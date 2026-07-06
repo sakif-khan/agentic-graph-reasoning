@@ -1,0 +1,16 @@
+webqsp done. cumulative unique triples: 3,791,302, entities: 1,298,304
+cwq done. cumulative unique triples: 8,309,194, entities: 2,592,892
+
+[webqsp]  test questions: 1628
+  all answers exist as nodes : 94.7%
+  >=1 answer exists          : 97.3%
+  >=1 answer reachable <= 4 hops (Hits@1 ceiling): 97.3%
+  questions with no topic entity in graph: 0
+
+[cwq]  test questions: 3531
+  all answers exist as nodes : 99.4%
+  >=1 answer exists          : 99.7%
+  >=1 answer reachable <= 4 hops (Hits@1 ceiling): 99.7%
+  questions with no topic entity in graph: 0
+
+Wrote nodes.csv.gz (2,592,892 nodes) and rels.csv.gz (8,309,194 rels).
