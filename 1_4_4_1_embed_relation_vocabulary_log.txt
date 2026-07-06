@@ -1,0 +1,6 @@
+7058 distinct relations
+american_football.football_coach.coaching_history  ->  american football coach coaching history
+american_football.football_coach.current_team_head_coached  ->  american football coach current team head coached
+american_football.football_coach_position.coaches_holding_this_position  ->  american football coach position coaches holding this position
+american_football.football_conference.divisions  ->  american football conference divisions
+american_football.football_conference.league  ->  american football conference league

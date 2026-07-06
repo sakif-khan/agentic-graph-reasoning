@@ -31,10 +31,12 @@ __pycache__/
 data/
 datasets/
 *.csv
+*.csv.gz
 *.tsv
 *.parquet
 *.jsonl
 *.h5
+*.npy
 
 # ==========================================
 # Model Checkpoints & Weights

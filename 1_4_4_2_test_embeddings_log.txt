@@ -1,0 +1,11 @@
+Loading model for query encoding...
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 6528.35it/s]
+Loading pre-computed relationship vectors and names...
+
+Top 5 relationship matches for: 'where was the person born':
+--------------------------------------------------
+1. Score: 0.7085 -> people.person.place_of_birth
+2. Score: 0.6750 -> location.location.people_born_here
+3. Score: 0.5130 -> fictional_universe.fictional_character.date_of_birth
+4. Score: 0.5064 -> people.person.nationality
+5. Score: 0.4976 -> fictional_universe.fictional_character.place_of_birth
