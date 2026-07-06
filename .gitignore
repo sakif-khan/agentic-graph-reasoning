@@ -1,0 +1,64 @@
+# ==========================================
+# Environments & Secrets (CRITICAL)
+# ==========================================
+.env
+.venv
+env/
+venv/
+conda-env/
+.Python
+
+# ==========================================
+# Python & Compilation Artifacts
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==========================================
+# Jupyter & IDEs
+# ==========================================
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# ==========================================
+# Data & Datasets (Prevent Repo Bloat)
+# ==========================================
+# It is usually best to ignore the entire data folder, 
+# or specific large file formats common in training/graphs
+data/
+datasets/
+*.csv
+*.tsv
+*.parquet
+*.jsonl
+*.h5
+
+# ==========================================
+# Model Checkpoints & Weights
+# ==========================================
+models/
+checkpoints/
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+
+# ==========================================
+# Logs, Profiling & Experiment Tracking
+# ==========================================
+logs/
+*.log
+wandb/
+mlruns/
+tensorboard/
+profile_results/
+
+# ==========================================
+# OS / System Artifacts
+# ==========================================
+.DS_Store
+Thumbs.db
