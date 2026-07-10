@@ -1,7 +1,7 @@
 import json, random
 from neo4j import GraphDatabase
 
-report = json.load(open("1_2_coverage_report.json", encoding="utf-8"))
+report = json.load(open("coverage_report.json", encoding="utf-8"))
 reachable_qs = [question for question in report["per_question"] if question["reachable"]]
 random.seed(42)
 sample = random.sample(reachable_qs, min(400, len(reachable_qs)))
@@ -39,4 +39,4 @@ with driver.session() as session:
             fail.append(question)
 
 print(f"Neo4j-verified: {ok}/{len(sample)}")
-json.dump(fail, open("1_5_gate_failures.json", "w"), indent=1)
+json.dump(fail, open("gate_failures.json", "w"), indent=1)

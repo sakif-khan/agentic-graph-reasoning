@@ -117,7 +117,7 @@ for dataset, stat in stats.items():
           f"{stat['any_reachable']/n:.1%}")
     print(f"  questions with no topic entity in graph: {stat['no_topic']}")
 
-with open("1_2_coverage_report.json", "w", encoding="utf-8") as f:
+with open("coverage_report.json", "w", encoding="utf-8") as f:
     json.dump({"stats": stats, "hop_cap": HOP_CAP,
                "per_question": per_question}, f, ensure_ascii=False, indent=1)
 

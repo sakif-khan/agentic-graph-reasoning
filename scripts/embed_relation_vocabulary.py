@@ -30,5 +30,5 @@ vecs = model.encode(phrases, batch_size=256,
 
 # 4. Persist as local artifacts
 np.save("relation_embeddings.npy", vecs.astype(np.float32))
-with open("1_4_4_1_relation_names.json", "w", encoding="utf-8") as f:
+with open("relation_names.json", "w", encoding="utf-8") as f:
     json.dump(rel_names, f)
