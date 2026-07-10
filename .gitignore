@@ -15,6 +15,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.egg-info/
 
 # ==========================================
 # Jupyter & IDEs
@@ -36,7 +37,6 @@ datasets/
 *.parquet
 *.jsonl
 *.h5
-*.npy
 
 # ==========================================
 # Model Checkpoints & Weights
