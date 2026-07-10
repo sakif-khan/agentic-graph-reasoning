@@ -7,7 +7,7 @@ NAME = "Justin Bieber"          # <- an entity that exists in YOUR graph
 REL = "people.person.parents"   # <- a relation it really has
 
 driver = GraphDatabase.driver("bolt://localhost:7687",
-                              auth=("neo4j", "abcd1234"))
+                              auth=("neo4j", "YOUR_PASSWORD_HERE"))  # <- change this to your password
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 tools = KGTools(driver, EntityResolver(driver, model), "logs/check_tools.jsonl")
 tools.qid = "manual-check"

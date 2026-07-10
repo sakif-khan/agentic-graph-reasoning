@@ -31,3 +31,9 @@ def make_init_state(qid: str, question: str,
         unsupported_claims=[], answer=None, supporting_triples=[],
         trace=[], _eval_decision=None,
     )
+
+"""
+Checkpoint — run:
+s = make_init_state('t','q');
+print(s['budget'].snapshot())
+"""
