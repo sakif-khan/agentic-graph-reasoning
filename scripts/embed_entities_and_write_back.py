@@ -1,12 +1,17 @@
 """
 Expect a few hours on CPU for a few million entities; storage adds roughly 1.5 KB per node.
 """
+import os
 from neo4j import GraphDatabase
 from sentence_transformers import SentenceTransformer
 
+
+NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_USERNAME = os.environ.get("NEO4J_USERNAME", "neo4j")
+NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD")
+driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-driver = GraphDatabase.driver("bolt://localhost:7687",
-                              auth=("neo4j", "YOUR_PASSWORD_HERE"))
 
 BATCH = 2000
 

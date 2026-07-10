@@ -10,7 +10,8 @@ dependencies = [
     "langchain-core",
     "numpy",
     "openai",
-    "pytest"
+    "pytest",
+    "python-dotenv",
 ]
 
 [tool.setuptools]

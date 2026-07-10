@@ -1,3 +1,4 @@
+import os
 from neo4j import GraphDatabase
 from sentence_transformers import SentenceTransformer
 from agr.resolver import EntityResolver
@@ -6,8 +7,11 @@ from agr.kg_tools import KGTools
 NAME = "Justin Bieber"          # <- an entity that exists in YOUR graph
 REL = "people.person.parents"   # <- a relation it really has
 
-driver = GraphDatabase.driver("bolt://localhost:7687",
-                              auth=("neo4j", "YOUR_PASSWORD_HERE"))  # <- change this to your password
+NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_USERNAME = os.environ.get("NEO4J_USERNAME", "neo4j")
+NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD")
+driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 tools = KGTools(driver, EntityResolver(driver, model), "logs/check_tools.jsonl")
 tools.qid = "manual-check"

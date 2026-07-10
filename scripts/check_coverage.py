@@ -1,5 +1,6 @@
-import json, random
+import json, random, os
 from neo4j import GraphDatabase
+
 
 report = json.load(open("coverage_report.json", encoding="utf-8"))
 reachable_qs = [question for question in report["per_question"] if question["reachable"]]
@@ -27,8 +28,11 @@ def path_exists(session, q_entity, a_entity, cap=4):
         qs=q_entity, ans=a_entity).single()
     return record["hops"] if record else None
 
-driver = GraphDatabase.driver("bolt://localhost:7687",
-                              auth=("neo4j", "YOUR_PASSWORD_HERE"))
+NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_USERNAME = os.environ.get("NEO4J_USERNAME", "neo4j")
+NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD")
+driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+
 ok, fail = 0, []
 with driver.session() as session:
     for question in sample:
