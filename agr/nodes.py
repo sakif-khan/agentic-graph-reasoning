@@ -25,14 +25,23 @@ def explorer_node(state, tools, scorer):
     stack = state["backtrack_stack"] + [{
         "anchors": list(state["anchors"]), "depth": meter.depth}]
 
-    banned = {tuple(b) for b in state["banned"]}          # Fix 1
+    banned = {tuple(b) for b in state["banned"]}
     new_triples, new_anchors, expanded, last_expanded = [], [], [], []
+    n_banned_skipped = 0
 
     for anchor in state["anchors"]:
         rels = tools.get_relations(anchor["id"])
-        picked = [(r, s) for r, s in scorer(objective, rels)
-                  if (anchor["id"], r["rel"], r["dir"]) not in banned
-                  ][: meter.cfg.beam_width]
+        scored = scorer(objective, rels)
+
+        picked = []
+        for rel_row, score in scored:
+            if len(picked) >= meter.cfg.beam_width:
+                break
+            if (anchor["id"], rel_row["rel"], rel_row["dir"]) in banned:
+                n_banned_skipped += 1          # honest count: would have been
+                continue                       # picked, excluded by ban list
+            picked.append((rel_row, score))
+
         for rel_row, score in picked:
             last_expanded.append([anchor["id"], rel_row["rel"],
                                   rel_row["dir"]])
@@ -45,13 +54,12 @@ def explorer_node(state, tools, scorer):
                 new_triples.append({
                     "h": anchor["id"], "h_name": anchor["name"],
                     "r": nb["via"], "t": nb["id"], "t_name": nb["name"],
-                    "rel_score": score})                   # interim Fix 5
+                    "rel_score": score})
                 new_anchors.append({"id": nb["id"], "name": nb["name"],
                                     "score": score})
 
-    # dedupe, then rank frontier by the score of the edge that produced it
     seen, frontier = set(), []
-    for a in sorted(new_anchors, key=lambda a: -a["score"]):   # interim Fix 5
+    for a in sorted(new_anchors, key=lambda a: -a["score"]):
         if a["id"] not in seen:
             seen.add(a["id"])
             frontier.append({"id": a["id"], "name": a["name"]})
@@ -61,12 +69,11 @@ def explorer_node(state, tools, scorer):
             "backtrack_stack": stack,
             "banned": state["banned"],
             "last_expanded": last_expanded,
+            "_last_n_new": len(new_triples),
             "traversed": new_triples,
             "trace": [{"node": "explorer", "objective": objective,
                        "expanded": expanded, "n_new": len(new_triples),
-                       "n_banned_skipped": sum(
-                           1 for a in state["anchors"]
-                           for r in [None])}]}   # optional; drop if noisy
+                       "n_banned_skipped": n_banned_skipped}]}
 
 
 # ------------------------------ evaluator ------------------------------
@@ -140,10 +147,15 @@ def route_after_eval(state):
     meter = state["budget"]
     if not meter.can("time") or not meter.can("depth"):
         return "answer"
-    d = state.get("_eval_decision") or "answer"
-    if d == "backtrack" and not meter.can("backtrack"):
+    if state.get("_last_n_new", -1) == 0:
+        # Explorer produced nothing new (ban list exhausted this anchor's
+        # relations, or dead-end node). Nothing new exists to evaluate or
+        # re-explore; force the answer path.
         return "answer"
-    return d if d in ("continue", "backtrack", "answer") else "answer"
+    decision = state.get("_eval_decision") or "answer"
+    if decision == "backtrack" and not meter.can("backtrack"):
+        return "answer"
+    return decision if decision in ("continue", "backtrack", "answer") else "answer"
 
 
 def route_after_verify(state):

@@ -21,6 +21,7 @@ class AGRState(TypedDict):
     supporting_triples: list[dict]
     trace: Annotated[list[dict], operator.add]       # append-only
     _eval_decision: Optional[str]  # scratch key: evaluator -> router
+    _last_n_new: Optional[int]
 
 
 def make_init_state(qid: str, question: str,
@@ -33,7 +34,7 @@ def make_init_state(qid: str, question: str,
         banned=[], last_expanded=[], candidate_answers=[],
         budget=BudgetMeter(cfg or BudgetConfig()),
         unsupported_claims=[], answer=None, supporting_triples=[],
-        trace=[], _eval_decision=None,
+        trace=[], _eval_decision=None, _last_n_new=None,
     )
 
 """

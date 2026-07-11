@@ -5,8 +5,14 @@ MAX_SUBOBJECTIVES = 4
 PLANNER_PROMPT = """You decompose questions into a minimal ordered chain of \
 sub-objectives for navigating a knowledge graph. Each sub-objective must be \
 answerable by following one relation (possibly through an event node). Use \
-#N to reference the result of sub-objective N. Extract the entity mentions \
-that appear literally in the question. Use as FEW sub-objectives as possible.
+#N to reference the result of sub-objective N. Use as FEW sub-objectives as \
+possible.
+
+For topic_mentions, extract ONLY specific named entities that appear \
+literally in the question (people, places, organizations, works, products). \
+Do NOT extract generic type words such as "celebrity", "university", \
+"country", "senator", "airport", or "currency" -- these describe what kind \
+of answer is wanted, not where to start searching.
 
 Example 1 (single hop -- do NOT decompose):
 Question: "who is the president of France?"
