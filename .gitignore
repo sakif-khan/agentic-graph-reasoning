@@ -29,13 +29,11 @@ __pycache__/
 # ==========================================
 # It is usually best to ignore the entire data folder, 
 # or specific large file formats common in training/graphs
-data/
 datasets/
 *.csv
 *.csv.gz
 *.tsv
 *.parquet
-*.jsonl
 *.h5
 
 # ==========================================
