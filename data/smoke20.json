@@ -1,0 +1,277 @@
+[
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-3525",
+   "question": "where did mendeleev died",
+   "gold_q_entities": [
+    "Dmitri Mendeleev"
+   ],
+   "answers": [
+    "Saint Petersburg"
+   ],
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-770",
+   "question": "what airport is close to daytona beach florida",
+   "gold_q_entities": [
+    "Daytona Beach"
+   ],
+   "answers": [
+    "Daytona Beach International Airport",
+    "Spruce Creek Airport",
+    "Massey Ranch Airpark"
+   ],
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-569",
+   "question": "what type of government and economic system does the united states have",
+   "gold_q_entities": [
+    "United States of America"
+   ],
+   "answers": [
+    "Presidential system",
+    "Federal republic",
+    "Constitutional republic"
+   ],
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTrn-1719_96914535d2c1ae6120a090361e60c965",
+   "question": "Who was born in 1901 that Niccolo Machiavelli was influenced by?",
+   "gold_q_entities": [
+    "Niccolò Machiavelli"
+   ],
+   "answers": [
+    "Plato",
+    "Aristotle"
+   ],
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTrn-3604_fa4b1fc5cc9db1e3164c9b382fcdc4e7",
+   "question": "With a street address of 300 West 21st Street in Austin, what can you see there?",
+   "gold_q_entities": [
+    "Austin"
+   ],
+   "answers": [
+    "Harry Ransom Center"
+   ],
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTrn-547_1f0f082cf9a15e8c58c9655386e1363f",
+   "question": "What Victoria Beckham kids' names are shared with other Celebrity?",
+   "gold_q_entities": [
+    "Victoria Beckham"
+   ],
+   "answers": [
+    "Romeo James Beckham",
+    "Brooklyn Joseph Beckham"
+   ],
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-1298",
+   "question": "what district does john cornyn represent",
+   "gold_q_entities": [
+    "John Cornyn"
+   ],
+   "answers": [
+    "Texas"
+   ],
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-153",
+   "question": "who did axl rose marry",
+   "gold_q_entities": [
+    "Axl Rose"
+   ],
+   "answers": [
+    "Erin Everly"
+   ],
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-3631",
+   "question": "which countries border the baltic sea",
+   "gold_q_entities": [
+    "Baltic Sea"
+   ],
+   "answers": [
+    "Second Polish Republic",
+    "Free City of Danzig",
+    "Sweden"
+   ],
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-3109",
+   "question": "what colleges did alice walker attend",
+   "gold_q_entities": [
+    "Alice Walker"
+   ],
+   "answers": [
+    "Spelman College",
+    "Sarah Lawrence College"
+   ],
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTrn-2584_0c8bcc717d50c92c31ff802641504b43",
+   "question": "When I visit the location containing the second level division Salcedo, what currency should I take with me?",
+   "gold_q_entities": [
+    "Salcedo"
+   ],
+   "answers": [
+    "Dominican peso"
+   ],
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTest-1267_9eeb2f38ee223b499967ac117f641e3b",
+   "question": "What money is used in the country where Red Stripe beer is produced?",
+   "gold_q_entities": [
+    "Red Stripe"
+   ],
+   "answers": [
+    "Jamaican dollar"
+   ],
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTrn-304_4ec9be4c828025d788bc5fb5ebca9e6e",
+   "question": "What are the official languages of the country where the Federal Supreme Court of Switzerland is?",
+   "gold_q_entities": [
+    "Federal Supreme Court of Switzerland"
+   ],
+   "answers": [
+    "Italian Language",
+    "German Language",
+    "French",
+    "Romansh language"
+   ],
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTest-1520_5f93548592ef4987720d1e3f3fe6b3d7",
+   "question": "What languages are spoken where teh Superior Court of Justice presides?",
+   "gold_q_entities": [
+    "Superior Court of Justice"
+   ],
+   "answers": [
+    "Italian Language",
+    "Brazilian Portuguese",
+    "Portuguese Language"
+   ],
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-2027",
+   "question": "what is daniel radcliffe name in the woman in black",
+   "gold_q_entities": [
+    "The Woman in Black",
+    "Daniel Radcliffe"
+   ],
+   "answers": [
+    "Arthur Kipps"
+   ],
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTest-673_5ecefd82a413a79be541a1bd16967800",
+   "question": "What university with a postgraduate class greater than 2656 did Robert Kardashian go to?",
+   "gold_q_entities": [
+    "College/University",
+    "Robert Kardashian"
+   ],
+   "answers": [
+    "University of San Diego",
+    "University of Southern California"
+   ],
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTrn-1067_ed395c43c14a93f3e41c1758ec7e1b8a",
+   "question": "Which senators are from the location, that has the government position titled ,Member of the New Jersey General Assembly?",
+   "gold_q_entities": [
+    "Senator",
+    "Member of the New Jersey General Assembly"
+   ],
+   "answers": [
+    "Bob Menendez",
+    "Cory Booker"
+   ],
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "dataset": "webqsp",
+   "id": "WebQTrn-144",
+   "question": "who is the president of the european union 2011",
+   "gold_q_entities": [
+    "European Union"
+   ],
+   "answers": [
+    "Jerzy Buzek"
+   ],
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "dataset": "cwq",
+   "id": "WebQTrn-3009_a453d9b2a3a3816e8ba70b1a240a4bdd",
+   "question": "Which team for which Jim Harbaugh played were founded prior to 1996?",
+   "gold_q_entities": [
+    "Jim Harbaugh"
+   ],
+   "answers": [
+    "Chicago Bears",
+    "Indianapolis Colts",
+    "Michigan Wolverines football",
+    "San Diego Chargers"
+   ],
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+    "id": "smoke-20",
+    "question": "who directed the film Chronicles of Zxqvorn?",
+    "gold_q_entities": ["Chronicles of Zxqvorn"],
+    "answers": []
+  }
+]

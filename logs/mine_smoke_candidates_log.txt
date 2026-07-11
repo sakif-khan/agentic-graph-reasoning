@@ -1,0 +1,17 @@
+Generating train split: 27639 examples [00:20, 1367.42 examples/s]
+one_hop       158 candidates
+    [webqsp] 'where did mendeleev died' -> ['Saint Petersburg'] (raw_hops=1, cvt=False)
+    [webqsp] 'what is the time zone in uk now' -> ['Greenwich Mean Time Zone'] (raw_hops=1, cvt=False)
+    [webqsp] 'where did the flemish live' -> ['France', 'Belgium'] (raw_hops=1, cvt=False)
+two_hop        95 candidates
+    [webqsp] 'what district does john cornyn represent' -> ['Texas'] (raw_hops=2, cvt=False)
+    [webqsp] 'who did axl rose marry' -> ['Erin Everly'] (raw_hops=2, cvt=False)
+    [webqsp] 'what country does nike operate in' -> ['United States of America'] (raw_hops=2, cvt=False)
+conjunction    83 candidates
+    [webqsp] 'what is the timezone in vancouver' -> ['Pacific Time Zone'] (raw_hops=1, cvt=False)
+    [webqsp] 'what is daniel radcliffe name in the woman in black' -> ['Arthur Kipps'] (raw_hops=1, cvt=False)
+    [webqsp] 'who nikki reed play in twilight' -> ['Rosalie Hale'] (raw_hops=1, cvt=False)
+cvt_heavy      48 candidates
+    [webqsp] 'who is the president of the european union 2011' -> ['Jerzy Buzek'] (raw_hops=2, cvt=True)
+    [webqsp] 'what ball does rickie fowler play' -> ['Golf'] (raw_hops=2, cvt=True)
+    [webqsp] 'what does beth tweddle compete in' -> ['Artistic gymnastics'] (raw_hops=2, cvt=True)
