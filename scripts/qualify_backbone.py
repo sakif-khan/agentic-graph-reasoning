@@ -66,7 +66,7 @@ def run_question(agr, tools, q):
 
 results = {}
 for model, params in CANDIDATES.items():
-    llm = LLMClient(model=model, api_key=OPENAI_API_KEY, **params)
+    llm = LLMClient(model=model, api_key=OPENAI_API_KEY, **params, cache_dir=None)
     tools = KGTools(driver, EntityResolver(driver, embed),
                     f"logs/qualify_{model.replace('/', '_')}.jsonl")
     agr = build_graph(llm, tools, scorer, RunConfig(use_gold_entities=True))

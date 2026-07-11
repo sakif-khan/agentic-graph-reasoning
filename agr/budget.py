@@ -35,6 +35,7 @@ class BudgetMeter:
     prompt_tokens: int = 0
     completion_tokens: int = 0
     reasoning_tokens: int = 0
+    cache_hits: int = 0
     exhausted: list = field(default_factory=list)
 
     def can(self, resource: str) -> bool:
@@ -56,5 +57,5 @@ class BudgetMeter:
             "tokens": self.prompt_tokens + self.completion_tokens,
             "reasoning_tokens": self.reasoning_tokens,
             "seconds": round(time.time() - self.t0, 1),
-            "exhausted": self.exhausted,
+            "exhausted": self.exhausted, "cache_hits": self.cache_hits,
         }
