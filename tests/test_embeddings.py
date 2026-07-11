@@ -8,8 +8,8 @@ model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
 # 2. Load your pre-computed local artifacts instantly
 print("Loading pre-computed relationship vectors and names...")
-vecs = np.load("relation_embeddings.npy")
-with open("relation_names.json", "r", encoding="utf-8") as f:
+vecs = np.load("data/relation_embeddings.npy")
+with open("data/relation_names.json", "r", encoding="utf-8") as f:
     rel_names = json.load(f)
 
 # 3. Encode your test query
