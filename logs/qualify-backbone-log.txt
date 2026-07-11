@@ -1,0 +1,89 @@
+metric                           gpt-4.1-mini-2025-04-14     gpt-5.4-mini-2026-03-17
+mean tokens/question                                3289                        3613
+mean llm calls/question                              4.5                         5.2
+mean seconds/question                                7.5                         7.6
+total reasoning tokens                                 0                           0
+questions with errors                                  0                           0
+determinism (repeat sigs)                            3/3                         1/3
+
+Per-question answers (eyeball for sensibleness):
+
+[WebQTrn-3525] where did mendeleev died  gold=['Saint Petersburg']
+   gpt-4.1-mini-2025-04-14    -> 'Saint Petersburg'
+   gpt-5.4-mini-2026-03-17    -> 'Saint Petersburg'
+
+[WebQTrn-770] what airport is close to daytona beach florida  gold=['Daytona Beach International Airport', 'Spruce Creek Airport', 'Massey Ranch Airpark']
+   gpt-4.1-mini-2025-04-14    -> 'Daytona Beach International Airport'
+   gpt-5.4-mini-2026-03-17    -> 'Daytona Beach International Airport'
+
+[WebQTrn-569] what type of government and economic system does the united states have  gold=['Presidential system', 'Federal republic', 'Constitutional republic']
+   gpt-4.1-mini-2025-04-14    -> 'Federal republic, Presidential system, Constitutional republic'
+   gpt-5.4-mini-2026-03-17    -> 'Federal republic, Presidential system, Constitutional republic'
+
+[WebQTrn-1719_96914535d2c1ae6120a090361e60c965] Who was born in 1901 that Niccolo Machiavelli was influenced by?  gold=['Plato', 'Aristotle']
+   gpt-4.1-mini-2025-04-14    -> 'Could not be determined'
+   gpt-5.4-mini-2026-03-17    -> 'Niccolo Machiavelli'
+
+[WebQTrn-3604_fa4b1fc5cc9db1e3164c9b382fcdc4e7] With a street address of 300 West 21st Street in Austin, what can you see there?  gold=['Harry Ransom Center']
+   gpt-4.1-mini-2025-04-14    -> 'Christ Episcopal Church'
+   gpt-5.4-mini-2026-03-17    -> 'Could not be determined'
+
+[WebQTrn-547_1f0f082cf9a15e8c58c9655386e1363f] What Victoria Beckham kids' names are shared with other Celebrity?  gold=['Romeo James Beckham', 'Brooklyn Joseph Beckham']
+   gpt-4.1-mini-2025-04-14    -> 'could not be determined'
+   gpt-5.4-mini-2026-03-17    -> 'Harper Seven Beckham'
+
+[WebQTrn-1298] what district does john cornyn represent  gold=['Texas']
+   gpt-4.1-mini-2025-04-14    -> 'Texas'
+   gpt-5.4-mini-2026-03-17    -> 'Texas'
+
+[WebQTrn-153] who did axl rose marry  gold=['Erin Everly']
+   gpt-4.1-mini-2025-04-14    -> 'Erin Everly'
+   gpt-5.4-mini-2026-03-17    -> 'Erin Everly'
+
+[WebQTrn-3631] which countries border the baltic sea  gold=['Second Polish Republic', 'Free City of Danzig', 'Sweden']
+   gpt-4.1-mini-2025-04-14    -> 'could not be determined'
+   gpt-5.4-mini-2026-03-17    -> 'Could not be determined from the provided facts.'
+
+[WebQTrn-3109] what colleges did alice walker attend  gold=['Spelman College', 'Sarah Lawrence College']
+   gpt-4.1-mini-2025-04-14    -> 'Sarah Lawrence College, Spelman College'
+   gpt-5.4-mini-2026-03-17    -> 'Spelman College, Sarah Lawrence College'
+
+[WebQTrn-2584_0c8bcc717d50c92c31ff802641504b43] When I visit the location containing the second level division Salcedo, what currency should I take with me?  gold=['Dominican peso']
+   gpt-4.1-mini-2025-04-14    -> 'Dominican peso'
+   gpt-5.4-mini-2026-03-17    -> 'Dominican peso'
+
+[WebQTest-1267_9eeb2f38ee223b499967ac117f641e3b] What money is used in the country where Red Stripe beer is produced?  gold=['Jamaican dollar']
+   gpt-4.1-mini-2025-04-14    -> 'Jamaican dollar'
+   gpt-5.4-mini-2026-03-17    -> 'Jamaican dollar'
+
+[WebQTrn-304_4ec9be4c828025d788bc5fb5ebca9e6e] What are the official languages of the country where the Federal Supreme Court of Switzerland is?  gold=['Italian Language', 'German Language', 'French', 'Romansh language']
+   gpt-4.1-mini-2025-04-14    -> 'German Language, French, Italian Language, Romansh language'
+   gpt-5.4-mini-2026-03-17    -> 'German Language, French, Italian Language, Romansh language'
+
+[WebQTest-1520_5f93548592ef4987720d1e3f3fe6b3d7] What languages are spoken where teh Superior Court of Justice presides?  gold=['Italian Language', 'Brazilian Portuguese', 'Portuguese Language']
+   gpt-4.1-mini-2025-04-14    -> 'Portuguese Language, Brazilian Portuguese, Italian Language'
+   gpt-5.4-mini-2026-03-17    -> 'Portuguese Language, Brazilian Portuguese, Italian Language'
+
+[WebQTrn-2027] what is daniel radcliffe name in the woman in black  gold=['Arthur Kipps']
+   gpt-4.1-mini-2025-04-14    -> 'Arthur Kipps'
+   gpt-5.4-mini-2026-03-17    -> 'Arthur Kipps'
+
+[WebQTest-673_5ecefd82a413a79be541a1bd16967800] What university with a postgraduate class greater than 2656 did Robert Kardashian go to?  gold=['University of San Diego', 'University of Southern California']
+   gpt-4.1-mini-2025-04-14    -> 'University of Southern California'
+   gpt-5.4-mini-2026-03-17    -> 'University of Southern California'
+
+[WebQTrn-1067_ed395c43c14a93f3e41c1758ec7e1b8a] Which senators are from the location, that has the government position titled ,Member of the New Jersey General Assembly?  gold=['Bob Menendez', 'Cory Booker']
+   gpt-4.1-mini-2025-04-14    -> 'Information insufficient to determine which senators are from New Jersey.'
+   gpt-5.4-mini-2026-03-17    -> 'Could not be determined from the provided facts.'
+
+[WebQTrn-144] who is the president of the european union 2011  gold=['Jerzy Buzek']
+   gpt-4.1-mini-2025-04-14    -> 'José Manuel Barroso'
+   gpt-5.4-mini-2026-03-17    -> 'could not be determined'
+
+[WebQTrn-3009_a453d9b2a3a3816e8ba70b1a240a4bdd] Which team for which Jim Harbaugh played were founded prior to 1996?  gold=['Chicago Bears', 'Indianapolis Colts', 'Michigan Wolverines football', 'San Diego Chargers']
+   gpt-4.1-mini-2025-04-14    -> 'Chicago Bears, San Diego Chargers, Michigan Wolverines football, Indianapolis Colts'
+   gpt-5.4-mini-2026-03-17    -> 'Could not be determined from the provided facts.'
+
+[smoke-20] who directed the film Chronicles of Zxqvorn?  gold=[]
+   gpt-4.1-mini-2025-04-14    -> 'could not be determined'
+   gpt-5.4-mini-2026-03-17    -> 'could not be determined'
