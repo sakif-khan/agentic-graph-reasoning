@@ -12,6 +12,9 @@ class FakeScorer:
     def __call__(self, objective, rel_rows):
         return [(r, 1.0 / (i + 1)) for i, r in enumerate(rel_rows)]
 
+    def top_facts(self, objective, triples, k=30):
+        return triples[-k:]          # deterministic, model-free
+
 @pytest.fixture(scope="session")
 def driver():
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))

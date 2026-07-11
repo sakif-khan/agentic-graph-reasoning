@@ -49,5 +49,16 @@ def test_backtrack_cap_downgrades(tools, fake_scorer):
     assert final["budget"].backtracks == 2
     assert final["answer"] is not None
 
+def test_backtrack_bans_reexpansion(tools, fake_scorer):
+    script = [{"sub_objectives": ["x"], "topic_mentions": [KNOWN["entity_name"]]}] \
+           + [{"decision": "backtrack", "objective_done": False,
+               "resolved": []}] * 50 + [{"answer": "y"}]
+    final = run(script, tools, fake_scorer, cfg=BudgetConfig(max_backtracks=3))
+    ex = [t for t in final["trace"] if t.get("node") == "explorer"]
+    first = {(e["anchor"], e["rel"]) for e in ex[0]["expanded"]}
+    second = {(e["anchor"], e["rel"]) for e in ex[1]["expanded"]}
+    assert first.isdisjoint(second), \
+        "explorer re-expanded banned (anchor, relation) pairs after backtrack"
+
 # pytest -m integration
 # Integration tests need Neo4j up and KNOWN filled in.

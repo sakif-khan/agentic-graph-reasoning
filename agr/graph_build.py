@@ -13,7 +13,8 @@ def build_graph(llm, tools, scorer, run_config):
                                   run_config=run_config))
     g.add_node("explorer", partial(nodes.explorer_node, tools=tools,
                                    scorer=scorer))
-    g.add_node("evaluator", partial(nodes.evaluator_node, llm=llm))
+    g.add_node("evaluator", partial(nodes.evaluator_node, llm=llm,
+                                    scorer=scorer))
     g.add_node("backtracker", nodes.backtracker_node)
     g.add_node("verifier", partial(nodes.verifier_node, tools=tools, llm=llm))
     g.add_node("answerer", partial(nodes.answerer_node, llm=llm))

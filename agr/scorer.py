@@ -23,6 +23,18 @@ class EmbeddingScorer:
             scored.append((row, s))
         return sorted(scored, key=lambda x: -x[1])
 
+    def top_facts(self, objective: str, triples: list[dict], k: int = 30):
+        """Rank traversed triples by relevance to the objective."""
+        if len(triples) <= k:
+            return triples
+        texts = [f'{t["h_name"]} {" ".join(t["r"])} {t["t_name"]}'
+                 for t in triples]
+        q = self.model.encode([objective], normalize_embeddings=True)[0]
+        vecs = self.model.encode(texts, batch_size=256,
+                                 normalize_embeddings=True)
+        order = np.argsort(vecs @ q)[::-1][:k]
+        return [triples[i] for i in sorted(order)]   # keep traversal order
+
 """
 Checkpoint — run:
 
