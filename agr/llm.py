@@ -10,7 +10,8 @@ def strip_fences(text: str) -> str:
 
 
 class LLMClient:
-    def __init__(self, model: str, api_key: str, temperature: float = 0.0):
+    def __init__(self, model: str, api_key: str,
+                 temperature: float | None = 0.0):
         self.client = OpenAI(api_key=api_key)
         self.model = model
         self.temperature = temperature
@@ -19,9 +20,11 @@ class LLMClient:
         if not meter.can("llm"):
             raise BudgetExhausted("llm")
         meter.llm_calls += 1
-        resp = self.client.chat.completions.create(
-            model=self.model, temperature=self.temperature,
-            messages=[{"role": "user", "content": content}])
+        kwargs = dict(model=self.model,
+                      messages=[{"role": "user", "content": content}])
+        if self.temperature is not None:
+            kwargs["temperature"] = self.temperature
+        resp = self.client.chat.completions.create(**kwargs)
         meter.prompt_tokens += resp.usage.prompt_tokens
         meter.completion_tokens += resp.usage.completion_tokens
         return resp.choices[0].message.content

@@ -62,7 +62,10 @@ def render_objective(plan: list[dict], idx: int) -> str:
     return text
 
 
-def planner_node(state, tools, llm, config):
+def planner_node(state, tools, llm, run_config):
+    assert hasattr(run_config, "use_gold_entities"), \
+    f"planner got {type(run_config).__name__}, expected RunConfig"
+
     from agr.budget import BudgetExhausted
     try:
         plan_json = llm(state, PLANNER_PROMPT.replace(
@@ -77,7 +80,7 @@ def planner_node(state, tools, llm, config):
                      "topic_mentions": list(state["gold_q_entities"])}
 
     anchors, linking = [], []
-    mentions = (state["gold_q_entities"] if config.use_gold_entities
+    mentions = (state["gold_q_entities"] if run_config.use_gold_entities
                 else plan_json["topic_mentions"])
     for m in mentions:
         hits = tools.search_entity(m, k=3)

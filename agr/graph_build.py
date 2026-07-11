@@ -10,7 +10,7 @@ from agr import nodes
 def build_graph(llm, tools, scorer, run_config):
     g = StateGraph(AGRState)
     g.add_node("planner", partial(planner_node, tools=tools, llm=llm,
-                                  config=run_config))
+                                  run_config=run_config))
     g.add_node("explorer", partial(nodes.explorer_node, tools=tools,
                                    scorer=scorer))
     g.add_node("evaluator", partial(nodes.evaluator_node, llm=llm))
