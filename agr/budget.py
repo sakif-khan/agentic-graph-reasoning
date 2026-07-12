@@ -13,7 +13,7 @@ class BudgetConfig:
     max_depth: int = 4
     beam_width: int = 3
     max_backtracks: int = 3
-    max_llm_calls: int = 20
+    max_llm_calls: int = 25
     max_verify_iters: int = 2
     max_seconds: float = 300.0
     max_anchors: int = 5

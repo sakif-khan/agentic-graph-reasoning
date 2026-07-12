@@ -23,36 +23,46 @@ def explorer_node(state, tools, scorer):
                  if idx is not None else state["question"])
 
     stack = state["backtrack_stack"] + [{
-        "anchors": list(state["anchors"]), "depth": meter.depth}]
+        "anchors": list(state["anchors"]), "depth": meter.depth,
+        "score": state.get("_frontier_max_score") or 0.0}]
 
     banned = {tuple(b) for b in state["banned"]}
-    new_triples, new_anchors, expanded, last_expanded = [], [], [], []
-    n_banned_skipped = 0
 
+    # ---- gather candidates from ALL anchors ----
+    all_rows = []
     for anchor in state["anchors"]:
-        rels = tools.get_relations(anchor["id"])
-        scored = scorer(objective, rels)
+        for row in tools.get_relations(anchor["id"]):
+            all_rows.append({**row, "anchor_id": anchor["id"],
+                             "anchor_name": anchor["name"]})
 
-        picked = []
-        for rel_row, score in scored:
-            if len(picked) >= meter.cfg.beam_width:
-                break
-            if (anchor["id"], rel_row["rel"], rel_row["dir"]) in banned:
-                n_banned_skipped += 1          # honest count: would have been
-                continue                       # picked, excluded by ban list
-            picked.append((rel_row, score))
+    # ---- ONE scoring pass (hybrid: one batched LLM call inside) ----
+    scored = scorer(objective, all_rows, state=state)
 
-        for rel_row, score in picked:
-            last_expanded.append([anchor["id"], rel_row["rel"],
-                                  rel_row["dir"]])
-            res = tools.get_neighbors(anchor["id"], rel_row["rel"],
-                                      rel_row["dir"])
-            expanded.append({"anchor": anchor["name"],
-                             "rel": rel_row["rel"],
+    # ---- per-anchor beam with ban filtering ----
+    per_anchor, n_banned_skipped = {}, 0
+    for row, score in scored:
+        key = row["anchor_id"]
+        bucket = per_anchor.setdefault(key, [])
+        if len(bucket) >= meter.cfg.beam_width:
+            continue
+        if (key, row["rel"], row["dir"]) in banned:
+            n_banned_skipped += 1
+            continue
+        bucket.append((row, score))
+
+    new_triples, new_anchors, expanded, last_expanded = [], [], [], []
+    max_score = 0.0
+    for bucket in per_anchor.values():
+        for row, score in bucket:
+            max_score = max(max_score, score)
+            last_expanded.append([row["anchor_id"], row["rel"], row["dir"]])
+            res = tools.get_neighbors(row["anchor_id"], row["rel"],
+                                      row["dir"])
+            expanded.append({"anchor": row["anchor_name"], "rel": row["rel"],
                              "score": round(score, 3)})
             for nb in res["neighbors"]:
                 new_triples.append({
-                    "h": anchor["id"], "h_name": anchor["name"],
+                    "h": row["anchor_id"], "h_name": row["anchor_name"],
                     "r": nb["via"], "t": nb["id"], "t_name": nb["name"],
                     "rel_score": score})
                 new_anchors.append({"id": nb["id"], "name": nb["name"],
@@ -70,9 +80,11 @@ def explorer_node(state, tools, scorer):
             "banned": state["banned"],
             "last_expanded": last_expanded,
             "_last_n_new": len(new_triples),
+            "_frontier_max_score": max_score,
             "traversed": new_triples,
             "trace": [{"node": "explorer", "objective": objective,
                        "expanded": expanded, "n_new": len(new_triples),
+                       "max_score": round(max_score, 3),
                        "n_banned_skipped": n_banned_skipped}]}
 
 
