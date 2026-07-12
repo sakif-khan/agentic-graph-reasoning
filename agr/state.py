@@ -17,13 +17,13 @@ class AGRState(TypedDict):
     candidate_answers: list[dict] # accumulated resolved entities, never discarded
     budget: BudgetMeter           # mutated in place, never returned as delta
     draft: Optional[str]
+    answer_entities: list[str]
     unsupported_claims: list[str]
     answer: Optional[str]
     supporting_triples: list[dict]
     trace: Annotated[list[dict], operator.add]       # append-only
     _eval_decision: Optional[str]  # scratch key: evaluator -> router
     _last_n_new: Optional[int]
-    _backtrack_reason: Optional[str]
     _frontier_max_score: Optional[float]
 
 
@@ -35,10 +35,11 @@ def make_init_state(qid: str, question: str,
         gold_q_entities=gold_q_entities or [],
         plan=[], anchors=[], traversed=[], backtrack_stack=[],
         banned=[], last_expanded=[], candidate_answers=[],
-        budget=BudgetMeter(cfg or BudgetConfig()), draft=None,
-        unsupported_claims=[], answer=None, supporting_triples=[],
+        budget=BudgetMeter(cfg or BudgetConfig()),
+        draft=None, answer_entities=[], unsupported_claims=[],
+        answer=None, supporting_triples=[],
         trace=[], _eval_decision=None, _last_n_new=None,
-        _backtrack_reason=None, _frontier_max_score=None,
+        _frontier_max_score=None,
     )
 
 """

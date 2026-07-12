@@ -22,6 +22,10 @@ class EmbeddingScorer:
 
     def __call__(self, objective: str, rel_rows: list[dict], state=None):
         scores = self._emb_scores(objective, rel_rows)
+        self.last_info = {
+            "emb_max": max(scores, default=0.0),
+            "llm_max": 0.0,
+        }
         return sorted(zip(rel_rows, scores), key=lambda x: -x[1])
 
     def top_facts(self, objective: str, triples: list[dict], k: int = 30):
@@ -45,6 +49,10 @@ print(sc('where was the person born', [{'rel':'people.person.place_of_birth','di
 The birth relation must outscore the genre relation.
 """
 
+# CACHE INVARIANT: this prompt must NOT contain alpha, tau, or any RunConfig
+# value. Alpha blends AFTER the LLM call, so scorer responses are shared
+# across all sweep conditions via the cache. Adding config-dependent wording
+# here silently multiplies sweep cost by the number of conditions.
 SCORE_PROMPT = """Sub-objective: {objective}
 
 Candidate knowledge-graph edges (anchor entity --relation-->):
@@ -99,4 +107,9 @@ class HybridScorer(EmbeddingScorer):
 
         blended = [self.alpha * e + (1 - self.alpha) * llm_scores.get(i, 0.0)
                    for i, e in enumerate(emb)]
+        
+        self.last_info = {
+            "emb_max": max(emb, default=0.0),
+            "llm_max": max(llm_scores.values(), default=0.0),
+        }
         return sorted(zip(rel_rows, blended), key=lambda x: -x[1])

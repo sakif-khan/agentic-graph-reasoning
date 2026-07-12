@@ -74,13 +74,18 @@ def explorer_node(state, tools, scorer):
             seen.add(a["id"])
             frontier.append({"id": a["id"], "name": a["name"]})
 
+    info = getattr(scorer, "last_info", {})
+    signal_max = max(max_score,
+                     info.get("emb_max", 0.0),
+                     info.get("llm_max", 0.0))
+
     meter.depth += 1
     return {"anchors": frontier[: meter.cfg.max_anchors] or state["anchors"],
             "backtrack_stack": stack,
             "banned": state["banned"],
             "last_expanded": last_expanded,
             "_last_n_new": len(new_triples),
-            "_frontier_max_score": max_score,
+            "_frontier_max_score": signal_max,
             "traversed": new_triples,
             "trace": [{"node": "explorer", "objective": objective,
                        "expanded": expanded, "n_new": len(new_triples),
@@ -145,7 +150,8 @@ def evaluator_node(state, llm, scorer):
             plan[idx + 1]["status"] = "active"
             out["decision"] = "continue"
             if resolved:
-                result["anchors"] = resolved
+                cap = state["budget"].cfg.max_anchors
+                result["anchors"] = resolved[:cap]
         else:
             out["decision"] = "answer"
 
@@ -155,39 +161,39 @@ def evaluator_node(state, llm, scorer):
 
 
 # ------------------------------ routers ------------------------------
-TAU = 0.20   # low-score backtrack threshold; tuned with alpha (Step 3.5)
+def _backtrack_trigger(state, tau: float) -> str | None:
+    """Priority-ordered backtrack triggers. Returns reason code or None."""
+    if state.get("_last_n_new", -1) == 0:
+        return "dead_end"
+    if (state.get("_frontier_max_score") or 1.0) < tau:
+        return "low_score"
+    if (state.get("_eval_decision") or "") == "backtrack":
+        return "evaluator"
+    return None
 
-def route_after_eval(state):
+def route_after_eval(state, run_config):
     meter = state["budget"]
     if not meter.can("time") or not meter.can("depth"):
         return "answer"
 
-    reason = None
-    if state.get("_last_n_new", -1) == 0:
-        reason = "dead_end"
-    elif (state.get("_frontier_max_score") or 1.0) < TAU:
-        reason = "low_score"
-    elif (state.get("_eval_decision") or "") == "backtrack":
-        reason = "evaluator"
-
-    if reason:
-        if meter.can("backtrack"):
-            state["_backtrack_reason"] = reason
-            return "backtrack"
-        return "answer"          # budget-forced downgrade, still logged
+    if _backtrack_trigger(state, run_config.tau):
+        return "backtrack" if meter.can("backtrack") else "answer"
 
     d = state.get("_eval_decision") or "answer"
     return d if d in ("continue", "answer") else "answer"
 
 
 def route_after_verify(state):
+    meter = state["budget"]
     if not state["unsupported_claims"]:
         return "grounded"
-    return "retry" if state["budget"].can("verify") else "give_up"
+    if meter.can("verify") and meter.can("depth") and meter.can("time"):
+        return "retry"
+    return "give_up"
 
 
 # ------------------------------ backtracker ------------------------------
-def backtracker_node(state):
+def backtracker_node(state, run_config):
     meter = state["budget"]
     meter.backtracks += 1
     stack = list(state["backtrack_stack"])
@@ -197,12 +203,11 @@ def backtracker_node(state):
     else:
         snap = {"anchors": state["anchors"], "depth": meter.depth}
     meter.depth = snap["depth"]
-    reason = state.get("_backtrack_reason") or "unspecified"
+    reason = _backtrack_trigger(state, run_config.tau) or "unspecified"
     newly_banned = state["banned"] + [
         b for b in state["last_expanded"] if b not in state["banned"]]
     return {"anchors": snap["anchors"], "backtrack_stack": stack,
             "banned": newly_banned, "last_expanded": [],
-            "_backtrack_reason": None,
             "trace": [{"node": "backtracker", "reason": reason,
                        "restored": [a["name"] for a in snap["anchors"]],
                        "restored_depth": snap["depth"],
@@ -210,6 +215,11 @@ def backtracker_node(state):
 
 
 # ------------------------------ verifier ------------------
+
+# CACHE INVARIANT: this prompt must NOT contain alpha, tau, or any RunConfig
+# value. Alpha blends AFTER the LLM call, so scorer responses are shared
+# across all sweep conditions via the cache. Adding config-dependent wording
+# here silently multiplies sweep cost by the number of conditions.
 DRAFT_PROMPT = """Question: {question}
 Facts retrieved from the knowledge graph:
 {facts}
@@ -217,11 +227,21 @@ Entities identified as promising during exploration:
 {candidates}
 
 1. Draft an answer using ONLY the facts and candidates above. Use entity
-names exactly as written. If insufficient, say what could not be determined.
-2. Decompose your draft into atomic factual claims, each as
+   names exactly as written. If insufficient, say what could not be
+   determined.
+2. List the answer entities themselves in "answer_entities", copied EXACTLY
+   as they are named in the facts above -- these are the entities your draft
+   asserts as the answer, not every entity it mentions. If your draft is a
+   hedge ("could not be determined"), "answer_entities" MUST be [].
+   IMPORTANT: "answer_entities" must be specific entities of the kind the
+   question asks for (a person for "who", a place for "where", etc.).
+   Never restate the question or name entity types/categories as the
+   answer. If you cannot name specific answer entities from the facts,
+   your draft must be a hedge and "answer_entities" must be [].
+3. Decompose your draft into atomic factual claims, each as
    {{"h": entity name, "r": short relation phrase, "t": entity name}}.
-   Only include claims your draft actually asserts. A hedged draft
-   ("could not be determined") has zero claims."""
+   Only include claims your draft actually asserts. A hedged draft has zero
+   claims."""
 
 ENTAIL_PROMPT = """Retrieved knowledge-graph triples:
 {facts}
@@ -233,7 +253,7 @@ Claims:
 {claims}"""
 
 
-def verifier_node(state, tools, llm, scorer):
+def verifier_node(state, tools, llm, scorer, run_config):
     meter = state["budget"]
     facts = scorer.top_facts(state["question"], state["traversed"], k=60)
     facts_str = _fmt_facts(facts, 60)
@@ -249,13 +269,25 @@ def verifier_node(state, tools, llm, scorer):
         out = llm(state, DRAFT_PROMPT.format(question=state["question"],
                                              facts=facts_str,
                                              candidates=cands),
-                  '{"draft": "...", "claims": [{"h": "...", "r": "...", '
-                  '"t": "..."}]}')
+                  '{"draft": "...", "answer_entities": ["..."], '
+                  '"claims": [{"h": "...", "r": "...", "t": "..."}]}')
         draft = out.get("draft") or "unable to answer"
+        answer_entities = [str(a).strip()
+                           for a in out.get("answer_entities", [])
+                           if str(a).strip()]
         claims = [c for c in out.get("claims", [])
                   if isinstance(c, dict) and c.get("h") and c.get("t")]
+        
+        if not run_config.verify_claims:
+            return {"draft": draft,
+                    "answer_entities": answer_entities,
+                    "unsupported_claims": [],
+                    "supporting_triples": [],
+                    "trace": [{"node": "verifier", "n_claims": len(claims),
+                            "outcome": "draft_only"}]}
     except (BudgetExhausted, Exception) as e:
-        return {"draft": None, "unsupported_claims": [],
+        return {"draft": None, "answer_entities": [],
+                "unsupported_claims": [],
                 "trace": [{"node": "verifier", "error": repr(e),
                            "outcome": "skipped"}]}
 
@@ -302,6 +334,7 @@ def verifier_node(state, tools, llm, scorer):
 
     # ---- (4) retry targeting, if budget remains ----
     result = {"draft": draft,
+              "answer_entities": answer_entities,
               "unsupported_claims": unsupported_strs,
               "supporting_triples": supporting,
               "trace": [{"node": "verifier",
@@ -337,7 +370,9 @@ Entities identified as promising during exploration:
 
 Answer using ONLY these facts and candidates. Give the answer entity name(s)
 exactly as they appear above. If the information is insufficient, state what
-could not be determined."""
+could not be determined.
+Also list in "answer_entities" the entities the REWRITTEN answer still
+asserts (exactly as named); [] if it asserts nothing."""
 
 
 REWRITE_PROMPT = """Question: {question}
@@ -347,12 +382,21 @@ The following claims in the draft are NOT supported by the knowledge graph:
 
 Rewrite the answer removing or explicitly hedging the unsupported claims.
 Keep everything that was supported. If nothing supported remains, state that
-the answer could not be verified against the knowledge graph."""
+the answer could not be verified against the knowledge graph.
+Also list in "answer_entities" the entities the REWRITTEN answer still
+asserts (exactly as named); [] if it asserts nothing.
+IMPORTANT: "answer_entities" must be specific entities of the kind the
+question asks for (a person for "who", a place for "where", etc.).
+Never restate the question or name entity types/categories as the
+answer. If you cannot name specific answer entities from the facts,
+your draft must be a hedge and "answer_entities" must be [].
+"""
 
 
 def answerer_node(state, llm):
     draft = state.get("draft")
     unsupported = state.get("unsupported_claims") or []
+    answer_entities = state.get("answer_entities") or []
 
     if draft and not unsupported:            # verified: zero-cost finalize
         answer, err = draft, None
@@ -361,14 +405,18 @@ def answerer_node(state, llm):
             out = llm(state, REWRITE_PROMPT.format(
                 question=state["question"], draft=draft,
                 unsupported="\n".join(f"- {u}" for u in unsupported)),
-                '{"answer": "..."}')
+                '{"answer": "...", "answer_entities": ["..."]}')
             answer = out.get("answer") or "unable to answer"
+            answer_entities = [str(a).strip()
+                               for a in out.get("answer_entities", [])
+                               if str(a).strip()]
             err = None
         except (BudgetExhausted, Exception) as e:
             answer = ("could not be fully verified against the knowledge "
                       "graph")
+            answer_entities = []
             err = repr(e)
-    else:                                    # verifier skipped/failed: legacy path
+    else:                                    # verifier skipped: legacy path
         cands = ", ".join(c["name"] for c in state["candidate_answers"][:25]) \
                 or "(none)"
         try:
@@ -376,20 +424,31 @@ def answerer_node(state, llm):
                 question=state["question"],
                 facts=_fmt_facts(state["traversed"], 60),
                 candidates=cands),
-                '{"answer": "..."}')
-            answer, err = out.get("answer") or "unable to answer", None
+                '{"answer": "...", "answer_entities": ["..."]}')
+            answer = out.get("answer") or "unable to answer"
+            answer_entities = [str(a).strip()
+                               for a in out.get("answer_entities", [])
+                               if str(a).strip()]
+            err = None
         except (BudgetExhausted, Exception) as e:
             done = [s for s in state["plan"] if s["status"] == "done"]
             names = ([e_["name"] for s in done for e_ in s["resolved"]]
                      or [c["name"] for c in state["candidate_answers"][:5]])
             answer = ", ".join(names) if names else "unable to answer"
+            answer_entities = names
             err = repr(e)
 
-    rec = {"node": "answerer", "answer": answer, "from_draft": bool(draft),
+    supp = state.get("supporting_triples")
+    if supp is None:
+        supp = list(state["traversed"])
+
+    rec = {"node": "answerer", "answer": answer,
+           "answer_entities": answer_entities,
+           "from_draft": bool(draft),
            "budget": state["budget"].snapshot()}
     if err:
         rec["error"] = err
     return {"answer": answer,
-            "supporting_triples": state.get("supporting_triples")
-                                  or list(state["traversed"]),
+            "answer_entities": answer_entities,
+            "supporting_triples": supp,
             "trace": [rec]}

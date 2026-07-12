@@ -6,6 +6,8 @@ from agr.state import AGRState
 from agr.planner import planner_node
 from agr import nodes
 
+from functools import partial
+
 
 def build_graph(llm, tools, scorer, run_config):
     g = StateGraph(AGRState)
@@ -15,14 +17,18 @@ def build_graph(llm, tools, scorer, run_config):
                                    scorer=scorer))
     g.add_node("evaluator", partial(nodes.evaluator_node, llm=llm,
                                     scorer=scorer))
-    g.add_node("backtracker", nodes.backtracker_node)
-    g.add_node("verifier", partial(nodes.verifier_node, tools=tools, llm=llm))
+    g.add_node("backtracker", partial(nodes.backtracker_node,
+                                      run_config=run_config))
+    g.add_node("verifier", partial(nodes.verifier_node, tools=tools,
+                                   llm=llm, scorer=scorer,
+                                   run_config=run_config))
     g.add_node("answerer", partial(nodes.answerer_node, llm=llm))
 
     g.set_entry_point("planner")
     g.add_edge("planner", "explorer")
     g.add_edge("explorer", "evaluator")
-    g.add_conditional_edges("evaluator", nodes.route_after_eval,
+    g.add_conditional_edges("evaluator", partial(nodes.route_after_eval,
+                                                 run_config=run_config),
                             {"continue": "explorer",
                              "backtrack": "backtracker",
                              "answer": "verifier"})
