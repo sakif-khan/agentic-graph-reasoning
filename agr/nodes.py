@@ -155,19 +155,29 @@ def evaluator_node(state, llm, scorer):
 
 
 # ------------------------------ routers ------------------------------
+TAU = 0.20   # low-score backtrack threshold; tuned with alpha (Step 3.5)
+
 def route_after_eval(state):
     meter = state["budget"]
     if not meter.can("time") or not meter.can("depth"):
         return "answer"
+
+    reason = None
     if state.get("_last_n_new", -1) == 0:
-        # Explorer produced nothing new (ban list exhausted this anchor's
-        # relations, or dead-end node). Nothing new exists to evaluate or
-        # re-explore; force the answer path.
-        return "answer"
-    decision = state.get("_eval_decision") or "answer"
-    if decision == "backtrack" and not meter.can("backtrack"):
-        return "answer"
-    return decision if decision in ("continue", "backtrack", "answer") else "answer"
+        reason = "dead_end"
+    elif (state.get("_frontier_max_score") or 1.0) < TAU:
+        reason = "low_score"
+    elif (state.get("_eval_decision") or "") == "backtrack":
+        reason = "evaluator"
+
+    if reason:
+        if meter.can("backtrack"):
+            state["_backtrack_reason"] = reason
+            return "backtrack"
+        return "answer"          # budget-forced downgrade, still logged
+
+    d = state.get("_eval_decision") or "answer"
+    return d if d in ("continue", "answer") else "answer"
 
 
 def route_after_verify(state):
@@ -181,16 +191,21 @@ def backtracker_node(state):
     meter = state["budget"]
     meter.backtracks += 1
     stack = list(state["backtrack_stack"])
-    snap = stack.pop() if stack else {"anchors": state["anchors"],
-                                      "depth": meter.depth}
+    if stack:
+        best = max(range(len(stack)), key=lambda i: stack[i].get("score", 0.0))
+        snap = stack.pop(best)
+    else:
+        snap = {"anchors": state["anchors"], "depth": meter.depth}
     meter.depth = snap["depth"]
+    reason = state.get("_backtrack_reason") or "unspecified"
     newly_banned = state["banned"] + [
         b for b in state["last_expanded"] if b not in state["banned"]]
     return {"anchors": snap["anchors"], "backtrack_stack": stack,
-            "banned": newly_banned,
-            "last_expanded": [],
-            "trace": [{"node": "backtracker",
+            "banned": newly_banned, "last_expanded": [],
+            "_backtrack_reason": None,
+            "trace": [{"node": "backtracker", "reason": reason,
                        "restored": [a["name"] for a in snap["anchors"]],
+                       "restored_depth": snap["depth"],
                        "n_banned": len(newly_banned)}]}
 
 
