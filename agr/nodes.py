@@ -209,10 +209,122 @@ def backtracker_node(state):
                        "n_banned": len(newly_banned)}]}
 
 
-# ------------------------------ verifier (Phase 2 stub) ------------------
-def verifier_node(state, tools, llm):
-    return {"unsupported_claims": [],
-            "trace": [{"node": "verifier", "stub": True}]}
+# ------------------------------ verifier ------------------
+DRAFT_PROMPT = """Question: {question}
+Facts retrieved from the knowledge graph:
+{facts}
+Entities identified as promising during exploration:
+{candidates}
+
+1. Draft an answer using ONLY the facts and candidates above. Use entity
+names exactly as written. If insufficient, say what could not be determined.
+2. Decompose your draft into atomic factual claims, each as
+   {{"h": entity name, "r": short relation phrase, "t": entity name}}.
+   Only include claims your draft actually asserts. A hedged draft
+   ("could not be determined") has zero claims."""
+
+ENTAIL_PROMPT = """Retrieved knowledge-graph triples:
+{facts}
+
+For each claim below, answer whether it is directly supported by the triples
+above (true) or not (false). Unsupported includes: plausible but absent,
+contradicted, or only inferable via outside knowledge.
+Claims:
+{claims}"""
+
+
+def verifier_node(state, tools, llm, scorer):
+    meter = state["budget"]
+    facts = scorer.top_facts(state["question"], state["traversed"], k=60)
+    facts_str = _fmt_facts(facts, 60)
+    cands = ", ".join(c["name"] for c in state["candidate_answers"][:25]) \
+            or "(none)"
+    name_to_id = {}
+    for t in state["traversed"]:
+        name_to_id.setdefault(t["h_name"], t["h"])
+        name_to_id.setdefault(t["t_name"], t["t"])
+
+    # ---- (1) draft + claims, one call ----
+    try:
+        out = llm(state, DRAFT_PROMPT.format(question=state["question"],
+                                             facts=facts_str,
+                                             candidates=cands),
+                  '{"draft": "...", "claims": [{"h": "...", "r": "...", '
+                  '"t": "..."}]}')
+        draft = out.get("draft") or "unable to answer"
+        claims = [c for c in out.get("claims", [])
+                  if isinstance(c, dict) and c.get("h") and c.get("t")]
+    except (BudgetExhausted, Exception) as e:
+        return {"draft": None, "unsupported_claims": [],
+                "trace": [{"node": "verifier", "error": repr(e),
+                           "outcome": "skipped"}]}
+
+    # ---- (2) structural checks ----
+    adjacent = set()
+    for t in state["traversed"]:
+        adjacent.add((t["h"], t["t"]))
+        adjacent.add((t["t"], t["h"]))
+
+    supported, pending, supporting = [], [], []
+    for c in claims:
+        h_id, t_id = name_to_id.get(c["h"]), name_to_id.get(c["t"])
+        if h_id is None or t_id is None:
+            pending.append(c)               # names not even retrieved
+            continue
+        if (h_id, t_id) in adjacent:
+            supported.append(c)
+            supporting.extend(t for t in state["traversed"]
+                              if {t["h"], t["t"]} == {h_id, t_id})
+        elif tools.verify_connection(h_id, t_id)["connected"]:
+            supported.append(c)
+        else:
+            pending.append(c)
+
+    # ---- (3) entailment fallback, one batched call ----
+    unsupported = []
+    if pending:
+        try:
+            claims_str = "\n".join(
+                f'{i}. {c["h"]} -- {c["r"]} -- {c["t"]}'
+                for i, c in enumerate(pending))
+            ent = llm(state, ENTAIL_PROMPT.format(facts=facts_str,
+                                                  claims=claims_str),
+                      '{"verdicts": [{"i": 0, "supported": true}, ...]}')
+            verdicts = {int(v["i"]): bool(v["supported"])
+                        for v in ent.get("verdicts", [])}
+            for i, c in enumerate(pending):
+                (supported if verdicts.get(i, False)
+                 else unsupported).append(c)
+        except (BudgetExhausted, Exception):
+            unsupported = pending           # conservative: unverified = unsupported
+
+    unsupported_strs = [f'{c["h"]} {c["r"]} {c["t"]}' for c in unsupported]
+
+    # ---- (4) retry targeting, if budget remains ----
+    result = {"draft": draft,
+              "unsupported_claims": unsupported_strs,
+              "supporting_triples": supporting,
+              "trace": [{"node": "verifier",
+                         "n_claims": len(claims),
+                         "n_structural": len(supported) - 0,
+                         "unsupported": unsupported_strs,
+                         "outcome": ("grounded" if not unsupported
+                                     else "unsupported")}]}
+    if unsupported and meter.can("verify"):
+        meter.verify_iters += 1
+        c = unsupported[0]
+        repair = {"text": f'verify whether {c["h"]} {c["r"]} {c["t"]}',
+                  "status": "active", "resolved": []}
+        plan = state["plan"]
+        for s_ in plan:
+            if s_["status"] == "active":
+                s_["status"] = "done"
+        plan.append(repair)
+        result["plan"] = plan
+        h_id = name_to_id.get(c["h"])
+        if h_id:
+            result["anchors"] = [{"id": h_id, "name": c["h"]}]
+    return result
 
 
 # ------------------------------ answerer ------------------------------
@@ -228,32 +340,56 @@ exactly as they appear above. If the information is insufficient, state what
 could not be determined."""
 
 
-def answerer_node(state, llm):
-    candidates = ", ".join(candidate["name"] for candidate in state["candidate_answers"][:25]) \
-                 or "(none)"
-    try:
-        out = llm(state, ANSWER_PROMPT.format(
-            question=state["question"],
-            facts=_fmt_facts(state["traversed"], 60),
-            candidates=candidates),
-            '{"answer": "..."}')
-        answer = out.get("answer") or "unable to answer"
-        err = None
-    except BudgetExhausted:
-        done = [s for s in state["plan"] if s["status"] == "done"]
-        names = [e["name"] for s in done for e in s["resolved"]]
-        names = names or [c["name"] for c in state["candidate_answers"][:5]]
-        answer = ", ".join(names) if names \
-            else "unable to answer (budget exhausted)"
-        err = "budget"
-    except Exception as e:
-        answer = "unable to answer (LLM error)"
-        err = repr(e)
+REWRITE_PROMPT = """Question: {question}
+Draft answer: {draft}
+The following claims in the draft are NOT supported by the knowledge graph:
+{unsupported}
 
-    trace_rec = {"node": "answerer", "answer": answer,
-                 "budget": state["budget"].snapshot()}
+Rewrite the answer removing or explicitly hedging the unsupported claims.
+Keep everything that was supported. If nothing supported remains, state that
+the answer could not be verified against the knowledge graph."""
+
+
+def answerer_node(state, llm):
+    draft = state.get("draft")
+    unsupported = state.get("unsupported_claims") or []
+
+    if draft and not unsupported:            # verified: zero-cost finalize
+        answer, err = draft, None
+    elif draft and unsupported:              # give_up path: one rewrite call
+        try:
+            out = llm(state, REWRITE_PROMPT.format(
+                question=state["question"], draft=draft,
+                unsupported="\n".join(f"- {u}" for u in unsupported)),
+                '{"answer": "..."}')
+            answer = out.get("answer") or "unable to answer"
+            err = None
+        except (BudgetExhausted, Exception) as e:
+            answer = ("could not be fully verified against the knowledge "
+                      "graph")
+            err = repr(e)
+    else:                                    # verifier skipped/failed: legacy path
+        cands = ", ".join(c["name"] for c in state["candidate_answers"][:25]) \
+                or "(none)"
+        try:
+            out = llm(state, ANSWER_PROMPT.format(
+                question=state["question"],
+                facts=_fmt_facts(state["traversed"], 60),
+                candidates=cands),
+                '{"answer": "..."}')
+            answer, err = out.get("answer") or "unable to answer", None
+        except (BudgetExhausted, Exception) as e:
+            done = [s for s in state["plan"] if s["status"] == "done"]
+            names = ([e_["name"] for s in done for e_ in s["resolved"]]
+                     or [c["name"] for c in state["candidate_answers"][:5]])
+            answer = ", ".join(names) if names else "unable to answer"
+            err = repr(e)
+
+    rec = {"node": "answerer", "answer": answer, "from_draft": bool(draft),
+           "budget": state["budget"].snapshot()}
     if err:
-        trace_rec["error"] = err
+        rec["error"] = err
     return {"answer": answer,
-            "supporting_triples": list(state["traversed"]),
-            "trace": [trace_rec]}
+            "supporting_triples": state.get("supporting_triples")
+                                  or list(state["traversed"]),
+            "trace": [rec]}

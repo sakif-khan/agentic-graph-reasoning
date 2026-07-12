@@ -16,6 +16,7 @@ class AGRState(TypedDict):
     last_expanded: list[list]     # what the most recent explorer step expanded
     candidate_answers: list[dict] # accumulated resolved entities, never discarded
     budget: BudgetMeter           # mutated in place, never returned as delta
+    draft: Optional[str]
     unsupported_claims: list[str]
     answer: Optional[str]
     supporting_triples: list[dict]
@@ -34,7 +35,7 @@ def make_init_state(qid: str, question: str,
         gold_q_entities=gold_q_entities or [],
         plan=[], anchors=[], traversed=[], backtrack_stack=[],
         banned=[], last_expanded=[], candidate_answers=[],
-        budget=BudgetMeter(cfg or BudgetConfig()),
+        budget=BudgetMeter(cfg or BudgetConfig()), draft=None,
         unsupported_claims=[], answer=None, supporting_triples=[],
         trace=[], _eval_decision=None, _last_n_new=None,
         _backtrack_reason=None, _frontier_max_score=None,

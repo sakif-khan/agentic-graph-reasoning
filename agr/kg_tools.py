@@ -98,3 +98,18 @@ class KGTools:
         self._log("verify_triple",
                   {"h": head_id, "rel": relation, "t": tail_id}, result, t0)
         return result
+    
+    def verify_connection(self, a_id: str, b_id: str):
+            """Are two entities adjacent (directly or via one CVT) in the KG?"""
+            t0 = time.time()
+            q = """
+            MATCH (a:Entity {id:$a}), (b:Entity {id:$b})
+            RETURN EXISTS { MATCH (a)-[]-(b) } AS direct,
+                EXISTS { MATCH (a)-[]-(c:Entity {is_cvt:true})-[]-(b) } AS via_cvt
+            """
+            with self.driver.session() as s:
+                row = s.run(q, a=a_id, b=b_id).single()
+            result = {"direct": row["direct"], "via_cvt": row["via_cvt"],
+                    "connected": row["direct"] or row["via_cvt"]}
+            self._log("verify_connection", {"a": a_id, "b": b_id}, result, t0)
+            return result
