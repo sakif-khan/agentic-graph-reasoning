@@ -21,12 +21,6 @@ if not NEO4J_PASSWORD:
         "NEO4J_PASSWORD is not set — create a .env in the repo root "
         "or set the variable in this terminal.")
 
-OPENAI_MODEL = os.environ.get("OPENAI_MODEL")
-if not OPENAI_MODEL:
-    raise RuntimeError(
-        "OPENAI_MODEL is not set — create a .env in the repo root "
-        "or set the variable in this terminal.")
-
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise RuntimeError(
