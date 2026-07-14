@@ -7,11 +7,11 @@ from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.scorer import HybridScorer
 from agr.state import make_init_state
-from agr.config import RunConfig, BACKBONE, llm
+from agr.config import RunConfig, llm
 from agr.budget import BudgetConfig
 from agr.graph_build import build_graph
 from agr.runlog import RunLogger
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, OPENAI_API_KEY
+from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
 
 
 CONDITIONS = [
