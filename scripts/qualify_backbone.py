@@ -7,7 +7,7 @@ from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.scorer import EmbeddingScorer
 from agr.state import make_init_state
-from agr.config import RunConfig
+from agr.config import run_cfg
 from agr.graph_build import build_graph
 from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, OPENAI_API_KEY
 
@@ -69,7 +69,7 @@ for model, params in CANDIDATES.items():
     llm = LLMClient(model=model, api_key=OPENAI_API_KEY, **params, cache_dir=None)
     tools = KGTools(driver, EntityResolver(driver, embed),
                     f"logs/qualify_{model.replace('/', '_')}.jsonl")
-    agr = build_graph(llm, tools, scorer, RunConfig(use_gold_entities=True))
+    agr = build_graph(llm, tools, scorer, run_cfg)
 
     rows = [run_question(agr, tools, q) for q in QUESTIONS]
     # determinism probe: second run of 3 selected questions

@@ -3,12 +3,11 @@ from neo4j import GraphDatabase
 from sentence_transformers import SentenceTransformer
 from pathlib import Path
 
-from agr.llm import LLMClient
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.scorer import HybridScorer
 from agr.state import make_init_state
-from agr.config import RunConfig, BACKBONE
+from agr.config import RunConfig, BACKBONE, llm
 from agr.budget import BudgetConfig
 from agr.graph_build import build_graph
 from agr.runlog import RunLogger
@@ -41,7 +40,6 @@ for rc in CONDITIONS:
     if Path(log_path).exists():
         done = {json.loads(l)["qid"]
                 for l in open(log_path, encoding="utf-8")}
-    llm = LLMClient(api_key=OPENAI_API_KEY, **BACKBONE)
     tools = KGTools(driver, EntityResolver(driver, embed),
                     f"logs/{name}_tools.jsonl")
     scorer = HybridScorer("data/relation_embeddings.npy",
