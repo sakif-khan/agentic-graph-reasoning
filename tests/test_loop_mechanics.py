@@ -146,5 +146,30 @@ def test_draft_only_ablation_skips_checking(tools, fake_scorer):
     assert final["budget"].llm_calls == 3        # no entailment, no rewrite
     assert final["answer_entities"] == ["Zxq Beta"]   # unchecked, passes through
 
+def test_giveup_filters_entities_deterministically(tools, fake_scorer):
+    good = {"h": "GoodEnt", "r": "related to", "t": "GoodTarget"}
+    bad = {"h": "BadEnt", "r": "related to", "t": "BadTarget"}
+    draft = {"draft": "GoodEnt and BadEnt are the answers.",
+             "answer_entities": ["GoodEnt", "BadEnt"],
+             "claims": [good, bad]}
+    entail = {"verdicts": [{"i": 0, "supported": True},
+                           {"i": 1, "supported": False}]}
+    script = [
+        {"sub_objectives": ["find x"],
+         "topic_mentions": [KNOWN["entity_name"]]},              # planner
+        {"decision": "answer", "objective_done": True,
+         "resolved": []},                                        # evaluator 1
+        draft, entail,                                           # verify 1
+        {"decision": "answer", "objective_done": True,
+         "resolved": []},                                        # evaluator 2
+        draft, entail,                                           # verify 2
+        {"answer": "hedged prose",
+         "answer_entities": ["ShouldBeIgnored"]},                # rewrite
+    ]
+    final = run(script, tools, fake_scorer)
+    assert final["answer_entities"] == ["GoodEnt"], \
+        "kept supported entity, dropped unsupported, ignored LLM's list"
+    assert "ShouldBeIgnored" not in final["answer_entities"]
+
 # pytest -m integration
 # Integration tests need Neo4j up and KNOWN filled in.

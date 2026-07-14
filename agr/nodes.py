@@ -336,6 +336,8 @@ def verifier_node(state, tools, llm, scorer, run_config):
     result = {"draft": draft,
               "answer_entities": answer_entities,
               "unsupported_claims": unsupported_strs,
+              "supported_claims": supported,
+              "unsupported_claim_objs": unsupported,
               "supporting_triples": supporting,
               "trace": [{"node": "verifier",
                          "n_claims": len(claims),
@@ -361,6 +363,17 @@ def verifier_node(state, tools, llm, scorer, run_config):
 
 
 # ------------------------------ answerer ------------------------------
+def filter_answer_entities(draft_entities, supported, unsupported):
+    """Deterministic entity selection for the give_up path.
+    Keep a draft entity iff it appears in >=1 supported claim, OR appears in
+    no unsupported claim (conservative: entities the decomposer never
+    claimed are retained -- we punish unsupported assertions, not
+    decomposition recall). Strings are copied verbatim; nothing is ever
+    added that was not in the draft's own list."""
+    sup = {c["h"] for c in supported} | {c["t"] for c in supported}
+    unsup = {c["h"] for c in unsupported} | {c["t"] for c in unsupported}
+    return [e for e in draft_entities if e in sup or e not in unsup]
+
 ANSWER_PROMPT = """Question: {question}
 Facts retrieved from the knowledge graph:
 {facts}
@@ -371,26 +384,21 @@ Entities identified as promising during exploration:
 Answer using ONLY these facts and candidates. Give the answer entity name(s)
 exactly as they appear above. If the information is insufficient, state what
 could not be determined.
-Also list in "answer_entities" the entities the REWRITTEN answer still
-asserts (exactly as named); [] if it asserts nothing."""
+Also list in "answer_entities" the entities your answer
+asserts (exactly as named above); [] if it asserts nothing."""
 
 
 REWRITE_PROMPT = """Question: {question}
 Draft answer: {draft}
 The following claims in the draft are NOT supported by the knowledge graph:
 {unsupported}
+The following entities remain verified and MUST be kept in the answer,
+named exactly as written: {kept}
 
-Rewrite the answer removing or explicitly hedging the unsupported claims.
-Keep everything that was supported. If nothing supported remains, state that
-the answer could not be verified against the knowledge graph.
-Also list in "answer_entities" the entities the REWRITTEN answer still
-asserts (exactly as named); [] if it asserts nothing.
-IMPORTANT: "answer_entities" must be specific entities of the kind the
-question asks for (a person for "who", a place for "where", etc.).
-Never restate the question or name entity types/categories as the
-answer. If you cannot name specific answer entities from the facts,
-your draft must be a hedge and "answer_entities" must be [].
-"""
+Rewrite the draft: keep the verified entities and their supported claims,
+and remove or explicitly hedge the unsupported claims. If the kept list is
+empty, state that the answer could not be verified against the knowledge
+graph. Respond with prose only."""
 
 
 def answerer_node(state, llm):
@@ -400,21 +408,27 @@ def answerer_node(state, llm):
 
     if draft and not unsupported:            # verified: zero-cost finalize
         answer, err = draft, None
-    elif draft and unsupported:              # give_up path: one rewrite call
+    elif draft and unsupported:              # give_up: deterministic entities,
+        answer_entities = filter_answer_entities(   # LLM for prose only
+            answer_entities,
+            state.get("supported_claims") or [],
+            state.get("unsupported_claim_objs") or [])
+        kept = ", ".join(answer_entities) or "(none)"
         try:
             out = llm(state, REWRITE_PROMPT.format(
                 question=state["question"], draft=draft,
-                unsupported="\n".join(f"- {u}" for u in unsupported)),
-                '{"answer": "...", "answer_entities": ["..."]}')
+                unsupported="\n".join(f"- {u}" for u in unsupported),
+                kept=kept),
+                '{"answer": "..."}')
             answer = out.get("answer") or "unable to answer"
-            answer_entities = [str(a).strip()
-                               for a in out.get("answer_entities", [])
-                               if str(a).strip()]
             err = None
         except (BudgetExhausted, Exception) as e:
-            answer = ("could not be fully verified against the knowledge "
+            # entities are already decided; only the prose degrades
+            answer = (f"Verified: {kept}. Other parts of the answer could "
+                      f"not be verified against the knowledge graph."
+                      if answer_entities else
+                      "could not be fully verified against the knowledge "
                       "graph")
-            answer_entities = []
             err = repr(e)
     else:                                    # verifier skipped: legacy path
         cands = ", ".join(c["name"] for c in state["candidate_answers"][:25]) \

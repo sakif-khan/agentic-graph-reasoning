@@ -1,17 +1,21 @@
-Generating train split: 27639 examples [00:20, 1367.42 examples/s]
-one_hop       158 candidates
-    [webqsp] 'where did mendeleev died' -> ['Saint Petersburg'] (raw_hops=1, cvt=False)
-    [webqsp] 'what is the time zone in uk now' -> ['Greenwich Mean Time Zone'] (raw_hops=1, cvt=False)
-    [webqsp] 'where did the flemish live' -> ['France', 'Belgium'] (raw_hops=1, cvt=False)
-two_hop        95 candidates
-    [webqsp] 'what district does john cornyn represent' -> ['Texas'] (raw_hops=2, cvt=False)
-    [webqsp] 'who did axl rose marry' -> ['Erin Everly'] (raw_hops=2, cvt=False)
-    [webqsp] 'what country does nike operate in' -> ['United States of America'] (raw_hops=2, cvt=False)
-conjunction    83 candidates
-    [webqsp] 'what is the timezone in vancouver' -> ['Pacific Time Zone'] (raw_hops=1, cvt=False)
-    [webqsp] 'what is daniel radcliffe name in the woman in black' -> ['Arthur Kipps'] (raw_hops=1, cvt=False)
-    [webqsp] 'who nikki reed play in twilight' -> ['Rosalie Hale'] (raw_hops=1, cvt=False)
-cvt_heavy      48 candidates
-    [webqsp] 'who is the president of the european union 2011' -> ['Jerzy Buzek'] (raw_hops=2, cvt=True)
-    [webqsp] 'what ball does rickie fowler play' -> ['Golf'] (raw_hops=2, cvt=True)
-    [webqsp] 'what does beth tweddle compete in' -> ['Artistic gymnastics'] (raw_hops=2, cvt=True)
+bucket             count   examples
+unanswerable_env      41
+    [webqsp] 'who does david beckham play for in 2013' -> ['Paris Saint-Germain F.C.'] (hops=2, cvt=True)
+    [webqsp] 'what team is hank baskett playing for in 2010' -> ['Indianapolis Colts', 'Philadelphia Eagles'] (hops=2, cvt=True)
+    [webqsp] 'who was the leader of the ussr in 1948' -> ['Joseph Stalin'] (hops=1, cvt=False)
+conjunction          238
+    [webqsp] 'what is the timezone in vancouver' -> ['Pacific Time Zone'] (hops=1, cvt=False)
+    [webqsp] 'what is daniel radcliffe name in the woman in black' -> ['Arthur Kipps'] (hops=1, cvt=False)
+    [webqsp] 'who nikki reed play in twilight' -> ['Rosalie Hale'] (hops=1, cvt=False)
+cvt_heavy            115
+    [webqsp] 'who is the president of the european union 2011' -> ['Jerzy Buzek'] (hops=2, cvt=True)
+    [webqsp] 'what ball does rickie fowler play' -> ['Golf'] (hops=2, cvt=True)
+    [webqsp] 'what does beth tweddle compete in' -> ['Artistic gymnastics'] (hops=2, cvt=True)
+one_hop              370
+    [webqsp] 'where did mendeleev died' -> ['Saint Petersburg'] (hops=1, cvt=False)
+    [webqsp] 'what is the time zone in uk now' -> ['Greenwich Mean Time Zone'] (hops=1, cvt=False)
+    [webqsp] 'where did the flemish live' -> ['France', 'Belgium'] (hops=1, cvt=False)
+two_hop              208
+    [webqsp] 'what district does john cornyn represent' -> ['Texas'] (hops=2, cvt=False)
+    [webqsp] 'who did axl rose marry' -> ['Erin Everly'] (hops=2, cvt=False)
+    [webqsp] 'what country does nike operate in' -> ['United States of America'] (hops=2, cvt=False)

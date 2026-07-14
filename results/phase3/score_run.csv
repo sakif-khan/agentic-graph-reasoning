@@ -1,0 +1,11 @@
+file,n,hits,hedges,wrong,unanswerable_ok,mean_tokens,mean_calls,total_backtracks,verifier_grounded,verifier_unsupported,verifier_draft_only
+logs\dev80_a1.0_t0.0.jsonl,80,59,12,6,3,3408,4.9,22,75,5,
+logs\dev80_a1.0_t0.2.jsonl,80,59,13,5,3,3400,4.9,26,75,5,
+logs\dev80_a0.7_t0.0.jsonl,80,64,8,5,3,4925,7.3,17,77,3,
+logs\dev80_a0.7_t0.2.jsonl,80,64,8,5,3,4925,7.3,17,77,3,
+logs\dev80_a0.5_t0.0.jsonl,80,62,7,8,3,4874,7.2,16,77,3,
+logs\dev80_a0.5_t0.2.jsonl,80,62,7,8,3,4874,7.2,16,77,3,
+logs\dev80_a0.3_t0.0.jsonl,80,61,9,7,3,4999,7.4,16,76,4,
+logs\dev80_a0.3_t0.2.jsonl,80,61,9,7,3,5030,7.5,18,76,4,
+logs\dev80_a0.5_t0.2_draftonly.jsonl,80,64,6,7,3,4807,7.1,16,,,80
+logs\dev80_a0.7_t0.2_draftonly.jsonl,80,66,7,4,3,4858,7.2,17,,,80

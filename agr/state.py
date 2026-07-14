@@ -19,6 +19,8 @@ class AGRState(TypedDict):
     draft: Optional[str]
     answer_entities: list[str]
     unsupported_claims: list[str]
+    supported_claims: list[dict]        # [{h, r, t}] verdict=supported
+    unsupported_claim_objs: list[dict]  # [{h, r, t}] verdict=unsupported
     answer: Optional[str]
     supporting_triples: list[dict]
     trace: Annotated[list[dict], operator.add]       # append-only
@@ -37,6 +39,7 @@ def make_init_state(qid: str, question: str,
         banned=[], last_expanded=[], candidate_answers=[],
         budget=BudgetMeter(cfg or BudgetConfig()),
         draft=None, answer_entities=[], unsupported_claims=[],
+        supported_claims=[], unsupported_claim_objs=[],
         answer=None, supporting_triples=[],
         trace=[], _eval_decision=None, _last_n_new=None,
         _frontier_max_score=None,

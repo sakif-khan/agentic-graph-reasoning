@@ -1,16 +1,31 @@
-"""Mine smoke-test candidates from TRAIN splits, classified by path shape."""
-import json, random
+"""Mine dev-set candidates from TRAIN splits, classified into exactly one of
+five buckets (priority order): unanswerable_env > conjunction > cvt_heavy >
+one_hop > two_hop. The sixth bucket (unanswerable_fake) is hand-written,
+never mined. Output: scripts/smoke_candidates_v2.json
+"""
+import json, random, re
+
 from datasets import load_dataset
 from neo4j import GraphDatabase
 from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
 
 driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
 
-SAMPLE_PER_DATASET = 200      # random candidates to classify per dataset
+SAMPLE_PER_DATASET = 500
 random.seed(42)
 
-def classify(session, q_names, a_names):
-    """Returns (raw_hops, via_cvt) for the shortest q->a path, or None."""
+# Questions whose gold requires date/founding-year facts. Verified 2026-07-12:
+# the graph contains NO date literals, so these are unanswerable-in-environment.
+DATE_CONSTRAINT = re.compile(
+    r"\b(in \d{4}|born (in|before|after) \d{4}|"
+    r"(?:founded|established|opened) (prior to|before|after)|"
+    r"founding date|"
+    r"(before|after|since|until) \d{4}|\d{4} to \d{4})\b",
+    re.IGNORECASE)
+
+
+def classify_path(session, q_names, a_names):
+    """Shortest q->a path in the live graph: (raw_hops, via_cvt) or None."""
     rec = session.run("""
         MATCH (a:Entity) WHERE a.name IN $qs
         MATCH (b:Entity) WHERE b.name IN $ans
@@ -22,7 +37,27 @@ def classify(session, q_names, a_names):
         qs=q_names, ans=a_names).single()
     return (rec["hops"], rec["via_cvt"]) if rec else None
 
-buckets = {"one_hop": [], "two_hop": [], "conjunction": [], "cvt_heavy": []}
+
+def bucket_of(question: str, n_topics: int, hops: int, via_cvt: bool):
+    """Priority-ordered, mutually exclusive assignment. Returns None if the
+    record fits no bucket we sample (e.g. 3+ hop plain paths)."""
+    if DATE_CONSTRAINT.search(question):
+        return "unanswerable_env"
+    if n_topics >= 2:
+        return "conjunction"
+    if via_cvt:
+        return "cvt_heavy"
+    if hops == 1:
+        return "one_hop"
+    if hops == 2:
+        return "two_hop"
+    return None
+
+
+BUCKETS = ["unanswerable_env", "conjunction", "cvt_heavy",
+           "one_hop", "two_hop"]
+
+buckets = {bucket: [] for bucket in BUCKETS}
 
 with driver.session() as session:
     for ds_name in ["webqsp", "cwq"]:
@@ -35,28 +70,31 @@ with driver.session() as session:
             a_entity = [str(x).strip() for x in example["a_entity"] if str(x).strip()]
             if not q_entity or not a_entity:
                 continue
-            res = classify(session, q_entity, a_entity)
+            res = classify_path(session, q_entity, a_entity)
             if res is None:
-                continue
+                continue          # gold unreachable within 4 hops: skip
             hops, via_cvt = res
-            rec = {"dataset": ds_name, "id": str(example.get("id", "")),
-                   "question": example["question"],
-                   "gold_q_entities": q_entity, "answers": a_entity,
-                   "raw_hops": hops, "via_cvt": via_cvt}
-            if len(q_entity) >= 2:
-                buckets["conjunction"].append(rec)
-            elif via_cvt:
-                buckets["cvt_heavy"].append(rec)      # logical hop count is
-            elif hops == 1:                           # lower than raw_hops
-                buckets["one_hop"].append(rec)
-            elif hops == 2:
-                buckets["two_hop"].append(rec)
+            bucket = bucket_of(example["question"], len(q_entity), hops, via_cvt)
+            if bucket is None:
+                continue
+            buckets[bucket].append({
+                "qid": str(example.get("id", "")),
+                "dataset": ds_name,
+                "question": example["question"],
+                "gold_q_entities": q_entity,
+                "answers": a_entity,
+                "bucket": bucket,
+                "raw_hops": hops,
+                "via_cvt": via_cvt,
+            })
 
-json.dump(buckets, open("data/smoke_candidates.json", "w",
+json.dump(buckets, open("data/smoke_candidates_v2.json", "w",
                         encoding="utf-8"), indent=1, ensure_ascii=False)
-for category, values in buckets.items():
-    print(f"{category:<12} {len(values):>4} candidates")
-    for r in values[:3]:
-        print(f"    [{r['dataset']}] {r['question']!r} -> {r['answers'][:2]}"
-              f" (raw_hops={r['raw_hops']}, cvt={r['via_cvt']})")
+
+print(f"{'bucket':<18} count   examples")
+for bucket in BUCKETS:
+    print(f"{bucket:<18} {len(buckets[bucket]):>5}")
+    for r in buckets[bucket][:3]:
+        print(f"    [{r['dataset']}] {r['question']!r} -> "
+              f"{r['answers'][:2]} (hops={r['raw_hops']}, cvt={r['via_cvt']})")
 driver.close()

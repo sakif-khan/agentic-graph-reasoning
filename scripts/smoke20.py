@@ -16,7 +16,7 @@ from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, OPENAI_API_KEY
 from agr.runlog import RunLogger
 
 # ---- experimental condition: the ONLY thing you edit between sweep runs ----
-run_cfg = RunConfig(use_gold_entities=True, alpha=0.5, tau=0.20)
+run_cfg = RunConfig(use_gold_entities=True, alpha=0.7, tau=0.20)
 budget_cfg = BudgetConfig()          # max_llm_calls now defaults to 25
 RUN_NAME = f"smoke20_a{run_cfg.alpha}_t{run_cfg.tau}"
 

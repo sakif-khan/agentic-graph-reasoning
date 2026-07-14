@@ -1,0 +1,1160 @@
+[
+  {
+   "qid": "WebQTrn-3525",
+   "dataset": "webqsp",
+   "question": "where did mendeleev died",
+   "gold_q_entities": [
+    "Dmitri Mendeleev"
+   ],
+   "answers": [
+    "Saint Petersburg"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-770",
+   "dataset": "webqsp",
+   "question": "what airport is close to daytona beach florida",
+   "gold_q_entities": [
+    "Daytona Beach"
+   ],
+   "answers": [
+    "Daytona Beach International Airport",
+    "Spruce Creek Airport",
+    "Massey Ranch Airpark"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-569",
+   "dataset": "webqsp",
+   "question": "what type of government and economic system does the united states have",
+   "gold_q_entities": [
+    "United States of America"
+   ],
+   "answers": [
+    "Presidential system",
+    "Federal republic",
+    "Constitutional republic"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1719_96914535d2c1ae6120a090361e60c965",
+   "dataset": "cwq",
+   "question": "Who was born in 1901 that Niccolo Machiavelli was influenced by?",
+   "gold_q_entities": [
+    "Niccolò Machiavelli"
+   ],
+   "answers": [
+    "Plato",
+    "Aristotle"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3604_fa4b1fc5cc9db1e3164c9b382fcdc4e7",
+   "dataset": "cwq",
+   "question": "With a street address of 300 West 21st Street in Austin, what can you see there?",
+   "gold_q_entities": [
+    "Austin"
+   ],
+   "answers": [
+    "Harry Ransom Center"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-547_1f0f082cf9a15e8c58c9655386e1363f",
+   "dataset": "cwq",
+   "question": "What Victoria Beckham kids' names are shared with other Celebrity?",
+   "gold_q_entities": [
+    "Victoria Beckham"
+   ],
+   "answers": [
+    "Romeo James Beckham",
+    "Brooklyn Joseph Beckham"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1298",
+   "dataset": "webqsp",
+   "question": "what district does john cornyn represent",
+   "gold_q_entities": [
+    "John Cornyn"
+   ],
+   "answers": [
+    "Texas"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-153",
+   "dataset": "webqsp",
+   "question": "who did axl rose marry",
+   "gold_q_entities": [
+    "Axl Rose"
+   ],
+   "answers": [
+    "Erin Everly"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3631",
+   "dataset": "webqsp",
+   "question": "which countries border the baltic sea",
+   "gold_q_entities": [
+    "Baltic Sea"
+   ],
+   "answers": [
+    "Second Polish Republic",
+    "Free City of Danzig",
+    "Sweden"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3109",
+   "dataset": "webqsp",
+   "question": "what colleges did alice walker attend",
+   "gold_q_entities": [
+    "Alice Walker"
+   ],
+   "answers": [
+    "Spelman College",
+    "Sarah Lawrence College"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2584_0c8bcc717d50c92c31ff802641504b43",
+   "dataset": "cwq",
+   "question": "When I visit the location containing the second level division Salcedo, what currency should I take with me?",
+   "gold_q_entities": [
+    "Salcedo"
+   ],
+   "answers": [
+    "Dominican peso"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-1267_9eeb2f38ee223b499967ac117f641e3b",
+   "dataset": "cwq",
+   "question": "What money is used in the country where Red Stripe beer is produced?",
+   "gold_q_entities": [
+    "Red Stripe"
+   ],
+   "answers": [
+    "Jamaican dollar"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-304_4ec9be4c828025d788bc5fb5ebca9e6e",
+   "dataset": "cwq",
+   "question": "What are the official languages of the country where the Federal Supreme Court of Switzerland is?",
+   "gold_q_entities": [
+    "Federal Supreme Court of Switzerland"
+   ],
+   "answers": [
+    "Italian Language",
+    "German Language",
+    "French",
+    "Romansh language"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-1520_5f93548592ef4987720d1e3f3fe6b3d7",
+   "dataset": "cwq",
+   "question": "What languages are spoken where teh Superior Court of Justice presides?",
+   "gold_q_entities": [
+    "Superior Court of Justice"
+   ],
+   "answers": [
+    "Italian Language",
+    "Brazilian Portuguese",
+    "Portuguese Language"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2027",
+   "dataset": "webqsp",
+   "question": "what is daniel radcliffe name in the woman in black",
+   "gold_q_entities": [
+    "The Woman in Black",
+    "Daniel Radcliffe"
+   ],
+   "answers": [
+    "Arthur Kipps"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-673_5ecefd82a413a79be541a1bd16967800",
+   "dataset": "cwq",
+   "question": "What university with a postgraduate class greater than 2656 did Robert Kardashian go to?",
+   "gold_q_entities": [
+    "College/University",
+    "Robert Kardashian"
+   ],
+   "answers": [
+    "University of San Diego",
+    "University of Southern California"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1067_ed395c43c14a93f3e41c1758ec7e1b8a",
+   "dataset": "cwq",
+   "question": "Which senators are from the location, that has the government position titled ,Member of the New Jersey General Assembly?",
+   "gold_q_entities": [
+    "Senator",
+    "Member of the New Jersey General Assembly"
+   ],
+   "answers": [
+    "Bob Menendez",
+    "Cory Booker"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-144",
+   "dataset": "webqsp",
+   "question": "who is the president of the european union 2011",
+   "gold_q_entities": [
+    "European Union"
+   ],
+   "answers": [
+    "Jerzy Buzek"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-3009_a453d9b2a3a3816e8ba70b1a240a4bdd",
+   "dataset": "cwq",
+   "question": "Which team for which Jim Harbaugh played were founded prior to 1996?",
+   "gold_q_entities": [
+    "Jim Harbaugh"
+   ],
+   "answers": [
+    "Chicago Bears",
+    "Indianapolis Colts",
+    "Michigan Wolverines football",
+    "San Diego Chargers"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+    "qid": "smoke-20",
+    "question": "who directed the film Chronicles of Zxqvorn?",
+    "gold_q_entities": ["Chronicles of Zxqvorn"],
+    "answers": [],
+    "bucket": "unanswerable_env"
+  },
+  {
+   "qid": "WebQTrn-3710",
+   "dataset": "webqsp",
+   "question": "where was dr luther king jr born",
+   "gold_q_entities": [
+    "Martin Luther King, Jr."
+   ],
+   "answers": [
+    "Atlanta"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-568",
+   "dataset": "webqsp",
+   "question": "what county is charlotte north carolina",
+   "gold_q_entities": [
+    "Charlotte"
+   ],
+   "answers": [
+    "Mecklenburg County"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3502",
+   "dataset": "webqsp",
+   "question": "what is the capital of oregon",
+   "gold_q_entities": [
+    "Oregon"
+   ],
+   "answers": [
+    "Salem"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2436",
+   "dataset": "webqsp",
+   "question": "on which river is paris",
+   "gold_q_entities": [
+    "Paris"
+   ],
+   "answers": [
+    "Seine"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3468",
+   "dataset": "webqsp",
+   "question": "what is charlie sheen 's dad 's name",
+   "gold_q_entities": [
+    "Charlie Sheen"
+   ],
+   "answers": [
+    "Martin Sheen"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3375",
+   "dataset": "webqsp",
+   "question": "who was the vice president during george w bush",
+   "gold_q_entities": [
+    "George W. Bush"
+   ],
+   "answers": [
+    "Dick Cheney"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2721",
+   "dataset": "webqsp",
+   "question": "what were adolf hitler 's parents names",
+   "gold_q_entities": [
+    "Adolf Hitler"
+   ],
+   "answers": [
+    "Klara Hitler",
+    "Alois Hitler"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1548",
+   "dataset": "webqsp",
+   "question": "what is the name of the pittsburgh steelers stadium",
+   "gold_q_entities": [
+    "Pittsburgh Steelers"
+   ],
+   "answers": [
+    "Heinz Field"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2028",
+   "dataset": "webqsp",
+   "question": "what money do they use in thailand",
+   "gold_q_entities": [
+    "Thailand"
+   ],
+   "answers": [
+    "Thai baht"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-546",
+   "dataset": "webqsp",
+   "question": "what language do fiji people speak",
+   "gold_q_entities": [
+    "Fiji"
+   ],
+   "answers": [
+    "Fijian Language",
+    "Fiji Hindi",
+    "English Language"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-334",
+   "dataset": "webqsp",
+   "question": "who is the voice of stewie griffin from family guy",
+   "gold_q_entities": [
+    "Family Guy"
+   ],
+   "answers": [
+    "Seth MacFarlane"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1751",
+   "dataset": "webqsp",
+   "question": "who created youtube",
+   "gold_q_entities": [
+    "YouTube"
+   ],
+   "answers": [
+    "Steve Chen",
+    "Jawed Karim",
+    "Chad Hurley"
+   ],
+   "bucket": "one_hop",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-181_9dabd74992f88c62c2152b48ab1ee8cd",
+   "dataset": "cwq",
+   "question": "What currency is used in the country of origin for Archa Beer?",
+   "gold_q_entities": [
+    "Archa Beer"
+   ],
+   "answers": [
+    "Thai baht"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2840_abf44b12ba7b11ea7e71a11cb540d258",
+   "dataset": "cwq",
+   "question": "Where did the writer of Still Dirrty grow up?",
+   "gold_q_entities": [
+    "Still Dirrty"
+   ],
+   "answers": [
+    "Staten Island"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-77_8176959b7600428c7cdb7aacd77fb5ea",
+   "dataset": "cwq",
+   "question": "What is the capital of the country of origin for the Austrian Pinscher breed?",
+   "gold_q_entities": [
+    "Austrian Pinscher"
+   ],
+   "answers": [
+    "Vienna"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-410_67d6828a804cdeef38928c85cb93bb03",
+   "dataset": "cwq",
+   "question": "What is a major city in the country that uses Ukrainian hryvnia as its currency?",
+   "gold_q_entities": [
+    "Ukrainian hryvnia"
+   ],
+   "answers": [
+    "Kiev"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-851_9f924908bb36bf7d331fa1b933af9f58",
+   "dataset": "cwq",
+   "question": "What is the modern capital of the country where Al Ahram Beverages Co. Stella beer is produced?",
+   "gold_q_entities": [
+    "Al Ahram Beverages Co. Stella"
+   ],
+   "answers": [
+    "Cairo"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3381_44d67b357829d662abe1c6dc637e219d",
+   "dataset": "cwq",
+   "question": "What currency does the country whose capital is Santiago use?",
+   "gold_q_entities": [
+    "Santiago"
+   ],
+   "answers": [
+    "Chilean peso"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2825_5bf6906c26a34660ad81a9e0506d36fc",
+   "dataset": "cwq",
+   "question": "What is the currency used in the location of the film \"La hora de la Siesta\"?",
+   "gold_q_entities": [
+    "La hora de la siesta"
+   ],
+   "answers": [
+    "Argentine peso"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-693_dd11343b9c28a21731d2ce4bbdc2630d",
+   "dataset": "cwq",
+   "question": "Which language is most spoken, where the currency used in the country is the Afghan afghani?",
+   "gold_q_entities": [
+    "Afghan afghani"
+   ],
+   "answers": [
+    "Farsi, Eastern Language",
+    "Pashto language"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-2025_c99c8cba93f683f3e37f2e175659c925",
+   "dataset": "cwq",
+   "question": "What is the name of the ocean that the river Sesheke flows into?",
+   "gold_q_entities": [
+    "Sesheke"
+   ],
+   "answers": [
+    "Indian Ocean"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3457_b08f65da81574b8397d5f76ea4138c3d",
+   "dataset": "cwq",
+   "question": "What sea does the river that flows under the Xiling Yangtze River Bridge emplty in to?",
+   "gold_q_entities": [
+    "Xiling Yangtze River Bridge"
+   ],
+   "answers": [
+    "East China Sea"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3617_258527684b01adb1fef0f02a9081ebe7",
+   "dataset": "cwq",
+   "question": "At where, does the body of water, under ASB Bridge terminate?",
+   "gold_q_entities": [
+    "ASB Bridge"
+   ],
+   "answers": [
+    "Mississippi River"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-274_5b8fa743161c465927586720934bef48",
+   "dataset": "cwq",
+   "question": "Who are the parents of the focal point of the film \"Shakespeare in love\"?",
+   "gold_q_entities": [
+    "Shakespeare in Love"
+   ],
+   "answers": [
+    "John Shakespeare",
+    "Mary Shakespeare"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-657_0818b36d353ffb39f85b4606b1230866",
+   "dataset": "cwq",
+   "question": "The featured speaker at the 'March on Washington for Jobs and Freedom' was shot in which city?",
+   "gold_q_entities": [
+    "March on Washington for Jobs and Freedom"
+   ],
+   "answers": [
+    "Memphis"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1566_63779e80b19cde0010c566ec0b4a0ed6",
+   "dataset": "cwq",
+   "question": "Where did Kurt Cobain, the subject of the film Music Box Biographical Collection, die?",
+   "gold_q_entities": [
+    "Music Box Biographical Collection: Kurt Cobain"
+   ],
+   "answers": [
+    "Seattle"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1002_30f1a4f034fe9f3f6df3327d69fb669b",
+   "dataset": "cwq",
+   "question": "What is the birthplace of the artist who had a tour named Rod Stewart 2009 Concert Tour?",
+   "gold_q_entities": [
+    "Rod Stewart 2009 Concert Tour"
+   ],
+   "answers": [
+    "Highgate"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-1910_1e6d4aefe769586d47767d86ffdd20b5",
+   "dataset": "cwq",
+   "question": "What is the birthplace of the artist who wrote \"Four Old English Songs. NO. 3: Who is Slyvia?\"?",
+   "gold_q_entities": [
+    "Four Old English Songs, No. 3: Who Is Sylvia?"
+   ],
+   "answers": [
+    "Stratford-upon-Avon"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-430_aa25cef57eebcc069b1783e80e760069",
+   "dataset": "cwq",
+   "question": "What disease did the author who wrote \"The Story of My Life\" have?",
+   "gold_q_entities": [
+    "The story of my life"
+   ],
+   "answers": [
+    "Hearing loss"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-1356_903876a283f3ce8764412a6cfd6a2c44",
+   "dataset": "cwq",
+   "question": "What was the drug that killed the subject of the movie \"Marilyn?\"?",
+   "gold_q_entities": [
+    "Marilyn"
+   ],
+   "answers": [
+    "Barbiturate overdose"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-528_9591187bdfee1d3adb757d74382745ce",
+   "dataset": "cwq",
+   "question": "What are the names of the children of the artist who was nominated for awards for \"Black or White\"?",
+   "gold_q_entities": [
+    "Black or White"
+   ],
+   "answers": [
+    "Paris-Michael Katherine Jackson",
+    "Michael Joseph Jackson, Jr.",
+    "Prince Michael Jackson II"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1214_ebbb01712f3eb1443b2895961ec14272",
+   "dataset": "cwq",
+   "question": "Team Mascot Benny the Bull is part of the team with which coach?",
+   "gold_q_entities": [
+    "Benny the Bull"
+   ],
+   "answers": [
+    "Tom Thibodeau"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-1907_5abd17edee676db9f12bbbe84edfb575",
+   "dataset": "cwq",
+   "question": "Name the currency used by the country were SamanÃ¡ English is spoken.?",
+   "gold_q_entities": [
+    "Samaná English"
+   ],
+   "answers": [
+    "Dominican peso"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-262_c1b166cd48ca0675b0bb9815289851f3",
+   "dataset": "cwq",
+   "question": "What currency do I need in the country that makes Tinima Superior beer?",
+   "gold_q_entities": [
+    "Tinima Superior"
+   ],
+   "answers": [
+    "Cuban peso",
+    "Cuban convertible peso"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2617",
+   "dataset": "webqsp",
+   "question": "who was charlemagne 's wife",
+   "gold_q_entities": [
+    "Charlemagne"
+   ],
+   "answers": [
+    "Luitgard"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-449",
+   "dataset": "webqsp",
+   "question": "where did lee corso go to college",
+   "gold_q_entities": [
+    "Lee Corso"
+   ],
+   "answers": [
+    "Florida State University"
+   ],
+   "bucket": "two_hop",
+   "raw_hops": 2,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1719_124a834e764c099d727ab87c1f80ccee",
+   "dataset": "cwq",
+   "question": "Who was Niccolo Machiavelli influenced by, that also influenced Giorgione?",
+   "gold_q_entities": [
+    "Giorgione",
+    "Niccolò Machiavelli"
+   ],
+   "answers": [
+    "Leonardo da Vinci"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-207_7bf178e825bb55452806d2e708f9ed50",
+   "dataset": "cwq",
+   "question": "Boston is the capital of what US State where Harvard University is located?",
+   "gold_q_entities": [
+    "Harvard University",
+    "Boston"
+   ],
+   "answers": [
+    "Massachusetts"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-254_01e2da60a2779c4ae4b5d1547499a4f8",
+   "dataset": "cwq",
+   "question": "The Alta Verapaz Department is located in which of the three nations that shares a border with Mexico?",
+   "gold_q_entities": [
+    "Mexico",
+    "Alta Verapaz Department",
+    "Country"
+   ],
+   "answers": [
+    "Guatemala"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-1781_455af05d577248799d41f84b34d67d8e",
+   "dataset": "cwq",
+   "question": "who influenced Albert Einstein and died in New York City?",
+   "gold_q_entities": [
+    "Albert Einstein",
+    "New York City"
+   ],
+   "answers": [
+    "Henry George"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-279_fd6e419f422eb640f1195f506522023e",
+   "dataset": "cwq",
+   "question": "Which language is the official language of both Great Britain and the Philippines?",
+   "gold_q_entities": [
+    "Kingdom of Great Britain",
+    "Philippines"
+   ],
+   "answers": [
+    "English Language"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1603_169d8c870fa88566ce1f62da123323d6",
+   "dataset": "cwq",
+   "question": "What type of government is used in both China and Romania?",
+   "gold_q_entities": [
+    "Socialist Republic of Romania",
+    "China"
+   ],
+   "answers": [
+    "Communist state",
+    "Socialist state"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-2029_761df3934c8a087ee86d3ab6317d2d9d",
+   "dataset": "cwq",
+   "question": "What country has the Palace of Knossos and Andros?",
+   "gold_q_entities": [
+    "Knossos",
+    "Andros"
+   ],
+   "answers": [
+    "Greece"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-3460_f6e8b7149f2e422640a49beb753be4ef",
+   "dataset": "cwq",
+   "question": "What country beside France uses the Swiss Franc currency?",
+   "gold_q_entities": [
+    "Swiss franc",
+    "Country",
+    "France"
+   ],
+   "answers": [
+    "Switzerland"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-1052_b9b4dbcf721e6ef7838dcd3082761330",
+   "dataset": "cwq",
+   "question": "What country is home to the pyramids of Giza and speaks the Siwi Language?",
+   "gold_q_entities": [
+    "Siwi Language",
+    "Great Pyramid of Giza"
+   ],
+   "answers": [
+    "Egypt"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-1673_c10cd072338ca267c3ec5cd1333030f4",
+   "dataset": "cwq",
+   "question": "Name the political party of which Adolph Hitler and Carl Voss were members.?",
+   "gold_q_entities": [
+    "Adolf Hitler",
+    "g.11h1sxprh"
+   ],
+   "answers": [
+    "Nazi Party"
+   ],
+   "bucket": "conjunction",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-2400",
+   "dataset": "webqsp",
+   "question": "who portrayed indiana jones in raiders of the lost ark",
+   "gold_q_entities": [
+    "Indiana Jones and the Raiders of the Lost Ark"
+   ],
+   "answers": [
+    "Harrison Ford"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-1",
+   "dataset": "webqsp",
+   "question": "what character did natalie portman play in star wars",
+   "gold_q_entities": [
+    "Natalie Portman"
+   ],
+   "answers": [
+    "Padmé Amidala"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-1549",
+   "dataset": "webqsp",
+   "question": "who was cleopatra married too",
+   "gold_q_entities": [
+    "Cleopatra"
+   ],
+   "answers": [
+    "Mark Antony",
+    "Ptolemy XIII Theos Philopator",
+    "Ptolemy XIV of Egypt"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-3085",
+   "dataset": "webqsp",
+   "question": "what ship did sir francis drake travel on",
+   "gold_q_entities": [
+    "Francis Drake"
+   ],
+   "answers": [
+    "Golden Hind"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-90",
+   "dataset": "webqsp",
+   "question": "where did timothy mcveigh go to prison",
+   "gold_q_entities": [
+    "Timothy McVeigh"
+   ],
+   "answers": [
+    "ADX Florence"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-2134",
+   "dataset": "webqsp",
+   "question": "where did william mckinley go to high school",
+   "gold_q_entities": [
+    "William McKinley"
+   ],
+   "answers": [
+    "Poland Seminary High School"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-1066",
+   "dataset": "webqsp",
+   "question": "who plays claire in lost",
+   "gold_q_entities": [
+    "Lost"
+   ],
+   "answers": [
+    "Emilie de Ravin"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTest-1554_b0412b83228508271932b11e338e48c6",
+   "dataset": "cwq",
+   "question": "Which language is spoken in the country that hosted the 54th Brazilian National Congress?",
+   "gold_q_entities": [
+    "54th Brazilian National Congress"
+   ],
+   "answers": [
+    "Portuguese Language"
+   ],
+   "bucket": "cvt_heavy",
+   "raw_hops": 3,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-1589",
+   "dataset": "webqsp",
+   "question": "who does david beckham play for in 2012",
+   "gold_q_entities": [
+    "David Beckham"
+   ],
+   "answers": [
+    "LA Galaxy"
+   ],
+   "bucket": "unanswerable_env",
+   "raw_hops": 2,
+   "via_cvt": true
+  },
+  {
+   "qid": "WebQTrn-3083",
+   "dataset": "webqsp",
+   "question": "who was the leader of the ussr in 1948",
+   "gold_q_entities": [
+    "Soviet Union"
+   ],
+   "answers": [
+    "Joseph Stalin"
+   ],
+   "bucket": "unanswerable_env",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTrn-559_9e3fc7126b544740b568757fd7ae1e88",
+   "dataset": "cwq",
+   "question": "Which university, founded in 1701, did actor James Franco attend?",
+   "gold_q_entities": [
+    "James Franco",
+    "College/University"
+   ],
+   "answers": [
+    "University Yale"
+   ],
+   "bucket": "unanswerable_env",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "WebQTest-673_44a4fd4e33816608544b1091f2bd81ea",
+   "dataset": "cwq",
+   "question": "What college that was established prior to 1949 did Robert Kardashian attend?",
+   "gold_q_entities": [
+    "College/University",
+    "Robert Kardashian"
+   ],
+   "answers": [
+    "University of Southern California"
+   ],
+   "bucket": "unanswerable_env",
+   "raw_hops": 1,
+   "via_cvt": false
+  },
+  {
+   "qid": "dev-fake-01",
+   "dataset": "handwritten",
+   "question": "what currency is used in the Republic of Velmoria?",
+   "gold_q_entities": [
+    "Republic of Velmoria"
+   ],
+   "answers": [],
+   "bucket": "unanswerable_fake",
+   "raw_hops": null,
+   "via_cvt": false
+  },
+  {
+   "qid": "dev-fake-02",
+   "dataset": "handwritten",
+   "question": "who composed the opera The Glass Cartographer?",
+   "gold_q_entities": [
+    "The Glass Cartographer"
+   ],
+   "answers": [],
+   "bucket": "unanswerable_fake",
+   "raw_hops": null,
+   "via_cvt": false
+  }
+]

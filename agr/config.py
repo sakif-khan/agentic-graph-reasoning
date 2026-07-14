@@ -6,7 +6,7 @@ from agr.env import OPENAI_API_KEY
 @dataclass(frozen=True)
 class RunConfig:
     use_gold_entities: bool = True   # seed anchors from dataset q_entity
-    alpha: float = 0.5               # embedding weight in the hybrid scorer;
+    alpha: float = 0.7               # embedding weight in the hybrid scorer;
                                      # 1.0 = embedding-only (Phase 2 behavior / ablation)
     tau: float = 0.20                # low-score backtrack threshold;
                                      # 0.0 = trigger disabled (Phase 2 behavior)
@@ -23,7 +23,7 @@ BACKBONE = {
     "reasoning_effort": "none",
 }
 
-run_cfg = RunConfig(alpha=0.5, tau=0.2)
+run_cfg = RunConfig(alpha=0.7, tau=0.2)
 llm = LLMClient(api_key=OPENAI_API_KEY, **BACKBONE)
 scorer = HybridScorer("data/relation_embeddings.npy",
                       "data/relation_names.json",

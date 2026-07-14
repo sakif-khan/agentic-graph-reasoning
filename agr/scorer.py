@@ -72,7 +72,7 @@ class HybridScorer(EmbeddingScorer):
     LLM failure or exhausted budget (logged via the returned rows' source)."""
 
     def __init__(self, npy_path, names_path, llm,
-                 alpha: float = 0.5, llm_top_k: int = 20,
+                 alpha: float = 0.7, llm_top_k: int = 20,
                  model_name="sentence-transformers/all-MiniLM-L6-v2"):
         super().__init__(npy_path, names_path, model_name)
         self.llm = llm
