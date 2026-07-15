@@ -1,0 +1,10 @@
+Generating test split: 2826 examples [00:02, 1174.64 examples/s]
+[webqsp] pool=2794 skipped={'dev_overlap': 32} strata={'h2': 885, 'h1': 1822, 'h3plus': 22, 'unreachable': 65}
+[webqsp] allocation={'h1': 261, 'h2': 127, 'h3plus': 3, 'unreachable': 9} -> sampled=400
+[webqsp] coverage: full=378 partial=13 zero=9 Hits@1 ceiling=97.8%
+Resolving data files: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 18/18 [00:00<00:00, 48457.94it/s]
+Downloading data: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 18/18 [00:00<00:00, 14997.51files/s]
+Generating test split: 27639 examples [00:21, 1280.16 examples/s]
+[cwq] pool=27586 skipped={'dev_overlap': 45, 'missing_entities': 8} strata={'h2': 13942, 'h1': 10303, 'h3plus': 3179, 'unreachable': 162}
+[cwq] allocation={'h1': 149, 'h2': 202, 'h3plus': 46, 'unreachable': 2} -> sampled=400
+[cwq] coverage: full=393 partial=5 zero=2 Hits@1 ceiling=99.5%
