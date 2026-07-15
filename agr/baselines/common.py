@@ -1,5 +1,3 @@
-from agr.budget import BudgetConfig, BudgetMeter
-
 BASELINE_SCHEMA = ('{"answer": "...", "answer_entities": ["..."]} '
                    '-- answer_entities exactly as named in any provided '
                    'facts; [] if the answer cannot be determined.')

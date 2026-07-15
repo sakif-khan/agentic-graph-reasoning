@@ -6,10 +6,9 @@ never mined. Output: scripts/smoke_candidates_v2.json
 import json, random, re
 
 from datasets import load_dataset
-from neo4j import GraphDatabase
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+from agr.runtime import get_driver
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+driver = get_driver()
 
 SAMPLE_PER_DATASET = 500
 random.seed(42)

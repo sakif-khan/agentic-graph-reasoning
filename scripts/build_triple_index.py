@@ -1,9 +1,9 @@
 """One-time: embed every verbalized triple to a memmapped fp16 matrix."""
 import csv, gzip, json
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from agr.runtime import get_embedder
 
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+model = get_embedder()
 texts, meta = [], []
 with gzip.open("data/rels.csv.gz", "rt", encoding="utf-8") as f:
     r = csv.DictReader(f)

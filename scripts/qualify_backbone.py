@@ -1,6 +1,4 @@
 import hashlib, json, time
-from neo4j import GraphDatabase
-from sentence_transformers import SentenceTransformer
 
 from agr.llm import LLMClient
 from agr.resolver import EntityResolver
@@ -9,7 +7,8 @@ from agr.scorer import EmbeddingScorer
 from agr.state import make_init_state
 from agr.config import run_cfg
 from agr.graph_build import build_graph
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, OPENAI_API_KEY
+from agr.runtime import get_driver, get_embedder
+from agr.env import OPENAI_API_KEY
 
 CANDIDATES = {
     "gpt-4.1-mini-2025-04-14": dict(temperature=0.0, reasoning_effort=None),
@@ -18,8 +17,8 @@ CANDIDATES = {
 QUESTIONS = json.load(open("data/smoke20.json", encoding="utf-8"))
 DETERMINISM_QIDS = [QUESTIONS[i]["id"] for i in (0, 6, 14)]  # 1-5 one-hop, 6-13 two-hop, 14-16 conjunction
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
-embed = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+driver = get_driver()
+embed = get_embedder()
 scorer = EmbeddingScorer("data/relation_embeddings.npy",
                          "data/relation_names.json")
 

@@ -1,13 +1,11 @@
 """
 Expect a few hours on CPU for a few million entities; storage adds roughly 1.5 KB per node.
 """
-from neo4j import GraphDatabase
-from sentence_transformers import SentenceTransformer
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+from agr.runtime import get_driver, get_embedder
 
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+driver = get_driver()
+model = get_embedder()
 
 BATCH = 2000
 

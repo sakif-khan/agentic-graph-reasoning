@@ -1,6 +1,5 @@
 import json, random
-from neo4j import GraphDatabase
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+from agr.runtime import get_driver
 
 
 report = json.load(open("coverage_report.json", encoding="utf-8"))
@@ -29,7 +28,7 @@ def path_exists(session, q_entity, a_entity, cap=4):
         qs=q_entity, ans=a_entity).single()
     return record["hops"] if record else None
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+driver = get_driver()
 
 ok, fail = 0, []
 with driver.session() as session:

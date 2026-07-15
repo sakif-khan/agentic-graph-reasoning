@@ -1,6 +1,6 @@
 import csv, gzip, json, re
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from agr.runtime import get_embedder
 
 # 1. Collect distinct relation names from the CSV generated in Step 1.2
 rel_names = set()
@@ -24,7 +24,7 @@ for rel_name, phrase in list(zip(rel_names, phrases))[:5]:
     print(f"{rel_name}  ->  {phrase}")
 
 # 3. Embed with the SAME model used for entities (critical for comparability)
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+model = get_embedder()
 vecs = model.encode(phrases, batch_size=256,
                     normalize_embeddings=True, show_progress_bar=True)
 

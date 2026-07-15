@@ -5,15 +5,14 @@ Run ONCE. Never edit the outputs. Seed and sample IDs are the record.
 import json, random
 from collections import Counter, defaultdict
 
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+from agr.runtime import get_driver
 from datasets import load_dataset
-from neo4j import GraphDatabase
 
 SEED = 42
 SAMPLE_SIZE = 400            # per dataset; set to None for full test sets
 HOP_CAP = 4
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+driver = get_driver()
 
 dev80_qids = {q["qid"] for q in
               json.load(open("data/dev80.json", encoding="utf-8"))}

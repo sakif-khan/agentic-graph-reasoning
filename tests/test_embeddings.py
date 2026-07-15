@@ -1,10 +1,10 @@
 import json
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from agr.runtime import get_embedder
 
 # 1. Load the model ONLY to encode your single query string
 print("Loading model for query encoding...")
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+model = get_embedder()
 
 # 2. Load your pre-computed local artifacts instantly
 print("Loading pre-computed relationship vectors and names...")

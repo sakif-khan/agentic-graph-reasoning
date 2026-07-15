@@ -2,25 +2,20 @@
 Usage: python scripts\run_baseline.py <system> <test_file.json>
   system in {noretrieval, vectorrag, graphrag, tog}
 """
-import os
 import json, sys, time
 from pathlib import Path
 
-from neo4j import GraphDatabase
-from sentence_transformers import SentenceTransformer
-
-from agr.llm import LLMClient
 from agr.config import run_cfg, llm
 from agr.budget import BudgetConfig
 from agr.runlog import RunLogger
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+from agr.runtime import get_driver, get_embedder
 
 system, test_file = sys.argv[1], sys.argv[2]
 tag = Path(test_file).stem                       # e.g. test_webqsp
 name = f"{tag}_{system}"
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
-embed = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+driver = get_driver()
+embed = get_embedder()
 
 if system == "noretrieval":
     from agr.baselines.noretrieval import NoRetrieval

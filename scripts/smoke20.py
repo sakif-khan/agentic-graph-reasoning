@@ -1,9 +1,6 @@
 import json
 import time
 
-from neo4j import GraphDatabase
-from sentence_transformers import SentenceTransformer
-
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.scorer import HybridScorer
@@ -11,7 +8,7 @@ from agr.state import make_init_state
 from agr.config import run_cfg, llm
 from agr.budget import BudgetConfig
 from agr.graph_build import build_graph
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+from agr.runtime import get_driver, get_embedder
 from agr.runlog import RunLogger
 
 # ---- experimental condition: the ONLY thing you edit between sweep runs ----
@@ -19,8 +16,8 @@ budget_cfg = BudgetConfig()          # max_llm_calls now defaults to 25
 RUN_NAME = f"smoke20_a{run_cfg.alpha}_t{run_cfg.tau}"
 
 # ---- construction ----
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
-embed = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+driver = get_driver()
+embed = get_embedder()
 tools = KGTools(driver, EntityResolver(driver, embed), f"logs/{RUN_NAME}_tools.jsonl")
 scorer = HybridScorer("data/relation_embeddings.npy", "data/relation_names.json",
                       llm=llm, alpha=run_cfg.alpha)

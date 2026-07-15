@@ -1,9 +1,8 @@
 # per-gold-entity graph coverage.
-import json, os
-from neo4j import GraphDatabase
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+import json
+from agr.runtime import get_driver
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+driver = get_driver()
 questions = json.load(open("data/dev80.json", encoding="utf-8"))
 
 report = []

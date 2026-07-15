@@ -1,10 +1,8 @@
 import pytest
-from neo4j import GraphDatabase
-from sentence_transformers import SentenceTransformer
 
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+from agr.runtime import get_driver, get_embedder
 
 
 class FakeScorer:
@@ -23,14 +21,14 @@ class LowScoreFakeScorer(FakeScorer):
 
 @pytest.fixture(scope="session")
 def driver():
-    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+    driver = get_driver()
     yield driver
     driver.close()
 
 
 @pytest.fixture(scope="session")
 def tools(driver, tmp_path_factory):
-    embed = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+    embed = get_embedder()
     log = tmp_path_factory.mktemp("logs") / "test_tools.jsonl"
     return KGTools(driver, EntityResolver(driver, embed), str(log))
 

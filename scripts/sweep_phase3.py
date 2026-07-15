@@ -1,6 +1,4 @@
 import json, time
-from neo4j import GraphDatabase
-from sentence_transformers import SentenceTransformer
 from pathlib import Path
 
 from agr.resolver import EntityResolver
@@ -11,7 +9,7 @@ from agr.config import RunConfig, llm
 from agr.budget import BudgetConfig
 from agr.graph_build import build_graph
 from agr.runlog import RunLogger
-from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
+from agr.runtime import get_driver, get_embedder
 
 
 CONDITIONS = [
@@ -28,8 +26,8 @@ CONDITIONS = [
 ]
 
 QUESTIONS = json.load(open("data/dev80.json", encoding="utf-8"))
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
-embed = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+driver = get_driver()
+embed = get_embedder()
 budget_cfg = BudgetConfig()
 
 for rc in CONDITIONS:
