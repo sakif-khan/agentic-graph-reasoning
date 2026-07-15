@@ -3,7 +3,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from agr.budget import BudgetExhausted
-from agr.config import EMBED_MODEL
+from agr.env import EMBED_MODEL
 
 
 class EmbeddingScorer:

@@ -4,7 +4,7 @@ from sentence_transformers import SentenceTransformer
 
 from agr.budget import BudgetMeter
 from agr.baselines.common import BASELINE_SCHEMA, make_final, parse_entities
-from agr.config import EMBED_MODEL
+from agr.env import EMBED_MODEL
 
 PROMPT = """Facts (retrieved from a knowledge graph):
 {facts}

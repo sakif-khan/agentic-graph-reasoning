@@ -26,3 +26,5 @@ if not OPENAI_API_KEY:
     raise RuntimeError(
         "OPENAI_API_KEY is not set — create a .env in the repo root "
         "or set the variable in this terminal.")
+
+EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
