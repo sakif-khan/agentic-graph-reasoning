@@ -3,13 +3,13 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from agr.budget import BudgetExhausted
+from agr.config import EMBED_MODEL
 
 
 class EmbeddingScorer:
     """alpha=1.0 baseline / ablation scorer. Also the base class for Hybrid."""
 
-    def __init__(self, npy_path, names_path,
-                 model_name="sentence-transformers/all-MiniLM-L6-v2"):
+    def __init__(self, npy_path, names_path, model_name=EMBED_MODEL):
         self.vecs = np.load(npy_path)
         names = json.load(open(names_path, encoding="utf-8"))
         self.index = {n: i for i, n in enumerate(names)}
@@ -73,7 +73,7 @@ class HybridScorer(EmbeddingScorer):
 
     def __init__(self, npy_path, names_path, llm,
                  alpha: float, llm_top_k: int = 20,
-                 model_name="sentence-transformers/all-MiniLM-L6-v2"):
+                 model_name=EMBED_MODEL):
         super().__init__(npy_path, names_path, model_name)
         self.llm = llm
         self.alpha = alpha

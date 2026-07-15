@@ -4,6 +4,7 @@ from sentence_transformers import SentenceTransformer
 
 from agr.budget import BudgetMeter
 from agr.baselines.common import BASELINE_SCHEMA, make_final, parse_entities
+from agr.config import EMBED_MODEL
 
 PROMPT = """Facts (retrieved from a knowledge graph):
 {facts}
@@ -14,8 +15,7 @@ facts. If the facts are insufficient, say so and return []."""
 
 
 class VectorRAG:
-    def __init__(self, llm, index_dir, top_k=30,
-                 model="sentence-transformers/all-MiniLM-L6-v2"):
+    def __init__(self, llm, index_dir, top_k=30, model=EMBED_MODEL):
         self.llm, self.top_k = llm, top_k
         n = json.load(open(f"{index_dir}/shape.json"))["n"]
         self.vecs = np.memmap(f"{index_dir}/vecs.fp16", dtype=np.float16,

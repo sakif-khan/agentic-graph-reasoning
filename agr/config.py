@@ -28,3 +28,5 @@ llm = LLMClient(api_key=OPENAI_API_KEY, **BACKBONE)
 scorer = HybridScorer("data/relation_embeddings.npy",
                       "data/relation_names.json",
                       llm=llm, alpha=run_cfg.alpha)
+
+EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"

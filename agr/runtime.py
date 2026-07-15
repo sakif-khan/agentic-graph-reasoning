@@ -3,6 +3,7 @@ from functools import lru_cache
 from neo4j import GraphDatabase
 from sentence_transformers import SentenceTransformer
 
+from agr.config import EMBED_MODEL
 from agr.env import NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
 
 
@@ -13,4 +14,4 @@ def get_driver():
 
 @lru_cache(maxsize=1)
 def get_embedder():
-    return SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+    return SentenceTransformer(EMBED_MODEL)
