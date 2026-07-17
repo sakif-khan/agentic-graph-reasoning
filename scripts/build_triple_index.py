@@ -1,7 +1,10 @@
 """One-time: embed every verbalized triple to a memmapped fp16 matrix."""
-import csv, gzip, json
+import csv, gzip, json, re, faiss
 import numpy as np
 from agr.runtime import get_embedder
+
+
+MID_RE = re.compile(r"^[mg]\.[0-9a-zA-Z_]+$")
 
 model = get_embedder()
 texts, meta = [], []
@@ -12,6 +15,8 @@ with gzip.open("data/rels.csv.gz", "rt", encoding="utf-8") as f:
     for row in r:
         h, t = id2name.get(row[":START_ID"]), id2name.get(row[":END_ID"])
         if not h or not t:
+            continue
+        if MID_RE.match(h) or MID_RE.match(t):
             continue
         rel_words = row["fb_name"].replace(".", " ").replace("_", " ")
         texts.append(f"{h} {rel_words} {t}")
@@ -31,3 +36,14 @@ mat.flush()
 json.dump({"n": len(texts)}, open("data/triple_index/shape.json", "w"))
 with open("data/triple_index/texts.txt", "w", encoding="utf-8") as f:
     f.write("\n".join(texts))
+
+print("Building FAISS index...")
+
+C = 500_000
+index = faiss.IndexFlatIP(384)
+
+for i in range(0, len(texts), C):
+    chunk = np.array(mat[i:i+C], dtype=np.float32)
+    index.add(chunk)
+    
+faiss.write_index(index, "data/triple_index/flat.faiss")

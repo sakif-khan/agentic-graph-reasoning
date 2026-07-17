@@ -1,4 +1,4 @@
-import json
+import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
@@ -17,24 +17,16 @@ facts. If the facts are insufficient, say so and return []."""
 class VectorRAG:
     def __init__(self, llm, index_dir, top_k=30, model=EMBED_MODEL):
         self.llm, self.top_k = llm, top_k
-        n = json.load(open(f"{index_dir}/shape.json"))["n"]
-        self.vecs = np.memmap(f"{index_dir}/vecs.fp16", dtype=np.float16,
-                              mode="r", shape=(n, 384))
         self.texts = open(f"{index_dir}/texts.txt",
                           encoding="utf-8").read().split("\n")
+        self.index = faiss.read_index(f"{index_dir}/flat.faiss")
         self.model = SentenceTransformer(model)
 
     def retrieve(self, question):
         qv = self.model.encode([question],
-                               normalize_embeddings=True)[0].astype(np.float16)
-        # chunked matmul keeps peak memory flat
-        scores = np.empty(len(self.texts), dtype=np.float32)
-        C = 500_000
-        for i in range(0, len(self.texts), C):
-            scores[i:i+C] = (self.vecs[i:i+C] @ qv).astype(np.float32)
-        top = np.argpartition(scores, -self.top_k)[-self.top_k:]
-        top = top[np.argsort(scores[top])[::-1]]
-        return [self.texts[i] for i in top]
+                               normalize_embeddings=True)[0].astype(np.float32)
+        _, I = self.index.search(qv[None, :], self.top_k)
+        return [self.texts[idx] for idx in I[0] if idx >= 0]
 
     def run(self, q, budget_cfg):
         meter = BudgetMeter(budget_cfg)
