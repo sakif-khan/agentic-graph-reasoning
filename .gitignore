@@ -31,6 +31,7 @@ __pycache__/
 # or specific large file formats common in training/graphs
 cache/
 datasets/
+data/triple_index/
 *.csv
 *.csv.gz
 *.tsv
