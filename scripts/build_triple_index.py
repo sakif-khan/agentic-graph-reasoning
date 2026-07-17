@@ -38,12 +38,9 @@ with open("data/triple_index/texts.txt", "w", encoding="utf-8") as f:
     f.write("\n".join(texts))
 
 print("Building FAISS index...")
-
 C = 500_000
 index = faiss.IndexFlatIP(384)
-
 for i in range(0, len(texts), C):
     chunk = np.array(mat[i:i+C], dtype=np.float32)
-    index.add(chunk)
-    
+    index.add(chunk)    
 faiss.write_index(index, "data/triple_index/flat.faiss")
