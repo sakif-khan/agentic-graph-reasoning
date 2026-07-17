@@ -5,44 +5,73 @@ from agr.baselines.common import BASELINE_SCHEMA, make_final, parse_entities
 from agr.baselines.vectorrag import PROMPT   # same answering prompt, deliberately
 
 
+def _words(rel: str) -> str:
+    return rel.replace(".", " ").replace("_", " ")
+
+
 class StaticGraphRAG:
-    def __init__(self, llm, driver, embed, top_k=30, fanout_cap=100):
-        self.llm, self.driver, self.model = llm, driver, embed
-        self.top_k, self.cap = top_k, fanout_cap
-        
+    """One-shot 2-logical-hop neighborhood retrieval, no agency.
+    CVT contract mirrors KGTools.get_neighbors: mediator nodes are hopped
+    THROUGH (their two relations concatenated), never emitted as text."""
+
     BLOCK_PREFIXES = ["common.", "freebase.", "type.", "kg.",
                       "user.", "dataworld.", "rdf-schema#", "owl#"]
 
+    def __init__(self, llm, driver, embed, resolver,
+                 top_k=30, fanout_cap=100, cvt_cap=20):
+        self.llm, self.driver, self.model = llm, driver, embed
+        self.resolver = resolver
+        self.top_k, self.cap, self.cvt_cap = top_k, fanout_cap, cvt_cap
+
     def subgraph(self, topic_names):
-        q = """
-        MATCH (t:Entity) WHERE t.name IN $names
-        CALL (t) {
-          MATCH (t)-[r1]-(n1:Entity)
-          WHERE none(p IN $block WHERE r1.fb_name STARTS WITH p)
-          RETURN t AS a, r1, n1 AS b LIMIT $cap
-        }
-        WITH collect({h:a.name, r:r1.fb_name, t:b.name, mid:b}) AS hop1
-        UNWIND hop1 AS x
-        WITH hop1, x WHERE x.mid.is_cvt = false
-        CALL (x) {
-          MATCH (m:Entity {id:x.mid.id})-[r2]-(n2:Entity)
-          WHERE none(p IN $block WHERE r2.fb_name STARTS WITH p)
-          RETURN r2, n2 LIMIT 20
-        }
-        RETURN hop1, collect({h:x.t, r:r2.fb_name, t:n2.name}) AS hop2
-        """
+        texts = []
         with self.driver.session() as s:
-            rec = s.run(q, names=topic_names, cap=self.cap, block=self.BLOCK_PREFIXES).single()
-        triples = []
-        if rec:
-            triples = [t for t in rec["hop1"]] + [t for t in rec["hop2"]]
-        return [f'{t["h"]} {t["r"].replace(".", " ").replace("_", " ")} '
-                f'{t["t"]}' for t in triples if t.get("h") and t.get("t")]
+            topics = []                       # [(id, name)]
+            for name in topic_names:
+                _, hits = self.resolver(name, 1)
+                if hits:
+                    topics.append((hits[0][0], hits[0][1]))
+
+            for eid, ename in topics:
+                rows = s.run("""
+                    MATCH (t:Entity {id:$id})-[r]-(n:Entity)
+                    WHERE none(p IN $block WHERE r.fb_name STARTS WITH p)
+                    RETURN n.id AS id, n.name AS name, n.is_cvt AS cvt,
+                           r.fb_name AS rel
+                    LIMIT $cap""",
+                    id=eid, block=self.BLOCK_PREFIXES, cap=self.cap).data()
+                for row in rows:
+                    if not row["cvt"]:
+                        texts.append(
+                            f'{ename} {_words(row["rel"])} {row["name"]}')
+                    else:                     # hop through the mediator
+                        for r2 in s.run("""
+                            MATCH (c:Entity {id:$cid})-[r2]-(m:Entity)
+                            WHERE m.id <> $orig AND m.is_cvt = false
+                              AND none(p IN $block
+                                       WHERE r2.fb_name STARTS WITH p)
+                            RETURN m.name AS name, r2.fb_name AS rel2
+                            LIMIT $cvt_cap""",
+                            cid=row["id"], orig=eid,
+                            block=self.BLOCK_PREFIXES,
+                            cvt_cap=self.cvt_cap).data():
+                            texts.append(
+                                f'{ename} {_words(row["rel"])} '
+                                f'{_words(r2["rel2"])} {r2["name"]}')
+
+        # dedupe, preserve first-seen order
+        seen, out = set(), []
+        for t in texts:
+            if t not in seen:
+                seen.add(t)
+                out.append(t)
+        return out
 
     def run(self, q, budget_cfg):
         meter = BudgetMeter(budget_cfg)
         state = {"budget": meter}
         texts = self.subgraph(q["gold_q_entities"])
+
         if len(texts) > self.top_k:
             qv = self.model.encode([q["question"]],
                                    normalize_embeddings=True)[0]
@@ -50,8 +79,11 @@ class StaticGraphRAG:
                                    normalize_embeddings=True)
             order = np.argsort(tv @ qv)[::-1][: self.top_k]
             texts = [texts[i] for i in order]
+
         out = self.llm(state, PROMPT.format(
-            facts="\n".join(f"- {t}" for t in texts),
+            facts="\n".join(f"- {t}" for t in texts) or "(none)",
             question=q["question"]), BASELINE_SCHEMA)
         return make_final(out.get("answer", ""), parse_entities(out), meter,
-                          [{"node": "graphrag", "n_facts": len(texts)}])
+                          [{"node": "graphrag",
+                            "n_facts": len(texts),
+                            "facts_sample": texts[:10]}])

@@ -30,7 +30,9 @@ for system in SYSTEMS:
         runner = VectorRAG(llm, "data/triple_index")
     elif system == "graphrag":
         from agr.baselines.graphrag import StaticGraphRAG
-        runner = StaticGraphRAG(llm, driver, embed)
+        from agr.resolver import EntityResolver
+        runner = StaticGraphRAG(llm, driver, embed,
+                                EntityResolver(driver, embed))
     elif system == "tog":
         from agr.baselines.tog import ToG
         from agr.resolver import EntityResolver
