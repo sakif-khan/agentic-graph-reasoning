@@ -52,7 +52,6 @@ checkpoints/
 # ==========================================
 # Logs, Profiling & Experiment Tracking
 # ==========================================
-logs/
 temp/
 *.log
 wandb/
