@@ -46,6 +46,8 @@ class ToG:
             for depth in range(DEPTH):
                 nxt = []
                 for ent in frontier[:WIDTH]:
+                    if meter.llm_calls >= budget_cfg.max_llm_calls - 1:
+                        raise BudgetExhausted("llm")
                     rels = self.tools.get_relations(ent["id"])[:40]
                     rel_out = self.llm(state, REL_PRUNE.format(
                         question=q["question"], entity=ent["name"], w=WIDTH,
@@ -60,6 +62,8 @@ class ToG:
                         nbrs = res["neighbors"][:20]
                         if not nbrs:
                             continue
+                        if meter.llm_calls >= budget_cfg.max_llm_calls - 1:
+                            raise BudgetExhausted("llm")
                         ent_out = self.llm(state, ENT_PRUNE.format(
                             question=q["question"], entity=ent["name"],
                             rel=sel["rel"], w=WIDTH,
@@ -77,6 +81,8 @@ class ToG:
                               "frontier": [e["name"] for e in nxt][:10]})
                 if not nxt:
                     break
+                if meter.llm_calls >= budget_cfg.max_llm_calls - 1:
+                    raise BudgetExhausted("llm")
                 suf = self.llm(state, SUFFICIENT.format(
                     question=q["question"],
                     triples="\n".join(f"- {t}" for t in triples[-60:])),
@@ -87,9 +93,14 @@ class ToG:
         except BudgetExhausted:
             trace.append({"node": "tog", "budget_exhausted": True})
 
-        out = self.llm(state, ANSWER.format(
-            question=q["question"],
-            triples="\n".join(f"- {t}" for t in triples[-60:]) or "(none)"),
-            BASELINE_SCHEMA)
-        return make_final(out.get("answer", ""), parse_entities(out), meter,
-                          [*trace, {"node": "tog_answer"}])
+        try:
+            out = self.llm(state, ANSWER.format(
+                question=q["question"],
+                triples="\n".join(f"- {t}" for t in triples[-60:]) or "(none)"),
+                BASELINE_SCHEMA)
+            answer, ents = out.get("answer", ""), parse_entities(out)
+        except BudgetExhausted:
+            answer, ents = "unable to answer (budget exhausted)", []
+            trace.append({"node": "tog_answer", "degraded": True})
+
+        return make_final(answer, ents, meter, [*trace, {"node": "tog_answer"}])

@@ -9,12 +9,16 @@ class StaticGraphRAG:
     def __init__(self, llm, driver, embed, top_k=30, fanout_cap=100):
         self.llm, self.driver, self.model = llm, driver, embed
         self.top_k, self.cap = top_k, fanout_cap
+        
+    BLOCK_PREFIXES = ["common.", "freebase.", "type.", "kg.",
+                      "user.", "dataworld.", "rdf-schema#", "owl#"]
 
     def subgraph(self, topic_names):
         q = """
         MATCH (t:Entity) WHERE t.name IN $names
         CALL (t) {
           MATCH (t)-[r1]-(n1:Entity)
+          WHERE none(p IN $block WHERE r1.fb_name STARTS WITH p)
           RETURN t AS a, r1, n1 AS b LIMIT $cap
         }
         WITH collect({h:a.name, r:r1.fb_name, t:b.name, mid:b}) AS hop1
@@ -22,12 +26,13 @@ class StaticGraphRAG:
         WITH hop1, x WHERE x.mid.is_cvt = false
         CALL (x) {
           MATCH (m:Entity {id:x.mid.id})-[r2]-(n2:Entity)
+          WHERE none(p IN $block WHERE r2.fb_name STARTS WITH p)
           RETURN r2, n2 LIMIT 20
         }
         RETURN hop1, collect({h:x.t, r:r2.fb_name, t:n2.name}) AS hop2
         """
         with self.driver.session() as s:
-            rec = s.run(q, names=topic_names, cap=self.cap).single()
+            rec = s.run(q, names=topic_names, cap=self.cap, block=self.BLOCK_PREFIXES).single()
         triples = []
         if rec:
             triples = [t for t in rec["hop1"]] + [t for t in rec["hop2"]]
