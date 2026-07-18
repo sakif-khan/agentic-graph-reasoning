@@ -24,9 +24,15 @@ class StaticGraphRAG:
         self.top_k, self.cap, self.cvt_cap = top_k, fanout_cap, cvt_cap
 
     def subgraph(self, topic_names):
-        texts = []
+        pair2text = {}                    # (topic_name, endpoint_name) -> text
+
+        def add(topic, endpoint, text):
+            key = (topic, endpoint)
+            if key not in pair2text or len(text) < len(pair2text[key]):
+                pair2text[key] = text
+
         with self.driver.session() as s:
-            topics = []                       # [(id, name)]
+            topics = []                   # [(id, name)]
             for name in topic_names:
                 _, hits = self.resolver(name, 1)
                 if hits:
@@ -42,9 +48,9 @@ class StaticGraphRAG:
                     id=eid, block=self.BLOCK_PREFIXES, cap=self.cap).data()
                 for row in rows:
                     if not row["cvt"]:
-                        texts.append(
+                        add(ename, row["name"],
                             f'{ename} {_words(row["rel"])} {row["name"]}')
-                    else:                     # hop through the mediator
+                    else:                 # hop through the mediator
                         for r2 in s.run("""
                             MATCH (c:Entity {id:$cid})-[r2]-(m:Entity)
                             WHERE m.id <> $orig AND m.is_cvt = false
@@ -55,17 +61,11 @@ class StaticGraphRAG:
                             cid=row["id"], orig=eid,
                             block=self.BLOCK_PREFIXES,
                             cvt_cap=self.cvt_cap).data():
-                            texts.append(
+                            add(ename, r2["name"],
                                 f'{ename} {_words(row["rel"])} '
                                 f'{_words(r2["rel2"])} {r2["name"]}')
 
-        # dedupe, preserve first-seen order
-        seen, out = set(), []
-        for t in texts:
-            if t not in seen:
-                seen.add(t)
-                out.append(t)
-        return out
+        return list(pair2text.values())
 
     def run(self, q, budget_cfg):
         meter = BudgetMeter(budget_cfg)
