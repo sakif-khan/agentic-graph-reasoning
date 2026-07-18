@@ -48,7 +48,7 @@ random.seed(SEED)
 
 for ds_name in ["webqsp", "cwq"]:
     path = f"../RoG-{ds_name}/data"
-    ds = load_dataset("parquet", data_files={"test": f"{path}/train-*.parquet"})
+    ds = load_dataset("parquet", data_files={"test": f"{path}/test-*.parquet"})
     pool, skipped = [], Counter()
     with driver.session() as session:
         for example in ds["test"]:
