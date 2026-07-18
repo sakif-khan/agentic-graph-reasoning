@@ -1,0 +1,9 @@
+file,n,hits,hedges,wrong,unanswerable_ok,mean_tokens,mean_calls,total_backtracks,verifier
+logs\test_webqsp_noretrieval.jsonl,400,181,49,170,0,113,1.0,0,{None: 400}
+logs\test_cwq_noretrieval.jsonl,400,123,152,125,0,118,1.0,0,{None: 400}
+logs\test_webqsp_vectorrag.jsonl,400,227,108,65,0,527,1.0,0,{None: 400}
+logs\test_cwq_vectorrag.jsonl,400,81,193,126,0,535,1.0,0,{None: 400}
+logs\test_webqsp_graphrag.jsonl,400,136,223,41,0,531,1.0,0,{None: 400}
+logs\test_cwq_graphrag.jsonl,400,82,243,75,0,471,1.0,0,{None: 400}
+logs\test_webqsp_tog.jsonl,400,264,75,61,0,3616,12.8,0,{None: 400}
+logs\test_cwq_tog.jsonl,400,174,90,136,0,5572,18.2,0,{None: 400}

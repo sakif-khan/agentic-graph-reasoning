@@ -1,0 +1,10 @@
+=== test_webqsp_noretrieval: 0 failures ===
+=== test_cwq_noretrieval: 0 failures ===
+=== test_webqsp_vectorrag: 0 failures ===
+=== test_cwq_vectorrag: 0 failures ===
+=== test_webqsp_graphrag: 0 failures ===
+=== test_cwq_graphrag: 0 failures ===
+=== test_webqsp_tog: 0 failures ===
+=== test_cwq_tog: 0 failures ===
+=== test_webqsp_tog: 0 failures ===
+=== test_cwq_tog: 0 failures ===

@@ -14,6 +14,8 @@ from agr.runtime import get_driver, get_embedder
 driver = get_driver()
 embed = get_embedder()
 
+budget_cfg = BudgetConfig()
+
 SYSTEMS = ["noretrieval", "vectorrag", "graphrag", "tog"]
 TEST_FILES = ["data/test_webqsp.json", "data/test_cwq.json"]
 
@@ -43,16 +45,15 @@ for system in SYSTEMS:
         else:
             sys.exit(f"unknown system {system}")
 
-        limit = 10 if system == "tog" else None
-        questions = json.load(open(test_file, encoding="utf-8"))[:limit]
-        budget_cfg = BudgetConfig()
-        logger = RunLogger(f"logs/{name}.jsonl", llm.describe(), budget_cfg,
-                        {**run_cfg.as_dict(), "system": system})
+        log_path = f"logs/{name}.jsonl"
+        logger = RunLogger(log_path, llm.describe(), budget_cfg,
+                           {**run_cfg.as_dict(), "system": system})
 
         done = set()
-        if Path(f"logs/{name}.jsonl").exists():
-            done = {json.loads(l)["qid"] for l in open(f"logs/{name}.jsonl",
-                                                    encoding="utf-8")}
+        if Path(log_path).exists():
+            done = {json.loads(l)["qid"] for l in open(log_path, encoding="utf-8")}
+
+        questions = json.load(open(test_file, encoding="utf-8"))
         failures = []
         for q in questions:
             if q["qid"] in done:
@@ -68,5 +69,7 @@ for system in SYSTEMS:
                 failures.append((q["qid"], repr(e)))
                 print(f'  [{q["qid"]}] FAILED: {e!r}')
         print(f"=== {name}: {len(failures)} failures ===")
+        if failures:
+            json.dump(failures, open(f"logs/{name}_failures.json", "w"), indent=1)
 
 driver.close()
