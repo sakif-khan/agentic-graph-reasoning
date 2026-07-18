@@ -8,3 +8,5 @@
 === test_cwq_tog: 0 failures ===
 === test_webqsp_tog: 0 failures ===
 === test_cwq_tog: 0 failures ===
+=== test_webqsp_agr: 400 ok, 0 failed ===
+=== test_cwq_agr: 400 ok, 0 failed ===
