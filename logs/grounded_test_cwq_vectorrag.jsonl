@@ -1,0 +1,207 @@
+{"qid": "WebQTrn-1557_25aa66737549ccec679a88f7ec71c350", "gold": ["McGill University"], "entities": {"McGill University": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-568_9fa2b7684e5de3793c6eb46ac7025b64", "gold": ["Mecklenburg County"], "entities": {"Mecklenburg County": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1528_04810196a28df9032811889ca112f28b", "gold": ["3:10 to Yuma"], "entities": {"Logan film": false}, "any_ungrounded": true, "hit": false}
+{"qid": "WebQTrn-2069_c1d589c22e4bcb71dd3832d4a8a1dbe9", "gold": ["Spanish Language"], "entities": {"Spanish Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1547_9a301711fdf36a2e2d6fdd7b21d65d3c", "gold": ["In My Time: A Personal and Political Memoir"], "entities": {"Officers in flight suits": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2540_1af583970c492fc3682ae363bbfca3d3", "gold": ["Camille Pissarro", "Pierre-Auguste Renoir"], "entities": {"Eugène Boudin": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1677_22c4d321fc60b69e1d966c77d4107a74", "gold": ["You Don't Mess with the Zohan"], "entities": {"Saturday Night Live: The Best of Adam Sandler": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2569_6b6fb0182356d92873272424688be466", "gold": ["Lakewood Church Central Campus"], "entities": {"Toyota Center": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-849_eba7931ddf28af4dfa20fb099196c91f", "gold": ["France"], "entities": {"Saudi Arabia": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2569_acebb33e831a74414284fba7938e01c8", "gold": ["Toyota Center"], "entities": {"Toyota Center": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-60_47c68c12c2afd9ae65f31a10982c43db", "gold": ["Brazil"], "entities": {"Portugal": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-213_024fd6ca0b4cb30927c22e93a552ae6c", "gold": ["Justin Timberlake"], "entities": {"Scarlett Johansson": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2152_3cdf60c15a8355981dd92e3c57ac2eed", "gold": ["Seattle Mariners"], "entities": {"Seattle Mariners": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-60_7abf3620549d6d7aaf194ce37a34bbd8", "gold": ["Portugal"], "entities": {"Oeiras, Portugal": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1260_c4e06c3a9e4b4f10bd1ae97f1742c198", "gold": ["Super Bowl XXXV"], "entities": {"Super Bowl XLVIII": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2871_4c5dc1332d9eba8fde58e7b9561d4ae3", "gold": ["Phoenix", "Phoenix"], "entities": {"Arizona": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3400_675e2a842506fdbbcf3ccdec8f51cee3", "gold": ["Seth MacFarlane"], "entities": {"Seth MacFarlane": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1405_b5513034c35cc49fda740f1a0ae5b7b9", "gold": ["Princeton University"], "entities": {"Sam Seaborn": true, "Princeton University": true, "Duke University School of Law": true, "John F. Kennedy School of Government": true, "John F. Kennedy University": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2429_4449720a6e25f3093a8065ae980f0221", "gold": ["Constitutional monarchy"], "entities": {"Monarchy": true, "Republic": true, "Unitary state": true, "Constitutional monarchy": true, "Parliamentary system": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1283_623b8370871966e2e8aeb301482e1558", "gold": ["Eastern Time Zone"], "entities": {"Michigan": true, "Venice Municipal Airport": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-389_27f6987805010183edbeba6b91a3cafd", "gold": ["Classical music"], "entities": {"Classical music": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2152_92fba37c9723caee68665ad9a5e4a468", "gold": ["Texas Rangers"], "entities": {"Texas Rangers": true, "Dallas Stars": true, "Tom Hicks": true, "American League West": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-61_7bd6b37d01a372aa5af2a8d5ef53d827", "gold": ["Islam"], "entities": {"Buddhism": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-261_30a384ed1f686b2338e963e4a2a963d3", "gold": ["British Columbia"], "entities": {"British Columbia": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-849_29d62c66b3b2bc4938023788455b5bc7", "gold": ["Netherlands"], "entities": {"Netherlands": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2069_0b65dea73fbce4f9f616eb5f69e9aa73", "gold": ["Rapa Nui Language"], "entities": {"Samoan Language": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-567_bfcde480dde9e03c320b2d2cc1d67743", "gold": ["A Beautiful Mind"], "entities": {"A Beautiful Mind film": false}, "any_ungrounded": true, "hit": false}
+{"qid": "WebQTrn-1812_04dbed66ba17d35bf79f72e04bbcc776", "gold": ["British Virgin Islands"], "entities": {"Jamaica": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-924_6d72ea1b1b38e146c28c87fee57e7f96", "gold": ["Argentina national football team"], "entities": {"Argentina national football team": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1603_6f7bafc08148c28d022ab04b0e6a4aaf", "gold": ["I Ching"], "entities": {"Yellow River Map": true, "Daozang": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1762_ea65a065bc9b8f5eda6ea8c0716c84b8", "gold": ["Indo-European languages"], "entities": {"Icelandic Language": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-14_f56f0b81a5d0fd41e793f70c0b468455", "gold": ["Italy", "Lazio", "Province of Rome"], "entities": {"Rome": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-241_353fe30c00fbc6d3d872a689d17b240d", "gold": ["Switzerland"], "entities": {"Switzerland": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1000_6099ea03f4fd2476605c4a513318d29c", "gold": ["New Zealand", "New Zealand", "New Zealand", "New Zealand", "New Zealand"], "entities": {"New Zealand": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d", "gold": ["British Virgin Islands", "Netherlands Antilles"], "entities": {"Bermuda": true, "Dominican Republic": true, "Netherlands Antilles": true, "Sint Maarten": true, "Greater Antilles": true, "Lesser Antilles": true, "Antilles": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-3527_1661062ba428b2ec2a00e2f84257682f", "gold": ["Latin Language"], "entities": {"Latin Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1484_256d41885c1839681311ca57f4d7b6c4", "gold": ["Surrealism"], "entities": {"Miguel Ángel Asturias": true, "Surrealism": true, "Frida Kahlo": true, "The Two Fridas": true, "Portrait of Alejandro Gomez Arias": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-3515_76ac752ffcee1b2759600cbec55107c7", "gold": ["American University"], "entities": {"Ryan Catholic College": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-60_4faaf65ae1cc1b138d41253c3fc0e493", "gold": ["Angola"], "entities": {"Portugal": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1251_cbf2f20f6caf754bc49d672ca7b150b7", "gold": ["East Germany"], "entities": {"East Germany": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-537_b7771109a84a9b56518460dc9e8878ff", "gold": ["Children of Men"], "entities": {"Fame": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1180_d234333cfe0037241bacdcbbc5a74317", "gold": ["Montgomery County"], "entities": {"Montgomery County": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-750_aa7f855c24369c18d0bfdb21bbf9d6d1", "gold": ["1959 World Series", "1965 World Series", "1963 World Series"], "entities": {"1959 World Series": true, "1963 World Series": true, "1965 World Series": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-837_8c90d5499a627a3478313407b1404ecf", "gold": ["Super Bowl XXXV"], "entities": {"Super Bowl XXXVI": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2047_01c02992dccda4886742ee8f9411d939", "gold": ["Wrigley Field"], "entities": {"Sloan Park": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-464_cab1228be4e8c16ee35a67b7ac63b264", "gold": ["Mountain Time Zone"], "entities": {"Mountain Time Zone": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-3515_d1a0c35fff4a3a4dec452ce9b7793244", "gold": ["American University"], "entities": {"Ryan Catholic College": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5", "gold": ["Barbados"], "entities": {"Antigua and Barbuda": true, "Dominica": true, "Barbados": true, "Trinidad": true, "Grenada": true, "Antigua": true, "Tobago": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1012_73741811f34519b29f7d19ccfd4d9553", "gold": ["Grauman's Egyptian Theatre"], "entities": {"Hollywood Bowl": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1069_3c89af72801c057504e78b3a263a9b77", "gold": ["German Language"], "entities": {"Danish Language": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1677_80066cc2617f4e1301adab9b3e951711", "gold": ["Eight Crazy Nights"], "entities": {"Billy Madison": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-25_4d68c1f4906c41ef2f0ea4e416e2615b", "gold": ["Grown Ups 2"], "entities": {"That's My Boy": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1180_67f5f717564163742ca2588b7e186fd8", "gold": ["Missouri"], "entities": {"Missouri": true, "Montgomery County": true, "United States of America": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-849_f0ffa14797f7486fb0510a740e1cc8d6", "gold": ["Switzerland"], "entities": {"Switzerland": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2069_14d783de97238bd1ef6eb28fe7221306", "gold": ["Puquina Language"], "entities": {"Tequiraca language": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1120_5fd34c6d0f1cf393b2bd58d6e9690993", "gold": ["French franc"], "entities": {"French franc": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-712_4e9134eaaafee4fd4023d41d4770f5eb", "gold": ["Guam"], "entities": {"Guam": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-567_94ad90ab85ded4cd5d0680cdd5c121aa", "gold": ["A Beautiful Mind"], "entities": {"A Beautiful Mind": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2540_5e56c7691b80c044d23d2f29efc3d94f", "gold": ["Stéphane Mallarmé"], "entities": {"Eugène Boudin": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1301_5714a7a5f1feec1348045800b0c0c28c", "gold": ["Raging Waters Sacramento"], "entities": {"Raging Waters Sacramento": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-60_eae3033643523fd3a54b6c147fdfa728", "gold": ["Guinea-Bissau"], "entities": {"Portugal": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1560_9b121a33fc0ee97ee3a3c43ee4e02a78", "gold": ["Albert Gallatin"], "entities": {"Alphonso Taft": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1232_cb253aaf69993423e0691aca1ad6cafa", "gold": ["Constantinople"], "entities": {"Constantinople": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1001_6bcfac70e63efec42212159c644a593a", "gold": ["Super Bowl XXV", "Super Bowl XXI"], "entities": {"Super Bowl XXI": true, "Super Bowl XXV": true, "Super Bowl XLII": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1785_ee9df68984cde21c3be056caefd6613f", "gold": ["Return from Witch Mountain"], "entities": {"Escape to Witch Mountain": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2779_14a5adac3764601c1967451c79cbdb79", "gold": ["Consultant"], "entities": {"Erin Brockovich": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-743_2b39afadc21f0a2a4602121616db1f8c", "gold": ["Ted Kennedy", "Robert F. Kennedy"], "entities": {"Robert F. Kennedy": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2721_2d207ed91313bd46c4ffd81c9e26a912", "gold": ["Alois Hitler"], "entities": {"Klara Hitler": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-493_3ce332b703593e71708a5604865c5758", "gold": ["Constitutional monarchy"], "entities": {"Constitutional monarchy": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1679_25b39fc2f9ae169e151a869f436f594b", "gold": ["Mid-Atlantic states"], "entities": {"United States of America": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2047_3d5f855275265f74d81b862231578e33", "gold": ["Hohokam Stadium"], "entities": {"Sloan Park": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-484_db24dc739b7b00cdab7cf3d825975aed", "gold": ["Esperanto Language"], "entities": {"Esperanto Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1840_3d474acada1d3230d94e79aad9206043", "gold": ["Saami, South Language"], "entities": {"Saami, South Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1260_018dc0c070e53555fa37f63d4b83ca87", "gold": ["Super Bowl XXXV"], "entities": {"Poe": true, "Baltimore Ravens": true, "Super Bowl XXXV": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-25_ee5981878443f689128ca9ea8a269f29", "gold": ["Twilight", "Eclipse", "The Twilight Saga: Breaking Dawn - Part 1"], "entities": {"She": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-60_1649fb7df8600ed128b0db6c53a483a2", "gold": ["Angola"], "entities": {"Angolan province": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1557_573d4efe36c8edcac99c7247408e53c2", "gold": ["McGill University"], "entities": {"McGill University": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1470_888604e15ae965565efd2aa1eb615bab", "gold": ["Democracy"], "entities": {"Democracy": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2209_beb5507aba5b006b3b2e0598989448c8", "gold": ["1959 NBA Finals"], "entities": {"1981 NBA Finals": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1677_93664d8718c70b3379fbb31bf4743598", "gold": ["You Don't Mess with the Zohan"], "entities": {"You Don't Mess with the Zohan": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1603_7ca9a8a41caa3634b454484965413fd3", "gold": ["Tao Te Ching"], "entities": {"Daozang": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-837_c4e06c3a9e4b4f10bd1ae97f1742c198", "gold": ["Super Bowl XLVII", "Super Bowl XXXV"], "entities": {"2013 NFL season": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1797_dece4ddacc57788e31bf70edc99f1f37", "gold": ["Ulysses S. Grant"], "entities": {"Ulysses S. Grant": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-60_085ced56c2b8a859253d1cd5749c9a28", "gold": ["Equatorial Guinea"], "entities": {"Equatorial Guinea": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-743_e8f21e0f0c4375d30317d26f9b95cd91", "gold": ["Robert F. Kennedy"], "entities": {"Robert F. Kennedy": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1001_33d9f1ae3911d4f69a9993902924107d", "gold": ["Super Bowl XXI"], "entities": {"Super Bowl XXI": true, "Super Bowl XXV": true, "Super Bowl XLII": true, "Super Bowl XLVI": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-989_4b6636a049fa767111eef6ce82bf7054", "gold": ["Battle of Dunkirk"], "entities": {"Dunkirk evacuation": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1646_9dd9cd027e4fb356ec7f48576c94b9a8", "gold": ["Spanish Language"], "entities": {"Spanish Language": true, "Haitian Creole": true, "Samaná English": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21", "gold": ["Belize"], "entities": {"Belize": true, "Costa Rica": true, "Guatemala": true, "Honduras": true, "El Salvador": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-654_f4f38507bbec5d30bec54c8c8dd9a72b", "gold": ["Egyptian pound"], "entities": {"Egyptian pound": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-538_485b6c9f1bd7bd7972f3dd4fcc11b1e9", "gold": ["Jonas Brothers: The Concert Experience"], "entities": {"Taylor Swift: Her Life, Her Story": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1923_93e2fc83e55c4e0deaa4671a531ca523", "gold": ["Hannah Montana: The Movie"], "entities": {"Hannah Montana: The Movie": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-42_021690b43db9ed877de0fa9d66751617", "gold": ["Democratic Party"], "entities": {"Jacksonian Democratic Party": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-95_9cefb57084da782f843b2c57e373f0a7", "gold": ["Jamaican dollar"], "entities": {"United States Dollar": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-412_47b2be470a658a605c3d174a78135849", "gold": ["Dutch Language", "Frisian languages", "West Flemish"], "entities": {"Dutch Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-3249_4fddfec17159cdf7caa87c1e3e1f34cd", "gold": ["Strong Medicine", "Roommates"], "entities": {"Tia & Tamera": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1736_125140bfa1a60527bde6e40dce7fe54a", "gold": ["Europe"], "entities": {"Eastern Europe": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-567_8e46718c3fc1361ff1c02b62a853b402", "gold": ["More American Graffiti", "A Beautiful Mind", "Dr. Seuss' How the Grinch Stole Christmas"], "entities": {"Howard the Duck": true, "Melvin and Howard": true, "The Party": true, "The Raven": true, "Prime": true, "The Chamber": true, "Harvey": true, "Psycho": true, "The Break-Up": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3141_9521cdd0a498eb745a7f49c67f6a999f", "gold": ["Brooklyn"], "entities": {"Allison Roddan": true, "Los Angeles": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-557_12cad9d9eb020bdd9bfd11099ac0a07c", "gold": ["Judy Garland"], "entities": {"Dorothy Spencer": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3084_62ea63f7954eccb68d685d3695c0b84d", "gold": ["Kiribati", "Tuvalu"], "entities": {"Australia": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-484_0bd50f38d8c9b7904b5a1187a904cd73", "gold": ["Brazilian real"], "entities": {"Brazilian real": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1168_1591d6a0e6cef93c6863edb2eb0e198f", "gold": ["Fender Jag-Stang"], "entities": {"Fender Jag-Stang": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2834_61efa0b17cc53c2187422d88bf670f22", "gold": ["Buddhism"], "entities": {"Buddhism": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1091_61efa0b17cc53c2187422d88bf670f22", "gold": ["Buddhism"], "entities": {"Buddhism": true, "Dharmic religions": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-452_006b1f1ed800c636a01f3888644cc1eb", "gold": ["Baltimore"], "entities": {"Baltimore": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1923_a90c08a839ac4d0ac22ebbf436bb578b", "gold": ["So Undercover"], "entities": {"Being Cyrus": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-389_544dcbf5d728f23ac97aa05f025a646a", "gold": ["Incidental music", "20th-century classical music", "Ballet", "Art song", "Ballet", "Classical music", "French opera"], "entities": {"Claude Debussy": true, "music composition": false}, "any_ungrounded": true, "hit": false}
+{"qid": "WebQTrn-2748_4a22e87b9e3af2f4de74d5017c09de12", "gold": ["Lao Language", "Khmer language", "Akha Language", "Mlabri Language", "Hmong language", "Saek language", "Malay, Pattani Language", "Vietnamese Language", "Nyaw Language", "Phu Thai language", "Cham language", "Mon Language", "Thai Language"], "entities": {"Thailand": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1646_5abd17edee676db9f12bbbe84edfb575", "gold": ["Haitian Creole", "Samaná English", "Spanish Language"], "entities": {"Spanish Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1473_3d4ecc1165ae1c21499afb8f7b9e25a3", "gold": ["Euro"], "entities": {"Euro": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1155_cb9805c4c3bedc59995289ea0f7dbf7f", "gold": ["Swiss franc"], "entities": {"Euro": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1569_0b5333d98ef87008aa02d1fbc1554b05", "gold": ["Jamaican dollar"], "entities": {"Jamaican dollar": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-303_2ee96aa7464485d80d214b61773f4a5c", "gold": ["Walt Whitman"], "entities": {"Langston Hughes": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-261_7bc18657d5150879fc643779b6ad5e48", "gold": ["British Columbia", "Coast Mountains", "North American Cordillera", "Pacific Coast Ranges", "North America", "Fitzsimmons Range", "Pacific Ranges", "Garibaldi Ranges", "Canada"], "entities": {"Whistler Mountain": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-493_cf7833e237b8cda1de396587129515c1", "gold": ["Europe", "Eurasia", "Western Europe"], "entities": {"Belgium": true, "Wallonia": true, "Brussels": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1923_44adab808bc1863fab0f07e6556afd67", "gold": ["Wizards on Deck with Hannah Montana"], "entities": {"Wizards on Deck with Hannah Montana": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-3249_6dbfa476f0510018f470c29993293e68", "gold": ["Sister, Sister", "Detention"], "entities": {"Tia & Tamera": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1023_6b6f19d9abc98d7eda3c6da9a66f1176", "gold": ["Argentine peso"], "entities": {"Peseta": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2570_ac52c51debd358141a23acc7ae7ec938", "gold": ["Harry S. Truman"], "entities": {"Harry S. Truman": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-538_fc5392eefef107aa88084b05ddd2e246", "gold": ["The Lorax"], "entities": {"Taylor Swift: Her Life, Her Story": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2006_4c7647e8d0b7435d37296e8103bcb33f", "gold": ["Burton's Gentleman's Magazine"], "entities": {"Graham's magazine": false}, "any_ungrounded": true, "hit": false}
+{"qid": "WebQTest-55_54e856d3c44e0ac4a33f0f0ebb7a67d6", "gold": ["Actor", "Singer", "Songwriter"], "entities": {"Michael Bublé": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1770_6a7c160ace84e7908302f805739ad06d", "gold": ["Blue Ivy"], "entities": {"Beyoncé Knowles": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-21_beeb032ce88fb3abfb8bf8bd2b657e62", "gold": ["Hailemariam Desalegn"], "entities": {"Prime Minister of Ethiopia": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2570_d63877a40200d18c7c4e39215a3c7019", "gold": ["Harry S. Truman"], "entities": {"Franklin D. Roosevelt": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-537_de17dd1afec3743e98d327e6b1912e99", "gold": ["Cold Mountain"], "entities": {"The Rite": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1629_5b23295775632ec566475a1ab8748962", "gold": ["Danny Elfman"], "entities": {"Danny Elfman": true, "The Newton Brothers": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-924_ad15b96e5de6c60b06f2295638c2e471", "gold": ["Argentina national football team"], "entities": {"FC Barcelona": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1120_c78405f6f2157645f1098f8a871f1bc2", "gold": ["Assignat", "French franc"], "entities": {"French franc": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2006_7993a79baca778d4e8e6cb2b1882bca4", "gold": ["Burton's Gentleman's Magazine"], "entities": {"Graham's magazine": false}, "any_ungrounded": true, "hit": false}
+{"qid": "WebQTest-1528_6ecf5c92092ae9080307178a28b8d589", "gold": ["The Perks of Being a Wallflower"], "entities": {"Logan's Run": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-12_974c964a1a2810facfeb4b1a996e878a", "gold": ["John Kasich"], "entities": {"Governor of Ohio": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3100_d059b24adec4064377b957ca598769be", "gold": ["Greater Antilles", "Latin America", "North America", "Americas", "País"], "entities": {"Dominican Republic": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-493_590fff78c30981ef9566ad54a453d002", "gold": ["Europe", "Eurasia", "Western Europe"], "entities": {"Belgium": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-484_d35194e42e8dfb2250164a3a10b93131", "gold": ["Brazilian real"], "entities": {"Brazil": true, "Brazilian cruzeiro": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1923_eaeaff16b51e52669edc90501a373c61", "gold": ["Sex and the City 2"], "entities": {"Hannah Montana and Miley Cyrus: Best of Both Worlds Concert": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1923_b10bde702bb6c68ce3cdced85d5aff02", "gold": ["The Last Song"], "entities": {"Hannah Montana and Miley Cyrus: Best of Both Worlds Concert": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1706_97097ed7f8b2c898c800e8717998cb4c", "gold": ["Ricardo Martinelli"], "entities": {"Panama": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-759_33c0a2138ef3f4a4f61dbee8dc9714e5", "gold": ["Thandie Newton"], "entities": {"Jennifer Aniston": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-857_d585a4c2e04a9cd40dd5ec98e2456515", "gold": ["Al Gore"], "entities": {"Al Gore": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1528_505f2eda6be64caf7b48a166de833564", "gold": ["Percy Jackson & the Olympians: The Lightning Thief"], "entities": {"Logan": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1405_ced20d844a472e7fafced76fae0a1c7c", "gold": ["Harvard College"], "entities": {"John F. Kennedy School of Government": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2904_0b2295cf692f73863c4d317fe2713132", "gold": ["San Francisco"], "entities": {"Laguna Beach": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-832_87afbf2481df60df8476b920f00c4247", "gold": ["2014 World Series"], "entities": {"2012 World Series": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-831_f2d789d28c11bc5b682263b07195d208", "gold": ["Something Wicked"], "entities": {"Faster, Pussycat! Kill! Kill!": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-567_2c5591f1dbe7402405004d7a0836dd3b", "gold": ["Osmosis Jones"], "entities": {"Howard the Duck": true, "Garfield: The Movie": true, "Tom and Jerry: Robin Hood and his Merry Mouse": true, "Disney Learning Adventures: Mickey and the Beanstalk": true, "The Mouse and His Child": true, "The Wonderful Wizard of Ha's": true, "Tom and Jerry: The Magic Ring": true, "Mickey's Circus": true, "Tom and Jerry: The Movie": true, "Just Mickey": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-989_6d0a1bf895925a752370575740368440", "gold": ["Battle of Dunkirk"], "entities": {"Battle of Dunkirk": true, "Kingdom of Great Britain": true, "Nazi Germany": true, "French Third Republic": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-124_609120802c32c3608fc379700186f76c", "gold": ["Blue Ivy"], "entities": {"By the Sea film": false}, "any_ungrounded": true, "hit": false}
+{"qid": "WebQTrn-1665_5b2c4b0d5faeffa7e6ed3767a4a57c89", "gold": ["Sydenham"], "entities": {"Shirebrook": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1785_98806527b045c387792db297c407c023", "gold": ["Race to Witch Mountain"], "entities": {"Kim Possible Movie: So the Drama": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-538_65e7de970f6844e8520d7785799ec19e", "gold": ["Hannah Montana: The Movie", "Valentine's Day"], "entities": {"Elf": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1577_1948beb9c3dfa0c0861f67f8d27c503f", "gold": ["The New School"], "entities": {"Mary Baldwin College": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2748_5394f28651892e7656afeda366a6af04", "gold": ["Lao Language", "Khmer language", "Akha Language", "Mlabri Language", "Hmong language", "Saek language", "Malay, Pattani Language", "Vietnamese Language", "Nyaw Language", "Phu Thai language", "Cham language", "Mon Language", "Thai Language"], "entities": {"Thai Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1785_e0f5bd8c1ccde7ddfa3be8bdf3122ebc", "gold": ["Return from Witch Mountain"], "entities": {"Return from Witch Mountain": true, "John B. Mansbridge": true, "Kim Richards": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-3084_ca8d129cc42cf94b681a91fb5ed94522", "gold": ["Kiribati"], "entities": {"Kiribati": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-61_9be8c18e016b713cbb7f7feb6badebc7", "gold": ["Protestantism", "Catholicism"], "entities": {"Christianity": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3376_3cfac4b90586c13b7348805674c750e1", "gold": ["Temple University"], "entities": {"University of Nottingham": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-452_f8c717f06ff656fba2fabfb354030958", "gold": ["Brooklyn"], "entities": {"Brooklyn": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-25_23b0132339644b875bf6a966c5b0c131", "gold": ["Eclipse"], "entities": {"Eclipse film": false}, "any_ungrounded": true, "hit": false}
+{"qid": "WebQTest-450_b68e8f1a3f19f80d7dfc10bf3796b71e", "gold": ["Hawaiian hibiscus"], "entities": {"American Pasque flower": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2748_4d6c65004ee28d487bc3921f625106b5", "gold": ["Khmer language"], "entities": {"Thai Language": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1923_29c81279ed9a982e12f82e764083db76", "gold": ["Wizards on Deck with Hannah Montana"], "entities": {"Hannah Montana": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-452_f79ffe93341047ed2d8a39e5bb7d9156", "gold": ["Baltimore"], "entities": {"Los Angeles": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3543_d7db4cdab1589b7c97a81236310a67f7", "gold": ["Dubai"], "entities": {"United Arab Emirates": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2069_cf3638075fd9204c82c8adf9ae47925e", "gold": ["Mapudungun Language"], "entities": {"Spanish Language": true, "Aymara language": true, "Mapudungun Language": true, "Puquina Language": true, "Rapa Nui Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-832_c1d5c9c777c291a80c29c70ec43c45ad", "gold": ["2014 World Series"], "entities": {"2012 World Series": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3084_ec0835b1ad2d181fa3b4195d539d862a", "gold": ["Tuvalu"], "entities": {"Fiji": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1758_477d7040a0ed5bfecb155b8b3d3082fb", "gold": ["Parliamentary system", "Presidential system", "Islamic republic", "Unitary state", "Theocracy"], "entities": {"Chiefdom": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2904_13765c6b33acddb614acbd7e8d2c5ea1", "gold": ["San Francisco"], "entities": {"Laguna Beach": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-568_f4dd5e4885d4e73788e2f0e9a63d6035", "gold": ["Mecklenburg County"], "entities": {"Mecklenburg County": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1294_a4b2006ad5ffa1964eb8aa93149cba5a", "gold": ["Robert De Niro"], "entities": {"Francesco De Vito": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-125_003c6a046c47526d922683f22cf0e983", "gold": ["Memphis"], "entities": {"Memphis": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1686_554811ebe1463287ee640a214683ea57", "gold": ["Janet Napolitano"], "entities": {"Jan Brewer": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3249_0b9c49912f43238136954d463b417194", "gold": ["Roommates"], "entities": {"Tia & Tamera": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-710_c1d5c9c777c291a80c29c70ec43c45ad", "gold": ["2014 World Series"], "entities": {"San Francisco Giants": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2834_d3301dedbdcb2d171a75be1631e8cec5", "gold": ["Buddhism"], "entities": {"Buddhism": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-3766_2458404b2726ce40f3d525263dc9f74c", "gold": ["Peruvian nuevo sol"], "entities": {"Peru": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-213_d9993d3e6f665d0c937cf7c0209ff9f8", "gold": ["Justin Timberlake"], "entities": {"Justin Timberlake": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1387_e519712761951b558bb7cbf4ea39198a", "gold": ["Eastern Time Zone"], "entities": {"Pacific Time Zone": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2570_ff6becc9074132acf2f300dbba1c1e4e", "gold": ["Franklin D. Roosevelt", "Harry S. Truman"], "entities": {"Franklin Delano Roosevelt, Jr.": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-1023_2ed287b0ef57067bd3a79f71c2fa849e", "gold": ["Argentine peso"], "entities": {"Argentina": true, "Argentine peso": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-497_3b4a316ec5790c8b3b2ec3c6aa23b29d", "gold": ["Netherlands"], "entities": {"Amsterdam": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3769_6e0a31334a35147f868ae514f9eb9ab8", "gold": ["Orange County"], "entities": {"Orlando": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2570_6f059734e774504c68f628670516e72c", "gold": ["Harvard College"], "entities": {"Harry S. Truman": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-567_1e6dd9ec51a40b6c0ec2105ed84574c5", "gold": ["American Graffiti"], "entities": {"Howard the Duck": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1923_3dac7aa955af6ee2ede38f6d42711a00", "gold": ["Miley Cyrus: Tongue Tied"], "entities": {"Miley Cyrus: Tongue Tied": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1823_a8cd75f8533d96e3be293401d63fad4b", "gold": ["Parliamentary system", "Republic", "Parliamentary republic", "Federal republic"], "entities": {"Parliamentary republic": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-634_4f2c0d9eb022ed67ec2cc356d4d5113a", "gold": ["Comal County"], "entities": {"Bexar County": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-719_402552b61d68fcf116111585da32583b", "gold": ["Democratic Party"], "entities": {"Republican Party": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3057_5a7cd2677ed97e520a124ba9c2da6ad4", "gold": ["Songwriter"], "entities": {"2010 World Series": true, "2012 World Series": true, "San Francisco Giants": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1384_9440ac3bd6d8053ca4d553da408a7cb0", "gold": ["Judaism"], "entities": {"Israel": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-64_025fdfafd914ff922ab8144f527c06ec", "gold": ["Bishop"], "entities": {"Tupac Shakur": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2026_de4e12cff67645e8580d6a495196c768", "gold": ["Dominican peso"], "entities": {"Dominican peso": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTest-1379_8b1ff0551fb22f1d4e54d33d3656b8e8", "gold": ["Drums"], "entities": {"Priest": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1348_b7598df908bf8cbe941f82e1cefaec28", "gold": ["Houston Oilers"], "entities": {"Houston Oilers": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2570_c47133a5a4595621bf114ffa8ed4c3e3", "gold": ["Khmer language"], "entities": {"Franklin Delano Roosevelt, Jr.": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2871_98925752e1e60abb73dc775f15ee38af", "gold": ["Phoenix"], "entities": {"Grand Rapids": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-3673_b0f2d7005d48b548c7022ad46eccfd31", "gold": ["Mountain Time Zone"], "entities": {"Mountain Time Zone": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2754_7b7ab19b5492a3184356f9305cdd3f9f", "gold": ["Bob West", "Dean Wendt", "Carey Stinson", "David Joyner"], "entities": {"Barney & Friends": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2478_3e09b108c3448248556d4c34acae3cf7", "gold": ["Syracuse University Otto the Orange"], "entities": {"Griffin": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1072_92f27159a96f716c1691371e64e5a604", "gold": ["Jan Brewer"], "entities": {"Governor of Arizona": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTrn-2319_14ab2260ec77ebd5b3b8f666efc08fc3", "gold": ["Albanian language", "Tatar Language", "Moldovan language", "Romanian Language", "Hungarian language", "Russian Language", "Ukrainian Language"], "entities": {"Ukrainian Language": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2335_7cd339eefa681cdb907de4bdf65f8aae", "gold": ["National Anthem of Russia"], "entities": {"National Anthem of Russia": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-1577_68d3456de4f00782e827bacf13846d5e", "gold": ["The New School", "DeWitt Clinton High School"], "entities": {"Martin Luther King, Jr. High School": true}, "any_ungrounded": false, "hit": false}
+{"qid": "WebQTest-1320_2492cfb926882a4bf9c580ba4f7c700a", "gold": ["Miller Park"], "entities": {"Miller Park": true}, "any_ungrounded": false, "hit": true}
+{"qid": "WebQTrn-2100_faefa67fba5946fa87b438a6df0b8e63", "gold": ["Curno"], "entities": {"Curno": true}, "any_ungrounded": false, "hit": true}

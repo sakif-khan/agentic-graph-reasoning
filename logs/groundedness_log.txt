@@ -1,0 +1,11 @@
+file                                  asserted  ungrounded  ent-rate  q-answered q-any-ungr q-rate
+test_webqsp_noretrieval               661       179         27.1%     351        132        37.6%
+test_cwq_noretrieval                  340       42          12.4%     248        34         13.7%
+test_webqsp_vectorrag                 1040      38          3.7%      292        18         6.2%
+test_cwq_vectorrag                    289       7           2.4%      207        7          3.4%
+test_webqsp_graphrag                  800       6           0.8%      177        5          2.8%
+test_cwq_graphrag                     224       2           0.9%      157        2          1.3%
+test_webqsp_tog                       832       0           0.0%      325        0          0.0%
+test_cwq_tog                          433       0           0.0%      310        0          0.0%
+test_webqsp_agr                       1235      0           0.0%      367        0          0.0%
+test_cwq_agr                          474       0           0.0%      308        0          0.0%
