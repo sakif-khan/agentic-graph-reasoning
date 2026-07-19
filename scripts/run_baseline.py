@@ -5,14 +5,15 @@ Usage: python scripts\run_baseline.py <system> <test_file.json>
 import json, sys, time
 from pathlib import Path
 
-from agr.config import run_cfg, llm
+from agr.config import run_cfg
 from agr.budget import BudgetConfig
 from agr.runlog import RunLogger
-from agr.runtime import get_driver, get_embedder
+from agr.runtime import get_driver, get_embedder, get_llm
 
 
 driver = get_driver()
 embed = get_embedder()
+llm = get_llm()
 
 budget_cfg = BudgetConfig()
 

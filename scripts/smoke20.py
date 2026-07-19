@@ -3,12 +3,11 @@ import time
 
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
-from agr.scorer import HybridScorer
 from agr.state import make_init_state
-from agr.config import run_cfg, llm
+from agr.config import run_cfg
 from agr.budget import BudgetConfig
 from agr.graph_build import build_graph
-from agr.runtime import get_driver, get_embedder
+from agr.runtime import get_driver, get_embedder, get_llm, get_scorer
 from agr.runlog import RunLogger
 
 # ---- experimental condition: the ONLY thing you edit between sweep runs ----
@@ -18,9 +17,9 @@ RUN_NAME = f"smoke20_a{run_cfg.alpha}_t{run_cfg.tau}"
 # ---- construction ----
 driver = get_driver()
 embed = get_embedder()
+llm = get_llm()
 tools = KGTools(driver, EntityResolver(driver, embed), f"logs/{RUN_NAME}_tools.jsonl")
-scorer = HybridScorer("data/relation_embeddings.npy", "data/relation_names.json",
-                      llm=llm, alpha=run_cfg.alpha)
+scorer = get_scorer(run_cfg.alpha)
 agr = build_graph(llm, tools, scorer, run_cfg)
 
 logger = RunLogger(path=f"logs/{RUN_NAME}.jsonl",

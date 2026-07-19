@@ -1,7 +1,4 @@
 from dataclasses import dataclass, asdict
-from agr.scorer import HybridScorer
-from agr.llm import LLMClient
-from agr.env import OPENAI_API_KEY
 
 @dataclass(frozen=True)
 class RunConfig:
@@ -22,9 +19,3 @@ BACKBONE = {
     "temperature": 0.0,
     "reasoning_effort": "none",
 }
-
-llm = LLMClient(api_key=OPENAI_API_KEY, **BACKBONE)
-
-scorer = HybridScorer("data/relation_embeddings.npy",
-                      "data/relation_names.json",
-                      llm=llm, alpha=run_cfg.alpha)

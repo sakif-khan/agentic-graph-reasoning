@@ -3,13 +3,12 @@ from pathlib import Path
 
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
-from agr.scorer import HybridScorer
 from agr.state import make_init_state
-from agr.config import RunConfig, llm
+from agr.config import RunConfig
 from agr.budget import BudgetConfig
 from agr.graph_build import build_graph
 from agr.runlog import RunLogger
-from agr.runtime import get_driver, get_embedder
+from agr.runtime import get_driver, get_embedder, get_llm, get_scorer
 
 
 CONDITIONS = [
@@ -28,6 +27,7 @@ CONDITIONS = [
 QUESTIONS = json.load(open("data/dev80.json", encoding="utf-8"))
 driver = get_driver()
 embed = get_embedder()
+llm = get_llm()
 budget_cfg = BudgetConfig()
 
 for rc in CONDITIONS:
@@ -40,9 +40,7 @@ for rc in CONDITIONS:
                 for l in open(log_path, encoding="utf-8")}
     tools = KGTools(driver, EntityResolver(driver, embed),
                     f"logs/{name}_tools.jsonl")
-    scorer = HybridScorer("data/relation_embeddings.npy",
-                          "data/relation_names.json",
-                          llm=llm, alpha=rc.alpha)
+    scorer = get_scorer(rc.alpha)
     agr = build_graph(llm, tools, scorer, rc)
     logger = RunLogger(f"logs/{name}.jsonl", llm.describe(),
                        budget_cfg, rc.as_dict())

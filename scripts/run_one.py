@@ -2,12 +2,13 @@ from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.scorer import EmbeddingScorer
 from agr.state import make_init_state
-from agr.config import run_cfg, llm
+from agr.config import run_cfg
 from agr.graph_build import build_graph
-from agr.runtime import get_driver, get_embedder
+from agr.runtime import get_driver, get_embedder, get_llm
 
 driver = get_driver()
 embed = get_embedder()
+llm = get_llm()
 
 tools = KGTools(driver, EntityResolver(driver, embed), "logs/tools.jsonl")
 scorer = EmbeddingScorer("data/relation_embeddings.npy", "data/relation_names.json")
