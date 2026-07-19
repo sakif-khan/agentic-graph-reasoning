@@ -6,41 +6,47 @@ from agr.runtime import get_embedder
 
 MID_RE = re.compile(r"^[mg]\.[0-9a-zA-Z_]+$")
 
-model = get_embedder()
-texts, meta = [], []
-with gzip.open("data/rels.csv.gz", "rt", encoding="utf-8") as f:
-    r = csv.DictReader(f)
-    id2name = json.load(open("data/id2name.json", encoding="utf-8"))  # build
-    # from nodes.csv.gz once if you don't have it: {id: name}
-    for row in r:
-        h, t = id2name.get(row[":START_ID"]), id2name.get(row[":END_ID"])
-        if not h or not t:
-            continue
-        if MID_RE.match(h) or MID_RE.match(t):
-            continue
-        rel_words = row["fb_name"].replace(".", " ").replace("_", " ")
-        texts.append(f"{h} {rel_words} {t}")
-        meta.append((row[":START_ID"], row["fb_name"], row[":END_ID"]))
 
-print(f"{len(texts):,} triples to embed")
-mat = np.memmap("data/triple_index/vecs.fp16", dtype=np.float16, mode="w+",
-                shape=(len(texts), 384))
-B = 4096
-for i in range(0, len(texts), B):
-    vecs = model.encode(texts[i:i+B], batch_size=256,
-                        normalize_embeddings=True)
-    mat[i:i+B] = vecs.astype(np.float16)
-    if i % (B * 20) == 0:
-        print(f"{i:,}")
-mat.flush()
-json.dump({"n": len(texts)}, open("data/triple_index/shape.json", "w"))
-with open("data/triple_index/texts.txt", "w", encoding="utf-8") as f:
-    f.write("\n".join(texts))
+def main():
+    model = get_embedder()
+    texts, meta = [], []
+    with gzip.open("data/rels.csv.gz", "rt", encoding="utf-8") as f:
+        r = csv.DictReader(f)
+        id2name = json.load(open("data/id2name.json", encoding="utf-8"))  # build
+        # from nodes.csv.gz once if you don't have it: {id: name}
+        for row in r:
+            h, t = id2name.get(row[":START_ID"]), id2name.get(row[":END_ID"])
+            if not h or not t:
+                continue
+            if MID_RE.match(h) or MID_RE.match(t):
+                continue
+            rel_words = row["fb_name"].replace(".", " ").replace("_", " ")
+            texts.append(f"{h} {rel_words} {t}")
+            meta.append((row[":START_ID"], row["fb_name"], row[":END_ID"]))
 
-print("Building FAISS index...")
-C = 500_000
-index = faiss.IndexFlatIP(384)
-for i in range(0, len(texts), C):
-    chunk = np.array(mat[i:i+C], dtype=np.float32)
-    index.add(chunk)    
-faiss.write_index(index, "data/triple_index/flat.faiss")
+    print(f"{len(texts):,} triples to embed")
+    mat = np.memmap("data/triple_index/vecs.fp16", dtype=np.float16, mode="w+",
+                    shape=(len(texts), 384))
+    B = 4096
+    for i in range(0, len(texts), B):
+        vecs = model.encode(texts[i:i+B], batch_size=256,
+                            normalize_embeddings=True)
+        mat[i:i+B] = vecs.astype(np.float16)
+        if i % (B * 20) == 0:
+            print(f"{i:,}")
+    mat.flush()
+    json.dump({"n": len(texts)}, open("data/triple_index/shape.json", "w"))
+    with open("data/triple_index/texts.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(texts))
+
+    print("Building FAISS index...")
+    C = 500_000
+    index = faiss.IndexFlatIP(384)
+    for i in range(0, len(texts), C):
+        chunk = np.array(mat[i:i+C], dtype=np.float32)
+        index.add(chunk)
+    faiss.write_index(index, "data/triple_index/flat.faiss")
+
+
+if __name__ == "__main__":
+    main()

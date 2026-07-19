@@ -8,10 +8,7 @@ import json, random, re
 from datasets import load_dataset
 from agr.runtime import get_driver
 
-driver = get_driver()
-
 SAMPLE_PER_DATASET = 500
-random.seed(42)
 
 # Questions whose gold requires date/founding-year facts. Verified 2026-07-12:
 # the graph contains NO date literals, so these are unanswerable-in-environment.
@@ -56,44 +53,53 @@ def bucket_of(question: str, n_topics: int, hops: int, via_cvt: bool):
 BUCKETS = ["unanswerable_env", "conjunction", "cvt_heavy",
            "one_hop", "two_hop"]
 
-buckets = {bucket: [] for bucket in BUCKETS}
 
-with driver.session() as session:
-    for ds_name in ["webqsp", "cwq"]:
-        path = f"../RoG-{ds_name}/data"
-        ds = load_dataset("parquet",
-                          data_files={"train": f"{path}/train-*.parquet"})
-        rows = list(ds["train"])
-        for example in random.sample(rows, min(SAMPLE_PER_DATASET, len(rows))):
-            q_entity = [str(x).strip() for x in example["q_entity"] if str(x).strip()]
-            a_entity = [str(x).strip() for x in example["a_entity"] if str(x).strip()]
-            if not q_entity or not a_entity:
-                continue
-            res = classify_path(session, q_entity, a_entity)
-            if res is None:
-                continue          # gold unreachable within 4 hops: skip
-            hops, via_cvt = res
-            bucket = bucket_of(example["question"], len(q_entity), hops, via_cvt)
-            if bucket is None:
-                continue
-            buckets[bucket].append({
-                "qid": str(example.get("id", "")),
-                "dataset": ds_name,
-                "question": example["question"],
-                "gold_q_entities": q_entity,
-                "answers": a_entity,
-                "bucket": bucket,
-                "raw_hops": hops,
-                "via_cvt": via_cvt,
-            })
+def main():
+    random.seed(42)
+    driver = get_driver()
 
-json.dump(buckets, open("data/smoke_candidates_v2.json", "w",
-                        encoding="utf-8"), indent=1, ensure_ascii=False)
+    buckets = {bucket: [] for bucket in BUCKETS}
 
-print(f"{'bucket':<18} count   examples")
-for bucket in BUCKETS:
-    print(f"{bucket:<18} {len(buckets[bucket]):>5}")
-    for r in buckets[bucket][:3]:
-        print(f"    [{r['dataset']}] {r['question']!r} -> "
-              f"{r['answers'][:2]} (hops={r['raw_hops']}, cvt={r['via_cvt']})")
-driver.close()
+    with driver.session() as session:
+        for ds_name in ["webqsp", "cwq"]:
+            path = f"../RoG-{ds_name}/data"
+            ds = load_dataset("parquet",
+                              data_files={"train": f"{path}/train-*.parquet"})
+            rows = list(ds["train"])
+            for example in random.sample(rows, min(SAMPLE_PER_DATASET, len(rows))):
+                q_entity = [str(x).strip() for x in example["q_entity"] if str(x).strip()]
+                a_entity = [str(x).strip() for x in example["a_entity"] if str(x).strip()]
+                if not q_entity or not a_entity:
+                    continue
+                res = classify_path(session, q_entity, a_entity)
+                if res is None:
+                    continue          # gold unreachable within 4 hops: skip
+                hops, via_cvt = res
+                bucket = bucket_of(example["question"], len(q_entity), hops, via_cvt)
+                if bucket is None:
+                    continue
+                buckets[bucket].append({
+                    "qid": str(example.get("id", "")),
+                    "dataset": ds_name,
+                    "question": example["question"],
+                    "gold_q_entities": q_entity,
+                    "answers": a_entity,
+                    "bucket": bucket,
+                    "raw_hops": hops,
+                    "via_cvt": via_cvt,
+                })
+
+    json.dump(buckets, open("data/smoke_candidates_v2.json", "w",
+                            encoding="utf-8"), indent=1, ensure_ascii=False)
+
+    print(f"{'bucket':<18} count   examples")
+    for bucket in BUCKETS:
+        print(f"{bucket:<18} {len(buckets[bucket]):>5}")
+        for r in buckets[bucket][:3]:
+            print(f"    [{r['dataset']}] {r['question']!r} -> "
+                  f"{r['answers'][:2]} (hops={r['raw_hops']}, cvt={r['via_cvt']})")
+    driver.close()
+
+
+if __name__ == "__main__":
+    main()

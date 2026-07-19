@@ -21,20 +21,26 @@ def normalized(rec):
             t["budget"]["cache_hits"] = None
     return r
 
-cold, warm = load(COLD), load(WARM)
-overlap = set(cold) & set(warm)
-print(f"cold={len(cold)} warm={len(warm)} overlap={len(overlap)}")
 
-for qid in sorted(overlap):
-    for k in ("git", "budget_hash", "backbone", "run_config"):
-        assert cold[qid][k] == warm[qid][k], f"{qid}: {k} differs -- ABORT"
-    if normalized(cold[qid]) != normalized(warm[qid]):
-        sys.exit(f"{qid}: records differ beyond timing fields -- ABORT, "
-                 "keep the sidecar-filter approach instead")
+def main():
+    cold, warm = load(COLD), load(WARM)
+    overlap = set(cold) & set(warm)
+    print(f"cold={len(cold)} warm={len(warm)} overlap={len(overlap)}")
 
-order = [json.loads(l)["qid"] for l in open(WARM, encoding="utf-8")]
-with open(OUT, "w", encoding="utf-8") as f:
-    for qid in order:
-        rec = cold[qid] if qid in overlap else warm[qid]
-        f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-print(f"merged {len(order)} records ({len(overlap)} from cold run) -> {OUT}")
+    for qid in sorted(overlap):
+        for k in ("git", "budget_hash", "backbone", "run_config"):
+            assert cold[qid][k] == warm[qid][k], f"{qid}: {k} differs -- ABORT"
+        if normalized(cold[qid]) != normalized(warm[qid]):
+            sys.exit(f"{qid}: records differ beyond timing fields -- ABORT, "
+                     "keep the sidecar-filter approach instead")
+
+    order = [json.loads(l)["qid"] for l in open(WARM, encoding="utf-8")]
+    with open(OUT, "w", encoding="utf-8") as f:
+        for qid in order:
+            rec = cold[qid] if qid in overlap else warm[qid]
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    print(f"merged {len(order)} records ({len(overlap)} from cold run) -> {OUT}")
+
+
+if __name__ == "__main__":
+    main()
