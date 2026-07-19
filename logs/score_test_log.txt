@@ -1,0 +1,33 @@
+dataset system        Hits@1               F1                   P      R      hedge%  tok    calls  secs*
+webqsp  noretrieval   0.453 [0.403,0.500]  0.305 [0.266,0.345]  0.380  0.303  12.2%   113    1.0    1.2
+cwq     noretrieval   0.307 [0.263,0.352]  0.279 [0.236,0.323]  0.285  0.282  38.0%   118    1.0    1.0
+webqsp  vectorrag     0.568 [0.517,0.618]  0.432 [0.389,0.475]  0.469  0.460  27.0%   527    1.0    1.4
+cwq     vectorrag     0.203 [0.163,0.242]  0.168 [0.133,0.204]  0.171  0.189  48.2%   535    1.0    1.4
+webqsp  graphrag      0.340 [0.292,0.388]  0.262 [0.224,0.302]  0.279  0.284  55.8%   531    1.0    2.1
+cwq     graphrag      0.205 [0.168,0.245]  0.183 [0.147,0.222]  0.187  0.194  60.8%   470    1.0    2.2
+webqsp  tog           0.660 [0.613,0.705]  0.477 [0.436,0.518]  0.571  0.480  18.8%   3615   12.8   12.9
+cwq     tog           0.435 [0.388,0.482]  0.378 [0.332,0.423]  0.403  0.384  22.5%   5572   18.2   15.2
+webqsp  agr           0.755 [0.713,0.797]  0.642 [0.600,0.684]  0.697  0.653  8.2%    4511   6.2    11.2
+cwq     agr           0.522 [0.475,0.570]  0.469 [0.423,0.514]  0.484  0.481  23.0%   6818   8.9    17.2
+
+Per-stratum Hits@1 / F1:
+  webqsp  noretrieval   h1:0.43/0.29(n=256)  h2:0.52/0.36(n=128)  h3plus:0.25/0.00(n=4)  unreachable:0.17/0.17(n=12)
+  cwq     noretrieval   h1:0.38/0.35(n=137)  h2:0.30/0.27(n=211)  h3plus:0.14/0.14(n=49)  unreachable:0.00/0.00(n=3)
+  webqsp  vectorrag     h1:0.82/0.63(n=256)  h2:0.12/0.07(n=128)  h3plus:0.00/0.00(n=4)  unreachable:0.08/0.08(n=12)
+  cwq     vectorrag     h1:0.33/0.27(n=137)  h2:0.14/0.11(n=211)  h3plus:0.10/0.09(n=49)  unreachable:0.67/0.67(n=3)
+  webqsp  graphrag      h1:0.30/0.23(n=256)  h2:0.44/0.35(n=128)  h3plus:0.25/0.07(n=4)  unreachable:0.08/0.08(n=12)
+  cwq     graphrag      h1:0.34/0.30(n=137)  h2:0.16/0.14(n=211)  h3plus:0.02/0.02(n=49)  unreachable:0.33/0.33(n=3)
+  webqsp  tog           h1:0.63/0.45(n=256)  h2:0.78/0.58(n=128)  h3plus:0.25/0.07(n=4)  unreachable:0.17/0.17(n=12)
+  cwq     tog           h1:0.53/0.48(n=137)  h2:0.37/0.32(n=211)  h3plus:0.45/0.32(n=49)  unreachable:0.33/0.33(n=3)
+  webqsp  agr           h1:0.75/0.64(n=256)  h2:0.84/0.73(n=128)  h3plus:0.00/0.00(n=4)  unreachable:0.08/0.08(n=12)
+  cwq     agr           h1:0.46/0.42(n=137)  h2:0.55/0.49(n=211)  h3plus:0.57/0.50(n=49)  unreachable:0.33/0.33(n=3)
+
+McNemar (AGR vs baseline, per-question hit):
+  webqsp  agr vs noretrieval    AGR-only-correct=152  noretrieval-only-correct=31   p=2.29e-20
+  cwq     agr vs noretrieval    AGR-only-correct=121  noretrieval-only-correct=35   p=2.73e-12
+  webqsp  agr vs vectorrag      AGR-only-correct=117  vectorrag-only-correct=42   p=2.22e-09
+  cwq     agr vs vectorrag      AGR-only-correct=151  vectorrag-only-correct=23   p=2.83e-24
+  webqsp  agr vs graphrag       AGR-only-correct=186  graphrag-only-correct=20   p=6.53e-35
+  cwq     agr vs graphrag       AGR-only-correct=148  graphrag-only-correct=21   p=1.02e-24
+  webqsp  agr vs tog            AGR-only-correct=76   tog-only-correct=38   p=4.75e-04
+  cwq     agr vs tog            AGR-only-correct=86   tog-only-correct=51   p=3.52e-03
