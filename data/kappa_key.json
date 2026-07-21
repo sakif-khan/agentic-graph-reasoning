@@ -1,0 +1,1536 @@
+[
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-1047",
+  "question": "who does amy stiller play in dodgeball",
+  "entity": "Him/Herself",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "DodgeBall: A True Underdog Story --film performance film--> [event]; [event] --film performance special_performance_type--> Him/Herself",
+   "DodgeBall: A True Underdog Story --film film starring--> [event]; [event] --film performance special_performance_type--> Him/Herself",
+   "DodgeBall: A True Underdog Story --film performance film--> [event]; [event] --film performance special_performance_type--> Him/Herself"
+  ],
+  "supported": false,
+  "reason": "The paths only indicate a performance type of \"Him/Herself,\" not Amy Stiller\u2019s role in DodgeBall.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTrn-1405_32fd6bcd379a666c1b479eb00ba3dfc6",
+  "question": "What colleges and universities did President Kennedy attend?",
+  "entity": "Princeton University",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "John F. Kennedy --people person nationality--> United States of America; United States of America --location location containedby--> Princeton University",
+   "John F. Kennedy --people person education--> [event]; [event] --education education institution--> Princeton University",
+   "John F. Kennedy --education education student--> [event]; [event] --education education institution--> Princeton University"
+  ],
+  "supported": false,
+  "reason": "The paths do not show Kennedy attended Princeton; they only connect him indirectly via nationality or an education event whose institution is Princeton University.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-3769_6e0a31334a35147f868ae514f9eb9ab8",
+  "question": "What county is the \"Orlando Business Journal\" circulated in?",
+  "entity": "Orange County",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Orlando Business Journal --book periodical language--> English Language; English Language --film film language--> Orange County",
+   "Orlando Business Journal --periodicals newspaper_circulation_area newspapers--> Orlando; Orlando --location location containedby--> Orange County",
+   "Orlando Business Journal --book newspaper circulation_areas--> Orlando; Orlando --location location containedby--> Orange County"
+  ],
+  "supported": true,
+  "reason": "The paths show the Orlando Business Journal\u2019s circulation area is Orlando, and Orlando is contained by Orange County, which supports Orange County as the county circulated in.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_graphrag",
+  "qid": "WebQTrn-3034_2fd33d22c32307ac6536d5c5644a1bde",
+  "question": "Where did the person who said, \"In this Revolution no plans have been written for retreat\" earn his doctorate?",
+  "entity": "Albert Einstein College of Medicine",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "PhD --education education degree--> [event]; [event] --education education institution--> Albert Einstein College of Medicine",
+   "PhD --education education degree--> [event]; [event] --education educational_institution students_graduates--> Albert Einstein College of Medicine",
+   "PhD --education education degree--> [event]; [event] --education education institution--> Albert Einstein College of Medicine"
+  ],
+  "supported": false,
+  "reason": "The paths only show a PhD linked to Albert Einstein College of Medicine, not that the quoted person earned his doctorate there.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-725",
+  "question": "what states does the sierra nevada run through",
+  "entity": "California",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Sierra Nevada --location location partially_containedby--> California",
+   "Sierra Nevada --location location partially_contains--> California"
+  ],
+  "supported": true,
+  "reason": "The Sierra Nevada runs through California, so the path directly supports the answer.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-1369",
+  "question": "what to visit in denver",
+  "entity": "Montclair",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Denver --location location containedby--> Montclair",
+   "Denver --location place_with_neighborhoods neighborhoods--> Montclair",
+   "Denver --location neighborhood neighborhood_of--> Montclair"
+  ],
+  "supported": false,
+  "reason": "The paths only show Montclair as a neighborhood of Denver, not something to visit in Denver.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-1291",
+  "question": "how many kids were there in the kennedy family",
+  "entity": "Patrick Bouvier Kennedy",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Joseph P. Kennedy, Sr. --people person nationality--> United States of America; United States of America --people person nationality--> Patrick Bouvier Kennedy",
+   "Joseph P. Kennedy, Sr. --people person children--> John F. Kennedy; John F. Kennedy --people person children--> Patrick Bouvier Kennedy",
+   "Joseph P. Kennedy, Sr. --people person parents--> John F. Kennedy; John F. Kennedy --people person children--> Patrick Bouvier Kennedy"
+  ],
+  "supported": false,
+  "reason": "The paths only show family connections to Patrick Bouvier Kennedy, not the total number of Kennedy children asked for.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-1259",
+  "question": "what books did ernest hemingway write",
+  "entity": "The Killers",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Ernest Hemingway --book written_work author--> The Killers",
+   "Ernest Hemingway --film film_story_contributor film_story_credits--> The Killers",
+   "Ernest Hemingway --film film story_by--> The Killers"
+  ],
+  "supported": false,
+  "reason": "The Killers is a story/film-related work associated with Hemingway, not a book he wrote.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-1795",
+  "question": "what are john terry 's children called",
+  "entity": "Summer",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "John Terry --people person nationality--> United States of America; United States of America --film film country--> Summer",
+   "John Terry --people person nationality--> United Kingdom; United Kingdom --film film country--> Summer"
+  ],
+  "supported": false,
+  "reason": "The paths only connect John Terry to the country of a film titled Summer, not to his children.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-191",
+  "question": "where did drew brees go to college wikianswers",
+  "entity": "Purdue University",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Drew Brees --people person nationality--> United States of America; United States of America --location location containedby--> Purdue University",
+   "Drew Brees --people person education--> [event]; [event] --education education institution--> Purdue University",
+   "Drew Brees --education education student--> [event]; [event] --education education institution--> Purdue University"
+  ],
+  "supported": true,
+  "reason": "The paths include Drew Brees\u2019s education event whose institution is Purdue University, which directly answers where he went to college.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_graphrag",
+  "qid": "WebQTrn-2779_14a5adac3764601c1967451c79cbdb79",
+  "question": "What was the occupation of Pam Huckaby and the real life Erin Brockovich?",
+  "entity": "Consultant",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Erin Brockovich --people person profession--> Consultant",
+   "Pam Huckaby --film film_crew_gig crewmember--> [event]; [event] --film film_crew_gig film_crew_role--> Consultant",
+   "Pam Huckaby --film film_crewmember films_crewed--> [event]; [event] --film film_crew_gig film_crew_role--> Consultant"
+  ],
+  "supported": true,
+  "reason": "The paths explicitly state that both Erin Brockovich and Pam Huckaby have the profession/crew role of Consultant.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
+  "question": "Which caribbean countries use Eastern Caribbean Time Zone?",
+  "entity": "Saint Kitts and Nevis",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Country --common topic notable_types--> Saint Kitts and Nevis",
+   "Caribbean --location location containedby--> Saint Kitts and Nevis",
+   "Caribbean --location location contains--> Saint Kitts and Nevis"
+  ],
+  "supported": false,
+  "reason": "The paths only show that Saint Kitts and Nevis is in the Caribbean, not that it uses Eastern Caribbean Time Zone.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-737",
+  "question": "what is the name of the capital of belgium",
+  "entity": "Brussels",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Belgium --location location containedby--> Brussels",
+   "Belgium --base biblioness bibs_location country--> Brussels",
+   "Belgium --location country capital--> Brussels"
+  ],
+  "supported": true,
+  "reason": "The path relation \"country capital\" directly states that Brussels is the capital of Belgium.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-164",
+  "question": "what did stephen hawking become famous for",
+  "entity": "Astrophysicist",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Stephen Hawking --people person profession--> Astrophysicist",
+   "Stephen Hawking --people profession people_with_this_profession--> Astrophysicist"
+  ],
+  "supported": true,
+  "reason": "The paths state Stephen Hawking\u2019s profession was astrophysicist, which directly answers what he became famous for.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTest-537_4439b7c167b6ccf30c53b610934c4521",
+  "question": "What \"coming of age\" genre movies have actor charlie humman been in?",
+  "entity": "Awaydays",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Coming of age --film film genre--> Awaydays",
+   "Charlie Hunnam --people person nationality--> United Kingdom; United Kingdom --film film country--> Awaydays",
+   "Charlie Hunnam --people person nationality--> United Kingdom; United Kingdom --media_common netflix_title netflix_genres--> Awaydays"
+  ],
+  "supported": false,
+  "reason": "The paths only show that Awaydays is a coming-of-age film and that Charlie Hunnam is connected to the UK, not that he acted in Awaydays.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-1416",
+  "question": "what was franklin pierce famous for",
+  "entity": "United States Volunteers",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Franklin Pierce --people person nationality--> United States of America; United States of America --military military_combatant armed_forces--> United States Volunteers",
+   "Franklin Pierce --people person nationality--> United States of America; United States of America --military military_combatant_group combatants--> United States Volunteers",
+   "Franklin Pierce --people person nationality--> United States of America; United States of America --military armed_force military_combatant--> United States Volunteers"
+  ],
+  "supported": false,
+  "reason": "The paths only show Franklin Pierce\u2019s nationality and a military group connected to the United States, not what he was famous for.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_tog",
+  "qid": "WebQTest-1744",
+  "question": "what team does josh hamilton play for",
+  "entity": "Cincinnati Reds",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Josh Hamilton --baseball baseball_player batting_stats--> [event]; [event] --baseball batting_statistics team--> Cincinnati Reds",
+   "Josh Hamilton --baseball batting_statistics player--> [event]; [event] --baseball batting_statistics team--> Cincinnati Reds",
+   "Josh Hamilton --sports pro_athlete teams--> [event]; [event] --sports sports_team_roster team--> Cincinnati Reds"
+  ],
+  "supported": true,
+  "reason": "The paths explicitly connect Josh Hamilton to a team roster/event whose team is the Cincinnati Reds, which answers what team he plays for.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTrn-25_ee5981878443f689128ca9ea8a269f29",
+  "question": "What fantasy movies has Taylor Lautner played in?",
+  "entity": "Eclipse",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Fantasy --media_common netflix_title netflix_genres--> Eclipse",
+   "Fantasy --book book genre--> Eclipse",
+   "Taylor Lautner --people person nationality--> United States of America; United States of America --film film country--> Eclipse"
+  ],
+  "supported": false,
+  "reason": "The paths only show that Eclipse is a fantasy title and a U.S. film associated with Taylor Lautner\u2019s nationality, not that he played in it.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-865",
+  "question": "what to do for fun in houston",
+  "entity": "Bayou Bend Collection and Gardens",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Houston --location location containedby--> Bayou Bend Collection and Gardens",
+   "Houston --travel tourist_attraction near_travel_destination--> Bayou Bend Collection and Gardens",
+   "Houston --travel travel_destination tourist_attractions--> Bayou Bend Collection and Gardens"
+  ],
+  "supported": true,
+  "reason": "Bayou Bend Collection and Gardens is a tourist attraction in Houston, which fits a question about fun things to do there.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-1077",
+  "question": "what language do the russian speak",
+  "entity": "Russian Language",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Russia --location country languages_spoken--> Russian Language",
+   "Russia --language human_language main_country--> Russian Language",
+   "Russia --language human_language countries_spoken_in--> Russian Language"
+  ],
+  "supported": true,
+  "reason": "The paths indicate that Russian is the language spoken in Russia, which directly answers what language Russians speak.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-432",
+  "question": "who did annie oakley married",
+  "entity": "Frank E. Butler",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Annie Oakley --people person spouse_s--> [event]; [event] --people person spouse_s--> Frank E. Butler",
+   "Annie Oakley --people marriage spouse--> [event]; [event] --people person spouse_s--> Frank E. Butler",
+   "Annie Oakley --people person spouse_s--> [event]; [event] --people marriage spouse--> Frank E. Butler"
+  ],
+  "supported": true,
+  "reason": "The paths indicate Annie Oakley\u2019s spouse/marriage event leads to Frank E. Butler, which directly supports him as her husband.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-513",
+  "question": "what language do most australians speak",
+  "entity": "English",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Australia --film film country--> United States of America; United States of America --location location containedby--> English",
+   "Australia --internet localized_uri location--> [event]; [event] --internet localized_uri language--> English",
+   "Australia --internet localized_uri location--> [event]; [event] --internet localized_uri language--> English"
+  ],
+  "supported": false,
+  "reason": "The paths only show indirect or unrelated connections to English, not that most Australians speak English.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-1736",
+  "question": "where is holy roman empire located",
+  "entity": "Europe",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Holy Roman Empire --location location containedby--> Europe"
+  ],
+  "supported": true,
+  "reason": "The path states that the Holy Roman Empire was located in Europe, which directly answers the question.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-1795",
+  "question": "what are john terry 's children called",
+  "entity": "Summer Rose Terry",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "John Terry --people person children--> Summer Rose Terry",
+   "John Terry --people person parents--> Summer Rose Terry"
+  ],
+  "supported": true,
+  "reason": "The path relation \"people person children\" directly indicates Summer Rose Terry is John Terry's child.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-2859_37bf80e89387cf09fca66eb7915a52b0",
+  "question": "What jobs were done by the author who wrote \"The New Atlantis\"?",
+  "entity": "Scientist",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "The New Atlantis --book book_edition author_editor--> Francis Bacon; Francis Bacon --people person profession--> Scientist",
+   "The New Atlantis --book author book_editions_published--> Francis Bacon; Francis Bacon --people person profession--> Scientist"
+  ],
+  "supported": true,
+  "reason": "The paths show that Francis Bacon authored The New Atlantis and that his profession was Scientist, which answers what job he did.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_tog",
+  "qid": "WebQTest-769",
+  "question": "which is the main train station in rome",
+  "entity": "Roma Termini railway station",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Rome --location location containedby--> Italy; Italy --location location containedby--> Roma Termini railway station",
+   "Rome --tv tv_program country_of_origin--> Italy; Italy --location location containedby--> Roma Termini railway station",
+   "Rome --base biblioness bibs_location country--> Italy; Italy --location location containedby--> Roma Termini railway station"
+  ],
+  "supported": false,
+  "reason": "The paths only show Rome is in Italy and Italy contains Roma Termini, not that Roma Termini is the main train station in Rome.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-25_403eec031cd613bfe527504362411ca0",
+  "question": "What movies was Gene Serdena the decorator on which Taylor Lautner starred in?",
+  "entity": "Twilight",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Taylor Lautner --people person nationality--> United States of America; United States of America --film film country--> Twilight",
+   "Taylor Lautner --film actor film--> [event]; [event] --film performance film--> Twilight",
+   "Taylor Lautner --film performance actor--> [event]; [event] --film performance film--> Twilight"
+  ],
+  "supported": false,
+  "reason": "The paths only show Taylor Lautner\u2019s connection to Twilight, not that Gene Serdena was the decorator on that movie.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_vectorrag",
+  "qid": "WebQTrn-2748_5394f28651892e7656afeda366a6af04",
+  "question": "Find the location of the film Fan Chan, what language is spoken there?",
+  "entity": "Thai Language",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Fan Chan --film film language--> Thai Language"
+  ],
+  "supported": true,
+  "reason": "The path directly states that Fan Chan\u2019s film language is Thai, which answers what language is spoken there.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-624",
+  "question": "who plays elena gilbert on vampire diaries",
+  "entity": "Nina Dobrev",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Elena Gilbert --common image appears_in_topic_gallery--> NinaDobrev08TIFF; NinaDobrev08TIFF --common topic image--> Nina Dobrev",
+   "Elena Gilbert --common topic image--> NinaDobrev08TIFF; NinaDobrev08TIFF --common topic image--> Nina Dobrev",
+   "Elena Gilbert --common image appears_in_topic_gallery--> NinaDobrev08TIFF; NinaDobrev08TIFF --common image appears_in_topic_gallery--> Nina Dobrev"
+  ],
+  "supported": false,
+  "reason": "The paths only connect Elena Gilbert and Nina Dobrev through shared images, not through the acting role relationship asked about.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_tog",
+  "qid": "WebQTest-433",
+  "question": "who has played lex luthor",
+  "entity": "Clancy Brown",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Alexander Luthor --film performance character--> [event]; [event] --film actor film--> Clancy Brown",
+   "Alexander Luthor --film film_character portrayed_in_films--> [event]; [event] --film actor film--> Clancy Brown",
+   "Alexander Luthor --film performance character--> [event]; [event] --film performance actor--> Clancy Brown"
+  ],
+  "supported": false,
+  "reason": "The paths connect Clancy Brown to Alexander Luthor, not to Lex Luthor, so they do not support the asked relationship.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTrn-2209_7bc37f5ea0bc419b7ee5510daff240df",
+  "question": "In what years did the 1974 NBA Finals winners win other Championships?",
+  "entity": "2008 NBA Finals",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "1974 NBA Finals --sports sports_team championships--> Boston Celtics; Boston Celtics --sports sports_championship_event champion--> 2008 NBA Finals",
+   "1974 NBA Finals --sports sports_championship_event champion--> Boston Celtics; Boston Celtics --sports sports_championship_event champion--> 2008 NBA Finals",
+   "1974 NBA Finals --sports sports_team championships--> Boston Celtics; Boston Celtics --sports sports_team championships--> 2008 NBA Finals"
+  ],
+  "supported": false,
+  "reason": "The paths only show that the 1974 NBA Finals winners were the Boston Celtics and that the Celtics won the 2008 NBA Finals, but they do not answer the question asking for the years of other championshi",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-1923",
+  "question": "what movies has miley cyrus been in",
+  "entity": "Cyrus",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Miley Cyrus --people person nationality--> United States of America; United States of America --film film country--> Cyrus",
+   "Miley Cyrus --people person languages--> English Language; English Language --film film language--> Cyrus"
+  ],
+  "supported": false,
+  "reason": "The paths only connect Miley Cyrus to the film title \"Cyrus\" via nationality/language, not to movies she has been in.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-1923",
+  "question": "what movies has miley cyrus been in",
+  "entity": "So Undercover",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Miley Cyrus --people person nationality--> United States of America; United States of America --film film country--> So Undercover",
+   "Miley Cyrus --film actor film--> [event]; [event] --film performance film--> So Undercover",
+   "Miley Cyrus --film performance actor--> [event]; [event] --film performance film--> So Undercover"
+  ],
+  "supported": true,
+  "reason": "The paths indicate Miley Cyrus has a film performance linked to So Undercover, which directly supports it as one of the movies she has been in.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-1929",
+  "question": "what do see in paris",
+  "entity": "Stade Olympique Yves-du-Manoir",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Paris --location location containedby--> Stade Olympique Yves-du-Manoir"
+  ],
+  "supported": false,
+  "reason": "The path only shows the stadium is located in Paris, but it does not answer what to see in Paris.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTest-61_9be8c18e016b713cbb7f7feb6badebc7",
+  "question": "What religion with religious text The Bible is practiced in Indonesia?",
+  "entity": "Christianity",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Indonesia --book book_subject works--> Shadow and Sound; Shadow and Sound --book written_work subjects--> World; World --book periodical subjects--> Christianity",
+   "Indonesia --book written_work subjects--> Shadow and Sound; Shadow and Sound --book written_work subjects--> World; World --book periodical subjects--> Christianity",
+   "Indonesia --book book_subject works--> Shadow and Sound; Shadow and Sound --book written_work subjects--> World; World --book periodical_subject periodicals--> Christianity"
+  ],
+  "supported": false,
+  "reason": "The paths only connect Indonesia to Christianity through unrelated book and subject links, not by showing that Christianity is the religion practiced in Indonesia.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-812",
+  "question": "what movies does matt dallas play in",
+  "entity": "The Indian",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Matt Dallas --people person nationality--> United States of America; United States of America --film film country--> The Indian",
+   "Matt Dallas --film actor film--> [event]; [event] --film film starring--> The Indian",
+   "Matt Dallas --film performance actor--> [event]; [event] --film film starring--> The Indian"
+  ],
+  "supported": false,
+  "reason": "The paths only show an indirect connection to a film starring The Indian, not that Matt Dallas played in The Indian.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTrn-2026_de5bb2b6c6727d40089ae17f2650f97d",
+  "question": "What kind of money is used in the location containing the second level division Comendador, El\u00c3\u00adas Pi\u00c3\u00b1a?",
+  "entity": "Dominican peso",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Comendador, El\u00edas Pi\u00f1a --location location containedby--> Dominican Republic; Dominican Republic --finance currency countries_used--> Dominican peso",
+   "Comendador, El\u00edas Pi\u00f1a --location administrative_division second_level_division_of--> Dominican Republic; Dominican Republic --finance currency countries_used--> Dominican peso",
+   "Comendador, El\u00edas Pi\u00f1a --location location containedby--> Dominican Republic; Dominican Republic --location country currency_used--> Dominican peso"
+  ],
+  "supported": true,
+  "reason": "The paths show Comendador, El\u00edas Pi\u00f1a is in the Dominican Republic, and the Dominican Republic uses the Dominican peso.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-1269",
+  "question": "where was the boston tea party 1773",
+  "entity": "Boston Harbor",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Boston Tea Party --time event locations--> Boston Harbor",
+   "Boston Tea Party --location location events--> Boston Harbor"
+  ],
+  "supported": true,
+  "reason": "The paths explicitly state the Boston Tea Party event took place in Boston Harbor, which answers where it was.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTrn-2069_cf3638075fd9204c82c8adf9ae47925e",
+  "question": "What languages does the place that has the Supreme Court of Chile speak?",
+  "entity": "Rapa Nui Language",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Supreme Court of Chile --location location containedby--> Chile; Chile --language human_language countries_spoken_in--> Rapa Nui Language",
+   "Supreme Court of Chile --law court_jurisdiction_area courts--> Chile; Chile --language human_language countries_spoken_in--> Rapa Nui Language",
+   "Supreme Court of Chile --law court jurisdiction--> Chile; Chile --language human_language countries_spoken_in--> Rapa Nui Language"
+  ],
+  "supported": true,
+  "reason": "The paths show the Supreme Court of Chile is in Chile, and Chile is a country where Rapa Nui Language is spoken.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-865",
+  "question": "what to do for fun in houston",
+  "entity": "Downtown Houston",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Houston --location location containedby--> Downtown Houston",
+   "Houston --location place_with_neighborhoods neighborhoods--> Downtown Houston",
+   "Houston --location neighborhood neighborhood_of--> Downtown Houston"
+  ],
+  "supported": false,
+  "reason": "The paths only show Downtown Houston is part of Houston, not that it is what to do for fun there.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-942",
+  "question": "who is anne hathaway parents",
+  "entity": "Gerald Hathaway",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Anne Hathaway --people person children--> Gerald Hathaway",
+   "Anne Hathaway --people person parents--> Gerald Hathaway"
+  ],
+  "supported": true,
+  "reason": "The path explicitly states that Gerald Hathaway is Anne Hathaway\u2019s parent.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_graphrag",
+  "qid": "WebQTrn-1812_04dbed66ba17d35bf79f72e04bbcc776",
+  "question": "What country in the Caribbean appointed Elizabeth II to a governmental position?",
+  "entity": "Jamaica",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Country --common topic notable_types--> Jamaica",
+   "Elizabeth II --royalty monarch kingdom--> Jamaica",
+   "Elizabeth II --royalty kingdom rulers--> Jamaica"
+  ],
+  "supported": false,
+  "reason": "The paths only show Elizabeth II\u2019s association with Jamaica as monarch, not that Jamaica appointed her to a governmental position.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-1215",
+  "question": "who was stephen r covey",
+  "entity": "Stephen R. Covey",
+  "structural": false,
+  "n_paths": 0,
+  "paths": [],
+  "supported": true,
+  "reason": "The question asks who Stephen R. Covey was, and the asserted entity is exactly Stephen R. Covey.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTrn-2779_14a5adac3764601c1967451c79cbdb79",
+  "question": "What was the occupation of Pam Huckaby and the real life Erin Brockovich?",
+  "entity": "legal clerk",
+  "structural": false,
+  "n_paths": 0,
+  "paths": [],
+  "supported": false,
+  "reason": "No knowledge-graph path is provided, so there is no semantic support for the occupation 'legal clerk'.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-1847",
+  "question": "where does kurdish people live",
+  "entity": "Iraq",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Kurds --people ethnicity languages_spoken--> Bajelani Language; Bajelani Language --language human_language main_country--> Iraq",
+   "Kurds --people ethnicity languages_spoken--> Gurani Language; Gurani Language --language human_language main_country--> Iraq",
+   "Kurds --people ethnicity geographic_distribution--> Asia; Asia --location location containedby--> Iraq"
+  ],
+  "supported": false,
+  "reason": "The paths only show languages spoken by Kurds and a broad link to Asia, not that Kurdish people live in Iraq.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-25_3a7068fa96cd9e08dc2b1dabe458c85d",
+  "question": "What movie did Taylor Lautner  play in that the running time for the tv program is 22 minutes?",
+  "entity": "Abduction",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Taylor Lautner --people person nationality--> United States of America; United States of America --film film country--> Abduction",
+   "Taylor Lautner --award award_nomination award_nominee--> [event]; [event] --award award_nominated_work award_nominations--> Abduction",
+   "Taylor Lautner --award award_nominee award_nominations--> [event]; [event] --award award_nominated_work award_nominations--> Abduction"
+  ],
+  "supported": false,
+  "reason": "The paths only show nationality or award links to Abduction, not that Taylor Lautner played in a movie with a 22-minute TV running time.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTrn-3543_ca8d129cc42cf94b681a91fb5ed94522",
+  "question": "Phoenix Islands are part of what country Japan exports to?",
+  "entity": "Kiribati",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Japan --base aareas schema administrative_area administrative_area_type--> Sovereign state; Sovereign state --base aareas schema administrative_area administrative_area_type--> Kiribati",
+   "Japan --base aareas schema administrative_area administrative_parent--> Earth; Earth --base aareas schema administrative_area administrative_parent--> Kiribati",
+   "Japan --location imports_and_exports imported_from--> [event]; [event] --location statistical_region places_imported_from--> Kiribati"
+  ],
+  "supported": false,
+  "reason": "The paths only show Japan\u2019s administrative or trade links to Kiribati, not that the Phoenix Islands are part of Kiribati.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_vectorrag",
+  "qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d",
+  "question": "What countries are in the Atlantic Time Zone in the Caribbean?",
+  "entity": "Sint Maarten",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Country --common topic notable_types--> Sint Maarten",
+   "Atlantic Time Zone --location location time_zones--> Sint Maarten",
+   "Caribbean --location location containedby--> Saint Martin (Island); Saint Martin (Island) --location location containedby--> Sint Maarten"
+  ],
+  "supported": true,
+  "reason": "The paths show Sint Maarten is in the Caribbean and associated with the Atlantic Time Zone, which matches the question.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-206",
+  "question": "what position does brandon roy play",
+  "entity": "Guard",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Brandon Roy --people person nationality--> United States of America; United States of America --people person nationality--> Guard",
+   "Brandon Roy --sports pro_athlete teams--> [event]; [event] --sports sports_team_roster position--> Guard",
+   "Brandon Roy --sports sports_team_roster player--> [event]; [event] --sports sports_team_roster position--> Guard"
+  ],
+  "supported": true,
+  "reason": "The roster paths explicitly connect Brandon Roy to a team event whose position is Guard, which answers what position he plays.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-1367",
+  "question": "where is glastonbury england",
+  "entity": "Connecticut",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Glastonbury --location location containedby--> Connecticut"
+  ],
+  "supported": false,
+  "reason": "The path only shows Glastonbury is contained by Connecticut, which does not answer where Glastonbury, England is.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-1232_cb253aaf69993423e0691aca1ad6cafa",
+  "question": "Where did the fictional character Sofia Sartor live that was also the center of the Roman Empire?",
+  "entity": "Constantinople",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Roman Empire --location country capital--> Constantinople",
+   "Sofia Sartor --fictional_universe fictional_setting characters_that_have_lived_here--> Constantinople",
+   "Sofia Sartor --fictional_universe fictional_setting fictional_characters_born_here--> Constantinople"
+  ],
+  "supported": true,
+  "reason": "The paths state that Sofia Sartor lived in Constantinople, and Constantinople was the center/capital of the Roman Empire.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-1269",
+  "question": "where was the boston tea party 1773",
+  "entity": "Boston Harbor",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Boston Tea Party --time event locations--> Boston Harbor",
+   "Boston Tea Party --location location events--> Boston Harbor"
+  ],
+  "supported": true,
+  "reason": "The paths explicitly state the Boston Tea Party event took place in Boston Harbor, which answers where it was.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-342",
+  "question": "what countries have english as their official language",
+  "entity": "Gambia",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "English Language --location country languages_spoken--> Gambia",
+   "English Language --language human_language countries_spoken_in--> Gambia",
+   "English Language --location country official_language--> Gambia"
+  ],
+  "supported": true,
+  "reason": "The path explicitly states that English is an official language of Gambia.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-1733",
+  "question": "who or what influenced frank lloyd wright",
+  "entity": "William Morris",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Frank Lloyd Wright --influence influence_node influenced--> William Morris",
+   "Frank Lloyd Wright --influence influence_node influenced_by--> William Morris"
+  ],
+  "supported": true,
+  "reason": "The paths explicitly state that Frank Lloyd Wright was influenced by William Morris.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-379",
+  "question": "what year does hitler die",
+  "entity": "Adolf Hitler",
+  "structural": true,
+  "n_paths": 0,
+  "paths": [],
+  "supported": false,
+  "reason": "The question asks for a year, but \"Adolf Hitler\" is a person, not a year.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_vectorrag",
+  "qid": "WebQTrn-1180_67f5f717564163742ca2588b7e186fd8",
+  "question": "The city of Wellsville can be found where in the United States?",
+  "entity": "United States of America",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Wellsville --location location containedby--> United States of America"
+  ],
+  "supported": true,
+  "reason": "The path states that Wellsville is contained by the United States of America, which directly answers where it can be found.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-1687",
+  "question": "what movies has spike lee made",
+  "entity": "BlacKkKlansman",
+  "structural": false,
+  "n_paths": 0,
+  "paths": [],
+  "supported": false,
+  "reason": "No knowledge-graph path is provided to show that BlacKkKlansman is a movie made by Spike Lee.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_vectorrag",
+  "qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d",
+  "question": "What countries are in the Atlantic Time Zone in the Caribbean?",
+  "entity": "Dominican Republic",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Country --common topic notable_types--> Dominican Republic",
+   "Atlantic Time Zone --location location time_zones--> Dominican Republic",
+   "Caribbean --location location partially_containedby--> Latin America; Latin America --location location containedby--> Dominican Republic"
+  ],
+  "supported": true,
+  "reason": "The path directly states that the Atlantic Time Zone includes the Dominican Republic in the Caribbean.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_graphrag",
+  "qid": "WebQTrn-3100_d059b24adec4064377b957ca598769be",
+  "question": "What part is the country with the capital named Santo Domingo?",
+  "entity": "Dominican Republic",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Santo Domingo --location location containedby--> Dominican Republic",
+   "Santo Domingo --base biblioness bibs_location country--> Dominican Republic",
+   "Santo Domingo --location country capital--> Dominican Republic"
+  ],
+  "supported": true,
+  "reason": "The paths state that Santo Domingo is the capital of the Dominican Republic, which directly answers the question.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_tog",
+  "qid": "WebQTest-1416",
+  "question": "what was franklin pierce famous for",
+  "entity": "Mexican\u2013American War",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Franklin Pierce --military military_person participated_in_conflicts--> Mexican\u2013American War",
+   "Franklin Pierce --base culturalevent event entity_involved--> Mexican\u2013American War"
+  ],
+  "supported": true,
+  "reason": "Franklin Pierce is known for his military service in the Mexican\u2013American War, which directly relates to what he was famous for.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTest-1260_018dc0c070e53555fa37f63d4b83ca87",
+  "question": "In what year did mascot Poe's team win the Super Bowl?",
+  "entity": "Baltimore Ravens",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Super bowl --type domain types--> American football; American football --sports sports_team sport--> Baltimore Ravens",
+   "Super bowl --type type domain--> American football; American football --sports sports_team sport--> Baltimore Ravens",
+   "Super bowl --common topic notable_types--> Super Bowl XXXV; Super Bowl XXXV --sports sports_team championships--> Baltimore Ravens"
+  ],
+  "supported": true,
+  "reason": "The paths show that the Baltimore Ravens won Super Bowl XXXV, which is the year/edition associated with Poe's team winning the Super Bowl.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTest-1923_037ebc0e903ab6eb5ef8ce44ecd3bd64",
+  "question": "Which movies was the nominee of the Blimp Award for Favorite Television Star award in?",
+  "entity": "Miley Cyrus",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Blimp Award for Favorite Television Star --award award_category nominees--> [event]; [event] --award award_nomination award_nominee--> Miley Cyrus",
+   "Blimp Award for Favorite Television Star --award award_nomination award--> [event]; [event] --award award_nomination award_nominee--> Miley Cyrus"
+  ],
+  "supported": false,
+  "reason": "The paths only show Miley Cyrus was a nominee for the TV star award, not which movies she was in.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-1758",
+  "question": "where do they speak afrikaans",
+  "entity": "Malawi",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Afrikaans Language --location country languages_spoken--> Malawi",
+   "Afrikaans Language --language human_language countries_spoken_in--> Malawi"
+  ],
+  "supported": true,
+  "reason": "The paths explicitly state that Afrikaans is spoken in Malawi, which directly answers where Afrikaans is spoken.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-2784_025fdfafd914ff922ab8144f527c06ec",
+  "question": "In what films does the lyracist for \"Panther Power\" appear?",
+  "entity": "Bullet",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Panther Power --music lyricist lyrics_written--> Tupac Shakur; Tupac Shakur --people person nationality--> United States of America; United States of America --film film country--> Bullet",
+   "Panther Power --music composition lyricist--> Tupac Shakur; Tupac Shakur --people person nationality--> United States of America; United States of America --film film country--> Bullet",
+   "Panther Power --music lyricist lyrics_written--> Tupac Shakur; Tupac Shakur --people person languages--> English Language; English Language --film film language--> Bullet"
+  ],
+  "supported": false,
+  "reason": "The paths only connect Tupac Shakur to Bullet via nationality/language, not by showing that he appears in that film.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_graphrag",
+  "qid": "WebQTest-1785_e0f5bd8c1ccde7ddfa3be8bdf3122ebc",
+  "question": "What movie whose production designed by John B. Mansbridge starred Kim Richards?",
+  "entity": "The Car",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Kim Richards --people person nationality--> United States of America; United States of America --film film country--> The Car",
+   "Kim Richards --film actor film--> [event]; [event] --film performance film--> The Car",
+   "Kim Richards --film performance actor--> [event]; [event] --film performance film--> The Car"
+  ],
+  "supported": false,
+  "reason": "The paths only show Kim Richards is connected to The Car through nationality or generic film-performance links, not that John B. Mansbridge designed the film\u2019s production.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTrn-2292_ea0bc3bb340865025c534c91eca19be9",
+  "question": "What kind of economy does the country have that breeds Moscow watchdogs?",
+  "entity": "Soviet Union",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Moscow Watchdog --biology breed_origin breeds_originating_here--> Soviet Union",
+   "Moscow Watchdog --biology animal_breed place_of_origin--> Soviet Union"
+  ],
+  "supported": false,
+  "reason": "The paths show the breed\u2019s place of origin is the Soviet Union, but they do not answer what kind of economy the country has.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTrn-1023_6b6f19d9abc98d7eda3c6da9a66f1176",
+  "question": "What currency is used in the country that breeds Cordoba Fighting Dog?",
+  "entity": "Argentine peso",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Cordoba Fighting Dog --biology breed_origin breeds_originating_here--> Argentina; Argentina --finance currency countries_used--> Argentine peso",
+   "Cordoba Fighting Dog --biology animal_breed place_of_origin--> Argentina; Argentina --finance currency countries_used--> Argentine peso",
+   "Cordoba Fighting Dog --biology breed_origin breeds_originating_here--> Argentina; Argentina --location country currency_used--> Argentine peso"
+  ],
+  "supported": true,
+  "reason": "The paths show Cordoba Fighting Dog originates in Argentina, and Argentina uses the Argentine peso as its currency.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_vectorrag",
+  "qid": "WebQTrn-750_aa7f855c24369c18d0bfdb21bbf9d6d1",
+  "question": "In what events that ended prior to 28 October 1981 did the Dodgers win the World Series?",
+  "entity": "1965 World Series",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Los Angeles Dodgers --sports sports_team championships--> 1965 World Series",
+   "Los Angeles Dodgers --sports sports_championship_event champion--> 1965 World Series"
+  ],
+  "supported": true,
+  "reason": "The paths state that the Los Angeles Dodgers were champions of the 1965 World Series, which directly supports that they won that World Series event before 28 October 1981.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-2653_ea8442cb2c503dcbd06d9b7a77fed60d",
+  "question": "What war did France participate in where it's fighting force was the smallest?",
+  "entity": "Thirty Years' War",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "France --military military_combatant_group combatants--> [event]; [event] --military military_combatant_group conflict--> Thirty Years' War",
+   "France --military military_combatant_group combatants--> [event]; [event] --military military_conflict combatants--> Thirty Years' War",
+   "France --location location containedby--> Europe; Europe --time event locations--> Thirty Years' War"
+  ],
+  "supported": false,
+  "reason": "The paths only show France participated in the Thirty Years' War, not that it was France's smallest fighting force in any war.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-1369",
+  "question": "what to visit in denver",
+  "entity": "Forney Transportation Museum",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Denver --location location containedby--> Forney Transportation Museum",
+   "Denver --travel tourist_attraction near_travel_destination--> Forney Transportation Museum",
+   "Denver --travel travel_destination tourist_attractions--> Forney Transportation Museum"
+  ],
+  "supported": true,
+  "reason": "The paths indicate Forney Transportation Museum is a tourist attraction in Denver, which directly supports it as something to visit there.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-425",
+  "question": "where english is spoken",
+  "entity": "English Language",
+  "structural": true,
+  "n_paths": 0,
+  "paths": [],
+  "supported": false,
+  "reason": "The question asks where English is spoken, and the entity \"English Language\" does not answer a location.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_vectorrag",
+  "qid": "WebQTest-61_7bd6b37d01a372aa5af2a8d5ef53d827",
+  "question": "Which religion is the primary one practiced in Indonesia and has Jersulam as the location of a sacred site?",
+  "entity": "Buddhism",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Jerusalem --common topic notable_types--> Book; Book --common topic notable_types--> Buddhism",
+   "Indonesia --location location containedby--> Borobudur; Borobudur --religion place_of_worship religion--> Buddhism",
+   "Indonesia --people person nationality--> Maya Soetoro-Ng; Maya Soetoro-Ng --people person religion--> Buddhism"
+  ],
+  "supported": false,
+  "reason": "The paths only connect Indonesia or Jerusalem to Buddhism indirectly and do not show that Buddhism is the primary religion in Indonesia or that Jerusalem is a sacred site for it.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTrn-25_ee5981878443f689128ca9ea8a269f29",
+  "question": "What fantasy movies has Taylor Lautner played in?",
+  "entity": "The Twilight Saga: Eclipse",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Fantasy --media_common netflix_title netflix_genres--> Eclipse; Eclipse --music soundtrack film--> The Twilight Saga: Eclipse",
+   "Fantasy --book book genre--> Eclipse; Eclipse --music soundtrack film--> The Twilight Saga: Eclipse",
+   "Fantasy --media_common netflix_title netflix_genres--> Eclipse; Eclipse --film film soundtrack--> The Twilight Saga: Eclipse"
+  ],
+  "supported": false,
+  "reason": "The paths only show that Eclipse is a fantasy-related title and that it is the soundtrack/film for The Twilight Saga: Eclipse, not that Taylor Lautner played in it.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_tog",
+  "qid": "WebQTest-1111",
+  "question": "where is mount fuji located",
+  "entity": "Honshu",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Mount Fuji --location location containedby--> Honshu",
+   "Mount Fuji --location location contains--> Honshu"
+  ],
+  "supported": true,
+  "reason": "Mount Fuji is located on Honshu, so the path directly supports the answer.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_graphrag",
+  "qid": "WebQTrn-3515_d1a0c35fff4a3a4dec452ce9b7793244",
+  "question": "Paul Ryan is owner of radio station WAMU and which college did he attend?",
+  "entity": "American University",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "College/University --common topic notable_types--> American University",
+   "Paul Ryan --people person nationality--> United States of America; United States of America --location location containedby--> American University",
+   "Paul Ryan --people person education--> [event]; [event] --education education institution--> American University"
+  ],
+  "supported": true,
+  "reason": "The path explicitly states that Paul Ryan\u2019s education institution was American University, which answers the college attended.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTrn-493_cf7833e237b8cda1de396587129515c1",
+  "question": "Where was the newspaper La Libre Belgique distributed during World War II?",
+  "entity": "Belgium",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "La Libre Belgique during World War II --periodicals newspaper_circulation_area newspapers--> Belgium",
+   "La Libre Belgique during World War II --book newspaper circulation_areas--> Belgium"
+  ],
+  "supported": true,
+  "reason": "The paths explicitly state Belgium as the newspaper\u2019s circulation/distribution area during World War II.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-231",
+  "question": "when did florida marlins join mlb",
+  "entity": "1993",
+  "structural": false,
+  "n_paths": 0,
+  "paths": [],
+  "supported": true,
+  "reason": "The Florida Marlins joined Major League Baseball in 1993.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_vectorrag",
+  "qid": "WebQTrn-567_2c5591f1dbe7402405004d7a0836dd3b",
+  "question": "Which animated movies hs Ron Howard done?",
+  "entity": "Just Mickey",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Ron Howard --people person nationality--> United States of America; United States of America --film film country--> Just Mickey",
+   "Ron Howard --people person languages--> English Language; English Language --film film language--> Just Mickey",
+   "Ron Howard --common topic notable_types--> TV Episode; TV Episode --common topic notable_types--> Just Mickey"
+  ],
+  "supported": false,
+  "reason": "The paths only show country/language/type links to \"Just Mickey,\" not that Ron Howard did that animated movie.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-1976",
+  "question": "what team did drogba play for",
+  "entity": "Shanghai Greenland Shenhua F.C.",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Didier Drogba --sports pro_athlete teams--> [event]; [event] --sports sports_team_roster team--> Shanghai Greenland Shenhua F.C.",
+   "Didier Drogba --sports sports_team_roster player--> [event]; [event] --sports sports_team_roster team--> Shanghai Greenland Shenhua F.C.",
+   "Didier Drogba --sports pro_athlete teams--> [event]; [event] --sports sports_team roster--> Shanghai Greenland Shenhua F.C."
+  ],
+  "supported": true,
+  "reason": "The paths indicate Didier Drogba was on the roster of Shanghai Greenland Shenhua F.C., which directly answers the team he played for.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTrn-1278_51fc729996448b82cb36b98e70cf1498",
+  "question": "Who dated Tupac Shakur and produced the movie After Earth?",
+  "entity": "Jada Pinkett Smith",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Tupac Shakur --freebase valuenotation is_reviewed--> Gender; Gender --freebase valuenotation is_reviewed--> Jada Pinkett Smith",
+   "Tupac Shakur --freebase valuenotation is_reviewed--> Place of birth; Place of birth --freebase valuenotation is_reviewed--> Jada Pinkett Smith",
+   "Tupac Shakur --people person nationality--> United States of America; United States of America --people person nationality--> Jada Pinkett Smith"
+  ],
+  "supported": false,
+  "reason": "The provided paths only show unrelated attributes of Tupac and Jada Pinkett Smith, not that she dated Tupac or produced After Earth.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_tog",
+  "qid": "WebQTest-103",
+  "question": "what basketball teams has shaq played for",
+  "entity": "Miami Heat",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Shaquille O'Neal --basketball basketball_player player_statistics--> [event]; [event] --basketball basketball_player_stats team--> Miami Heat",
+   "Shaquille O'Neal --basketball basketball_player_stats player--> [event]; [event] --basketball basketball_player_stats team--> Miami Heat",
+   "Shaquille O'Neal --basketball basketball_player player_statistics--> [event]; [event] --basketball basketball_player_stats team--> Miami Heat"
+  ],
+  "supported": true,
+  "reason": "The paths indicate Shaquille O'Neal was on an event whose team was the Miami Heat, which directly supports that he played for that team.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTrn-484_d35194e42e8dfb2250164a3a10b93131",
+  "question": "What currency is used where Artur da Costa e Silva is from?",
+  "entity": "Brazilian real",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Artur da Costa e Silva --people person nationality--> Brazil; Brazil --location country currency_used--> Brazilian real",
+   "Artur da Costa e Silva --people person nationality--> Brazil; Brazil --finance currency countries_used--> Brazilian real"
+  ],
+  "supported": true,
+  "reason": "Artur da Costa e Silva is from Brazil, and the paths state that Brazil uses the Brazilian real.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-206",
+  "question": "what position does brandon roy play",
+  "entity": "Shooting guard",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Brandon Roy --basketball basketball_player position_s--> Shooting guard"
+  ],
+  "supported": true,
+  "reason": "The path directly states Brandon Roy\u2019s position is shooting guard.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_graphrag",
+  "qid": "WebQTrn-2569_6b6fb0182356d92873272424688be466",
+  "question": "The building where the Houston Rockets and Houston Aeros played is now called what?",
+  "entity": "Toyota Center",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Houston Aeros --sports sports_team arena_stadium--> Toyota Center",
+   "Houston Aeros --sports sports_facility teams--> Toyota Center",
+   "Houston Rockets --sports sports_team arena_stadium--> Toyota Center"
+  ],
+  "supported": true,
+  "reason": "The paths state that both the Houston Rockets and Houston Aeros played at Toyota Center, which matches the building now called Toyota Center.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTest-1705_35c94dc6944d964963b44949d8ed512c",
+  "question": "Where did the composer of What She Came From come from?",
+  "entity": "Glasgow",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "What She Came For --music engineer tracks_engineered--> Paul Savage; Paul Savage --music artist origin--> Glasgow",
+   "What She Came For --music recording engineer--> Paul Savage; Paul Savage --music artist origin--> Glasgow",
+   "What She Came For --music composition composer--> Franz Ferdinand; Franz Ferdinand --music artist origin--> Glasgow"
+  ],
+  "supported": true,
+  "reason": "The paths show that the composer of \"What She Came For\" is Franz Ferdinand, and Franz Ferdinand\u2019s origin is Glasgow.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-388",
+  "question": "what are the important holidays of islam",
+  "entity": "Ramadan",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Islam --religion religion holidays--> Ramadan",
+   "Islam --time holiday featured_in_religions--> Ramadan"
+  ],
+  "supported": true,
+  "reason": "Ramadan is an important Islamic holiday/observance, so the paths do support it as an answer.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-848",
+  "question": "where are the nordic countries",
+  "entity": "Greenland",
+  "structural": true,
+  "n_paths": 2,
+  "paths": [
+   "Nordic countries --location location containedby--> Greenland",
+   "Nordic countries --location location contains--> Greenland"
+  ],
+  "supported": false,
+  "reason": "The paths only show a containment/location link to Greenland, not where the Nordic countries are.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-2003",
+  "question": "what movies have robert pattinson in them",
+  "entity": "Maps to the Stars",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Robert Pattinson --film actor film--> [event]; [event] --film performance film--> Maps to the Stars",
+   "Robert Pattinson --film performance actor--> [event]; [event] --film performance film--> Maps to the Stars",
+   "Robert Pattinson --film actor film--> [event]; [event] --film film starring--> Maps to the Stars"
+  ],
+  "supported": true,
+  "reason": "The paths indicate Robert Pattinson has a film performance in Maps to the Stars, which directly answers the question.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_tog",
+  "qid": "WebQTest-538_d37989c422fef8a98e7289ca0144159c",
+  "question": "Which movies has the individual who attended The Wyndcroft School appeared in?",
+  "entity": "The Lorax",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "The Wyndcroft School --organization organization headquarters--> [event]; [event] --location mailing_address country--> United States of America; United States of America --film film country--> The Lorax",
+   "The Wyndcroft School --common topic notable_types--> School; School --music composition language--> English Language; English Language --film film language--> The Lorax",
+   "The Wyndcroft School --common topic notable_types--> School; School --music composition language--> English Language; English Language --book written_work original_language--> The Lorax"
+  ],
+  "supported": false,
+  "reason": "The paths only connect the school to The Lorax via country or language, not by showing that the attended individual appeared in that movie.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTest-1686_c374fe555611a2e3aba1ba9ffd739d13",
+  "question": "Who held his governmental position from 1998 and was the Governor of Arizona in 2009?",
+  "entity": "Jan Brewer",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Arizona --film film country--> United States of America; United States of America --people person nationality--> Jan Brewer",
+   "Arizona --location location containedby--> United States of America; United States of America --people person nationality--> Jan Brewer",
+   "Arizona --location country administrative_divisions--> United States of America; United States of America --people person nationality--> Jan Brewer"
+  ],
+  "supported": false,
+  "reason": "The paths only show Arizona is in the United States and that Jan Brewer is a U.S. person, not that she held the relevant governmental position from 1998 or was Arizona\u2019s governor in 2009.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-342",
+  "question": "what countries have english as their official language",
+  "entity": "Tanzania",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "English Language --location country languages_spoken--> Tanzania",
+   "English Language --language human_language countries_spoken_in--> Tanzania",
+   "English Language --location country official_language--> Tanzania"
+  ],
+  "supported": true,
+  "reason": "The path explicitly states that English is an official language in Tanzania.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-1942",
+  "question": "who was in the israeli palestinian conflict",
+  "entity": "David Ben-Gurion",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Israeli\u2013Palestinian conflict --time event people_involved--> David Ben-Gurion"
+  ],
+  "supported": true,
+  "reason": "The path explicitly states David Ben-Gurion was a person involved in the Israeli\u2013Palestinian conflict.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_vectorrag",
+  "qid": "WebQTest-1178",
+  "question": "where is tupac from originally",
+  "entity": "Marin City",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Tupac Shakur --music artist origin--> Marin City"
+  ],
+  "supported": true,
+  "reason": "The path states Tupac Shakur\u2019s origin is Marin City, which directly answers where he is originally from.",
+  "was_hit": false
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-1682",
+  "question": "who did ben stiller date",
+  "entity": "Rhea Durham",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Ben Stiller --people person nationality--> United States of America; United States of America --people person nationality--> Rhea Durham",
+   "Ben Stiller --freebase valuenotation is_reviewed--> Parents; Parents --freebase valuenotation has_value--> Rhea Durham",
+   "Ben Stiller --freebase valuenotation is_reviewed--> Siblings; Siblings --freebase valuenotation has_value--> Rhea Durham"
+  ],
+  "supported": false,
+  "reason": "The paths only show indirect or unrelated connections, not that Ben Stiller dated Rhea Durham.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTrn-3673_b0f2d7005d48b548c7022ad46eccfd31",
+  "question": "In what timezone is the governmental jurisdiction that held the legislative session of the Colorado recall election in 2013?",
+  "entity": "Mountain Time Zone",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Colorado recall election, 2013 --government legislative_session members--> [event]; [event] --government political_district representatives--> Pueblo; Pueblo --location location time_zones--> Mountain Time Zone",
+   "Colorado recall election, 2013 --government government_position_held legislative_sessions--> [event]; [event] --government political_district representatives--> Pueblo; Pueblo --location location time_zones--> Mountain Time Zone",
+   "Colorado recall election, 2013 --government legislative_session members--> [event]; [event] --government government_position_held district_represented--> Pueblo; Pueblo --location location time_zones--> Mountain Time Zone"
+  ],
+  "supported": false,
+  "reason": "The paths only show that Pueblo is in the Mountain Time Zone, not that the governmental jurisdiction holding the legislative session is in that timezone.",
+  "was_hit": true
+ },
+ {
+  "run": "test_cwq_agr",
+  "qid": "WebQTest-743_4d2f11c63fa0611b0e29bc00f41bf7a9",
+  "question": "Who are the brothers of the author who wrote \"Profiles in Courage\"?",
+  "entity": "Joseph P. Kennedy, Jr.",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Male --people person gender--> Joseph P. Kennedy, Jr.",
+   "Profiles in courage --book book_edition author_editor--> John F. Kennedy; John F. Kennedy --people person nationality--> United States of America; United States of America --people person nationality--> Joseph P. Kennedy, Jr.",
+   "Profiles in courage --book author book_editions_published--> John F. Kennedy; John F. Kennedy --people person nationality--> United States of America; United States of America --people person nationality--> Joseph P. Kennedy, Jr."
+  ],
+  "supported": false,
+  "reason": "The paths do not show that Joseph P. Kennedy, Jr. is a brother of John F. Kennedy; they only connect him indirectly through nationality.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_agr",
+  "qid": "WebQTest-978",
+  "question": "what book did benjamin franklin published",
+  "entity": "United States Declaration of Independence",
+  "structural": true,
+  "n_paths": 1,
+  "paths": [
+   "Benjamin Franklin --book written_work author--> United States Declaration of Independence"
+  ],
+  "supported": false,
+  "reason": "The Declaration of Independence is not a book Benjamin Franklin published.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_graphrag",
+  "qid": "WebQTest-784",
+  "question": "where do the seattle seahawks play",
+  "entity": "Seattle Seahawks",
+  "structural": true,
+  "n_paths": 0,
+  "paths": [],
+  "supported": false,
+  "reason": "The asserted entity is the team itself, not the place where it plays.",
+  "was_hit": false
+ },
+ {
+  "run": "test_cwq_noretrieval",
+  "qid": "WebQTest-537_560ee86f4cb9196c8d757880602e8433",
+  "question": "What film with character named Ricky has Charlie Hunnam been in?",
+  "entity": "Green Street",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "Charlie Hunnam --people person nationality--> United Kingdom; United Kingdom --film film country--> Green Street",
+   "Charlie Hunnam --film actor film--> [event]; [event] --film performance film--> Green Street",
+   "Charlie Hunnam --film performance actor--> [event]; [event] --film performance film--> Green Street"
+  ],
+  "supported": true,
+  "reason": "The paths show Charlie Hunnam acted in Green Street, which is the film featuring the character Ricky.",
+  "was_hit": true
+ },
+ {
+  "run": "test_webqsp_noretrieval",
+  "qid": "WebQTest-342",
+  "question": "what countries have english as their official language",
+  "entity": "Ireland",
+  "structural": true,
+  "n_paths": 3,
+  "paths": [
+   "English Language --tv tv_program languages--> Trinity; Trinity --book written_work subjects--> Ireland",
+   "English Language --film film language--> Leprechaun; Leprechaun --base folklore mythical_creature area_of_occurrence--> Ireland",
+   "English Language --film film language--> Leprechaun; Leprechaun --base folklore mythical_creature_location mythical_creature_s--> Ireland"
+  ],
+  "supported": false,
+  "reason": "The paths only connect English Language to works about Ireland, not to Ireland having English as an official language.",
+  "was_hit": true
+ }
+]

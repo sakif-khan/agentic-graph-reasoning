@@ -1,0 +1,11 @@
+run                             semantically-supported
+test_webqsp_noretrieval         38/60 = 63.3%
+test_cwq_noretrieval            22/60 = 36.7%
+test_webqsp_vectorrag           37/60 = 61.7%
+test_cwq_vectorrag              30/60 = 50.0%
+test_webqsp_graphrag            33/60 = 55.0%
+test_cwq_graphrag               22/60 = 36.7%
+test_webqsp_tog                 37/60 = 61.7%
+test_cwq_tog                    26/60 = 43.3%
+test_webqsp_agr                 40/60 = 66.7%
+test_cwq_agr                    29/60 = 48.3%
