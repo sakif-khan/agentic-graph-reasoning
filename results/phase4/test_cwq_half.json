@@ -1,0 +1,3243 @@
+[
+ {
+  "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
+  "dataset": "cwq",
+  "question": "Of the 7 countries in Central America, which has an ISO smaller than 188?",
+  "gold_q_entities": [
+   "Central America",
+   "Country"
+  ],
+  "answers": [
+   "Belize"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-484_db24dc739b7b00cdab7cf3d825975aed",
+  "dataset": "cwq",
+  "question": "What language did L. L. Zamenhof invent that Australia uses?",
+  "gold_q_entities": [
+   "Australia",
+   "L. L. Zamenhof"
+  ],
+  "answers": [
+   "Esperanto Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d",
+  "dataset": "cwq",
+  "question": "What countries are in the Atlantic Time Zone in the Caribbean?",
+  "gold_q_entities": [
+   "Atlantic Time Zone",
+   "Caribbean",
+   "Country"
+  ],
+  "answers": [
+   "British Virgin Islands",
+   "Netherlands Antilles"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1513_5422fa602469c38418171ad342583759",
+  "dataset": "cwq",
+  "question": "What is there to do in downtown Sacramento, where there is an organization headquarters, located in the city of Sacramento County?",
+  "gold_q_entities": [
+   "Sacramento",
+   "Sacramento County"
+  ],
+  "answers": [
+   "California State Capitol Museum"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-25_4d68c1f4906c41ef2f0ea4e416e2615b",
+  "dataset": "cwq",
+  "question": "Jack Giarraputo produced what movie that stars Taylor Lautner?",
+  "gold_q_entities": [
+   "Taylor Lautner",
+   "Jack Giarraputo"
+  ],
+  "answers": [
+   "Grown Ups 2"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2779_14a5adac3764601c1967451c79cbdb79",
+  "dataset": "cwq",
+  "question": "What was the occupation of Pam Huckaby and the real life Erin Brockovich?",
+  "gold_q_entities": [
+   "Erin Brockovich",
+   "Pam Huckaby"
+  ],
+  "answers": [
+   "Consultant"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1560_9b121a33fc0ee97ee3a3c43ee4e02a78",
+  "dataset": "cwq",
+  "question": "Which politician was out of office before 1801-03-03 and also remembered for founding New York University?",
+  "gold_q_entities": [
+   "New York University"
+  ],
+  "answers": [
+   "Albert Gallatin"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1260_018dc0c070e53555fa37f63d4b83ca87",
+  "dataset": "cwq",
+  "question": "In what year did mascot Poe's team win the Super Bowl?",
+  "gold_q_entities": [
+   "Super bowl",
+   "Poe"
+  ],
+  "answers": [
+   "Super Bowl XXXV"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1797_194b220adab0abb76bdf49354cfdf3ff",
+  "dataset": "cwq",
+  "question": "Who held the position through 1870-11-22 and fought in the Battle of Vicksburg?",
+  "gold_q_entities": [
+   "Siege of Vicksburg"
+  ],
+  "answers": [
+   "Ulysses S. Grant"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3400_675e2a842506fdbbcf3ccdec8f51cee3",
+  "dataset": "cwq",
+  "question": "In the TV show that is known for the family guy theme song, who plays the character Stewis Griffin?",
+  "gold_q_entities": [
+   "Stewie Griffin",
+   "Family Guy Theme Song"
+  ],
+  "answers": [
+   "Seth MacFarlane"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1405_b5513034c35cc49fda740f1a0ae5b7b9",
+  "dataset": "cwq",
+  "question": "Did US President Kennedy and fictional character Sam Seaborn attend the same real university?",
+  "gold_q_entities": [
+   "Sam Seaborn",
+   "John F. Kennedy"
+  ],
+  "answers": [
+   "Princeton University"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1000_1d3a86f839023bb35d439f56a673dbe6",
+  "dataset": "cwq",
+  "question": "In Oceania, what country has the smallest GDP deflator change of rate?",
+  "gold_q_entities": [
+   "Oceania"
+  ],
+  "answers": [
+   "New Caledonia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1677_22c4d321fc60b69e1d966c77d4107a74",
+  "dataset": "cwq",
+  "question": "What movie starring Adam Sandler was filmed in New York City?",
+  "gold_q_entities": [
+   "Adam Sandler",
+   "New York City"
+  ],
+  "answers": [
+   "You Don't Mess with the Zohan"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1812_04dbed66ba17d35bf79f72e04bbcc776",
+  "dataset": "cwq",
+  "question": "What country in the Caribbean appointed Elizabeth II to a governmental position?",
+  "gold_q_entities": [
+   "Caribbean",
+   "Elizabeth II",
+   "Country"
+  ],
+  "answers": [
+   "British Virgin Islands"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-568_9fa2b7684e5de3793c6eb46ac7025b64",
+  "dataset": "cwq",
+  "question": "What county is the neighborhood of Stonehaven located in?",
+  "gold_q_entities": [
+   "Stonehaven"
+  ],
+  "answers": [
+   "Mecklenburg County"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1012_73741811f34519b29f7d19ccfd4d9553",
+  "dataset": "cwq",
+  "question": "What structure opened in 1922 in Hollywood, CA?",
+  "gold_q_entities": [
+   "Hollywood"
+  ],
+  "answers": [
+   "Grauman's Egyptian Theatre"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-983_5117d407df6e21d30cd4893bcab84281",
+  "dataset": "cwq",
+  "question": "What university that has fewer than 26,965 undergraduates did Tennessee WIlliams attend?",
+  "gold_q_entities": [
+   "College/University",
+   "Tennessee Williams"
+  ],
+  "answers": [
+   "University of Missouri",
+   "Washington University in St. Louis",
+   "The New School",
+   "University of Iowa"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-576_99c43635b648023af901dc341b3bab6e",
+  "dataset": "cwq",
+  "question": "In which of the seven countries making up Central America are there fewer than 1100 people in the country's army?",
+  "gold_q_entities": [
+   "Central America",
+   "Country"
+  ],
+  "answers": [
+   "Belize"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1677_93664d8718c70b3379fbb31bf4743598",
+  "dataset": "cwq",
+  "question": "Which movie starring Adam Sandler featured the song Hallo Hallo?",
+  "gold_q_entities": [
+   "Adam Sandler",
+   "Hallo Hallo"
+  ],
+  "answers": [
+   "You Don't Mess with the Zohan"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1812_688d69d484eeaffda36f06fbba9fe9fb",
+  "dataset": "cwq",
+  "question": "What country in the Caribbean has the smallest population?",
+  "gold_q_entities": [
+   "Caribbean",
+   "Country"
+  ],
+  "answers": [
+   "Anguilla"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1557_25aa66737549ccec679a88f7ec71c350",
+  "dataset": "cwq",
+  "question": "What college did Charles Drew attend that has McGill Redman soccer team?",
+  "gold_q_entities": [
+   "Charles R. Drew",
+   "McGill Redmen soccer",
+   "College/University"
+  ],
+  "answers": [
+   "McGill University"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2784_e35bbe9c7fc2677853b0df65b7b656f6",
+  "dataset": "cwq",
+  "question": "What drama movies did Tupac play in?",
+  "gold_q_entities": [
+   "Drama",
+   "Tupac Shakur"
+  ],
+  "answers": [
+   "Poetic Justice",
+   "Gridlock'd",
+   "Above the Rim",
+   "Juice",
+   "Gang Related",
+   "Bullet"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 6,
+  "n_gold_reachable": 6
+ },
+ {
+  "qid": "WebQTrn-513_5a15eae658cc54d81698d2e5e68e82c0",
+  "dataset": "cwq",
+  "question": "What country with the calling code 373 is in Eastern Europe?",
+  "gold_q_entities": [
+   "Eastern Europe",
+   "Country"
+  ],
+  "answers": [
+   "Moldova"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1180_67f5f717564163742ca2588b7e186fd8",
+  "dataset": "cwq",
+  "question": "The city of Wellsville can be found where in the United States?",
+  "gold_q_entities": [
+   "Wellsville",
+   "United States of America"
+  ],
+  "answers": [
+   "Missouri"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2540_1af583970c492fc3682ae363bbfca3d3",
+  "dataset": "cwq",
+  "question": "Who was influenced by Eugene Delacroix and inspired Monet?",
+  "gold_q_entities": [
+   "Eugène Delacroix",
+   "Claude Monet"
+  ],
+  "answers": [
+   "Camille Pissarro",
+   "Pierre-Auguste Renoir"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-2209_beb5507aba5b006b3b2e0598989448c8",
+  "dataset": "cwq",
+  "question": "In which NBA championship did the Celtics win in a sweep of 4 games to 0.?",
+  "gold_q_entities": [
+   "Boston Celtics"
+  ],
+  "answers": [
+   "1959 NBA Finals"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-837_c4e06c3a9e4b4f10bd1ae97f1742c198",
+  "dataset": "cwq",
+  "question": "In what year did a team win the superbowl and the 2013 AFC Championship Game ?",
+  "gold_q_entities": [
+   "Super Bowl",
+   "2013 AFC Championship Game"
+  ],
+  "answers": [
+   "Super Bowl XLVII",
+   "Super Bowl XXXV"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-423_135747a75bf43cdc1e0a1cb41f49965e",
+  "dataset": "cwq",
+  "question": "What is there to do in Laughlin, NV that has a venue capacity of 800?",
+  "gold_q_entities": [
+   "Laughlin"
+  ],
+  "answers": [
+   "Riverside Resort Hotel & Casino"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1012_131eaad9f6b360a7166467b5784470d4",
+  "dataset": "cwq",
+  "question": "Which building in Hollywood, CA was opened on May 18, 1927, and can be visited this weekend?",
+  "gold_q_entities": [
+   "Hollywood"
+  ],
+  "answers": [
+   "TCL Chinese Theatre"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-743_e8f21e0f0c4375d30317d26f9b95cd91",
+  "dataset": "cwq",
+  "question": "Which of JFK's brothers was Attorney General?",
+  "gold_q_entities": [
+   "John F. Kennedy",
+   "Male",
+   "Attorney general"
+  ],
+  "answers": [
+   "Robert F. Kennedy"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-837_8c90d5499a627a3478313407b1404ecf",
+  "dataset": "cwq",
+  "question": "Which Superbowl was won by the 2001 AFC champions?",
+  "gold_q_entities": [
+   "Super Bowl",
+   "2001 AFC Championship Game"
+  ],
+  "answers": [
+   "Super Bowl XXXV"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-60_085ced56c2b8a859253d1cd5749c9a28",
+  "dataset": "cwq",
+  "question": "What Portuguese speaking country that uses Central African CFQ Franc?",
+  "gold_q_entities": [
+   "Central African CFA franc",
+   "Portuguese Language"
+  ],
+  "answers": [
+   "Equatorial Guinea"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2152_92fba37c9723caee68665ad9a5e4a468",
+  "dataset": "cwq",
+  "question": "Which of team owners Tom Hicks sports team are in the American League West?",
+  "gold_q_entities": [
+   "American League West",
+   "Tom Hicks"
+  ],
+  "answers": [
+   "Texas Rangers"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2069_14d783de97238bd1ef6eb28fe7221306",
+  "dataset": "cwq",
+  "question": "Which language is spoken in Chile, its main speaking country is Peru?",
+  "gold_q_entities": [
+   "Chile",
+   "Peru"
+  ],
+  "answers": [
+   "Puquina Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1180_d234333cfe0037241bacdcbbc5a74317",
+  "dataset": "cwq",
+  "question": "What County with Wellsville Missouri as downtown has 0.003572302 as its total Industrial CO2 emissions rate?",
+  "gold_q_entities": [
+   "Wellsville"
+  ],
+  "answers": [
+   "Montgomery County"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-60_6b8ef173b0fe9eb52a18df50991df028",
+  "dataset": "cwq",
+  "question": "In which three countries do people speak Portuguese, that has an ISO numeric of greater than 132?",
+  "gold_q_entities": [
+   "Portuguese Language"
+  ],
+  "answers": [
+   "Portugal",
+   "Macau",
+   "Equatorial Guinea",
+   "South Africa",
+   "China",
+   "Mozambique",
+   "Guinea-Bissau",
+   "Guyana",
+   "Timor-Leste"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 9,
+  "n_gold_reachable": 9
+ },
+ {
+  "qid": "WebQTest-61_5b52c9e057d0f0e6704f0b264e864dfc",
+  "dataset": "cwq",
+  "question": "What Indonesia religion includes a place of worship named Church?",
+  "gold_q_entities": [
+   "Indonesia",
+   "Church"
+  ],
+  "answers": [
+   "Catholicism"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2152_3cdf60c15a8355981dd92e3c57ac2eed",
+  "dataset": "cwq",
+  "question": "What team that has a mascot named Mariner Moose is in the American League West?",
+  "gold_q_entities": [
+   "American League West",
+   "Mariner Moose"
+  ],
+  "answers": [
+   "Seattle Mariners"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2540_5e56c7691b80c044d23d2f29efc3d94f",
+  "dataset": "cwq",
+  "question": "Who inspired Monet and influenced Paul Verlaine?",
+  "gold_q_entities": [
+   "Paul Verlaine",
+   "Claude Monet"
+  ],
+  "answers": [
+   "Stéphane Mallarmé"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3515_d1a0c35fff4a3a4dec452ce9b7793244",
+  "dataset": "cwq",
+  "question": "Paul Ryan is owner of radio station WAMU and which college did he attend?",
+  "gold_q_entities": [
+   "WAMU",
+   "Paul Ryan",
+   "College/University"
+  ],
+  "answers": [
+   "American University"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1232_cb253aaf69993423e0691aca1ad6cafa",
+  "dataset": "cwq",
+  "question": "Where did the fictional character Sofia Sartor live that was also the center of the Roman Empire?",
+  "gold_q_entities": [
+   "Roman Empire",
+   "Sofia Sartor"
+  ],
+  "answers": [
+   "Constantinople"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-241_7a1f9047f5100e2853d54d69c6793f2d",
+  "dataset": "cwq",
+  "question": "What countries border the government jurisdiction held by the French Minister of the Economy, Finance and Industry?",
+  "gold_q_entities": [
+   "Country",
+   "French Minister of the Economy, Finance and Industry"
+  ],
+  "answers": [
+   "Belgium",
+   "Germany",
+   "Italy",
+   "Luxembourg",
+   "Monaco",
+   "Spain",
+   "Switzerland",
+   "United Kingdom",
+   "Andorra"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 9,
+  "n_gold_reachable": 9
+ },
+ {
+  "qid": "WebQTest-1797_dece4ddacc57788e31bf70edc99f1f37",
+  "dataset": "cwq",
+  "question": "What Government position holder fought in the battle of Vicksburg?",
+  "gold_q_entities": [
+   "Siege of Vicksburg"
+  ],
+  "answers": [
+   "Ulysses S. Grant"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-894_dc126021d39290ceeecabd0361b65c4b",
+  "dataset": "cwq",
+  "question": "Which person inspired Scott Fitzgerald and died on 1821-02-23?",
+  "gold_q_entities": [
+   "F. Scott Fitzgerald"
+  ],
+  "answers": [
+   "John Keats"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1000_6099ea03f4fd2476605c4a513318d29c",
+  "dataset": "cwq",
+  "question": "Which nation is located in Oceania and made the appointment of Liberal Government of New Zealand to a governmental position?",
+  "gold_q_entities": [
+   "Liberal Government of New Zealand",
+   "Oceania"
+  ],
+  "answers": [
+   "New Zealand",
+   "New Zealand",
+   "New Zealand",
+   "New Zealand",
+   "New Zealand"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2871_4c5dc1332d9eba8fde58e7b9561d4ae3",
+  "dataset": "cwq",
+  "question": "Which state has the position title of Mayor is near the Grand Canyon?",
+  "gold_q_entities": [
+   "Mayor",
+   "Grand Canyon"
+  ],
+  "answers": [
+   "Phoenix",
+   "Phoenix"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-849_eba7931ddf28af4dfa20fb099196c91f",
+  "dataset": "cwq",
+  "question": "What country bordering Germany that involved in the Gulf War?",
+  "gold_q_entities": [
+   "Germany",
+   "Country",
+   "Gulf War"
+  ],
+  "answers": [
+   "France"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-537_4439b7c167b6ccf30c53b610934c4521",
+  "dataset": "cwq",
+  "question": "What \"coming of age\" genre movies have actor charlie humman been in?",
+  "gold_q_entities": [
+   "Coming of age",
+   "Charlie Hunnam"
+  ],
+  "answers": [
+   "Nicholas Nickleby",
+   "Whatever Happened to Harold Smith?"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-849_f0ffa14797f7486fb0510a740e1cc8d6",
+  "dataset": "cwq",
+  "question": "Of the countries that border Germany, which country has an iso alpha 3 of CHE?",
+  "gold_q_entities": [
+   "Germany",
+   "Country"
+  ],
+  "answers": [
+   "Switzerland"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3527_1661062ba428b2ec2a00e2f84257682f",
+  "dataset": "cwq",
+  "question": "Which language spoken by the ancient Romans is used on the album \"Tanto Tempo?\"?",
+  "gold_q_entities": [
+   "Roman Empire",
+   "Tanto Tempo"
+  ],
+  "answers": [
+   "Latin Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1603_6f7bafc08148c28d022ab04b0e6a4aaf",
+  "dataset": "cwq",
+  "question": "What text is on the yellow river map and also the sacred text of Daoism?",
+  "gold_q_entities": [
+   "Taoism",
+   "Yellow River Map"
+  ],
+  "answers": [
+   "I Ching"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1251_cf6cc4cc9ed790243a390f155ae72256",
+  "dataset": "cwq",
+  "question": "Which country speaks Germanic languages has the nominal GDP of 279500000000.0?",
+  "gold_q_entities": [
+   "German Language"
+  ],
+  "answers": [
+   "Austria"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1001_6bcfac70e63efec42212159c644a593a",
+  "dataset": "cwq",
+  "question": "In what events ending prior to 3 February 2008 did the Giants win the Super Bowl?",
+  "gold_q_entities": [
+   "Super bowl",
+   "New York Giants"
+  ],
+  "answers": [
+   "Super Bowl XXV",
+   "Super Bowl XXI"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1251_cbf2f20f6caf754bc49d672ca7b150b7",
+  "dataset": "cwq",
+  "question": "What country speaks Germanic languages and uses the East German mark as currency?",
+  "gold_q_entities": [
+   "East German mark",
+   "German Language"
+  ],
+  "answers": [
+   "East Germany"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1547_9a301711fdf36a2e2d6fdd7b21d65d3c",
+  "dataset": "cwq",
+  "question": "What is the title of the book written by the United States Secretary of the Air Force?",
+  "gold_q_entities": [
+   "United States Secretary of the Air Force",
+   "Book"
+  ],
+  "answers": [
+   "In My Time: A Personal and Political Memoir"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-712_4e9134eaaafee4fd4023d41d4770f5eb",
+  "dataset": "cwq",
+  "question": "What country with territories in Oceania has Chamorro as spoken language?",
+  "gold_q_entities": [
+   "Chamorro Language",
+   "Country",
+   "Oceania"
+  ],
+  "answers": [
+   "Guam"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1001_33d9f1ae3911d4f69a9993902924107d",
+  "dataset": "cwq",
+  "question": "Which Super Bowl did the Giants win against the Denver Broncos?",
+  "gold_q_entities": [
+   "Super bowl",
+   "Denver Broncos",
+   "New York Giants"
+  ],
+  "answers": [
+   "Super Bowl XXI"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1646_9dd9cd027e4fb356ec7f48576c94b9a8",
+  "dataset": "cwq",
+  "question": "What language is spoken in the Dominican Republic?",
+  "gold_q_entities": [
+   "Sesame Street",
+   "Dominican Republic"
+  ],
+  "answers": [
+   "Spanish Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-517_e7d8b401e84db19b4965bb23aa43871d",
+  "dataset": "cwq",
+  "question": "Which conlang type \"Engineered language\" is spoken in Canada?",
+  "gold_q_entities": [
+   "Canada",
+   "Engineered language"
+  ],
+  "answers": [
+   "Lojban"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2569_acebb33e831a74414284fba7938e01c8",
+  "dataset": "cwq",
+  "question": "What venue has a capacity of more than 16285 and is where the Houston Rockets play?",
+  "gold_q_entities": [
+   "Houston Rockets"
+  ],
+  "answers": [
+   "Toyota Center"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-60_eae3033643523fd3a54b6c147fdfa728",
+  "dataset": "cwq",
+  "question": "What Portuguese=speaking country had the net migration number of -10000?",
+  "gold_q_entities": [
+   "Portuguese Language"
+  ],
+  "answers": [
+   "Guinea-Bissau"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-567_94ad90ab85ded4cd5d0680cdd5c121aa",
+  "dataset": "cwq",
+  "question": "What award nominated movie starring Ron Howard that was based on the book by Sylvia Nasar?",
+  "gold_q_entities": [
+   "Ron Howard"
+  ],
+  "answers": [
+   "A Beautiful Mind"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1470_888604e15ae965565efd2aa1eb615bab",
+  "dataset": "cwq",
+  "question": "What government system does Poland use that Nelson Mandela has talked about?",
+  "gold_q_entities": [
+   "Poland",
+   "Nelson Mandela"
+  ],
+  "answers": [
+   "Democracy"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3744_6dcb413fa7f7fe52b9345f95bda76752",
+  "dataset": "cwq",
+  "question": "What college in Raleigh did Russell Wilson attend?",
+  "gold_q_entities": [
+   "Raleigh",
+   "Russell Wilson",
+   "College/University"
+  ],
+  "answers": [
+   "North Carolina State University"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3515_76ac752ffcee1b2759600cbec55107c7",
+  "dataset": "cwq",
+  "question": "Which college attended by Paul Ryan was founded after 1809?",
+  "gold_q_entities": [
+   "Paul Ryan",
+   "College/University"
+  ],
+  "answers": [
+   "American University"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-60_7abf3620549d6d7aaf194ce37a34bbd8",
+  "dataset": "cwq",
+  "question": "In which Portuguese speaking country was Carlos Tavares born?",
+  "gold_q_entities": [
+   "g.11b41d96h",
+   "Portuguese Language"
+  ],
+  "answers": [
+   "Portugal"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-743_2b39afadc21f0a2a4602121616db1f8c",
+  "dataset": "cwq",
+  "question": "Which of JFK's brothers held governmental position from before January 3, 1965?",
+  "gold_q_entities": [
+   "John F. Kennedy",
+   "Male"
+  ],
+  "answers": [
+   "Ted Kennedy",
+   "Robert F. Kennedy"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1797_345a0887c7012fd7647ad0c6f9783e67",
+  "dataset": "cwq",
+  "question": "Which of the combattants in the Battle of Vicksburg died as a result of esophageal cancer?",
+  "gold_q_entities": [
+   "Esophageal cancer",
+   "Siege of Vicksburg"
+  ],
+  "answers": [
+   "Ulysses S. Grant"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-55_54e856d3c44e0ac4a33f0f0ebb7a67d6",
+  "dataset": "cwq",
+  "question": "Who had a concert named Crazy Love Tour?",
+  "gold_q_entities": [
+   "Crazy Love Tour"
+  ],
+  "answers": [
+   "Actor",
+   "Singer",
+   "Songwriter"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTrn-2818_db09fc9949516c3b8e34002f5507514d",
+  "dataset": "cwq",
+  "question": "Where does the river that flows through Volgograd start?",
+  "gold_q_entities": [
+   "Volgograd"
+  ],
+  "answers": [
+   "Valdai Hills"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-213_05bdda30187b7cfb104ec6e7d5ecec6a",
+  "dataset": "cwq",
+  "question": "What \"Captain Glenn\" actor did Scarlett Johansson date?",
+  "gold_q_entities": [
+   "Scarlett Johansson",
+   "Captain Glenn"
+  ],
+  "answers": [
+   "Patrick Wilson"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-567_8e46718c3fc1361ff1c02b62a853b402",
+  "dataset": "cwq",
+  "question": "What Ron Howard movies that were produced by Universal Studio?",
+  "gold_q_entities": [
+   "Ron Howard",
+   "Universal Studios"
+  ],
+  "answers": [
+   "More American Graffiti",
+   "A Beautiful Mind",
+   "Dr. Seuss' How the Grinch Stole Christmas"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTrn-567_693feb48c0515cd069014e7ca2846b37",
+  "dataset": "cwq",
+  "question": "What movie with the character Teklel Hafouli did Ron Howard do?",
+  "gold_q_entities": [
+   "Ron Howard",
+   "Teklel Hafouli"
+  ],
+  "answers": [
+   "The Journey"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1297_a0da13a7b70a064b8cffb58007f6739d",
+  "dataset": "cwq",
+  "question": "Where did the artist grow up that recorded #Thatpower?",
+  "gold_q_entities": [
+   "#Thatpower"
+  ],
+  "answers": [
+   "London"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-484_0bd50f38d8c9b7904b5a1187a904cd73",
+  "dataset": "cwq",
+  "question": "What is the name of currency in the place where Fila Brasileiro originated?",
+  "gold_q_entities": [
+   "Fila Brasileiro"
+  ],
+  "answers": [
+   "Brazilian real"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2615_48a6ac5681b2e67e07d84708115db614",
+  "dataset": "cwq",
+  "question": "What instruments does the author of Fela! play?",
+  "gold_q_entities": [
+   "Fela!"
+  ],
+  "answers": [
+   "Drums",
+   "Guitar",
+   "Keyboard",
+   "Saxophone",
+   "Trumpet"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTest-1797_202ded8e5df1c80ea9770154e24e5ffb",
+  "dataset": "cwq",
+  "question": "Who held Secretary of State after the Battle of Vicksburg?",
+  "gold_q_entities": [
+   "Secretary of State",
+   "Siege of Vicksburg"
+  ],
+  "answers": [
+   "Ulysses S. Grant"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-213_7debc6a8247700de6db4ac7b0f4cc0e1",
+  "dataset": "cwq",
+  "question": "Scarlett Johansson dated a famous person who been popular since 2000, who was he?",
+  "gold_q_entities": [
+   "Scarlett Johansson"
+  ],
+  "answers": [
+   "Justin Timberlake"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-538_485b6c9f1bd7bd7972f3dd4fcc11b1e9",
+  "dataset": "cwq",
+  "question": "What film was Taylor Swift in that Shelby Young was a crew member on?",
+  "gold_q_entities": [
+   "Shelby Young",
+   "Taylor Swift"
+  ],
+  "answers": [
+   "Jonas Brothers: The Concert Experience"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3084_62ea63f7954eccb68d685d3695c0b84d",
+  "dataset": "cwq",
+  "question": "What country that imports from Japan and uses Australian dollar?",
+  "gold_q_entities": [
+   "Japan",
+   "Australian dollar"
+  ],
+  "answers": [
+   "Kiribati",
+   "Tuvalu"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27",
+  "dataset": "cwq",
+  "question": "What was the actor's name that played the character Digital Underground Member in \"Juice\"?",
+  "gold_q_entities": [
+   "Juice",
+   "Digital Underground member"
+  ],
+  "answers": [
+   "Bishop"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1923_44adab808bc1863fab0f07e6556afd67",
+  "dataset": "cwq",
+  "question": "What movie written by Pamela Eells did Miley Cyrus play in?",
+  "gold_q_entities": [
+   "Pamela Eells",
+   "Miley Cyrus"
+  ],
+  "answers": [
+   "Wizards on Deck with Hannah Montana"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1646_5abd17edee676db9f12bbbe84edfb575",
+  "dataset": "cwq",
+  "question": "What other languages are spoken in the country where SamanÃ¡ English is spoken?",
+  "gold_q_entities": [
+   "Samaná English"
+  ],
+  "answers": [
+   "Haitian Creole",
+   "Samaná English",
+   "Spanish Language"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 3,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-303_770773a5150d1cdd3cfadfc25022720b",
+  "dataset": "cwq",
+  "question": "Who inspired the person who wrote the lyrics for \"Street Scene: Act I. No. 6b Quartet\" to write poetry?",
+  "gold_q_entities": [
+   "Street Scene: Act I. No. 6b Quartet"
+  ],
+  "answers": [
+   "Walt Whitman"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-538_65e7de970f6844e8520d7785799ec19e",
+  "dataset": "cwq",
+  "question": "Which movies featured Taylor swift and music by John Debney?",
+  "gold_q_entities": [
+   "Taylor Swift",
+   "John Debney"
+  ],
+  "answers": [
+   "Hannah Montana: The Movie",
+   "Valentine's Day"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-106_8a7ae3422867fd4b2d40b06930915468",
+  "dataset": "cwq",
+  "question": "Who did Armie Hammer play in The Social Network?",
+  "gold_q_entities": [
+   "Armie Hammer",
+   "The Social Network"
+  ],
+  "answers": [
+   "Tyler Winklevoss",
+   "Cameron Winklevoss"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1923_a64ef0f5ce397a5e1ef6fcd550ebfcfb",
+  "dataset": "cwq",
+  "question": "What movies has Miley Cyrus been in with music by Aaron Zigman?",
+  "gold_q_entities": [
+   "Miley Cyrus",
+   "Aaron Zigman"
+  ],
+  "answers": [
+   "Sex and the City 2",
+   "The Last Song"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-2570_99dba9274e8d6c826fdb25827fe613b3",
+  "dataset": "cwq",
+  "question": "Which Presidents of the United States were used as subjects of the book Sherlock Holmes and the Voice of Terror?",
+  "gold_q_entities": [
+   "President of the United States",
+   "Sherlock Holmes and the Voice of Terror"
+  ],
+  "answers": [
+   "Franklin D. Roosevelt",
+   "Harry S. Truman"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-62_b2f9ab8521bc316c4c97cfbba4229932",
+  "dataset": "cwq",
+  "question": "What are the names of the kids nominated for an Artist Award for \"Donald's Crime\"?",
+  "gold_q_entities": [
+   "Donalds Crime"
+  ],
+  "answers": [
+   "Diane Disney Miller",
+   "Sharon Mae Disney"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-1023_2ed287b0ef57067bd3a79f71c2fa849e",
+  "dataset": "cwq",
+  "question": "The country with the National Anthem Argentine National Anthem use what currency?",
+  "gold_q_entities": [
+   "Argentine National Anthem"
+  ],
+  "answers": [
+   "Argentine peso"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-64_08a3071aec88af141fc20ed22cfff0e2",
+  "dataset": "cwq",
+  "question": "What did the person who lived in Marin City once do?",
+  "gold_q_entities": [
+   "Juice",
+   "Marin City"
+  ],
+  "answers": [
+   "Bishop"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1171_a8ed8aa8e8eaf11e4b00b81b2ac2ac23",
+  "dataset": "cwq",
+  "question": "What actor was featured in Mike and Dave Need Wedding Dates and didthe voice of Darth Vader?",
+  "gold_q_entities": [
+   "Voice",
+   "g.11b6v7j7y9",
+   "Darth Vader"
+  ],
+  "answers": [
+   "Zac Efron"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1577_ffdfe9623c3c4aa623a95045b61c29e9",
+  "dataset": "cwq",
+  "question": "What university attended by James Baldwin has more than 6735 undergraduates enrolled?",
+  "gold_q_entities": [
+   "James Baldwin"
+  ],
+  "answers": [
+   "The New School"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-538_fc5392eefef107aa88084b05ddd2e246",
+  "dataset": "cwq",
+  "question": "Which film debuted at the 2012 9Âº Syfy Festival and featured Taylor Swift?",
+  "gold_q_entities": [
+   "Taylor Swift",
+   "2012 9º Syfy Festival"
+  ],
+  "answers": [
+   "The Lorax"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-124_609120802c32c3608fc379700186f76c",
+  "dataset": "cwq",
+  "question": "What is the most recent movie directed by Angelina Jolie?",
+  "gold_q_entities": [
+   "Angelina Jolie"
+  ],
+  "answers": [
+   "Blue Ivy"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-21_beeb032ce88fb3abfb8bf8bd2b657e62",
+  "dataset": "cwq",
+  "question": "What prime minister presides over the nation with the House of Peoples' Representatives?",
+  "gold_q_entities": [
+   "House of Peoples' Representatives",
+   "Prime minister"
+  ],
+  "answers": [
+   "Hailemariam Desalegn"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1405_ced20d844a472e7fafced76fae0a1c7c",
+  "dataset": "cwq",
+  "question": "What school, with a founding date in 1636, did President Kennedy attend?",
+  "gold_q_entities": [
+   "John F. Kennedy"
+  ],
+  "answers": [
+   "Harvard College"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3249_0b9c49912f43238136954d463b417194",
+  "dataset": "cwq",
+  "question": "Which program featuring Tamera Mowry has the largest \"tvrage_id?\"?",
+  "gold_q_entities": [
+   "Tamera Mowry"
+  ],
+  "answers": [
+   "Roommates"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-452_f8c717f06ff656fba2fabfb354030958",
+  "dataset": "cwq",
+  "question": "What is the name of the place that was home to the 2005 Animation Block Party and the home of Lala Anthony?",
+  "gold_q_entities": [
+   "Carmelo Anthony",
+   "2005 Animation Block Party"
+  ],
+  "answers": [
+   "Brooklyn"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-125_003c6a046c47526d922683f22cf0e983",
+  "dataset": "cwq",
+  "question": "The subject of the film King: A Filmed Record... Montgomery to Memphis was shot at what location?",
+  "gold_q_entities": [
+   "King: A Filmed Record... Montgomery to Memphis"
+  ],
+  "answers": [
+   "Memphis"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-25_db9695c22f0f88f0733e1286c7fffe30",
+  "dataset": "cwq",
+  "question": "Which Taylor Lautner movie has a tvrage_id of 20997?",
+  "gold_q_entities": [
+   "Taylor Lautner"
+  ],
+  "answers": [
+   "The Nick and Jessica Variety Hour"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-105_8b3815ec57389b13892dd5abb108cc4e",
+  "dataset": "cwq",
+  "question": "What is the currency for the Genes Elba 2013 country?",
+  "gold_q_entities": [
+   "Gebel Elba"
+  ],
+  "answers": [
+   "Egyptian pound"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1002_806620bbf6ca7cf3ced5d4ff130c714d",
+  "dataset": "cwq",
+  "question": "Which actor portrayed both Dumbledore and Badger?",
+  "gold_q_entities": [
+   "Professor Albus Dumbledore",
+   "Badger"
+  ],
+  "answers": [
+   "Michael Gambon"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-25_62939f05e216712e4700e993437a980a",
+  "dataset": "cwq",
+  "question": "What was the latest film that Taylor Lautner played in?",
+  "gold_q_entities": [
+   "Taylor Lautner"
+  ],
+  "answers": [
+   "Grown Ups 2"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1797_5a1c66f408118c6342c4a0eb350b58de",
+  "dataset": "cwq",
+  "question": "Who was president during the battle of Vicksburg?",
+  "gold_q_entities": [
+   "President",
+   "Siege of Vicksburg"
+  ],
+  "answers": [
+   "Ulysses S. Grant"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3249_4fddfec17159cdf7caa87c1e3e1f34cd",
+  "dataset": "cwq",
+  "question": "Which show does Tamera Mowry act on, where the TV program \"thetvdb_id\", is greater than 75171?",
+  "gold_q_entities": [
+   "Tamera Mowry"
+  ],
+  "answers": [
+   "Strong Medicine",
+   "Roommates"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1785_2fd3a482f02db22067954809fe7b222b",
+  "dataset": "cwq",
+  "question": "What Kim Richards films have film netflix_id numbers lower than 70037542?",
+  "gold_q_entities": [
+   "Kim Richards"
+  ],
+  "answers": [
+   "No Deposit, No Return",
+   "Escape to Witch Mountain",
+   "Tuff Turf",
+   "Raid on Entebbe",
+   "Return from Witch Mountain"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTrn-2570_6f059734e774504c68f628670516e72c",
+  "dataset": "cwq",
+  "question": "Which WW2-era USA president once said \"I would rather have peace in the world than be President.\"?",
+  "gold_q_entities": [
+   "President of the United States",
+   "I would rather have peace in the world than be President.",
+   "World War II"
+  ],
+  "answers": [
+   "Harvard College"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1069_1eb6f5acf20855a1a2ef0d5b38673175",
+  "dataset": "cwq",
+  "question": "What language is used in the place where the Danish Sport Pony breed comes from?",
+  "gold_q_entities": [
+   "Danish Sport Pony"
+  ],
+  "answers": [
+   "Greenlandic language",
+   "Danish Language",
+   "Faroese",
+   "German Language"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTrn-2784_025fdfafd914ff922ab8144f527c06ec",
+  "dataset": "cwq",
+  "question": "In what films does the lyracist for \"Panther Power\" appear?",
+  "gold_q_entities": [
+   "Panther Power"
+  ],
+  "answers": [
+   "Murder Was the Case",
+   "Poetic Justice",
+   "Gridlock'd",
+   "Above the Rim",
+   "Juice",
+   "Nothing but Trouble",
+   "Gang Related",
+   "Bullet"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 8,
+  "n_gold_reachable": 8
+ },
+ {
+  "qid": "WebQTrn-484_dd6bb253556f96cc801f1b16e60ae1cf",
+  "dataset": "cwq",
+  "question": "What kind of money is used in the place where you'd find the second level division AraporÃ£?",
+  "gold_q_entities": [
+   "Araporã"
+  ],
+  "answers": [
+   "Brazilian real"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1348_3f44e0c4fd23a8334a972ebb812e0e35",
+  "dataset": "cwq",
+  "question": "What Minneapolis sports team had Peyton Manning's father on their roster?",
+  "gold_q_entities": [
+   "Peyton Manning",
+   "Male",
+   "Minneapolis"
+  ],
+  "answers": [
+   "Minnesota Vikings"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1923_29c81279ed9a982e12f82e764083db76",
+  "dataset": "cwq",
+  "question": "What television series did Miley Cyrus been in with 0 season?",
+  "gold_q_entities": [
+   "Miley Cyrus"
+  ],
+  "answers": [
+   "Wizards on Deck with Hannah Montana"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1785_98806527b045c387792db297c407c023",
+  "dataset": "cwq",
+  "question": "Which film starring Kim Richards has the largest Netflix ID?",
+  "gold_q_entities": [
+   "Kim Richards"
+  ],
+  "answers": [
+   "Race to Witch Mountain"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3084_ca8d129cc42cf94b681a91fb5ed94522",
+  "dataset": "cwq",
+  "question": "What country does Japan export to that contains the Phoenix Islands?",
+  "gold_q_entities": [
+   "Japan",
+   "Phoenix Islands"
+  ],
+  "answers": [
+   "Kiribati"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1597_8adc06ba12a3254370bdb3ff8e8820af",
+  "dataset": "cwq",
+  "question": "Which character voiced by Seth MacFarlane was born in Thundera?",
+  "gold_q_entities": [
+   "Seth MacFarlane",
+   "Voice",
+   "Thundera"
+  ],
+  "answers": [
+   "Lion-O"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2748_4a22e87b9e3af2f4de74d5017c09de12",
+  "dataset": "cwq",
+  "question": "In the city where the Royal Thai government gazette is circulated, what languages are spoken?",
+  "gold_q_entities": [
+   "Royal Thai Government Gazette"
+  ],
+  "answers": [
+   "Lao Language",
+   "Khmer language",
+   "Akha Language",
+   "Mlabri Language",
+   "Hmong language",
+   "Saek language",
+   "Malay, Pattani Language",
+   "Vietnamese Language",
+   "Nyaw Language",
+   "Phu Thai language",
+   "Cham language",
+   "Mon Language",
+   "Thai Language"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 13,
+  "n_gold_reachable": 13
+ },
+ {
+  "qid": "WebQTrn-567_b63fe0fde281c871990cc523c2df1e9b",
+  "dataset": "cwq",
+  "question": "Which of Ron Howard's movies has a netflix_id higher than 60002655?",
+  "gold_q_entities": [
+   "Ron Howard"
+  ],
+  "answers": [
+   "Cannes: All Access",
+   "Under the Boardwalk: The Monopoly Story",
+   "American Graffiti",
+   "The Spikes Gang",
+   "Osmosis Jones",
+   "Bitter Harvest",
+   "A Beautiful Mind",
+   "The Shootist",
+   "I'm a Fool",
+   "Five Minutes to Live",
+   "The Courtship of Eddie's Father",
+   "The Independent",
+   "More American Graffiti",
+   "Village of the Giants"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 14,
+  "n_gold_reachable": 14
+ },
+ {
+  "qid": "WebQTest-1817_1bbd9ffd7b604510a3d6751b9f8ef796",
+  "dataset": "cwq",
+  "question": "Which university with 9327 postgraduates did J.R.R. Tolkien attend?",
+  "gold_q_entities": [
+   "J. R. R. Tolkien"
+  ],
+  "answers": [
+   "University of Oxford"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3141_9521cdd0a498eb745a7f49c67f6a999f",
+  "dataset": "cwq",
+  "question": "What is the birthplace of the actor who portrayed the character Allison Lang?",
+  "gold_q_entities": [
+   "Allison Lang"
+  ],
+  "answers": [
+   "Brooklyn"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1770_6325ee890e333f0d4fe222c15a95906f",
+  "dataset": "cwq",
+  "question": "What is the name of the daughter of the actor that played the character Etta James?",
+  "gold_q_entities": [
+   "Etta James"
+  ],
+  "answers": [
+   "Blue Ivy"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2023_139d69ce55d2d9feed41587eb4aa1b54",
+  "dataset": "cwq",
+  "question": "Where was the actor who played the character 'Untouchable J' raised?",
+  "gold_q_entities": [
+   "Untouchable J"
+  ],
+  "answers": [
+   "Brooklyn"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-567_724a3b769671b1ea52a76af3a90687f4",
+  "dataset": "cwq",
+  "question": "What movie was decorated by Antonio Mateos and made by Ron Howard?",
+  "gold_q_entities": [
+   "Ron Howard",
+   "Antonio Mateos"
+  ],
+  "answers": [
+   "The Spikes Gang"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3084_ec0835b1ad2d181fa3b4195d539d862a",
+  "dataset": "cwq",
+  "question": "What  country imports from Japan and has currency called Fiji?",
+  "gold_q_entities": [
+   "Japan",
+   "Fiji"
+  ],
+  "answers": [
+   "Tuvalu"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1405_b98a27e21e904173168eb7517b123e51",
+  "dataset": "cwq",
+  "question": "Where did President Kennedy go to school that has less than 2416 postgraduates?",
+  "gold_q_entities": [
+   "John F. Kennedy"
+  ],
+  "answers": [
+   "Stanford Graduate School of Business"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-759_33c0a2138ef3f4a4f61dbee8dc9714e5",
+  "dataset": "cwq",
+  "question": "Who has Brad Pitt dated in the past, and was into Buddhism?",
+  "gold_q_entities": [
+   "Buddhism",
+   "Brad Pitt",
+   "Dated"
+  ],
+  "answers": [
+   "Thandie Newton"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-537_e5da8cda32fb1aa37028f9f7f7b1d3a8",
+  "dataset": "cwq",
+  "question": "Which film was nominated for an award with the description, \"Outstanding Director - Motion Picture\", and Charlie Hunnam was in?",
+  "gold_q_entities": [
+   "Charlie Hunnam"
+  ],
+  "answers": [
+   "Children of Men"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-450_b68e8f1a3f19f80d7dfc10bf3796b71e",
+  "dataset": "cwq",
+  "question": "What is the official flower of the place with an official symbol of Nene?",
+  "gold_q_entities": [
+   "State flower",
+   "Nene"
+  ],
+  "answers": [
+   "Hawaiian hibiscus"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3543_b5eabb006685da5755fdf968500b7cd4",
+  "dataset": "cwq",
+  "question": "What nation to which Japan exports has a standing army of 104000 people?",
+  "gold_q_entities": [
+   "Japan"
+  ],
+  "answers": [
+   "Sudan"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1686_554811ebe1463287ee640a214683ea57",
+  "dataset": "cwq",
+  "question": "Who held his governmental position from before Janaury 6, 2003 and was the 2009 Governor of Arizona?",
+  "gold_q_entities": [
+   "Governor",
+   "Arizona"
+  ],
+  "answers": [
+   "Janet Napolitano"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-945_121437233d5ec5331edb2a957e079759",
+  "dataset": "cwq",
+  "question": "What time zone is in the location that Upper Mississippi River is located in?",
+  "gold_q_entities": [
+   "Upper Mississippi River"
+  ],
+  "answers": [
+   "Central Time Zone"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1785_bd2684abe96767b0564cea78024983f2",
+  "dataset": "cwq",
+  "question": "What movie who was cast by Sarah Finn was Kim Richards in?",
+  "gold_q_entities": [
+   "Sarah Finn",
+   "Kim Richards"
+  ],
+  "answers": [
+   "Race to Witch Mountain"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1528_505f2eda6be64caf7b48a166de833564",
+  "dataset": "cwq",
+  "question": "What movie about ancient Greek culture features Logan Lerman?",
+  "gold_q_entities": [
+   "Ancient Greek",
+   "Logan Lerman"
+  ],
+  "answers": [
+   "Percy Jackson & the Olympians: The Lightning Thief"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-25_23b0132339644b875bf6a966c5b0c131",
+  "dataset": "cwq",
+  "question": "Which Taylor Lautner movie has a sequel titled \"The Twilight Saga: Breaking Dawn - Part 1\"?",
+  "gold_q_entities": [
+   "The Twilight Saga: Breaking Dawn - Part 1",
+   "Taylor Lautner"
+  ],
+  "answers": [
+   "Eclipse"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-43_a29af73bf225f568206dcf810358236f",
+  "dataset": "cwq",
+  "question": "What occupations were held by the person who stated \"Everything I know I learned after I was thirty?\"?",
+  "gold_q_entities": [
+   "Everything I know I learned after I was thirty."
+  ],
+  "answers": [
+   "Statesman",
+   "Publisher",
+   "Physician",
+   "Writer",
+   "Journalist"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTrn-710_c1d5c9c777c291a80c29c70ec43c45ad",
+  "dataset": "cwq",
+  "question": "Find the sports team that calls AT&T Park, when was the last time they won a world series?",
+  "gold_q_entities": [
+   "AT&T Park"
+  ],
+  "answers": [
+   "2014 World Series"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2570_ac52c51debd358141a23acc7ae7ec938",
+  "dataset": "cwq",
+  "question": "Which WW2 US President had a political appointer that was White House Chief of Staff?",
+  "gold_q_entities": [
+   "President of the United States",
+   "White House Chief of Staff",
+   "World War II"
+  ],
+  "answers": [
+   "Harry S. Truman"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-538_5f5da3e1d4ca7df9f19ce3fdfc5790e2",
+  "dataset": "cwq",
+  "question": "Which film featuring Taylor Swift includes organization toonsplainers?",
+  "gold_q_entities": [
+   "Taylor Swift",
+   "toonexplainers"
+  ],
+  "answers": [
+   "The Lorax"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3084_d7a8cbddd43733cfb78c3d41af704745",
+  "dataset": "cwq",
+  "question": "Which country who trades with Japan has a country calling code of 249?",
+  "gold_q_entities": [
+   "Japan"
+  ],
+  "answers": [
+   "Sudan"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1394_75a63b2d78bab35a97e07d53149a29e0",
+  "dataset": "cwq",
+  "question": "What country with whom Turkey trades has an ISO numeric lower than 012?",
+  "gold_q_entities": [
+   "Turkey"
+  ],
+  "answers": [
+   "Albania"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-25_403eec031cd613bfe527504362411ca0",
+  "dataset": "cwq",
+  "question": "What movies was Gene Serdena the decorator on which Taylor Lautner starred in?",
+  "gold_q_entities": [
+   "Taylor Lautner",
+   "Gene Serdena"
+  ],
+  "answers": [
+   "Twilight"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-25_3a7068fa96cd9e08dc2b1dabe458c85d",
+  "dataset": "cwq",
+  "question": "What movie did Taylor Lautner  play in that the running time for the tv program is 22 minutes?",
+  "gold_q_entities": [
+   "Taylor Lautner"
+  ],
+  "answers": [
+   "He's a Bully, Charlie Brown"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1686_80cf1e206617287917f0af7538f69ab8",
+  "dataset": "cwq",
+  "question": "Who was the governor of Arizona in 2009 who had also held the Secretary of state government position?",
+  "gold_q_entities": [
+   "Governor",
+   "Secretary of state",
+   "Arizona"
+  ],
+  "answers": [
+   "Jan Brewer"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2570_d63877a40200d18c7c4e39215a3c7019",
+  "dataset": "cwq",
+  "question": "This 33rd president was the nation's leader during WW2.?",
+  "gold_q_entities": [
+   "President of the United States",
+   "World War II"
+  ],
+  "answers": [
+   "Harry S. Truman"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1665_5b2c4b0d5faeffa7e6ed3767a4a57c89",
+  "dataset": "cwq",
+  "question": "What location is the home of Jason Statham?",
+  "gold_q_entities": [
+   "Jason Statham"
+  ],
+  "answers": [
+   "Sydenham"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-750_bb35e9b8023fbf9c05df55b4245a4775",
+  "dataset": "cwq",
+  "question": "In which years have the baseball club that claimed victory in the 1988 World Series won the World Series?",
+  "gold_q_entities": [
+   "1988 World Series"
+  ],
+  "answers": [
+   "1981 World Series",
+   "1988 World Series",
+   "1965 World Series",
+   "1963 World Series",
+   "1959 World Series"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 5,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-1736_125140bfa1a60527bde6e40dce7fe54a",
+  "dataset": "cwq",
+  "question": "Where's the location where the Slavic language is spoken located?",
+  "gold_q_entities": [
+   "Slavic language"
+  ],
+  "answers": [
+   "Europe"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-654_f4f38507bbec5d30bec54c8c8dd9a72b",
+  "dataset": "cwq",
+  "question": "What is the name of the Currency in the Country of Egypt?",
+  "gold_q_entities": [
+   "Government of Egypt"
+  ],
+  "answers": [
+   "Egyptian pound"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3543_ca8d129cc42cf94b681a91fb5ed94522",
+  "dataset": "cwq",
+  "question": "Phoenix Islands are part of what country Japan exports to?",
+  "gold_q_entities": [
+   "Japan",
+   "Phoenix Islands"
+  ],
+  "answers": [
+   "Kiribati"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1528_3c737d4a4dbf3b5acb082a4a1e43d792",
+  "dataset": "cwq",
+  "question": "What Cameron Pace Group movie was Logan Lerman in?",
+  "gold_q_entities": [
+   "Logan Lerman",
+   "Cameron Pace Group"
+  ],
+  "answers": [
+   "The Three Musketeers"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-61_9be8c18e016b713cbb7f7feb6badebc7",
+  "dataset": "cwq",
+  "question": "What religion with religious text The Bible is practiced in Indonesia?",
+  "gold_q_entities": [
+   "Indonesia",
+   "The Bible"
+  ],
+  "answers": [
+   "Protestantism",
+   "Catholicism"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-497_3b4a316ec5790c8b3b2ec3c6aa23b29d",
+  "dataset": "cwq",
+  "question": "What country had the city which hosted the 1928 Summer Olympics?",
+  "gold_q_entities": [
+   "1928 Summer Olympics"
+  ],
+  "answers": [
+   "Netherlands"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1023_6b6f19d9abc98d7eda3c6da9a66f1176",
+  "dataset": "cwq",
+  "question": "What currency is used in the country that breeds Cordoba Fighting Dog?",
+  "gold_q_entities": [
+   "Cordoba Fighting Dog"
+  ],
+  "answers": [
+   "Argentine peso"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3376_3cfac4b90586c13b7348805674c750e1",
+  "dataset": "cwq",
+  "question": "Which university has 9153 postgraduates and had Kevin Hart as a student?",
+  "gold_q_entities": [
+   "Kevin Hart"
+  ],
+  "answers": [
+   "Temple University"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2664_4001558ccc529debde3a908a6f22b018",
+  "dataset": "cwq",
+  "question": "Who is a main trading partners of China that appointed Abdelaziz Bouterflika to a governmental position?",
+  "gold_q_entities": [
+   "China",
+   "Abdelaziz Bouteflika"
+  ],
+  "answers": [
+   "Algeria",
+   "Algeria",
+   "Algeria"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-237_f43785599ba51bf943f98f8d9bbf102a",
+  "dataset": "cwq",
+  "question": "Who is the man in the position of head coach of the squad that earned victory in the 2011 AFC Championship Game?",
+  "gold_q_entities": [
+   "2011 AFC Championship Game"
+  ],
+  "answers": [
+   "Mike Tomlin"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1560_3dba296e57fcc898668201e992da8b6b",
+  "dataset": "cwq",
+  "question": "Who's the topic of the movie,The Darwin Adventure, married to?",
+  "gold_q_entities": [
+   "Marriage",
+   "The Darwin Adventure"
+  ],
+  "answers": [
+   "Emma Darwin"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-567_2c5591f1dbe7402405004d7a0836dd3b",
+  "dataset": "cwq",
+  "question": "Which animated movies hs Ron Howard done?",
+  "gold_q_entities": [
+   "Ron Howard"
+  ],
+  "answers": [
+   "Osmosis Jones"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1053_4c8649801d197e6eb5377d292c0b6ca8",
+  "dataset": "cwq",
+  "question": "Which actor played the character Henri Ducard in Star Wars?",
+  "gold_q_entities": [
+   "Henri Ducard",
+   "Star Wars Episode I: The Phantom Menace"
+  ],
+  "answers": [
+   "Qui-Gon Jinn"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1923_963f10fbb72072fc718bd8cc3e0ec12d",
+  "dataset": "cwq",
+  "question": "Which Danny Kallis movies have stared Miley Cyrus?",
+  "gold_q_entities": [
+   "Danny Kallis",
+   "Miley Cyrus"
+  ],
+  "answers": [
+   "Wizards on Deck with Hannah Montana"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2292_ea0bc3bb340865025c534c91eca19be9",
+  "dataset": "cwq",
+  "question": "What kind of economy does the country have that breeds Moscow watchdogs?",
+  "gold_q_entities": [
+   "Moscow Watchdog"
+  ],
+  "answers": [
+   "Communist state",
+   "Socialist state",
+   "Soviet democracy",
+   "Parliamentary republic"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTrn-1758_477d7040a0ed5bfecb155b8b3d3082fb",
+  "dataset": "cwq",
+  "question": "What is the current government of the place where \"The Alchemist of Happiness\" takes place?",
+  "gold_q_entities": [
+   "The Alchemist of Happiness"
+  ],
+  "answers": [
+   "Parliamentary system",
+   "Presidential system",
+   "Islamic republic",
+   "Unitary state",
+   "Theocracy"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTrn-452_006b1f1ed800c636a01f3888644cc1eb",
+  "dataset": "cwq",
+  "question": "In which city, does Lala Anthony live, where the TV show Ace of Cakes was filmed?",
+  "gold_q_entities": [
+   "Carmelo Anthony",
+   "Ace of Cakes"
+  ],
+  "answers": [
+   "Baltimore"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2057_989ef8c8e3ea409e00989ea93579d5ff",
+  "dataset": "cwq",
+  "question": "What currency is used by the subject of the film Death in a Cornfied?",
+  "gold_q_entities": [
+   "Death in a Cornfield"
+  ],
+  "answers": [
+   "Guatemalan quetzal"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-303_2ee96aa7464485d80d214b61773f4a5c",
+  "dataset": "cwq",
+  "question": "Who was the literary role model for the \"Not Without Laughter (Thrift Edition)\" piece poet?",
+  "gold_q_entities": [
+   "Not Without Laughter (Thrift Edition)"
+  ],
+  "answers": [
+   "Walt Whitman"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-857_d585a4c2e04a9cd40dd5ec98e2456515",
+  "dataset": "cwq",
+  "question": "Who was vice president when the actor who played in the movie \"Bill Clinton\" His Life\" was in office?",
+  "gold_q_entities": [
+   "Bill Clinton: His Life"
+  ],
+  "answers": [
+   "Al Gore"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-436_f7cfe105d2830ecc77ff720612084de8",
+  "dataset": "cwq",
+  "question": "Who played Dumbledore in the film that contained Daniel Brunet in the crew?",
+  "gold_q_entities": [
+   "Daniel Brunet",
+   "Professor Albus Dumbledore"
+  ],
+  "answers": [
+   "Richard Harris"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3100_d059b24adec4064377b957ca598769be",
+  "dataset": "cwq",
+  "question": "What part is the country with the capital named Santo Domingo?",
+  "gold_q_entities": [
+   "Santo Domingo"
+  ],
+  "answers": [
+   "Greater Antilles",
+   "Latin America",
+   "North America",
+   "Americas",
+   "País"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTest-389_544dcbf5d728f23ac97aa05f025a646a",
+  "dataset": "cwq",
+  "question": "What type of music did the composer of Deux danses pour Harpe, L. 103 do?",
+  "gold_q_entities": [
+   "Deux danses pour Harpe, L. 103"
+  ],
+  "answers": [
+   "Incidental music",
+   "20th-century classical music",
+   "Ballet",
+   "Art song",
+   "Ballet",
+   "Classical music",
+   "French opera"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 6,
+  "n_gold_reachable": 6
+ },
+ {
+  "qid": "WebQTrn-1629_5b23295775632ec566475a1ab8748962",
+  "dataset": "cwq",
+  "question": "Who voices Jack Skellington? Who composed the music in Before I Wake?",
+  "gold_q_entities": [
+   "Voice",
+   "Jack Skellington",
+   "Before I Wake"
+  ],
+  "answers": [
+   "Danny Elfman"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3543_d7db4cdab1589b7c97a81236310a67f7",
+  "dataset": "cwq",
+  "question": "What country to which Japan exports contains a neighborhood called Al Barsha?",
+  "gold_q_entities": [
+   "Japan",
+   "Al Barsha"
+  ],
+  "answers": [
+   "Dubai"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1528_6ecf5c92092ae9080307178a28b8d589",
+  "dataset": "cwq",
+  "question": "What movie was nominated for an award, was based on a book, and featured Logan Lerman as an actor?",
+  "gold_q_entities": [
+   "Logan Lerman"
+  ],
+  "answers": [
+   "The Perks of Being a Wallflower"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1405_32fd6bcd379a666c1b479eb00ba3dfc6",
+  "dataset": "cwq",
+  "question": "What colleges and universities did President Kennedy attend?",
+  "gold_q_entities": [
+   "John F. Kennedy"
+  ],
+  "answers": [
+   "Harvard College",
+   "Stanford Graduate School of Business",
+   "Harvard University",
+   "Princeton University"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTrn-3170_8c4cd2a8dd5064dcd1e88389796138c7",
+  "dataset": "cwq",
+  "question": "What does the political appointee, Associate Director, White House Office of Public Liaison, have a degree in?",
+  "gold_q_entities": [
+   "Associate Director, White House Office of Public Liaison"
+  ],
+  "answers": [
+   "Political Science"
+  ],
+  "hops": 4,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-837_690725e14115ca059d1bcbfb022bbf1f",
+  "dataset": "cwq",
+  "question": "What high school was attended by the actor who played Sister Rosemary?",
+  "gold_q_entities": [
+   "Sister Rosemary"
+  ],
+  "answers": [
+   "Langston University",
+   "Dunbar Vocational High School"
+  ],
+  "hops": 4,
+  "stratum": "h3plus",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-25_2a2de50d3b65cc5d2c88f54e283a4b8a",
+  "dataset": "cwq",
+  "question": "What movie featured Taylor Lautner and was released straight to video?",
+  "gold_q_entities": [
+   "Video",
+   "Taylor Lautner"
+  ],
+  "answers": [
+   "Shadow Fury",
+   "Shadow Fury"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-538_d37989c422fef8a98e7289ca0144159c",
+  "dataset": "cwq",
+  "question": "Which movies has the individual who attended The Wyndcroft School appeared in?",
+  "gold_q_entities": [
+   "The Wyndcroft School"
+  ],
+  "answers": [
+   "Hannah Montana: The Movie",
+   "Valentine's Day",
+   "The Lorax",
+   "Jonas Brothers: The Concert Experience",
+   "The Giver"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTrn-1577_68d3456de4f00782e827bacf13846d5e",
+  "dataset": "cwq",
+  "question": "What school was attended by the famous person who quoted \"The future is... black.\"?",
+  "gold_q_entities": [
+   "The future is... black."
+  ],
+  "answers": [
+   "The New School",
+   "DeWitt Clinton High School"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-3057_5a7cd2677ed97e520a124ba9c2da6ad4",
+  "dataset": "cwq",
+  "question": "When prior to October 30, 2014 did the Giants win the world series?",
+  "gold_q_entities": [
+   "San Francisco Giants"
+  ],
+  "answers": [
+   "Songwriter"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1278_d8e43a02200cfdff82052f8cc5395b27",
+  "dataset": "cwq",
+  "question": "Who did the digital underground actor date?",
+  "gold_q_entities": [
+   "Digital Underground member"
+  ],
+  "answers": [
+   "Jada Pinkett Smith",
+   "Salli Richardson",
+   "Kidada Jones"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTrn-64_025fdfafd914ff922ab8144f527c06ec",
+  "dataset": "cwq",
+  "question": "What was the name in \"Juice\" of the lyricist for \"Panther Power\"?",
+  "gold_q_entities": [
+   "Juice",
+   "Panther Power"
+  ],
+  "answers": [
+   "Bishop"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1384_9440ac3bd6d8053ca4d553da408a7cb0",
+  "dataset": "cwq",
+  "question": "What is the main religion of the country where the Old Israeli sheckel is circulated?",
+  "gold_q_entities": [
+   "Old Israeli shekel"
+  ],
+  "answers": [
+   "Judaism"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1484_1fbd766e1b1bf978da23e8646cadf3a1",
+  "dataset": "cwq",
+  "question": "The person who attended the education institution Colegio AlemÃ¡n Alexander von Humboldt did what kind of paintings?",
+  "gold_q_entities": [
+   "Colegio Alemán Alexander von Humboldt"
+  ],
+  "answers": [
+   "Magic realism",
+   "Modern art",
+   "Surrealism"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTrn-1665_4293d22de1b977d7bacb0d5896623115",
+  "dataset": "cwq",
+  "question": "Where does the actor, that was the character Yves Gluant, live at?",
+  "gold_q_entities": [
+   "Yves Gluant"
+  ],
+  "answers": [
+   "Sydenham",
+   "Great Yarmouth"
+  ],
+  "hops": 4,
+  "stratum": "h3plus",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-2006_54c677761ff06a9b6e223ccb4c72a2a6",
+  "dataset": "cwq",
+  "question": "What magazine did the author of The Fall of the House of Usher work for?",
+  "gold_q_entities": [
+   "The fall of the House of Usher"
+  ],
+  "answers": [
+   "Burton's Gentleman's Magazine"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2311_a82b389c06081907ebdd12acd9382ab0",
+  "dataset": "cwq",
+  "question": "What medical condition ended the life of the actor featured as the character Morris Fenderbaum?",
+  "gold_q_entities": [
+   "Morris Fenderbaum"
+  ],
+  "answers": [
+   "Laryngeal cancer",
+   "Complication"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-3123_5968b1cb8e15d4f7819fde8b72714100",
+  "dataset": "cwq",
+  "question": "What college was attended by the actor who played the character C.C. Ryder?",
+  "gold_q_entities": [
+   "C.C. Ryder"
+  ],
+  "answers": [
+   "University of Alabama"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-1077_d9bc2c5e35761bbc475b7900393fcc97",
+  "dataset": "cwq",
+  "question": "Who knows the religions that are practiced in the home of the Qatgani?",
+  "gold_q_entities": [
+   "Qatgani"
+  ],
+  "answers": [
+   "Shia Islam",
+   "Sunni Islam"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-965_e91a95bd503f0704b9cc40c6f2139524",
+  "dataset": "cwq",
+  "question": "\"Laziness may appear attractive but work gives satisfaction,\" was said by a person who went to what school?",
+  "gold_q_entities": [
+   "Laziness may appear attractive but work gives satisfaction."
+  ],
+  "answers": [
+   "Montessori Lyceum Amsterdam",
+   "Jewish Lyceum"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTrn-2319_14ab2260ec77ebd5b3b8f666efc08fc3",
+  "dataset": "cwq",
+  "question": "What language is spoken where the First Vice Prime Minister of Ukraine resides?",
+  "gold_q_entities": [
+   "First Vice Prime Minister of Ukraine"
+  ],
+  "answers": [
+   "Albanian language",
+   "Tatar Language",
+   "Moldovan language",
+   "Romanian Language",
+   "Hungarian language",
+   "Russian Language",
+   "Ukrainian Language"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTrn-2335_7cd339eefa681cdb907de4bdf65f8aae",
+  "dataset": "cwq",
+  "question": "What is the national anthem of the country where the people speak Chechen?",
+  "gold_q_entities": [
+   "Chechen Language"
+  ],
+  "answers": [
+   "National Anthem of Russia"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2754_7b7ab19b5492a3184356f9305cdd3f9f",
+  "dataset": "cwq",
+  "question": "Who stared in the TV program that has the theme song Barney Is a Dinosaur?",
+  "gold_q_entities": [
+   "Barney Is a Dinosaur",
+   "Barney"
+  ],
+  "answers": [
+   "Bob West",
+   "Dean Wendt",
+   "Carey Stinson",
+   "David Joyner"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTrn-124_92133c60417a74da674a0807a5a56eff",
+  "dataset": "cwq",
+  "question": "Which movies were directed by the actor that played Franky Cook?",
+  "gold_q_entities": [
+   "Franky Cook"
+  ],
+  "answers": [
+   "By the Sea",
+   "In the Land of Blood and Honey",
+   "A Place in Time",
+   "Unbroken"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTrn-2006_e258f4c46fa686cf9c12150935e9211f",
+  "dataset": "cwq",
+  "question": "What magazine did the person who said \"To observe attentively is to remember distinctly.\" work for?",
+  "gold_q_entities": [
+   "To observe attentively is to remember distinctly."
+  ],
+  "answers": [
+   "Graham's Magazine",
+   "Broadway Journal",
+   "Burton's Gentleman's Magazine"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-213_71621b15ae9777fca8c1becaa188a3bb",
+  "dataset": "cwq",
+  "question": "Who were the award nominees for the 2003 Boston Society of Film Critics Awards?",
+  "gold_q_entities": [
+   "Boston Society of Film Critics Awards 2003"
+  ],
+  "answers": [
+   "Josh Hartnett"
+  ],
+  "hops": 4,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-3376_0619d288bbed0ca782e60c6f841a6051",
+  "dataset": "cwq",
+  "question": "What colleges did the famous person who went to Castlemont High school go to?",
+  "gold_q_entities": [
+   "Castlemont High School"
+  ],
+  "answers": [
+   "Temple University",
+   "Castlemont High School"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 2,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-634_4f2c0d9eb022ed67ec2cc356d4d5113a",
+  "dataset": "cwq",
+  "question": "What county does the place with San Antonio City Council located in?",
+  "gold_q_entities": [
+   "San Antonio City Council"
+  ],
+  "answers": [
+   "Comal County"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTrn-2100_faefa67fba5946fa87b438a6df0b8e63",
+  "dataset": "cwq",
+  "question": "What city can the headquarters for Curno Brakes be found?",
+  "gold_q_entities": [
+   "Curno"
+  ],
+  "answers": [
+   "Curno"
+  ],
+  "hops": null,
+  "stratum": "unreachable",
+  "n_gold": 1,
+  "n_gold_reachable": 0
+ }
+]

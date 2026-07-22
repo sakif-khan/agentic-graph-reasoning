@@ -1,0 +1,4187 @@
+[
+ {
+  "qid": "WebQTest-1271",
+  "dataset": "webqsp",
+  "question": "when did carolina panthers go to superbowl",
+  "gold_q_entities": [
+   "Carolina Panthers"
+  ],
+  "answers": [
+   "Super Bowl XXXVIII"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-397",
+  "dataset": "webqsp",
+  "question": "what are the school colors for harvard university",
+  "gold_q_entities": [
+   "Harvard University"
+  ],
+  "answers": [
+   "Crimson"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1758",
+  "dataset": "webqsp",
+  "question": "where do they speak afrikaans",
+  "gold_q_entities": [
+   "Afrikaans Language"
+  ],
+  "answers": [
+   "South Africa",
+   "Namibia",
+   "Malawi",
+   "Zambia",
+   "Gazankulu",
+   "Botswana",
+   "Transkei"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTest-567",
+  "dataset": "webqsp",
+  "question": "what is the zip code for nogales az",
+  "gold_q_entities": [
+   "Nogales"
+  ],
+  "answers": [
+   "85621",
+   "85628",
+   "85662"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-1178",
+  "dataset": "webqsp",
+  "question": "where is tupac from originally",
+  "gold_q_entities": [
+   "Tupac Shakur"
+  ],
+  "answers": [
+   "East Harlem"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-480",
+  "dataset": "webqsp",
+  "question": "where does name pennsylvania come from",
+  "gold_q_entities": [
+   "Pennsylvania"
+  ],
+  "answers": [
+   "William Penn"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-658",
+  "dataset": "webqsp",
+  "question": "who wrote the gospel according to john",
+  "gold_q_entities": [
+   "Gospel of John"
+  ],
+  "answers": [
+   "John the Evangelist"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1465",
+  "dataset": "webqsp",
+  "question": "what kind of government is south korea",
+  "gold_q_entities": [
+   "South Korea"
+  ],
+  "answers": [
+   "Unitary state",
+   "Presidential system",
+   "Constitutional republic"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-301",
+  "dataset": "webqsp",
+  "question": "what were amelia earhart 's achievements",
+  "gold_q_entities": [
+   "Amelia Earhart"
+  ],
+  "answers": [
+   "Pilot",
+   "Writer"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-215",
+  "dataset": "webqsp",
+  "question": "where was elvis costello born",
+  "gold_q_entities": [
+   "Elvis Costello"
+  ],
+  "answers": [
+   "Paddington"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-893",
+  "dataset": "webqsp",
+  "question": "what is the zip code for azle texas",
+  "gold_q_entities": [
+   "Azle"
+  ],
+  "answers": [
+   "76098",
+   "76020"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1564",
+  "dataset": "webqsp",
+  "question": "what did bobby darin die of",
+  "gold_q_entities": [
+   "Bobby Darin"
+  ],
+  "answers": [
+   "Surgical complications"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-513",
+  "dataset": "webqsp",
+  "question": "what language do most australians speak",
+  "gold_q_entities": [
+   "Australia"
+  ],
+  "answers": [
+   "Esperanto Language",
+   "Lojban",
+   "English Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-1736",
+  "dataset": "webqsp",
+  "question": "where is holy roman empire located",
+  "gold_q_entities": [
+   "Holy Roman Empire"
+  ],
+  "answers": [
+   "Europe"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1548",
+  "dataset": "webqsp",
+  "question": "where did antoine lavoisier die",
+  "gold_q_entities": [
+   "Antoine Lavoisier"
+  ],
+  "answers": [
+   "Place de la Concorde"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1687",
+  "dataset": "webqsp",
+  "question": "what movies has spike lee made",
+  "gold_q_entities": [
+   "Spike Lee"
+  ],
+  "answers": [
+   "Concert For New York City",
+   "Bamboozled",
+   "Malcolm X",
+   "When the Levees Broke: A Requiem in Four Acts",
+   "Jungle Fever",
+   "HIStory on Film, Volume II",
+   "25th Hour",
+   "She's Gotta Have It",
+   "Freak",
+   "Oldboy",
+   "Summer of Sam",
+   "School Daze",
+   "Saint John of Las Vegas",
+   "Lovers & Haters",
+   "Red Hook Summer",
+   "M.O.N.Y.",
+   "Bad 25",
+   "Girl 6",
+   "Get on the Bus",
+   "4 Little Girls",
+   "A Huey P. Newton Story",
+   "All the Invisible Children",
+   "Mike Tyson: Undisputed Truth",
+   "The Original Kings of Comedy",
+   "Last Hustle in Brooklyn",
+   "Sucker Free City",
+   "The Best Man",
+   "Ten Minutes Older: The Trumpet",
+   "Da Sweet Blood of Jesus",
+   "New Jersey Drive",
+   "Lumière and Company",
+   "Mo' Better Blues",
+   "Jim Brown: All-American",
+   "She Hate Me",
+   "Crooklyn",
+   "Clockers",
+   "Joe's Bed-Stuy Barbershop: We Cut Heads",
+   "Kobe Doin' Work",
+   "And Ya Don't Stop: Hip Hop's Greatest Videos, Vol. 1",
+   "If God Is Willing and da Creek Don't Rise",
+   "Love & Basketball",
+   "Passing Strange",
+   "Do the Right Thing",
+   "Chiraq",
+   "Miracle at St. Anna",
+   "Inside Man",
+   "He Got Game"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 47,
+  "n_gold_reachable": 47
+ },
+ {
+  "qid": "WebQTest-1688",
+  "dataset": "webqsp",
+  "question": "what did bernie mac died of",
+  "gold_q_entities": [
+   "Bernie Mac"
+  ],
+  "answers": [
+   "Sarcoidosis",
+   "Complications from pneumonia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-336",
+  "dataset": "webqsp",
+  "question": "what currency should you take to morocco",
+  "gold_q_entities": [
+   "Morocco"
+  ],
+  "answers": [
+   "Moroccan dirham"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-16",
+  "dataset": "webqsp",
+  "question": "what countries are part of the uk",
+  "gold_q_entities": [
+   "United Kingdom"
+  ],
+  "answers": [
+   "Wales",
+   "Northern Ireland",
+   "Scotland",
+   "England"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-579",
+  "dataset": "webqsp",
+  "question": "where are the new orleans hornets moving to",
+  "gold_q_entities": [
+   "Charlotte Hornets"
+  ],
+  "answers": [
+   "Charlotte"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1768",
+  "dataset": "webqsp",
+  "question": "what are the official languages of argentina",
+  "gold_q_entities": [
+   "Argentina"
+  ],
+  "answers": [
+   "Spanish Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1767",
+  "dataset": "webqsp",
+  "question": "where was martin luther king jr buried",
+  "gold_q_entities": [
+   "Martin Luther King, Jr."
+  ],
+  "answers": [
+   "Martin Luther King, Jr. National Historic Site"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-206",
+  "dataset": "webqsp",
+  "question": "what position does brandon roy play",
+  "gold_q_entities": [
+   "Brandon Roy"
+  ],
+  "answers": [
+   "Small forward",
+   "Shooting guard",
+   "Point guard"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-225",
+  "dataset": "webqsp",
+  "question": "what state is mount st. helens in",
+  "gold_q_entities": [
+   "Mount St. Helens"
+  ],
+  "answers": [
+   "Washington"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1187",
+  "dataset": "webqsp",
+  "question": "where are english speakers distributed",
+  "gold_q_entities": [
+   "English Language"
+  ],
+  "answers": [
+   "Nigeria",
+   "Qatar",
+   "Cayman Islands",
+   "New Zealand",
+   "Bermuda",
+   "Ethiopia",
+   "Guam",
+   "Swaziland",
+   "State of Palestine",
+   "Bonaire",
+   "Vanuatu",
+   "Pakistan",
+   "Saint Kitts and Nevis",
+   "Saint Lucia",
+   "Mandatory Palestine",
+   "Fiji",
+   "Cameroon",
+   "Zambia",
+   "Vatican City",
+   "Bahamas",
+   "Laos",
+   "Canada",
+   "Tokelau",
+   "Israel",
+   "United Kingdom",
+   "Kenya",
+   "Sierra Leone",
+   "Australia",
+   "Dominica",
+   "Ghana",
+   "Indonesia",
+   "Republic of Ireland",
+   "United States of America",
+   "Papua New Guinea",
+   "South Yemen",
+   "Bangladesh",
+   "Saint Vincent and the Grenadines",
+   "Curaçao",
+   "Puerto Rico",
+   "Kiribati",
+   "Guyana",
+   "Transkei",
+   "Uganda",
+   "Grenada",
+   "Montserrat",
+   "Brunei",
+   "Cyprus",
+   "South Africa",
+   "Liberia",
+   "Hong Kong",
+   "Belize",
+   "Kingdom of Great Britain",
+   "Gambia",
+   "England",
+   "Samoa",
+   "Wales",
+   "Territory of Papua and New Guinea",
+   "Territory of New Guinea",
+   "Gibraltar",
+   "India",
+   "China",
+   "Antigua and Barbuda",
+   "Jordan",
+   "Sudan",
+   "Nauru",
+   "Lesotho",
+   "Zimbabwe",
+   "Cook Islands",
+   "Rwanda",
+   "Malaysia",
+   "Singapore",
+   "Sri Lanka",
+   "Marshall Islands",
+   "Timor-Leste",
+   "Japan",
+   "Namibia",
+   "Gazankulu",
+   "Tanzania",
+   "Honduras",
+   "Botswana",
+   "Jersey",
+   "Turks and Caicos Islands",
+   "Tuvalu",
+   "Isle of Man",
+   "Barbados",
+   "Malta",
+   "Philippines"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 87,
+  "n_gold_reachable": 87
+ },
+ {
+  "qid": "WebQTest-233",
+  "dataset": "webqsp",
+  "question": "what to see in phoenix arizona",
+  "gold_q_entities": [
+   "Phoenix"
+  ],
+  "answers": [
+   "Pueblo Grande Ruin",
+   "Arizona Science Center",
+   "Heard Museum",
+   "Mesa Arts Center",
+   "Ro Ho En",
+   "Phoenix Art Museum",
+   "Grand Canyon",
+   "Phoenix Mountain Preserve",
+   "Musical Instrument Museum",
+   "Desert Botanical Garden",
+   "Castle Hot Springs"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 11,
+  "n_gold_reachable": 11
+ },
+ {
+  "qid": "WebQTest-861",
+  "dataset": "webqsp",
+  "question": "who will coach carolina panthers in 2013",
+  "gold_q_entities": [
+   "Carolina Panthers"
+  ],
+  "answers": [
+   "Ron Rivera"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-925",
+  "dataset": "webqsp",
+  "question": "what time zone is greensburg indiana",
+  "gold_q_entities": [
+   "Greensburg"
+  ],
+  "answers": [
+   "Eastern Time Zone"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1292",
+  "dataset": "webqsp",
+  "question": "which barcelona airport is closest to the port",
+  "gold_q_entities": [
+   "Barcelona"
+  ],
+  "answers": [
+   "Barcelona–El Prat Airport"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1387",
+  "dataset": "webqsp",
+  "question": "what time zone is toronto gmt",
+  "gold_q_entities": [
+   "Toronto"
+  ],
+  "answers": [
+   "Eastern Time Zone"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-637",
+  "dataset": "webqsp",
+  "question": "what type of government did soviet union have",
+  "gold_q_entities": [
+   "Soviet Union"
+  ],
+  "answers": [
+   "Soviet democracy",
+   "Parliamentary republic",
+   "Communist state",
+   "Socialist state"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-1668",
+  "dataset": "webqsp",
+  "question": "what did andy irons die from",
+  "gold_q_entities": [
+   "Andy Irons"
+  ],
+  "answers": [
+   "heart attack"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-66",
+  "dataset": "webqsp",
+  "question": "what is the currency of puerto rico called",
+  "gold_q_entities": [
+   "Puerto Rico"
+  ],
+  "answers": [
+   "United States Dollar"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-176",
+  "dataset": "webqsp",
+  "question": "who is emma stone father",
+  "gold_q_entities": [
+   "Emma Stone"
+  ],
+  "answers": [
+   "Jeff Stone"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-153",
+  "dataset": "webqsp",
+  "question": "what are the sights to see in madrid",
+  "gold_q_entities": [
+   "Madrid"
+  ],
+  "answers": [
+   "Madrid Arena",
+   "Festimad",
+   "Parque Warner Madrid",
+   "Plaza de Cibeles",
+   "Puerta del Sol",
+   "Summercase",
+   "Thyssen-Bornemisza Museum",
+   "Madrid Marathon",
+   "Museum of Lázaro Galdiano",
+   "Gran Vía",
+   "Paseo del Prado",
+   "El Escorial",
+   "Temple of Debod",
+   "Palace of la Bolsa de Madrid",
+   "Royal Palace of Madrid",
+   "Plaza Mayor, Madrid",
+   "Museo Nacional Del Prado",
+   "Almudena Cathedral",
+   "La Vaguada",
+   "Museo Nacional Centro de Arte Reina Sofía",
+   "Buen Retiro Park",
+   "Sorolla Museum"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 22,
+  "n_gold_reachable": 22
+ },
+ {
+  "qid": "WebQTest-1061",
+  "dataset": "webqsp",
+  "question": "where does greek language come from",
+  "gold_q_entities": [
+   "Greek Language"
+  ],
+  "answers": [
+   "Attic Group"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-93",
+  "dataset": "webqsp",
+  "question": "what continent does armenia belong to",
+  "gold_q_entities": [
+   "Armenia"
+  ],
+  "answers": [
+   "Europe"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-200",
+  "dataset": "webqsp",
+  "question": "where was the vietnam war location",
+  "gold_q_entities": [
+   "Vietnam War"
+  ],
+  "answers": [
+   "Vietnam",
+   "South Vietnam",
+   "Southeast Asia",
+   "Laos",
+   "North Vietnam",
+   "Cambodia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 6,
+  "n_gold_reachable": 6
+ },
+ {
+  "qid": "WebQTest-1584",
+  "dataset": "webqsp",
+  "question": "what disease did bernie mac die of",
+  "gold_q_entities": [
+   "Bernie Mac"
+  ],
+  "answers": [
+   "Sarcoidosis",
+   "Complications from pneumonia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-698",
+  "dataset": "webqsp",
+  "question": "who is robin roberts father",
+  "gold_q_entities": [
+   "Robin Roberts"
+  ],
+  "answers": [
+   "Lawrence E. Roberts"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1567",
+  "dataset": "webqsp",
+  "question": "what cancer did patrick swayze",
+  "gold_q_entities": [
+   "Patrick Swayze"
+  ],
+  "answers": [
+   "Pancreatic cancer"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1650",
+  "dataset": "webqsp",
+  "question": "what did gloria steinem founded",
+  "gold_q_entities": [
+   "Gloria Steinem"
+  ],
+  "answers": [
+   "National Women's Political Caucus",
+   "Ms. Foundation for Women",
+   "Choice USA",
+   "New York Media, LLC",
+   "Feminist Majority Foundation",
+   "Women's Action Alliance",
+   "Coalition of Labor Union Women"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTest-518",
+  "dataset": "webqsp",
+  "question": "what type of money do they use in costa rica",
+  "gold_q_entities": [
+   "Costa Rica"
+  ],
+  "answers": [
+   "Costa Rican colón"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1929",
+  "dataset": "webqsp",
+  "question": "what do see in paris",
+  "gold_q_entities": [
+   "Paris"
+  ],
+  "answers": [
+   "Jardin du Luxembourg",
+   "Musée de l'Orangerie",
+   "Musée des Arts et Métiers",
+   "Notre Dame de Paris",
+   "Arc de Triomphe",
+   "Verdon Gorge",
+   "Petit Palais",
+   "Panthéon",
+   "Disneyland Paris",
+   "La Maison Rouge",
+   "Disneyland Park",
+   "Galerie nationale du Jeu de Paume",
+   "The Louvre",
+   "Café Volpini",
+   "Eiffel Tower",
+   "Musée du quai Branly",
+   "Île de la Cité",
+   "Place de la Concorde",
+   "Grande Arche",
+   "Folies Bergère",
+   "Gare d'Orsay",
+   "Musée Maillol",
+   "Parc Astérix",
+   "Château de Chambord",
+   "Sacré-Cœur, Paris",
+   "Galerie Claude Bernard",
+   "Bois de Boulogne",
+   "Centre Georges Pompidou",
+   "Les Invalides",
+   "Champs-Élysées",
+   "Musée d'Orsay"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 31,
+  "n_gold_reachable": 31
+ },
+ {
+  "qid": "WebQTest-186",
+  "dataset": "webqsp",
+  "question": "who rules denmark right now",
+  "gold_q_entities": [
+   "Denmark"
+  ],
+  "answers": [
+   "Helle Thorning-Schmidt",
+   "Margrethe II of Denmark",
+   "Margrethe Vestager"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-1057",
+  "dataset": "webqsp",
+  "question": "what concentration camp did anne frank died in",
+  "gold_q_entities": [
+   "Anne Frank"
+  ],
+  "answers": [
+   "Bergen-Belsen concentration camp"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1267",
+  "dataset": "webqsp",
+  "question": "what currency can you use in jamaica",
+  "gold_q_entities": [
+   "Jamaica"
+  ],
+  "answers": [
+   "Jamaican dollar"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1353",
+  "dataset": "webqsp",
+  "question": "what are the four nations of the united kingdom",
+  "gold_q_entities": [
+   "United Kingdom"
+  ],
+  "answers": [
+   "Wales",
+   "Northern Ireland",
+   "Scotland",
+   "England"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-2006",
+  "dataset": "webqsp",
+  "question": "what race is vanessa carlton",
+  "gold_q_entities": [
+   "Vanessa Carlton"
+  ],
+  "answers": [
+   "Scandinavians",
+   "Russian"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1239",
+  "dataset": "webqsp",
+  "question": "what is the zip code for concord",
+  "gold_q_entities": [
+   "Concord"
+  ],
+  "answers": [
+   "94518",
+   "94522",
+   "94524",
+   "94519",
+   "94527",
+   "94529",
+   "94520",
+   "94521"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 8,
+  "n_gold_reachable": 8
+ },
+ {
+  "qid": "WebQTest-469",
+  "dataset": "webqsp",
+  "question": "what currency is used in panama",
+  "gold_q_entities": [
+   "Panama"
+  ],
+  "answers": [
+   "Panamanian balboa",
+   "United States Dollar"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1556",
+  "dataset": "webqsp",
+  "question": "when 's the last time the mets won the world series",
+  "gold_q_entities": [
+   "New York Mets"
+  ],
+  "answers": [
+   "1986 World Series"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-133",
+  "dataset": "webqsp",
+  "question": "where did dolly parton grow up",
+  "gold_q_entities": [
+   "Dolly Parton"
+  ],
+  "answers": [
+   "Sevierville"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1422",
+  "dataset": "webqsp",
+  "question": "what language do they speak in sweden yahoo",
+  "gold_q_entities": [
+   "Sweden"
+  ],
+  "answers": [
+   "Meänkieli",
+   "Swedish Language",
+   "Finnish Language",
+   "Swedish Sign Language",
+   "Yiddish Language",
+   "Romani language",
+   "Turoyo Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTest-1110",
+  "dataset": "webqsp",
+  "question": "where was john jay born",
+  "gold_q_entities": [
+   "John Jay"
+  ],
+  "answers": [
+   "New York City"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1330",
+  "dataset": "webqsp",
+  "question": "what is the most populated state in united states",
+  "gold_q_entities": [
+   "United States of America"
+  ],
+  "answers": [
+   "New York"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-362",
+  "dataset": "webqsp",
+  "question": "when did conflict start in ireland",
+  "gold_q_entities": [
+   "Ireland"
+  ],
+  "answers": [
+   "Irish Confederate Wars",
+   "Battle of Ros-Mhic-Thriúin",
+   "Cromwellian conquest of Ireland",
+   "Battle of the Curragh",
+   "Battle of Belahoe",
+   "Norman invasion of Ireland",
+   "Siege of Smerwick",
+   "Battle of Knockdoe",
+   "Irish Civil War",
+   "Planned French invasion of Britain",
+   "Battle of Glentaisie",
+   "Sack of Dun Gallimhe",
+   "Irish Rebellion of 1641",
+   "Expédition d'Irlande",
+   "Nine Years' War",
+   "Siege of Drogheda",
+   "Battle of Affane",
+   "Battle of Tochar Cruachain-Bri-Ele",
+   "Irish Free State offensive",
+   "Second Desmond Rebellion",
+   "Wars of the Three Kingdoms",
+   "Siege of Wexford",
+   "Williamite War in Ireland",
+   "Irish War of Independence",
+   "Anglo-Spanish War",
+   "Jacobite risings",
+   "Siege of Waterford",
+   "Desmond Rebellions",
+   "Guerrilla phase of the Irish Civil War",
+   "Nine Years' War",
+   "Bruce campaign in Ireland",
+   "Irish Rebellion of 1798"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 31,
+  "n_gold_reachable": 31
+ },
+ {
+  "qid": "WebQTest-8",
+  "dataset": "webqsp",
+  "question": "what else did ben franklin invent",
+  "gold_q_entities": [
+   "Benjamin Franklin"
+  ],
+  "answers": [
+   "Lightning rod",
+   "Glass harmonica",
+   "Bifocals",
+   "Franklin stove"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-788",
+  "dataset": "webqsp",
+  "question": "what is the holy book of the buddhist religion",
+  "gold_q_entities": [
+   "Buddhism"
+  ],
+  "answers": [
+   "Gangōji Garan Engi",
+   "Longchen Nyingthig",
+   "Chinese Buddhist canon",
+   "Nīlakaṇṭha Dhāraṇī",
+   "Mahāvastu",
+   "Pāli Canon",
+   "Dhammapada",
+   "Āgama",
+   "Amitabha Sutra",
+   "Uṣṇīṣa Vijaya Dhāraṇī Sūtra",
+   "Vimalakirti Sutra",
+   "Śrīmālādevī Siṃhanāda Sūtra",
+   "Mahāyāna sūtras",
+   "Tibetan Buddhist canon"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 14,
+  "n_gold_reachable": 14
+ },
+ {
+  "qid": "WebQTest-1130",
+  "dataset": "webqsp",
+  "question": "what is real name of santa claus",
+  "gold_q_entities": [
+   "Santa Claus"
+  ],
+  "answers": [
+   "Saint Nicholas"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-296",
+  "dataset": "webqsp",
+  "question": "what kind of government does libya have today",
+  "gold_q_entities": [
+   "Libya"
+  ],
+  "answers": [
+   "Parliamentary republic",
+   "Provisional government"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1484",
+  "dataset": "webqsp",
+  "question": "what prompted shakespeare to write poetry",
+  "gold_q_entities": [
+   "William Shakespeare"
+  ],
+  "answers": [
+   "Terence",
+   "Thomas Kyd",
+   "Thomas More",
+   "Michel de Montaigne",
+   "Seneca the Younger",
+   "Lucian",
+   "Plautus",
+   "Plutarch",
+   "Christopher Marlowe",
+   "Geoffrey Chaucer",
+   "Edmund Spenser",
+   "John Pory",
+   "Ovid",
+   "Virgil"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 14,
+  "n_gold_reachable": 14
+ },
+ {
+  "qid": "WebQTest-542",
+  "dataset": "webqsp",
+  "question": "where did alex chilton die",
+  "gold_q_entities": [
+   "Alex Chilton"
+  ],
+  "answers": [
+   "New Orleans"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1189",
+  "dataset": "webqsp",
+  "question": "what is the capital of italy today",
+  "gold_q_entities": [
+   "Italy"
+  ],
+  "answers": [
+   "Rome"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-194",
+  "dataset": "webqsp",
+  "question": "where did the iroquois indians come from",
+  "gold_q_entities": [
+   "Iroquois"
+  ],
+  "answers": [
+   "Québec",
+   "Ontario"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1972",
+  "dataset": "webqsp",
+  "question": "where did john franklin live",
+  "gold_q_entities": [
+   "John Franklin"
+  ],
+  "answers": [
+   "Blue Island"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1611",
+  "dataset": "webqsp",
+  "question": "what is armenian currency",
+  "gold_q_entities": [
+   "Armenia"
+  ],
+  "answers": [
+   "Armenian dram"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1242",
+  "dataset": "webqsp",
+  "question": "what are all the names of the harry potter books",
+  "gold_q_entities": [
+   "Harry Potter"
+  ],
+  "answers": [
+   "Harry Potter and the Chamber of Secrets",
+   "Harry Potter and the Philosopher's Stone",
+   "Harry Potter and the Deathly Hallows",
+   "Harry Potter and the Order of the Phoenix",
+   "Harry Potter and the Half-Blood Prince",
+   "Harry Potter and the Goblet of Fire",
+   "Harry Potter and the Prisoner of Azkaban"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTest-254",
+  "dataset": "webqsp",
+  "question": "what countries in the world speak chinese",
+  "gold_q_entities": [
+   "Chinese language"
+  ],
+  "answers": [
+   "Vietnam",
+   "Shěn",
+   "Canada",
+   "Malaysia",
+   "Singapore",
+   "Brunei",
+   "China"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTest-1077",
+  "dataset": "webqsp",
+  "question": "what language do the russian speak",
+  "gold_q_entities": [
+   "Russia"
+  ],
+  "answers": [
+   "Erzya Language",
+   "Chechen Language",
+   "Aghul language",
+   "Yiddish Language",
+   "Abaza Language",
+   "Ingush Language",
+   "Karachay-Balkar Language",
+   "Buryat language",
+   "Adyghe Language",
+   "Osetin Language",
+   "Mari language",
+   "Russian Language",
+   "Rutul language",
+   "Azerbaijani language",
+   "Kalmyk-Oirat Language",
+   "Khakas Language",
+   "Tatar Language",
+   "Tabassaran Language",
+   "Altai language",
+   "Kumyk Language",
+   "Udmurt Language",
+   "Dargwa Language",
+   "Crimean Turkish Language",
+   "Nogai Language",
+   "Komi language",
+   "Moksha Language",
+   "Bashkir Language",
+   "Tsakhur Language",
+   "Kabardian Language",
+   "Ukrainian Language",
+   "Lezgi Language",
+   "Yakut Language",
+   "Tuvin Language",
+   "Avar Language",
+   "Lak Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 35,
+  "n_gold_reachable": 35
+ },
+ {
+  "qid": "WebQTest-1968",
+  "dataset": "webqsp",
+  "question": "what was the cause of death for laci peterson",
+  "gold_q_entities": [
+   "Laci Peterson"
+  ],
+  "answers": [
+   "Murder"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-873",
+  "dataset": "webqsp",
+  "question": "where does toronto get its water from",
+  "gold_q_entities": [
+   "Toronto"
+  ],
+  "answers": [
+   "Ashbridges Bay Wastewater Treatment Plant"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1847",
+  "dataset": "webqsp",
+  "question": "where does kurdish people live",
+  "gold_q_entities": [
+   "Kurds"
+  ],
+  "answers": [
+   "Asia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1115",
+  "dataset": "webqsp",
+  "question": "what is lawton ok zip code",
+  "gold_q_entities": [
+   "Lawton"
+  ],
+  "answers": [
+   "73507",
+   "73502",
+   "73506",
+   "73501",
+   "73505"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTest-1259",
+  "dataset": "webqsp",
+  "question": "what books did ernest hemingway write",
+  "gold_q_entities": [
+   "Ernest Hemingway"
+  ],
+  "answers": [
+   "Ernest Hemingway, selected letters, 1917-1961",
+   "Dateline: Toronto",
+   "Green Hills of Africa (Scribner Classic)",
+   "The Old Man and the Sea (Old Man & the Sea Tr)",
+   "Green Hills of Africa (Vintage Classics)",
+   "Conversations with Ernest Hemingway",
+   "Wings always over Africa",
+   "Men Without Women",
+   "E.H, apprenti reporter",
+   "Men without women",
+   "Winner take nothing",
+   "Islands in the Stream",
+   "The garden of Eden",
+   "a.d. in Africa",
+   "Across the river and into the trees",
+   "Across the River and into the Trees (Arrow Classic)",
+   "For Whom the Bell Tolls",
+   "The Garden of Eden",
+   "In Another Country",
+   "A Farewell to Arms (Vintage Classics)",
+   "The sun also rises",
+   "For Whom the Bell Tolls",
+   "The soul of Spain with Mc. Almon and Bird the publishers",
+   "For Whom the Bell Tolls",
+   "Winner Take Nothing",
+   "Green Hills of Africa",
+   "For whom the bell tolls",
+   "The old man and the sea",
+   "The enduring Hemingway",
+   "Three novels: The sun also rises; A farewell to arms; The old man and the sea",
+   "The Old Man and the Sea",
+   "The denunciation",
+   "A moveable feast",
+   "True at First Light",
+   "A Moveable Feast",
+   "Sobranie sochineniĭ v chetyrekh tomakh",
+   "A Farewell to Arms",
+   "Major Works of Ernest Hemingway",
+   "The Letters of Ernest Hemingway: Volume 1, 1907-1922",
+   "Death in the Afternoon",
+   "The faithful bull",
+   "Under Kilimanjaro",
+   "The only thing that counts",
+   "Storie della guerra de Spagna",
+   "Green hills of Africa",
+   "Across the River and Into the Trees",
+   "The Sun Also Rises",
+   "For Whom the Bell Tolls",
+   "Sailfish off Mombasa",
+   "The Complete Short Stories of Ernest Hemingway: The Finca Vigía Edition",
+   "The Old Man and the Sea (Old Man & the Sea Illus Gift Ed C)",
+   "Nieves del Kilimanjaro, Las",
+   "g.11b6s8f7gb",
+   "The good lion",
+   "Old Man and the Sea (Special Student)",
+   "Die Stories",
+   "Klokkene ringer for deg",
+   "The Sun Also Rises",
+   "In Our Time",
+   "Neues vom Festland. Stories",
+   "For Whom the Bell Tolls",
+   "Ernest Hemingway in high school",
+   "For whom the bell tolls",
+   "Across the River and Into the Trees",
+   "Up in Michigan",
+   "A Moveable Feast",
+   "Farewell to Arms (A Scribner Classic)",
+   "Fable",
+   "The short stories of Ernest Hemingway",
+   "Vier Stories aus dem spanischen Bürgerkrieg",
+   "The sun also rises.",
+   "Death in the afternoon.",
+   "Men without women",
+   "To Have and Have Not",
+   "For whom the bell tolls",
+   "Old Man and the Sea",
+   "Green hills of Africa.",
+   "Bi xatirê sı̂lehan",
+   "The Torrents of Spring",
+   "The Old Man and the Sea",
+   "Death in the afternoon",
+   "To have and have not",
+   "Death in the afternoon",
+   "For Whom the Bell Tolls",
+   "The old man and the sea",
+   "For whom the bell tolls",
+   "Shootism versus sport",
+   "A Day's Wait",
+   "A Moveable Feast",
+   "Conversations with Ernest Hemingway",
+   "The old man and the sea",
+   "Sun Also Rises",
+   "In our time",
+   "Ernest Hemingway: The Collected Stories",
+   "In Our Time (In Our Time Hre)",
+   "The circus",
+   "The Butterfly and the Tank...fiction",
+   "At have og ikke have",
+   "Men without women",
+   "The Complete Short Stories of Ernest Hemingway: The Finca Vigía Edition",
+   "The Sun Also Rises",
+   "Green Hills of Africa (Scribner Classic)",
+   "A folyo n at, a fa k koze",
+   "A Farewell to Arms",
+   "Lao ren yu hai",
+   "Complete Poems",
+   "Men without women",
+   "For whom the bell tolls",
+   "Hemingway on hunting",
+   "The Old Man and the Sea",
+   "The Snows of Kilimanjaro",
+   "The Old Man and the Sea (York Notes)",
+   "Sun Also Rises (Sun Also Rises Tr)",
+   "A Farewell to Arms",
+   "A divine gesture",
+   "Death in the afternoon",
+   "The Dangerous Summer",
+   "Death in the Afternoon",
+   "Hemingway and the mechanism of fame",
+   "The Old Man And The Sea",
+   "Hemingway",
+   "La quinta columna",
+   "Fifth Column and Four Stories of the Spanish Civil War (Fifth Column & 4 Stories Hre)",
+   "Ernest Hemingway: The Collected Stories",
+   "Old Man and the Sea (New Windmill)",
+   "For whom the bell tolls",
+   "The Old Man and the Sea (A Scribner Classic)",
+   "Death in the afternoon",
+   "The torrents of spring",
+   "Across the River and Into the Trees",
+   "The Old Man And The Sea",
+   "The Undefeated",
+   "Three stories",
+   "To have and have not",
+   "For whom the bell tolls",
+   "The Sun Also Rises",
+   "Men Without Women",
+   "The Old Man and the Sea",
+   "To Have and Have Not",
+   "Oeuvres Romanesques Vol. 1",
+   "The fifth column, and four stories of the Spanish Civil War.",
+   "The Snows of Kilimanjaro",
+   "Der alte Mann und das Meer, und andere Meisterwerke",
+   "The old man and the sea =",
+   "The Old Man and The Sea (Annual Review of the Institute for Information Studies)",
+   "Million dollar fright",
+   "Winner Take Nothing (Scribner Classic)",
+   "L'Etrange contrée",
+   "A Moveable Feast",
+   "Across the River and into the Trees",
+   "To have and have not",
+   "For Whom the Bell Tolls (Audio Library Classics)",
+   "For Whom the Bell Tolls (Vintage Classics)",
+   "The sun also rises",
+   "Las Nieves del Kilimanjaro",
+   "Hemingway on Hunting (On)",
+   "Un corresponsal llamado Hemingway",
+   "Ernest Hemingway's Apprenticeship",
+   "The dangerous summer",
+   "Night before battle",
+   "Dear Papa, dear Hotch",
+   "Hills Like White Elephants",
+   "Old Man and the Sea/ (Cassette)",
+   "The old man and the sea",
+   "Men without women",
+   "To have and have not.",
+   "The Christmas gift",
+   "For Whom the Bell Tolls (War Promo)",
+   "For whom the bell tolls",
+   "The Snows of Kilimanjaro",
+   "Ernest Hemingway: Cub Reporter",
+   "Die schönsten Geschichten Afrikas",
+   "For Whom the Bell Tolls",
+   "The garden of Eden.",
+   "The old man and the sea",
+   "Across the River and into the Trees",
+   "A Clean, Well-Lighted Place",
+   "Winner take nothing.",
+   "Across The River And Into The Trees",
+   "The torrents of spring",
+   "Winner take nothing",
+   "A Paris letter",
+   "The snows of Kilimanjaro and other stories",
+   "The tradesman's return",
+   "The Spanish earth",
+   "In Our Time",
+   "Marlin off the Morro",
+   "The Complete Short Stories of Ernest Hemingway: The Finca Vigía Edition",
+   "The Fifth Column and the First Forty-Nine Stories",
+   "For whom the bell tolls",
+   "The TORRENTS OF SPRING",
+   "To have and have not",
+   "Death in the Afternoon",
+   "Death in the afternoon",
+   "Le chaud et le froid",
+   "The Old Man and the Sea (MacMillan Literature Series, Signature Edition)",
+   "Obras Completas:Por quién doblan las campanas, El viejo y el mar",
+   "ACROSS THE RIVER AND INTO THE TREES",
+   "Zhan di zhong sheng",
+   "To have and have not",
+   "The Dangerous Summer",
+   "Big Two-Hearted River",
+   "Dear Papa, dear Hotch",
+   "Che Ti Dice La Patria?",
+   "The Spanish War",
+   "A Moveable Feast",
+   "For Whom the Bell Tolls (War Promo)",
+   "Hemingway on war",
+   "The Torrents of Spring",
+   "Soldier's Home",
+   "Winner Take Nothing",
+   "Now I Lay Me",
+   "The Complete Short Stories of Ernest Hemingway: The Finca Vigía Edition",
+   "Men at war",
+   "The Garden of Eden",
+   "Die Wahrheit im Morgenlicht. Eine afrikanische Safari.",
+   "Across the river and into the trees",
+   "A Farewell To Arms",
+   "The torrents of spring",
+   "Under Kilimanjaro",
+   "The fifth column and four stories of the Spanish Civil War",
+   "Green Hills of Africa",
+   "By-Line",
+   "To Have and Have Not (To Have & Have Not Hre)",
+   "For Whom the Bell Tolls",
+   "A Moveable Feast (Moveable Feast Srs)",
+   "quarantanove racconti",
+   "Reportagen 1920 - 1924",
+   "True at first light",
+   "For whom the bell tolls",
+   "Three Stories and Ten Poems",
+   "To have and have not",
+   "The friend of Spain",
+   "The dangerous summer",
+   "The Old Man and the Sea",
+   "Green Hills of Africa (Hudson River editions)",
+   "For Whom the Bell Tolls",
+   "The Revolutionist",
+   "The Complete Short Stories of Ernest Hemingway: The Finca Vigía Edition",
+   "By-Line Ernest Hemingway",
+   "A Moveable Feast",
+   "For Whom the Bell Tolls",
+   "To Have and Have Not",
+   "Bullfighting, sport & industry",
+   "The garden of Eden",
+   "The sights of Whitehead Street",
+   "A Moveable Feast",
+   "Der alṭer un der yam",
+   "El Toro Fiel / the Faithful Bull",
+   "Bullfighting",
+   "For Whom the Bell Tolls",
+   "For whom the bell tolls",
+   "Monologue to the maestro",
+   "Die Wahrheit im Morgenlicht. Eine afrikanische Safari.",
+   "A farewell to arms",
+   "El Buen Leon",
+   "A Farewell to Arms",
+   "A Farewell to Arms (Scribner Classics)",
+   "Ernest Hemingway, selected letters, 1917-1961",
+   "Green hills of Africa",
+   "On Paris",
+   "To have and have not",
+   "The Garden of Eden",
+   "The wild years",
+   "He who gets slap happy",
+   "The Old Man and the Sea",
+   "The Hemingway reader",
+   "The essential Hemingway",
+   "Green Hills of Africa",
+   "A farewell to arms",
+   "The sun also rises",
+   "True At First Light",
+   "The Sun Also Rises",
+   "Indian Camp",
+   "Death in the Afternoon",
+   "Men without women",
+   "Notes on dangerous game",
+   "To Have and Have Not",
+   "On Writing",
+   "For whom the bell tolls",
+   "The Garden of Eden",
+   "g.1ym_l5zt2",
+   "The Fifth Column and Four Stories of the Spanish Civil War",
+   "A Simple Enquiry",
+   "Voor wien de klok luidt",
+   "Marlin off Cuba",
+   "Hemingway on Fishing",
+   "In Our Time",
+   "Genio after Josie",
+   "Death in the Afternoon (Death in the Afternoon Hre)",
+   "The snows of Kilimanjaro",
+   "The old man and the sea",
+   "For Whom the Bell Tolls",
+   "The president vanquishes",
+   "The Sun Also Rises",
+   "The colected poems of Ernest Hemingway",
+   "A Farewell to Arms",
+   "In our time",
+   "Old Man and the Sea",
+   "Sun Also Rises (Library Reprint Editions)",
+   "The torrents of spring",
+   "Proshchaĭ oruzhie!",
+   "In Our Time",
+   "The Battler",
+   "There she breaches!",
+   "The sun also rises",
+   "The Short Happy Life of Francis Macomber",
+   "Cat in the Rain",
+   "Green Hills of Africa",
+   "Defense of dirty words",
+   "For whom the bell tolls",
+   "The great blue river",
+   "After the Storm",
+   "Green Hills of Africa",
+   "In Harry's Bar in Venice and More",
+   "Green Hills of Africa",
+   "On being shot again",
+   "Valentine",
+   "The Complete Short Stories of Ernest Hemingway: The Finca Vigía Edition",
+   "Men Without Women (Arrow Classic)",
+   "The Garden of Eden",
+   "Old Man and the Sea",
+   "The malady of power",
+   "Best Of Bad Hemingway: Vol 1",
+   "Ernest Hemingway Selected Letters 1917–1961",
+   "The dangerous summer",
+   "Green hills of Africa.",
+   "The Killers",
+   "The old man and the sea",
+   "The End of Something",
+   "Relatos Ineditos",
+   "The collected poems of Ernest Hemingway",
+   "The Old Man and the Sea. (Lernmaterialien)",
+   "Across the river and into the trees.",
+   "Give us a prescription, Doctor",
+   "The Dangerous Summer",
+   "The Old Man and the Sea",
+   "88 Poems",
+   "The Old Man and the Sea",
+   "The Nick Adams Stories",
+   "50000 dollars",
+   "Across the river and into the trees",
+   "Los Asesinos",
+   "By-line, Ernest Hemingway",
+   "Green hills of Africa",
+   "For Whom the Bell Tolls (Vintage Classics)",
+   "The Snows of Kilimanjaro",
+   "On the blue water",
+   "The old man and the sea",
+   "De vye zanmi",
+   "In Our Time",
+   "The dangerous summer",
+   "For Whom the Bell Tolls (Audio Library Classics)",
+   "The torrents of spring",
+   "En ligne",
+   "True at first light",
+   "To have and have not",
+   "The old man and the sea.",
+   "Hemingway on war",
+   "To Have and Have Not (To Have & Have Not Srs)",
+   "Hemingway on hunting",
+   "A Moveable Feast (Scribner Classic)",
+   "Death in the Afternoon",
+   "a.d. southern style",
+   "The Sun Also Rises (A Scribner classic)",
+   "The Cambridge Edition of the Letters of Ernest Hemingway",
+   "The sun also rises",
+   "Ernest Hemingway, selected letters, 1917-1961",
+   "The Dangerous Summer",
+   "A Farewell to Arms (Farewell to Arms Tr)",
+   "Winner Take Nothing",
+   "The old man and the sea. (Lernmaterialien)",
+   "A Moveable Feast",
+   "The Old Man and the Sea (Vintage Classics)",
+   "The Capital of the World",
+   "Collected poems",
+   "The Gambler, the Nun, and the Radio",
+   "Wada'an Lilseelah",
+   "Hayat Francis Macumber",
+   "Complete poems",
+   "The Snows of Kilimanjaro",
+   "The Sun Also Rises (Archive of Literary Documents)"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 237,
+  "n_gold_reachable": 51
+ },
+ {
+  "qid": "WebQTest-1733",
+  "dataset": "webqsp",
+  "question": "who or what influenced frank lloyd wright",
+  "gold_q_entities": [
+   "Frank Lloyd Wright"
+  ],
+  "answers": [
+   "Bruce Price",
+   "William Morris",
+   "Georges I. Gurdjieff and Thomas De Hartmann",
+   "Louis Sullivan",
+   "Henry David Thoreau",
+   "Ebenezer Howard",
+   "Elizabeth Gordon"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTest-1011",
+  "dataset": "webqsp",
+  "question": "where do they speak tibetan",
+  "gold_q_entities": [
+   "Standard Tibetan"
+  ],
+  "answers": [
+   "Tibet",
+   "China"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1770",
+  "dataset": "webqsp",
+  "question": "what country does rafael nadal play for",
+  "gold_q_entities": [
+   "Rafael Nadal"
+  ],
+  "answers": [
+   "Spain"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1629",
+  "dataset": "webqsp",
+  "question": "what currency does dominican republic take",
+  "gold_q_entities": [
+   "Dominican Republic"
+  ],
+  "answers": [
+   "Dominican peso"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1080",
+  "dataset": "webqsp",
+  "question": "where did abraham and his descendants live",
+  "gold_q_entities": [
+   "Abraham"
+  ],
+  "answers": [
+   "Canaan",
+   "Mesopotamia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-43",
+  "dataset": "webqsp",
+  "question": "what did george clemenceau do",
+  "gold_q_entities": [
+   "Georges Clémenceau"
+  ],
+  "answers": [
+   "Physician",
+   "Writer",
+   "Statesman",
+   "Journalist",
+   "Publisher"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTest-618",
+  "dataset": "webqsp",
+  "question": "where is chesapeake bay bridge",
+  "gold_q_entities": [
+   "Chesapeake Bay Bridge"
+  ],
+  "answers": [
+   "Anne Arundel County",
+   "Queen Anne's County"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-2017",
+  "dataset": "webqsp",
+  "question": "what party was abe lincoln part of",
+  "gold_q_entities": [
+   "Abraham Lincoln"
+  ],
+  "answers": [
+   "Illinois Republican Party",
+   "National Union Party",
+   "Whig Party",
+   "Republican Party"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-1876",
+  "dataset": "webqsp",
+  "question": "what language did the ancient babylonians speak",
+  "gold_q_entities": [
+   "Babylon",
+   "Babylonia"
+  ],
+  "answers": [
+   "Akkadian language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1698",
+  "dataset": "webqsp",
+  "question": "where do burmese cats originate from",
+  "gold_q_entities": [
+   "Burmese cat"
+  ],
+  "answers": [
+   "Myanmar",
+   "Thailand"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-329",
+  "dataset": "webqsp",
+  "question": "what type of government was formed when italy unified",
+  "gold_q_entities": [
+   "Italy"
+  ],
+  "answers": [
+   "Unitary state",
+   "Parliamentary republic",
+   "Constitutional republic"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-1304",
+  "dataset": "webqsp",
+  "question": "what was hitler the leader of",
+  "gold_q_entities": [
+   "Adolf Hitler"
+  ],
+  "answers": [
+   "Wehrmacht",
+   "Schutzstaffel",
+   "1st SS Panzer Division Leibstandarte SS Adolf Hitler",
+   "Sturmabteilung",
+   "Waffen-SS",
+   "Gestapo",
+   "Nazi Party",
+   "Hitler Youth"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 8,
+  "n_gold_reachable": 8
+ },
+ {
+  "qid": "WebQTest-150",
+  "dataset": "webqsp",
+  "question": "what language does cuba speak",
+  "gold_q_entities": [
+   "Cuba"
+  ],
+  "answers": [
+   "Haitian Creole",
+   "Spanish Language",
+   "Lucumi Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-440",
+  "dataset": "webqsp",
+  "question": "where is jason mraz from",
+  "gold_q_entities": [
+   "Jason Mraz"
+  ],
+  "answers": [
+   "Mechanicsville",
+   "California"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1723",
+  "dataset": "webqsp",
+  "question": "where is english spoken in the world map",
+  "gold_q_entities": [
+   "English Language"
+  ],
+  "answers": [
+   "Nigeria",
+   "Qatar",
+   "Cayman Islands",
+   "New Zealand",
+   "Bermuda",
+   "Ethiopia",
+   "Guam",
+   "Swaziland",
+   "State of Palestine",
+   "Bonaire",
+   "Vanuatu",
+   "Pakistan",
+   "Saint Kitts and Nevis",
+   "Saint Lucia",
+   "Mandatory Palestine",
+   "Fiji",
+   "Cameroon",
+   "Zambia",
+   "Vatican City",
+   "Bahamas",
+   "Laos",
+   "Canada",
+   "Tokelau",
+   "Israel",
+   "United Kingdom",
+   "Kenya",
+   "Sierra Leone",
+   "Australia",
+   "Dominica",
+   "Ghana",
+   "Indonesia",
+   "Republic of Ireland",
+   "United States of America",
+   "Papua New Guinea",
+   "South Yemen",
+   "Bangladesh",
+   "Saint Vincent and the Grenadines",
+   "Curaçao",
+   "Puerto Rico",
+   "Kiribati",
+   "Guyana",
+   "Transkei",
+   "Uganda",
+   "Grenada",
+   "Montserrat",
+   "Brunei",
+   "Cyprus",
+   "South Africa",
+   "Liberia",
+   "Hong Kong",
+   "Belize",
+   "Kingdom of Great Britain",
+   "Gambia",
+   "England",
+   "Samoa",
+   "Wales",
+   "Territory of Papua and New Guinea",
+   "Territory of New Guinea",
+   "Gibraltar",
+   "India",
+   "China",
+   "Antigua and Barbuda",
+   "Jordan",
+   "Sudan",
+   "Nauru",
+   "Lesotho",
+   "Zimbabwe",
+   "Cook Islands",
+   "Rwanda",
+   "Malaysia",
+   "Singapore",
+   "Sri Lanka",
+   "Marshall Islands",
+   "Timor-Leste",
+   "Japan",
+   "Namibia",
+   "Gazankulu",
+   "Tanzania",
+   "Honduras",
+   "Botswana",
+   "Jersey",
+   "Turks and Caicos Islands",
+   "Tuvalu",
+   "Isle of Man",
+   "Barbados",
+   "Malta",
+   "Philippines"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 87,
+  "n_gold_reachable": 87
+ },
+ {
+  "qid": "WebQTest-1794",
+  "dataset": "webqsp",
+  "question": "where is mitt romney 's family from",
+  "gold_q_entities": [
+   "Mitt Romney"
+  ],
+  "answers": [
+   "Detroit"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-284",
+  "dataset": "webqsp",
+  "question": "where did the latin language originate from",
+  "gold_q_entities": [
+   "Latin Language"
+  ],
+  "answers": [
+   "Indo-European languages",
+   "Italic languages"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-608",
+  "dataset": "webqsp",
+  "question": "when did liverpool fc last win the champions league",
+  "gold_q_entities": [
+   "Liverpool F.C."
+  ],
+  "answers": [
+   "2012 Football League Cup Final"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1233",
+  "dataset": "webqsp",
+  "question": "what are the colors of the ny giants",
+  "gold_q_entities": [
+   "New York Giants"
+  ],
+  "answers": [
+   "Red",
+   "Grey",
+   "Blue",
+   "White"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-1520",
+  "dataset": "webqsp",
+  "question": "what language speak in brazil",
+  "gold_q_entities": [
+   "Brazil"
+  ],
+  "answers": [
+   "Brazilian Portuguese",
+   "Portuguese Language",
+   "Italian Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-869",
+  "dataset": "webqsp",
+  "question": "where is ancient phoenician",
+  "gold_q_entities": [
+   "Phoenicia"
+  ],
+  "answers": [
+   "Lebanon"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1909",
+  "dataset": "webqsp",
+  "question": "what is spoken in czech republic",
+  "gold_q_entities": [
+   "Czech Republic"
+  ],
+  "answers": [
+   "Russian Language",
+   "Slovak Language",
+   "Polish Language",
+   "Rusyn Language",
+   "Bulgarian Language",
+   "Romani language",
+   "Croatian language",
+   "Hungarian language",
+   "Ukrainian Language",
+   "Serbian language",
+   "Czech Language",
+   "German Language",
+   "Greek Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 13,
+  "n_gold_reachable": 13
+ },
+ {
+  "qid": "WebQTest-519",
+  "dataset": "webqsp",
+  "question": "what timezone is nashville tn",
+  "gold_q_entities": [
+   "Nashville"
+  ],
+  "answers": [
+   "Central Time Zone"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1534",
+  "dataset": "webqsp",
+  "question": "who are the coaches for the oakland raiders",
+  "gold_q_entities": [
+   "Oakland Raiders"
+  ],
+  "answers": [
+   "Tony Sparano"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1572",
+  "dataset": "webqsp",
+  "question": "what should i do today in san francisco",
+  "gold_q_entities": [
+   "San Francisco"
+  ],
+  "answers": [
+   "San Francisco Ferry Building",
+   "Ghirardelli Square",
+   "Musée Mécanique",
+   "Golden Gate Bridge",
+   "San Francisco Railway Museum",
+   "Asian Art Museum of San Francisco",
+   "Angel Island",
+   "Lombard Street",
+   "San Francisco Museum of Modern Art",
+   "Travefy",
+   "St. Regis Museum Tower",
+   "Haas-Lilienthal House",
+   "Alcatraz Island",
+   "Coit Tower",
+   "Twin Peaks",
+   "Fisherman's Wharf",
+   "Cartoon Art Museum",
+   "Baker Beach",
+   "Exploratorium",
+   "Yerba Buena Center for the Arts",
+   "Crissy Field",
+   "Golden Gate Park",
+   "Palace of the Legion of Honor",
+   "Presidio of San Francisco",
+   "Ripley's Believe It or Not! Museum",
+   "Camera Obscura",
+   "San Francisco Fire Department Museum",
+   "San Francisco City Hall",
+   "Contemporary Jewish Museum",
+   "Union Square",
+   "Chinatown",
+   "Consulate General of Mexico, San Francisco",
+   "Museum of the African Diaspora",
+   "San Francisco cable car system",
+   "Japanese Tea Garden"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 35,
+  "n_gold_reachable": 35
+ },
+ {
+  "qid": "WebQTest-848",
+  "dataset": "webqsp",
+  "question": "where are the nordic countries",
+  "gold_q_entities": [
+   "Nordic countries"
+  ],
+  "answers": [
+   "Faroe Islands",
+   "Iceland",
+   "Denmark",
+   "Sweden",
+   "Norway",
+   "Finland",
+   "Åland Islands",
+   "Greenland"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 8,
+  "n_gold_reachable": 8
+ },
+ {
+  "qid": "WebQTest-969",
+  "dataset": "webqsp",
+  "question": "when is the last time the denver broncos won the superbowl",
+  "gold_q_entities": [
+   "Denver Broncos"
+  ],
+  "answers": [
+   "Super Bowl XXXIII"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-721",
+  "dataset": "webqsp",
+  "question": "what kind of leukemia did jill clayburgh have",
+  "gold_q_entities": [
+   "Jill Clayburgh"
+  ],
+  "answers": [
+   "Leukemia",
+   "B-cell chronic lymphocytic leukemia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-96",
+  "dataset": "webqsp",
+  "question": "where did richard nixon die",
+  "gold_q_entities": [
+   "Richard Nixon"
+  ],
+  "answers": [
+   "New York City"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-209",
+  "dataset": "webqsp",
+  "question": "where is laos in world map",
+  "gold_q_entities": [
+   "Laos"
+  ],
+  "answers": [
+   "Southeast Asia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1796",
+  "dataset": "webqsp",
+  "question": "what city was michael jackson born in",
+  "gold_q_entities": [
+   "Michael Jackson"
+  ],
+  "answers": [
+   "Gary"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1674",
+  "dataset": "webqsp",
+  "question": "who is the leader of north korea today",
+  "gold_q_entities": [
+   "North Korea"
+  ],
+  "answers": [
+   "Kim Jong-un"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1291",
+  "dataset": "webqsp",
+  "question": "how many kids were there in the kennedy family",
+  "gold_q_entities": [
+   "Joseph P. Kennedy, Sr."
+  ],
+  "answers": [
+   "Eunice Kennedy Shriver",
+   "Ted Kennedy",
+   "John F. Kennedy",
+   "Rosemary Kennedy",
+   "Jean Kennedy Smith",
+   "Patricia Kennedy Lawford",
+   "Robert F. Kennedy",
+   "Kathleen Cavendish",
+   "Joseph P. Kennedy, Jr."
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 9,
+  "n_gold_reachable": 9
+ },
+ {
+  "qid": "WebQTest-1059",
+  "dataset": "webqsp",
+  "question": "what language does east timor speak",
+  "gold_q_entities": [
+   "Timor-Leste"
+  ],
+  "answers": [
+   "Tukudede Language",
+   "Makalero dialect",
+   "Fataluku Language",
+   "Indonesian Language",
+   "Makuv'a Language",
+   "Kemak Language",
+   "Makasae Language",
+   "Galoli Language",
+   "Wetarese",
+   "Bunak Language",
+   "Tetun-Terik",
+   "English Language",
+   "Tetun Language",
+   "Portuguese Language",
+   "Mambai Language",
+   "Idalaka",
+   "Dawan",
+   "Bekais",
+   "Habu Language",
+   "Kawaimina languages"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 20,
+  "n_gold_reachable": 20
+ },
+ {
+  "qid": "WebQTest-1679",
+  "dataset": "webqsp",
+  "question": "what kind of government does the united states have currently",
+  "gold_q_entities": [
+   "United States of America"
+  ],
+  "answers": [
+   "Presidential system",
+   "Federal republic",
+   "Constitutional republic"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-1114",
+  "dataset": "webqsp",
+  "question": "what countries makes up the uk",
+  "gold_q_entities": [
+   "United Kingdom"
+  ],
+  "answers": [
+   "Wales",
+   "Northern Ireland",
+   "Scotland",
+   "England"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-980",
+  "dataset": "webqsp",
+  "question": "where did they get the name stanley cup",
+  "gold_q_entities": [
+   "Stanley Cup"
+  ],
+  "answers": [
+   "Frederick Stanley, 16th Earl of Derby"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1962",
+  "dataset": "webqsp",
+  "question": "what language do brazilians use",
+  "gold_q_entities": [
+   "Brazil"
+  ],
+  "answers": [
+   "Brazilian Portuguese",
+   "Portuguese Language",
+   "Italian Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-994",
+  "dataset": "webqsp",
+  "question": "when was the last time the dallas cowboys won the superbowl",
+  "gold_q_entities": [
+   "Dallas Cowboys"
+  ],
+  "answers": [
+   "Super Bowl XXX"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-523",
+  "dataset": "webqsp",
+  "question": "what is the largest nation in europe",
+  "gold_q_entities": [
+   "Europe"
+  ],
+  "answers": [
+   "Russia"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1289",
+  "dataset": "webqsp",
+  "question": "what type of music did mozart composed",
+  "gold_q_entities": [
+   "Wolfgang Amadeus Mozart"
+  ],
+  "answers": [
+   "Classical music",
+   "Opera",
+   "Chamber music",
+   "Ballet",
+   "Art song"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTest-195",
+  "dataset": "webqsp",
+  "question": "what kind of guitar did george harrison use",
+  "gold_q_entities": [
+   "George Harrison"
+  ],
+  "answers": [
+   "Rickenbacker 360/12",
+   "Fender Stratocaster"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-383",
+  "dataset": "webqsp",
+  "question": "what language do chinese people write in",
+  "gold_q_entities": [
+   "Chinese language"
+  ],
+  "answers": [
+   "Simplified Chinese character",
+   "Chinese characters",
+   "Nüshu script",
+   "Traditional Chinese characters",
+   "'Phags-pa script"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTest-1309",
+  "dataset": "webqsp",
+  "question": "what art did wassily kandinsky do",
+  "gold_q_entities": [
+   "Wassily Kandinsky"
+  ],
+  "answers": [
+   "Painting"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-371",
+  "dataset": "webqsp",
+  "question": "what are the major languages spoken in greece",
+  "gold_q_entities": [
+   "Greece"
+  ],
+  "answers": [
+   "Greek Language"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1079",
+  "dataset": "webqsp",
+  "question": "what country was king tut 's tomb found",
+  "gold_q_entities": [
+   "KV62"
+  ],
+  "answers": [
+   "Egypt"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1566",
+  "dataset": "webqsp",
+  "question": "what kind of guitar john mayer",
+  "gold_q_entities": [
+   "John Mayer"
+  ],
+  "answers": [
+   "Fender Stratocaster"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1014",
+  "dataset": "webqsp",
+  "question": "where did kim kardashian come from",
+  "gold_q_entities": [
+   "Kim Kardashian"
+  ],
+  "answers": [
+   "Los Angeles"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1354",
+  "dataset": "webqsp",
+  "question": "who is judy garland father",
+  "gold_q_entities": [
+   "Judy Garland"
+  ],
+  "answers": [
+   "Francis Avent Gumm"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1730",
+  "dataset": "webqsp",
+  "question": "where does the parana river flow",
+  "gold_q_entities": [
+   "Paraná River"
+  ],
+  "answers": [
+   "South America"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-585",
+  "dataset": "webqsp",
+  "question": "what did king henry viii rule",
+  "gold_q_entities": [
+   "Henry VIII of England"
+  ],
+  "answers": [
+   "England"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1321",
+  "dataset": "webqsp",
+  "question": "where did the gallipoli war take place",
+  "gold_q_entities": [
+   "Gallipoli Campaign"
+  ],
+  "answers": [
+   "Gallipoli"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-462",
+  "dataset": "webqsp",
+  "question": "what time is it in texas houston right now",
+  "gold_q_entities": [
+   "Houston"
+  ],
+  "answers": [
+   "Central Time Zone"
+  ],
+  "hops": 1,
+  "stratum": "h1",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-74",
+  "dataset": "webqsp",
+  "question": "who did benjamin franklin get married to",
+  "gold_q_entities": [
+   "Benjamin Franklin"
+  ],
+  "answers": [
+   "Deborah Read"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-334",
+  "dataset": "webqsp",
+  "question": "who did john kennedy have affairs with",
+  "gold_q_entities": [
+   "John F. Kennedy"
+  ],
+  "answers": [
+   "Marilyn Monroe",
+   "Judith Exner"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-734",
+  "dataset": "webqsp",
+  "question": "who did roger federer married",
+  "gold_q_entities": [
+   "Roger Federer"
+  ],
+  "answers": [
+   "Mirka Federer"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1350",
+  "dataset": "webqsp",
+  "question": "what did jesse owens won",
+  "gold_q_entities": [
+   "Jesse Owens"
+  ],
+  "answers": [
+   "Associated Press Male Athlete of the Year"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1707",
+  "dataset": "webqsp",
+  "question": "who plays lex luthor on smallville",
+  "gold_q_entities": [
+   "Smallville"
+  ],
+  "answers": [
+   "Michael Rosenbaum"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1020",
+  "dataset": "webqsp",
+  "question": "what highschool did r. kelly attend",
+  "gold_q_entities": [
+   "R. Kelly"
+  ],
+  "answers": [
+   "Kenwood Academy"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-642",
+  "dataset": "webqsp",
+  "question": "where did vince scully go to college",
+  "gold_q_entities": [
+   "Vin Scully"
+  ],
+  "answers": [
+   "Fordham University"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1915",
+  "dataset": "webqsp",
+  "question": "where did harry s truman go to school",
+  "gold_q_entities": [
+   "Harry S. Truman"
+  ],
+  "answers": [
+   "University of Missouri–Kansas City",
+   "William Chrisman High School",
+   "University of Missouri–Kansas City School of Law"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-749",
+  "dataset": "webqsp",
+  "question": "who was president in 1988 in the united states",
+  "gold_q_entities": [
+   "President of the United States"
+  ],
+  "answers": [
+   "Ronald Reagan"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1868",
+  "dataset": "webqsp",
+  "question": "who plays knox overstreet",
+  "gold_q_entities": [
+   "Knox Overstreet"
+  ],
+  "answers": [
+   "Josh Charles"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-262",
+  "dataset": "webqsp",
+  "question": "what tv shows did shawnee smith play in",
+  "gold_q_entities": [
+   "Shawnee Smith"
+  ],
+  "answers": [
+   "All is Forgiven",
+   "Brand New Life",
+   "Becker",
+   "The Stand",
+   "30 Days of Night: Dust to Dust",
+   "Arsenio",
+   "Scream Queens",
+   "Anger Management",
+   "The Tom Show"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 9,
+  "n_gold_reachable": 9
+ },
+ {
+  "qid": "WebQTest-1313",
+  "dataset": "webqsp",
+  "question": "who were demeter 's siblings",
+  "gold_q_entities": [
+   "Demeter"
+  ],
+  "answers": [
+   "Zeus"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1324",
+  "dataset": "webqsp",
+  "question": "what college did john nash go to",
+  "gold_q_entities": [
+   "John Forbes Nash, Jr."
+  ],
+  "answers": [
+   "Princeton University",
+   "Carnegie Mellon College of Engineering"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1864",
+  "dataset": "webqsp",
+  "question": "who plays the role of tony dinozzo on ncis",
+  "gold_q_entities": [
+   "Special Agent Anthony DiNozzo"
+  ],
+  "answers": [
+   "Michael Weatherly"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-433",
+  "dataset": "webqsp",
+  "question": "who has played lex luthor",
+  "gold_q_entities": [
+   "Alexander Luthor"
+  ],
+  "answers": [
+   "Kevin Spacey",
+   "Jesse Eisenberg",
+   "Anthony LaPaglia",
+   "James Marsters",
+   "William Hootkins",
+   "Chris Noth",
+   "Powers Boothe",
+   "Gene Hackman",
+   "Clancy Brown"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 9,
+  "n_gold_reachable": 9
+ },
+ {
+  "qid": "WebQTest-985",
+  "dataset": "webqsp",
+  "question": "who was queen victoria 's husband",
+  "gold_q_entities": [
+   "Queen Victoria"
+  ],
+  "answers": [
+   "Albert, Prince Consort"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1928",
+  "dataset": "webqsp",
+  "question": "what wnba team is diana taurasi on",
+  "gold_q_entities": [
+   "Diana Taurasi"
+  ],
+  "answers": [
+   "UMMC Ekaterinburg",
+   "Phoenix Mercury"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-165",
+  "dataset": "webqsp",
+  "question": "who plays donna noble",
+  "gold_q_entities": [
+   "Donna Noble"
+  ],
+  "answers": [
+   "Catherine Tate"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-286",
+  "dataset": "webqsp",
+  "question": "what school did karl benz go to",
+  "gold_q_entities": [
+   "Karl Benz"
+  ],
+  "answers": [
+   "Karlsruhe Institute of Technology"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-701",
+  "dataset": "webqsp",
+  "question": "what team is reggie bush on 2011",
+  "gold_q_entities": [
+   "Reggie Bush"
+  ],
+  "answers": [
+   "Miami Dolphins",
+   "New Orleans Saints"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-128",
+  "dataset": "webqsp",
+  "question": "who plays juni cortez",
+  "gold_q_entities": [
+   "Juni Cortez"
+  ],
+  "answers": [
+   "Daryl Sabara"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1047",
+  "dataset": "webqsp",
+  "question": "who does amy stiller play in dodgeball",
+  "gold_q_entities": [
+   "DodgeBall: A True Underdog Story",
+   "Amy Stiller"
+  ],
+  "answers": [
+   "Keno Waitress"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1445",
+  "dataset": "webqsp",
+  "question": "what tv series did mark harmon star in",
+  "gold_q_entities": [
+   "Mark Harmon"
+  ],
+  "answers": [
+   "NCIS",
+   "Sam",
+   "Centennial",
+   "Reasonable Doubts",
+   "From the Earth to the Moon",
+   "Chicago Hope",
+   "The Dream Merchants",
+   "Flamingo Road",
+   "Eleanor and Franklin: The White House Years",
+   "Charlie Grace",
+   "St. Elsewhere",
+   "240-Robert"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 12,
+  "n_gold_reachable": 12
+ },
+ {
+  "qid": "WebQTest-1829",
+  "dataset": "webqsp",
+  "question": "what type of religion did massachusetts have",
+  "gold_q_entities": [
+   "Massachusetts"
+  ],
+  "answers": [
+   "United Church of Christ",
+   "Buddhism",
+   "Churches of Christ",
+   "Methodism",
+   "Christianity",
+   "Jehovah's Witnesses",
+   "Pentecostalism",
+   "Protestantism",
+   "Judaism",
+   "Baptists",
+   "Catholicism",
+   "Presbyterianism",
+   "Lutheranism",
+   "Episcopal Church"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 14,
+  "n_gold_reachable": 14
+ },
+ {
+  "qid": "WebQTest-838",
+  "dataset": "webqsp",
+  "question": "what team does cristiano ronaldo play for 2011",
+  "gold_q_entities": [
+   "Cristiano Ronaldo"
+  ],
+  "answers": [
+   "Real Madrid C.F.",
+   "Portugal national football team"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-875",
+  "dataset": "webqsp",
+  "question": "where did hugo chavez go to school",
+  "gold_q_entities": [
+   "Hugo Chávez"
+  ],
+  "answers": [
+   "Bolivarian Military University of Venezuela",
+   "Julian Pino School",
+   "Simón Bolívar University",
+   "Daniel Florencio O'Leary School"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 4,
+  "n_gold_reachable": 4
+ },
+ {
+  "qid": "WebQTest-1923",
+  "dataset": "webqsp",
+  "question": "what movies has miley cyrus been in",
+  "gold_q_entities": [
+   "Miley Cyrus"
+  ],
+  "answers": [
+   "Rock Mafia Presents: The Big Bang",
+   "Hannah Montana and Miley Cyrus: Best of Both Worlds Concert",
+   "So Undercover",
+   "Bolt",
+   "The World According to Miley Cyrus",
+   "LOL",
+   "Sex and the City 2",
+   "Sonic the Hedgehog",
+   "Big Fish",
+   "Family Bond",
+   "Super Rhino",
+   "Radio Disney Party Jams: The Concert",
+   "The Last Song",
+   "Wizards on Deck with Hannah Montana",
+   "Hannah Montana: The Movie",
+   "High School Musical 2",
+   "Miley Cyrus: Tongue Tied"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 17,
+  "n_gold_reachable": 17
+ },
+ {
+  "qid": "WebQTest-191",
+  "dataset": "webqsp",
+  "question": "where did drew brees go to college wikianswers",
+  "gold_q_entities": [
+   "Drew Brees"
+  ],
+  "answers": [
+   "Stanford Graduate School of Business",
+   "Purdue University"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-991",
+  "dataset": "webqsp",
+  "question": "who played donna on west wing",
+  "gold_q_entities": [
+   "Donnatella Moss"
+  ],
+  "answers": [
+   "Janel Moloney"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1121",
+  "dataset": "webqsp",
+  "question": "what is kentucky state slogan",
+  "gold_q_entities": [
+   "Kentucky"
+  ],
+  "answers": [
+   "United we stand, divided we fall"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-205",
+  "dataset": "webqsp",
+  "question": "what school did sir ernest rutherford go to",
+  "gold_q_entities": [
+   "Ernest Rutherford"
+  ],
+  "answers": [
+   "University of Cambridge",
+   "Trinity College, Cambridge",
+   "Nelson College",
+   "University of New Zealand",
+   "University of Canterbury"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 5,
+  "n_gold_reachable": 5
+ },
+ {
+  "qid": "WebQTest-1595",
+  "dataset": "webqsp",
+  "question": "what new movies is robert pattinson in",
+  "gold_q_entities": [
+   "Robert Pattinson"
+  ],
+  "answers": [
+   "Harry Potter and the Order of the Phoenix",
+   "Love & Distrust",
+   "Little Ashes",
+   "Hold on to Me",
+   "Maps to the Stars",
+   "Cosmopolis",
+   "The Twilight Saga: Breaking Dawn - Part 1",
+   "The Twilight Saga: Breaking Dawn - Part 2",
+   "Remember Me",
+   "Mission: Blacklist",
+   "The Haunted Airman",
+   "Unbound Captives",
+   "Bel Ami",
+   "The Summer House",
+   "Vanity Fair",
+   "The Bad Mother's Handbook",
+   "Life",
+   "Harry Potter and the Goblet of Fire",
+   "The Twilight Saga: New Moon",
+   "Queen of the Desert",
+   "Dark Kingdom: The Dragon King",
+   "The Childhood of a Leader",
+   "Twilight",
+   "How to Be",
+   "The Rover",
+   "Eclipse",
+   "Water for Elephants"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 27,
+  "n_gold_reachable": 27
+ },
+ {
+  "qid": "WebQTest-1764",
+  "dataset": "webqsp",
+  "question": "where is daud ibrahim",
+  "gold_q_entities": [
+   "Dawood Ibrahim"
+  ],
+  "answers": [
+   "Maharashtra"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-555",
+  "dataset": "webqsp",
+  "question": "what did drew barrymore go to rehab for",
+  "gold_q_entities": [
+   "Drew Barrymore"
+  ],
+  "answers": [
+   "Cocaine",
+   "Alcoholic beverage"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-960",
+  "dataset": "webqsp",
+  "question": "who plays dwight in the office",
+  "gold_q_entities": [
+   "The Office"
+  ],
+  "answers": [
+   "Rainn Wilson"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1339",
+  "dataset": "webqsp",
+  "question": "what team does jeremy lin play for 2013",
+  "gold_q_entities": [
+   "Jeremy Lin"
+  ],
+  "answers": [
+   "Houston Rockets"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1618",
+  "dataset": "webqsp",
+  "question": "what teams has manny ramirez played for",
+  "gold_q_entities": [
+   "Manny Ramirez"
+  ],
+  "answers": [
+   "Chicago White Sox",
+   "Tampa Bay Rays",
+   "Cleveland Indians",
+   "EDA Rhinos",
+   "Oakland Athletics",
+   "Texas Rangers",
+   "Los Angeles Dodgers",
+   "Boston Red Sox",
+   "Chicago Cubs"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 9,
+  "n_gold_reachable": 9
+ },
+ {
+  "qid": "WebQTest-1898",
+  "dataset": "webqsp",
+  "question": "what voices does seth macfarlane play on family guy",
+  "gold_q_entities": [
+   "Family Guy"
+  ],
+  "answers": [
+   "Glenn Quagmire",
+   "Kevin Swanson",
+   "Jasper",
+   "Mickey McFinnegan",
+   "Peter Griffin",
+   "Tom Tucker",
+   "Brian Griffin",
+   "Stewie Griffin",
+   "God",
+   "Seamus",
+   "Dr. Elmer Hartman",
+   "Jake Tucker",
+   "Nate Griffin",
+   "Carter Pewterschmidt",
+   "Kool-aid Guy"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 15,
+  "n_gold_reachable": 13
+ },
+ {
+  "qid": "WebQTest-1097",
+  "dataset": "webqsp",
+  "question": "where did michelle obama graduated from",
+  "gold_q_entities": [
+   "Michelle Obama"
+  ],
+  "answers": [
+   "Princeton University",
+   "Harvard Law School",
+   "Whitney M. Young Magnet High School"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-1971",
+  "dataset": "webqsp",
+  "question": "what movies gerard butler has been in",
+  "gold_q_entities": [
+   "Gerard Butler"
+  ],
+  "answers": [
+   "Reign of Fire",
+   "Trailer for a Remake of Gore Vidal's Caligula",
+   "Law Abiding Citizen",
+   "Shooters",
+   "300",
+   "How to Train Your Dragon: Gift of the Night Fury",
+   "The Phantom of the Opera",
+   "One More Kiss",
+   "How to Train Your Dragon",
+   "RocknRolla",
+   "The Cherry Orchard",
+   "Olympus Has Fallen",
+   "Fast Food",
+   "How to Train Your Dragon 3",
+   "Timeline",
+   "Coriolanus",
+   "Tomorrow Never Dies",
+   "How to Train Your Dragon: Legend of the Boneknapper Dragon",
+   "Mrs Brown",
+   "P.S. I Love You",
+   "Harrison's Flowers",
+   "Dracula 2000",
+   "Gamer",
+   "Beowulf & Grendel",
+   "Thunder Run",
+   "How to Train Your Dragon 2",
+   "The Game of Their Lives",
+   "Gods of Egypt",
+   "Dear Frankie",
+   "Movie 43",
+   "Nim's Island",
+   "Attila",
+   "Lara Croft Tomb Raider: The Cradle of Life",
+   "The Bounty Hunter",
+   "Tales of the Black Freighter",
+   "Playing for Keeps",
+   "London Has Fallen",
+   "Chasing Mavericks",
+   "Wrath of Gods",
+   "Jewel of the Sahara",
+   "Butterfly on a Wheel",
+   "Geostorm",
+   "Machine Gun Preacher",
+   "Justin and the Knights of Valour",
+   "The Ugly Truth",
+   "Dynamo"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 46,
+  "n_gold_reachable": 46
+ },
+ {
+  "qid": "WebQTest-1759",
+  "dataset": "webqsp",
+  "question": "what 3 states border florida",
+  "gold_q_entities": [
+   "Florida"
+  ],
+  "answers": [
+   "Alabama",
+   "Georgia"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-1177",
+  "dataset": "webqsp",
+  "question": "where did mario lopez go to school",
+  "gold_q_entities": [
+   "Mario Lopez"
+  ],
+  "answers": [
+   "Chula Vista High School"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1334",
+  "dataset": "webqsp",
+  "question": "who did tom hanks play in apollo 13",
+  "gold_q_entities": [
+   "Tom Hanks",
+   "Apollo 13"
+  ],
+  "answers": [
+   "Jim Lovell"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-2003",
+  "dataset": "webqsp",
+  "question": "what movies have robert pattinson in them",
+  "gold_q_entities": [
+   "Robert Pattinson"
+  ],
+  "answers": [
+   "Harry Potter and the Order of the Phoenix",
+   "Love & Distrust",
+   "Little Ashes",
+   "Hold on to Me",
+   "Maps to the Stars",
+   "Cosmopolis",
+   "The Twilight Saga: Breaking Dawn - Part 1",
+   "The Twilight Saga: Breaking Dawn - Part 2",
+   "Remember Me",
+   "Mission: Blacklist",
+   "The Haunted Airman",
+   "Unbound Captives",
+   "Bel Ami",
+   "The Summer House",
+   "Vanity Fair",
+   "The Bad Mother's Handbook",
+   "Life",
+   "Harry Potter and the Goblet of Fire",
+   "The Twilight Saga: New Moon",
+   "Queen of the Desert",
+   "Dark Kingdom: The Dragon King",
+   "The Childhood of a Leader",
+   "Twilight",
+   "How to Be",
+   "The Rover",
+   "Eclipse",
+   "Water for Elephants"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 27,
+  "n_gold_reachable": 27
+ },
+ {
+  "qid": "WebQTest-1976",
+  "dataset": "webqsp",
+  "question": "what team did drogba play for",
+  "gold_q_entities": [
+   "Didier Drogba"
+  ],
+  "answers": [
+   "Olympique de Marseille",
+   "Galatasaray S.K.",
+   "Chelsea F.C.",
+   "Ivory Coast national football team",
+   "Shanghai Greenland Shenhua F.C.",
+   "En Avant de Guingamp",
+   "Le Mans FC"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTest-114",
+  "dataset": "webqsp",
+  "question": "who did the voice of darth vader in episode 3",
+  "gold_q_entities": [
+   "Darth Vader"
+  ],
+  "answers": [
+   "Hayden Christensen"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1897",
+  "dataset": "webqsp",
+  "question": "what are the names of ariel 's six sisters",
+  "gold_q_entities": [
+   "Ariel"
+  ],
+  "answers": [
+   "Adella",
+   "Attina",
+   "Andrina",
+   "Alana",
+   "Aquata",
+   "Arista"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 6,
+  "n_gold_reachable": 6
+ },
+ {
+  "qid": "WebQTest-1007",
+  "dataset": "webqsp",
+  "question": "what district does nancy pelosi represent",
+  "gold_q_entities": [
+   "Nancy Pelosi"
+  ],
+  "answers": [
+   "California’s 8th congressional district",
+   "California’s 12th congressional district",
+   "California’s 5th congressional district"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-1362",
+  "dataset": "webqsp",
+  "question": "who is the state governor of florida",
+  "gold_q_entities": [
+   "Florida"
+  ],
+  "answers": [
+   "Rick Scott"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-3",
+  "dataset": "webqsp",
+  "question": "who plays ken barlow in coronation street",
+  "gold_q_entities": [
+   "Coronation Street"
+  ],
+  "answers": [
+   "William Roache"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1782",
+  "dataset": "webqsp",
+  "question": "where does egypt export to",
+  "gold_q_entities": [
+   "Egypt"
+  ],
+  "answers": [
+   "Sudan"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-661",
+  "dataset": "webqsp",
+  "question": "who did nasri play for before arsenal",
+  "gold_q_entities": [
+   "Samir Nasri"
+  ],
+  "answers": [
+   "Olympique de Marseille"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-359",
+  "dataset": "webqsp",
+  "question": "what team does heskey play for",
+  "gold_q_entities": [
+   "Emile Heskey"
+  ],
+  "answers": [
+   "Aston Villa F.C.",
+   "Newcastle Jets FC"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-901",
+  "dataset": "webqsp",
+  "question": "who would play luke skywalker",
+  "gold_q_entities": [
+   "Luke Skywalker"
+  ],
+  "answers": [
+   "Mark Hamill"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-959",
+  "dataset": "webqsp",
+  "question": "who did brett gardner play for in 2008",
+  "gold_q_entities": [
+   "Brett Gardner"
+  ],
+  "answers": [
+   "New York Yankees"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1370",
+  "dataset": "webqsp",
+  "question": "where did thomas hobbes live",
+  "gold_q_entities": [
+   "Thomas Hobbes"
+  ],
+  "answers": [
+   "Paris"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1585",
+  "dataset": "webqsp",
+  "question": "who plays spike spiegel",
+  "gold_q_entities": [
+   "Spike Spiegel"
+  ],
+  "answers": [
+   "Kōichi Yamadera",
+   "Steven Blum"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-118",
+  "dataset": "webqsp",
+  "question": "who fought in the gulf war 1991",
+  "gold_q_entities": [
+   "Gulf War"
+  ],
+  "answers": [
+   "France",
+   "Australia",
+   "United States of America",
+   "Argentina",
+   "Iraq",
+   "United Kingdom",
+   "Saudi Arabia"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 7,
+  "n_gold_reachable": 7
+ },
+ {
+  "qid": "WebQTest-923",
+  "dataset": "webqsp",
+  "question": "what countries does england border",
+  "gold_q_entities": [
+   "England"
+  ],
+  "answers": [
+   "Wales",
+   "Scotland"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 2,
+  "n_gold_reachable": 2
+ },
+ {
+  "qid": "WebQTest-543",
+  "dataset": "webqsp",
+  "question": "what college did martin luther king jr go to",
+  "gold_q_entities": [
+   "Martin Luther King, Jr."
+  ],
+  "answers": [
+   "Morehouse College",
+   "Boston University",
+   "Crozer Theological Seminary"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 3,
+  "n_gold_reachable": 3
+ },
+ {
+  "qid": "WebQTest-311",
+  "dataset": "webqsp",
+  "question": "where is the ufc headquarters",
+  "gold_q_entities": [
+   "Ultimate Fighting Championship"
+  ],
+  "answers": [
+   "Las Vegas"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-1461",
+  "dataset": "webqsp",
+  "question": "who has ray allen dated",
+  "gold_q_entities": [
+   "Ray Allen"
+  ],
+  "answers": [
+   "Shannon Walker Williams"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-147",
+  "dataset": "webqsp",
+  "question": "who is the state governor of tennessee",
+  "gold_q_entities": [
+   "Tennessee"
+  ],
+  "answers": [
+   "William Haslam"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-417",
+  "dataset": "webqsp",
+  "question": "who plays kenneth",
+  "gold_q_entities": [
+   "Kenneth Parcell"
+  ],
+  "answers": [
+   "Jack McBrayer"
+  ],
+  "hops": 2,
+  "stratum": "h2",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-273",
+  "dataset": "webqsp",
+  "question": "when did michael jordan return to the nba",
+  "gold_q_entities": [
+   "Michael Jordan"
+  ],
+  "answers": [
+   "1984"
+  ],
+  "hops": 3,
+  "stratum": "h3plus",
+  "n_gold": 1,
+  "n_gold_reachable": 1
+ },
+ {
+  "qid": "WebQTest-172",
+  "dataset": "webqsp",
+  "question": "what do you call members of the senate",
+  "gold_q_entities": [
+   "United States Senate"
+  ],
+  "answers": [
+   "Senator",
+   "Senate majority leader",
+   "President pro tempore",
+   "President of the Senate",
+   "Chief of staff",
+   "State Senator"
+  ],
+  "hops": 4,
+  "stratum": "h3plus",
+  "n_gold": 6,
+  "n_gold_reachable": 6
+ },
+ {
+  "qid": "WebQTest-1902",
+  "dataset": "webqsp",
+  "question": "what year was hitler was born",
+  "gold_q_entities": [
+   "Adolf Hitler"
+  ],
+  "answers": [
+   "1889-04-20"
+  ],
+  "hops": null,
+  "stratum": "unreachable",
+  "n_gold": 1,
+  "n_gold_reachable": 0
+ },
+ {
+  "qid": "WebQTest-2020",
+  "dataset": "webqsp",
+  "question": "what are the mountains in northern italy called",
+  "gold_q_entities": [
+   "Apennine Mountains"
+  ],
+  "answers": [
+   "Apennine Mountains"
+  ],
+  "hops": null,
+  "stratum": "unreachable",
+  "n_gold": 1,
+  "n_gold_reachable": 0
+ },
+ {
+  "qid": "WebQTest-1979",
+  "dataset": "webqsp",
+  "question": "who is number 22 on miami dolphins",
+  "gold_q_entities": [
+   "Miami Dolphins"
+  ],
+  "answers": [
+   "Jamar Taylor"
+  ],
+  "hops": null,
+  "stratum": "unreachable",
+  "n_gold": 1,
+  "n_gold_reachable": 0
+ },
+ {
+  "qid": "WebQTest-1555",
+  "dataset": "webqsp",
+  "question": "what is the parliament of nepal called",
+  "gold_q_entities": [
+   "Parliament of Nepal"
+  ],
+  "answers": [
+   "Parliament of Nepal"
+  ],
+  "hops": null,
+  "stratum": "unreachable",
+  "n_gold": 1,
+  "n_gold_reachable": 0
+ },
+ {
+  "qid": "WebQTest-1620",
+  "dataset": "webqsp",
+  "question": "when was president wilson in office",
+  "gold_q_entities": [
+   "Woodrow Wilson"
+  ],
+  "answers": [
+   "1913-03-04"
+  ],
+  "hops": null,
+  "stratum": "unreachable",
+  "n_gold": 1,
+  "n_gold_reachable": 0
+ },
+ {
+  "qid": "WebQTest-59",
+  "dataset": "webqsp",
+  "question": "when did annie open",
+  "gold_q_entities": [
+   "Annie"
+  ],
+  "answers": [
+   "1976-08-10"
+  ],
+  "hops": null,
+  "stratum": "unreachable",
+  "n_gold": 1,
+  "n_gold_reachable": 0
+ }
+]
