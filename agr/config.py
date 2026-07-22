@@ -7,6 +7,7 @@ class RunConfig:
     tau: float = 0.20                # frozen 2026-07-13
     verify_claims: bool = True       # False = draft-only ablation: grounded
                                      # drafting, no claim extraction/checking
+    use_planner: bool = True
 
     def as_dict(self) -> dict:
         return asdict(self)

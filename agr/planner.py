@@ -73,17 +73,23 @@ def planner_node(state, tools, llm, run_config):
     f"planner got {type(run_config).__name__}, expected RunConfig"
 
     from agr.budget import BudgetExhausted
-    try:
-        plan_json = llm(state, PLANNER_PROMPT.replace(
-            "{question}", state["question"]),
-            '{"sub_objectives": ["..."], "topic_mentions": ["..."]}')
-        issues = validate_plan(plan_json, state["question"])
-    except (BudgetExhausted, Exception) as e:
-        plan_json, issues = {}, [f"planner call failed: {e}"]
-
-    if issues:
+    ablated = not run_config.use_planner
+    if ablated:
         plan_json = {"sub_objectives": [state["question"]],
                      "topic_mentions": list(state["gold_q_entities"])}
+        issues = []
+    else:
+        try:
+            plan_json = llm(state, PLANNER_PROMPT.replace(
+                "{question}", state["question"]),
+                '{"sub_objectives": ["..."], "topic_mentions": ["..."]}')
+            issues = validate_plan(plan_json, state["question"])
+        except (BudgetExhausted, Exception) as e:
+            plan_json, issues = {}, [f"planner call failed: {e}"]
+
+        if issues:
+            plan_json = {"sub_objectives": [state["question"]],
+                         "topic_mentions": list(state["gold_q_entities"])}
 
     anchors, linking = [], []
     mentions = (state["gold_q_entities"] if run_config.use_gold_entities
@@ -101,4 +107,4 @@ def planner_node(state, tools, llm, run_config):
     return {"plan": plan, "anchors": anchors,
             "trace": [{"node": "planner", "plan": plan_json,
                        "anchors": anchors, "linking": linking,
-                       "fallback": bool(issues)}]}
+                       "fallback": bool(issues), "ablated": ablated}]}
