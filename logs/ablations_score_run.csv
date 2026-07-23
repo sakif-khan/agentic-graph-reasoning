@@ -1,0 +1,11 @@
+file,n,hits,hedges,wrong,unanswerable_ok,mean_tokens,mean_calls,total_backtracks,verifier.grounded,verifier.unsupported,verifier.draft_only
+logs/test_webqsp_half_abl_full.jsonl,200,151,17,32,0,4562,6.2,38,194,6,
+logs/test_cwq_half_abl_full.jsonl,198,98,46,54,0,7106,9.1,108,180,18,
+logs/test_webqsp_half_abl_noplanner.jsonl,200,166,11,23,0,3160,4.0,12,195,5,
+logs/test_cwq_half_abl_noplanner.jsonl,198,86,53,59,0,5618,6.7,70,168,30,
+logs/test_webqsp_half_abl_nobacktrack.jsonl,200,149,19,32,0,4262,5.8,0,192,8,
+logs/test_cwq_half_abl_nobacktrack.jsonl,198,97,56,45,0,5792,7.4,0,182,16,
+logs/test_webqsp_half_abl_noverifier.jsonl,200,152,16,32,0,4460,6.1,38,,,200
+logs/test_cwq_half_abl_noverifier.jsonl,198,97,40,61,0,6704,8.7,108,,,198
+logs/test_webqsp_half_abl_embonly.jsonl,200,148,27,25,0,3413,4.4,57,190,10,
+logs/test_cwq_half_abl_embonly.jsonl,198,94,56,48,0,4925,5.9,143,178,20,
