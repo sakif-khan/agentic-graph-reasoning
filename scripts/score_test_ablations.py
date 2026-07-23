@@ -123,8 +123,8 @@ def main():
             for st, v in sorted(by.items()))
         print(f"  {ds:<8}{sysname:<21}{cells}")
 
-    # McNemar: AGR vs each baseline, per dataset
-    print("\nMcNemar (AGR vs baseline, per-question hit):")
+    # McNemar: AGR vs each ablation, per dataset
+    print("\nMcNemar (AGR vs ablation, per-question hit):")
     for ds in ("webqsp", "cwq"):
         agr_abl_full = runs.get((ds, "half_abl_full"))
         for (d2, sysname), rows in runs.items():
