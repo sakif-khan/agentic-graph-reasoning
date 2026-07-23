@@ -1,0 +1,1236 @@
+[
+ {
+  "qid": "WebQTrn-2540_1af583970c492fc3682ae363bbfca3d3",
+  "question": "Who was influenced by Eugene Delacroix and inspired Monet?",
+  "gold": [
+   "Camille Pissarro",
+   "Pierre-Auguste Renoir"
+  ],
+  "pred": [
+   "Claude Monet"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2569_6b6fb0182356d92873272424688be466",
+  "question": "The building where the Houston Rockets and Houston Aeros played is now called what?",
+  "gold": [
+   "Lakewood Church Central Campus"
+  ],
+  "pred": [
+   "Toyota Center"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-213_024fd6ca0b4cb30927c22e93a552ae6c",
+  "question": "What person notable with the medical condition Attention deficit hyperactivity disorder id Scarlett Johansson date?",
+  "gold": [
+   "Justin Timberlake"
+  ],
+  "pred": [
+   "Mary-Kate Olsen"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1260_c4e06c3a9e4b4f10bd1ae97f1742c198",
+  "question": "Which Super Bowl was won by the team that also won the AFC Championship Game in 2013?",
+  "gold": [
+   "Super Bowl XXXV"
+  ],
+  "pred": [
+   "Super Bowl XLVII",
+   "Baltimore Ravens"
+  ],
+  "near_miss": true
+ },
+ {
+  "qid": "WebQTrn-894_022431f6dfa30cf2e715eb171e0437ec",
+  "question": "What inspired Scott Fitzgerald and was also influenced by Mark Twain?",
+  "gold": [
+   "Sherwood Anderson"
+  ],
+  "pred": [
+   "Jazz Age"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1677_15a55e684b4c9a686e6865cfcad59905",
+  "question": "What movie produced by Chris Columbus did Adam Sandler play in?",
+  "gold": [
+   "Pixels"
+  ],
+  "pred": [
+   "Nine Months"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2871_4c5dc1332d9eba8fde58e7b9561d4ae3",
+  "question": "Which state has the position title of Mayor is near the Grand Canyon?",
+  "gold": [
+   "Phoenix",
+   "Phoenix"
+  ],
+  "pred": [
+   "Arizona"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-849_fa1fffe7995213b6528da57ea4c8d226",
+  "question": "Which country, with an army of 101,000, borders Germany?",
+  "gold": [
+   "Belgium"
+  ],
+  "pred": [
+   "Poland"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1812_04dbed66ba17d35bf79f72e04bbcc776",
+  "question": "What country in the Caribbean appointed Elizabeth II to a governmental position?",
+  "gold": [
+   "British Virgin Islands"
+  ],
+  "pred": [
+   "Anguilla"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1000_7457bb008a1da743b19ff9ce3a5cac63",
+  "question": "Which countries included in Oceania, had a population of less than 523000?",
+  "gold": [
+   "Tonga",
+   "Samoa",
+   "Northern Mariana Islands",
+   "Solomon Islands",
+   "Guam",
+   "New Caledonia",
+   "Marshall Islands",
+   "Vanuatu",
+   "Kiribati",
+   "Fiji",
+   "Cook Islands"
+  ],
+  "pred": [
+   "Nauru",
+   "Tuvalu",
+   "Norfolk Island"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1513_5422fa602469c38418171ad342583759",
+  "question": "What is there to do in downtown Sacramento, where there is an organization headquarters, located in the city of Sacramento County?",
+  "gold": [
+   "California State Capitol Museum"
+  ],
+  "pred": [
+   "Sacramento"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d",
+  "question": "What countries are in the Atlantic Time Zone in the Caribbean?",
+  "gold": [
+   "British Virgin Islands",
+   "Netherlands Antilles"
+  ],
+  "pred": [
+   "Dominican Republic",
+   "Trinidad and Tobago",
+   "Bermuda"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-60_4faaf65ae1cc1b138d41253c3fc0e493",
+  "question": "What country once had a consumer price index of 0.03 and is where people speak Portuguese?",
+  "gold": [
+   "Angola"
+  ],
+  "pred": [
+   "Brazil"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-212_7905d5d52ac1a17f68996d4a2245e682",
+  "question": "What state does the Colorado River run through that has a governmental jurisdiction location symbol adapted the earliest?",
+  "gold": [
+   "Phoenix"
+  ],
+  "pred": [
+   "Colorado"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-464_cab1228be4e8c16ee35a67b7ac63b264",
+  "question": "What time zone do parts of Texas and Strathmore (D. J. Murray) Airport share?",
+  "gold": [
+   "Mountain Time Zone"
+  ],
+  "pred": [
+   "Central Time Zone"
+  ],
+  "near_miss": true
+ },
+ {
+  "qid": "WebQTest-1012_73741811f34519b29f7d19ccfd4d9553",
+  "question": "What structure opened in 1922 in Hollywood, CA?",
+  "gold": [
+   "Grauman's Egyptian Theatre"
+  ],
+  "pred": [
+   "Hollywood Palladium"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1069_3c89af72801c057504e78b3a263a9b77",
+  "question": "What language is used in Denmark with the abbreviation DE?",
+  "gold": [
+   "German Language"
+  ],
+  "pred": [
+   "Danish Language"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1677_80066cc2617f4e1301adab9b3e951711",
+  "question": "What is the earlies movie released to feature Adam Sandler?",
+  "gold": [
+   "Eight Crazy Nights"
+  ],
+  "pred": [
+   "Going Overboard"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1180_67f5f717564163742ca2588b7e186fd8",
+  "question": "The city of Wellsville can be found where in the United States?",
+  "gold": [
+   "Missouri"
+  ],
+  "pred": [
+   "Montgomery County"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1677_bdfdca39c58846e51247fd78bc7683eb",
+  "question": "In which films decorated by Karen O'Hara did Adam Sandler appear?",
+  "gold": [
+   "Paul Blart: Mall Cop 2",
+   "Blended"
+  ],
+  "pred": [
+   "Spider-Man",
+   "The American President"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2069_14d783de97238bd1ef6eb28fe7221306",
+  "question": "Which language is spoken in Chile, its main speaking country is Peru?",
+  "gold": [
+   "Puquina Language"
+  ],
+  "pred": [
+   "Spanish Language"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2540_5e56c7691b80c044d23d2f29efc3d94f",
+  "question": "Who inspired Monet and influenced Paul Verlaine?",
+  "gold": [
+   "Stéphane Mallarmé"
+  ],
+  "pred": [
+   "Eugène Boudin",
+   "Symbolism"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1841_5d1cba94c816bec220b9f98e97493b0f",
+  "question": "What nominee of the Laureus World Sports Award for Team of the Year represents a popular sport in Spain?",
+  "gold": [
+   "Spain national football team",
+   "Spain national football team",
+   "Spain national football team"
+  ],
+  "pred": [
+   "FC Barcelona"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2047_3d5f855275265f74d81b862231578e33",
+  "question": "What is the name of the structure opened in 1997 where the Chicago Cubs play?",
+  "gold": [
+   "Hohokam Stadium"
+  ],
+  "pred": [
+   "Wrigley Field"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-983_1f8b6ebf20d1119eba090d8d0257bdc5",
+  "question": "What university with 3708 postgraduates did Tennessee Williams attend?",
+  "gold": [
+   "The New School"
+  ],
+  "pred": [
+   "University of Iowa"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1260_018dc0c070e53555fa37f63d4b83ca87",
+  "question": "In what year did mascot Poe's team win the Super Bowl?",
+  "gold": [
+   "Super Bowl XXXV"
+  ],
+  "pred": [
+   "Baltimore Ravens"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-537_4439b7c167b6ccf30c53b610934c4521",
+  "question": "What \"coming of age\" genre movies have actor charlie humman been in?",
+  "gold": [
+   "Nicholas Nickleby",
+   "Whatever Happened to Harold Smith?"
+  ],
+  "pred": [
+   "Awaydays",
+   "All the Right Moves",
+   "Flicka",
+   "Diggers",
+   "With Honors",
+   "Waiting...",
+   "Hoot",
+   "Middle of Nowhere",
+   "Breaking Away",
+   "Toe to Toe"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2209_beb5507aba5b006b3b2e0598989448c8",
+  "question": "In which NBA championship did the Celtics win in a sweep of 4 games to 0.?",
+  "gold": [
+   "1959 NBA Finals"
+  ],
+  "pred": [
+   "1965 NBA Finals"
+  ],
+  "near_miss": true
+ },
+ {
+  "qid": "WebQTest-837_c4e06c3a9e4b4f10bd1ae97f1742c198",
+  "question": "In what year did a team win the superbowl and the 2013 AFC Championship Game ?",
+  "gold": [
+   "Super Bowl XLVII",
+   "Super Bowl XXXV"
+  ],
+  "pred": [
+   "2012 NFL season"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1797_dece4ddacc57788e31bf70edc99f1f37",
+  "question": "What Government position holder fought in the battle of Vicksburg?",
+  "gold": [
+   "Ulysses S. Grant"
+  ],
+  "pred": [
+   "John C. Pemberton"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1001_33d9f1ae3911d4f69a9993902924107d",
+  "question": "Which Super Bowl did the Giants win against the Denver Broncos?",
+  "gold": [
+   "Super Bowl XXI"
+  ],
+  "pred": [
+   "Super Bowl XXXII"
+  ],
+  "near_miss": true
+ },
+ {
+  "qid": "WebQTest-1785_759908f37fd43c40a532a73779dd793d",
+  "question": "What German Language movie starred  Kim Richards?",
+  "gold": [
+   "Raid on Entebbe"
+  ],
+  "pred": [
+   "The Car"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1251_cf6cc4cc9ed790243a390f155ae72256",
+  "question": "Which country speaks Germanic languages has the nominal GDP of 279500000000.0?",
+  "gold": [
+   "Austria"
+  ],
+  "pred": [
+   "Germany"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-12_7b54b31f3e5a6273f4fd2a20e565ec6d",
+  "question": "Who was the Governor of Ohio that held his position from before 1-10-2011?",
+  "gold": [
+   "Return J. Meigs, Jr.",
+   "Ted Strickland",
+   "John Kasich"
+  ],
+  "pred": [
+   "James Rudolph Garfield"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-538_485b6c9f1bd7bd7972f3dd4fcc11b1e9",
+  "question": "What film was Taylor Swift in that Shelby Young was a crew member on?",
+  "gold": [
+   "Jonas Brothers: The Concert Experience"
+  ],
+  "pred": [
+   "Hannah Montana: The Movie"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-962_f69b9d7b30f2ef81193ae7b0a39c78c5",
+  "question": "Who played in a movie that included a young Ray O Hardesty as a crew membner?",
+  "gold": [
+   "Michael Connor Humphreys"
+  ],
+  "pred": [
+   "Tom Hanks"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1053_4c8649801d197e6eb5377d292c0b6ca8",
+  "question": "Which actor played the character Henri Ducard in Star Wars?",
+  "gold": [
+   "Qui-Gon Jinn"
+  ],
+  "pred": [
+   "Liam Neeson"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-3249_4fddfec17159cdf7caa87c1e3e1f34cd",
+  "question": "Which show does Tamera Mowry act on, where the TV program \"thetvdb_id\", is greater than 75171?",
+  "gold": [
+   "Strong Medicine",
+   "Roommates"
+  ],
+  "pred": [
+   "Sister, Sister"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1736_125140bfa1a60527bde6e40dce7fe54a",
+  "question": "Where's the location where the Slavic language is spoken located?",
+  "gold": [
+   "Europe"
+  ],
+  "pred": [
+   "Holy Roman Empire"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1178_09e61020934818b85641a22821e7a455",
+  "question": "Where is the Strictly 4 My N.I.G.G.A.Z. producer originally from?",
+  "gold": [
+   "East Harlem"
+  ],
+  "pred": [
+   "Marin City"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2292_ea0bc3bb340865025c534c91eca19be9",
+  "question": "What kind of economy does the country have that breeds Moscow watchdogs?",
+  "gold": [
+   "Communist state",
+   "Socialist state",
+   "Soviet democracy",
+   "Parliamentary republic"
+  ],
+  "pred": [
+   "Soviet Union"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-683_7584ba13fff133af09542211fd90a33d",
+  "question": "Who is the actor tha tplayed Hawkeye in the film starred by Katarzyna Ancuta?",
+  "gold": [
+   "Jeremy Renner"
+  ],
+  "pred": [
+   "Chris Hemsworth"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-538_5f5da3e1d4ca7df9f19ce3fdfc5790e2",
+  "question": "Which film featuring Taylor Swift includes organization toonsplainers?",
+  "gold": [
+   "The Lorax"
+  ],
+  "pred": [
+   "Taylor Swift: Speak Now World Tour Live"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-303_2ee96aa7464485d80d214b61773f4a5c",
+  "question": "Who was the literary role model for the \"Not Without Laughter (Thrift Edition)\" piece poet?",
+  "gold": [
+   "Walt Whitman"
+  ],
+  "pred": [
+   "Langston Hughes"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-493_cf7833e237b8cda1de396587129515c1",
+  "question": "Where was the newspaper La Libre Belgique distributed during World War II?",
+  "gold": [
+   "Europe",
+   "Eurasia",
+   "Western Europe"
+  ],
+  "pred": [
+   "Belgium"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2570_ac52c51debd358141a23acc7ae7ec938",
+  "question": "Which WW2 US President had a political appointer that was White House Chief of Staff?",
+  "gold": [
+   "Harry S. Truman"
+  ],
+  "pred": [
+   "Dwight D. Eisenhower"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-55_54e856d3c44e0ac4a33f0f0ebb7a67d6",
+  "question": "Who had a concert named Crazy Love Tour?",
+  "gold": [
+   "Actor",
+   "Singer",
+   "Songwriter"
+  ],
+  "pred": [
+   "Michael Bublé"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2570_d63877a40200d18c7c4e39215a3c7019",
+  "question": "This 33rd president was the nation's leader during WW2.?",
+  "gold": [
+   "Harry S. Truman"
+  ],
+  "pred": [
+   "Woodrow Wilson"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-924_ad15b96e5de6c60b06f2295638c2e471",
+  "question": "Which is the team founded in 1893 which Messi played for in 2010?",
+  "gold": [
+   "Argentina national football team"
+  ],
+  "pred": [
+   "FC Barcelona"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2784_025fdfafd914ff922ab8144f527c06ec",
+  "question": "In what films does the lyracist for \"Panther Power\" appear?",
+  "gold": [
+   "Murder Was the Case",
+   "Poetic Justice",
+   "Gridlock'd",
+   "Above the Rim",
+   "Juice",
+   "Nothing but Trouble",
+   "Gang Related",
+   "Bullet"
+  ],
+  "pred": [
+   "Tupac: Assassination",
+   "Tupac Shakur: Thug Angel: The Life of an Outlaw",
+   "R.I.P. II: Eyes on Hip Hop",
+   "Tha Westside",
+   "Apprenticeship of Tupac Shakur",
+   "Tupac: Live at the House of Blues",
+   "Tupac: Resurrection",
+   "Thug Immortal: The Tupac Shakur Story",
+   "Freestyle: The Art of Rhyme",
+   "R.I.P.: Shades of Hip Hop"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2006_7993a79baca778d4e8e6cb2b1882bca4",
+  "question": "What magazine, published in 1841, once employed Edgar Allen Poe?",
+  "gold": [
+   "Burton's Gentleman's Magazine"
+  ],
+  "pred": [
+   "Graham's Magazine"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-3100_d059b24adec4064377b957ca598769be",
+  "question": "What part is the country with the capital named Santo Domingo?",
+  "gold": [
+   "Greater Antilles",
+   "Latin America",
+   "North America",
+   "Americas",
+   "País"
+  ],
+  "pred": [
+   "Dominican Republic"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-493_590fff78c30981ef9566ad54a453d002",
+  "question": "Where does the breed Schipperke originated from?",
+  "gold": [
+   "Europe",
+   "Eurasia",
+   "Western Europe"
+  ],
+  "pred": [
+   "Belgium"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1923_eaeaff16b51e52669edc90501a373c61",
+  "question": "Which movie did Miley Cyrus appear in and got a nomination for \"the entire cast\"?",
+  "gold": [
+   "Sex and the City 2"
+  ],
+  "pred": [
+   "Hannah Montana: The Movie"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-64_08a3071aec88af141fc20ed22cfff0e2",
+  "question": "What did the person who lived in Marin City once do?",
+  "gold": [
+   "Bishop"
+  ],
+  "pred": [
+   "Tupac Shakur",
+   "California Love"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1923_b10bde702bb6c68ce3cdced85d5aff02",
+  "question": "Which movie that was cast by Cathy Sandrich was Miley Cyrus in?",
+  "gold": [
+   "The Last Song"
+  ],
+  "pred": [
+   "So Undercover"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1706_97097ed7f8b2c898c800e8717998cb4c",
+  "question": "What controls the second level division Kuna de Madugandi?",
+  "gold": [
+   "Ricardo Martinelli"
+  ],
+  "pred": [
+   "Panama"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-25_3a7068fa96cd9e08dc2b1dabe458c85d",
+  "question": "What movie did Taylor Lautner  play in that the running time for the tv program is 22 minutes?",
+  "gold": [
+   "He's a Bully, Charlie Brown"
+  ],
+  "pred": [
+   "Summerland"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-831_f2d789d28c11bc5b682263b07195d208",
+  "question": "What is the last movie by the artist who recorded Faster Kill Pussycat?",
+  "gold": [
+   "Something Wicked"
+  ],
+  "pred": [
+   "The Dead Girl"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-567_2c5591f1dbe7402405004d7a0836dd3b",
+  "question": "Which animated movies hs Ron Howard done?",
+  "gold": [
+   "Osmosis Jones"
+  ],
+  "pred": [
+   "Willow",
+   "Splash"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-124_609120802c32c3608fc379700186f76c",
+  "question": "What is the most recent movie directed by Angelina Jolie?",
+  "gold": [
+   "Blue Ivy"
+  ],
+  "pred": [
+   "By the Sea"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-43_a29af73bf225f568206dcf810358236f",
+  "question": "What occupations were held by the person who stated \"Everything I know I learned after I was thirty?\"?",
+  "gold": [
+   "Statesman",
+   "Publisher",
+   "Physician",
+   "Writer",
+   "Journalist"
+  ],
+  "pred": [
+   "Georges Clémenceau"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1297_a0da13a7b70a064b8cffb58007f6739d",
+  "question": "Where did the artist grow up that recorded #Thatpower?",
+  "gold": [
+   "London"
+  ],
+  "pred": [
+   "Stratford",
+   "Canada"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1923_7084416ab9f72f1f1f8fc3ce7871ee4a",
+  "question": "Which movie has Miley Cyrus starred in that is 102.0 minutes long?",
+  "gold": [
+   "Hannah Montana: The Movie"
+  ],
+  "pred": [
+   "The Last Song"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-25_23b0132339644b875bf6a966c5b0c131",
+  "question": "Which Taylor Lautner movie has a sequel titled \"The Twilight Saga: Breaking Dawn - Part 1\"?",
+  "gold": [
+   "Eclipse"
+  ],
+  "pred": [
+   "The Twilight Saga: Breaking Dawn - Part 2"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2748_4d6c65004ee28d487bc3921f625106b5",
+  "question": "What language is spoken in the country that circulates a newspaper called Manager Daily?",
+  "gold": [
+   "Khmer language"
+  ],
+  "pred": [
+   "Thai Language"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1923_29c81279ed9a982e12f82e764083db76",
+  "question": "What television series did Miley Cyrus been in with 0 season?",
+  "gold": [
+   "Wizards on Deck with Hannah Montana"
+  ],
+  "pred": [
+   "The Jay Leno Show"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-3543_d7db4cdab1589b7c97a81236310a67f7",
+  "question": "What country to which Japan exports contains a neighborhood called Al Barsha?",
+  "gold": [
+   "Dubai"
+  ],
+  "pred": [
+   "United Arab Emirates"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1758_477d7040a0ed5bfecb155b8b3d3082fb",
+  "question": "What is the current government of the place where \"The Alchemist of Happiness\" takes place?",
+  "gold": [
+   "Parliamentary system",
+   "Presidential system",
+   "Islamic republic",
+   "Unitary state",
+   "Theocracy"
+  ],
+  "pred": [
+   "Government of Iran"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2859_37bf80e89387cf09fca66eb7915a52b0",
+  "question": "What jobs were done by the author who wrote \"The New Atlantis\"?",
+  "gold": [
+   "Spy",
+   "Statesman",
+   "Philosopher",
+   "Scientist",
+   "Author"
+  ],
+  "pred": [
+   "Francis Bacon"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-783_b181354faec01d121c5f050e0d0da2fd",
+  "question": "What county in Texas is the location where the movie \"Puncture\" takes place?",
+  "gold": [
+   "Montgomery County"
+  ],
+  "pred": [
+   "Harris County"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-64_017078a590fa5382bab9986c451d8d08",
+  "question": "In the movie Juice, what character did the focal character in the image Meagainsttheworld play?",
+  "gold": [
+   "Bishop"
+  ],
+  "pred": [
+   "Q"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2784_abedc8acd0fdcd2e595d7ec6d58d6058",
+  "question": "In which movies does Tupac act in, that was edited by Malcolm Campbell?",
+  "gold": [
+   "Nothing but Trouble"
+  ],
+  "pred": [
+   "Gang Related"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1348_9cd662e0ee5c2ffbbbb0dc86053b1680",
+  "question": "Which University of Mississippi did Peyton Manning's father play for?",
+  "gold": [
+   "Ole Miss Rebels football"
+  ],
+  "pred": [
+   "Archie Manning"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27",
+  "question": "What was the actor's name that played the character Digital Underground Member in \"Juice\"?",
+  "gold": [
+   "Bishop"
+  ],
+  "pred": [
+   "Tupac Shakur"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-25_db9695c22f0f88f0733e1286c7fffe30",
+  "question": "Which Taylor Lautner movie has a tvrage_id of 20997?",
+  "gold": [
+   "The Nick and Jessica Variety Hour"
+  ],
+  "pred": [
+   "Abduction"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2570_ff6becc9074132acf2f300dbba1c1e4e",
+  "question": "Who was the president of the United States during World War 2 that started his governmental position after January 2, 1939?",
+  "gold": [
+   "Franklin D. Roosevelt",
+   "Harry S. Truman"
+  ],
+  "pred": [
+   "Dwight D. Eisenhower"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1405_b98a27e21e904173168eb7517b123e51",
+  "question": "Where did President Kennedy go to school that has less than 2416 postgraduates?",
+  "gold": [
+   "Stanford Graduate School of Business"
+  ],
+  "pred": [
+   "Choate Rosemary Hall"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2570_6f059734e774504c68f628670516e72c",
+  "question": "Which WW2-era USA president once said \"I would rather have peace in the world than be President.\"?",
+  "gold": [
+   "Harvard College"
+  ],
+  "pred": [
+   "Harry S. Truman"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1348_3f44e0c4fd23a8334a972ebb812e0e35",
+  "question": "What Minneapolis sports team had Peyton Manning's father on their roster?",
+  "gold": [
+   "Minnesota Vikings"
+  ],
+  "pred": [
+   "Archie Manning"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1528_3c737d4a4dbf3b5acb082a4a1e43d792",
+  "question": "What Cameron Pace Group movie was Logan Lerman in?",
+  "gold": [
+   "The Three Musketeers"
+  ],
+  "pred": [
+   "Meet Bill"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-3170_8c4cd2a8dd5064dcd1e88389796138c7",
+  "question": "What does the political appointee, Associate Director, White House Office of Public Liaison, have a degree in?",
+  "gold": [
+   "Political Science"
+  ],
+  "pred": [
+   "Kal Penn"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-634_4f2c0d9eb022ed67ec2cc356d4d5113a",
+  "question": "What county does the place with San Antonio City Council located in?",
+  "gold": [
+   "Comal County"
+  ],
+  "pred": [
+   "Bexar County"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-3057_5a7cd2677ed97e520a124ba9c2da6ad4",
+  "question": "When prior to October 30, 2014 did the Giants win the world series?",
+  "gold": [
+   "Songwriter"
+  ],
+  "pred": [
+   "2010 World Series",
+   "2012 World Series"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1686_c374fe555611a2e3aba1ba9ffd739d13",
+  "question": "Who held his governmental position from 1998 and was the Governor of Arizona in 2009?",
+  "gold": [
+   "Egyptian pound"
+  ],
+  "pred": [
+   "Jan Brewer"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1923_037ebc0e903ab6eb5ef8ce44ecd3bd64",
+  "question": "Which movies was the nominee of the Blimp Award for Favorite Television Star award in?",
+  "gold": [
+   "Miley Cyrus: Tongue Tied",
+   "Big Fish",
+   "Hannah Montana: The Movie",
+   "Hannah Montana and Miley Cyrus: Best of Both Worlds Concert",
+   "Sonic the Hedgehog",
+   "Sex and the City 2",
+   "Wizards on Deck with Hannah Montana",
+   "Bolt",
+   "The Last Song",
+   "Super Rhino",
+   "High School Musical 2",
+   "LOL",
+   "Radio Disney Party Jams: The Concert",
+   "The World According to Miley Cyrus",
+   "So Undercover",
+   "Family Bond",
+   "Rock Mafia Presents: The Big Bang"
+  ],
+  "pred": [
+   "Miley Cyrus"
+  ],
+  "near_miss": true
+ },
+ {
+  "qid": "WebQTrn-25_f65ceb2f4ef98392b0177705932740a5",
+  "question": "What other movies has the actor that played the character Eliot Murtaugh play in?",
+  "gold": [
+   "Run the Tide",
+   "The Ridiculous Six",
+   "He's a Bully, Charlie Brown",
+   "Twilight",
+   "The Twilight Saga: New Moon",
+   "Valentine's Day",
+   "Cheaper by the Dozen 2",
+   "The Adventures of Sharkboy and Lavagirl",
+   "Shadow Fury",
+   "Eclipse",
+   "The Twilight Saga: Breaking Dawn - Part 1",
+   "The Nick and Jessica Variety Hour",
+   "Northern Lights",
+   "Abduction",
+   "The Twilight Saga: Breaking Dawn - Part 2",
+   "Field of Dreams 2: Lockout",
+   "Incarceron",
+   "Grown Ups 2",
+   "Tracers"
+  ],
+  "pred": [
+   "Taylor Lautner"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-64_025fdfafd914ff922ab8144f527c06ec",
+  "question": "What was the name in \"Juice\" of the lyricist for \"Panther Power\"?",
+  "gold": [
+   "Bishop"
+  ],
+  "pred": [
+   "Tupac Shakur"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-124_0782789f35ce79d56102e26e54e5b700",
+  "question": "What was directed by the actor who played Corneila Wallace?",
+  "gold": [
+   "By the Sea",
+   "In the Land of Blood and Honey",
+   "A Place in Time",
+   "Unbroken"
+  ],
+  "pred": [
+   "Angelina Jolie"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-965_e91a95bd503f0704b9cc40c6f2139524",
+  "question": "\"Laziness may appear attractive but work gives satisfaction,\" was said by a person who went to what school?",
+  "gold": [
+   "Montessori Lyceum Amsterdam",
+   "Jewish Lyceum"
+  ],
+  "pred": [
+   "Anne Frank"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-1348_b7598df908bf8cbe941f82e1cefaec28",
+  "question": "What defunct sports team later known as the Tennessee Oilers did Peyton Manning 's dad play for?",
+  "gold": [
+   "Houston Oilers"
+  ],
+  "pred": [
+   "Archie Manning"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2570_c47133a5a4595621bf114ffa8ed4c3e3",
+  "question": "What held his governmental position from latest and was the president of the United States during WWII?",
+  "gold": [
+   "Khmer language"
+  ],
+  "pred": [
+   "Franklin D. Roosevelt"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-213_71621b15ae9777fca8c1becaa188a3bb",
+  "question": "Who were the award nominees for the 2003 Boston Society of Film Critics Awards?",
+  "gold": [
+   "Josh Hartnett"
+  ],
+  "pred": [
+   "Scarlett Johansson"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2319_14ab2260ec77ebd5b3b8f666efc08fc3",
+  "question": "What language is spoken where the First Vice Prime Minister of Ukraine resides?",
+  "gold": [
+   "Albanian language",
+   "Tatar Language",
+   "Moldovan language",
+   "Romanian Language",
+   "Hungarian language",
+   "Russian Language",
+   "Ukrainian Language"
+  ],
+  "pred": [
+   "Russian"
+  ],
+  "near_miss": true
+ },
+ {
+  "qid": "WebQTrn-25_2a2de50d3b65cc5d2c88f54e283a4b8a",
+  "question": "What movie featured Taylor Lautner and was released straight to video?",
+  "gold": [
+   "Shadow Fury",
+   "Shadow Fury"
+  ],
+  "pred": [
+   "Abduction"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2653_6c19bc1fe78f2c0015bfd29e5c12767c",
+  "question": "The government jurisdiction, that held the legislative session of the First Valls Government, was involved in which wars?",
+  "gold": [
+   "Gulf War",
+   "Battle of Talavera",
+   "Battle of Bussaco",
+   "Battle of Bailén",
+   "Battle of Berezina",
+   "Second Battle of the Aisne",
+   "Battle of Medellín",
+   "Battle of Passchendaele",
+   "Battle of Dien Bien Phu"
+  ],
+  "pred": [
+   "Seven Years' War",
+   "First Indochina War",
+   "War of the Castilian Succession",
+   "Action of 1 January 1800",
+   "Action of 8 May 1744",
+   "Action of 31 March 1800",
+   "Revolutions and interventions in Hungary",
+   "Williamite War in Ireland"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-1484_1fbd766e1b1bf978da23e8646cadf3a1",
+  "question": "The person who attended the education institution Colegio AlemÃ¡n Alexander von Humboldt did what kind of paintings?",
+  "gold": [
+   "Magic realism",
+   "Modern art",
+   "Surrealism"
+  ],
+  "pred": [
+   "Frida Kahlo"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTest-12_5373d9d04da65179a41e5d4669db121e",
+  "question": "Who was the Methodist governor of Ohio in 2011?",
+  "gold": [
+   "Ted Strickland"
+  ],
+  "pred": [
+   "John Glenn"
+  ],
+  "near_miss": false
+ },
+ {
+  "qid": "WebQTrn-2100_faefa67fba5946fa87b438a6df0b8e63",
+  "question": "What city can the headquarters for Curno Brakes be found?",
+  "gold": [
+   "Curno"
+  ],
+  "pred": [
+   "Brembo"
+  ],
+  "near_miss": false
+ }
+]
