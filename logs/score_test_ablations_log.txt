@@ -1,0 +1,33 @@
+dataset system               Hits@1               F1                   P      R      hedge%  tok    calls  secs*
+webqsp  half_abl_full        0.755 [0.695,0.810]  0.659 [0.599,0.717]  0.710  0.664  8.5%    4562   6.2    11.2
+cwq     half_abl_full        0.495 [0.424,0.566]  0.445 [0.379,0.511]  0.461  0.451  23.2%   7105   9.1    17.6
+webqsp  half_abl_noplanner   0.830 [0.775,0.880]  0.742 [0.687,0.794]  0.788  0.749  5.5%    3159   4.0    8.1
+cwq     half_abl_noplanner   0.434 [0.369,0.505]  0.398 [0.333,0.464]  0.407  0.405  26.8%   5617   6.7    13.1
+webqsp  half_abl_nobacktrack 0.745 [0.685,0.805]  0.646 [0.586,0.705]  0.704  0.649  9.5%    4261   5.8    5.5
+cwq     half_abl_nobacktrack 0.490 [0.419,0.561]  0.445 [0.379,0.511]  0.456  0.453  28.3%   5792   7.4    8.3
+webqsp  half_abl_noverifier  0.760 [0.700,0.820]  0.663 [0.604,0.721]  0.711  0.673  8.0%    4460   6.1    nan
+cwq     half_abl_noverifier  0.490 [0.419,0.561]  0.436 [0.371,0.503]  0.451  0.446  20.2%   6704   8.7    nan
+webqsp  half_abl_embonly     0.740 [0.680,0.800]  0.643 [0.583,0.702]  0.701  0.644  13.5%   3413   4.4    9.3
+cwq     half_abl_embonly     0.475 [0.409,0.545]  0.437 [0.370,0.502]  0.452  0.444  28.3%   4925   5.9    10.5
+
+Per-stratum Hits@1 / F1:
+  webqsp  half_abl_full        h1:0.75/0.65(n=128)     h2:0.84/0.75(n=64)      h3plus:0.00/0.00(n=2)   unreachable:0.17/0.17(n=6)
+  cwq     half_abl_full        h1:0.49/0.45(n=68)      h2:0.48/0.43(n=105)     h3plus:0.62/0.50(n=24)  unreachable:0.00/0.00(n=1)
+  webqsp  half_abl_noplanner   h1:0.85/0.76(n=128)     h2:0.89/0.80(n=64)      h3plus:0.00/0.00(n=2)   unreachable:0.00/0.00(n=6)
+  cwq     half_abl_noplanner   h1:0.54/0.51(n=68)      h2:0.34/0.33(n=105)     h3plus:0.54/0.41(n=24)  unreachable:0.00/0.00(n=1)
+  webqsp  half_abl_nobacktrack h1:0.73/0.63(n=128)     h2:0.84/0.74(n=64)      h3plus:0.00/0.00(n=2)   unreachable:0.17/0.17(n=6)
+  cwq     half_abl_nobacktrack h1:0.51/0.48(n=68)      h2:0.45/0.42(n=105)     h3plus:0.62/0.50(n=24)  unreachable:0.00/0.00(n=1)
+  webqsp  half_abl_noverifier  h1:0.76/0.66(n=128)     h2:0.84/0.74(n=64)      h3plus:0.00/0.00(n=2)   unreachable:0.17/0.17(n=6)
+  cwq     half_abl_noverifier  h1:0.47/0.43(n=68)      h2:0.48/0.43(n=105)     h3plus:0.62/0.50(n=24)  unreachable:0.00/0.00(n=1)
+  webqsp  half_abl_embonly     h1:0.75/0.64(n=128)     h2:0.81/0.73(n=64)      h3plus:0.00/0.00(n=2)   unreachable:0.00/0.00(n=6)
+  cwq     half_abl_embonly     h1:0.50/0.46(n=68)      h2:0.45/0.42(n=105)     h3plus:0.54/0.45(n=24)  unreachable:0.00/0.00(n=1)
+
+McNemar (AGR vs baseline, per-question hit):
+  webqsp  half_abl_full vs half_abl_noplanner    half_abl_full-only-correct=6    half_abl_noplanner-only-correct=21      p=5.92e-03
+  cwq     half_abl_full vs half_abl_noplanner    half_abl_full-only-correct=27   half_abl_noplanner-only-correct=15      p=8.84e-02
+  webqsp  half_abl_full vs half_abl_nobacktrack  half_abl_full-only-correct=5    half_abl_nobacktrack-only-correct=3     p=7.27e-01
+  cwq     half_abl_full vs half_abl_nobacktrack  half_abl_full-only-correct=6    half_abl_nobacktrack-only-correct=5     p=1.00e+00
+  webqsp  half_abl_full vs half_abl_noverifier   half_abl_full-only-correct=0    half_abl_noverifier-only-correct=1      p=1.00e+00
+  cwq     half_abl_full vs half_abl_noverifier   half_abl_full-only-correct=1    half_abl_noverifier-only-correct=0      p=1.00e+00
+  webqsp  half_abl_full vs half_abl_embonly      half_abl_full-only-correct=12   half_abl_embonly-only-correct=9         p=6.64e-01
+  cwq     half_abl_full vs half_abl_embonly      half_abl_full-only-correct=11   half_abl_embonly-only-correct=7         p=4.81e-01
