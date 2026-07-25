@@ -24,7 +24,7 @@ def main():
             cons = norm(f["consensus_answer"])
             qtext = norm(f["question"])            # same normalization both sides
             golds = [norm(g) for g in f["gold"]]
-            has_mid = any(re.match(r"^[mg]\.", g) for g in golds)
+            has_mid = any(re.match(r"^[mg]\.", str(g).strip()) for g in f["gold"])
 
             if cons and cons in qtext:
                 f["verdict"] = "gold_ok"

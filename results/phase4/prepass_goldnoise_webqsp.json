@@ -286,7 +286,7 @@
   "includes_agr": true,
   "mixed_evidence": true,
   "verdict": "gold_wrong",
-  "note": "malformed gold (116 entities, MID leakage=False)"
+  "note": "malformed gold (116 entities, MID leakage=True)"
  },
  {
   "qid": "WebQTest-783",
@@ -1948,7 +1948,7 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_wrong",
-  "note": "malformed gold (116 entities, MID leakage=False)"
+  "note": "malformed gold (116 entities, MID leakage=True)"
  },
  {
   "qid": "WebQTest-958",
@@ -2081,7 +2081,7 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_wrong",
-  "note": "malformed gold (116 entities, MID leakage=False)"
+  "note": "malformed gold (116 entities, MID leakage=True)"
  },
  {
   "qid": "WebQTest-245",
