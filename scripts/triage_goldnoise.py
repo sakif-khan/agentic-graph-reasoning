@@ -40,10 +40,11 @@ def main():
 
         done = sum(1 for f in flags if f.get("verdict"))
         manual = [f for f in flags if not f.get("verdict")]
-        mixed_manual = sum(1 for f in manual if f.get("mixed_evidence"))
-        print(f"{ds}: auto-verdicted {done}/{len(flags)}; "
-              f"{len(manual)} manual ({mixed_manual} mixed-evidence -> adjudicate; "
-              f"{len(manual) - mixed_manual} graph-only -> scope out)")
+        mixed = sum(1 for f in manual if f.get("mixed_evidence"))
+        print(f"{ds}: auto {done}/{len(flags)} "
+              f"({len({f['qid'] for f in flags})} distinct questions); "
+              f"manual {len(manual)} ({mixed} mixed-evidence, "
+              f"{len(manual) - mixed} graph-only)")
 
 if __name__ == "__main__":
     main()

@@ -1,2 +1,2 @@
-webqsp: auto-verdicted 15/89; 74 manual (18 mixed-evidence -> adjudicate; 56 graph-only -> scope out)
-cwq: auto-verdicted 2/59; 57 manual (42 mixed-evidence -> adjudicate; 15 graph-only -> scope out)
+webqsp: auto 15/89 (58 distinct questions); manual 74 (18 mixed-evidence, 56 graph-only)
+cwq: auto 2/59 (47 distinct questions); manual 57 (42 mixed-evidence, 15 graph-only)
