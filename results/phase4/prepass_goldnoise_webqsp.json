@@ -68,8 +68,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": true,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-1730",
@@ -113,8 +113,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": true,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-122",
@@ -285,8 +285,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": true,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_wrong",
+  "note": "malformed gold (116 entities, MID leakage=False)"
  },
  {
   "qid": "WebQTest-783",
@@ -322,8 +322,8 @@
   ],
   "includes_agr": false,
   "mixed_evidence": true,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-514",
@@ -363,8 +363,8 @@
   ],
   "includes_agr": false,
   "mixed_evidence": true,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-1330",
@@ -473,8 +473,8 @@
   ],
   "includes_agr": false,
   "mixed_evidence": true,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-298",
@@ -691,8 +691,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-1309",
@@ -729,8 +729,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-1416",
@@ -825,8 +825,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-1281",
@@ -924,8 +924,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-124",
@@ -1015,8 +1015,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "answer-type mismatch: gold is occupation/type, consensus is an entity name"
  },
  {
   "qid": "WebQTest-848",
@@ -1115,8 +1115,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-1920",
@@ -1137,8 +1137,8 @@
   ],
   "includes_agr": false,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "answer-type mismatch: gold is occupation/type, consensus is an entity name"
  },
  {
   "qid": "WebQTest-1877",
@@ -1159,8 +1159,8 @@
   ],
   "includes_agr": false,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-1877",
@@ -1338,8 +1338,8 @@
   ],
   "includes_agr": false,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "answer-type mismatch: gold is occupation/type, consensus is an entity name"
  },
  {
   "qid": "WebQTest-464",
@@ -1385,8 +1385,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_ok",
+  "note": "echo: consensus answer appears in question text"
  },
  {
   "qid": "WebQTest-942",
@@ -1947,8 +1947,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_wrong",
+  "note": "malformed gold (116 entities, MID leakage=False)"
  },
  {
   "qid": "WebQTest-958",
@@ -2080,8 +2080,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "",
-  "note": ""
+  "verdict": "gold_wrong",
+  "note": "malformed gold (116 entities, MID leakage=False)"
  },
  {
   "qid": "WebQTest-245",
