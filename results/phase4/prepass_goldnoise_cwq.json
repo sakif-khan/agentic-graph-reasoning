@@ -504,7 +504,8 @@
   "includes_agr": false,
   "mixed_evidence": true,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTrn-1812_04dbed66ba17d35bf79f72e04bbcc776",
@@ -832,7 +833,8 @@
   "includes_agr": false,
   "mixed_evidence": true,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTrn-2006_54c677761ff06a9b6e223ccb4c72a2a6",
@@ -870,8 +872,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "gold_ok",
-  "note": "answer-type mismatch: gold is occupation/type, consensus is an entity name"
+  "verdict": "",
+  "note": ""
  },
  {
   "qid": "WebQTrn-1706_97097ed7f8b2c898c800e8717998cb4c",

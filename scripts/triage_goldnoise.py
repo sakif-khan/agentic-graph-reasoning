@@ -29,14 +29,11 @@ def main():
             if cons and cons in qtext:
                 f["verdict"] = "gold_ok"
                 f["note"] = "echo: consensus answer appears in question text"
+                f["subtype"] = "echo_topic"
             elif len(f["gold"]) > 20 or has_mid:
                 f["verdict"] = "gold_wrong"
                 f["note"] = (f"malformed gold ({len(f['gold'])} entities, "
                              f"MID leakage={has_mid})")
-            elif golds and sum(1 for g in golds if g in TYPE_WORDS) >= len(golds) / 2:
-                f["verdict"] = "gold_ok"
-                f["note"] = ("answer-type mismatch: gold is occupation/type, "
-                             "consensus is an entity name")
 
         json.dump(flags, open(path, "w", encoding="utf-8"),
                   indent=1, ensure_ascii=False)

@@ -69,7 +69,8 @@
   "includes_agr": true,
   "mixed_evidence": true,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-1730",
@@ -114,7 +115,8 @@
   "includes_agr": true,
   "mixed_evidence": true,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-122",
@@ -323,7 +325,8 @@
   "includes_agr": false,
   "mixed_evidence": true,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-514",
@@ -364,7 +367,8 @@
   "includes_agr": false,
   "mixed_evidence": true,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-1330",
@@ -474,7 +478,8 @@
   "includes_agr": false,
   "mixed_evidence": true,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-298",
@@ -692,7 +697,8 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-1309",
@@ -730,7 +736,8 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-1416",
@@ -826,7 +833,8 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-1281",
@@ -925,7 +933,8 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-124",
@@ -1015,8 +1024,8 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "gold_ok",
-  "note": "answer-type mismatch: gold is occupation/type, consensus is an entity name"
+  "verdict": "",
+  "note": ""
  },
  {
   "qid": "WebQTest-848",
@@ -1116,7 +1125,8 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-1920",
@@ -1137,8 +1147,8 @@
   ],
   "includes_agr": false,
   "mixed_evidence": false,
-  "verdict": "gold_ok",
-  "note": "answer-type mismatch: gold is occupation/type, consensus is an entity name"
+  "verdict": "",
+  "note": ""
  },
  {
   "qid": "WebQTest-1877",
@@ -1160,7 +1170,8 @@
   "includes_agr": false,
   "mixed_evidence": false,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-1877",
@@ -1338,8 +1349,8 @@
   ],
   "includes_agr": false,
   "mixed_evidence": false,
-  "verdict": "gold_ok",
-  "note": "answer-type mismatch: gold is occupation/type, consensus is an entity name"
+  "verdict": "",
+  "note": ""
  },
  {
   "qid": "WebQTest-464",
@@ -1386,7 +1397,8 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_ok",
-  "note": "echo: consensus answer appears in question text"
+  "note": "echo: consensus answer appears in question text",
+  "subtype": "echo_topic"
  },
  {
   "qid": "WebQTest-942",
