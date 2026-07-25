@@ -1,0 +1,1140 @@
+[
+ {
+  "qid": "WebQTrn-2569_6b6fb0182356d92873272424688be466",
+  "question": "The building where the Houston Rockets and Houston Aeros played is now called what?",
+  "gold": [
+   "Lakewood Church Central Campus"
+  ],
+  "consensus_answer": "toyota center",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
+  "question": "Which caribbean countries use Eastern Caribbean Time Zone?",
+  "gold": [
+   "Barbados"
+  ],
+  "consensus_answer": "antigua and barbuda",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-493_cf7833e237b8cda1de396587129515c1",
+  "question": "Where was the newspaper La Libre Belgique distributed during World War II?",
+  "gold": [
+   "Europe",
+   "Eurasia",
+   "Western Europe"
+  ],
+  "consensus_answer": "belgium",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-3100_d059b24adec4064377b957ca598769be",
+  "question": "What part is the country with the capital named Santo Domingo?",
+  "gold": [
+   "Greater Antilles",
+   "Latin America",
+   "North America",
+   "Americas",
+   "País"
+  ],
+  "consensus_answer": "dominican republic",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-493_590fff78c30981ef9566ad54a453d002",
+  "question": "Where does the breed Schipperke originated from?",
+  "gold": [
+   "Europe",
+   "Eurasia",
+   "Western Europe"
+  ],
+  "consensus_answer": "belgium",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-3543_d7db4cdab1589b7c97a81236310a67f7",
+  "question": "What country to which Japan exports contains a neighborhood called Al Barsha?",
+  "gold": [
+   "Dubai"
+  ],
+  "consensus_answer": "united arab emirates",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-710_c1d5c9c777c291a80c29c70ec43c45ad",
+  "question": "Find the sports team that calls AT&T Park, when was the last time they won a world series?",
+  "gold": [
+   "2014 World Series"
+  ],
+  "consensus_answer": "san francisco giants",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2570_6f059734e774504c68f628670516e72c",
+  "question": "Which WW2-era USA president once said \"I would rather have peace in the world than be President.\"?",
+  "gold": [
+   "Harvard College"
+  ],
+  "consensus_answer": "harry s truman",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2540_1af583970c492fc3682ae363bbfca3d3",
+  "question": "Who was influenced by Eugene Delacroix and inspired Monet?",
+  "gold": [
+   "Camille Pissarro",
+   "Pierre-Auguste Renoir"
+  ],
+  "consensus_answer": "claude monet",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2871_4c5dc1332d9eba8fde58e7b9561d4ae3",
+  "question": "Which state has the position title of Mayor is near the Grand Canyon?",
+  "gold": [
+   "Phoenix",
+   "Phoenix"
+  ],
+  "consensus_answer": "arizona",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
+  "question": "Which caribbean countries use Eastern Caribbean Time Zone?",
+  "gold": [
+   "Barbados"
+  ],
+  "consensus_answer": "dominica",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
+  "question": "Which caribbean countries use Eastern Caribbean Time Zone?",
+  "gold": [
+   "Barbados"
+  ],
+  "consensus_answer": "grenada",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
+  "question": "Which caribbean countries use Eastern Caribbean Time Zone?",
+  "gold": [
+   "Barbados"
+  ],
+  "consensus_answer": "saint kitts and nevis",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
+  "question": "Which caribbean countries use Eastern Caribbean Time Zone?",
+  "gold": [
+   "Barbados"
+  ],
+  "consensus_answer": "saint vincent and the grenadines",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2779_14a5adac3764601c1967451c79cbdb79",
+  "question": "What was the occupation of Pam Huckaby and the real life Erin Brockovich?",
+  "gold": [
+   "Consultant"
+  ],
+  "consensus_answer": "paralegal",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-25_ee5981878443f689128ca9ea8a269f29",
+  "question": "What fantasy movies has Taylor Lautner played in?",
+  "gold": [
+   "Twilight",
+   "Eclipse",
+   "The Twilight Saga: Breaking Dawn - Part 1"
+  ],
+  "consensus_answer": "the adventures of sharkboy and lavagirl",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-303_2ee96aa7464485d80d214b61773f4a5c",
+  "question": "Who was the literary role model for the \"Not Without Laughter (Thrift Edition)\" piece poet?",
+  "gold": [
+   "Walt Whitman"
+  ],
+  "consensus_answer": "langston hughes",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1629_5b23295775632ec566475a1ab8748962",
+  "question": "Who voices Jack Skellington? Who composed the music in Before I Wake?",
+  "gold": [
+   "Danny Elfman"
+  ],
+  "consensus_answer": "chris sarandon",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-924_ad15b96e5de6c60b06f2295638c2e471",
+  "question": "Which is the team founded in 1893 which Messi played for in 2010?",
+  "gold": [
+   "Argentina national football team"
+  ],
+  "consensus_answer": "fc barcelona",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2006_7993a79baca778d4e8e6cb2b1882bca4",
+  "question": "What magazine, published in 1841, once employed Edgar Allen Poe?",
+  "gold": [
+   "Burton's Gentleman's Magazine"
+  ],
+  "consensus_answer": "grahams magazine",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2748_5394f28651892e7656afeda366a6af04",
+  "question": "Find the location of the film Fan Chan, what language is spoken there?",
+  "gold": [
+   "Lao Language",
+   "Khmer language",
+   "Akha Language",
+   "Mlabri Language",
+   "Hmong language",
+   "Saek language",
+   "Malay, Pattani Language",
+   "Vietnamese Language",
+   "Nyaw Language",
+   "Phu Thai language",
+   "Cham language",
+   "Mon Language",
+   "Thai Language"
+  ],
+  "consensus_answer": "thailand",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-61_9be8c18e016b713cbb7f7feb6badebc7",
+  "question": "What religion with religious text The Bible is practiced in Indonesia?",
+  "gold": [
+   "Protestantism",
+   "Catholicism"
+  ],
+  "consensus_answer": "christianity",
+  "n_systems": 4,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-634_4f2c0d9eb022ed67ec2cc356d4d5113a",
+  "question": "What county does the place with San Antonio City Council located in?",
+  "gold": [
+   "Comal County"
+  ],
+  "consensus_answer": "bexar county",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2570_c47133a5a4595621bf114ffa8ed4c3e3",
+  "question": "What held his governmental position from latest and was the president of the United States during WWII?",
+  "gold": [
+   "Khmer language"
+  ],
+  "consensus_answer": "franklin d roosevelt",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-213_024fd6ca0b4cb30927c22e93a552ae6c",
+  "question": "What person notable with the medical condition Attention deficit hyperactivity disorder id Scarlett Johansson date?",
+  "gold": [
+   "Justin Timberlake"
+  ],
+  "consensus_answer": "scarlett johansson",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_04dbed66ba17d35bf79f72e04bbcc776",
+  "question": "What country in the Caribbean appointed Elizabeth II to a governmental position?",
+  "gold": [
+   "British Virgin Islands"
+  ],
+  "consensus_answer": "jamaica",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d",
+  "question": "What countries are in the Atlantic Time Zone in the Caribbean?",
+  "gold": [
+   "British Virgin Islands",
+   "Netherlands Antilles"
+  ],
+  "consensus_answer": "trinidad and tobago",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-464_cab1228be4e8c16ee35a67b7ac63b264",
+  "question": "What time zone do parts of Texas and Strathmore (D. J. Murray) Airport share?",
+  "gold": [
+   "Mountain Time Zone"
+  ],
+  "consensus_answer": "central time zone",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
+  "question": "Which caribbean countries use Eastern Caribbean Time Zone?",
+  "gold": [
+   "Barbados"
+  ],
+  "consensus_answer": "saint lucia",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1677_80066cc2617f4e1301adab9b3e951711",
+  "question": "What is the earlies movie released to feature Adam Sandler?",
+  "gold": [
+   "Eight Crazy Nights"
+  ],
+  "consensus_answer": "going overboard",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1001_6bcfac70e63efec42212159c644a593a",
+  "question": "In what events ending prior to 3 February 2008 did the Giants win the Super Bowl?",
+  "gold": [
+   "Super Bowl XXV",
+   "Super Bowl XXI"
+  ],
+  "consensus_answer": "super bowl xlii",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1785_ee9df68984cde21c3be056caefd6613f",
+  "question": "Which move starring Kim Richards was the prequel to \"Beyond Witch Mountain?\"?",
+  "gold": [
+   "Return from Witch Mountain"
+  ],
+  "consensus_answer": "escape to witch mountain",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1841_5d1cba94c816bec220b9f98e97493b0f",
+  "question": "What nominee of the Laureus World Sports Award for Team of the Year represents a popular sport in Spain?",
+  "gold": [
+   "Spain national football team",
+   "Spain national football team",
+   "Spain national football team"
+  ],
+  "consensus_answer": "fc barcelona",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2047_3d5f855275265f74d81b862231578e33",
+  "question": "What is the name of the structure opened in 1997 where the Chicago Cubs play?",
+  "gold": [
+   "Hohokam Stadium"
+  ],
+  "consensus_answer": "wrigley field",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-989_4b6636a049fa767111eef6ce82bf7054",
+  "question": "What happened during ww2 when a lower estimate of 30000 casualties occurred in Dunkirk?",
+  "gold": [
+   "Battle of Dunkirk"
+  ],
+  "consensus_answer": "dunkirk evacuation",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
+  "question": "Of the 7 countries in Central America, which has an ISO smaller than 188?",
+  "gold": [
+   "Belize"
+  ],
+  "consensus_answer": "costa rica",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
+  "question": "Of the 7 countries in Central America, which has an ISO smaller than 188?",
+  "gold": [
+   "Belize"
+  ],
+  "consensus_answer": "el salvador",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
+  "question": "Of the 7 countries in Central America, which has an ISO smaller than 188?",
+  "gold": [
+   "Belize"
+  ],
+  "consensus_answer": "guatemala",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
+  "question": "Of the 7 countries in Central America, which has an ISO smaller than 188?",
+  "gold": [
+   "Belize"
+  ],
+  "consensus_answer": "honduras",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1923_29c81279ed9a982e12f82e764083db76",
+  "question": "What television series did Miley Cyrus been in with 0 season?",
+  "gold": [
+   "Wizards on Deck with Hannah Montana"
+  ],
+  "consensus_answer": "hannah montana",
+  "n_systems": 3,
+  "systems": [
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1686_554811ebe1463287ee640a214683ea57",
+  "question": "Who held his governmental position from before Janaury 6, 2003 and was the 2009 Governor of Arizona?",
+  "gold": [
+   "Janet Napolitano"
+  ],
+  "consensus_answer": "jan brewer",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-783_b181354faec01d121c5f050e0d0da2fd",
+  "question": "What county in Texas is the location where the movie \"Puncture\" takes place?",
+  "gold": [
+   "Montgomery County"
+  ],
+  "consensus_answer": "harris county",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1348_9cd662e0ee5c2ffbbbb0dc86053b1680",
+  "question": "Which University of Mississippi did Peyton Manning's father play for?",
+  "gold": [
+   "Ole Miss Rebels football"
+  ],
+  "consensus_answer": "university of mississippi",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2006_54c677761ff06a9b6e223ccb4c72a2a6",
+  "question": "What magazine did the author of The Fall of the House of Usher work for?",
+  "gold": [
+   "Burton's Gentleman's Magazine"
+  ],
+  "consensus_answer": "grahams magazine",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-55_54e856d3c44e0ac4a33f0f0ebb7a67d6",
+  "question": "Who had a concert named Crazy Love Tour?",
+  "gold": [
+   "Actor",
+   "Singer",
+   "Songwriter"
+  ],
+  "consensus_answer": "michael bublé",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1706_97097ed7f8b2c898c800e8717998cb4c",
+  "question": "What controls the second level division Kuna de Madugandi?",
+  "gold": [
+   "Ricardo Martinelli"
+  ],
+  "consensus_answer": "panama",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-2748_4d6c65004ee28d487bc3921f625106b5",
+  "question": "What language is spoken in the country that circulates a newspaper called Manager Daily?",
+  "gold": [
+   "Khmer language"
+  ],
+  "consensus_answer": "thai language",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-64_025fdfafd914ff922ab8144f527c06ec",
+  "question": "What was the name in \"Juice\" of the lyricist for \"Panther Power\"?",
+  "gold": [
+   "Bishop"
+  ],
+  "consensus_answer": "tupac shakur",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d",
+  "question": "What countries are in the Atlantic Time Zone in the Caribbean?",
+  "gold": [
+   "British Virgin Islands",
+   "Netherlands Antilles"
+  ],
+  "consensus_answer": "dominican republic",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1180_67f5f717564163742ca2588b7e186fd8",
+  "question": "The city of Wellsville can be found where in the United States?",
+  "gold": [
+   "Missouri"
+  ],
+  "consensus_answer": "united states of america",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1260_018dc0c070e53555fa37f63d4b83ca87",
+  "question": "In what year did mascot Poe's team win the Super Bowl?",
+  "gold": [
+   "Super Bowl XXXV"
+  ],
+  "consensus_answer": "baltimore ravens",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-25_ee5981878443f689128ca9ea8a269f29",
+  "question": "What fantasy movies has Taylor Lautner played in?",
+  "gold": [
+   "Twilight",
+   "Eclipse",
+   "The Twilight Saga: Breaking Dawn - Part 1"
+  ],
+  "consensus_answer": "incarceron",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-389_544dcbf5d728f23ac97aa05f025a646a",
+  "question": "What type of music did the composer of Deux danses pour Harpe, L. 103 do?",
+  "gold": [
+   "Incidental music",
+   "20th-century classical music",
+   "Ballet",
+   "Art song",
+   "Ballet",
+   "Classical music",
+   "French opera"
+  ],
+  "consensus_answer": "claude debussy",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-1629_5b23295775632ec566475a1ab8748962",
+  "question": "Who voices Jack Skellington? Who composed the music in Before I Wake?",
+  "gold": [
+   "Danny Elfman"
+  ],
+  "consensus_answer": "the newton brothers",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-124_609120802c32c3608fc379700186f76c",
+  "question": "What is the most recent movie directed by Angelina Jolie?",
+  "gold": [
+   "Blue Ivy"
+  ],
+  "consensus_answer": "by the sea",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27",
+  "question": "What was the actor's name that played the character Digital Underground Member in \"Juice\"?",
+  "gold": [
+   "Bishop"
+  ],
+  "consensus_answer": "tupac shakur",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-567_1e6dd9ec51a40b6c0ec2105ed84574c5",
+  "question": "What movies, written by Gloria Katz, did Ron Howard do?",
+  "gold": [
+   "American Graffiti"
+  ],
+  "consensus_answer": "howard the duck",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-3057_5a7cd2677ed97e520a124ba9c2da6ad4",
+  "question": "When prior to October 30, 2014 did the Giants win the world series?",
+  "gold": [
+   "Songwriter"
+  ],
+  "consensus_answer": "2010 world series",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTrn-3057_5a7cd2677ed97e520a124ba9c2da6ad4",
+  "question": "When prior to October 30, 2014 did the Giants win the world series?",
+  "gold": [
+   "Songwriter"
+  ],
+  "consensus_answer": "2012 world series",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ }
+]

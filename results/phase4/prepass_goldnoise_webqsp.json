@@ -1,0 +1,2122 @@
+[
+ {
+  "qid": "WebQTest-618",
+  "question": "where is chesapeake bay bridge",
+  "gold": [
+   "Anne Arundel County",
+   "Queen Anne's County"
+  ],
+  "consensus_answer": "maryland",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-848",
+  "question": "where are the nordic countries",
+  "gold": [
+   "Faroe Islands",
+   "Iceland",
+   "Denmark",
+   "Sweden",
+   "Norway",
+   "Finland",
+   "Åland Islands",
+   "Greenland"
+  ],
+  "consensus_answer": "northern europe",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1920",
+  "question": "who is rick scott",
+  "gold": [
+   "Lawyer",
+   "Investor",
+   "Businessperson",
+   "Politician",
+   "Executive officer"
+  ],
+  "consensus_answer": "rick scott",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1730",
+  "question": "where does the parana river flow",
+  "gold": [
+   "South America"
+  ],
+  "consensus_answer": "río de la plata",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-704",
+  "question": "who is thor heyerdahl",
+  "gold": [
+   "Ethnographer",
+   "Film director",
+   "Scientist",
+   "Film Producer",
+   "Cinematographer",
+   "Adventurer"
+  ],
+  "consensus_answer": "thor heyerdahl",
+  "n_systems": 5,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-122",
+  "question": "where did francisco coronado come from",
+  "gold": [
+   "Salamanca"
+  ],
+  "consensus_answer": "spain",
+  "n_systems": 4,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-311",
+  "question": "where is the ufc headquarters",
+  "gold": [
+   "Las Vegas"
+  ],
+  "consensus_answer": "nevada",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-958",
+  "question": "what are some famous people from el salvador",
+  "gold": [
+   "Mario Wilfredo Contreras",
+   "William López",
+   "Fausto Omar Vásquez",
+   "Francisco Menéndez",
+   "Jose B. Gonzalez",
+   "Camilo Minero",
+   "Santiago \\\"Jimmy\\\" Mellado",
+   "Manuel Enrique Araujo",
+   "Erwin McManus",
+   "Américo González",
+   "Rene Moran",
+   "Mauricio Alonso Rodríguez",
+   "Saturnino Osorio",
+   "Jose Solis",
+   "Damaris Quéles",
+   "Jorge Búcaro",
+   "Rafael Menjívar Ochoa",
+   "Doroteo Vasconcelos",
+   "Selvin González",
+   "Claudia Lars",
+   "Jaime Portillo",
+   "Joel Aguilar",
+   "Xenia Estrada",
+   "Jorge Rivera",
+   "Miguel Cañizalez",
+   "José Luis Rugamas",
+   "Ricardo López Tenorio",
+   "Raúl Cicero",
+   "Mario Montoya",
+   "Carlos Barrios",
+   "Elena Diaz",
+   "Steve Montenegro",
+   "Elmer Acevedo",
+   "Laura Molina",
+   "Ernesto Aparicio",
+   "Gerardo Barrios",
+   "Pedro José Escalón",
+   "Isaías Choto",
+   "Rutilio Grande",
+   "Carlos Linares",
+   "Juan Rafael Bustillo",
+   "Melvin Barrera",
+   "Enrique Álvarez Córdova",
+   "Miguel Cruz",
+   "Roberto Carlos Martinez",
+   "Armando Chacón",
+   "Richard Oriani",
+   "Jorge Meléndez",
+   "Francisco Gavidia",
+   "Edwin Ramos",
+   "José Francisco Valiente",
+   "José María Cañas",
+   "Prudencia Ayala",
+   "Julio Adalberto Rivera Carballo",
+   "Guillermo García",
+   "Francisca González",
+   "Alexander Méndoza",
+   "Alfredo Ruano",
+   "Eduardo Hernández",
+   "José Castellanos Contreras",
+   "Consuelo de Saint Exupéry",
+   "Norman Quijano",
+   "Roberto Rivas",
+   "Mauricio Alvarenga",
+   "Patricia Chica",
+   "Emilio Guardado",
+   "Paula Heredia",
+   "Robert Renderos",
+   "Johnny Lopez",
+   "Papa A.P.",
+   "José Inocencio Alas",
+   "Takeshi Fujiwara",
+   "William Renderos Iraheta",
+   "Eduardo \\\"Volkswagen\\\" Hernández",
+   "Wilfredo Iraheta",
+   "José Manfredi Portillo",
+   "Jose Orlando Martinez",
+   "Tomás Medina",
+   "Víctor Ramírez",
+   "Rubén Zamora",
+   "Gualberto Fernández",
+   "Marlon Menjívar",
+   "Pedro Geoffroy Rivas",
+   "Arturo Rivera y Damas",
+   "Francisco Funes",
+   "DJ Quest",
+   "Andrés Eduardo Menéndez",
+   "Keoki",
+   "Nicolas F. Shi",
+   "Mauricio Alfaro",
+   "Sarah Ramos",
+   "g.11b8058v7j",
+   "Rafael Campo",
+   "Malin Arvidsson",
+   "Diego Velázquez",
+   "Francisco Dueñas",
+   "Arturo Armando Molina",
+   "William Armando",
+   "Pedro Chavarria",
+   "Salvador Castaneda Castro",
+   "Alexander Campos",
+   "Victor Lopez",
+   "Milton Palacios",
+   "Ana Sol Gutierrez",
+   "Ángel Orellana",
+   "Genaro Sermeño",
+   "Victor Manuel Ochoa",
+   "Óscar Antonio Ulloa",
+   "Bernard Lewinsky",
+   "Bobby Rivas",
+   "Miguel Angel Deras",
+   "Eva Dimas",
+   "Ana Maria de Martinez",
+   "Ruben Cedillos",
+   "Félix Pineda",
+   "Juan Ramón Sánchez"
+  ],
+  "consensus_answer": "mauricio funes",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-783",
+  "question": "what county is houston tx in",
+  "gold": [
+   "Montgomery County"
+  ],
+  "consensus_answer": "harris county",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-301",
+  "question": "what were amelia earhart 's achievements",
+  "gold": [
+   "Pilot",
+   "Writer"
+  ],
+  "consensus_answer": "amelia earhart",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-514",
+  "question": "where is denmark situated",
+  "gold": [
+   "Scandinavia",
+   "Nordic countries"
+  ],
+  "consensus_answer": "northern europe",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-129",
+  "question": "what was lucille ball",
+  "gold": [
+   "Actor",
+   "Comedian",
+   "Television producer",
+   "Model",
+   "Singer"
+  ],
+  "consensus_answer": "lucille ball",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1330",
+  "question": "what is the most populated state in united states",
+  "gold": [
+   "New York"
+  ],
+  "consensus_answer": "california",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1373",
+  "question": "where was john f kennedy when he got shot",
+  "gold": [
+   "Dallas"
+  ],
+  "consensus_answer": "dealey plaza",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1304",
+  "question": "what was hitler the leader of",
+  "gold": [
+   "Wehrmacht",
+   "Schutzstaffel",
+   "1st SS Panzer Division Leibstandarte SS Adolf Hitler",
+   "Sturmabteilung",
+   "Waffen-SS",
+   "Gestapo",
+   "Nazi Party",
+   "Hitler Youth"
+  ],
+  "consensus_answer": "nazi germany",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1575",
+  "question": "what products and\\/or services does google offer customers",
+  "gold": [
+   "Google Glass",
+   "Google Drive",
+   "Nexus 10",
+   "Google Maps",
+   "Nexus 7",
+   "Google Docs, Sheets, and Slides",
+   "Google Classroom",
+   "Nexus Q",
+   "Google Earth",
+   "Apache Wave",
+   "Google Buzz",
+   "Nexus S",
+   "Chromecast"
+  ],
+  "consensus_answer": "gmail",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1296",
+  "question": "what was scottie pippen known for",
+  "gold": [
+   "Actor",
+   "Basketball player"
+  ],
+  "consensus_answer": "scottie pippen",
+  "n_systems": 3,
+  "systems": [
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-298",
+  "question": "what year did the orioles go to the world series",
+  "gold": [
+   "1970 World Series",
+   "1966 World Series",
+   "1983 World Series"
+  ],
+  "consensus_answer": "baltimore orioles",
+  "n_systems": 3,
+  "systems": [
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1061",
+  "question": "where does greek language come from",
+  "gold": [
+   "Attic Group"
+  ],
+  "consensus_answer": "greece",
+  "n_systems": 3,
+  "systems": [
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-164",
+  "question": "what did stephen hawking become famous for",
+  "gold": [
+   "Cosmologist",
+   "Mathematician",
+   "Author",
+   "Physicist",
+   "Writer",
+   "Astronomer",
+   "Science writer",
+   "Astrophysicist",
+   "Professor",
+   "Scientist"
+  ],
+  "consensus_answer": "a brief history of time",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1309",
+  "question": "what art did wassily kandinsky do",
+  "gold": [
+   "Painting"
+  ],
+  "consensus_answer": "abstract art",
+  "n_systems": 3,
+  "systems": [
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-537",
+  "question": "what has charlie hunnam been in",
+  "gold": [
+   "Children of Men",
+   "Deadfall",
+   "Frankie Go Boom",
+   "Knights of the Roundtable: King Arthur",
+   "Abandon",
+   "Crimson Peak",
+   "Nicholas Nickleby",
+   "Green Street",
+   "Whatever Happened to Harold Smith?",
+   "Cold Mountain",
+   "Pacific Rim",
+   "The Ledge"
+  ],
+  "consensus_answer": "sons of anarchy",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-114",
+  "question": "who did the voice of darth vader in episode 3",
+  "gold": [
+   "Hayden Christensen"
+  ],
+  "consensus_answer": "james earl jones",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "noretrieval",
+   "tog"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1099",
+  "question": "what country does david luiz play for",
+  "gold": [
+   "Brazil national football team"
+  ],
+  "consensus_answer": "brazil",
+  "n_systems": 3,
+  "systems": [
+   "noretrieval",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": true,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-848",
+  "question": "where are the nordic countries",
+  "gold": [
+   "Faroe Islands",
+   "Iceland",
+   "Denmark",
+   "Sweden",
+   "Norway",
+   "Finland",
+   "Åland Islands",
+   "Greenland"
+  ],
+  "consensus_answer": "scandinavia",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1215",
+  "question": "who was stephen r covey",
+  "gold": [
+   "Author",
+   "Manager",
+   "Writer",
+   "Consultant",
+   "Professor",
+   "Motivational speaker"
+  ],
+  "consensus_answer": "stephen covey",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1937",
+  "question": "who is captain james cook facts",
+  "gold": [
+   "Explorer",
+   "Sailor"
+  ],
+  "consensus_answer": "james cook",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1309",
+  "question": "what art did wassily kandinsky do",
+  "gold": [
+   "Painting"
+  ],
+  "consensus_answer": "painting with green center",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-869",
+  "question": "where is ancient phoenician",
+  "gold": [
+   "Lebanon"
+  ],
+  "consensus_answer": "phoenicia",
+  "n_systems": 4,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1416",
+  "question": "what was franklin pierce famous for",
+  "gold": [
+   "US President"
+  ],
+  "consensus_answer": "politician",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1416",
+  "question": "what was franklin pierce famous for",
+  "gold": [
+   "US President"
+  ],
+  "consensus_answer": "mexican–american war",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1178",
+  "question": "where is tupac from originally",
+  "gold": [
+   "East Harlem"
+  ],
+  "consensus_answer": "marin city",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-86",
+  "question": "which country does greenland belong to",
+  "gold": [
+   "Denmark"
+  ],
+  "consensus_answer": "kingdom of denmark",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1733",
+  "question": "who or what influenced frank lloyd wright",
+  "gold": [
+   "Bruce Price",
+   "William Morris",
+   "Georges I. Gurdjieff and Thomas De Hartmann",
+   "Louis Sullivan",
+   "Henry David Thoreau",
+   "Ebenezer Howard",
+   "Elizabeth Gordon"
+  ],
+  "consensus_answer": "lloyd wright",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1281",
+  "question": "where did kate gosselin grew up",
+  "gold": [
+   "Philadelphia"
+  ],
+  "consensus_answer": "wyomissing",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1281",
+  "question": "where did kate gosselin grew up",
+  "gold": [
+   "Philadelphia"
+  ],
+  "consensus_answer": "elizabethtown",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1281",
+  "question": "where did kate gosselin grew up",
+  "gold": [
+   "Philadelphia"
+  ],
+  "consensus_answer": "wernersville",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1291",
+  "question": "how many kids were there in the kennedy family",
+  "gold": [
+   "Eunice Kennedy Shriver",
+   "Ted Kennedy",
+   "John F. Kennedy",
+   "Rosemary Kennedy",
+   "Jean Kennedy Smith",
+   "Patricia Kennedy Lawford",
+   "Robert F. Kennedy",
+   "Kathleen Cavendish",
+   "Joseph P. Kennedy, Jr."
+  ],
+  "consensus_answer": "patrick j kennedy",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-618",
+  "question": "where is chesapeake bay bridge",
+  "gold": [
+   "Anne Arundel County",
+   "Queen Anne's County"
+  ],
+  "consensus_answer": "chesapeake bay",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-124",
+  "question": "what language does egyptian people speak",
+  "gold": [
+   "Modern Standard Arabic"
+  ],
+  "consensus_answer": "egyptian arabic",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-409",
+  "question": "where did giuliana rancic grow up",
+  "gold": [
+   "Naples"
+  ],
+  "consensus_answer": "washington dc",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-617",
+  "question": "where did tim tebow grow up",
+  "gold": [
+   "Makati"
+  ],
+  "consensus_answer": "florida",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-617",
+  "question": "where did tim tebow grow up",
+  "gold": [
+   "Makati"
+  ],
+  "consensus_answer": "jacksonville",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1296",
+  "question": "what was scottie pippen known for",
+  "gold": [
+   "Actor",
+   "Basketball player"
+  ],
+  "consensus_answer": "small forward",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-848",
+  "question": "where are the nordic countries",
+  "gold": [
+   "Faroe Islands",
+   "Iceland",
+   "Denmark",
+   "Sweden",
+   "Norway",
+   "Finland",
+   "Åland Islands",
+   "Greenland"
+  ],
+  "consensus_answer": "svalbard",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-284",
+  "question": "where did the latin language originate from",
+  "gold": [
+   "Indo-European languages",
+   "Italic languages"
+  ],
+  "consensus_answer": "europe",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1937",
+  "question": "who is captain james cook facts",
+  "gold": [
+   "Explorer",
+   "Sailor"
+  ],
+  "consensus_answer": "kingdom of great britain",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1937",
+  "question": "who is captain james cook facts",
+  "gold": [
+   "Explorer",
+   "Sailor"
+  ],
+  "consensus_answer": "united kingdom",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-209",
+  "question": "where is laos in world map",
+  "gold": [
+   "Southeast Asia"
+  ],
+  "consensus_answer": "laos",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1920",
+  "question": "who is rick scott",
+  "gold": [
+   "Lawyer",
+   "Investor",
+   "Businessperson",
+   "Politician",
+   "Executive officer"
+  ],
+  "consensus_answer": "republican party",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1877",
+  "question": "what kind of painter was wassily kandinsky",
+  "gold": [
+   "Expressionism",
+   "Der Blaue Reiter",
+   "Modern art",
+   "German Expressionism",
+   "Abstract art"
+  ],
+  "consensus_answer": "painter",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1877",
+  "question": "what kind of painter was wassily kandinsky",
+  "gold": [
+   "Expressionism",
+   "Der Blaue Reiter",
+   "Modern art",
+   "German Expressionism",
+   "Abstract art"
+  ],
+  "consensus_answer": "visual artist",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-383",
+  "question": "what language do chinese people write in",
+  "gold": [
+   "Simplified Chinese character",
+   "Chinese characters",
+   "Nüshu script",
+   "Traditional Chinese characters",
+   "'Phags-pa script"
+  ],
+  "consensus_answer": "chinese language",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1730",
+  "question": "where does the parana river flow",
+  "gold": [
+   "South America"
+  ],
+  "consensus_answer": "paranaíba river",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1730",
+  "question": "where does the parana river flow",
+  "gold": [
+   "South America"
+  ],
+  "consensus_answer": "rio grande",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1730",
+  "question": "where does the parana river flow",
+  "gold": [
+   "South America"
+  ],
+  "consensus_answer": "paraguay river",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1730",
+  "question": "where does the parana river flow",
+  "gold": [
+   "South America"
+  ],
+  "consensus_answer": "iguazu river",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1061",
+  "question": "where does greek language come from",
+  "gold": [
+   "Attic Group"
+  ],
+  "consensus_answer": "hellenic languages",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-43",
+  "question": "what did george clemenceau do",
+  "gold": [
+   "Physician",
+   "Writer",
+   "Statesman",
+   "Journalist",
+   "Publisher"
+  ],
+  "consensus_answer": "georges clémenceau",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-704",
+  "question": "who is thor heyerdahl",
+  "gold": [
+   "Ethnographer",
+   "Film director",
+   "Scientist",
+   "Film Producer",
+   "Cinematographer",
+   "Adventurer"
+  ],
+  "consensus_answer": "the ra expeditions",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-464",
+  "question": "what is the political structure of china",
+  "gold": [
+   "Single-party state",
+   "Communist state",
+   "Socialist state"
+  ],
+  "consensus_answer": "state council of the peoples republic of china",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-164",
+  "question": "what did stephen hawking become famous for",
+  "gold": [
+   "Cosmologist",
+   "Mathematician",
+   "Author",
+   "Physicist",
+   "Writer",
+   "Astronomer",
+   "Science writer",
+   "Astrophysicist",
+   "Professor",
+   "Scientist"
+  ],
+  "consensus_answer": "stephen hawking",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-942",
+  "question": "who is anne hathaway parents",
+  "gold": [
+   "Gerald Hathaway",
+   "Kate McCauley Hathaway"
+  ],
+  "consensus_answer": "richard hathaway",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1239",
+  "question": "what is the zip code for concord",
+  "gold": [
+   "94518",
+   "94522",
+   "94524",
+   "94519",
+   "94527",
+   "94529",
+   "94520",
+   "94521"
+  ],
+  "consensus_answer": "03301",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1940",
+  "question": "who do islamic people follow",
+  "gold": [
+   "Ramdev Pir",
+   "God",
+   "Allah"
+  ],
+  "consensus_answer": "muslims",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-608",
+  "question": "when did liverpool fc last win the champions league",
+  "gold": [
+   "2012 Football League Cup Final"
+  ],
+  "consensus_answer": "2005 uefa champions league final",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1309",
+  "question": "what art did wassily kandinsky do",
+  "gold": [
+   "Painting"
+  ],
+  "consensus_answer": "composition viii",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1309",
+  "question": "what art did wassily kandinsky do",
+  "gold": [
+   "Painting"
+  ],
+  "consensus_answer": "on the points",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1309",
+  "question": "what art did wassily kandinsky do",
+  "gold": [
+   "Painting"
+  ],
+  "consensus_answer": "improvisation no 30 cannons",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1035",
+  "question": "what was f. scott fitzgerald",
+  "gold": [
+   "Writer",
+   "Novelist",
+   "Poet"
+  ],
+  "consensus_answer": "united states of america",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1835",
+  "question": "what country did gregor mendel live in",
+  "gold": [
+   "Brno",
+   "Austrian Silesia"
+  ],
+  "consensus_answer": "austria-hungary",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1350",
+  "question": "what did jesse owens won",
+  "gold": [
+   "Associated Press Male Athlete of the Year"
+  ],
+  "consensus_answer": "gold medal",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1793",
+  "question": "where does marta play soccer",
+  "gold": [
+   "Tyresö FF",
+   "Brazil women's national football team"
+  ],
+  "consensus_answer": "los angeles sol",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-749",
+  "question": "who was president in 1988 in the united states",
+  "gold": [
+   "Ronald Reagan"
+  ],
+  "consensus_answer": "george h w bush",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1744",
+  "question": "what team does josh hamilton play for",
+  "gold": [
+   "Los Angeles Angels of Anaheim"
+  ],
+  "consensus_answer": "texas rangers",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1744",
+  "question": "what team does josh hamilton play for",
+  "gold": [
+   "Los Angeles Angels of Anaheim"
+  ],
+  "consensus_answer": "cincinnati reds",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1969",
+  "question": "what team is kris humphries play for",
+  "gold": [
+   "Washington Wizards"
+  ],
+  "consensus_answer": "brooklyn nets",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1969",
+  "question": "what team is kris humphries play for",
+  "gold": [
+   "Washington Wizards"
+  ],
+  "consensus_answer": "dallas mavericks",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1969",
+  "question": "what team is kris humphries play for",
+  "gold": [
+   "Washington Wizards"
+  ],
+  "consensus_answer": "boston celtics",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1969",
+  "question": "what team is kris humphries play for",
+  "gold": [
+   "Washington Wizards"
+  ],
+  "consensus_answer": "toronto raptors",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1969",
+  "question": "what team is kris humphries play for",
+  "gold": [
+   "Washington Wizards"
+  ],
+  "consensus_answer": "utah jazz",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-359",
+  "question": "what team does heskey play for",
+  "gold": [
+   "Aston Villa F.C.",
+   "Newcastle Jets FC"
+  ],
+  "consensus_answer": "wigan athletic fc",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1764",
+  "question": "where is daud ibrahim",
+  "gold": [
+   "Maharashtra"
+  ],
+  "consensus_answer": "ratnagiri district",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1090",
+  "question": "where are boeing headquarters",
+  "gold": [
+   "Chicago"
+  ],
+  "consensus_answer": "illinois",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1090",
+  "question": "where are boeing headquarters",
+  "gold": [
+   "Chicago"
+  ],
+  "consensus_answer": "united states of america",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-958",
+  "question": "what are some famous people from el salvador",
+  "gold": [
+   "Mario Wilfredo Contreras",
+   "William López",
+   "Fausto Omar Vásquez",
+   "Francisco Menéndez",
+   "Jose B. Gonzalez",
+   "Camilo Minero",
+   "Santiago \\\"Jimmy\\\" Mellado",
+   "Manuel Enrique Araujo",
+   "Erwin McManus",
+   "Américo González",
+   "Rene Moran",
+   "Mauricio Alonso Rodríguez",
+   "Saturnino Osorio",
+   "Jose Solis",
+   "Damaris Quéles",
+   "Jorge Búcaro",
+   "Rafael Menjívar Ochoa",
+   "Doroteo Vasconcelos",
+   "Selvin González",
+   "Claudia Lars",
+   "Jaime Portillo",
+   "Joel Aguilar",
+   "Xenia Estrada",
+   "Jorge Rivera",
+   "Miguel Cañizalez",
+   "José Luis Rugamas",
+   "Ricardo López Tenorio",
+   "Raúl Cicero",
+   "Mario Montoya",
+   "Carlos Barrios",
+   "Elena Diaz",
+   "Steve Montenegro",
+   "Elmer Acevedo",
+   "Laura Molina",
+   "Ernesto Aparicio",
+   "Gerardo Barrios",
+   "Pedro José Escalón",
+   "Isaías Choto",
+   "Rutilio Grande",
+   "Carlos Linares",
+   "Juan Rafael Bustillo",
+   "Melvin Barrera",
+   "Enrique Álvarez Córdova",
+   "Miguel Cruz",
+   "Roberto Carlos Martinez",
+   "Armando Chacón",
+   "Richard Oriani",
+   "Jorge Meléndez",
+   "Francisco Gavidia",
+   "Edwin Ramos",
+   "José Francisco Valiente",
+   "José María Cañas",
+   "Prudencia Ayala",
+   "Julio Adalberto Rivera Carballo",
+   "Guillermo García",
+   "Francisca González",
+   "Alexander Méndoza",
+   "Alfredo Ruano",
+   "Eduardo Hernández",
+   "José Castellanos Contreras",
+   "Consuelo de Saint Exupéry",
+   "Norman Quijano",
+   "Roberto Rivas",
+   "Mauricio Alvarenga",
+   "Patricia Chica",
+   "Emilio Guardado",
+   "Paula Heredia",
+   "Robert Renderos",
+   "Johnny Lopez",
+   "Papa A.P.",
+   "José Inocencio Alas",
+   "Takeshi Fujiwara",
+   "William Renderos Iraheta",
+   "Eduardo \\\"Volkswagen\\\" Hernández",
+   "Wilfredo Iraheta",
+   "José Manfredi Portillo",
+   "Jose Orlando Martinez",
+   "Tomás Medina",
+   "Víctor Ramírez",
+   "Rubén Zamora",
+   "Gualberto Fernández",
+   "Marlon Menjívar",
+   "Pedro Geoffroy Rivas",
+   "Arturo Rivera y Damas",
+   "Francisco Funes",
+   "DJ Quest",
+   "Andrés Eduardo Menéndez",
+   "Keoki",
+   "Nicolas F. Shi",
+   "Mauricio Alfaro",
+   "Sarah Ramos",
+   "g.11b8058v7j",
+   "Rafael Campo",
+   "Malin Arvidsson",
+   "Diego Velázquez",
+   "Francisco Dueñas",
+   "Arturo Armando Molina",
+   "William Armando",
+   "Pedro Chavarria",
+   "Salvador Castaneda Castro",
+   "Alexander Campos",
+   "Victor Lopez",
+   "Milton Palacios",
+   "Ana Sol Gutierrez",
+   "Ángel Orellana",
+   "Genaro Sermeño",
+   "Victor Manuel Ochoa",
+   "Óscar Antonio Ulloa",
+   "Bernard Lewinsky",
+   "Bobby Rivas",
+   "Miguel Angel Deras",
+   "Eva Dimas",
+   "Ana Maria de Martinez",
+   "Ruben Cedillos",
+   "Félix Pineda",
+   "Juan Ramón Sánchez"
+  ],
+  "consensus_answer": "salvador sánchez cerén",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-958",
+  "question": "what are some famous people from el salvador",
+  "gold": [
+   "Mario Wilfredo Contreras",
+   "William López",
+   "Fausto Omar Vásquez",
+   "Francisco Menéndez",
+   "Jose B. Gonzalez",
+   "Camilo Minero",
+   "Santiago \\\"Jimmy\\\" Mellado",
+   "Manuel Enrique Araujo",
+   "Erwin McManus",
+   "Américo González",
+   "Rene Moran",
+   "Mauricio Alonso Rodríguez",
+   "Saturnino Osorio",
+   "Jose Solis",
+   "Damaris Quéles",
+   "Jorge Búcaro",
+   "Rafael Menjívar Ochoa",
+   "Doroteo Vasconcelos",
+   "Selvin González",
+   "Claudia Lars",
+   "Jaime Portillo",
+   "Joel Aguilar",
+   "Xenia Estrada",
+   "Jorge Rivera",
+   "Miguel Cañizalez",
+   "José Luis Rugamas",
+   "Ricardo López Tenorio",
+   "Raúl Cicero",
+   "Mario Montoya",
+   "Carlos Barrios",
+   "Elena Diaz",
+   "Steve Montenegro",
+   "Elmer Acevedo",
+   "Laura Molina",
+   "Ernesto Aparicio",
+   "Gerardo Barrios",
+   "Pedro José Escalón",
+   "Isaías Choto",
+   "Rutilio Grande",
+   "Carlos Linares",
+   "Juan Rafael Bustillo",
+   "Melvin Barrera",
+   "Enrique Álvarez Córdova",
+   "Miguel Cruz",
+   "Roberto Carlos Martinez",
+   "Armando Chacón",
+   "Richard Oriani",
+   "Jorge Meléndez",
+   "Francisco Gavidia",
+   "Edwin Ramos",
+   "José Francisco Valiente",
+   "José María Cañas",
+   "Prudencia Ayala",
+   "Julio Adalberto Rivera Carballo",
+   "Guillermo García",
+   "Francisca González",
+   "Alexander Méndoza",
+   "Alfredo Ruano",
+   "Eduardo Hernández",
+   "José Castellanos Contreras",
+   "Consuelo de Saint Exupéry",
+   "Norman Quijano",
+   "Roberto Rivas",
+   "Mauricio Alvarenga",
+   "Patricia Chica",
+   "Emilio Guardado",
+   "Paula Heredia",
+   "Robert Renderos",
+   "Johnny Lopez",
+   "Papa A.P.",
+   "José Inocencio Alas",
+   "Takeshi Fujiwara",
+   "William Renderos Iraheta",
+   "Eduardo \\\"Volkswagen\\\" Hernández",
+   "Wilfredo Iraheta",
+   "José Manfredi Portillo",
+   "Jose Orlando Martinez",
+   "Tomás Medina",
+   "Víctor Ramírez",
+   "Rubén Zamora",
+   "Gualberto Fernández",
+   "Marlon Menjívar",
+   "Pedro Geoffroy Rivas",
+   "Arturo Rivera y Damas",
+   "Francisco Funes",
+   "DJ Quest",
+   "Andrés Eduardo Menéndez",
+   "Keoki",
+   "Nicolas F. Shi",
+   "Mauricio Alfaro",
+   "Sarah Ramos",
+   "g.11b8058v7j",
+   "Rafael Campo",
+   "Malin Arvidsson",
+   "Diego Velázquez",
+   "Francisco Dueñas",
+   "Arturo Armando Molina",
+   "William Armando",
+   "Pedro Chavarria",
+   "Salvador Castaneda Castro",
+   "Alexander Campos",
+   "Victor Lopez",
+   "Milton Palacios",
+   "Ana Sol Gutierrez",
+   "Ángel Orellana",
+   "Genaro Sermeño",
+   "Victor Manuel Ochoa",
+   "Óscar Antonio Ulloa",
+   "Bernard Lewinsky",
+   "Bobby Rivas",
+   "Miguel Angel Deras",
+   "Eva Dimas",
+   "Ana Maria de Martinez",
+   "Ruben Cedillos",
+   "Félix Pineda",
+   "Juan Ramón Sánchez"
+  ],
+  "consensus_answer": "josé napoleón duarte",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-245",
+  "question": "what year was the first miss america pageant held",
+  "gold": [
+   "1921-09"
+  ],
+  "consensus_answer": "miss america 1921",
+  "n_systems": 3,
+  "systems": [
+   "agr",
+   "graphrag",
+   "tog"
+  ],
+  "includes_agr": true,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ },
+ {
+  "qid": "WebQTest-1902",
+  "question": "what year was hitler was born",
+  "gold": [
+   "1889-04-20"
+  ],
+  "consensus_answer": "adolf hitler",
+  "n_systems": 3,
+  "systems": [
+   "graphrag",
+   "tog",
+   "vectorrag"
+  ],
+  "includes_agr": false,
+  "mixed_evidence": false,
+  "verdict": "",
+  "note": ""
+ }
+]
