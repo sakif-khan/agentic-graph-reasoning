@@ -19,7 +19,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "granularity echo: state-level answer, gold is county-level; gold not broken",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-848",
@@ -47,7 +48,8 @@
   "mixed_evidence": true,
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where are\" invites a container region, gold lists member countries; cross-ref kappa guideline",
-  "subtype": "container_vs_member"
+  "subtype": "container_vs_member",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1920",
@@ -72,7 +74,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1730",
@@ -93,7 +96,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-704",
@@ -119,7 +123,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-122",
@@ -139,7 +144,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "granularity echo: country instead of city of origin",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-311",
@@ -159,7 +165,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "granularity echo: state instead of city",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-958",
@@ -293,7 +300,9 @@
   "includes_agr": true,
   "mixed_evidence": true,
   "verdict": "gold_wrong",
-  "note": "malformed gold (116 entities, MID leakage=True)"
+  "note": "malformed gold (116 entities, MID leakage=True)",
+  "subtype": "",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-783",
@@ -312,7 +321,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "houston lies principally in harris county; gold lists only montgomery county",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-301",
@@ -332,7 +342,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-514",
@@ -352,7 +363,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "granularity echo: broader region than gold; gold not broken",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-129",
@@ -375,7 +387,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1330",
@@ -394,7 +407,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "california is the most populous us state; gold (new york) is factually wrong",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1373",
@@ -413,7 +427,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "consensus is finer-grained (plaza) than gold (city); gold not broken",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1304",
@@ -439,7 +454,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "canonical answer (nazi germany) absent; gold lists subordinate military organisations only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1575",
@@ -470,7 +486,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "gmail is a google product absent from gold; gold list incomplete",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1296",
@@ -490,7 +507,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-298",
@@ -511,7 +529,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus is the question's topic team, not the asked event; substring rule missed \"the orioles\" vs \"baltimore orioles\"",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1061",
@@ -530,7 +549,8 @@
   "mixed_evidence": true,
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where\" invites a place (greece), gold gives linguistic ancestry",
-  "subtype": "place_vs_lineage"
+  "subtype": "place_vs_lineage",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-164",
@@ -558,7 +578,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives a notable work",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1309",
@@ -577,7 +598,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold gives the medium (painting); consensus gives a style or individual works",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-537",
@@ -607,7 +629,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "gold lists films only; sons of anarchy (television, best-known role) absent",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-114",
@@ -626,7 +649,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "james earl jones voiced vader in episode iii; gold gives the on-screen actor",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1099",
@@ -645,7 +669,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "same referent at different granularity: consensus the country, gold the national team entity",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-848",
@@ -672,7 +697,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where are\" invites a container region, gold lists member countries; cross-ref kappa guideline",
-  "subtype": "container_vs_member"
+  "subtype": "container_vs_member",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1215",
@@ -697,7 +723,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: topic entity as name variant; substring rule missed the middle initial",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1937",
@@ -718,7 +745,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1309",
@@ -738,7 +766,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives the medium (painting); consensus gives a style or individual works",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-869",
@@ -758,7 +787,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1416",
@@ -777,7 +807,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives his office; consensus gives a coarser profession and a conflict he served in",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1416",
@@ -796,7 +827,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives his office; consensus gives a coarser profession and a conflict he served in",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1178",
@@ -815,7 +847,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold correct: born in east harlem; marin city is a later residence",
-  "subtype": "wrong_consensus"
+  "subtype": "wrong_consensus",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-86",
@@ -834,7 +867,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "same referent: \"kingdom of denmark\" is the formal name of gold \"denmark\"; token overlap below stage-b threshold",
-  "subtype": "surface_variant"
+  "subtype": "surface_variant",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1733",
@@ -859,7 +893,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1281",
@@ -878,7 +913,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (philadelphia); gosselin was raised in wyomissing, pennsylvania",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1281",
@@ -897,7 +933,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (philadelphia); gosselin was raised in wyomissing, pennsylvania",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1281",
@@ -916,7 +953,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (philadelphia); gosselin was raised in wyomissing, pennsylvania",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1291",
@@ -943,7 +981,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold lists the nine kennedy siblings; consensus names a different-generation relative",
-  "subtype": "entity_ambiguity"
+  "subtype": "entity_ambiguity",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-618",
@@ -963,7 +1002,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-124",
@@ -982,7 +1022,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "both defensible: gold the standard written form, consensus the spoken vernacular",
-  "subtype": "variety"
+  "subtype": "variety",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-409",
@@ -1001,7 +1042,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "born in naples, emigrated as a child to the dc area; \"grew up\" supports either",
-  "subtype": "birthplace_vs_upbringing"
+  "subtype": "birthplace_vs_upbringing",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-617",
@@ -1020,7 +1062,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (makati, philippines); tebow grew up in jacksonville, florida",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-617",
@@ -1039,7 +1082,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (makati, philippines); tebow grew up in jacksonville, florida",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1296",
@@ -1059,7 +1103,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives his playing position",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-848",
@@ -1085,7 +1130,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where are\" invites a container region, gold lists member countries; cross-ref kappa guideline",
-  "subtype": "container_vs_member"
+  "subtype": "container_vs_member",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-284",
@@ -1105,7 +1151,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where\" invites a place, gold gives language-family ancestry",
-  "subtype": "place_vs_lineage"
+  "subtype": "place_vs_lineage",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1937",
@@ -1125,7 +1172,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives nationality",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1937",
@@ -1145,7 +1193,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives nationality",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-209",
@@ -1164,7 +1213,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1920",
@@ -1187,7 +1237,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives party affiliation",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1877",
@@ -1210,7 +1261,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1877",
@@ -1233,7 +1285,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives movements/styles; consensus gives a coarse profession",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-383",
@@ -1256,7 +1309,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus restates the question's topic (chinese); gold gives writing systems",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1730",
@@ -1275,7 +1329,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1730",
@@ -1294,7 +1349,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1730",
@@ -1313,7 +1369,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1730",
@@ -1332,7 +1389,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1061",
@@ -1351,7 +1409,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where\" invites a place (greece), gold gives linguistic ancestry",
-  "subtype": "place_vs_lineage"
+  "subtype": "place_vs_lineage",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-43",
@@ -1374,7 +1433,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: topic entity in accented spelling; substring rule missed it",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-704",
@@ -1398,7 +1458,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives a notable expedition",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-464",
@@ -1419,7 +1480,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives structure types; consensus gives a government body",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-164",
@@ -1447,7 +1509,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-942",
@@ -1467,7 +1530,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "entity ambiguity: consensus resolved to shakespeare's anne hathaway; gold is the actress's parents",
-  "subtype": "entity_ambiguity"
+  "subtype": "entity_ambiguity",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1239",
@@ -1493,7 +1557,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "ambiguous place name: 03301 is concord nh; gold is concord ca",
-  "subtype": "place_name"
+  "subtype": "place_name",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1940",
@@ -1514,7 +1579,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold contains valid answers (god, allah); consensus is circular (the followers). gold also contains a spurious entity (ramdev pir)",
-  "subtype": "circular"
+  "subtype": "circular",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-608",
@@ -1533,7 +1599,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold gives the wrong competition (2012 league cup); liverpool last won the champions league in 2005",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1309",
@@ -1552,7 +1619,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives the medium (painting); consensus gives a style or individual works",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1309",
@@ -1571,7 +1639,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives the medium (painting); consensus gives a style or individual works",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1309",
@@ -1590,7 +1659,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives the medium (painting); consensus gives a style or individual works",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1035",
@@ -1611,7 +1681,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives nationality",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1835",
@@ -1631,7 +1702,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "question asks for a country; gold gives a city (brno) and a region (austrian silesia)",
-  "subtype": "type_mismatch"
+  "subtype": "type_mismatch",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1350",
@@ -1650,7 +1722,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "owens's four olympic gold medals absent; gold lists only an ap award",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1793",
@@ -1670,7 +1743,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: la sol was a former club; gold reflects a later period",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-749",
@@ -1689,7 +1763,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold correct: reagan was president throughout 1988; bush took office january 1989",
-  "subtype": "wrong_consensus"
+  "subtype": "wrong_consensus",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1744",
@@ -1708,7 +1783,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects his 2013-15 club",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1744",
@@ -1727,7 +1803,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects his 2013-15 club",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1969",
@@ -1746,7 +1823,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1969",
@@ -1765,7 +1843,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1969",
@@ -1784,7 +1863,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1969",
@@ -1803,7 +1883,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1969",
@@ -1822,7 +1903,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-359",
@@ -1842,7 +1924,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names a former club",
-  "subtype": "temporal"
+  "subtype": "temporal",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTest-1764",
@@ -1861,7 +1944,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "consensus is finer-grained (district within gold's state); gold not broken",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1090",
@@ -1880,7 +1964,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "granularity echo: state/country instead of city",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1090",
@@ -1899,7 +1984,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "granularity echo: state/country instead of city",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-958",
@@ -2032,7 +2118,9 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_wrong",
-  "note": "malformed gold (116 entities, MID leakage=True)"
+  "note": "malformed gold (116 entities, MID leakage=True)",
+  "subtype": "",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-958",
@@ -2165,7 +2253,9 @@
   "includes_agr": true,
   "mixed_evidence": false,
   "verdict": "gold_wrong",
-  "note": "malformed gold (116 entities, MID leakage=True)"
+  "note": "malformed gold (116 entities, MID leakage=True)",
+  "subtype": "",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-245",
@@ -2184,7 +2274,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold is a date literal (1921-09); consensus names the event entity for the same year",
-  "subtype": "type_mismatch"
+  "subtype": "type_mismatch",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-1902",
@@ -2203,6 +2294,7 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: topic entity instead of the asked date",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  }
 ]

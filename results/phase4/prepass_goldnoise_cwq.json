@@ -18,7 +18,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: the former compaq center is now lakewood church; consensus names the rockets' current arena",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
@@ -39,7 +40,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "incomplete gold: antigua and barbuda, dominica, grenada, st kitts and nevis, st vincent, st lucia all use eastern caribbean time; gold lists barbados only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-493_cf7833e237b8cda1de396587129515c1",
@@ -62,7 +64,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "intermediate echo: consensus gives the country, gold the containing regions asked for",
-  "subtype": "echo_intermediate"
+  "subtype": "echo_intermediate",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-3100_d059b24adec4064377b957ca598769be",
@@ -87,7 +90,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "intermediate echo: consensus names the country (descriptor clause), gold the region; cross-ref kappa composition-echo ruling. gold also contains spurious \"país\"",
-  "subtype": "echo_intermediate"
+  "subtype": "echo_intermediate",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-493_590fff78c30981ef9566ad54a453d002",
@@ -110,7 +114,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "intermediate echo: consensus gives the country, gold the containing regions",
-  "subtype": "echo_intermediate"
+  "subtype": "echo_intermediate",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-3543_d7db4cdab1589b7c97a81236310a67f7",
@@ -131,7 +136,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "question asks for a country; gold gives an emirate/city (dubai); consensus gives the country",
-  "subtype": "type_mismatch"
+  "subtype": "type_mismatch",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTrn-710_c1d5c9c777c291a80c29c70ec43c45ad",
@@ -152,7 +158,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "intermediate echo: consensus names the team (descriptor clause), gold the event asked for",
-  "subtype": "echo_intermediate"
+  "subtype": "echo_intermediate",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-2570_6f059734e774504c68f628670516e72c",
@@ -173,7 +180,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "question asks for a president; gold gives a college (harvard) — cwq template resolved one relation too far",
-  "subtype": "type_mismatch"
+  "subtype": "type_mismatch",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTrn-2540_1af583970c492fc3682ae363bbfca3d3",
@@ -194,7 +202,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus names monet, who appears in the question as the person inspired, not the answer",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-2871_4c5dc1332d9eba8fde58e7b9561d4ae3",
@@ -215,7 +224,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "question asks for a state; gold gives a city (phoenix, duplicated); consensus gives the state",
-  "subtype": "type_mismatch"
+  "subtype": "type_mismatch",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
@@ -235,7 +245,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "incomplete gold: antigua and barbuda, dominica, grenada, st kitts and nevis, st vincent, st lucia all use eastern caribbean time; gold lists barbados only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
@@ -255,7 +266,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "incomplete gold: antigua and barbuda, dominica, grenada, st kitts and nevis, st vincent, st lucia all use eastern caribbean time; gold lists barbados only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
@@ -275,7 +287,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "incomplete gold: antigua and barbuda, dominica, grenada, st kitts and nevis, st vincent, st lucia all use eastern caribbean time; gold lists barbados only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
@@ -295,7 +308,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "incomplete gold: antigua and barbuda, dominica, grenada, st kitts and nevis, st vincent, st lucia all use eastern caribbean time; gold lists barbados only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-2779_14a5adac3764601c1967451c79cbdb79",
@@ -315,7 +329,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold gives \"consultant\" from the kg; consensus gives the popular description \"paralegal\"",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTrn-25_ee5981878443f689128ca9ea8a269f29",
@@ -337,7 +352,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "incomplete gold: \"the adventures of sharkboy and lavagirl\" is a lautner fantasy film absent from gold (twilight series only); second consensus row (incarceron) is an unreleased project",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-303_2ee96aa7464485d80d214b61773f4a5c",
@@ -357,7 +373,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus names the book's author (hughes); gold gives his literary role model",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-1629_5b23295775632ec566475a1ab8748962",
@@ -377,7 +394,8 @@
   "mixed_evidence": true,
   "verdict": "ambiguous_question",
   "note": "malformed two-part question: sarandon voiced skellington's speech, elfman the singing, newton brothers scored \"before i wake\" — multiple valid answers",
-  "subtype": "malformed_question"
+  "subtype": "malformed_question",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-924_ad15b96e5de6c60b06f2295638c2e471",
@@ -397,7 +415,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: barcelona was founded 1899; the 1893 constraint selects the argentina national team",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTrn-2006_7993a79baca778d4e8e6cb2b1882bca4",
@@ -417,7 +436,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "graham's magazine began publication in 1841 and employed poe; gold gives burton's, which ceased in 1840",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-2748_5394f28651892e7656afeda366a6af04",
@@ -449,7 +469,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "intermediate echo: consensus names the country, gold the languages asked for; gold omits thai itself",
-  "subtype": "echo_intermediate"
+  "subtype": "echo_intermediate",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-61_9be8c18e016b713cbb7f7feb6badebc7",
@@ -470,7 +491,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "granularity echo: consensus gives the parent religion, gold the denominations",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-634_4f2c0d9eb022ed67ec2cc356d4d5113a",
@@ -490,7 +512,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "san antonio and its city council are in bexar county; gold gives comal county, a neighbouring county",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-2570_c47133a5a4595621bf114ffa8ed4c3e3",
@@ -510,7 +533,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "gold unrelated to the question (\"khmer language\" for a us-president question); cwq template failure",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-213_024fd6ca0b4cb30927c22e93a552ae6c",
@@ -529,7 +553,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-1812_04dbed66ba17d35bf79f72e04bbcc776",
@@ -548,7 +573,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "question asks for a country; jamaica is a sovereign realm of elizabeth ii, gold gives a british overseas territory",
-  "subtype": "type_mismatch"
+  "subtype": "type_mismatch",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d",
@@ -568,7 +594,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "incomplete gold: trinidad and tobago and the dominican republic are atlantic-time caribbean countries; gold lists two territories only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-464_cab1228be4e8c16ee35a67b7ac63b264",
@@ -587,7 +614,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: mountain time is the zone shared by parts of texas and strathmore; consensus gives texas's majority zone",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTrn-1812_af6e94960d6ecddfbb9e8bee3ca654f5",
@@ -606,7 +634,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "incomplete gold: antigua and barbuda, dominica, grenada, st kitts and nevis, st vincent, st lucia all use eastern caribbean time; gold lists barbados only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-1677_80066cc2617f4e1301adab9b3e951711",
@@ -625,7 +654,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "going overboard (1989) is sandler's earliest film; gold gives eight crazy nights (2002)",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-1001_6bcfac70e63efec42212159c644a593a",
@@ -645,7 +675,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: super bowl xlii was played on 3 february 2008 and is excluded by the \"prior to\" constraint",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTest-1785_ee9df68984cde21c3be056caefd6613f",
@@ -664,7 +695,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold gives the immediately preceding film (return, 1978); consensus gives the first film (escape, 1975)",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTrn-1841_5d1cba94c816bec220b9f98e97493b0f",
@@ -685,7 +717,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "both barcelona and spain were laureus nominees; consensus ignored the second constraint",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTrn-2047_3d5f855275265f74d81b862231578e33",
@@ -704,7 +737,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: hohokam stadium opened 1997; wrigley field opened 1914 and violates the date constraint",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTest-989_4b6636a049fa767111eef6ce82bf7054",
@@ -723,7 +757,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "closely related entities: consensus gives the evacuation, gold the battle; below stage-b near-miss threshold",
-  "subtype": "related_entity"
+  "subtype": "related_entity",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
@@ -742,7 +777,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: belize's iso numeric code (084) satisfies the threshold; consensus countries have higher codes",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
@@ -761,7 +797,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: belize's iso numeric code (084) satisfies the threshold; consensus countries have higher codes",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
@@ -780,7 +817,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: belize's iso numeric code (084) satisfies the threshold; consensus countries have higher codes",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTest-576_495085ad9dd6274cce483df63474ca21",
@@ -799,7 +837,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct: belize's iso numeric code (084) satisfies the threshold; consensus countries have higher codes",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTest-1923_29c81279ed9a982e12f82e764083db76",
@@ -818,7 +857,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct under the \"0 seasons\" constraint (a crossover special); consensus gives the main series",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTest-1686_554811ebe1463287ee640a214683ea57",
@@ -837,7 +877,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "gold correct under the date constraint; consensus names a later officeholder",
-  "subtype": "constraint_ignored"
+  "subtype": "constraint_ignored",
+  "family": "constraint ignored"
  },
  {
   "qid": "WebQTest-783_b181354faec01d121c5f050e0d0da2fd",
@@ -856,7 +897,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "\"puncture\" is set in houston, which lies in harris county; gold gives montgomery county",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-1348_9cd662e0ee5c2ffbbbb0dc86053b1680",
@@ -875,7 +917,8 @@
   "mixed_evidence": true,
   "verdict": "gold_ok",
   "note": "echo: consensus answer appears in question text",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-2006_54c677761ff06a9b6e223ccb4c72a2a6",
@@ -894,7 +937,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "graham's magazine also employed poe; gold lists burton's only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-55_54e856d3c44e0ac4a33f0f0ebb7a67d6",
@@ -916,7 +960,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "question asks who (a person); gold gives the artist's professions — michael bublé is correct",
-  "subtype": "type_mismatch"
+  "subtype": "type_mismatch",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTrn-1706_97097ed7f8b2c898c800e8717998cb4c",
@@ -936,7 +981,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "\"controls\" underdetermined: gold gives the governing official (martinelli), consensus the controlling country (panama)",
-  "subtype": "underdetermined"
+  "subtype": "underdetermined",
+  "family": "question underdetermined"
  },
  {
   "qid": "WebQTrn-2748_4d6c65004ee28d487bc3921f625106b5",
@@ -956,7 +1002,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "consensus gives the majority language (thai); gold a minority language of the same country",
-  "subtype": "echo_granularity"
+  "subtype": "echo_granularity",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-64_025fdfafd914ff922ab8144f527c06ec",
@@ -976,7 +1023,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus names the actor (tupac shakur); gold gives the character name asked for",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-1812_82e069064d66663276c549f47e5e179d",
@@ -996,7 +1044,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "incomplete gold: trinidad and tobago and the dominican republic are atlantic-time caribbean countries; gold lists two territories only",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-1180_67f5f717564163742ca2588b7e186fd8",
@@ -1015,7 +1064,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus restates the question's containing country; gold gives the state asked for",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1260_018dc0c070e53555fa37f63d4b83ca87",
@@ -1034,7 +1084,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "intermediate echo: consensus names the team, gold the event; same case appears in the noplanner census as extraction bug",
-  "subtype": "echo_intermediate"
+  "subtype": "echo_intermediate",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-25_ee5981878443f689128ca9ea8a269f29",
@@ -1055,7 +1106,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "incomplete gold: \"the adventures of sharkboy and lavagirl\" is a lautner fantasy film absent from gold (twilight series only); second consensus row (incarceron) is an unreleased project",
-  "subtype": "incomplete_gold"
+  "subtype": "incomplete_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTest-389_544dcbf5d728f23ac97aa05f025a646a",
@@ -1080,7 +1132,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "intermediate echo: consensus names the composer (descriptor clause), gold the music types asked for",
-  "subtype": "echo_intermediate"
+  "subtype": "echo_intermediate",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-1629_5b23295775632ec566475a1ab8748962",
@@ -1099,7 +1152,8 @@
   "mixed_evidence": false,
   "verdict": "ambiguous_question",
   "note": "malformed two-part question: sarandon voiced skellington's speech, elfman the singing, newton brothers scored \"before i wake\" — multiple valid answers",
-  "subtype": "malformed_question"
+  "subtype": "malformed_question",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-124_609120802c32c3608fc379700186f76c",
@@ -1118,7 +1172,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold unrelated to the question (\"blue ivy\" for a film-direction question); by the sea (2015) is a jolie-directed film",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27",
@@ -1137,7 +1192,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "echo: consensus names the actor; gold gives the character name asked for",
-  "subtype": "echo_topic"
+  "subtype": "echo_topic",
+  "family": "echo"
  },
  {
   "qid": "WebQTrn-567_1e6dd9ec51a40b6c0ec2105ed84574c5",
@@ -1156,7 +1212,8 @@
   "mixed_evidence": false,
   "verdict": "gold_ok",
   "note": "gold correct: ron howard appeared in american graffiti; howard the duck is a katz screenplay without him",
-  "subtype": "relation_confusion"
+  "subtype": "relation_confusion",
+  "family": "relation mismatch"
  },
  {
   "qid": "WebQTrn-3057_5a7cd2677ed97e520a124ba9c2da6ad4",
@@ -1175,7 +1232,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold unrelated to the question (\"songwriter\" for a world-series question); 2010 and 2012 world series are correct",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  },
  {
   "qid": "WebQTrn-3057_5a7cd2677ed97e520a124ba9c2da6ad4",
@@ -1194,6 +1252,7 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "gold unrelated to the question (\"songwriter\" for a world-series question); 2010 and 2012 world series are correct",
-  "subtype": "wrong_gold"
+  "subtype": "wrong_gold",
+  "family": "label defect"
  }
 ]
