@@ -1,0 +1,18 @@
+{
+ "webqsp": {
+  "flag_rows": 89,
+  "flagged_questions": 58,
+  "gold_wrong_questions": 12,
+  "ambiguous_questions": 10,
+  "gold_ok_questions": 36,
+  "excluded_questions": 22
+ },
+ "cwq": {
+  "flag_rows": 59,
+  "flagged_questions": 47,
+  "gold_wrong_questions": 16,
+  "ambiguous_questions": 2,
+  "gold_ok_questions": 29,
+  "excluded_questions": 18
+ }
+}

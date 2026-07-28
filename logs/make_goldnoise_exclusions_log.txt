@@ -1,2 +1,17 @@
-webqsp: 22 qids excluded (17 gold_wrong rows, 18 ambiguous rows)
-cwq: 18 qids excluded (24 gold_wrong rows, 3 ambiguous rows)
+=== webqsp ===
+verdict               rows  questions
+gold_ok                 54         36
+gold_wrong              17         12
+ambiguous_question      18         10
+TOTAL                   89         58
+excluded from census: 22 questions (5.5% of the webqsp test set)
+
+=== cwq ===
+verdict               rows  questions
+gold_ok                 32         29
+gold_wrong              24         16
+ambiguous_question       3          2
+TOTAL                   59         47
+excluded from census: 18 questions (4.5% of the cwq test set)
+
+wrote census_exclusions.json + goldnoise_summary.json
