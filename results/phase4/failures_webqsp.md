@@ -1,0 +1,1440 @@
+## WebQTest-1003 (wrong)
+
+**Q:** who was the prime minister of pakistan in 1999
+
+**gold:** ['Nawaz Sharif', 'Moeenuddin Ahmad Qureshi']
+
+**answer:** Muhammad Mian Soomro was the prime minister of Pakistan in 1999.
+
+**entities:** ['Muhammad Mian Soomro']
+
+- plan: ['find the prime minister of Pakistan in 1999']
+- explored: ['government.government_position_held.office_position_or_title', 'government.government_office_or_title.office_holders', 'government.government_office_or_title.category'] (max_score 0.398)
+- eval: continue resolved=['Muhammad Mian Soomro', 'Ghulam Mustafa Jatoi', 'Liaquat Ali Khan', 'Muhammad Khan Junejo']
+- explored: ['government.politician.government_positions_held', 'government.government_position_held.office_holder', 'people.person.nationality', 'government.politician.government_positions_held', 'government.government_position_held.office_holder', 'people.person.nationality'] (max_score 0.439)
+- eval: answer resolved=['Muhammad Mian Soomro']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1047 (wrong)
+
+**Q:** who does amy stiller play in dodgeball
+
+**gold:** ['Keno Waitress']
+
+**answer:** Amy Stiller plays Pam Bailey in DodgeBall: A True Underdog Story.
+
+**entities:** ['Pam Bailey']
+
+- plan: ['find the character Amy Stiller plays in Dodgeball']
+- explored: ['film.film.starring', 'film.film_costumer_designer.costume_design_for_film', 'film.film_subject.films', 'film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.476)
+- eval: answer resolved=['Pam Bailey']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-108 (wrong)
+
+**Q:** what was the book written by charles darwin
+
+**gold:** ['On evolution', 'The Autobiography of Charles Darwin, and selected letters', 'The Voyage of the Beagle', 'The Voyage of the Beagle (Great Minds Series)', "Théorie de l'évolution", 'To the members of the Down Friendly Club', 'The Correspondence of Charles Darwin, Volume 3: 1844-1846', 'Descent of Man and Selection in Relation to Sex (Barnes & Noble Library of Essential Reading)', 'Origin of Species', 'The Origin Of Species', 'The Voyage of the Beagle (Classics of World Literature) (Classics of World Literature)', 'Proiskhozhdenie vidov', 'Darwin and Henslow', 'Resa kring jorden', 'Darwinism stated by Darwin himself', 'The Voyage of the Beagle (Unabridged Classics)', 'The zoology of the voyage of H.M.S. Beagle during the years 1832-1836', 'Darwin', 'The Darwin Reader First Edition', 'The Origin of Species', 'From So Simple a Beginning', 'Diary of the voyage of H.M.S. Beagle', "Journal of researches into the natural history and geology of the countries visited during the voyage round the world of the H. M. S. 'Beagle' under the command of Captain Fitz Roy, R. N", 'The Origin of Species', 'Voyage of the Beagle (NG Adventure Classics)', "Charles Darwin's letters", "Origin of Species (Everyman's University Paperbacks)", 'The Origin of Species', 'The Expression Of The Emotions In Man And Animals', 'The Expression of the Emotions in Man and Animals', 'The Structure and Distribution of Coral Reefs', 'The Formation of Vegetable Mould through the Action of Worms', 'Gesammelte kleinere Schriften', 'Het uitdrukken van emoties bij mens en dier', 'Evolution and natural selection', 'The Correspondence of Charles Darwin, Volume 12: 1864', 'Voyage of the Beagle (Harvard Classics, Part 29)', 'On the tendency of species to form varieties', 'The descent of man, and selection in relation to sex', 'The Correspondence of Charles Darwin, Volume 15: 1867', 'The origin of species', "Darwin's journal", 'The Expression of the Emotions in Man and Animals', 'The Descent of Man, and Selection in Relation to Sex', "The Origin of Species (Collector's Library)", 'Die verschiedenen Blütenformen an Pflanzen der nämlichen Art', 'Darwin-Wallace', 'Part I: Contributions to the Theory of Natural Selection / Part II', 'Charles Darwin', 'Darwin for Today', 'The Origin of Species (Barnes & Noble Classics Series) (Barnes & Noble Classics)', 'The Correspondence of Charles Darwin, Volume 16: 1868', "A student's introduction to Charles Darwin", 'The Expression of the Emotions in Man And Animals', 'The autobiography of Charles Darwin', 'From so simple a beginning', 'The Darwin Reader First Edition', 'Les mouvements et les habitudes des plantes grimpantes', "Charles Darwin's marginalia", 'The Correspondence of Charles Darwin, Volume 8: 1860', 'The Origin of Species', 'The Voyage of the Beagle', 'The Correspondence of Charles Darwin, Volume 2: 1837-1843', 'Autobiography of Charles Darwin', 'The Origin of Species', 'The expression of the emotions in man and animals', 'A Darwin Selection', 'The expression of the emotions in man and animals', "Charles Darwin's zoology notes & specimen lists from H.M.S. Beagle", 'red notebook of Charles Darwin', 'The Origin of Species (Great Books : Learning Channel)', 'The Correspondence of Charles Darwin, Volume 4', 'Questions about the breeding of animals', 'The voyage of Charles Darwin', 'The Correspondence of Charles Darwin, Volume 6', 'Tesakneri tsagumě', 'Cartas de Darwin 18251859', "Un mémoire inédit de Charles Darwin sur l'instinct", 'The Voyage of the Beagle (Unabridged Classics)', 'Works', 'The Correspondence of Charles Darwin, Volume 9: 1861', 'The Origin of Species (Variorum Reprint)', 'On Natural Selection', 'The Correspondence of Charles Darwin, Volume 4: 1847-1850', 'The expression of the emotions in man and animals.', 'Les récifs de corail, leur structure et leur distribution', "Les moyens d'expression chez les animaux", 'The Autobiography of Charles Darwin (Great Minds Series)', 'The Expression of the Emotions in Man and Animals', 'The Correspondence of Charles Darwin, Volume 14', 'The autobiography of Charles Darwin, 1809-1882', 'The Correspondence of Charles Darwin, Volume 8', 'La faculté motrice dans les plantes', 'The Origin of Species (Enriched Classics)', 'The Correspondence of Charles Darwin, Volume 5: 1851-1855', 'Notebooks on transmutation of species', 'The Autobiography of Charles Darwin', 'Opshṭamung fun menshen', 'Fertilisation of Orchids', 'Autobiography of Charles Darwin', 'The Expression of the Emotions in Man And Animals', 'The Correspondence of Charles Darwin, Volume 2', 'Voyage of the Beagle', 'The Voyage of the \\"Beagle\\" (Everyman\'s Classics)', "Darwin's insects", 'Charles Darwin on the routes of male humble bees', 'Reise eines Naturforschers um die Welt', 'Seul celui qui change reste fidèle à lui-même', 'The Correspondence of Charles Darwin, Volume 1', "Human nature, Darwin's view", 'Voyage Of The Beagle', 'The structure and distribution of coral reefs.', 'The descent of man, and selection in relation to sex.', 'The Origin Of Species', 'Das Variiren der Thiere und Pflanzen im Zustande der Domestication', 'The Life of Erasmus Darwin', 'The Correspondence of Charles Darwin, Volume 15', 'geneseōs tōn eidōn', 'The Correspondence of Charles Darwin, Volume 11: 1863', 'Origin of Species', 'The Descent of Man and Selection in Relation to Sex', 'Evolution by natural selection', 'The collected papers of Charles Darwin', 'Insectivorous Plants', 'The Effects of Cross and Self Fertilisation in the Vegetable Kingdom', 'The Correspondence of Charles Darwin, Volume 5', 'Memorias y epistolario íntimo', 'El Origin De Las Especies', 'H.M.S. Beagle in South America', 'The Expression of the Emotions in Man and Animals', 'THE ORIGIN OF SPECIES (Wordsworth Collection) (Wordsworth Collection)', 'Die fundamente zur entstehung der arten', 'The Origin of Species', 'On the Movements and Habits of Climbing Plants', 'The Origin of Species', 'variëeren der huisdieren en cultuurplanten', 'Darwin Compendium', 'Origin of Species', 'Origin of Species (Harvard Classics, Part 11)', 'The portable Darwin', 'The Correspondence of Charles Darwin, Volume 10: 1862', 'The structure and distribution of coral reefs', 'The foundations of the Origin of species', 'The education of Darwin', 'Origin of Species', 'ontstaan der soorten door natuurlijke teeltkeus', 'The Voyage of the Beagle', 'The expression of the emotions in man and animals', 'The expression of the emotions in man and animals', 'The origin of species', 'The Expression of the Emotions in Man and Animals', 'Metaphysics, Materialism, & the evolution of mind', 'Der Ausdruck der Gemüthsbewegungen bei dem Menschen und den Thieren', 'The Origin of Species', 'The Origin of Species', 'The Correspondence of Charles Darwin, Volume 13: 1865', 'monograph on the sub-class Cirripedia', 'La vie et la correspondance de Charles Darwin', 'The voyage of the Beagle.', 'The Origin of Species (Great Minds Series)', 'The Darwin Reader Second Edition', 'The Origin of Species', 'The geology of the voyage of H.M.S. Beagle', 'The Correspondence of Charles Darwin, Volume 11', 'The Autobiography of Charles Darwin (Dodo Press)', 'The Origin of Species', "The Origin of Species (Oxford World's Classics)", "From Darwin's unpublished notebooks", 'The Autobiography of Charles Darwin [EasyRead Edition]', "Charles Darwin's letters", 'Darwin on humus and the earthworm', "A student's introduction to Charles Darwin", 'The Autobiography of Charles Darwin', 'The descent of man, and selection in relation to sex.', 'From so simple a beginning', 'The Voyage of the Beagle (Adventure Classics)', 'The Correspondence of Charles Darwin, Volume 14: 1866', 'The Correspondence of Charles Darwin, Volume 17: 1869', 'The descent of man and selection in relation to sex.', 'The Correspondence of Charles Darwin, Volume 13', 'Origin of Species', 'The Expression of the Emotions in Man and Animals', 'The Autobiography of Charles Darwin [EasyRead Large Edition]', 'Reise um die Welt 1831 - 36', "The Descent Of Man And Selection In Relation To Sex (Kessinger Publishing's Rare Reprints)", 'The Origin Of Species', 'Viaje de Un Naturalista Alrededor del Mundo 2 Vol', 'The Origin of Species', 'Diario del Viaje de Un Naturalista Alrededor', 'The Origin of Species', "Charles Darwin's natural selection", 'On evolution', 'The Origin of Species (Mentor)', 'The living thoughts of Darwin', 'The principal works', 'Über den Bau und die Verbreitung der Corallen-Riffe', 'The origin of species : complete and fully illustrated', 'Notes on the fertilization of orchids', 'The Correspondence of Charles Darwin, Volume 18: 1870', 'Evolution', 'The origin of species', 'The Autobiography Of Charles Darwin', 'The Descent of Man and Selection in Relation to Sex', 'The origin of species : complete and fully illustrated', 'Monographs of the fossil Lepadidae and the fossil Balanidae', 'On a remarkable bar of sandstone off Pernambuco', 'The Correspondence of Charles Darwin, Volume 7: 1858-1859', 'The Correspondence of Charles Darwin, Volume 3', "Charles Darwin's natural selection", 'The Voyage of the Beagle (Unabridged Classics)', "La descendance de l'homme et la s©Øelection sexuelle", 'Darwin en Patagonia', 'Del Plata a Tierra del Fuego', 'The Voyage of the Beagle', "Geological observations on the volcanic islands and parts of South America visited during the voyage of H.M.S. 'Beagle", 'The Structure And Distribution of Coral Reefs', 'The Power of Movement in Plants', 'The Voyage of the Beagle', 'Origins', 'Kleinere geologische Abhandlungen', 'The Correspondence of Charles Darwin, Volume 1: 1821-1836', 'Letters from C. Darwin, Esq., to A. Hancock, Esq', 'The Orgin of Species', 'Die Entstehung der Arten durch natürliche Zuchtwahl', 'The action of carbonate of ammonia on the roots of certain plants', 'The Autobiography of Charles Darwin [EasyRead Comfort Edition]', 'The Voyage of the Beagle (Everyman Paperbacks)', 'The origin of species', 'The Expression of the Emotions in Man and Animals', 'More Letters of Charles Darwin', 'The Expression of the Emotions in Man and Animals (Large Print Edition): The Expression of the Emotions in Man and Animals (Large Print Edition)', 'Beagle letters', 'The Correspondence of Charles Darwin, Volume 10', 'The Correspondence of Charles Darwin, Volume 7', 'Rejse om jorden', 'The Different Forms of Flowers on Plants of the Same Species', "Darwin's notebooks on transmutation of species", 'The Structure and Distribution of Coral Reefs', 'Vospominanii︠a︡ o razvitii moego uma i kharaktera', 'The Origin of Species (Mentor)', 'The Descent of Man and Selection in Relation to Sex', 'The Essential Darwin', 'The Autobiography of Charles Darwin (Large Print)', 'The Descent of Man and Selection in Relation to Sex', 'The Darwin Reader Second Edition', 'Leben und Briefe von Charles Darwin', 'Voyage of the Beagle', 'Die Bewegungen und Lebensweise der kletternden Pflanzen', "Voyage d'un naturaliste autour du monde", 'Über die Wege der Hummel-Männchen', 'The autobiography of Charles Darwin, 1809-1882', 'Darwin Darwin', "The Origin of Species (World's Classics)", 'Motsa ha-minim', 'The Variation of Animals and Plants under Domestication', 'Die geschlechtliche Zuchtwahl', "Darwin's Ornithological notes", 'Wu zhong qi yuan', 'The origin of species by means of natural selection, or, The preservation of favored races in the struggle for life', 'The origin of species', 'Voyage of the Beagle (Dover Value Editions)', 'On Natural Selection', 'The Origin of Species', 'The Correspondence of Charles Darwin, Volume 9', "Charles Darwin's zoology notes & specimen lists from H.M.S. Beagle", 'The Autobiography of Charles Darwin', 'On the origin of species by means of natural selection', 'Geological Observations on South America', 'The Voyage of the Beagle (Mentor)', 'The Origin of Species', 'Die Wirkungen der Kreuz- und Selbst-Befruchtung im Pflanzenreich', 'The Correspondence of Charles Darwin, Volume 6: 1856-1857', 'The Correspondence of Charles Darwin, Volume 12', 'Volcanic Islands', 'Charles Darwin, 1809-1882--Anton Dohrn, 1840-1909']
+
+**answer:** Grant Allen
+
+**entities:** ['Grant Allen']
+
+- plan: ['find the book written by Charles Darwin']
+- explored: ['book.author.works_written', 'book.written_work.author', 'book.book_subject.works'] (max_score 0.633)
+- eval: answer resolved=['Grant Allen']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1170 (wrong)
+
+**Q:** who is the governor of virginia 2011
+
+**gold:** ['Bob McDonnell']
+
+**answer:** Governor of Virginia
+
+**entities:** ['Governor of Virginia']
+
+- plan: ['find the governor of Virginia in 2011']
+- explored: ['government.government_position_held.jurisdiction_of_office', 'government.election.district', 'government.political_district.representatives'] (max_score 0.278)
+- eval: continue resolved=['Governor of Virginia']
+- explored: ['government.political_party_tenure.politician', 'government.politician.government_positions_held', 'government.politician.party', 'government.politician.government_positions_held', 'government.government_position_held.office_holder', 'location.location.people_born_here'] (max_score 0.263)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['government.government_position_held.office_holder', 'education.education.student', 'location.location.people_born_here', 'people.person.place_of_birth', 'people.person.profession', 'people.deceased_person.place_of_death'] (max_score 0.191)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['people.person.education', 'people.person.place_of_birth', 'people.person.profession', 'people.person.gender', 'people.person.nationality'] (max_score 0.095)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['people.deceased_person.place_of_death', 'military.military_person.participated_in_conflicts', 'people.person.gender'] (max_score 0.069)
+- eval: answer resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1178 (wrong)
+
+**Q:** where is tupac from originally
+
+**gold:** ['East Harlem']
+
+**answer:** Tupac Shakur is originally from Marin City.
+
+**entities:** ['Marin City']
+
+- plan: ['find where Tupac is originally from']
+- explored: ['music.artist.origin', 'location.location.people_born_here', 'people.person.places_lived'] (max_score 0.535)
+- eval: answer resolved=['Marin City']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1215 (wrong)
+
+**Q:** who was stephen r covey
+
+**gold:** ['Author', 'Manager', 'Writer', 'Consultant', 'Professor', 'Motivational speaker']
+
+**answer:** Stephen Covey was a Writer, Motivational speaker, Author, Consultant, Professor, and Manager. He wrote works including The 8th Habit, First Things First, The Leader in Me, The SPEED of Trust, and The 3rd Alternative.
+
+**entities:** ['Stephen Covey']
+
+- plan: ['find who Stephen R. Covey was']
+- explored: ['people.person.profession', 'book.written_work.author', 'book.author.works_written'] (max_score 0.354)
+- eval: answer resolved=['Writer', 'Author', 'Consultant', 'Professor']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1271 (wrong)
+
+**Q:** when did carolina panthers go to superbowl
+
+**gold:** ['Super Bowl XXXVIII']
+
+**answer:** The Carolina Panthers went to the Super Bowl in 2004 NFC Championship Game.
+
+**entities:** ['2004 NFC Championship Game']
+
+- plan: ['find the Super Bowl that the Carolina Panthers went to', 'find when #1 took place']
+- explored: ['sports.sports_team.championships', 'american_football.football_game.home_team', 'american_football.football_team.home_games'] (max_score 0.518)
+- eval: continue resolved=['2004 NFC Championship Game']
+- explored: ['american_football.football_game.home_team', 'american_football.football_team.home_games', 'american_football.football_game.receiving', 'american_football.football_game.home_team', 'american_football.football_team.home_games', 'american_football.football_game.receiving'] (max_score 0.295)
+- eval: continue resolved=['2004 NFC Championship Game']
+- explored: ['sports.sports_team.championships', 'american_football.football_game.home_team', 'american_football.football_team.home_games', 'sports.sports_team.championships', 'american_football.football_game.home_team', 'american_football.football_team.home_games'] (max_score 0.548)
+- eval: continue resolved=['2004 NFC Championship Game']
+- explored: ['american_football.football_game.home_team', 'american_football.football_team.home_games', 'american_football.football_game.receiving', 'american_football.football_game.home_team', 'american_football.football_team.home_games', 'american_football.football_game.receiving'] (max_score 0.295)
+- eval: continue resolved=['2004 NFC Championship Game']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1296 (wrong)
+
+**Q:** what was scottie pippen known for
+
+**gold:** ['Actor', 'Basketball player']
+
+**answer:** Scottie Pippen was known as a Small forward.
+
+**entities:** ['Small forward']
+
+- plan: ['find what Scottie Pippen was known for']
+- explored: ['basketball.basketball_player_stats.player', 'basketball.basketball_player.player_statistics', 'basketball.basketball_player.position_s'] (max_score 0.434)
+- eval: continue resolved=['Small forward']
+- explored: ['basketball.basketball_historical_coach_position.team', 'basketball.basketball_team.previous_coaches', 'award.award_honor.award_winner', 'basketball.basketball_historical_coach_position.team', 'basketball.basketball_team.previous_coaches', 'award.award_honor.award_winner'] (max_score 0.15)
+- eval: continue resolved=['Small forward']
+- explored: ['sports.sports_award.award_winner', 'basketball.basketball_historical_coach_position.coach', 'basketball.basketball_player_stats.player', 'basketball.basketball_historical_coach_position.coach', 'sports.sports_team_roster.player', 'basketball.basketball_player.position_s'] (max_score 0.154)
+- eval: continue resolved=['Small forward']
+- explored: ['basketball.basketball_player_stats.team', 'basketball.basketball_historical_coach_position.team', 'basketball.basketball_team.previous_coaches', 'basketball.basketball_player_stats.team', 'basketball.basketball_historical_coach_position.team', 'basketball.basketball_team.previous_coaches'] (max_score 0.404)
+- eval: continue resolved=['Small forward']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1367 (wrong)
+
+**Q:** where is glastonbury england
+
+**gold:** ['Mendip', 'United Kingdom']
+
+**answer:** Glastonbury is in Connecticut, United States of America. It is also in United Kingdom and Mendip, but the facts are conflicting, so the exact location could not be determined from the provided facts.
+
+**entities:** ['Connecticut', 'United States of America']
+
+- plan: ['find Glastonbury', 'find where #1 is located']
+- explored: ['location.location.containedby', 'location.location.containedby', 'location.location.contains'] (max_score 0.433)
+- eval: continue resolved=['Glastonbury']
+- explored: ['location.location.contains', 'location.location.containedby', 'location.location.geolocation', 'location.location.contains', 'location.location.containedby', 'location.location.geolocation'] (max_score 0.474)
+- eval: continue resolved=['Glastonbury']
+- explored: ['location.location.containedby', 'location.location.containedby', 'location.location.geolocation'] (max_score 0.553)
+- eval: answer resolved=['Connecticut', 'United States of America', 'Hartford County', 'United Kingdom']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1373 (wrong)
+
+**Q:** where was john f kennedy when he got shot
+
+**gold:** ['Dallas']
+
+**answer:** John F. Kennedy was shot during the Assassination of John F. Kennedy, which took place at Dealey Plaza in Dallas.
+
+**entities:** ['Dealey Plaza']
+
+- plan: ['find the event when John F. Kennedy got shot', 'find where #1 happened']
+- explored: ['base.crime.crime.victim_s', 'base.crime.crime_victim.crime', 'military.military_person.participated_in_conflicts'] (max_score 0.426)
+- eval: continue resolved=['Assassination of John F. Kennedy']
+- explored: ['location.location.events', 'time.event.locations', 'base.newsevents.videotaped_event.footage'] (max_score 0.548)
+- eval: answer resolved=['Dealey Plaza', 'Dallas']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1416 (wrong)
+
+**Q:** what was franklin pierce famous for
+
+**gold:** ['US President']
+
+**answer:** Franklin Pierce was famous for being the president in Franklin Pierce 1853 presidential inauguration and for his participation in the Mexican–American War, including the Battle of Molino del Rey, Battle of Churubusco, Battle of Chapultepec, Battle for Mexico City, and Battle of Contreras.
+
+**entities:** ['Franklin Pierce 1853 presidential inauguration', 'Mexican–American War', 'Battle of Molino del Rey', 'Battle of Churubusco', 'Battle of Chapultepec', 'Battle for Mexico City', 'Battle of Contreras']
+
+- plan: ['find what Franklin Pierce was famous for']
+- explored: ['military.military_person.participated_in_conflicts', 'base.inaugurations.inauguration.president', 'media_common.quotation.author'] (max_score 0.377)
+- eval: answer resolved=['Franklin Pierce', 'Mexican–American War', 'Battle of Molino del Rey', 'Battle of Churubusco']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1458 (wrong)
+
+**Q:** who owns chrysler corporation 2011
+
+**gold:** ['Fiat Chrysler Automobiles', 'Federal government of the United States', 'Voluntary Employee Beneficiary Association', 'Government of Canada', 'Fiat S.p.A.']
+
+**answer:** Chrysler Group LLC.
+
+**entities:** ['Chrysler Group LLC']
+
+- plan: ['find Chrysler Corporation in 2011', 'find the owner of #1']
+- explored: ['automotive.make.parent_company', 'organization.organization.companies_acquired', 'automotive.company.make_s'] (max_score 0.581)
+- eval: continue resolved=['Chrysler']
+- explored: ['automotive.make.parent_company', 'automotive.company.make_s', 'automotive.make.model_s', 'automotive.make.parent_company', 'automotive.company.make_s', 'automotive.make.model_s'] (max_score 0.581)
+- eval: continue resolved=['Chrysler Group LLC']
+- explored: ['organization.organization.companies_acquired', 'automotive.company.make_s', 'business.acquisition.company_acquired', 'automotive.company.make_s', 'automotive.make.parent_company', 'base.cars_refactor.company.makes'] (max_score 0.624)
+- eval: continue resolved=['Chrysler']
+- explored: ['automotive.make.parent_company', 'business.brand.owner_s', 'base.cars_refactor.make.parent_company'] (max_score 0.617)
+- eval: answer resolved=['Chrysler Group LLC']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1477 (wrong)
+
+**Q:** what episode of how i met your mother is carrie underwood on
+
+**gold:** ['Hooked']
+
+**answer:** Carrie Underwood appears on Peyton Manning/Carrie Underwood.
+
+**entities:** ['Peyton Manning/Carrie Underwood']
+
+- plan: ['find the episode of How I Met Your Mother that Carrie Underwood appears in']
+- explored: ['tv.tv_guest_role.actor', 'base.saturdaynightlive.snl_episode.musical_guest', 'base.realitytv.reality_tv_contestant.season'] (max_score 0.393)
+- eval: continue resolved=['Peyton Manning/Carrie Underwood']
+- explored: ['tv.tv_guest_role.episodes_appeared_in', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_series_season.episodes', 'tv.tv_guest_role.episodes_appeared_in', 'tv.tv_guest_role.episodes_appeared_in', 'tv.tv_guest_role.episodes_appeared_in'] (max_score 0.486)
+- eval: continue resolved=[]
+- explored: ['tv.tv_guest_personal_appearance.episode', 'base.saturdaynightlive.snl_episode.musical_guest', 'tv.tv_program_guest.appeared_on', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_program_guest.appeared_on', 'tv.tv_guest_personal_appearance.person'] (max_score 0.322)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['tv.tv_guest_role.episodes_appeared_in', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_series_season.episodes', 'tv.tv_guest_role.episodes_appeared_in', 'tv.tv_guest_role.episodes_appeared_in', 'tv.tv_guest_role.episodes_appeared_in'] (max_score 0.486)
+- eval: continue resolved=['Peyton Manning/Carrie Underwood']
+- explored: ['base.saturdaynightlive.snl_episode.host', 'base.saturdaynightlive.snl_host.episodes_hosted', 'tv.tv_guest_personal_appearance.person', 'base.saturdaynightlive.snl_character.impression_of', 'base.saturdaynightlive.person_impersonated_on_snl.snl_impersonations', 'people.person.parents'] (max_score 0.197)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.saturdaynightlive.snl_musical_guest.episodes_as_musical_guest', 'base.saturdaynightlive.snl_musical_guest.musical_performance', 'base.saturdaynightlive.snl_musical_performance.musical_guest', 'people.person.parents', 'event.public_speaker.speeches_or_presentations', 'tv.tv_personality.tv_regular_appearances'] (max_score 0.164)
+- eval: continue resolved=['2007 CMA Music Festival', 'January 20, 2007']
+- explored: ['tv.tv_guest_personal_appearance.episode', 'tv.tv_program_guest.appeared_on', 'tv.tv_guest_role.episodes_appeared_in', 'base.saturdaynightlive.snl_musical_performance.episode', 'base.saturdaynightlive.snl_episode.season', 'base.saturdaynightlive.snl_season.episodes'] (max_score 0.337)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1555 (wrong)
+
+**Q:** what is the parliament of nepal called
+
+**gold:** ['Parliament of Nepal']
+
+**answer:** The Parliament of Nepal is composed of the National Assembly and the House of Representatives.
+
+**entities:** ['National Assembly', 'House of Representatives']
+
+- plan: ['find the parliament of Nepal']
+- explored: ['government.governmental_jurisdiction.government_bodies', 'government.governmental_body.body_this_is_a_component_of', 'government.governmental_body.component_bodies'] (max_score 0.219)
+- eval: answer resolved=['Parliament of Nepal']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1557 (wrong)
+
+**Q:** where do florida panthers play
+
+**gold:** ['Miami Arena', 'BB&T Center']
+
+**answer:** The Florida Panthers play in Sunrise.
+
+**entities:** ['Sunrise']
+
+- plan: ['find the team Florida Panthers', 'find where #1 play']
+- explored: ['sports.sports_team_roster.team', 'sports.mascot.team', 'sports.sports_team_location.teams'] (max_score 0.357)
+- eval: continue resolved=['Florida Panthers']
+- explored: ['sports.sports_position.sport', 'sports.sport.positions', 'sports.sports_team_roster.position', 'ice_hockey.hockey_player.hockey_position', 'sports.sports_team_roster.player', 'sports.pro_athlete.sports_played_professionally'] (max_score 0.532)
+- eval: continue resolved=['Los Angeles Kings', 'Boston Bruins']
+- explored: ['sports.sports_position.sport', 'sports.sport.positions', 'sports.pro_sports_played.sport', 'ice_hockey.hockey_player.hockey_position', 'sports.sports_team_roster.player', 'sports.pro_athlete.teams'] (max_score 0.532)
+- eval: continue resolved=['Los Angeles Kings']
+- explored: ['basketball.basketball_player.position_s', 'sports.sports_position.sport', 'sports.sport.positions', 'sports.sports_position.sport', 'sports.sport.positions', 'cvg.cvg_developer.game_versions_developed'] (max_score 0.557)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1620 (wrong)
+
+**Q:** when was president wilson in office
+
+**gold:** ['1913-03-04']
+
+**answer:** Woodrow Wilson was in office in 1913 and 1917, based on the 1913 presidential inauguration and the 1917 presidential inauguration.
+
+**entities:** ['Woodrow Wilson 1913 presidential inauguration', 'Woodrow Wilson 1917 presidential inauguration']
+
+- plan: ['find president Wilson', 'find when #1 was in office']
+- explored: ['government.us_president.vice_president', 'government.us_vice_president.to_president', 'base.inaugurations.inauguration.president'] (max_score 0.568)
+- eval: continue resolved=['Woodrow Wilson']
+- explored: ['government.us_president.vice_president', 'government.government_position_held.office_holder', 'government.politician.government_positions_held', 'time.event.locations', 'base.inaugurations.inauguration.president', 'base.inaugurations.inauguration.inaugural_address'] (max_score 0.485)
+- eval: answer resolved=['Woodrow Wilson 1913 presidential inauguration', 'Woodrow Wilson 1917 presidential inauguration']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-164 (wrong)
+
+**Q:** what did stephen hawking become famous for
+
+**gold:** ['Cosmologist', 'Mathematician', 'Author', 'Physicist', 'Writer', 'Astronomer', 'Science writer', 'Astrophysicist', 'Professor', 'Scientist']
+
+**answer:** Stephen Hawking became famous for A Brief History of Time.
+
+**entities:** ['Stephen Hawking']
+
+- plan: ['find what Stephen Hawking became famous for']
+- explored: ['medicine.notable_person_with_medical_condition.condition', 'award.award_honor.award_winner', 'book.author.works_written'] (max_score 0.415)
+- eval: continue resolved=['A Brief History of Time', 'The Theory of Everything', 'The Universe in a Nutshell', 'The Grand Design']
+- explored: ['medicine.notable_person_with_medical_condition.condition', 'book.book_subject.works', 'medicine.disease.medical_specialties', 'award.award_category.winners', 'award.award_honor.award', 'medicine.notable_person_with_medical_condition.condition'] (max_score 0.43)
+- eval: answer resolved=['Stephen Hawking']
+- verifier: unsupported unsupported=['Stephen Hawking worked in theoretical physics', 'Stephen Hawking especially studied black holes']
+- explored: ['people.person.employment_history', 'fictional_universe.person_in_fiction.representations_in_fiction', 'fictional_universe.person_in_fiction.representations_in_fiction'] (max_score 0.41)
+- eval: answer resolved=['Stephen Hawking']
+- verifier: unsupported unsupported=['Stephen Hawking became famous for black holes and cosmology']
+
+---
+
+## WebQTest-1707 (wrong)
+
+**Q:** who plays lex luthor on smallville
+
+**gold:** ['Michael Rosenbaum']
+
+**answer:** John Glover plays Lionel Luthor on Smallville. The facts provided do not determine who plays Lex Luthor on Smallville.
+
+**entities:** ['John Glover']
+
+- plan: ['find the actor who plays Lex Luthor on Smallville']
+- explored: ['tv.tv_program.regular_cast', 'tv.regular_tv_appearance.series', 'tv.tv_series_season.series'] (max_score 0.542)
+- eval: continue resolved=['John Glover']
+- explored: ['tv.tv_actor.starring_roles', 'tv.regular_tv_appearance.actor', 'people.person.nationality', 'tv.tv_series_season.regular_cast', 'tv.tv_series_season.series', 'tv.tv_series_season.episodes'] (max_score 0.317)
+- eval: continue resolved=['John Glover']
+- explored: ['tv.tv_program.regular_cast', 'tv.regular_tv_appearance.series', 'tv.tv_series_season.series', 'tv.tv_series_season.regular_cast', 'tv.tv_series_season.series', 'tv.tv_series_season.episodes'] (max_score 0.317)
+- eval: continue resolved=['Lionel Luthor', 'Alexander Luthor', 'Lucas Luthor']
+- explored: ['tv.tv_actor.starring_roles', 'tv.regular_tv_appearance.actor', 'people.person.nationality', 'tv.tv_series_season.regular_cast', 'tv.tv_series_season.series', 'tv.tv_series_season.episodes'] (max_score 0.317)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1730 (wrong)
+
+**Q:** where does the parana river flow
+
+**gold:** ['South America']
+
+**answer:** The Paraná River flows into Río de la Plata, and it also has Rio Grande, Paraguay River, Paranaíba River, and Iguazu River listed as mouth or origin-related entities.
+
+**entities:** ['Río de la Plata', 'Rio Grande', 'Paraguay River', 'Paranaíba River', 'Iguazu River']
+
+- plan: ['find where the Paraná River flows']
+- explored: ['geography.river.mouth', 'geography.river.mouth', 'geography.river.origin'] (max_score 0.621)
+- eval: answer resolved=['Rio Grande', 'Paraguay River', 'Paranaíba River', 'Iguazu River']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1794 (wrong)
+
+**Q:** where is mitt romney 's family from
+
+**gold:** ['Detroit']
+
+**answer:** Mitt Romney's family is from Bloomfield Hills and Massachusetts.
+
+**entities:** ['Bloomfield Hills', 'Massachusetts']
+
+- plan: ['find the family of Mitt Romney', 'find where #1 is from']
+- explored: ['people.person.spouse_s', 'people.person.parents', 'people.person.parents'] (max_score 0.469)
+- eval: continue resolved=['Ann Romney', 'Craig Romney', 'Josh Romney', 'Tagg Romney']
+- explored: ['people.person.places_lived', 'people.person.place_of_birth', 'people.place_lived.person', 'people.person.places_lived', 'people.person.place_of_birth', 'people.place_lived.person'] (max_score 0.457)
+- eval: continue resolved=['Ann Romney', 'Tagg Romney', 'Craig Romney', 'Josh Romney']
+- explored: ['location.location.people_born_here', 'location.location.contains', 'location.location.contains', 'base.biblioness.bibs_location.country', 'location.location.contains', 'people.place_lived.location'] (max_score 0.238)
+- eval: continue resolved=['Ann Romney', 'Tagg Romney']
+- explored: ['location.location.people_born_here', 'location.location.people_born_here', 'location.location.people_born_here', 'location.location.people_born_here', 'people.person.place_of_birth', 'people.person.nationality'] (max_score 0.238)
+- eval: answer resolved=['Bloomfield Hills', 'Belmont', 'Massachusetts', 'Provo']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-186 (wrong)
+
+**Q:** who rules denmark right now
+
+**gold:** ['Helle Thorning-Schmidt', 'Margrethe II of Denmark', 'Margrethe Vestager']
+
+**answer:** Christian X of Denmark rules Denmark right now.
+
+**entities:** ['Christian X of Denmark']
+
+- plan: ['find who rules Denmark right now']
+- explored: ['royalty.royal_line.kingdom_s_ruled', 'royalty.kingdom.rulers', 'royalty.monarch.kingdom'] (max_score 0.535)
+- eval: continue resolved=[]
+- explored: ['royalty.royal_line.kingdom_s_ruled', 'royalty.monarch.royal_line', 'people.family.country', 'royalty.royal_line.kingdom_s_ruled', 'royalty.monarch.royal_line', 'people.family.country'] (max_score 0.535)
+- eval: continue resolved=['Christian X of Denmark']
+- explored: ['royalty.kingdom.rulers', 'royalty.monarch.kingdom', 'government.governmental_jurisdiction.governing_officials', 'royalty.monarch.kingdom', 'royalty.royal_line.kingdom_s_ruled', 'royalty.kingdom.rulers'] (max_score 0.521)
+- eval: continue resolved=['Christian VII of Denmark']
+- explored: ['royalty.kingdom.rulers', 'royalty.monarch.kingdom', 'royalty.monarch.royal_line', 'royalty.kingdom.rulers', 'royalty.monarch.kingdom', 'base.culturalevent.event.entity_involved'] (max_score 0.251)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1898 (wrong)
+
+**Q:** what voices does seth macfarlane play on family guy
+
+**gold:** ['Glenn Quagmire', 'Kevin Swanson', 'Jasper', 'Mickey McFinnegan', 'Peter Griffin', 'Tom Tucker', 'Brian Griffin', 'Stewie Griffin', 'God', 'Seamus', 'Dr. Elmer Hartman', 'Jake Tucker', 'Nate Griffin', 'Carter Pewterschmidt', 'Kool-aid Guy']
+
+**answer:** Seth MacFarlane.
+
+**entities:** ['Seth MacFarlane']
+
+- plan: ['find the characters Seth MacFarlane voices on Family Guy']
+- explored: ['tv.tv_program.regular_cast', 'tv.regular_tv_appearance.series', 'tv.tv_regular_personal_appearance.program'] (max_score 0.258)
+- eval: continue resolved=['Seth MacFarlane']
+- explored: ['tv.regular_tv_appearance.actor', 'tv.tv_actor.starring_roles', 'tv.tv_writer.tv_programs', 'tv.tv_series_season.regular_cast', 'tv.tv_series_season.episodes', 'tv.tv_program.seasons'] (max_score 0.238)
+- eval: continue resolved=['Seth MacFarlane']
+- explored: ['tv.tv_program.regular_cast', 'tv.regular_tv_appearance.series', 'tv.tv_regular_personal_appearance.program', 'tv.tv_series_season.regular_cast', 'tv.tv_series_season.episodes', 'tv.tv_program.seasons'] (max_score 0.528)
+- eval: continue resolved=['Seth MacFarlane']
+- explored: ['tv.regular_tv_appearance.actor', 'tv.tv_actor.starring_roles', 'tv.tv_writer.tv_programs', 'tv.tv_series_season.regular_cast', 'tv.tv_series_season.episodes', 'tv.tv_program.seasons'] (max_score 0.238)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1914 (wrong)
+
+**Q:** what year was allen iverson mvp
+
+**gold:** ['2000–01 NBA season']
+
+**answer:** Allen Iverson won the NBA Most Valuable Player Award in the 2000–01 NBA season.
+
+**entities:** ['Allen Iverson']
+
+- plan: ['find the MVP award won by Allen Iverson', 'find the year of #1']
+- explored: ['sports.sports_award.award_winner', 'sports.sports_award_winner.awards', 'award.award_honor.award_winner'] (max_score 0.662)
+- eval: continue resolved=['NBA Most Valuable Player Award']
+- explored: ['sports.sports_award_type.winners', 'award.award_category.winners', 'sports.sports_award.award'] (max_score 0.654)
+- eval: continue resolved=['1976–77 NBA season', '1979–80 NBA season', '1990–91 NBA season', '1992–93 NBA season']
+- explored: ['sports.sports_award_winner.awards', 'sports.sports_award.award_winner', 'basketball.basketball_player_career_stats.player', 'sports.sports_award_winner.awards', 'sports.sports_award.award_winner', 'award.ranking.item'] (max_score 0.682)
+- eval: continue resolved=['1976–77 NBA season', '1979–80 NBA season', '1990–91 NBA season', '1992–93 NBA season']
+- explored: ['sports.sports_award.season', 'basketball.basketball_player_stats.season', 'sports.sports_league_season.awards', 'sports.sports_award.season', 'basketball.basketball_player_stats.season', 'sports.sports_league_season.awards'] (max_score 0.432)
+- eval: continue resolved=['1976–77 NBA season', '2006–07 NBA season']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1920 (wrong)
+
+**Q:** who is rick scott
+
+**gold:** ['Lawyer', 'Investor', 'Businessperson', 'Politician', 'Executive officer']
+
+**answer:** Rick Scott is a politician affiliated with the Republican Party. He was the candidate for Rick Scott for Governor, 2010.
+
+**entities:** ['Rick Scott']
+
+- plan: ['find who Rick Scott is']
+- explored: ['government.election_campaign.candidate', 'government.political_party_tenure.politician', 'government.politician.party'] (max_score 0.429)
+- eval: continue resolved=['Rick Scott']
+- explored: ['government.election_campaign.candidate', 'government.election_campaign.party', 'government.politician.election_campaigns', 'organization.organization.board_members', 'government.political_party.politicians_in_this_party', 'base.popstra.party.celebrities'] (max_score 0.429)
+- eval: answer resolved=['Rick Scott']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1937 (wrong)
+
+**Q:** who is captain james cook facts
+
+**gold:** ['Explorer', 'Sailor']
+
+**answer:** Captain James Cook was a person who served in the Royal Navy and had nationality in the Kingdom of Great Britain and the United Kingdom.
+
+**entities:** ['James Cook']
+
+- plan: ['find facts about Captain James Cook']
+- explored: ['military.military_service.military_person', 'military.military_person.service', 'people.person.nationality'] (max_score 0.415)
+- eval: continue resolved=['Royal Navy', 'Kingdom of Great Britain', 'United Kingdom']
+- explored: ['military.military_combatant.military_commanders', 'base.schemastaging.military_person_extra.allegiance', 'military.casualties.combatant', 'military.military_combatant.military_commanders', 'dining.cuisine.region_of_origin', 'book.written_work.subjects'] (max_score 0.403)
+- eval: continue resolved=['James Cook']
+- explored: ['book.author.works_written', 'military.military_command.military_commander', 'military.military_service.military_person', 'military.military_conflict.commanders', 'military.military_person.participated_in_conflicts', 'base.americancivilwar.campaign.battle'] (max_score 0.185)
+- eval: continue resolved=['James Cook']
+- explored: ['book.author.works_written', 'book.author.works_written', 'fictional_universe.person_in_fiction.representations_in_fiction', 'military.military_command.military_commander', 'military.military_command.military_commander', 'military.military_commander.military_commands'] (max_score 0.185)
+- eval: continue resolved=['James Cook']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1940 (wrong)
+
+**Q:** who do islamic people follow
+
+**gold:** ['Ramdev Pir', 'God', 'Allah']
+
+**answer:** Islamic people follow Muslims. Could not be determined from the provided facts whether any specific person is meant beyond Muslims.
+
+**entities:** ['Muslims']
+
+- plan: ['find who Islamic people follow']
+- explored: ['religion.adherents.religion', 'religion.religion.number_of_adherents', 'religion.religion.collective_term_for_adherents'] (max_score 0.324)
+- eval: backtrack resolved=['Muslims']
+- backtrack: evaluator
+- explored: ['people.person.religion', 'location.religion_percentage.religion', 'religion.religious_organization.associated_with'] (max_score 0.286)
+- eval: answer resolved=['Maysoon Zayid', 'Faisal al-Fayez', 'Ibn Arabi', 'Rifaat al-Assad']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-209 (wrong)
+
+**Q:** where is laos in world map
+
+**gold:** ['Southeast Asia']
+
+**answer:** Laos is in Asia.
+
+**entities:** ['Laos']
+
+- plan: ['find Laos', 'find where #1 is located on the world map']
+- explored: ['location.country.languages_spoken', 'location.country.internet_tld', 'location.country.form_of_government'] (max_score 0.263)
+- eval: continue resolved=['Laos']
+- explored: ['location.country.internet_tld', 'base.rosetta.languoid.geolocation', 'base.rosetta.languoid.geolocation', 'location.country.languages_spoken', 'location.country.form_of_government', 'government.form_of_government.countries'] (max_score 0.286)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.country.official_language', 'language.human_language.countries_spoken_in', 'language.human_language.main_country', 'language.human_language.main_country', 'language.human_language.region', 'base.rosetta.languoid.local_name'] (max_score 0.203)
+- eval: continue resolved=['Laos']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.location.geolocation', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.location.geolocation'] (max_score 0.652)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.country.official_language', 'language.human_language.countries_spoken_in', 'language.human_language.main_country', 'language.human_language.main_country', 'language.human_language.region', 'base.rosetta.languoid.local_name'] (max_score 0.203)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['language.human_language.region', 'fictional_universe.fictional_setting.languages', 'fictional_universe.fictional_language.where_spoken', 'base.rosetta.local_name.languoid', 'base.rosetta.languoid.parent', 'base.rosetta.languoid.document'] (max_score 0.148)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-245 (wrong)
+
+**Q:** what year was the first miss america pageant held
+
+**gold:** ['1921-09']
+
+**answer:** The first Miss America pageant was held in 1921, corresponding to Miss America 1921.
+
+**entities:** ['Miss America 1921']
+
+- plan: ['find the first Miss America pageant', 'find the year it was held']
+- explored: ['award.recurring_competition.individual_competitions', 'award.competition.instance_of_recurring_competition', 'time.event.instance_of_recurring_event'] (max_score 0.438)
+- eval: continue resolved=['Miss America 1921']
+- explored: ['time.event.instance_of_recurring_event', 'time.recurring_event.instances', 'award.recurring_competition.individual_competitions'] (max_score 0.529)
+- eval: continue resolved=['Miss America 1925', 'Miss America 1975', 'Miss America 1976', 'Miss America 1926']
+- explored: ['time.event.instance_of_recurring_event', 'time.recurring_event.instances', 'award.competition.instance_of_recurring_competition'] (max_score 0.529)
+- eval: answer resolved=['Miss America 1980', '1929 Miss America']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-273 (wrong)
+
+**Q:** when did michael jordan return to the nba
+
+**gold:** ['1984']
+
+**answer:** Michael Jordan returned to the NBA in the 1994–95 NBA season.
+
+**entities:** ['1994–95 NBA season']
+
+- plan: ['find the event of Michael Jordan returning to the NBA', 'find when #1 happened']
+- explored: ['sports.pro_athlete.teams', 'basketball.basketball_player.player_statistics', 'sports.drafted_athlete.drafted'] (max_score 0.535)
+- eval: continue resolved=['1994–95 NBA season']
+- explored: ['basketball.basketball_team_stats.season', 'sports.sports_league.seasons', 'basketball.basketball_player_stats.season'] (max_score 0.409)
+- eval: answer resolved=['1994–95 NBA season']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-301 (wrong)
+
+**Q:** what were amelia earhart 's achievements
+
+**gold:** ['Pilot', 'Writer']
+
+**answer:** Amelia Earhart was inducted into the National Women's Hall of Fame.
+
+**entities:** ["National Women's Hall of Fame"]
+
+- plan: ['find achievements of Amelia Earhart']
+- explored: ['award.award_nomination.nominated_for', 'award.hall_of_fame_inductee.hall_of_fame_inductions', 'award.hall_of_fame_induction.inductee'] (max_score 0.454)
+- eval: continue resolved=["National Women's Hall of Fame"]
+- explored: ['award.hall_of_fame_induction.hall_of_fame'] (max_score 0.364)
+- eval: answer resolved=["National Women's Hall of Fame"]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-316 (wrong)
+
+**Q:** what did shakespeare become famous for
+
+**gold:** ['Author', 'Actor', 'Playwright', 'Lyricist', 'Poet']
+
+**answer:** William Shakespeare became famous for writing plays such as Macbeth, Antony and Cleopatra, A Midsummer Night's Dream, Romeo and Juliet, The Taming of the Shrew, The Comedy of Errors, Titus Andronicus, and The Two Gentlemen of Verona.
+
+**entities:** ['William Shakespeare']
+
+- plan: ['find what Shakespeare became famous for']
+- explored: ['theater.play.lyricist', 'theater.theatrical_lyricist.play_lyrics_written', 'music.composition.lyricist'] (max_score 0.551)
+- eval: continue resolved=['William Shakespeare']
+- explored: ['theater.theater_role.play', 'theater.play.lyricist', 'theater.play.characters', 'theater.theater_role.play', 'theater.play.lyricist', 'theater.play.genre'] (max_score 0.253)
+- eval: continue resolved=['William Shakespeare']
+- explored: ['theater.theater_role.actor', 'theater.theater_actor.theater_roles', 'media_common.quotation.author', 'theater.theater_character.portrayed_by', 'theater.theater_role.role', 'theater.play.characters'] (max_score 0.26)
+- eval: continue resolved=['William Shakespeare']
+- explored: ['theater.theater_role.play', 'theater.theater_production.cast', 'theater.theater_role.play', 'theater.theater_production.cast', 'book.author.works_written', 'theater.theater_role.play'] (max_score 0.253)
+- eval: continue resolved=['William Shakespeare']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-419 (wrong)
+
+**Q:** what country did magellan represent
+
+**gold:** ['Kingdom of Portugal']
+
+**answer:** Ferdinand Magellan represented Magellan.
+
+**entities:** ['Ferdinand Magellan']
+
+- plan: ['find what Magellan represented']
+- explored: ['symbols.namesake.named_after', 'symbols.namesake.named_after', 'symbols.name_source.namesakes'] (max_score 0.434)
+- eval: answer resolved=['Strait of Magellan', 'Large Magellanic Cloud', 'Magellan Shrine', 'Magelhaens']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-43 (wrong)
+
+**Q:** what did george clemenceau do
+
+**gold:** ['Physician', 'Writer', 'Statesman', 'Journalist', 'Publisher']
+
+**answer:** Georges Clémenceau was a writer and politician associated with the Radical Party. He wrote works including The Surprises Of Life, La France devant L'Allemagne, Le grand Pan, and Discours de guerre, and he is quoted as saying "War is too important a matter to be left to the military."
+
+**entities:** ['Georges Clémenceau']
+
+- plan: ['find what George Clemenceau did']
+- explored: ['book.author.works_written', 'media_common.quotation.author', 'people.person.places_lived'] (max_score 0.126)
+- eval: answer resolved=['Georges Clémenceau']
+- backtrack: low_score
+- explored: ['government.political_party_tenure.politician', 'book.written_work.author', 'symbols.namesake.named_after'] (max_score 0.104)
+- eval: answer resolved=['Georges Clémenceau']
+- backtrack: low_score
+- explored: ['government.politician.party', 'organization.organization_member.member_of', 'people.place_lived.person'] (max_score 0.062)
+- eval: answer resolved=['Georges Clémenceau']
+- backtrack: low_score
+- explored: ['symbols.name_source.namesakes', 'people.person.quotations', 'film.personal_film_appearance.person'] (max_score 0.046)
+- eval: answer resolved=['Georges Clémenceau']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-59 (wrong)
+
+**Q:** when did annie open
+
+**gold:** ['1976-08-10']
+
+**answer:** Annie opened in New York City and Los Angeles, with regional release information also pointing to the United States of America.
+
+**entities:** ['New York City', 'Los Angeles', 'United States of America']
+
+- plan: ['find the opening date of Annie']
+- explored: ['film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film.story_by'] (max_score 0.529)
+- eval: continue resolved=[]
+- explored: ['film.film_regional_release_date.film_regional_debut_venue', 'film.film_regional_release_date.film_release_region', 'time.event.locations', 'film.film_regional_release_date.film_regional_debut_venue', 'film.film_regional_release_date.film_release_region', 'time.event.locations'] (max_score 0.451)
+- eval: continue resolved=['Annie']
+- explored: ['film.film.release_date_s', 'film.film.story_by', 'film.film_regional_release_date.film', 'film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film.starring'] (max_score 0.244)
+- eval: answer resolved=['Annie']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-665 (wrong)
+
+**Q:** what government does new zealand have
+
+**gold:** ['Parliamentary system', 'Unitary state', 'Constitutional monarchy']
+
+**answer:** Government of New Zealand
+
+**entities:** ['Government of New Zealand']
+
+- plan: ['find the government of New Zealand']
+- explored: ['government.government_agency.government', 'government.government.agency', 'government.governmental_jurisdiction.government'] (max_score 0.638)
+- eval: answer resolved=['Government of New Zealand']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-703 (wrong)
+
+**Q:** what currency should i take to mexico
+
+**gold:** ['Mexican peso']
+
+**answer:** United States Dollar
+
+**entities:** ['United States Dollar']
+
+- plan: ['find Mexico', 'find the currency used in #1']
+- explored: ['location.location.contains', 'base.locations.countries.continent', 'location.country.languages_spoken'] (max_score 0.258)
+- eval: continue resolved=['Mexico']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.continents.planet', 'location.location.contains', 'location.location.contains', 'base.ontologies.ontology_instance.equivalent_instances'] (max_score 0.192)
+- eval: continue resolved=['Mexico']
+- explored: ['location.country.currency_used', 'finance.currency.countries_used', 'location.statistical_region.gni_per_capita_in_ppp_dollars', 'location.country.currency_used', 'finance.currency.countries_used', 'location.statistical_region.gni_per_capita_in_ppp_dollars'] (max_score 0.746)
+- eval: answer resolved=['United States Dollar']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-704 (wrong)
+
+**Q:** who is thor heyerdahl
+
+**gold:** ['Ethnographer', 'Film director', 'Scientist', 'Film Producer', 'Cinematographer', 'Adventurer']
+
+**answer:** Thor Heyerdahl was a Film director, Cinematographer, Scientist, Ethnographer, Film Producer, and Adventurer. He was also the author of works including Kon-Tiki: Across the Pacific in a Raft, Fatu Hiva, and Aku Aku.
+
+**entities:** ['Thor Heyerdahl']
+
+- plan: ['find who Thor Heyerdahl is']
+- explored: ['people.person.profession', 'book.written_work.author', 'book.written_work.author'] (max_score 0.38)
+- eval: answer resolved=['Thor Heyerdahl']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-749 (wrong)
+
+**Q:** who was president in 1988 in the united states
+
+**gold:** ['Ronald Reagan']
+
+**answer:** George H. W. Bush was president in 1988 in the United States.
+
+**entities:** ['George H. W. Bush']
+
+- plan: ['find the president of the United States in 1988']
+- explored: ['government.election.office', 'government.government_position_held.office_position_or_title', 'government.government_office_or_title.office_holders'] (max_score 0.514)
+- eval: continue resolved=['United States presidential election, 1988']
+- explored: ['government.election.office', 'government.election.winner', 'government.election_campaign.election', 'government.election.office', 'government.election.winner', 'government.election.general_election'] (max_score 0.229)
+- eval: continue resolved=['United States presidential election, 1988']
+- explored: ['government.us_president.vice_president', 'government.us_vice_president.to_president', 'base.politicalconventions.presidential_nominee.nominated_at', 'government.us_president.vice_president', 'government.us_vice_president.to_president', 'base.presidentialpets.first_family.president'] (max_score 0.385)
+- eval: continue resolved=['United States presidential election, 1988']
+- explored: ['government.us_president.vice_president', 'government.us_vice_president.to_president', 'base.politicalconventions.presidential_nominee.nominated_at', 'government.us_president.vice_president', 'government.us_vice_president.to_president', 'government.government_position_held.office_holder'] (max_score 0.385)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-769 (wrong)
+
+**Q:** which is the main train station in rome
+
+**gold:** ['Roma Termini railway station']
+
+**answer:** Rome Metro
+
+**entities:** ['Rome Metro']
+
+- plan: ["find Rome's main train station"]
+- explored: ['travel.travel_destination.local_transportation', 'transportation.road.major_cities', 'metropolitan_transit.transit_system.area_served'] (max_score 0.403)
+- eval: continue resolved=[]
+- explored: ['location.location.containedby', 'location.location.containedby', 'location.location.contains', 'metropolitan_transit.transit_system.transit_lines', 'metropolitan_transit.transit_system.area_served', 'metropolitan_transit.transit_system.daily_riders'] (max_score 0.443)
+- eval: continue resolved=['Rome Metro']
+- explored: ['location.location.contains', 'location.location.contains', 'location.capital_of_administrative_division.capital_of', 'metropolitan_transit.transit_system.transit_lines', 'metropolitan_transit.transit_stop.transit_lines', 'metropolitan_transit.transit_system.transit_lines'] (max_score 0.449)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.biblioness.bibs_location.city', 'transportation.road.major_cities', 'metropolitan_transit.transit_system.area_served', 'location.location.containedby', 'location.location.partially_contained_by', 'location.location.contains'] (max_score 0.22)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.citytown.postal_codes', 'location.location.containedby', 'location.location.containedby', 'location.location.partially_contains', 'location.location.partially_contains', 'time.event.locations'] (max_score 0.181)
+- eval: continue resolved=['Rome Metro']
+- explored: ['location.location.contains', 'location.location.containedby', 'location.location.containedby', 'location.citytown.postal_codes', 'location.citytown.postal_codes', 'location.citytown.postal_codes'] (max_score 0.194)
+- eval: continue resolved=['Rome Metro']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-776 (wrong)
+
+**Q:** what sport is popular in italy
+
+**gold:** ['Italy national handball team', 'Partenope Napoli', 'Fortitudo Pallacanestro Bologna', "Italy women's national beach handball team", 'Pallacanestro Varese', 'AS Vicenza', "Italy men's national pitch and putt team", 'Italy Davis Cup team', "Italy women's national ice hockey team", 'Italy national football team', "Italy women's national rugby union team", 'Italy national baseball team', "Italy women's national water polo team", 'Italy national speedway team', 'Victoria Libertas Pesaro', "Italy women's national football team", 'Italy national rugby union team', 'S.S. Felice Scandone', 'Pallacanestro Treviso', 'g.11x7vhqcx', 'Italy Fed Cup team', 'Mens Sana 1871 Basket', 'Dinamo Basket Sassari', 'Italy national futsal team', 'Italy national cricket team', "Italy men's national ice hockey team", 'Virtus Pallacanestro Bologna', 'Pallacanestro Virtus Roma', 'Italy national rugby league team', 'Italy national basketball team', 'Juvecaserta Basket', "Italy men's national volleyball team", 'Pallacanestro Cantù', 'Olimpia Milano', "Italy women's national volleyball team", 'Team Liquigas-Cannondale']
+
+**answer:** Swimming
+
+**entities:** ['Swimming']
+
+- plan: ['find the sport popular in Italy']
+- explored: ['sports.sport_country.athletes', 'sports.sport_country.athletic_performances', 'olympics.olympic_athlete.country'] (max_score 0.59)
+- eval: answer resolved=['Swimming']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-830 (wrong)
+
+**Q:** where is taylor swift from
+
+**gold:** ['Reading']
+
+**answer:** Taylor Swift is from Wyomissing.
+
+**entities:** ['Wyomissing']
+
+- plan: ['find where Taylor Swift is from']
+- explored: ['music.artist.origin', 'people.person.nationality', 'music.album.artist'] (max_score 0.547)
+- eval: answer resolved=['Wyomissing']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-86 (wrong)
+
+**Q:** which country does greenland belong to
+
+**gold:** ['Denmark']
+
+**answer:** Greenland belongs to Kingdom of Denmark.
+
+**entities:** ['Kingdom of Denmark']
+
+- plan: ['find the country that Greenland belongs to']
+- explored: ['location.location.containedby', 'location.location.containedby', 'location.country.capital'] (max_score 0.514)
+- eval: answer resolved=['Kingdom of Denmark']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-873 (wrong)
+
+**Q:** where does toronto get its water from
+
+**gold:** ['Ashbridges Bay Wastewater Treatment Plant']
+
+**answer:** Toronto gets its water from Lake Ontario.
+
+**entities:** ['Lake Ontario']
+
+- plan: ['find the water source of Toronto']
+- explored: ['location.location.containedby', 'location.location.containedby', 'base.infrastructure.sewage_treatment_plant.serves_location_s'] (max_score 0.467)
+- eval: continue resolved=[]
+- explored: ['location.location.containedby', 'location.location.contains', 'architecture.building.building_function', 'location.location.containedby', 'location.location.geolocation', 'travel.tourist_attraction.near_travel_destination'] (max_score 0.197)
+- eval: continue resolved=[]
+- explored: ['geography.lake.cities', 'base.infrastructure.sewage_treatment_plant.serves_location_s', 'location.province.capital', 'location.statistical_region.renewable_freshwater_per_capita', 'location.location.primarily_containedby', 'location.location.primarily_containedby'] (max_score 0.49)
+- eval: answer resolved=['Lake Ontario']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1133 (hedge)
+
+**Q:** what does wh smith stand for
+
+**gold:** ['WHSmith']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find what WH Smith stands for']
+- explored: ['people.person.spouse_s', 'government.political_party_tenure.politician', 'government.politician.party'] (max_score 0.089)
+- eval: answer resolved=['William Henry Smith']
+- backtrack: low_score
+- explored: ['people.marriage.spouse', 'people.person.gender', 'people.person.nationality'] (max_score 0.06)
+- eval: answer resolved=['William Henry Smith']
+- backtrack: low_score
+- explored: ['people.person.place_of_birth'] (max_score 0.021)
+- eval: answer resolved=['William Henry Smith']
+- backtrack: low_score
+- explored: [] (max_score 0.0)
+- eval: answer resolved=['William Henry Smith']
+- verifier: unsupported unsupported=['WH Smith stands for William Henry Smith']
+- explored: [] (max_score 0.0)
+- eval: answer resolved=['William Henry Smith']
+- verifier: unsupported unsupported=['WH Smith stands for William Henry Smith']
+
+---
+
+## WebQTest-1226 (hedge)
+
+**Q:** what form of government does australia use
+
+**gold:** ['Parliamentary system', 'Federal monarchy', 'Constitutional monarchy']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find Australia', 'find the form of government used by #1']
+- explored: ['location.country.internet_tld', 'cricket.cricket_team.country', 'location.country.capital'] (max_score 0.291)
+- eval: continue resolved=['Australia']
+- explored: ['organization.organization.geographic_scope', 'location.administrative_division_capital_relationship.capital', 'base.ontologies.ontology_instance.equivalent_instances', 'location.country.internet_tld', 'internet.top_level_domain.status', 'cricket.cricket_team.country'] (max_score 0.156)
+- eval: continue resolved=['Australia']
+- explored: ['organization.organization.legal_structure', 'organization.organization.geographic_scope', 'organization.organization.sectors', 'organization.organization.geographic_scope', 'organization.organization_scope.organizations_with_this_scope', 'organization.organization.headquarters'] (max_score 0.451)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['organization.organization.geographic_scope', 'location.administrative_division_capital_relationship.capital', 'base.ontologies.ontology_instance.equivalent_instances', 'location.country.internet_tld', 'internet.top_level_domain.status', 'cricket.cricket_team.country'] (max_score 0.156)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.aareas.schema.administrative_area.capital', 'location.capital_of_administrative_division.capital_of', 'organization.organization_scope.organizations_with_this_scope', 'sports.sports_team.sport', 'sports.sports_team.championships', 'sports.sports_team_location.teams'] (max_score 0.145)
+- eval: backtrack resolved=['Canberra']
+- backtrack: evaluator
+- explored: ['organization.organization.founders', 'organization.organization_scope.organizations_with_this_scope', 'organization.organization_sector.organizations_in_this_sector', 'organization.organization.email', 'organization.organization.phone_number', 'business.employer.number_of_employees'] (max_score 0.147)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1399 (hedge)
+
+**Q:** what products does the united states export
+
+**gold:** ['Pharmaceutical Preparation', 'Automotive industry', 'Food Manufacturing', 'Industrial Organic Chemicals, NEC']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find products exported by the United States']
+- explored: ['location.statistical_region.major_exports', 'location.statistical_region.major_imports', 'location.statistical_region.high_tech_as_percent_of_manufactured_exports'] (max_score 0.696)
+- eval: continue resolved=['Automotive industry']
+- explored: ['location.imports_exports_by_industry.industry', 'business.product_category.products', 'business.business_operation.industry'] (max_score 0.751)
+- eval: continue resolved=['Automotive industry']
+- explored: ['location.statistical_region.major_exports', 'location.statistical_region.major_imports', 'location.statistical_region.places_exported_to', 'location.statistical_region.major_exports', 'base.biblioness.bibs_location.country', 'travel.travel_destination.how_to_get_here'] (max_score 0.711)
+- eval: continue resolved=['Automotive industry']
+- explored: ['business.product_category.products', 'location.imports_exports_by_industry.industry', 'business.business_operation.industry', 'location.statistical_region.major_imports', 'location.statistical_region.major_exports', 'location.imports_and_exports.imported_from'] (max_score 0.588)
+- eval: continue resolved=['Petroleum industry', 'Beverages and Tobacco', 'Machinery and Transport Equipment', 'Food and Live Animals']
+- verifier: unsupported unsupported=['United States of America exports Petroleum industry', 'United States of America exports Beverages and Tobacco']
+
+---
+
+## WebQTest-1484 (hedge)
+
+**Q:** what prompted shakespeare to write poetry
+
+**gold:** ['Terence', 'Thomas Kyd', 'Thomas More', 'Michel de Montaigne', 'Seneca the Younger', 'Lucian', 'Plautus', 'Plutarch', 'Christopher Marlowe', 'Geoffrey Chaucer', 'Edmund Spenser', 'John Pory', 'Ovid', 'Virgil']
+
+**answer:** It could not be determined from the provided facts what prompted William Shakespeare to write poetry.
+
+**entities:** []
+
+- plan: ['find what prompted Shakespeare to write poetry']
+- explored: ['theater.theatrical_lyricist.play_lyrics_written', 'music.composition.lyricist', 'theater.play.lyricist'] (max_score 0.334)
+- eval: continue resolved=['William Shakespeare']
+- explored: ['theater.theatrical_lyricist.play_lyrics_written', 'theater.play.lyricist', 'book.written_work.original_language', 'theater.theatrical_lyricist.play_lyrics_written', 'theater.play.lyricist', 'book.literary_series.works_in_this_series'] (max_score 0.349)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['book.written_work.author', 'book.written_work.school_or_movement', 'theater.play.genre', 'book.written_work.author', 'theater.theater_role.play', 'theater.theater_production.play'] (max_score 0.195)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['book.school_or_movement.associated_works', 'theater.theater_role.role', 'theater.play.country_of_origin', 'theater.theater_production.play', 'book.written_work.part_of_series', 'theater.play.country_of_origin'] (max_score 0.187)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['theater.theater_director.plays_directed', 'theater.theater_production.director', 'film.film.language', 'theater.theater_director.plays_directed', 'theater.theater_production.director', 'theater.play.productions'] (max_score 0.165)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1630 (hedge)
+
+**Q:** what inspired michael jackson to become a singer
+
+**gold:** ['Nipsey Russell', 'Redd Foxx', 'Charlie Chaplin', 'Walt Disney', 'James Brown']
+
+**answer:** Michael Jackson was influenced by James Brown, Walt Disney, Charlie Chaplin, Redd Foxx, and Nipsey Russell. However, from the facts provided, it could not be determined what specifically inspired Michael Jackson to become a singer.
+
+**entities:** []
+
+- plan: ['find what inspired Michael Jackson to become a singer']
+- explored: ['influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'music.artist.contribution'] (max_score 0.466)
+- eval: continue resolved=['James Brown', 'Walt Disney', 'Charlie Chaplin', 'Redd Foxx']
+- explored: ['music.artist.contribution', 'music.voice.singers', 'music.artist.origin', 'music.artist.contribution', 'music.artist.track_contributions', 'music.artist.origin'] (max_score 0.31)
+- eval: continue resolved=['James Brown', 'Walt Disney', 'Charlie Chaplin', 'Nipsey Russell']
+- explored: ['music.recording.artist', 'music.album.artist', 'music.recording_contribution.album', 'music.recording.artist', 'music.album.artist', 'music.recording_contribution.album'] (max_score 0.213)
+- eval: continue resolved=['James Brown', 'Walt Disney', 'Charlie Chaplin', 'Nipsey Russell']
+- explored: ['music.artist.contribution', 'music.artist.track_contributions', 'music.music_video.artist', 'music.artist.contribution', 'music.artist.track_contributions', 'music.artist.origin'] (max_score 0.31)
+- eval: continue resolved=['James Brown', 'Walt Disney', 'Charlie Chaplin', 'Redd Foxx']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1635 (hedge)
+
+**Q:** when did tony romo got drafted
+
+**gold:** ['2002']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find when Tony Romo got drafted']
+- explored: ['sports.sports_team_roster.player', 'american_football.football_player.rushing', 'american_football.game_rushing_statistics.player'] (max_score 0.286)
+- eval: continue resolved=[]
+- explored: ['sports.sports_league_draft_pick.team', 'sports.professional_sports_team.draft_picks', 'american_football.football_historical_coach_position.team', 'american_football.player_receiving_statistics.season', 'american_football.player_passing_statistics.season', 'american_football.player_game_statistics.season'] (max_score 0.327)
+- eval: continue resolved=['Tony Romo']
+- explored: ['sports.drafted_athlete.drafted', 'sports.sports_league_draft_pick.player', 'american_football.football_player.position_s', 'sports.drafted_athlete.drafted', 'sports.sports_league_draft_pick.player', 'american_football.football_player.position_s'] (max_score 0.392)
+- eval: continue resolved=['Tony Romo']
+- explored: ['sports.sports_league_draft_pick.draft', 'sports.sports_league_draft.picks', 'time.event.instance_of_recurring_event', 'sports.sports_league_draft_pick.team', 'sports.professional_sports_team.draft_picks', 'american_football.football_historical_coach_position.team'] (max_score 0.631)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1646 (hedge)
+
+**Q:** what year did the phillies begin
+
+**gold:** ['1883']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find when the Phillies began']
+- explored: ['baseball.baseball_team.historical_managers', 'baseball.baseball_historical_managerial_position.team', 'baseball.baseball_team.historical_coaches'] (max_score 0.335)
+- eval: continue resolved=['Charlie Manuel', 'Joe Rigoli', 'Bullpen Coach']
+- explored: ['baseball.baseball_manager.former_teams_managed', 'baseball.baseball_historical_managerial_position.manager', 'baseball.baseball_player.position_s', 'baseball.baseball_coach.historical_teams_coached', 'baseball.historical_coaching_tenure.baseball_coach', 'sports.sports_team_roster.player'] (max_score 0.567)
+- eval: continue resolved=['Philadelphia Phillies']
+- explored: ['baseball.baseball_league.teams', 'baseball.baseball_team.historical_managers', 'baseball.baseball_team.league', 'baseball.baseball_team.historical_managers', 'baseball.baseball_historical_managerial_position.team', 'baseball.baseball_league.teams'] (max_score 0.364)
+- eval: continue resolved=['Philadelphia Phillies']
+- explored: ['baseball.baseball_team.league', 'baseball.baseball_league.teams', 'baseball.baseball_division.league', 'baseball.baseball_manager.former_teams_managed', 'baseball.baseball_historical_managerial_position.manager', 'baseball.baseball_player.position_s'] (max_score 0.575)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-172 (hedge)
+
+**Q:** what do you call members of the senate
+
+**gold:** ['Senator', 'Senate majority leader', 'President pro tempore', 'President of the Senate', 'Chief of staff', 'State Senator']
+
+**answer:** William O'Connell Bradley, John B. Allen, and Randy Scheunemann are the only promising candidates provided, but from the facts above it could not be determined which one is the correct answer to what members of the senate are called.
+
+**entities:** []
+
+- plan: ['find members of the senate', 'find what members of #1 are called']
+- explored: ['base.government2.legislative_position_held.legislative_body', 'government.government_position_held.governmental_body', 'business.employer.employees'] (max_score 0.514)
+- eval: continue resolved=["William O'Connell Bradley", 'John B. Allen']
+- explored: ['government.legislative_committee_membership.member', 'government.politician.legislative_committees_served_on', 'base.government2.legislator.legislative_positions_held', 'government.legislative_committee_membership.session', 'base.government2.legislative_position_held.legislative_sessions', 'government.government_position_held.legislative_sessions'] (max_score 0.364)
+- eval: continue resolved=["William O'Connell Bradley", 'John B. Allen', 'Randy Scheunemann']
+- explored: ['government.legislative_committee.members', 'government.legislative_committee_membership.committee', 'government.legislative_committee.members', 'government.legislative_committee_membership.committee', 'government.legislative_committee.legislature', 'government.legislative_committee.members'] (max_score 0.414)
+- eval: continue resolved=["William O'Connell Bradley", 'John B. Allen', 'Randy Scheunemann']
+- explored: ['government.legislative_committee_membership.member', 'government.politician.legislative_committees_served_on', 'government.politician.government_positions_held', 'government.legislative_committee_membership.member', 'government.politician.legislative_committees_served_on', 'base.government2.legislator.legislative_positions_held'] (max_score 0.649)
+- eval: continue resolved=["William O'Connell Bradley", 'John B. Allen']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1724 (hedge)
+
+**Q:** when did arsenal won the league
+
+**gold:** ['2001–02 FA Cup', '1997–98 FA Cup', '2002–03 FA Cup', '2013–14 FA Cup', '1970–71 FA Cup', '2004–05 FA Cup', '1992–93 FA Cup', '1978–79 FA Cup']
+
+**answer:** Arsenal F.C. won the league in 1992–93 FA Premier League? The facts only show Arsenal F.C. participating in 1992–93 FA Premier League, 2006–07 FA Premier League, and 2007–08 Premier League, while the champions listed for 2006–07 FA Premier League and 2007–08 Premier League are Manchester United F.C. So it could not be determined when Arsenal F.C. won the league from the provided facts.
+
+**entities:** []
+
+- plan: ['find the league Arsenal won', 'find when #1 was won']
+- explored: ['soccer.football_team.league', 'sports.sports_team.league', 'soccer.football_league_season.teams'] (max_score 0.606)
+- eval: continue resolved=['Premier League']
+- explored: ['sports.sports_championship_event.champion', 'sports.sports_team.championships', 'soccer.football_league_season.teams', 'sports.sports_championship_event.champion', 'sports.sports_team.championships', 'soccer.football_league_season.teams'] (max_score 0.488)
+- eval: continue resolved=['Manchester United F.C.']
+- explored: ['soccer.football_league_season.matches', 'soccer.football_league_season.league', 'soccer.football_league.seasons', 'soccer.football_league_season.league', 'soccer.football_league_participation.from', 'soccer.football_league.seasons'] (max_score 0.34)
+- eval: continue resolved=['Premier League']
+- explored: ['soccer.football_league_season.matches', 'soccer.football_team.matches', 'soccer.football_match.teams', 'soccer.football_league_season.matches', 'soccer.football_team.matches', 'soccer.football_league_season.matches'] (max_score 0.34)
+- eval: continue resolved=['Premier League']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1791 (hedge)
+
+**Q:** when was the printing press invented by gutenberg
+
+**gold:** ['1440']
+
+**answer:** It could not be determined from the provided facts when the Printing press was invented by Johannes Gutenberg.
+
+**entities:** []
+
+- plan: ['find the printing press invented by Gutenberg', 'find when #1 was invented']
+- explored: ['law.invention.inventor', 'law.inventor.inventions', 'base.ontologies.ontology_instance.equivalent_instances'] (max_score 0.501)
+- eval: continue resolved=['Printing press']
+- explored: ['law.inventor.inventions', 'law.invention.inventor', 'base.argumentmaps.innovator.original_ideas', 'base.ontologies.ontology_instance_mapping.ontology', 'base.ontologies.ontology_class_mapping.ontology', 'base.ontologies.ontology.equivalent_classes'] (max_score 0.572)
+- eval: continue resolved=['Printing press']
+- explored: ['law.invention.inventor', 'law.inventor.inventions', 'base.ontologies.ontology_instance.equivalent_instances', 'base.argumentmaps.innovator.original_ideas', 'tv.tv_program.country_of_origin', 'time.event.locations'] (max_score 0.579)
+- eval: answer resolved=['Johannes Gutenberg']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1902 (hedge)
+
+**Q:** what year was hitler was born
+
+**gold:** ['1889-04-20']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find the year Hitler was born']
+- explored: ['people.person.place_of_birth', 'location.location.people_born_here', 'award.award_honor.award_winner'] (max_score 0.56)
+- eval: continue resolved=['Adolf Hitler']
+- explored: ['people.person.place_of_birth', 'location.location.people_born_here', 'people.deceased_person.place_of_death', 'award.award_honor.award', 'award.award_category.winners', 'award.award_honor.award'] (max_score 0.275)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.location.geolocation', 'location.location.contains', 'location.location.contains'] (max_score 0.067)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['people.marriage.location_of_ceremony', 'location.location.containedby', 'location.location.containedby'] (max_score 0.046)
+- eval: continue resolved=['Adolf Hitler']
+- explored: ['people.person.place_of_birth', 'location.location.people_born_here', 'people.person.nationality', 'people.person.place_of_birth', 'location.location.people_born_here', 'people.person.nationality'] (max_score 0.275)
+- eval: continue resolved=[]
+- explored: ['people.person.place_of_birth', 'location.location.people_born_here', 'location.location.containedby', 'people.person.place_of_birth', 'location.location.people_born_here', 'people.person.nationality'] (max_score 0.275)
+- eval: answer resolved=['Adolf Hitler']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1979 (hedge)
+
+**Q:** who is number 22 on miami dolphins
+
+**gold:** ['Jamar Taylor']
+
+**answer:** It could not be determined from the provided facts who is number 22 on Miami Dolphins.
+
+**entities:** []
+
+- plan: ['find the team or roster that includes number 22 on the Miami Dolphins', 'find the person who wears number 22 on #1']
+- explored: ['sports.sports_team_roster.team', 'sports.sports_team_season_record.team', 'american_football.football_historical_coach_position.team'] (max_score 0.686)
+- eval: continue resolved=['Miami Dolphins']
+- explored: ['sports.sports_team_roster.player', 'sports.pro_athlete.teams', 'american_football.football_player.position_s', 'sports.pro_athlete.teams', 'sports.sports_team_roster.player', 'american_football.football_player.position_s'] (max_score 0.643)
+- eval: continue resolved=['Miami Dolphins']
+- explored: ['sports.sports_team_roster.team', 'sports.sports_team_season_record.team', 'american_football.football_historical_coach_position.team', 'sports.sports_team_roster.team', 'american_football.player_game_statistics.team', 'sports.sports_team_season_record.team'] (max_score 0.686)
+- eval: continue resolved=['Miami Dolphins']
+- explored: ['sports.sports_team_roster.player', 'sports.pro_athlete.teams', 'american_football.football_player.position_s', 'sports.pro_athlete.teams', 'sports.sports_team_roster.player', 'american_football.football_player.position_s'] (max_score 0.643)
+- eval: continue resolved=['Miami Dolphins']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-231 (hedge)
+
+**Q:** when did florida marlins join mlb
+
+**gold:** ['1994 Major League Baseball Season']
+
+**answer:** Could not be determined from the provided facts. The facts only show that Miami Marlins are in the National League and list historical managers, but they do not give when Florida Marlins joined MLB.
+
+**entities:** []
+
+- plan: ['find when the Florida Marlins joined MLB']
+- explored: ['baseball.baseball_team.historical_managers', 'baseball.baseball_historical_managerial_position.team', 'baseball.baseball_league.teams'] (max_score 0.348)
+- eval: continue resolved=['Miami Marlins']
+- explored: ['baseball.baseball_manager.former_teams_managed', 'baseball.baseball_historical_managerial_position.manager', 'baseball.baseball_player.position_s', 'baseball.baseball_manager.former_teams_managed', 'baseball.baseball_historical_managerial_position.manager', 'baseball.baseball_player.position_s'] (max_score 0.365)
+- eval: continue resolved=['Miami Marlins', 'National League']
+- explored: ['baseball.baseball_team.historical_managers', 'baseball.baseball_historical_managerial_position.team', 'baseball.baseball_league.teams', 'baseball.baseball_team.historical_managers', 'baseball.baseball_historical_managerial_position.team', 'baseball.baseball_league.teams'] (max_score 0.348)
+- eval: continue resolved=['Miami Marlins', 'National League']
+- explored: ['baseball.baseball_manager.former_teams_managed', 'baseball.baseball_historical_managerial_position.manager', 'baseball.baseball_player.position_s', 'baseball.baseball_manager.former_teams_managed', 'baseball.baseball_historical_managerial_position.manager', 'baseball.baseball_player.position_s'] (max_score 0.365)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-314 (hedge)
+
+**Q:** what kind of government is sweden
+
+**gold:** ['Parliamentary system', 'Hereditary monarchy', 'Unitary state', 'Constitutional monarchy', 'Representative democracy']
+
+**answer:** It could not be determined from the provided facts what kind of government Sweden has.
+
+**entities:** []
+
+- plan: ['find Sweden', 'find the kind of government of #1']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.location.contains'] (max_score 0.27)
+- eval: continue resolved=['Europe']
+- explored: ['government.governmental_jurisdiction.governing_officials', 'government.government_position_held.jurisdiction_of_office', 'base.locations.states_and_provences.continent'] (max_score 0.557)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.continents.states_provinces_within'] (max_score 0.209)
+- eval: continue resolved=['European Parliament']
+- explored: ['government.form_of_government.countries', 'location.country.form_of_government', 'government.governmental_jurisdiction.government', 'government.form_of_government.countries', 'location.country.form_of_government', 'government.governmental_jurisdiction.governing_officials'] (max_score 0.731)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.continents.states_provinces_within'] (max_score 0.209)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['government.government.government_for', 'government.governmental_jurisdiction.governing_officials', 'government.governmental_jurisdiction.government_bodies', 'government.governmental_jurisdiction.government_bodies', 'government.governmental_jurisdiction.government_positions', 'base.aareas.schema.administrative_area_type.sovereignty'] (max_score 0.302)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-379 (hedge)
+
+**Q:** what year does hitler die
+
+**gold:** ['1945-04-30']
+
+**answer:** It could not be determined from the provided facts what year Adolf Hitler died.
+
+**entities:** []
+
+- plan: ['find the year Hitler died']
+- explored: ['people.deceased_person.place_of_death', 'people.deceased_person.cause_of_death', 'base.jewlib.research_collection.originators'] (max_score 0.472)
+- eval: continue resolved=[]
+- explored: ['people.deceased_person.cause_of_death', 'people.cause_of_death.includes_causes_of_death', 'base.fictionaluniverse.deceased_fictional_character.cause_of_death', 'people.deceased_person.cause_of_death', 'people.cause_of_death.includes_causes_of_death', 'base.fictionaluniverse.deceased_fictional_character.cause_of_death'] (max_score 0.497)
+- eval: answer resolved=['Adolf Hitler']
+- verifier: unsupported unsupported=['Adolf Hitler died in 1945']
+- explored: ['people.deceased_person.cause_of_death', 'people.deceased_person.place_of_death', 'base.jewlib.research_collection.originators'] (max_score 0.463)
+- eval: answer resolved=['Adolf Hitler']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-38 (hedge)
+
+**Q:** who did george w. bush run against for the second term
+
+**gold:** ['John Kerry', 'Ralph Nader', 'Michael Peroutka', 'Gene Amondson']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the second-term election that George W. Bush ran in', 'find who George W. Bush ran against in #1']
+- explored: ['government.election_campaign.candidate', 'government.politician.election_campaigns', 'government.election.winner'] (max_score 0.595)
+- eval: continue resolved=['George W. Bush presidential campaign, 2004']
+- explored: ['government.election_campaign.candidate', 'government.election_campaign.election', 'government.politician.election_campaigns'] (max_score 0.629)
+- eval: continue resolved=['George W. Bush']
+- explored: ['government.election.campaigns', 'government.election_campaign.election', 'government.general_election.contests', 'government.election_campaign.candidate', 'government.politician.election_campaigns', 'base.politicalconventions.presidential_nominee.nominated_at'] (max_score 0.602)
+- eval: answer resolved=['John Kerry presidential campaign, 2004', 'Ralph Nader presidential campaign, 2004', 'Michael Peroutka presidential campaign, 2004', 'Gene Amondson presidential campaign, 2004']
+- verifier: unsupported unsupported=['George W. Bush ran against John Kerry presidential campaign, 2004']
+- explored: ['government.election_campaign.candidate', 'government.politician.election_campaigns', 'base.politicalconventions.presidential_nominee.nominated_at'] (max_score 0.609)
+- eval: answer resolved=['George W. Bush presidential campaign, 2004', 'John Kerry presidential campaign, 2004']
+- verifier: unsupported unsupported=['George W. Bush ran against John Kerry presidential campaign, 2004']
+
+---
+
+## WebQTest-462 (hedge)
+
+**Q:** what time is it in texas houston right now
+
+**gold:** ['Central Time Zone']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find Houston in Texas', 'find the current time in #1']
+- explored: ['base.biblioness.bibs_location.state', 'location.neighborhood.neighborhood_of', 'location.place_with_neighborhoods.neighborhoods'] (max_score 0.453)
+- eval: continue resolved=['Houston']
+- explored: ['location.neighborhood.neighborhood_of', 'location.place_with_neighborhoods.neighborhoods', 'location.location.geolocation', 'location.neighborhood.neighborhood_of', 'location.place_with_neighborhoods.neighborhoods', 'location.location.geolocation'] (max_score 0.513)
+- eval: continue resolved=['Houston']
+- explored: ['location.hud_county_place.county', 'location.neighborhood.neighborhood_of', 'location.place_with_neighborhoods.neighborhoods', 'location.neighborhood.neighborhood_of', 'location.place_with_neighborhoods.neighborhoods', 'location.location.nearby_airports'] (max_score 0.486)
+- eval: continue resolved=['Texas']
+- explored: ['location.neighborhood.neighborhood_of', 'location.place_with_neighborhoods.neighborhoods', 'location.location.geolocation', 'location.neighborhood.neighborhood_of', 'location.place_with_neighborhoods.neighborhoods', 'location.location.geolocation'] (max_score 0.243)
+- eval: continue resolved=['Houston']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-579 (hedge)
+
+**Q:** where are the new orleans hornets moving to
+
+**gold:** ['Charlotte']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the destination the New Orleans Hornets are moving to']
+- explored: ['sports.sports_team_location.teams', 'sports.sports_team.location', 'sports.sports_league_draft_pick.team'] (max_score 0.334)
+- eval: continue resolved=['Charlotte']
+- explored: ['sports.sports_team_location.teams', 'sports.sports_team.location', 'tv.tv_location.tv_shows_filmed_here', 'sports.sports_league_draft_pick.school', 'sports.school_sports_team.school', 'location.location.contains'] (max_score 0.349)
+- eval: continue resolved=['New Orleans Pelicans']
+- explored: ['sports.sports_team_location.teams', 'sports.sports_team.location', 'sports.sports_facility.teams', 'sports.sports_team_location.teams', 'sports.sports_team.location', 'sports.sports_facility.teams'] (max_score 0.634)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['sports.sports_team_location.teams', 'sports.sports_team.location', 'tv.tv_location.tv_shows_filmed_here', 'sports.sports_league_draft_pick.school', 'sports.school_sports_team.school', 'location.location.contains'] (max_score 0.349)
+- eval: backtrack resolved=['New Orleans Pelicans']
+- backtrack: evaluator
+- explored: ['location.place_with_neighborhoods.neighborhoods', 'location.location.nearby_airports', 'location.neighborhood.neighborhood_of', 'location.location.contains', 'location.location.geolocation', 'location.location.containedby'] (max_score 0.241)
+- eval: backtrack resolved=['New Orleans Pelicans']
+- backtrack: evaluator
+- explored: ['sports.sports_team.venue', 'sports.sports_league_draft_pick.team', 'basketball.basketball_conference.teams', 'sports.sports_team.venue', 'basketball.basketball_conference.teams', 'sports.sports_team_roster.team'] (max_score 0.531)
+- eval: continue resolved=['Charlotte']
+- explored: ['sports.sports_facility.teams', 'location.location.events', 'location.location.geolocation', 'location.location.containedby', 'education.educational_institution.sports_teams', 'education.school_mascot.school'] (max_score 0.242)
+- eval: backtrack resolved=[]
+- verifier: unsupported unsupported=['New Orleans Hornets moved to Charlotte']
+
+---
+
+## WebQTest-663 (hedge)
+
+**Q:** what age did william penn get married
+
+**gold:** ['1672-04-04']
+
+**answer:** It could not be determined from the provided facts what age William Penn got married.
+
+**entities:** []
+
+- plan: ['find when William Penn got married', 'find the age of William Penn at #1']
+- explored: ['people.marriage.spouse', 'people.person.spouse_s', 'people.person.employment_history'] (max_score 0.526)
+- eval: continue resolved=['Hannah Callowhill Penn', 'Gulielma Maria Springett']
+- explored: ['people.marriage.spouse', 'people.person.spouse_s', 'people.person.place_of_birth', 'people.marriage.spouse', 'people.person.spouse_s', 'people.marriage.type_of_union'] (max_score 0.526)
+- eval: continue resolved=['Hannah Callowhill Penn', 'Gulielma Maria Springett']
+- explored: ['people.marriage.spouse', 'people.person.spouse_s', 'people.person.employment_history', 'people.marriage.spouse', 'people.person.spouse_s', 'book.author.works_written'] (max_score 0.541)
+- eval: continue resolved=['William Penn', 'Hannah Callowhill Penn', 'Gulielma Maria Springett']
+- explored: ['people.marriage.spouse', 'people.person.spouse_s', 'people.person.place_of_birth', 'people.marriage.spouse', 'people.person.spouse_s', 'people.marriage.spouse'] (max_score 0.241)
+- eval: continue resolved=['William Penn', 'Hannah Callowhill Penn', 'Gulielma Maria Springett']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-689 (hedge)
+
+**Q:** what was the first language spoken in spain
+
+**gold:** ['Spanish Language']
+
+**answer:** Spanish Language was spoken in Spain. The first language spoken in Spain could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the first language spoken in Spain']
+- explored: ['location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'location.country.official_language'] (max_score 0.66)
+- eval: answer resolved=['Spanish Language']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-725 (hedge)
+
+**Q:** what states does the sierra nevada run through
+
+**gold:** ['Nevada', 'California']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the Sierra Nevada', 'find the states that the Sierra Nevada runs through']
+- explored: ['geography.mountain.mountain_range', 'geography.mountain_range.passes', 'geography.mountain_pass.range'] (max_score 0.527)
+- eval: continue resolved=['Sierra Nevada']
+- explored: ['geography.mountain.listings', 'geography.mountain_range.mountains', 'geography.mountain.mountain_range', 'geography.mountain.listings', 'geography.mountain.mountain_range', 'location.location.contains'] (max_score 0.256)
+- eval: continue resolved=['California', 'Nevada']
+- explored: ['geography.mountain.listings', 'geography.mountain.listings', 'geography.mountain_range.mountains', 'geography.mountain_range.passes', 'geography.mountain.mountain_range', 'geography.mountain_range.mountains'] (max_score 0.256)
+- eval: continue resolved=[]
+- explored: ['geography.mountain.listings', 'geography.mountain_range.mountains', 'geography.mountain.mountain_range', 'geography.mountain.listings', 'geography.mountain_range.mountains', 'geography.mountain.mountain_range'] (max_score 0.256)
+- eval: backtrack resolved=[]
+- verifier: unsupported unsupported=['Sierra Nevada runs through California', 'Sierra Nevada runs through Nevada']
+
+---
+
+## WebQTest-996 (hedge)
+
+**Q:** where do ireland play rugby union
+
+**gold:** ['Aviva Stadium']
+
+**answer:** Could not be determined from the provided facts. The facts identify Ireland national rugby union team and its sport, but do not give a place where Ireland play rugby union.
+
+**entities:** []
+
+- plan: ['find the rugby union team Ireland', 'find where #1 play']
+- explored: ['sports.sports_team.sport', 'base.rugby.rugby_club.coaches_of_this_team', 'base.rugby.rugby_coaching_tenure.team'] (max_score 0.557)
+- eval: continue resolved=['Ireland national rugby union team']
+- explored: ['sports.sport.positions', 'sports.sports_position.sport', 'cvg.computer_game_subject.games', 'base.rugby.rugby_coach.coached_team_s', 'base.rugby.rugby_coach.type_of_rugby', 'base.rugby.rugby_coaching_tenure.coach'] (max_score 0.264)
+- eval: continue resolved=['Fullback', 'Prop', 'Three-quarter', 'Scrum half']
+- explored: ['sports.sports_position.sport', 'sports.sport.positions', 'american_football.football_player.position_s', 'sports.sports_position.sport', 'sports.sport.positions', 'sports.sports_team_roster.position'] (max_score 0.532)
+- eval: continue resolved=['Wests Tigers']
+- explored: ['american_football.football_player.position_s', 'american_football.football_player.games', 'american_football.player_game_statistics.player', 'sports.sports_position.sport', 'sports.sport.positions', 'cvg.computer_game_subject.games'] (max_score 0.515)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+

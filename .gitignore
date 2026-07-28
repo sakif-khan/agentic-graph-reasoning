@@ -32,7 +32,6 @@ __pycache__/
 cache/
 datasets/
 data/triple_index/
-*.csv
 *.csv.gz
 *.tsv
 *.parquet

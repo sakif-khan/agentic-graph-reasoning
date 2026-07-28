@@ -1,0 +1,24 @@
+{
+ "webqsp": {
+  "population_wrong": 43,
+  "population_hedge": 22,
+  "sampled_wrong": 43,
+  "sampled_hedge": 22,
+  "rate_wrong": 1.0,
+  "rate_hedge": 1.0,
+  "n_skipped": 43,
+  "mode": "full_census",
+  "seed": 42
+ },
+ "cwq": {
+  "population_wrong": 71,
+  "population_hedge": 87,
+  "sampled_wrong": 40,
+  "sampled_hedge": 20,
+  "rate_wrong": 0.563,
+  "rate_hedge": 0.23,
+  "n_skipped": 37,
+  "mode": "stratified_sample",
+  "seed": 42
+ }
+}

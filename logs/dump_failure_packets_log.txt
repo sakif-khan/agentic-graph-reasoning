@@ -1,0 +1,3 @@
+webqsp: population 43W/22H (43 skipped) -> 43W+22H [full_census; rates W=100% H=100%]
+cwq: population 71W/87H (37 skipped) -> 40W+20H [stratified_sample; rates W=56% H=23%]
+wrote sampling_manifest.json
