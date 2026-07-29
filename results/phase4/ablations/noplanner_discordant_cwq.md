@@ -162,7 +162,9 @@
 | verifier     | grounded                                                                                             | grounded                                                                        |
 | calls/tokens | 12/8432                                                                                              | 5/3230                                                                          |
 
-**category:** decomposition_error (context-stripping variant)
+**category:** decomposition_error
+
+**subtype:** context_stripping
 
 **note:** The first sub-objective is scored without any mention of instruments. Splitting the question discarded disambiguating information that only appears in a later clause, causing an early sub-objective to resolve toward the wrong sense of an ambiguous relation.
 
@@ -183,9 +185,9 @@
 | verifier     | unsupported                                                                                   | grounded                                                                          |
 | calls/tokens | 14/15231                                                                                      | 3/3267                                                                            |
 
-**category:** decomposition_error (positive framing)
+**category:** gold_noise
 
-**note:** Verifier correctly rejected an unsupported candidate — an honest hedge, not a hallucination.
+**note:** Gold ("Ulysses S. Grant") answers "who fought at/commanded during the battle of Vicksburg" (1863), not "who was president" then — Grant didn't become president until 1869; the actual president during the battle was Lincoln. Full's hedge and its verifier's "unsupported" rejection of "Grant was president during Vicksburg" are the epistemically correct call; noplanner's "hit" only matches because it happens to restate the (wrong-for-this-question) gold value. Not a genuine decomposition mechanism — flagging as gold/question-template noise instead.
 
 ---
 
@@ -225,7 +227,9 @@
 | verifier     | grounded                                                                                        | grounded                                                                                 |
 | calls/tokens | 10/9358                                                                                         | 3/3375                                                                                   |
 
-**category:** decomposition_error (context-stripping variant)
+**category:** decomposition_error
+
+**subtype:** context_stripping
 
 **note:** Decomposition actively suppressed the WW2 anchor, then objective 1 never completed (objective_done: false at every step), so objective 2 never activated and the WW2 constraint was never explored at all.
 

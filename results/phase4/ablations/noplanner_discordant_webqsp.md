@@ -57,7 +57,9 @@
 | verifier     | grounded                                                                          | grounded                                                                                                   |
 | calls/tokens | 4/2308                                                                            | 3/1645                                                                                                     |
 
-**category:** decomposition_error (paraphrase variant)
+**category:** decomposition_error
+
+**subtype:** paraphrase_drift
 
 **note:** Both single-step; planner's rewritten objective scored worse against the target relation than raw question text.
 
@@ -204,7 +206,9 @@
 | verifier     | grounded                                                                                                                                                                                                                                    | grounded                                                                                                                               |
 | calls/tokens | 10/7148                                                                                                                                                                                                                                     | 3/2601                                                                                                                                 |
 
-**category:** decomposition_error (paraphrase variant)
+**category:** decomposition_error
+
+**subtype:** paraphrase_drift
 
 **note:** Same retrieved facts both runs; rendered sub-objective's singular framing ("find the holy book of #1") triggered draft-stage over-caution that raw wording didn't.
 
@@ -267,7 +271,9 @@
 | verifier     | grounded                                                     | grounded                                                     |
 | calls/tokens | 10/7645                                                      | 3/1394                                                       |
 
-**category:** decomposition_error (paraphrase variant)
+**category:** decomposition_error
+
+**subtype:** paraphrase_drift
 
 **note:** Rewritten objective scored worse than raw text for the ethnicity relation.
 
@@ -414,9 +420,11 @@
 | verifier     | grounded                                                                                                                                                                                                                                                                      | grounded                                                                                                                                                                                                                                            |
 | calls/tokens | 14/11986                                                                                                                                                                                                                                                                      | 3/2309                                                                                                                                                                                                                                              |
 
-**category:** decomposition_error + premature_termination
+**category:** decomposition_error
 
-**note:** 14 calls (near cap), explicit hedge citing insufficient support; noplanner found it directly in 3 calls.
+**subtype:** over_decomposition
+
+**note:** Splitting off a redundant "find Massachusetts" step (an already-unambiguous named entity) introduced 3 evaluator backtracks that ate the budget (14/16 calls), forcing a premature_termination/budget hedge; noplanner found the same facts directly in 3 calls with zero backtracks. Budget exhaustion is the proximate symptom here, not the root cause -- the earliest departure from the correct path is the unnecessary decomposition itself.
 
 ---
 
