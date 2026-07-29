@@ -51,6 +51,19 @@ These were re-filed by content, not by blind string substitution — `verdict` (
 `census_exclusions.json` is actually derived from) was untouched and re-verified to still match
 exactly.
 
+One row, `WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27` (cwq), was adjudicated during this
+cleanup rather than left as originally filed: Stage C had called it `gold_ok`/`echo` (multiple
+systems, including AGR, converged on "Tupac Shakur" and the consensus reasoning treated that as
+an echo-of-topic mistake against a fine gold). On review, the question literally asks for "the
+actor's name," and gold ("Bishop") is a character name from a *different* role Tupac Shakur
+plays in the same film — a `type_mismatch` gold defect, and AGR's answer is correct. Flipped to
+`verdict: gold_wrong` / `family: gold_noise` / `subtype: type_mismatch` in
+`prepass_goldnoise_cwq.json`, added to `census_exclusions.json`, and the matching row in
+`labels_cwq.csv` (found independently during the Stage D reading, also as `gold_noise`) had its
+subtype and note tightened to match. This is the `gold_noise`/`ambiguous_question`-"escaped
+Stage C's net" case the taxonomy table already anticipated — not a new problem, the intended
+safety net catching a real one.
+
 ## Notes from this reading pass
 
 - `decomposition_error/extraction_bug` showed up repeatedly on "who is X" / "what is X known

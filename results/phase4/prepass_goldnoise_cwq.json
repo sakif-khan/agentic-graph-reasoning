@@ -1190,10 +1190,10 @@
   ],
   "includes_agr": true,
   "mixed_evidence": false,
-  "verdict": "gold_ok",
-  "note": "echo: consensus names the actor; gold gives the character name asked for",
-  "subtype": "echo_topic",
-  "family": "echo"
+  "verdict": "gold_wrong",
+  "note": "question asks for the actor's name (a person); gold gives 'Bishop', the character name from a different, more prominent role Tupac Shakur plays in the same film -- confirmed gold/question type mismatch, AGR is correct.",
+  "subtype": "type_mismatch",
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTrn-567_1e6dd9ec51a40b6c0ec2105ed84574c5",
