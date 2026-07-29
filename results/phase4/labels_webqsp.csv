@@ -1,66 +1,66 @@
 qid,kind,category,subtype,note
-WebQTest-1003,wrong,,,
-WebQTest-1047,wrong,,,
-WebQTest-108,wrong,,,
-WebQTest-1170,wrong,,,
-WebQTest-1178,wrong,,,
-WebQTest-1215,wrong,,,
-WebQTest-1271,wrong,,,
-WebQTest-1296,wrong,,,
-WebQTest-1367,wrong,,,
-WebQTest-1373,wrong,,,
-WebQTest-1416,wrong,,,
-WebQTest-1458,wrong,,,
-WebQTest-1477,wrong,,,
-WebQTest-1555,wrong,,,
-WebQTest-1557,wrong,,,
-WebQTest-1620,wrong,,,
-WebQTest-164,wrong,,,
-WebQTest-1707,wrong,,,
-WebQTest-1730,wrong,,,
-WebQTest-1794,wrong,,,
-WebQTest-186,wrong,,,
-WebQTest-1898,wrong,,,
-WebQTest-1914,wrong,,,
-WebQTest-1920,wrong,,,
-WebQTest-1937,wrong,,,
-WebQTest-1940,wrong,,,
-WebQTest-209,wrong,,,
-WebQTest-245,wrong,,,
-WebQTest-273,wrong,,,
-WebQTest-301,wrong,,,
-WebQTest-316,wrong,,,
-WebQTest-419,wrong,,,
-WebQTest-43,wrong,,,
-WebQTest-59,wrong,,,
-WebQTest-665,wrong,,,
-WebQTest-703,wrong,,,
-WebQTest-704,wrong,,,
-WebQTest-749,wrong,,,
-WebQTest-769,wrong,,,
-WebQTest-776,wrong,,,
-WebQTest-830,wrong,,,
-WebQTest-86,wrong,,,
-WebQTest-873,wrong,,,
-WebQTest-1133,hedge,,,
-WebQTest-1226,hedge,,,
-WebQTest-1399,hedge,,,
-WebQTest-1484,hedge,,,
-WebQTest-1630,hedge,,,
-WebQTest-1635,hedge,,,
-WebQTest-1646,hedge,,,
-WebQTest-172,hedge,,,
-WebQTest-1724,hedge,,,
-WebQTest-1791,hedge,,,
-WebQTest-1902,hedge,,,
-WebQTest-1979,hedge,,,
-WebQTest-231,hedge,,,
-WebQTest-314,hedge,,,
-WebQTest-379,hedge,,,
-WebQTest-38,hedge,,,
-WebQTest-462,hedge,,,
-WebQTest-579,hedge,,,
-WebQTest-663,hedge,,,
-WebQTest-689,hedge,,,
-WebQTest-725,hedge,,,
-WebQTest-996,hedge,,,
+WebQTest-1003,wrong,composite_claim,conjunction_uncovered,Time constraint '1999' never applied to the office-holder list; final pick chosen from unfiltered candidates that don't include either 1999 PM.
+WebQTest-1047,wrong,relation_selection,,"Single clean high-confidence path via film.performance-family relations converged on a different credited role (Pam Bailey) than gold's cameo 'Keno Waitress'; no alternative candidate ever appeared, so a kg_gap/data_error read is also plausible."
+WebQTest-108,wrong,relation_selection,,Explored book.book_subject.works (books ABOUT Darwin) alongside book.author.works_written; the scorer surfaced a Darwin biography's author (Grant Allen) instead of a book written BY Darwin.
+WebQTest-1170,wrong,premature_termination,budget,"Exhausted the backtrack budget wandering through unrelated person-attribute relations (birthplace, profession, gender, nationality, military) after the direct government_position_held->office_holder edge returned nothing usable; fell back to the office title itself."
+WebQTest-1178,wrong,relation_selection,,"music.artist.origin (Marin City, where Tupac is publicly associated) outscored the place-of-birth relation that would give the gold birthplace, East Harlem."
+WebQTest-1215,wrong,decomposition_error,extraction_bug,"Answer text correctly lists all 6 gold professions verbatim, but answer_entities captured only the subject 'Stephen Covey' -- an extraction/serialization bug, not a reasoning failure."
+WebQTest-1271,wrong,relation_selection,,"Step 1 needed the specific Super Bowl game but sports.sports_team.championships/home_games surfaced the 2004 NFC Championship Game (the game that got them there, not the Super Bowl itself), and later continues never corrected the anchor."
+WebQTest-1296,wrong,echo,granularity,"Retrieved 'Small forward' (a specific playing position) instead of the coarser profession label 'Basketball player' that gold uses -- a granularity mismatch, not a wrong topic."
+WebQTest-1367,wrong,decomposition_error,context_stripping,"Plan's step 1 anchor was just 'Glastonbury', dropping the question's own disambiguator 'England', so the explorer resolved to (or merged with) the identically-named Connecticut town instead of the UK one."
+WebQTest-1373,wrong,echo,granularity,"'Dallas' was among the resolved candidates alongside 'Dealey Plaza', but the drafter surfaced the finer-grained landmark (located within Dallas) as the sole answer entity instead of the city gold wants."
+WebQTest-1416,wrong,decomposition_error,paraphrase_drift,'Famous for' resolved into military-conflict/inauguration relations rather than the profession/role relation that the gold label 'US President' actually reflects.
+WebQTest-1458,wrong,kg_gap,temporal_qualifier,"Ownership 'in 2011' needs a time-scoped fact; parent_company/companies_acquired relations just bounce between 'Chrysler' and 'Chrysler Group LLC' (the company itself) without ever surfacing the real 2011 owners (Fiat, US/Canada governments, VEBA)."
+WebQTest-1477,wrong,relation_selection,,"Repeatedly explored Saturday-Night-Live-specific guest-appearance relations (base.saturdaynightlive.*) instead of narrowing to How I Met Your Mother's own guest-role edges, producing a cross-show mix-up that never surfaced the real episode 'Hooked'."
+WebQTest-1555,wrong,answer_selection,,"The evaluator resolved the correct entity 'Parliament of Nepal' itself, but the drafted answer instead named its component bodies (National Assembly, House of Representatives) -- the right candidate was found but not selected."
+WebQTest-1557,wrong,relation_selection,,"Explored sports.sports_team_location.teams (the team's home city) rather than a specific arena/venue relation, yielding the city 'Sunrise' instead of the actual arena; later exploration derailed further into unrelated ice-hockey position edges."
+WebQTest-1620,wrong,kg_gap,date_literal,"Gold wants the literal start date (1913-03-04); the KG only exposes inauguration event entities, so the drafter surfaced two inauguration-event mentions instead of a precise date."
+WebQTest-164,wrong,decomposition_error,paraphrase_drift,"'What made X famous' repeatedly explored book-authorship/medical-condition relations instead of the profession relation that carries the gold list, ending in two rounds of verifier-flagged unsupported claims about black holes/cosmology."
+WebQTest-1707,wrong,echo,topic,"Confused the target character 'Lex Luthor' with similarly-named family members (Lionel, Alexander, Lucas Luthor) in the same fictional-universe cluster; the real Lex Luthor/Michael Rosenbaum link was never surfaced."
+WebQTest-1730,wrong,relation_selection,,"geography.river.mouth/origin surfaces the confluence rivers the Parana feeds into or originates from, not the containing region; a location/continent-containment relation was never explored."
+WebQTest-1794,wrong,relation_selection,,"'Family of Mitt Romney' resolved to his spouse and sons rather than his parents/ancestral line, so the origin-search chased Ann Romney's and the sons' places lived instead of the Romney family's actual roots in Detroit."
+WebQTest-186,wrong,kg_gap,temporal_qualifier,"royalty.kingdom.rulers returns the full historical list of Danish monarchs with no 'current' filter; the drafter picked an arbitrary past ruler (Christian X, then Christian VII) since no relation selects the reigning-as-of-now entry."
+WebQTest-1898,wrong,relation_selection,,"Explored tv.tv_program.regular_cast/regular_tv_appearance.series (actor/series edges) but never a character-of-appearance edge, so the voiced characters never entered candidates; the run ended by falling back to the topic entity itself."
+WebQTest-1914,wrong,relation_selection,,"sports_award_type.winners/sports_award.season returned the full multi-year list of MVP seasons rather than the one linked specifically to Iverson's award instance, so the drafter picked unrelated seasons (1976-77, 2006-07)."
+WebQTest-1920,wrong,decomposition_error,paraphrase_drift,"'Who is Rick Scott' explored only campaign/party-affiliation relations, never people.person.profession, so none of the 5 gold profession labels were ever candidates; answer_entities also collapsed to the topic node itself."
+WebQTest-1937,wrong,decomposition_error,paraphrase_drift,'Facts about X' explored military-service/nationality relations rather than the profession relation that carries the gold labels 'Explorer'/'Sailor'.
+WebQTest-1940,wrong,relation_selection,,people.person.religion returns individual adherents of Islam (reverse direction) rather than the object of worship; the relation for 'who Muslims follow' (Allah/God) was never explored.
+WebQTest-209,wrong,relation_selection,,"Backtracked repeatedly through unrelated language relations before settling on the coarse country->continent property ('Asia'), never trying the location-containment chain that would surface the specific subregion 'Southeast Asia'."
+WebQTest-245,wrong,kg_gap,ordinal,"'First' requires selecting the earliest instance from time.recurring_event.instances, but there's no ordinal/min-date operation, so the drafter picked arbitrary instances (1925, 1980, 1929) instead of the actual first (1921)."
+WebQTest-273,wrong,ambiguous_question,,"Gold labels 1984 (draft year) but 'return to the NBA' more naturally means Jordan's 1995 comeback from retirement (1994-95 season), which is what AGR retrieved -- likely a gold/question mismatch that slipped past Stage C."
+WebQTest-301,wrong,decomposition_error,paraphrase_drift,'Achievements' resolved to a hall-of-fame induction record instead of profession/career relations carrying the gold labels Pilot/Writer.
+WebQTest-316,wrong,decomposition_error,paraphrase_drift,'Famous for' explored play/lyricist/cast relations and surfaced specific play titles rather than the profession relation carrying the gold role labels.
+WebQTest-419,wrong,relation_selection,,"symbols.namesake.named_after surfaces things named after Magellan (Strait of Magellan, Magellanic Cloud) rather than his nationality/sponsoring country; the correct relation was never explored."
+WebQTest-43,wrong,decomposition_error,extraction_bug,Answer text mentions 'writer and politician' plus works/quotations (a partial profession match) but answer_entities collapsed to the subject 'Georges Clemenceau' itself across all four low-score backtrack attempts.
+WebQTest-59,wrong,echo,topic,'Annie' resolved to the 1982 film entity via release-date relations rather than the original 1976 Broadway musical that gold's date (1976-08-10) refers to -- a same-name entity mix-up.
+WebQTest-665,wrong,relation_selection,,"Explored government.government_agency/governmental_jurisdiction.government (organizational-structure relations) instead of government.form_of_government.countries, so it returned the generic 'Government of New Zealand' entity itself."
+WebQTest-703,wrong,relation_selection,,"Joined location.country.currency_used with the inverse finance.currency.countries_used; the join surfaced United States Dollar instead of Mexican Peso, suggesting a forward/reverse relation mix-up."
+WebQTest-704,wrong,decomposition_error,extraction_bug,Answer text lists all 6 gold professions verbatim but answer_entities captured only the subject 'Thor Heyerdahl' -- the same self-referencing extraction bug seen elsewhere.
+WebQTest-749,wrong,kg_gap,temporal_qualifier,"'President in 1988' requires matching a term-date range, but the pipeline substituted government.election.winner (the Nov 1988 election winner, who takes office the following January) -- a temporal-qualifier gap."
+WebQTest-769,wrong,relation_selection,,metropolitan_transit.transit_system relations surfaced the city's metro (subway) system rather than a specific railway-station entity; no train-station-specific relation was ever explored.
+WebQTest-776,wrong,relation_selection,,sports.sport_country.athletes/athletic_performances (Olympic-performance framing) surfaced 'Swimming' instead of the national-team-affiliation relations that generate gold's long list of Italian sports teams/federations.
+WebQTest-830,wrong,relation_selection,,music.artist.origin returns Wyomissing (where Swift grew up/is publicly associated) rather than her birthplace Reading; a place-of-birth relation was never used.
+WebQTest-86,wrong,echo,granularity,"'Kingdom of Denmark' (the formal sovereign-state entity) and 'Denmark' (gold's common-name entity) are distinct KG nodes for the same country; the pipeline surfaced the formal entity, a different node/string from gold."
+WebQTest-873,wrong,gold_noise,,"Gold points to a wastewater TREATMENT plant, not an actual water source; AGR's answer 'Lake Ontario' (Toronto's real drinking-water source) is arguably more correct than gold -- likely mislabeled gold that slipped past Stage C."
+WebQTest-1133,hedge,verifier_fn,structural_not_semantic,"Evaluator correctly resolved 'William Henry Smith' (matching the initials) across all backtrack rounds, but the verifier flagged the claim unsupported both times since no single KG triple states it that way, forcing a hedge on what is likely the true answer; gold ('WHSmith') is itself somewhat tautological."
+WebQTest-1226,hedge,premature_termination,evaluator,"government.form_of_government.countries (the correct relation, matching the pattern from sibling 'what form of government' questions) was explored with a reasonable score (0.451) but the evaluator backtracked away from it anyway and never returned before hedging."
+WebQTest-1399,hedge,answer_selection,,"'Automotive industry' (a genuine gold match) was resolved as a top candidate in 3 of 4 continue steps, but the final step swapped in an unsupported set that the verifier rejected, hedging instead of committing to the earlier correct candidate."
+WebQTest-1484,hedge,relation_selection,,"Never explored influence.influence_node.influenced_by (the relation that correctly surfaces literary influences, as used successfully in the sibling Michael Jackson question) -- instead chased theater/lyricist relations for four backtrack rounds."
+WebQTest-1630,hedge,premature_termination,budget,"All 5 gold names surfaced across repeated 'continue' evaluations with a grounded verifier, but the run never transitioned from continue to answer and exhausted its step budget, hedging despite having the correct entities in hand."
+WebQTest-1635,hedge,premature_termination,evaluator,sports_league_draft_pick.draft/sports_league_draft.picks was explored with a strong score (0.631) -- the relation needed to reach the draft year -- but the evaluator backtracked away from it instead of continuing.
+WebQTest-1646,hedge,relation_selection,,Only explored historical-manager/coach and league-membership relations across all four rounds; a founding-year/established relation for the team was never tried.
+WebQTest-172,hedge,relation_selection,,"Explored member-lookup relations that return individual senators' names rather than an office/title relation that would surface the label 'Senator' itself, so the answer degenerated into unresolved specific names."
+WebQTest-1724,hedge,ambiguous_question,,"Gold lists FA Cup-winning seasons, but the question literally asks about 'the league' (the Premier League); AGR's evidence correctly shows Man Utd, not Arsenal, won the Premier League in the checked seasons -- likely a gold/question-domain mismatch."
+WebQTest-1791,hedge,kg_gap,date_literal,All three rounds stayed on law.invention.inventor/inventions (linking the press to Gutenberg) without ever reaching a date-of-invention relation; the literal year 1440 was never a candidate.
+WebQTest-1902,hedge,relation_selection,,All exploration rounds pursued place_of_birth/people_born_here (location relations) rather than a date-of-birth relation; the birth year was never reachable from any relation actually explored.
+WebQTest-1979,hedge,kg_gap,numeric_literal,"sports_team_roster.player exposes team rosters but never a jersey-number attribute; there's no relation that can filter the roster by 'number 22', so the correct player was structurally unreachable."
+WebQTest-231,hedge,relation_selection,,Only explored historical-manager and league-membership relations across all rounds; no team-founding/expansion-year relation was ever tried.
+WebQTest-314,hedge,premature_termination,evaluator,"government.form_of_government.countries was explored with high relevance (0.731) -- the same relation that would answer the question -- but as in the sibling Australia case, the evaluator backtracked away from it instead of continuing."
+WebQTest-379,hedge,kg_gap,date_literal,"Exploration stayed on cause_of_death/place_of_death relations across all rounds; a death-date relation was never reached, so the year could never be extracted -- the first guessed year was correctly flagged unsupported."
+WebQTest-38,hedge,verifier_fn,structural_not_semantic,"First answer attempt correctly resolved all 4 gold campaign entities, but the verifier rejected the claim as unsupported, forcing a retry that narrowed to only 2 names and still failed -- a verifier false negative on an actually-correct answer."
+WebQTest-462,hedge,relation_selection,,Never explored a location.time_zones-type relation (the static fact gold wants -- Central Time Zone) across any of the 4 rounds; only neighborhood/geolocation relations were tried.
+WebQTest-579,hedge,echo,topic,"Early exploration correctly surfaced 'Charlotte' as the relocation destination, but subsequent rounds got pulled into the franchise's later renamed identity 'New Orleans Pelicans'; even after re-finding Charlotte the verifier rejected the final claim, forcing a hedge."
+WebQTest-663,hedge,kg_gap,numeric_literal,"'What age' requires computing age = marriage_date - birth_date; the environment only retrieves marriage-partner/date-adjacent entities and never performs arithmetic, so it resolves spouse names forever without producing a number."
+WebQTest-689,hedge,other,,"Evaluator resolved 'Spanish Language' with a grounded verifier -- a fully correct single-hop answer -- yet the drafted text states the fact and then contradicts itself ('could not be determined'), zeroing out answer_entities despite no verifier rejection. Doesn't fit existing subtypes; flag for discussion."
+WebQTest-725,hedge,verifier_fn,structural_not_semantic,"Correctly resolved both gold states (California, Nevada) in round 2, but subsequent rounds re-explored the same weak edges, lost the resolution, and the verifier ultimately rejected the claims as unsupported, forcing a hedge on an answer already found."
+WebQTest-996,hedge,echo,topic,"Exploration drifted from Ireland's rugby-union team into generic sport-position relations, eventually pulling in an unrelated club ('Wests Tigers', an Australian rugby league team) while the actual venue relation was never explored."
