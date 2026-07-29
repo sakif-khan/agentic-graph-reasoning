@@ -49,7 +49,7 @@
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where are\" invites a container region, gold lists member countries; cross-ref kappa guideline",
   "subtype": "container_vs_member",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1920",
@@ -97,7 +97,7 @@
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-704",
@@ -301,8 +301,8 @@
   "mixed_evidence": true,
   "verdict": "gold_wrong",
   "note": "malformed gold (116 entities, MID leakage=True)",
-  "subtype": "",
-  "family": "label defect"
+  "subtype": "malformed_gold",
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-783",
@@ -322,7 +322,7 @@
   "verdict": "gold_wrong",
   "note": "houston lies principally in harris county; gold lists only montgomery county",
   "subtype": "incomplete_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-301",
@@ -408,7 +408,7 @@
   "verdict": "gold_wrong",
   "note": "california is the most populous us state; gold (new york) is factually wrong",
   "subtype": "wrong_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1373",
@@ -455,7 +455,7 @@
   "verdict": "gold_wrong",
   "note": "canonical answer (nazi germany) absent; gold lists subordinate military organisations only",
   "subtype": "incomplete_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1575",
@@ -487,7 +487,7 @@
   "verdict": "gold_wrong",
   "note": "gmail is a google product absent from gold; gold list incomplete",
   "subtype": "incomplete_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1296",
@@ -550,7 +550,7 @@
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where\" invites a place (greece), gold gives linguistic ancestry",
   "subtype": "place_vs_lineage",
-  "family": "relation mismatch"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-164",
@@ -579,7 +579,7 @@
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives a notable work",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1309",
@@ -630,7 +630,7 @@
   "verdict": "gold_wrong",
   "note": "gold lists films only; sons of anarchy (television, best-known role) absent",
   "subtype": "incomplete_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-114",
@@ -650,7 +650,7 @@
   "verdict": "gold_wrong",
   "note": "james earl jones voiced vader in episode iii; gold gives the on-screen actor",
   "subtype": "wrong_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1099",
@@ -698,7 +698,7 @@
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where are\" invites a container region, gold lists member countries; cross-ref kappa guideline",
   "subtype": "container_vs_member",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1215",
@@ -808,7 +808,7 @@
   "verdict": "gold_ok",
   "note": "gold gives his office; consensus gives a coarser profession and a conflict he served in",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1416",
@@ -828,7 +828,7 @@
   "verdict": "gold_ok",
   "note": "gold gives his office; consensus gives a coarser profession and a conflict he served in",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1178",
@@ -848,7 +848,7 @@
   "verdict": "gold_ok",
   "note": "gold correct: born in east harlem; marin city is a later residence",
   "subtype": "wrong_consensus",
-  "family": "question underdetermined"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-86",
@@ -868,7 +868,7 @@
   "verdict": "gold_ok",
   "note": "same referent: \"kingdom of denmark\" is the formal name of gold \"denmark\"; token overlap below stage-b threshold",
   "subtype": "surface_variant",
-  "family": "question underdetermined"
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1733",
@@ -914,7 +914,7 @@
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (philadelphia); gosselin was raised in wyomissing, pennsylvania",
   "subtype": "wrong_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1281",
@@ -934,7 +934,7 @@
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (philadelphia); gosselin was raised in wyomissing, pennsylvania",
   "subtype": "wrong_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1281",
@@ -954,7 +954,7 @@
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (philadelphia); gosselin was raised in wyomissing, pennsylvania",
   "subtype": "wrong_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1291",
@@ -982,7 +982,7 @@
   "verdict": "gold_ok",
   "note": "gold lists the nine kennedy siblings; consensus names a different-generation relative",
   "subtype": "entity_ambiguity",
-  "family": "question underdetermined"
+  "family": "echo"
  },
  {
   "qid": "WebQTest-618",
@@ -1023,7 +1023,7 @@
   "verdict": "ambiguous_question",
   "note": "both defensible: gold the standard written form, consensus the spoken vernacular",
   "subtype": "variety",
-  "family": "relation mismatch"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-409",
@@ -1043,7 +1043,7 @@
   "verdict": "ambiguous_question",
   "note": "born in naples, emigrated as a child to the dc area; \"grew up\" supports either",
   "subtype": "birthplace_vs_upbringing",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-617",
@@ -1063,7 +1063,7 @@
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (makati, philippines); tebow grew up in jacksonville, florida",
   "subtype": "wrong_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-617",
@@ -1083,7 +1083,7 @@
   "verdict": "gold_wrong",
   "note": "gold gives birthplace (makati, philippines); tebow grew up in jacksonville, florida",
   "subtype": "wrong_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1296",
@@ -1104,7 +1104,7 @@
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives his playing position",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-848",
@@ -1131,7 +1131,7 @@
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where are\" invites a container region, gold lists member countries; cross-ref kappa guideline",
   "subtype": "container_vs_member",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-284",
@@ -1152,7 +1152,7 @@
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where\" invites a place, gold gives language-family ancestry",
   "subtype": "place_vs_lineage",
-  "family": "relation mismatch"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1937",
@@ -1173,7 +1173,7 @@
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives nationality",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1937",
@@ -1194,7 +1194,7 @@
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives nationality",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-209",
@@ -1238,7 +1238,7 @@
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives party affiliation",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1877",
@@ -1330,7 +1330,7 @@
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1730",
@@ -1350,7 +1350,7 @@
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1730",
@@ -1370,7 +1370,7 @@
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1730",
@@ -1390,7 +1390,7 @@
   "verdict": "gold_ok",
   "note": "gold gives the containing continent; consensus gives mouth/tributary rivers — different relation",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1061",
@@ -1410,7 +1410,7 @@
   "verdict": "ambiguous_question",
   "note": "question underdetermined: \"where\" invites a place (greece), gold gives linguistic ancestry",
   "subtype": "place_vs_lineage",
-  "family": "relation mismatch"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-43",
@@ -1459,7 +1459,7 @@
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives a notable expedition",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-464",
@@ -1481,7 +1481,7 @@
   "verdict": "gold_ok",
   "note": "gold gives structure types; consensus gives a government body",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-164",
@@ -1531,7 +1531,7 @@
   "verdict": "gold_ok",
   "note": "entity ambiguity: consensus resolved to shakespeare's anne hathaway; gold is the actress's parents",
   "subtype": "entity_ambiguity",
-  "family": "question underdetermined"
+  "family": "echo"
  },
  {
   "qid": "WebQTest-1239",
@@ -1558,7 +1558,7 @@
   "verdict": "ambiguous_question",
   "note": "ambiguous place name: 03301 is concord nh; gold is concord ca",
   "subtype": "place_name",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1940",
@@ -1600,7 +1600,7 @@
   "verdict": "gold_wrong",
   "note": "gold gives the wrong competition (2012 league cup); liverpool last won the champions league in 2005",
   "subtype": "wrong_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1309",
@@ -1682,7 +1682,7 @@
   "verdict": "gold_ok",
   "note": "gold gives professions; consensus gives nationality",
   "subtype": "relation_confusion",
-  "family": "relation mismatch"
+  "family": "relation_selection"
  },
  {
   "qid": "WebQTest-1835",
@@ -1703,7 +1703,7 @@
   "verdict": "gold_wrong",
   "note": "question asks for a country; gold gives a city (brno) and a region (austrian silesia)",
   "subtype": "type_mismatch",
-  "family": "relation mismatch"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1350",
@@ -1723,7 +1723,7 @@
   "verdict": "gold_wrong",
   "note": "owens's four olympic gold medals absent; gold lists only an ap award",
   "subtype": "incomplete_gold",
-  "family": "label defect"
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-1793",
@@ -1744,7 +1744,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: la sol was a former club; gold reflects a later period",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-749",
@@ -1764,7 +1764,7 @@
   "verdict": "gold_ok",
   "note": "gold correct: reagan was president throughout 1988; bush took office january 1989",
   "subtype": "wrong_consensus",
-  "family": "question underdetermined"
+  "family": "kg_gap"
  },
  {
   "qid": "WebQTest-1744",
@@ -1784,7 +1784,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects his 2013-15 club",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1744",
@@ -1804,7 +1804,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects his 2013-15 club",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1969",
@@ -1824,7 +1824,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1969",
@@ -1844,7 +1844,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1969",
@@ -1864,7 +1864,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1969",
@@ -1884,7 +1884,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1969",
@@ -1904,7 +1904,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names former clubs; gold reflects a single season",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-359",
@@ -1925,7 +1925,7 @@
   "verdict": "ambiguous_question",
   "note": "no temporal qualifier: consensus names a former club",
   "subtype": "temporal",
-  "family": "question underdetermined"
+  "family": "ambiguous_question"
  },
  {
   "qid": "WebQTest-1764",
@@ -2119,8 +2119,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "malformed gold (116 entities, MID leakage=True)",
-  "subtype": "",
-  "family": "label defect"
+  "subtype": "malformed_gold",
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-958",
@@ -2254,8 +2254,8 @@
   "mixed_evidence": false,
   "verdict": "gold_wrong",
   "note": "malformed gold (116 entities, MID leakage=True)",
-  "subtype": "",
-  "family": "label defect"
+  "subtype": "malformed_gold",
+  "family": "gold_noise"
  },
  {
   "qid": "WebQTest-245",
@@ -2275,7 +2275,7 @@
   "verdict": "gold_ok",
   "note": "gold is a date literal (1921-09); consensus names the event entity for the same year",
   "subtype": "type_mismatch",
-  "family": "relation mismatch"
+  "family": "kg_gap"
  },
  {
   "qid": "WebQTest-1902",
