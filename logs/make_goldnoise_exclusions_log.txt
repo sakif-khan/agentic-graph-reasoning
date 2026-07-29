@@ -8,10 +8,10 @@ excluded from census: 22 questions (5.5% of the webqsp test set)
 
 === cwq ===
 verdict               rows  questions
-gold_ok                 32         29
-gold_wrong              24         16
+gold_ok                 31         28
+gold_wrong              25         17
 ambiguous_question       3          2
 TOTAL                   59         47
-excluded from census: 18 questions (4.5% of the cwq test set)
+excluded from census: 19 questions (4.8% of the cwq test set)
 
 wrote census_exclusions.json + goldnoise_summary.json

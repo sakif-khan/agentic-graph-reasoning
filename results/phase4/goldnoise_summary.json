@@ -10,9 +10,9 @@
  "cwq": {
   "flag_rows": 59,
   "flagged_questions": 47,
-  "gold_wrong_questions": 16,
+  "gold_wrong_questions": 17,
   "ambiguous_questions": 2,
-  "gold_ok_questions": 29,
-  "excluded_questions": 18
+  "gold_ok_questions": 28,
+  "excluded_questions": 19
  }
 }
