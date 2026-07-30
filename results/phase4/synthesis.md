@@ -1,0 +1,414 @@
+# AGR Failure Taxonomy — Synthesis (Stage E)
+
+This is the synthesis layer on top of `annotation_taxonomy.md` (which defines the categories
+and subtypes) and the three label sources it merges (Stage D's main census, the rows Stage D
+found and later dropped, and Stage A's ablation-discordance census). Every qid, quote, and count
+below is pulled directly from the label files — nothing here is reconstructed from memory. Where
+a note says "eval correctly resolved X," that's quoting the actual trace, not a paraphrase.
+
+## §1 — Method, in one paragraph
+
+Stage B flags surface-form near-misses mechanically (no human judgment). Stage C adjudicates
+consensus-vs-gold disagreements across five systems and produces `census_exclusions.json` — the
+qids Stage D never reads because they're gold-noise or ambiguous, not AGR failures. Stage A takes
+a different route entirely: it contrasts the full (with-planner) pipeline against a no-planner
+ablation on the same questions, isolating cases where removing the planner *fixed* the answer —
+a direct signal that the planner caused the failure. Stage D is the main manual census: every
+remaining genuine wrong/hedge, both datasets now read to completion (no sampling). This document
+merges all three populations (Stage A, Stage D, and the one case that moved from Stage D into a
+formal Stage C exclusion mid-project) into one histogram, wrong and hedge kept separate
+throughout — pooling them would conflate two different failure semantics (a wrong answer is a
+reasoning error; a hedge is usually a retrieval/coverage gap that never produced a committal
+answer at all).
+
+| source | webqsp | cwq |
+|---|---:|---:|
+| Stage D (main census) | 65 | 157 |
+| Stage D → dropped (promoted to a formal Stage C exclusion) | 0 | 1 |
+| Stage A (ablation discordance) | 21 | 15 |
+| **Total genuine failures analyzed** | **86** | **173** |
+
+259 failures analyzed across both datasets. The wrong/hedge histogram below already has all
+three sources blended in by kind (`wrong`/`hedge`) — the split above is provenance, not a
+separate count to add on top.
+
+## §2 — The histogram
+
+| category | webqsp wrong | webqsp hedge | cwq wrong | cwq hedge | **combined** |
+|---|---:|---:|---:|---:|---:|
+| relation_selection | 20 | 6 | 20 | 19 | **65** |
+| composite_claim | 1 | — | 23 | 23 | **47** |
+| kg_gap | 8 | 4 | 8 | 24 | **44** |
+| decomposition_error | 15 | 11 | 10 | 2 | **38** |
+| answer_selection | 1 | 1 | 8 | 4 | **14** |
+| echo | 5 | 2 | 4 | 2 | **13** |
+| ambiguous_question | 1 | 1 | 3 | 5 | **10** |
+| premature_termination | 1 | 4 | 1 | 2 | **8** |
+| gold_noise | 1 | — | 3 | 3 | **7** |
+| verifier_fn | — | 3 | 1 | 3 | **7** |
+| other | — | 1 | — | 5 | **6** |
+| **total** | **53** | **33** | **81** | **92** | **259** |
+
+Two things jump out before the per-category detail:
+
+- **The shape flips between datasets.** webqsp's top two categories are `relation_selection` and
+  `decomposition_error` — tied, 26 each, together nearly 60% of webqsp's total — with `kg_gap`
+  and everything else a distant third (12 and below). cwq's top three are `composite_claim` (46),
+  `relation_selection` (39), and `kg_gap` (32), much closer together, with everything else dropping
+  sharply to 12 and below. `relation_selection` is large in *both* datasets — it isn't what
+  distinguishes them. What's actually different is `composite_claim` and `kg_gap`: barely present
+  in webqsp (1 and 12 out of 86) but two of cwq's three largest categories (46 and 32 out of 173),
+  consistent with cwq's questions being multi-hop/multi-constraint and numerically-qualified by
+  construction. This isn't a claim about which dataset is "harder" — it's that the two datasets
+  stress different parts of the architecture.
+- **`kg_gap` skews hedge-heavy in cwq specifically** (24 hedge vs 8 wrong — three-to-one), the
+  opposite of webqsp's split (4 hedge vs 8 wrong). When cwq's numeric IDs, date literals, or
+  ordinal constraints are unreachable, AGR much more often hedges honestly than asserts a wrong
+  answer — a *good* property of the system on this category, worth stating explicitly rather than
+  only reading `kg_gap` as a deficiency. webqsp's smaller kg_gap population (12 total, half of it
+  `temporal_qualifier`/`date_literal`) doesn't show the same lean.
+
+### relation_selection (65 combined) — the scorer picks the wrong edge
+
+The single largest category in both datasets. No subtypes (the mechanism is uniform: a wrong
+relation got explored, or the right one was explored but abandoned).
+
+- **`WebQTest-1730`** ("where does the parana river flow", gold `South America`): AGR answers
+  *"The Paraná River flows into Río de la Plata, and it also has Rio Grande, Paraguay River,
+  Paranaíba River, and Iguazu River listed as mouth or origin-related entities."*
+  `geography.river.mouth`/`origin` surfaces the rivers it *feeds into*, not the region it flows
+  *through* — a location-containment relation was never tried.
+- **`WebQTrn-1758_477d7040...`** ("What is the current government of the place where 'The
+  Alchemist of Happiness' takes place?", gold five government-type labels): AGR answers
+  *"The current government is Government of Iran"* — the organization entity, not the type
+  labels. This is the same mistake as `WebQTest-1226`/`WebQTest-314` below: three separate
+  questions across both datasets all reach for `government.governmental_jurisdiction.government`
+  instead of `government.form_of_government.countries`.
+- **The Beyoncé's-daughter triplet** (`WebQTrn-1770_540abec8...`, `WebQTrn-1770_6325ee89...`,
+  `WebQTrn-1770_6a7c160a...`) — three differently-phrased cwq questions ("featured in the film
+  Beyonce: Baby and Beyond...", "the actor that played Etta James...", "the composer for
+  'Dangerously in Love 2'...") all correctly resolve Beyoncé, then all three never once try
+  `people.person.children` — the one relation that would give `Blue Ivy` directly. All three
+  hedge. This is the cleanest evidence in the whole corpus that a relation gap is systemic rather
+  than an artifact of one question's phrasing: three independent entry points into the same
+  underlying resolver hit the identical dead end.
+
+### composite_claim (47 combined) — multi-constraint handled partially
+
+Split `conjunction_uncovered` (a constraint gets explored, then dropped or never checked against
+the final candidate) vs `no_set_intersection` (both halves of a compound question get answered
+independently, with no attempt to find a value satisfying both).
+
+- **`WebQTrn-2047_3d5f8552...`** ("What is the name of the structure opened in 1997 where the
+  Chicago Cubs play?", gold `Hohokam Stadium`, their spring-training park): AGR answers
+  *"Wrigley Field"* — their primary stadium, opened 1914. No date relation for "1997" ever
+  appears in the trace; the "opened in 1997" clause is simply never checked against the answer.
+  `conjunction_uncovered`.
+- **`WebQTrn-2540_5e56c769...`** ("Who inspired Monet and influenced Paul Verlaine?", gold
+  `Stéphane Mallarmé`): AGR answers *"Claude Monet was inspired by Eugène Boudin, and Paul
+  Verlaine was associated with Symbolism."* Two independently-true half-answers — one of them not
+  even a person — stapled together with no attempt to find one individual satisfying both
+  clauses. Textbook `no_set_intersection`.
+- **A milder version of the same bug, in AGR's favor**: `WebQTrn-2784_abedc8ac...` ("which movies
+  does Tupac act in that was edited by Malcolm Campbell", gold `Nothing but Trouble`) actually
+  *resolves the exact right answer* — the trace shows `eval: answer resolved=['Nothing but
+  Trouble']` satisfying both constraints — and then the drafted text still says *"Gang Related is
+  a movie Tupac acted in, but the claim that it was edited by Malcolm Campbell could not be
+  verified"*, substituting a worse answer. Filed as `answer_selection` (below), but it belongs in
+  this family's orbit: the correct intersection was found and then abandoned.
+
+### kg_gap (44 combined) — the environment can't express it
+
+Five subtypes, and they cluster by mechanism, not just by dataset:
+
+- **`ordinal`** (superlatives: "first", "last", "smallest", "latest", "earliest") — every single
+  instance in the corpus shares the same shape: the relevant relation is explored, candidates
+  come back, and the min/max comparison across them simply never happens. `WebQTest-245` ("what
+  year was the first miss america pageant held", gold `1921-09`) has the clearest illustration:
+  AGR answers with 1925, then 1980, then 1929 across successive rounds — genuinely different
+  years each time — because nothing in the architecture ever sorts by date and takes the minimum.
+- **`numeric_literal`** — internal identifiers (`tvrage_id`, `netflix_id`, `thetvdb_id`, ISO
+  alpha-3 codes, Freebase's internal "located ID") recur constantly in cwq's question templates
+  and never once resolve, because no relation in the explored schema exposes them. Several of
+  these hedges are unusually *honest*: `WebQTrn-849_f0ffa147...` ("which country bordering
+  Germany has iso alpha 3 of CHE") names Switzerland in the answer text and then explicitly says
+  the code itself "could not be confirmed from the facts given" — a correct guess, honestly
+  caveated, rather than a false assertion.
+- **`date_literal`** — `WebQTest-1620` ("when was president wilson in office", gold the literal
+  date `1913-03-04`): the KG only exposes inauguration *events*, not the date value itself, so AGR
+  answers with two inauguration mentions instead of extracting a date.
+- **`temporal_qualifier`** — `WebQTest-749` ("who was president in 1988"): AGR answers *"George
+  H. W. Bush"* — the winner of the November 1988 election, who didn't take office until January
+  1989. The pipeline substituted `government.election.winner` for a term-date-range check it
+  can't perform.
+- **`data_error`** — `WebQTrn-261_7bc18657...` ("Where is the topic of the image 'Whistler
+  Skilift 040' found?") returns four consecutive rounds of `explored=[] (max_score 0.0)` — the
+  image reference itself never resolves to anything in the graph, a genuine coverage hole rather
+  than a reasoning mistake.
+
+### decomposition_error (38 combined) — the planner/draft pipeline caused it
+
+The standout finding here is `extraction_bug` (9 of the 38 `decomposition_error` cases carry this
+exact subtype), and it's worth stating plainly: **on profession/"what did X do" questions, the
+evaluator repeatedly resolves every correct gold value, states them verbatim in the answer text,
+and then `answer_entities` collapses to the subject entity alone.** Three near-identical
+instances, verified from the raw trace:
+
+| qid | question | gold | answer *text* (correct) | `answer_entities` (wrong) |
+|---|---|---|---|---|
+| `WebQTest-1215` | who was stephen r covey | Author, Manager, Writer, Consultant, Professor, Motivational speaker | *"Stephen Covey was a Writer, Motivational speaker, Author, Consultant, Professor, and Manager."* | `['Stephen Covey']` |
+| `WebQTest-704` | who is thor heyerdahl | Ethnographer, Film director, Scientist, Film Producer, Cinematographer, Adventurer | *"Thor Heyerdahl was a Film director, Cinematographer, Scientist, Ethnographer, Film Producer, and Adventurer."* | `['Thor Heyerdahl']` |
+| `WebQTrn-124_0782789f...` | What was directed by the actor who played Corneila Wallace? | By the Sea, In the Land of Blood and Honey, A Place in Time, Unbroken | *"Angelina Jolie directed Unbroken, In the Land of Blood and Honey, A Place in Time, and By the Sea."* | `['Angelina Jolie']` |
+
+This is not a reasoning failure at all — the reasoning is complete and correct by the time the
+text is drafted. It's a bug in whatever step turns the answer text into `answer_entities`,
+consistently reaching for the sentence's grammatical *subject* instead of its predicate values.
+Because scoring presumably runs against `answer_entities`, this single bug is very likely
+depressing AGR's measured accuracy on an entire class of "list the profession/attribute" and
+"list what X did" questions independently of any actual reasoning defect — worth fixing before
+drawing conclusions about AGR's competence on that question type.
+
+`over_decomposition` is Stage-A-only (n=1 — the mechanism needs a with/without-planner contrast to
+even show up as distinct from ordinary decomposition_error). `paraphrase_drift` is actually more
+common in Stage D's own reading (6 cases: `WebQTest-1416`, `-164`, `-1920`, `-1937`, `-301`,
+`-316` — all "who is X"/"what did X become famous for" questions where the profession relation
+gets bypassed for biographical-event relations instead) than in Stage A (3 cases: `WebQTest-1679`,
+`-788`, `-2006`). But the Stage A cases make the *mechanism* unusually legible, because the
+ablation contrast gives a direct before/after:
+
+- **`WebQTest-869`** ("where is ancient phoenician", gold `Lebanon`) — full pipeline: *"Phoenicia."*
+  noplanner: *"Ancient Phoenicia was in Lebanon."* The planner's rewrite of the sub-objective —
+  `['find ancient Phoenician']` — dropped the question word "where" entirely, so the explorer just
+  re-identified the topic instead of locating it. Filed as plain `decomposition_error` (no
+  subtype quite fits), and flagged in the Stage A notes as *"the strongest specimen in the set"* —
+  the clearest possible before/after evidence that a rewrite can lose the actual ask.
+- **`WebQTest-1679`** ("what kind of government does the united states have currently") — both
+  runs are single-step, so this isn't about hop count: the planner's *rewritten* sub-objective
+  scored worse against the target relation than the raw question text did, resolving the generic
+  "Federal government of the United States" entity instead of the three government-type labels
+  gold wants. `paraphrase_drift`, cleanly isolated from any decomposition effect.
+- **`WebQTest-1829`** ("what type of religion did massachusetts have") — full pipeline splits into
+  `['find Massachusetts', 'find the religion type associated with #1']` and burns 14 of its 16
+  call budget on 3 evaluator backtracks before hedging; noplanner (undecomposed) finds the same
+  fact in 3 calls with zero backtracks. The redundant "find Massachusetts" step — resolving an
+  already-unambiguous named entity — is what introduces the instability that then exhausts the
+  budget. `over_decomposition`.
+
+The fourth subtype, `context_stripping` (3 cases: `WebQTest-1367` in Stage D, `WebQTrn-2615_48a6ac...`
+and `WebQTrn-2570_d63877a...` in Stage A), is the mirror image of `paraphrase_drift`: instead of a
+rewrite scoring worse, splitting the question into steps *removes* a qualifier that only appears
+in a later clause, so an early sub-objective resolves the wrong sense of an ambiguous term before
+the disambiguating information ever arrives.
+
+- **`WebQTest-1367`** ("where is glastonbury england", gold `Mendip`/`United Kingdom`): the plan's
+  first step anchors on just `'find Glastonbury'`, dropping the question's own disambiguator
+  "England," so the explorer resolves to (or merges with) the identically-named Connecticut town
+  instead of the UK one.
+- **`WebQTrn-2570_d63877a...`** ("This 33rd president was the nation's leader during WW2.?", gold
+  `Harry S. Truman`): full pipeline splits into `['find the 33rd president', "find the nation's
+  leader during WW2"]` and answers *"Woodrow Wilson"* — the 28th president, and nowhere near WW2 —
+  because step 1 resolves "33rd president" in isolation and never completes
+  (`objective_done: false` at every round), so step 2 (the actual WW2 anchor) never activates at
+  all. noplanner, working from the undecomposed question, answers correctly. This is the exact
+  `WebQTrn-2570` case flagged for this exhibit: decomposition didn't just lose a qualifier, it
+  actively prevented the disambiguating clause from ever being checked.
+- **`WebQTrn-2615_48a6ac...`** ("What instruments does the author of Fela! play?", gold five
+  instruments): the first sub-objective ("find the author of Fela!") is scored with no mention of
+  "instruments" at all, so it resolves toward the wrong sense of an ambiguous relation before the
+  actual constraint appears in step 2. Full pipeline hedges; noplanner answers all five correctly
+  in fewer calls.
+
+### answer_selection (14 combined) — correct candidate retrieved, drafter chose another
+
+Distinct from `composite_claim` in one specific way: here the exact gold value demonstrably
+entered the resolved candidate set at some point, and the final drafted answer picked something
+else anyway.
+
+- **`WebQTest-1555`** ("what is the parliament of nepal called", gold `Parliament of Nepal`): the
+  evaluator resolves the correct entity — `Parliament of Nepal` itself — and the drafted answer
+  instead names its component bodies (National Assembly, House of Representatives). The right
+  candidate was in hand and not selected.
+- **`WebQTrn-2784_abedc8ac...`** (above): `eval: answer resolved=['Nothing but Trouble']` — the
+  literal gold value — and the drafted text substitutes `Gang Related` instead, hedging on a claim
+  the verifier then correctly rejects.
+
+### echo (13 combined) — the shared-attractor pattern
+
+Gets its own §3 below, given how central this finding is to the project.
+
+### ambiguous_question (10 combined) — CWQ template-composition artifacts
+
+Distinct from `gold_noise`: here the *question itself* is the problem, not the gold value.
+
+- **`WebQTrn-1053_4c864980...`** ("Which actor played the character Henri Ducard in Star Wars?",
+  gold `Qui-Gon Jinn`): Henri Ducard is a *Batman Begins* character; he never appears "in Star
+  Wars" at all. AGR answers *"Liam Neeson played Henri Ducard"* — factually correct, and the only
+  coherent answer to the question as asked. Gold appears to come from a template that fused "who
+  played Henri Ducard" with an unrelated fact about the same actor (Liam Neeson also played
+  Qui-Gon Jinn). AGR had no way to produce the unrelated Star Wars role because the question
+  doesn't actually ask for it.
+- **`WebQTest-1724`** ("when did arsenal won the league", gold eight *FA Cup*-winning seasons):
+  the question literally asks about "the league" (the Premier League); AGR's own evidence
+  correctly shows Manchester United, not Arsenal, won the Premier League in the seasons it
+  checked. Gold answers a different competition than the one named in the question.
+
+### premature_termination (8 combined) — stopped before the answer, `evaluator` subtype only
+
+Every instance in the corpus is the *same* systemic pattern, not eight independent incidents:
+**the correct relation gets explored with a solid score, and the evaluator backtracks away from
+it anyway, never returning.** `WebQTest-1226` (Australia, 0.451), `WebQTest-314` (Sweden, 0.731),
+`WebQTrn-710_e3d40457...` (the "Crazy Cab" mascot question, 0.702 — about as high-confidence as
+this project's traces ever get) all show the identical shape: a correct signal, thrown away. This
+reads as an evaluator-threshold or backtracking-policy bug rather than eight separate reasoning
+failures, and is one of the more directly fixable findings in this whole census (see §5).
+
+### gold_noise (7) / verifier_fn (7) / other (6) — see §4 for gold_noise, below for the rest
+
+**`verifier_fn` (`structural_not_semantic`)** — the verifier rejects a claim that's actually true,
+apparently because it wants a single direct triple rather than a transitively-true multi-hop fact:
+`WebQTrn-568_f4dd5e48...` ("what county is home to The Charlotte News", gold `Mecklenburg
+County`) resolves the exact right county via a clean two-hop chain (newspaper → Charlotte →
+county), gets rejected, retries, resolves it *again*, and gets rejected again. `WebQTest-38`
+("who did george w. bush run against for the second term") resolves *all four* gold campaign
+entities in one shot and the verifier still rejects it, forcing a retry that recovers only two
+names.
+
+**`other`** — a genuinely new, recurring mechanism that doesn't fit any existing subtype: the
+evaluator resolves the exact gold value, the verifier says `grounded`, and the *drafted text
+still hedges anyway* — no verifier rejection is involved at all, so it isn't `verifier_fn`.
+`WebQTest-689` (*"Spanish Language was spoken in Spain. The first language spoken in Spain could
+not be determined..."*), `WebQTest-989_4b6636a0...` (Battle of Dunkirk), and
+`WebQTrn-1392_d372995c...` (Eleanor Roosevelt's two schools, both named correctly and then
+declared undeterminable) are the clearest instances. This is a drafting-stage bug distinct from
+the extraction_bug above: there, the entities are wrong but the text is right; here, the text
+itself contradicts a fact it just stated.
+
+## §3 — The shared-attractor finding
+
+`echo` is the pattern the taxonomy specifically names for a mechanism that recurs constantly and
+independently of the two more mechanical categories (`relation_selection`, `kg_gap`): AGR resolves
+a real, well-grounded entity that sits *near* the correct answer in the graph's structure, and the
+verifier passes it because it genuinely is grounded — the fact is true, just not what was asked.
+Three distinct shapes:
+
+- **`topic`** — confusion between distinct entities sharing a name or a close cluster.
+  `WebQTest-1707` ("who plays lex luthor on smallville", gold `Michael Rosenbaum`) answers *"John
+  Glover plays Lionel Luthor"* — a different character in the same fictional-universe cluster
+  (Lionel, Alexander, and Lucas Luthor variants all surface in the trace before the run gives up).
+- **`granularity`** — the right entity family, wrong level of specificity. `WebQTest-86` ("which
+  country does greenland belong to", gold `Denmark`) answers *"Kingdom of Denmark"* — the formal
+  sovereign-state entity, a genuinely distinct KG node from the common-name entity gold uses.
+  `WebQTrn-1405_ced20d...` ("What school, with a founding date in 1636, did President Kennedy
+  attend?", gold `Harvard College`) has `Harvard College` sitting right there in the very first
+  candidate list, and the run narrows to the closely-related whole institution `Harvard
+  University` instead — whose own founding-date claim the verifier then correctly rejects.
+- **`intermediate`** — the trajectory stops at a hop along the way rather than continuing to the
+  actual target. (webqsp and cwq both have clean cases of this; see `annotation_taxonomy.md`'s
+  subtype table for the Stage-C-derived examples, since Stage D's own reading filed most of its
+  intermediate-stop cases under `granularity` instead — the boundary between the two isn't always
+  crisp, and it's worth treating them as one family in any future retrospective pass.)
+
+The throughline: none of these are cases where AGR "didn't know" anything — every one resolves a
+real, verifiably-true fact. The failure is entirely in *which* true fact gets surfaced. This is
+architecturally different from `relation_selection` (wrong edge) or `kg_gap` (no edge exists at
+all): the right edge exists, gets used, and lands one node away from where it needed to.
+
+## §4 — Benchmark-quality footnote
+
+Separately from AGR's own failures, this census turned up real gold-label and question-quality
+defects — both through the formal Stage C process and through Stage D's reading catching what
+Stage C's net missed:
+
+- **Stage C excluded 41 qids outright** before Stage D ever read them (22 webqsp + 19 cwq,
+  `gold_wrong` or `ambiguous_question` verdicts) — 4.8–5.5% of each dataset's respective test set
+  (per `goldnoise_summary.json`).
+- **Stage D's own reading caught 17 more** that Stage C's net missed and that remain in the active
+  census as `gold_noise`/`ambiguous_question` rows (3 webqsp + 14 cwq) — plus **one case that
+  crossed all the way from a Stage D finding into a formal Stage C exclusion mid-project**:
+  `WebQTrn-64_d8e43a...` ("What was the actor's name that played the character Digital Underground
+  Member in 'Juice'?", gold `Bishop` — a character name, not an actor's name, from a *different*
+  role Tupac Shakur plays in the same film). Originally adjudicated `gold_ok`/echo by Stage C
+  (multiple systems converging on "Tupac Shakur" read as an echo-of-topic mistake), Stage D's
+  independent read reached the opposite conclusion on the same evidence, and the resolution —
+  gold is wrong, AGR is right — held up. It's the single cleanest illustration in this whole
+  project of why the taxonomy keeps a `gold_noise` category open at all: two independent adjudication
+  passes can legitimately disagree, and the process needs a way to resolve that rather than
+  silently picking whichever ran first.
+- **`WebQTest-958`** ("what are some famous people from el salvador") has **116 gold entities**
+  with detectable MID leakage (raw Freebase machine IDs in the answer strings) — flagged
+  `malformed_gold`, and a useful data point on its own: a "list some famous X" template can
+  balloon gold to over a hundred loosely-related names, at which point no system's finite answer
+  can realistically match by any reasonable metric.
+- **The Vicksburg pair is worth reading side by side** — two Stage A sibling questions, same
+  battle, same gold value, opposite diagnoses:
+  - `WebQTest-1797_5a1c66f...` ("Who was president during the battle of Vicksburg?", gold
+    `Ulysses S. Grant`) — Grant didn't become president until 1869, six years after Vicksburg; the
+    actual president in 1863 was Lincoln. The full pipeline answers *"The answer could not be
+    verified against the knowledge graph"* and its verifier correctly flags the claim as
+    `unsupported`; the no-planner ablation, with zero backtracks, confidently asserts *"Ulysses S.
+    Grant was president during the battle of Vicksburg"* — and counts as a *win* under simple
+    string-match scoring, purely because it happens to restate a gold value that answers a
+    different question. Filed `gold_noise`: the question itself asks something false.
+  - `WebQTest-1797_dece4dd...` ("What Government position holder fought in the battle of
+    Vicksburg?", same gold, `Ulysses S. Grant`) — here the question *is* coherent (Grant, then a
+    sitting general, did hold a government position and did fight at Vicksburg), and the full
+    pipeline gets it wrong: *"John C. Pemberton fought in the Siege of Vicksburg"* — the
+    Confederate commander, a real combatant but not a "government position holder" by any
+    reading. The qualifier is present in the sub-objective text but never actually filters the
+    multi-candidate combatant frontier down from "everyone who fought" to "the one who held a
+    government position." Filed `composite_claim`: a genuine AGR reasoning failure.
+
+  Same battle, same gold string, one question that's actually unanswerable and one that's a real
+  constraint AGR dropped — a clean illustration of why the taxonomy insists on reading each case
+  individually rather than trusting question similarity as a shortcut. The pipeline that hedged on
+  the first was more epistemically correct than the one that "succeeded"; the pipeline that
+  asserted on the second was simply wrong.
+
+Combined, that's 59 qids across both datasets where the benchmark itself, not AGR, is the thing
+that needed correcting — 41 excluded outright by Stage C before Stage D ever read them, 17 more
+still visible in the active census as `gold_noise`/`ambiguous_question` rows, and 1 that started
+as a Stage D finding and was later promoted to a formal Stage C exclusion (three disjoint counts;
+nothing here is double-counted). That's a real number, not a rounding error, and it's worth a real
+footnote — or its own paragraph — in whatever write-up cites AGR's headline accuracy numbers.
+
+## §5 — Implications
+
+Splitting these into fixes that are ready to make now versus genuine open architecture questions,
+since the census supports different confidence levels for each:
+
+**Ready to fix now — each backed by a clean, repeated pattern, not a hypothesis:**
+
+1. **The entity-extraction bug** (§2, `decomposition_error/extraction_bug`, 9 instances across
+   both datasets): whatever turns drafted answer text into `answer_entities` needs to stop
+   defaulting to the sentence's subject. This alone likely costs measurable accuracy on every
+   "what professions/what did X do/what did X direct" question shape, independent of any
+   reasoning quality.
+2. **The evaluator-abandons-a-good-relation bug** (§2, `premature_termination/evaluator`): a
+   relation scored ≥0.45 (and in one case 0.73, in another 0.70) gets explored and then
+   backtracked away from, never revisited. This looks like a threshold or backtracking-policy
+   defect, not a reasoning gap — it recurs identically across unrelated question domains
+   (government form, sports mascots, drafts, conlangs).
+3. **The drafter-hedges-despite-grounding bug** (§2, `other`): when the verifier says `grounded`
+   and the resolved value matches gold exactly, the drafter should commit to it. Right now it
+   sometimes states the fact and then contradicts itself in the same sentence.
+
+**Architectural, future-work — each now backed by a labeled failure mass, not just intuition:**
+
+1. **Adaptive decomposition gating** (motivated by `decomposition_error`'s `paraphrase_drift`,
+   `over_decomposition`, and the composition-echo cases in Stage A specifically): a planner check
+   for whether a rewritten sub-objective preserved the question's actual interrogative, and
+   whether a decomposition step is resolving an already-unambiguous entity for no benefit.
+2. **Semantic-level verification** (motivated by `verifier_fn/structural_not_semantic`, 7 cases):
+   the verifier needs to recognize a transitively-true multi-hop claim as supported, rather than
+   requiring one literal triple that states the conclusion directly.
+3. **A set-intersection operator for composite questions** (motivated by
+   `composite_claim/no_set_intersection`, and worth pairing with the `conjunction_uncovered`
+   subtype too): an explicit AND/join primitive that resolves each clause of a compound question
+   into a candidate set and intersects them, rather than resolving each clause independently and
+   hoping the results happen to coincide.
+4. **Ordinal and literal-value support for `kg_gap`** (44 combined cases — the third-largest
+   category overall, and cwq's single largest hedge category at 24): a min/max-by-date-or-number
+   operation for superlatives ("first", "latest", "smallest"), and a literal-value extraction path
+   for numeric IDs, ISO codes, and dates that the graph exposes as event/entity nodes rather than
+   plain values. This wasn't in the original three-item list, but the numbers make a strong case
+   that it belongs alongside them.
