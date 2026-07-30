@@ -85,22 +85,29 @@ safety net catching a real one.
 
 ## Distribution (this pass)
 
-> **Note:** the cwq column below reflects the superseded 40W+20H stratified sample (drawn
-> before `WebQTrn-64_d8e43a...` was adjudicated as gold noise). The census has since moved to
-> full coverage for both datasets (70W+87H for cwq); update this table once the ~98 new cwq
-> packets are read.
+Both datasets are now full censuses (no sampling): webqsp 43W+22H, cwq 70W+87H (the cwq
+population dropped from 71W after `WebQTrn-64_d8e43a...` was adjudicated as gold noise and
+excluded). The cwq column below reflects the complete 157-row read, not the earlier 40W+20H
+stratified sample.
 
 | category | webqsp | cwq |
 |---|---:|---:|
-| relation_selection | 24 | 16 |
-| composite_claim | 1 | 13 |
-| decomposition_error | 10 | 3 |
-| kg_gap | 9 | 9 |
-| echo | 7 | 2 |
+| composite_claim | 1 | 40 |
+| relation_selection | 24 | 39 |
+| kg_gap | 9 | 30 |
+| answer_selection | 2 | 12 |
+| ambiguous_question | 2 | 8 |
+| decomposition_error | 10 | 7 |
+| echo | 7 | 6 |
+| other | 1 | 5 |
+| gold_noise | 1 | 4 |
+| verifier_fn | 3 | 3 |
 | premature_termination | 5 | 3 |
-| answer_selection | 2 | 5 |
-| verifier_fn | 3 | 2 |
-| ambiguous_question | 2 | 4 |
-| gold_noise | 1 | 1 |
-| other | 1 | 2 |
-| **total** | **65** | **60** |
+| **total** | **65** | **157** |
+
+The shape flipped sharply once cwq went to full coverage: `composite_claim` and `kg_gap` are now
+cwq's dominant categories (both barely present in webqsp), consistent with cwq's questions being
+multi-hop/multi-constraint by construction — `composite_claim` catches the dropped-constraint
+failures, `kg_gap` catches the internal numeric IDs (netflix_id, tvrage_id, thetvdb_id, ISO
+codes) and superlatives ("smallest", "latest", "earliest") that recur constantly in cwq's
+question templates but rarely in webqsp's.
