@@ -1,0 +1,2 @@
+webqsp: 21 rows (10 wrong, 11 hedge) -> results\phase4\ablations\noplanner_categories_webqsp.csv
+cwq: 15 rows (10 wrong, 5 hedge) -> results\phase4\ablations\noplanner_categories_cwq.csv

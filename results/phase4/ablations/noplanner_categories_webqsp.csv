@@ -1,0 +1,22 @@
+qid,kind,category,subtype,note
+WebQTest-397,hedge,decomposition_error,,"Step 1 (""find Harvard"") expanded generic identity relations (library, honorary-degree), polluting frontier with off-target anchors before step 2 could reach colors."
+WebQTest-336,hedge,decomposition_error,,Step 1 resolved wrong/extra country candidates; step 2's currency relation scored against the wrong anchor.
+WebQTest-1679,wrong,decomposition_error,paraphrase_drift,Both single-step; planner's rewritten objective scored worse against the target relation than raw question text.
+WebQTest-16,hedge,decomposition_error,,contains/containedby direction confusion after entity-ID split from containment lookup.
+WebQTest-1233,hedge,decomposition_error,,"Team-hub relation dilution at step 2; 3 low_score backtracks, most expensive case in the set (13k tokens) for a hedge."
+WebQTest-567,hedge,decomposition_error,,Same 2-step pattern as WebQTest-1233.
+WebQTest-1674,wrong,kg_gap,,"No step-count difference; multiple historical leaders likely share the same relation without a ""current"" marker — wording-sensitive tie."
+WebQTest-1353,hedge,decomposition_error,,"Mirror of WebQTest-16, same direction-confusion mechanism."
+WebQTest-329,hedge,decomposition_error,,"""Event of unification"" sub-objective dead-ended (event modeled awkwardly); direct scoring found the relation without the detour."
+WebQTest-788,hedge,decomposition_error,paraphrase_drift,"Same retrieved facts both runs; rendered sub-objective's singular framing (""find the holy book of #1"") triggered draft-stage over-caution that raw wording didn't."
+WebQTest-284,wrong,relation_selection,,Scorer favored geographic origin relation over language-family relation; paraphrase-sensitive.
+WebQTest-1289,wrong,decomposition_error,,"Step 1 anchored to specific works, not the abstract genre; step 2 typed the wrong granularity. Same shape as κ's composition-echo pattern."
+WebQTest-2006,hedge,decomposition_error,paraphrase_drift,Rewritten objective scored worse than raw text for the ethnicity relation.
+WebQTest-1309,wrong,decomposition_error,,"Identical mechanism to Mozart case (WebQTest-1289) — works-level anchor, wrong-granularity typing."
+WebQTest-869,wrong,decomposition_error,,"Strongest specimen in the set. Planner's rewrite dropped the ""where"" entirely (""find ancient Phoenician""), so the explorer just re-identified the topic — a live composition-echo case."
+WebQTest-893,hedge,decomposition_error,,Same as WebQTest-1233.
+WebQTest-923,wrong,relation_selection,,"No step-count difference; full picked ""is-part-of"" over ""borders."" Note: noplanner's own verifier fired unsupported here but the deterministic entity filter correctly preserved the grounded Scotland/Wales claims — a good confirmatory trace for the filter_answer_entities fix."
+WebQTest-118,wrong,decomposition_error,,"""Find the war"" step likely anchored a related-but-distinct conflict entity, surfacing Israel via a misclassified relation."
+WebQTest-1362,wrong,kg_gap,,"Second ""current officeholder"" case — Same as WebQTest-1674."
+WebQTest-1829,hedge,decomposition_error,over_decomposition,"Splitting off a redundant ""find Massachusetts"" step (an already-unambiguous named entity) introduced 3 evaluator backtracks that ate the budget (14/16 calls), forcing a premature_termination/budget hedge; noplanner found the same facts directly in 3 calls with zero backtracks. Budget exhaustion is the proximate symptom here, not the root cause -- the earliest departure from the correct path is the unnecessary decomposition itself."
+WebQTest-701,wrong,kg_gap,,"No date-scoped roster relations (he changed teams mid-season); scorer picked among multiple team-edges without temporal disambiguation — same root cause as the Harbaugh date-literal gap, just not regex-flagged."
