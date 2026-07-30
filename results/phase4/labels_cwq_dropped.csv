@@ -1,0 +1,2 @@
+qid,kind,category,subtype,note
+WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27,wrong,gold_noise,type_mismatch,"The question asks for 'the actor's name' who played a minor role; gold gives 'Bishop', his character name from a different, more prominent role in the same film. AGR's answer ('Tupac Shakur') is correct -- confirmed gold/question type mismatch, not an AGR failure."

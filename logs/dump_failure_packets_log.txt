@@ -1,3 +1,5 @@
-webqsp: population 43W/22H (43 skipped) -> 43W+22H [full_census; rates W=100% H=100%]
-cwq: population 71W/87H (37 skipped) -> 40W+20H [stratified_sample; rates W=56% H=23%]
+webqsp: census 43W/22H (43 skipped) [labels: 65 carried, 0 to read, 0 dropped]
+cwq: census 70W/87H (38 skipped) [labels: 59 carried, 98 to read, 1 dropped]
+  dropped (left the population; saved to labels_cwq_dropped.csv):
+    WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27  [gold_noise]
 wrote sampling_manifest.json

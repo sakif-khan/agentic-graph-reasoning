@@ -1,686 +1,22 @@
-## WebQTrn-2069_14d783de97238bd1ef6eb28fe7221306 (wrong)
+## WebQTest-1000_7457bb008a1da743b19ff9ce3a5cac63 (wrong)
 
-**Q:** Which language is spoken in Chile, its main speaking country is Peru?
+**Q:** Which countries included in Oceania, had a population of less than 523000?
 
-**gold:** ['Puquina Language']
+**gold:** ['Tonga', 'Samoa', 'Northern Mariana Islands', 'Solomon Islands', 'Guam', 'New Caledonia', 'Marshall Islands', 'Vanuatu', 'Kiribati', 'Fiji', 'Cook Islands']
 
-**answer:** Spanish Language is spoken in Chile, and its main speaking country is Peru.
+**answer:** The countries included in Oceania that had a population of less than 523000 were Nauru, Tuvalu, and Norfolk Island.
 
-**entities:** ['Spanish Language']
+**entities:** ['Nauru', 'Tuvalu', 'Norfolk Island']
 
-- plan: ['find the language spoken in Chile', 'find the main speaking country of #1', 'find which language is spoken in #2']
-- explored: ['location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'location.country.official_language', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'location.country.official_language'] (max_score 0.698)
-- eval: continue resolved=['Spanish Language', 'Aymara language', 'Puquina Language', 'Mapudungun Language']
-- explored: ['language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in'] (max_score 0.755)
-- eval: continue resolved=['Spain', 'Peru', 'Chile']
-- explored: ['language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in'] (max_score 0.755)
-- eval: continue resolved=['Spanish Language', 'Aymara language', 'Puquina Language', 'Mapudungun Language']
-- explored: ['location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'language.human_language.main_country'] (max_score 0.653)
-- eval: continue resolved=['Spanish Language', 'Aymara language', 'Puquina Language']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-894_022431f6dfa30cf2e715eb171e0437ec (wrong)
-
-**Q:** What inspired Scott Fitzgerald and was also influenced by Mark Twain?
-
-**gold:** ['Sherwood Anderson']
-
-**answer:** Jazz Age inspired F. Scott Fitzgerald.
-
-**entities:** ['Jazz Age']
-
-- plan: ['find what inspired Scott Fitzgerald', 'find what was influenced by Mark Twain', 'find the overlap between #1 and #2']
-- explored: ['book.author.school_or_movement', 'book.written_work.author', 'book.school_or_movement.associated_authors', 'book.written_work.author', 'book.book_subject.works', 'fictional_universe.fictional_character.character_created_by'] (max_score 0.256)
-- eval: continue resolved=['Mark Twain']
-- explored: ['book.school_or_movement.associated_authors', 'book.author.school_or_movement', 'book.written_work.school_or_movement', 'book.written_work.author', 'media_common.adapted_work.adaptations', 'media_common.adaptation.adapted_from'] (max_score 0.23)
-- eval: continue resolved=['Jazz Age']
-- explored: ['book.author.works_written', 'book.author.works_written', 'book.author.contributing_author_to', 'book.author.works_written', 'book.school_or_movement.associated_authors', 'book.written_work.author'] (max_score 0.222)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['book.school_or_movement.associated_authors', 'book.author.school_or_movement', 'book.written_work.school_or_movement', 'book.written_work.author', 'media_common.adapted_work.adaptations', 'media_common.adaptation.adapted_from'] (max_score 0.23)
-- eval: backtrack resolved=['F. Scott Fitzgerald']
-- backtrack: evaluator
-- explored: ['book.school_or_movement.associated_works', 'book.book_subject.works', 'book.school_or_movement.associated_period', 'book.written_work.subjects', 'book.book.genre', 'media_common.adapted_work.adaptations'] (max_score 0.191)
-- eval: continue resolved=['Jazz Age']
-- explored: ['book.book_subject.works', 'book.school_or_movement.associated_works', 'book.written_work.school_or_movement', 'book.book_subject.works', 'book.school_or_movement.associated_works', 'book.written_work.author'] (max_score 0.243)
-- eval: continue resolved=['Jazz Age']
-- explored: ['base.inspiration.inspiration.inspired_by', 'base.inspiration.inspiration.inspired_by', 'base.inspiration.inspiration.inspiration_for', 'book.school_or_movement.associated_works', 'book.book_subject.works', 'book.school_or_movement.associated_period'] (max_score 0.275)
-- eval: continue resolved=['Jazz Age']
-- verifier: unsupported unsupported=['Jazz Age was also influenced by Mark Twain']
-
----
-
-## WebQTrn-3100_d059b24adec4064377b957ca598769be (wrong)
-
-**Q:** What part is the country with the capital named Santo Domingo?
-
-**gold:** ['Greater Antilles', 'Latin America', 'North America', 'Americas', 'País']
-
-**answer:** The country with the capital named Santo Domingo is Dominican Republic.
-
-**entities:** ['Dominican Republic']
-
-- plan: ['find the country with the capital named Santo Domingo', 'find the part of #1']
-- explored: ['location.country.capital', 'location.capital_of_administrative_division.capital_of', 'location.administrative_division_capital_relationship.capital'] (max_score 0.675)
-- eval: continue resolved=['Dominican Republic']
-- explored: ['location.country.administrative_divisions', 'location.country.first_level_divisions', 'location.administrative_division.country'] (max_score 0.553)
-- eval: answer resolved=['La Romana Province, Dominican Republic', 'Duarte Province', 'Distrito Nacional', 'Santiago Rodríguez Province']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-303_2ee96aa7464485d80d214b61773f4a5c (wrong)
-
-**Q:** Who was the literary role model for the "Not Without Laughter (Thrift Edition)" piece poet?
-
-**gold:** ['Walt Whitman']
-
-**answer:** Langston Hughes
-
-**entities:** ['Langston Hughes']
-
-- plan: ['find the literary role model for the poet of "Not Without Laughter (Thrift Edition)"']
-- explored: ['book.book_edition.author_editor', 'book.book_edition.book', 'book.author.book_editions_published'] (max_score 0.508)
-- eval: continue resolved=['Langston Hughes']
-- explored: ['book.written_work.author', 'book.author.works_written', 'book.written_work.subjects', 'book.author.works_written', 'book.author.works_written', 'book.literary_series.author_s'] (max_score 0.545)
-- eval: continue resolved=['Langston Hughes']
-- explored: ['book.literary_series.author_s', 'book.author.works_written', 'book.author.works_written', 'book.author.works_written', 'book.written_work.author', 'book.written_work.subjects'] (max_score 0.297)
-- eval: backtrack resolved=['Langston Hughes']
-- backtrack: evaluator
-- explored: ['book.book_edition.book', 'book.book_edition.book', 'book.book_edition.author_editor', 'book.written_work.author', 'book.written_work.author', 'book.author.contributing_author_to'] (max_score 0.29)
-- eval: backtrack resolved=['Langston Hughes']
-- backtrack: evaluator
-- explored: ['book.book_edition.contributing_authors', 'book.author.series_written_or_contributed_to', 'book.written_work.subjects', 'book.written_work.original_language', 'book.author.book_editions_published', 'book.book_edition.publisher'] (max_score 0.258)
-- eval: backtrack resolved=['Langston Hughes']
-- backtrack: evaluator
-- explored: ['theater.theatrical_lyricist.play_lyrics_written', 'book.book_edition.author_editor', 'theater.play.lyricist', 'book.book.editions', 'book.book.editions', 'book.book_edition.binding'] (max_score 0.225)
-- eval: answer resolved=['Langston Hughes']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-2292_ea0bc3bb340865025c534c91eca19be9 (wrong)
-
-**Q:** What kind of economy does the country have that breeds Moscow watchdogs?
-
-**gold:** ['Communist state', 'Socialist state', 'Soviet democracy', 'Parliamentary republic']
-
-**answer:** The country is Soviet Union, and it has a Communist state economy.
-
-**entities:** ['Soviet Union']
-
-- plan: ['find the country that breeds Moscow watchdogs', 'find the kind of economy of #1']
-- explored: ['biology.breed_origin.breeds_originating_here', 'biology.animal_breed.place_of_origin', 'biology.breed_temperament.breeds'] (max_score 0.55)
-- eval: continue resolved=['Soviet Union']
-- explored: ['finance.currency.countries_formerly_used', 'government.form_of_government.countries', 'location.country.form_of_government'] (max_score 0.204)
-- eval: continue resolved=['Communist state', 'Socialist state']
-- explored: ['finance.currency.countries_used', 'finance.currency.countries_formerly_used', 'location.country.currency_used', 'government.form_of_government.countries', 'location.country.form_of_government', 'government.form_of_government.countries'] (max_score 0.222)
-- eval: answer resolved=['Socialist state', 'Communist state']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-2047_3d5f855275265f74d81b862231578e33 (wrong)
-
-**Q:** What is the name of the structure opened in 1997 where the Chicago Cubs play?
-
-**gold:** ['Hohokam Stadium']
-
-**answer:** Wrigley Field
-
-**entities:** ['Wrigley Field']
-
-- plan: ['find where the Chicago Cubs play', 'find the structure opened in 1997 at #1', 'find the name of #2']
-- explored: ['sports.sports_team.venue', 'sports.sports_team.arena_stadium', 'sports.sports_team.location'] (max_score 0.61)
-- eval: continue resolved=['Wrigley Field']
-- explored: ['time.event.locations', 'location.location.events', 'sports.sports_team.arena_stadium'] (max_score 0.429)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['sports.sports_facility.home_venue_for', 'sports.sports_facility.teams', 'base.playball.baseball_stadium.naming_rights'] (max_score 0.279)
-- eval: continue resolved=[]
-- explored: ['sports.sports_team.arena_stadium', 'sports.sports_team.venue', 'base.schemastaging.sports_team_extra.training_ground', 'sports.sports_team.arena_stadium', 'sports.sports_team.venue', 'sports.sports_facility.teams'] (max_score 0.553)
-- eval: continue resolved=['Wrigley Field']
-- explored: ['base.schemastaging.sports_facility_extra.training_ground_for', 'sports.sports_team.arena_stadium', 'sports.sports_facility.home_venue_for', 'sports.sports_facility.home_venue_for', 'base.playball.baseball_stadium.naming_rights', 'sports.sports_facility.teams'] (max_score 0.284)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-1677_bdfdca39c58846e51247fd78bc7683eb (wrong)
-
-**Q:** In which films decorated by Karen O'Hara did Adam Sandler appear?
-
-**gold:** ['Paul Blart: Mall Cop 2', 'Blended']
-
-**answer:** The answer could not be verified against the knowledge graph. Spider-Man and The American President are films decorated by Karen O'Hara, but Adam Sandler’s appearance in them is not supported.
-
-**entities:** ['Spider-Man', 'The American President']
-
-- plan: ["find films decorated by Karen O'Hara", 'find which of #1 feature Adam Sandler']
-- explored: ['film.film.film_set_decoration_by', 'film.film_set_designer.film_sets_designed', 'award.award_honor.award_winner', 'film.writer.film', 'film.film.written_by', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.637)
-- eval: continue resolved=['True Identity', 'Blended', 'License to Wed', 'Spider-Man']
-- explored: ['film.film_film_distributor_relationship.film', 'film.film.costume_design_by', 'film.film.directed_by', 'film.film_film_distributor_relationship.film', 'film.film.costume_design_by', 'film.music_contributor.film'] (max_score 0.194)
-- eval: continue resolved=['Spider-Man', 'License to Wed']
-- explored: ['comic_books.comic_book_creator.characters_created', 'comic_books.comic_book_creator.series_created', 'comic_books.comic_book_character.created_by', 'comic_books.comic_book_creator.characters_created', 'people.marriage.spouse', 'comic_books.comic_book_creator.series_created'] (max_score 0.226)
-- eval: continue resolved=['Spider-Man']
-- explored: ['fictional_universe.marriage_of_fictional_characters.spouses', 'comic_books.comic_book_creator.characters_created', 'fictional_universe.fictional_character.married_to', 'fictional_universe.marriage_of_fictional_characters.spouses', 'comic_books.comic_book_creator.characters_created', 'fictional_universe.fictional_character.married_to'] (max_score 0.27)
-- eval: answer resolved=['Spider-Man']
-- verifier: unsupported unsupported=['Adam Sandler appeared in Spider-Man', 'Adam Sandler appeared in The American President']
-
----
-
-## WebQTrn-1069_3c89af72801c057504e78b3a263a9b77 (wrong)
-
-**Q:** What language is used in Denmark with the abbreviation DE?
-
-**gold:** ['German Language']
-
-**answer:** Danish Language
-
-**entities:** ['Danish Language']
-
-- plan: ['find the entity in Denmark with the abbreviation DE', 'find the language used in #1']
-- explored: ['base.aareas.schema.administrative_area_type.iso_country', 'location.country.official_language', 'location.administrative_division.country'] (max_score 0.263)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['base.aareas.schema.earth.sovereign_domain.sovereign_state', 'location.country.internet_tld', 'location.location.contains'] (max_score 0.238)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['location.location.contains', 'base.biblioness.bibs_location.country', 'base.jewlib.judaica_owner.parent_institution'] (max_score 0.23)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['location.country.currency_used', 'location.country.administrative_divisions', 'location.location.containedby'] (max_score 0.21)
-- eval: continue resolved=[]
-- explored: ['location.administrative_division.country', 'location.location.contains', 'location.country.administrative_divisions', 'location.administrative_division.country', 'location.country.administrative_divisions', 'location.location.containedby'] (max_score 0.256)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-1923_eaeaff16b51e52669edc90501a373c61 (wrong)
-
-**Q:** Which movie did Miley Cyrus appear in and got a nomination for "the entire cast"?
-
-**gold:** ['Sex and the City 2']
-
-**answer:** Miley Cyrus appeared in Hannah Montana: The Movie, which is the movie that got a nomination for "the entire cast".
-
-**entities:** ['Hannah Montana: The Movie']
-
-- plan: ['find movies that Miley Cyrus appeared in', 'find which of #1 got a nomination for "the entire cast"']
-- explored: ['film.actor.film', 'film.person_or_entity_appearing_in_film.films', 'film.performance.actor'] (max_score 0.573)
-- eval: continue resolved=['The Last Song', 'So Undercover', 'Hannah Montana: The Movie', 'Radio Disney Party Jams: The Concert']
-- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack'] (max_score 0.351)
-- eval: continue resolved=['Hannah Montana: The Movie', 'Radio Disney Party Jams: The Concert', 'The Last Song', 'So Undercover']
-- explored: ['film.film.featured_song', 'film.film_featured_song.performed_by', 'film.film_featured_song.featured_in_film', 'film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack'] (max_score 0.621)
-- eval: continue resolved=['Hannah Montana: The Movie']
-- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film.featured_song', 'film.film_featured_song.performed_by', 'film.film_featured_song.featured_in_film'] (max_score 0.366)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-1178_09e61020934818b85641a22821e7a455 (wrong)
-
-**Q:** Where is the Strictly 4 My N.I.G.G.A.Z. producer originally from?
-
-**gold:** ['East Harlem']
-
-**answer:** Marin City
-
-**entities:** ['Marin City']
-
-- plan: ['find the producer of Strictly 4 My N.I.G.G.A.Z.', 'find where #1 is originally from']
-- explored: ['music.producer.releases_produced', 'music.recording.releases'] (max_score 0.588)
-- eval: continue resolved=['Tupac Shakur']
-- explored: ['location.location.people_born_here', 'music.artist.origin', 'people.person.places_lived'] (max_score 0.532)
-- eval: answer resolved=['Marin City']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-213_024fd6ca0b4cb30927c22e93a552ae6c (wrong)
-
-**Q:** What person notable with the medical condition Attention deficit hyperactivity disorder id Scarlett Johansson date?
-
-**gold:** ['Justin Timberlake']
-
-**answer:** Mary-Kate Olsen is a notable person with Attention deficit hyperactivity disorder.
-
-**entities:** ['Mary-Kate Olsen']
-
-- plan: ['find the person notable with Attention deficit hyperactivity disorder and named Scarlett Johansson', 'find the date associated with #1']
-- explored: ['medicine.notable_person_with_medical_condition.condition', 'medicine.disease.notable_people_with_this_condition', 'fictional_universe.medical_condition_in_fiction.characters_with_this_condition', 'tv.tv_guest_personal_appearance.person', 'film.personal_film_appearance.person', 'people.person.gender'] (max_score 0.615)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['fictional_universe.fictional_character.medical_conditions', 'medicine.disease.medical_specialties', 'base.aubreymaturin.affliction.malady', 'film.performance.actor', 'film.person_or_entity_appearing_in_film.films', 'people.person.spouse_s'] (max_score 0.251)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['base.aubreymaturin.malady.sufferers', 'medicine.disease.includes_diseases', 'medicine.disease.includes_diseases', 'people.person.children', 'people.person.children', 'people.person.profession'] (max_score 0.205)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['medicine.symptom.symptom_of', 'medicine.risk_factor.diseases', 'medicine.risk_factor.diseases', 'theater.theater_role.actor', 'celebrities.sexual_orientation_phase.celebrity', 'celebrities.romantic_relationship.celebrity'] (max_score 0.201)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-2569_6b6fb0182356d92873272424688be466 (wrong)
-
-**Q:** The building where the Houston Rockets and Houston Aeros played is now called what?
-
-**gold:** ['Lakewood Church Central Campus']
-
-**answer:** Toyota Center
-
-**entities:** ['Toyota Center']
-
-- plan: ['find the building where the Houston Rockets and Houston Aeros played', 'find what #1 is now called']
-- explored: ['sports.sports_team.arena_stadium', 'sports.sports_facility.teams', 'sports.sports_team.venue', 'sports.sports_team.arena_stadium', 'sports.sports_facility.teams', 'sports.sports_team.venue'] (max_score 0.586)
-- eval: continue resolved=['Toyota Center', 'Lakewood Church Central Campus']
-- explored: ['sports.sports_facility.home_venue_for', 'sports.sports_team.arena_stadium', 'sports.sports_facility.teams', 'sports.sports_facility.home_venue_for', 'sports.sports_team.arena_stadium', 'sports.sports_facility.teams'] (max_score 0.239)
-- eval: answer resolved=['Toyota Center', 'Lakewood Church Central Campus']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-849_fa1fffe7995213b6528da57ea4c8d226 (wrong)
-
-**Q:** Which country, with an army of 101,000, borders Germany?
-
-**gold:** ['Belgium']
-
-**answer:** Poland borders Germany. The claim that Poland has an army of 101,000 could not be verified against the knowledge graph.
-
-**entities:** ['Poland']
-
-- plan: ['find countries that border Germany', 'find which of #1 have an army of 101,000']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country', 'film.film.country', 'film.film_regional_release_date.film', 'base.ontologies.ontology_instance_mapping.freebase_topic'] (max_score 0.309)
-- eval: continue resolved=['Germany']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.states_and_provences.continent', 'base.biblioness.bibs_location.country', 'location.country.administrative_divisions', 'location.administrative_division.country'] (max_score 0.309)
-- eval: continue resolved=['Belgium', 'Luxembourg', 'Poland', 'Austria']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country'] (max_score 0.309)
-- eval: continue resolved=['Belgium', 'Liechtenstein']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.states_and_provences.continent', 'base.biblioness.bibs_location.country', 'location.country.administrative_divisions', 'location.administrative_division.country'] (max_score 0.309)
-- eval: continue resolved=['Belgium', 'Liechtenstein', 'Europe']
-- verifier: unsupported unsupported=['Poland has an army of 101,000']
-
----
-
-## WebQTest-1348_b7598df908bf8cbe941f82e1cefaec28 (wrong)
-
-**Q:** What defunct sports team later known as the Tennessee Oilers did Peyton Manning 's dad play for?
-
-**gold:** ['Houston Oilers']
-
-**answer:** Archie Manning played for Houston Oilers, which later became known as Tennessee Oilers.
-
-**entities:** ['Archie Manning']
-
-- plan: ['find the sports team later known as the Tennessee Oilers', "find the team that Peyton Manning's dad played for that is #1"]
-- explored: ['sports.defunct_sports_team.later_known_as', 'sports.defunct_sports_team.later_known_as', 'sports.sports_team.previously_known_as', 'sports.pro_athlete.teams', 'sports.sports_team_roster.player', 'sports.pro_athlete.sports_played_professionally'] (max_score 0.617)
-- eval: continue resolved=['Tennessee Oilers']
-- explored: ['american_football.football_historical_coach_position.team', 'american_football.football_team.historical_coaching_staff', 'american_football.football_division.teams', 'american_football.football_historical_coach_position.team', 'american_football.football_team.historical_coaching_staff', 'sports.sports_team_season_record.team'] (max_score 0.375)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['american_football.football_team.division', 'sports.sports_team_season_record.team', 'american_football.football_game.home_team', 'sports.sports_team_roster.team', 'sports.sports_team.roster', 'sports.sports_team.season_record'] (max_score 0.308)
-- eval: answer resolved=['Houston Oilers']
-- verifier: unsupported unsupported=['Peyton Manning dad played for Houston Oilers']
-- explored: ['sports.pro_sports_played.athlete', 'sports.sports_team_roster.player', 'sports.sports_award.award_winner'] (max_score 0.228)
-- eval: answer resolved=['Archie Manning']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-2100_faefa67fba5946fa87b438a6df0b8e63 (wrong)
-
-**Q:** What city can the headquarters for Curno Brakes be found?
-
-**gold:** ['Curno']
-
-**answer:** Brembo
-
-**entities:** ['Brembo']
-
-- plan: ['find the headquarters for Curno Brakes', 'find the city where #1 can be found']
-- explored: ['location.location.containedby', 'location.mailing_address.citytown', 'location.statistical_region.population'] (max_score 0.218)
-- eval: continue resolved=['Curno']
-- explored: ['location.administrative_division.country', 'location.administrative_division.capital', 'location.administrative_division_capital_relationship.administrative_division', 'location.administrative_division.country', 'organization.organization.locations', 'location.administrative_division.first_level_division_of'] (max_score 0.3)
-- eval: continue resolved=['Brembo']
-- explored: ['location.administrative_division.country', 'organization.organization.locations', 'location.administrative_division.first_level_division_of', 'location.administrative_division.country', 'location.administrative_division.second_level_division_of', 'location.location.containedby'] (max_score 0.3)
-- eval: continue resolved=['Curno']
-- explored: ['location.administrative_division.country', 'location.administrative_division.second_level_division_of', 'location.location.containedby', 'location.administrative_division.country', 'location.administrative_division.second_level_division_of', 'location.location.containedby'] (max_score 0.3)
-- eval: backtrack resolved=['Curno']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-493_cf7833e237b8cda1de396587129515c1 (wrong)
-
-**Q:** Where was the newspaper La Libre Belgique distributed during World War II?
-
-**gold:** ['Europe', 'Eurasia', 'Western Europe']
-
-**answer:** La Libre Belgique during World War II was distributed in Belgium.
-
-**entities:** ['Belgium']
-
-- plan: ['find World War II distribution locations of La Libre Belgique']
-- explored: ['periodicals.newspaper_circulation_area.newspapers', 'book.newspaper.circulation_areas'] (max_score 0.459)
-- eval: answer resolved=['Belgium']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-64_08a3071aec88af141fc20ed22cfff0e2 (wrong)
-
-**Q:** What did the person who lived in Marin City once do?
-
-**gold:** ['Bishop']
-
-**answer:** The person who lived in Marin City was Tupac Shakur, and he once recorded California Love.
-
-**entities:** ['Tupac Shakur', 'California Love']
-
-- plan: ['find the person who lived in Marin City', 'find what #1 once did']
-- explored: ['people.place_lived.location', 'location.location.people_born_here', 'people.person.place_of_birth', 'book.written_work.author', 'book.author.works_written', 'film.film.story_by'] (max_score 0.626)
-- eval: continue resolved=['Tupac Shakur']
-- explored: ['music.artist.track_contributions', 'music.recording.artist', 'music.album.artist'] (max_score 0.446)
-- eval: continue resolved=['Tupac Shakur']
-- explored: ['music.track_contribution.track', 'media_common.quotation.subjects', 'music.artist.track', 'music.track_contribution.role', 'music.recording_contribution.performance_role', 'base.recordingstudios.studio_musician.insturments_played'] (max_score 0.487)
-- eval: answer resolved=['Out The Moon', 'Smile', 'Same Song', 'Gangsta Team']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-3170_8c4cd2a8dd5064dcd1e88389796138c7 (wrong)
-
-**Q:** What does the political appointee, Associate Director, White House Office of Public Liaison, have a degree in?
-
-**gold:** ['Political Science']
-
-**answer:** Kal Penn. The degree could not be determined from the facts provided.
-
-**entities:** ['Kal Penn']
-
-- plan: ['find the degree of the Associate Director of the White House Office of Public Liaison']
-- explored: ['government.government_position_held.office_position_or_title', 'government.government_office_or_title.office_holders'] (max_score 0.504)
-- eval: continue resolved=['Kal Penn']
-- explored: ['government.government_position_held.office_holder', 'people.person.profession', 'award.award_nomination.award_nominee', 'education.honorary_degree.recipient', 'organization.leadership.person', 'business.board_member.leader_of'] (max_score 0.494)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['government.politician.government_positions_held', 'award.award_nominee.award_nominations', 'film.performance.actor', 'education.honorary_degree_recipient.honorary_degrees', 'organization.organization_member.member_of', 'government.us_president.vice_president'] (max_score 0.256)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['film.actor.film', 'tv.tv_actor.starring_roles', 'tv.regular_tv_appearance.actor', 'people.appointment.appointed_by', 'government.political_appointer.appointees', 'business.employment_tenure.person'] (max_score 0.226)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['people.person.gender', 'people.person.languages', 'people.person.nationality', 'government.us_vice_president.to_president', 'government.government_position_held.office_holder', 'government.political_party_tenure.politician'] (max_score 0.211)
-- eval: answer resolved=['Kal Penn']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-1484_1fbd766e1b1bf978da23e8646cadf3a1 (wrong)
-
-**Q:** The person who attended the education institution Colegio AlemÃ¡n Alexander von Humboldt did what kind of paintings?
-
-**gold:** ['Magic realism', 'Modern art', 'Surrealism']
-
-**answer:** Frida Kahlo did paintings such as Self-Portrait, The Two Fridas, Henry Ford Hospital, and Viva la Vida, Watermelons.
-
-**entities:** ['Frida Kahlo']
-
-- plan: ['find the person who attended Colegio AlemÃ¡n Alexander von Humboldt', 'find what kind of paintings #1 did']
-- explored: ['education.educational_institution.students_graduates', 'education.education.institution', 'symbols.namesake.named_after'] (max_score 0.416)
-- eval: continue resolved=['Frida Kahlo']
-- explored: ['visual_art.artwork.artist', 'visual_art.visual_artist.artworks', 'visual_art.artwork.art_subject'] (max_score 0.596)
-- eval: answer resolved=['Roots', 'What the Water Gave Me', 'Living Nature', 'Congress of People for Peace']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-1180_67f5f717564163742ca2588b7e186fd8 (wrong)
-
-**Q:** The city of Wellsville can be found where in the United States?
-
-**gold:** ['Missouri']
-
-**answer:** Wellsville can be found in Montgomery County, United States of America.
-
-**entities:** ['Montgomery County']
-
-- plan: ['find the location of Wellsville in the United States']
-- explored: ['location.us_county.hud_county_place', 'location.hud_county_place.place', 'location.hud_county_place.place', 'location.mailing_address.citytown', 'location.location.primarily_containedby', 'location.location.primarily_containedby'] (max_score 0.599)
-- eval: continue resolved=['Wellsville', 'Montgomery County']
-- explored: ['location.us_county.hud_county_place', 'location.hud_county_place.place', 'location.hud_county_place.place', 'location.us_county.hud_county_place', 'location.us_county.county_seat', 'location.hud_county_place.county'] (max_score 0.599)
-- eval: answer resolved=['Montgomery County']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-1923_7084416ab9f72f1f1f8fc3ce7871ee4a (wrong)
-
-**Q:** Which movie has Miley Cyrus starred in that is 102.0 minutes long?
-
-**gold:** ['Hannah Montana: The Movie']
-
-**answer:** The movie is The Last Song.
-
-**entities:** ['The Last Song']
-
-- plan: ['find movies that Miley Cyrus starred in', 'find which of #1 are 102.0 minutes long']
-- explored: ['film.actor.film', 'film.performance.actor', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.597)
-- eval: continue resolved=['The Last Song', 'So Undercover', 'Hannah Montana: The Movie', 'Radio Disney Party Jams: The Concert']
-- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack'] (max_score 0.351)
-- eval: continue resolved=[]
-- explored: ['film.film.featured_song', 'music.artist.track', 'film.film_featured_song.performed_by', 'film.film.featured_song', 'music.artist.track', 'film.film_featured_song.performed_by'] (max_score 0.351)
-- eval: continue resolved=['Hannah Montana: The Movie']
-- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack'] (max_score 0.351)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-831_f2d789d28c11bc5b682263b07195d208 (wrong)
-
-**Q:** What is the last movie by the artist who recorded Faster Kill Pussycat?
-
-**gold:** ['Something Wicked']
-
-**answer:** Brittany Murphy. The last movie in the facts is The Dead Girl.
-
-**entities:** ['The Dead Girl']
-
-- plan: ['find the artist who recorded Faster Kill Pussycat', 'find the last movie by #1']
-- explored: ['music.recording.artist', 'music.album.artist', 'music.artist.track'] (max_score 0.657)
-- eval: continue resolved=['Paul Oakenfold', 'Brittany Murphy']
-- explored: ['film.actor.film', 'film.music_contributor.film', 'film.film.music', 'film.actor.film', 'film.performance.actor', 'film.producer.film'] (max_score 0.589)
-- eval: continue resolved=['Brittany Murphy']
-- explored: ['film.film.starring', 'film.performance.film', 'film.film.country', 'film.film.starring', 'film.performance.film', 'film.producer.film'] (max_score 0.609)
-- eval: continue resolved=['Brittany Murphy']
-- explored: ['film.actor.film', 'film.performance.actor', 'film.producer.film', 'film.actor.film', 'film.music_contributor.film', 'film.film.music'] (max_score 0.589)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-1297_a0da13a7b70a064b8cffb58007f6739d (wrong)
-
-**Q:** Where did the artist grow up that recorded #Thatpower?
-
-**gold:** ['London']
-
-**answer:** Justin Bieber grew up in Stratford and Canada.
-
-**entities:** ['Stratford', 'Canada']
-
-- plan: ['find the artist that recorded #Thatpower', 'find where #1 grew up']
-- explored: ['music.recording.artist', 'music.featured_artist.recordings', 'music.recording.featured_artists'] (max_score 0.645)
-- eval: continue resolved=['Will i Am', 'Justin Bieber']
-- explored: ['people.place_lived.person', 'people.person.place_of_birth', 'people.person.places_lived', 'people.place_lived.person', 'people.person.place_of_birth', 'people.person.places_lived'] (max_score 0.504)
-- eval: answer resolved=['Los Angeles', 'Stratford', 'Canada', 'London']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-2784_025fdfafd914ff922ab8144f527c06ec (wrong)
-
-**Q:** In what films does the lyracist for "Panther Power" appear?
-
-**gold:** ['Murder Was the Case', 'Poetic Justice', "Gridlock'd", 'Above the Rim', 'Juice', 'Nothing but Trouble', 'Gang Related', 'Bullet']
-
-**answer:** The lyracist for "Panther Power" is Tupac Shakur. Tupac Shakur appears in Tupac: Assassination, Tupac Shakur: Thug Angel: The Life of an Outlaw, R.I.P. II: Eyes on Hip Hop, Tha Westside, Apprenticeship of Tupac Shakur, Tupac: Live at the House of Blues, Tupac: Resurrection, Thug Immortal: The Tupac Shakur Story, Freestyle: The Art of Rhyme, and R.I.P.: Shades of Hip Hop.
-
-**entities:** ['Tupac: Assassination', 'Tupac Shakur: Thug Angel: The Life of an Outlaw', 'R.I.P. II: Eyes on Hip Hop', 'Tha Westside', 'Apprenticeship of Tupac Shakur', 'Tupac: Live at the House of Blues', 'Tupac: Resurrection', 'Thug Immortal: The Tupac Shakur Story', 'Freestyle: The Art of Rhyme', 'R.I.P.: Shades of Hip Hop']
-
-- plan: ['find the lyracist for "Panther Power"', 'find the films that this person appears in']
-- explored: ['music.composition.lyricist', 'music.lyricist.lyrics_written'] (max_score 0.358)
-- eval: continue resolved=['Tupac Shakur']
-- explored: ['film.personal_film_appearance.person', 'film.person_or_entity_appearing_in_film.films', 'film.actor.film'] (max_score 0.806)
-- eval: answer resolved=['Apprenticeship of Tupac Shakur', 'Tupac: Resurrection', 'Welcome to Death Row', 'Biggie & Tupac']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-1736_125140bfa1a60527bde6e40dce7fe54a (wrong)
-
-**Q:** Where's the location where the Slavic language is spoken located?
-
-**gold:** ['Europe']
-
-**answer:** The location where the Slavic language is spoken is Holy Roman Empire.
-
-**entities:** ['Holy Roman Empire']
-
-- plan: ['find the location where the Slavic language is spoken', 'find the location of #1']
-- explored: ['location.country.official_language', 'language.language_family.languages', 'language.human_language.language_family'] (max_score 0.377)
-- eval: backtrack resolved=['Holy Roman Empire']
-- backtrack: evaluator
-- explored: [] (max_score 0.0)
-- eval: backtrack resolved=['Holy Roman Empire']
-- backtrack: dead_end
-- explored: [] (max_score 0.0)
-- eval: backtrack resolved=['Holy Roman Empire']
-- backtrack: dead_end
-- explored: [] (max_score 0.0)
-- eval: continue resolved=['Holy Roman Empire']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-2570_ff6becc9074132acf2f300dbba1c1e4e (wrong)
-
-**Q:** Who was the president of the United States during World War 2 that started his governmental position after January 2, 1939?
-
-**gold:** ['Franklin D. Roosevelt', 'Harry S. Truman']
-
-**answer:** Dwight D. Eisenhower was the president of the United States during World War 2 that started his governmental position after January 2, 1939.
-
-**entities:** ['Dwight D. Eisenhower']
-
-- plan: ['find the president of the United States during World War 2', 'find which of #1 started his governmental position after January 2, 1939']
-- explored: ['government.government_position_held.office_position_or_title', 'government.electoral_college_elected_office.office', 'government.election.office', 'military.military_person.participated_in_conflicts', 'military.military_conflict.commanders', 'military.military_command.military_conflict'] (max_score 0.453)
-- eval: continue resolved=['Dwight D. Eisenhower']
-- explored: ['organization.role.leaders', 'organization.leadership.role', 'organization.role.governors', 'government.us_president.vice_president', 'government.us_vice_president.to_president', 'military.military_person.participated_in_conflicts'] (max_score 0.454)
-- eval: continue resolved=['Dwight D. Eisenhower']
-- explored: ['organization.leadership.person', 'business.board_member.leader_of', 'organization.organization.founders', 'organization.leadership.person', 'business.board_member.leader_of', 'organization.leadership.person'] (max_score 0.172)
-- eval: continue resolved=['Dwight D. Eisenhower']
-- explored: ['people.person.employment_history', 'business.employment_tenure.person', 'government.government_position_held.office_holder'] (max_score 0.411)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-25_2a2de50d3b65cc5d2c88f54e283a4b8a (wrong)
-
-**Q:** What movie featured Taylor Lautner and was released straight to video?
-
-**gold:** ['Shadow Fury', 'Shadow Fury']
-
-**answer:** Abduction
-
-**entities:** ['Abduction']
-
-- plan: ['find the movie that featured Taylor Lautner', 'find which of #1 were released straight to video']
-- explored: ['film.actor.film', 'film.performance.actor', 'film.personal_film_appearance.person', 'film.film.film_format', 'film.film_film_distributor_relationship.film_distribution_medium', 'film.film_regional_release_date.film_release_distribution_medium'] (max_score 0.623)
-- eval: continue resolved=['Abduction', "Valentine's Day", 'Incarceron', 'Tracers']
-- explored: ['film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film_film_distributor_relationship.film', 'film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film.story_by'] (max_score 0.319)
-- eval: continue resolved=['Abduction', 'Twilight']
-- explored: ['film.film_regional_release_date.film_release_distribution_medium', 'base.mediapackage.video_release.consumer_releases', 'base.mediapackage.media_release.video_contents', 'film.film_regional_release_date.film_release_distribution_medium', 'film.film_regional_release_date.film_regional_debut_venue', 'film.film_film_distributor_relationship.film_distribution_medium'] (max_score 0.528)
-- eval: continue resolved=['Abduction', 'Twilight']
-- explored: ['film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film.edited_by', 'film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film.edited_by'] (max_score 0.319)
-- eval: continue resolved=['Abduction', 'Twilight']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-64_025fdfafd914ff922ab8144f527c06ec (wrong)
-
-**Q:** What was the name in "Juice" of the lyricist for "Panther Power"?
-
-**gold:** ['Bishop']
-
-**answer:** The lyricist for "Panther Power" in "Juice" was Tupac Shakur.
-
-**entities:** ['Tupac Shakur']
-
-- plan: ['find the lyricist for "Panther Power"', 'find the name used in "Juice" for #1']
-- explored: ['music.lyricist.lyrics_written', 'music.composition.lyricist', 'music.lyricist.lyrics_written', 'music.composition.lyricist', 'music.artist.track'] (max_score 0.682)
-- eval: continue resolved=['Tupac Shakur']
-- explored: ['music.artist.label', 'symbols.name_source.namesakes', 'symbols.name_source.namesakes'] (max_score 0.481)
-- eval: backtrack resolved=['Tupac Shakur']
-- backtrack: evaluator
-- explored: ['symbols.namesake.named_after', 'symbols.namesake.named_after', 'music.record_label.artist'] (max_score 0.176)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['music.artist.origin', 'music.artist.contribution', 'music.artist.track_contributions'] (max_score 0.149)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['base.popstra.celebrity.canoodled', 'music.album.artist', 'music.recording.artist'] (max_score 0.138)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-213_71621b15ae9777fca8c1becaa188a3bb (wrong)
-
-**Q:** Who were the award nominees for the 2003 Boston Society of Film Critics Awards?
-
-**gold:** ['Josh Hartnett']
-
-**answer:** The award nominee was Scarlett Johansson for Lost in Translation.
-
-**entities:** ['Scarlett Johansson']
-
-- plan: ['find the 2003 Boston Society of Film Critics Awards', 'find the award nominees for #1']
-- explored: ['award.award_ceremony.awards_presented', 'award.award_ceremony.nominees', 'award.award_nomination.ceremony'] (max_score 0.587)
-- eval: continue resolved=['Boston Society of Film Critics Awards 2003']
-- explored: ['award.award_category.nominees', 'award.award_nomination.award', 'award.award_category.winners', 'award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'award.ranking.item'] (max_score 0.806)
-- eval: answer resolved=['Her', "People's Choice Award for Favorite Star Under 35", "People's Choice Award for Favorite Leading Lady", "33rd People's Choice Awards"]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-2540_1af583970c492fc3682ae363bbfca3d3 (wrong)
-
-**Q:** Who was influenced by Eugene Delacroix and inspired Monet?
-
-**gold:** ['Camille Pissarro', 'Pierre-Auguste Renoir']
-
-**answer:** Claude Monet was influenced by Eugène Delacroix, and Eugène Delacroix influenced Claude Monet.
-
-**entities:** ['Claude Monet']
-
-- plan: ['find people influenced by Eugene Delacroix', 'find which of #1 inspired Monet']
-- explored: ['influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced'] (max_score 0.581)
-- eval: continue resolved=['Vincent van Gogh', 'Purvis Young', 'Pierre-Auguste Renoir', 'Pierre Puvis de Chavannes']
-- explored: ['visual_art.artwork.artist', 'visual_art.visual_artist.associated_periods_or_movements', 'visual_art.visual_artist.art_forms', 'visual_art.artwork.artist', 'visual_art.art_series.artist', 'visual_art.art_period_movement.associated_artists'] (max_score 0.324)
-- eval: continue resolved=['Vincent van Gogh', 'Pierre-Auguste Renoir']
-- explored: ['visual_art.artwork.artist', 'visual_art.artwork.owners', 'visual_art.artwork.art_subject', 'visual_art.artwork.artist', 'visual_art.art_series.artworks', 'visual_art.artwork.art_form'] (max_score 0.309)
-- eval: answer resolved=['Vincent van Gogh', 'Pierre-Auguste Renoir']
+- plan: ['find countries included in Oceania', 'find which of #1 had a population of less than 523000']
+- explored: ['location.location.contains', 'location.location.contains', 'location.statistical_region.population'] (max_score 0.557)
+- eval: continue resolved=['Papua New Guinea', 'Coral Sea Islands', 'French Polynesia', 'Nauru']
+- explored: ['location.statistical_region.population', 'location.location.people_born_here', 'language.human_language.countries_spoken_in', 'location.statistical_region.internet_users_percent_population', 'location.statistical_region.renewable_freshwater_per_capita', 'location.statistical_region.literacy_rate'] (max_score 0.541)
+- eval: continue resolved=['Coral Sea Islands']
+- explored: ['people.ethnicity.geographic_distribution', 'people.ethnicity.population', 'people.ethnicity.included_in_group', 'people.ethnicity.geographic_distribution', 'people.ethnicity.included_in_group', 'people.ethnicity.languages_spoken'] (max_score 0.217)
+- eval: continue resolved=['Coral Sea Islands']
+- explored: ['location.statistical_region.population', 'location.statistical_region.internet_users_percent_population', 'location.statistical_region.renewable_freshwater_per_capita', 'location.statistical_region.internet_users_percent_population', 'location.statistical_region.renewable_freshwater_per_capita', 'people.ethnicity.geographic_distribution'] (max_score 0.541)
+- eval: continue resolved=['Coral Sea Islands', 'Nauru']
 - verifier: grounded unsupported=[]
 
 ---
@@ -709,21 +45,21 @@
 
 ---
 
-## WebQTrn-25_f65ceb2f4ef98392b0177705932740a5 (wrong)
+## WebQTest-1178_09e61020934818b85641a22821e7a455 (wrong)
 
-**Q:** What other movies has the actor that played the character Eliot Murtaugh play in?
+**Q:** Where is the Strictly 4 My N.I.G.G.A.Z. producer originally from?
 
-**gold:** ['Run the Tide', 'The Ridiculous Six', "He's a Bully, Charlie Brown", 'Twilight', 'The Twilight Saga: New Moon', "Valentine's Day", 'Cheaper by the Dozen 2', 'The Adventures of Sharkboy and Lavagirl', 'Shadow Fury', 'Eclipse', 'The Twilight Saga: Breaking Dawn - Part 1', 'The Nick and Jessica Variety Hour', 'Northern Lights', 'Abduction', 'The Twilight Saga: Breaking Dawn - Part 2', 'Field of Dreams 2: Lockout', 'Incarceron', 'Grown Ups 2', 'Tracers']
+**gold:** ['East Harlem']
 
-**answer:** Taylor Lautner played Eliott Murtaugh, and other movies he played in include Twilight, The Twilight Saga: New Moon, Eclipse, The Twilight Saga: Breaking Dawn - Part 1, The Twilight Saga: Breaking Dawn - Part 2, Northern Lights, The Ridiculous Six, and Incarceron.
+**answer:** Marin City
 
-**entities:** ['Taylor Lautner']
+**entities:** ['Marin City']
 
-- plan: ['find the actor that played the character Eliot Murtaugh', 'find other movies that #1 has played in']
-- explored: ['film.film_character.portrayed_in_films', 'film.performance.character'] (max_score 0.589)
-- eval: continue resolved=['Taylor Lautner']
-- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.631)
-- eval: answer resolved=['Abduction', 'Incarceron', 'Tracers', 'Twilight']
+- plan: ['find the producer of Strictly 4 My N.I.G.G.A.Z.', 'find where #1 is originally from']
+- explored: ['music.producer.releases_produced', 'music.recording.releases'] (max_score 0.588)
+- eval: continue resolved=['Tupac Shakur']
+- explored: ['location.location.people_born_here', 'music.artist.origin', 'people.person.places_lived'] (max_score 0.532)
+- eval: answer resolved=['Marin City']
 - verifier: grounded unsupported=[]
 
 ---
@@ -760,25 +96,305 @@
 
 ---
 
-## WebQTrn-567_2c5591f1dbe7402405004d7a0836dd3b (wrong)
+## WebQTest-12_5373d9d04da65179a41e5d4669db121e (wrong)
 
-**Q:** Which animated movies hs Ron Howard done?
+**Q:** Who was the Methodist governor of Ohio in 2011?
 
-**gold:** ['Osmosis Jones']
+**gold:** ['Ted Strickland']
 
-**answer:** Ron Howard did these animated movies: Willow and Splash. I could not determine any others from the facts provided.
+**answer:** John Glenn was the Methodist governor of Ohio in 2011.
 
-**entities:** ['Willow', 'Splash']
+**entities:** ['John Glenn']
 
-- plan: ['find animated movies associated with Ron Howard']
-- explored: ['film.director.film', 'film.film.directed_by', 'film.actor.film'] (max_score 0.567)
-- eval: continue resolved=['Cocoon', 'Willow', 'Splash']
-- explored: ['film.film.genre', 'film.production_company.films', 'film.film_film_distributor_relationship.film', 'film.film_subject.films', 'film.film.featured_film_locations', 'film.film_art_director.films_art_directed'] (max_score 0.345)
-- eval: continue resolved=['Cocoon', 'Willow', 'Backdraft', 'The Missing']
-- explored: ['film.film_subject.films', 'film.film.subjects', 'film.film.genre', 'film.film_subject.films', 'film.film.subjects', 'film.film.genre'] (max_score 0.326)
-- eval: continue resolved=['Cocoon', 'Willow', 'Backdraft', 'Splash']
-- explored: ['film.film_subject.films', 'film.music_contributor.film', 'film.film_subject.films', 'film.film_art_director.films_art_directed', 'film.production_company.films', 'film.film_subject.films'] (max_score 0.326)
-- eval: answer resolved=['Cocoon', 'Willow', 'Backdraft', 'The Missing']
+- plan: ['find the governor of Ohio in 2011', 'find which of #1 was Methodist']
+- explored: ['government.government_office_or_title.office_holders', 'government.government_position_held.office_position_or_title', 'government.government_office_category.officeholders', 'government.election.district', 'government.political_district.elections', 'government.political_district.representatives'] (max_score 0.444)
+- eval: continue resolved=[]
+- explored: ['government.politician.government_positions_held', 'government.government_position_held.office_holder', 'people.person.place_of_birth', 'government.politician.government_positions_held', 'government.government_position_held.office_holder', 'people.person.place_of_birth'] (max_score 0.19)
+- eval: continue resolved=['John Glenn', 'Kingsley A. Taft', 'Jacob Burnet', 'Stephen M. Young']
+- explored: ['government.government_office_or_title.office_holders', 'organization.role.governors', 'government.government_position_held.office_position_or_title', 'location.br_state.capital', 'location.br_state.capital', 'government.governmental_jurisdiction.agencies'] (max_score 0.444)
+- eval: continue resolved=[]
+- explored: ['government.politician.government_positions_held', 'government.government_position_held.office_holder', 'people.person.place_of_birth', 'government.politician.government_positions_held', 'government.government_position_held.office_holder', 'people.person.place_of_birth'] (max_score 0.19)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-12_7b54b31f3e5a6273f4fd2a20e565ec6d (wrong)
+
+**Q:** Who was the Governor of Ohio that held his position from before 1-10-2011?
+
+**gold:** ['Return J. Meigs, Jr.', 'Ted Strickland', 'John Kasich']
+
+**answer:** James Rudolph Garfield was the Governor of Ohio before 1-10-2011.
+
+**entities:** ['James Rudolph Garfield']
+
+- plan: ['find the Governor of Ohio who held the position before 1-10-2011']
+- explored: ['organization.role.governors', 'government.government_position_held.office_position_or_title', 'government.government_office_or_title.office_holders', 'government.government_position_held.jurisdiction_of_office', 'government.government_position_held.district_represented', 'government.election.district'] (max_score 0.564)
+- eval: answer resolved=['Jacob Dolson Cox', 'James Rudolph Garfield']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1348_9cd662e0ee5c2ffbbbb0dc86053b1680 (wrong)
+
+**Q:** Which University of Mississippi did Peyton Manning's father play for?
+
+**gold:** ['Ole Miss Rebels football']
+
+**answer:** Archie Manning played for University of Mississippi.
+
+**entities:** ['Archie Manning']
+
+- plan: ["find Peyton Manning's father", 'find the university that #1 played for', 'find which University of Mississippi #2 refers to']
+- explored: ['people.person.parents', 'people.person.parents', 'american_football.football_player.rushing', 'sports.school_sports_team.school', 'location.location.containedby', 'location.location.containedby'] (max_score 0.452)
+- eval: continue resolved=['Archie Manning']
+- explored: ['education.education.student', 'people.person.education', 'american_football.football_player.forty_yard_dash_time'] (max_score 0.491)
+- eval: continue resolved=['University of Mississippi']
+- explored: ['education.educational_institution_campus.educational_institution', 'education.educational_institution_campus.educational_institution', 'education.educational_institution.campuses'] (max_score 0.284)
+- eval: answer resolved=['University of Mississippi']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1348_b7598df908bf8cbe941f82e1cefaec28 (wrong)
+
+**Q:** What defunct sports team later known as the Tennessee Oilers did Peyton Manning 's dad play for?
+
+**gold:** ['Houston Oilers']
+
+**answer:** Archie Manning played for Houston Oilers, which later became known as Tennessee Oilers.
+
+**entities:** ['Archie Manning']
+
+- plan: ['find the sports team later known as the Tennessee Oilers', "find the team that Peyton Manning's dad played for that is #1"]
+- explored: ['sports.defunct_sports_team.later_known_as', 'sports.defunct_sports_team.later_known_as', 'sports.sports_team.previously_known_as', 'sports.pro_athlete.teams', 'sports.sports_team_roster.player', 'sports.pro_athlete.sports_played_professionally'] (max_score 0.617)
+- eval: continue resolved=['Tennessee Oilers']
+- explored: ['american_football.football_historical_coach_position.team', 'american_football.football_team.historical_coaching_staff', 'american_football.football_division.teams', 'american_football.football_historical_coach_position.team', 'american_football.football_team.historical_coaching_staff', 'sports.sports_team_season_record.team'] (max_score 0.375)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['american_football.football_team.division', 'sports.sports_team_season_record.team', 'american_football.football_game.home_team', 'sports.sports_team_roster.team', 'sports.sports_team.roster', 'sports.sports_team.season_record'] (max_score 0.308)
+- eval: answer resolved=['Houston Oilers']
+- verifier: unsupported unsupported=['Peyton Manning dad played for Houston Oilers']
+- explored: ['sports.pro_sports_played.athlete', 'sports.sports_team_roster.player', 'sports.sports_award.award_winner'] (max_score 0.228)
+- eval: answer resolved=['Archie Manning']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1513_5422fa602469c38418171ad342583759 (wrong)
+
+**Q:** What is there to do in downtown Sacramento, where there is an organization headquarters, located in the city of Sacramento County?
+
+**gold:** ['California State Capitol Museum']
+
+**answer:** Downtown Sacramento is in Sacramento, which is the capital of California. One organization headquarters there is Superior Pest Control of Sacramento, and Sacramento also has organizations such as Andersen Corporation and US Notary Public Association. If you meant specific things to do in downtown Sacramento, that could not be determined from the facts provided.
+
+**entities:** ['Sacramento']
+
+- plan: ['find the organization headquarters located in the city of Sacramento County', 'find downtown Sacramento']
+- explored: ['organization.organization.locations', 'organization.organization.place_founded', 'base.aareas.schema.administrative_area.capital', 'location.administrative_division.capital', 'location.us_county.hud_county_place', 'location.hud_county_place.county'] (max_score 0.44)
+- eval: continue resolved=['Sacramento']
+- explored: ['organization.organization.headquarters', 'organization.organization.locations', 'organization.organization.place_founded', 'organization.organization.headquarters', 'organization.organization.place_founded', 'organization.organization_founder.organizations_founded'] (max_score 0.755)
+- eval: continue resolved=['Superior Pest Control of Sacramento']
+- explored: ['organization.organization.locations', 'organization.organization.place_founded', 'organization.organization_founder.organizations_founded', 'organization.organization.locations', 'organization.organization.place_founded', 'location.administrative_division.capital'] (max_score 0.434)
+- eval: continue resolved=['Superior Pest Control of Sacramento']
+- explored: ['business.business_location.hours', 'business.business_location.address', 'business.business_location.phone_number'] (max_score 0.185)
+- eval: answer resolved=['Sacramento']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1528_3c737d4a4dbf3b5acb082a4a1e43d792 (wrong)
+
+**Q:** What Cameron Pace Group movie was Logan Lerman in?
+
+**gold:** ['The Three Musketeers']
+
+**answer:** Logan Lerman was in Meet Bill.
+
+**entities:** ['Meet Bill']
+
+- plan: ['find the movie that Logan Lerman was in', 'find the Cameron Pace Group movie among #1']
+- explored: ['film.actor.film', 'film.person_or_entity_appearing_in_film.films', 'film.performance.actor', 'film.film_company.films', 'film.production_company.films', 'film.film_film_company_relationship.film_company'] (max_score 0.587)
+- eval: continue resolved=['Meet Bill', 'Hoot', 'The Only Living Boy in New York', 'Riding in Cars with Boys']
+- explored: ['film.film.starring', 'film.film.genre', 'film.film.country', 'film.film.starring', 'film.film.genre', 'film.film.country'] (max_score 0.298)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.film_set_decoration_by', 'film.film.music', 'film.director.film', 'film.film.soundtrack', 'film.film.soundtrack', 'film.film_film_distributor_relationship.film'] (max_score 0.278)
+- eval: answer resolved=['Life of Pi']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1686_c374fe555611a2e3aba1ba9ffd739d13 (wrong)
+
+**Q:** Who held his governmental position from 1998 and was the Governor of Arizona in 2009?
+
+**gold:** ['Egyptian pound']
+
+**answer:** Jan Brewer was the Governor of Arizona in 2009.
+
+**entities:** ['Jan Brewer']
+
+- plan: ['find the governmental position held from 1998', 'find who was the Governor of Arizona in 2009', 'find who is the same person as #1 and #2']
+- explored: ['government.government_position_held.office_position_or_title', 'government.government_position_held.basic_title', 'government.government_office_or_title.office_holders', 'government.government_position_held.jurisdiction_of_office', 'government.governmental_jurisdiction.government_positions', 'government.government_position_held.district_represented'] (max_score 0.484)
+- eval: continue resolved=['Governor']
+- explored: ['government.governmental_jurisdiction.government_positions', 'government.government_office_or_title.office_holders', 'government.government_position_held.office_position_or_title', 'government.government_position_held.office_holder', 'government.politician.government_positions_held', 'people.person.profession'] (max_score 0.662)
+- eval: continue resolved=['Governor']
+- explored: ['government.government_position_held.office_holder', 'government.politician.government_positions_held', 'government.political_party_tenure.politician', 'government.government_position_held.office_holder', 'government.politician.government_positions_held', 'people.person.nationality'] (max_score 0.719)
+- eval: continue resolved=['Governor']
+- explored: ['government.government_position_held.office_position_or_title', 'base.government2.elected_government_positions_held.office_position_or_title', 'government.governmental_jurisdiction.government_positions', 'government.government_position_held.office_position_or_title', 'government.government_position_held.basic_title', 'government.government_office_or_title.office_holders'] (max_score 0.463)
+- eval: continue resolved=['Governor']
+- verifier: unsupported unsupported=['Jan Brewer held her governmental position from 1998']
+
+---
+
+## WebQTest-1736_125140bfa1a60527bde6e40dce7fe54a (wrong)
+
+**Q:** Where's the location where the Slavic language is spoken located?
+
+**gold:** ['Europe']
+
+**answer:** The location where the Slavic language is spoken is Holy Roman Empire.
+
+**entities:** ['Holy Roman Empire']
+
+- plan: ['find the location where the Slavic language is spoken', 'find the location of #1']
+- explored: ['location.country.official_language', 'language.language_family.languages', 'language.human_language.language_family'] (max_score 0.377)
+- eval: backtrack resolved=['Holy Roman Empire']
+- backtrack: evaluator
+- explored: [] (max_score 0.0)
+- eval: backtrack resolved=['Holy Roman Empire']
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: backtrack resolved=['Holy Roman Empire']
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: continue resolved=['Holy Roman Empire']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1785_759908f37fd43c40a532a73779dd793d (wrong)
+
+**Q:** What German Language movie starred  Kim Richards?
+
+**gold:** ['Raid on Entebbe']
+
+**answer:** The German Language movie that starred Kim Richards was The Car.
+
+**entities:** ['The Car']
+
+- plan: ['find the German-language movie that starred Kim Richards']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles', 'film.film.primary_language', 'film.film.language', 'film.dubbing_performance.language'] (max_score 0.579)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['tv.tv_guest_role.actor', 'tv.tv_actor.guest_roles', 'tv.regular_tv_appearance.actor', 'book.translation.language', 'book.translation.language', 'fictional_universe.fictional_language.where_spoken'] (max_score 0.257)
+- eval: backtrack resolved=['The Car']
+- backtrack: evaluator
+- explored: ['people.person.nationality', 'tv.tv_personality.tv_regular_appearances', 'tv.tv_regular_personal_appearance.person', 'film.film.country', 'fictional_universe.fictional_setting.languages', 'tv.tv_program.languages'] (max_score 0.252)
+- eval: backtrack resolved=['The Car']
+- backtrack: evaluator
+- explored: ['people.person.gender', 'people.person.profession', 'people.person.children', 'people.ethnicity.languages_spoken', 'language.human_language.countries_spoken_in', 'book.translator.works_translated'] (max_score 0.24)
+- eval: backtrack resolved=['The Car']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1923_29c81279ed9a982e12f82e764083db76 (wrong)
+
+**Q:** What television series did Miley Cyrus been in with 0 season?
+
+**gold:** ['Wizards on Deck with Hannah Montana']
+
+**answer:** The Jay Leno Show.
+
+**entities:** ['The Jay Leno Show']
+
+- plan: ['find television series that Miley Cyrus has been in', 'find which of #1 have 0 seasons']
+- explored: ['tv.tv_program_guest.appeared_on', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_personality.tv_regular_appearances'] (max_score 0.54)
+- eval: continue resolved=['Celebrity guest', 'Host', 'Musician']
+- explored: ['tv.tv_program.episodes', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_series_season.regular_personal_appearances', 'tv.tv_regular_personal_appearance.seasons'] (max_score 0.602)
+- eval: continue resolved=['The Jay Leno Show']
+- explored: ['tv.tv_program_guest.appeared_on', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_personality.tv_regular_appearances', 'tv.tv_program_guest.appeared_on', 'tv.tv_guest_personal_appearance.episode', 'tv.tv_guest_role.episodes_appeared_in'] (max_score 0.54)
+- eval: continue resolved=['The Jay Leno Show']
+- explored: ['tv.tv_program.seasons', 'tv.regular_tv_appearance.series', 'tv.tv_program.episodes'] (max_score 0.663)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1923_7084416ab9f72f1f1f8fc3ce7871ee4a (wrong)
+
+**Q:** Which movie has Miley Cyrus starred in that is 102.0 minutes long?
+
+**gold:** ['Hannah Montana: The Movie']
+
+**answer:** The movie is The Last Song.
+
+**entities:** ['The Last Song']
+
+- plan: ['find movies that Miley Cyrus starred in', 'find which of #1 are 102.0 minutes long']
+- explored: ['film.actor.film', 'film.performance.actor', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.597)
+- eval: continue resolved=['The Last Song', 'So Undercover', 'Hannah Montana: The Movie', 'Radio Disney Party Jams: The Concert']
+- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack'] (max_score 0.351)
+- eval: continue resolved=[]
+- explored: ['film.film.featured_song', 'music.artist.track', 'film.film_featured_song.performed_by', 'film.film.featured_song', 'music.artist.track', 'film.film_featured_song.performed_by'] (max_score 0.351)
+- eval: continue resolved=['Hannah Montana: The Movie']
+- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack'] (max_score 0.351)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1923_b10bde702bb6c68ce3cdced85d5aff02 (wrong)
+
+**Q:** Which movie that was cast by Cathy Sandrich was Miley Cyrus in?
+
+**gold:** ['The Last Song']
+
+**answer:** Miley Cyrus was in So Undercover.
+
+**entities:** ['So Undercover']
+
+- plan: ['find the movie cast by Cathy Sandrich that Miley Cyrus was in']
+- explored: ['film.actor.film', 'film.person_or_entity_appearing_in_film.films', 'film.performance.actor', 'film.film.film_casting_director', 'film.film_casting_director.films_casting_directed', 'people.person.parents'] (max_score 0.575)
+- eval: continue resolved=['So Undercover', 'Hannah Montana: The Movie', 'Bolt', 'Wizards on Deck with Hannah Montana']
+- explored: ['film.film.starring', 'film.film.film_casting_director', 'film.film_casting_director.films_casting_directed', 'film.film.starring', 'film.personal_film_appearance.film', 'film.film.personal_appearances'] (max_score 0.565)
+- eval: continue resolved=['So Undercover', 'Hannah Montana: The Movie', 'Bolt', 'Wizards on Deck with Hannah Montana']
+- explored: ['film.actor.film', 'film.performance.actor', 'people.person.gender', 'film.actor.film', 'film.performance.actor', 'people.person.gender'] (max_score 0.29)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.starring', 'film.film.film_casting_director', 'film.film_casting_director.films_casting_directed', 'film.film.starring', 'film.personal_film_appearance.film', 'film.film.personal_appearances'] (max_score 0.565)
+- eval: continue resolved=['So Undercover', 'Hannah Montana: The Movie', 'Wizards on Deck with Hannah Montana', 'Super Rhino']
+- explored: ['people.person.profession', 'people.person.profession'] (max_score 0.06)
+- eval: continue resolved=['Hannah Montana: The Movie', 'So Undercover', 'Wizards on Deck with Hannah Montana', 'Super Rhino']
+- explored: ['film.film_character.portrayed_in_films', 'film.director.film', 'film.performance.character'] (max_score 0.277)
+- eval: answer resolved=['So Undercover', 'Hannah Montana: The Movie', 'Wizards on Deck with Hannah Montana', 'Super Rhino']
+- verifier: unsupported unsupported=['So Undercover was cast by Cathy Sandrich']
+
+---
+
+## WebQTest-1923_eaeaff16b51e52669edc90501a373c61 (wrong)
+
+**Q:** Which movie did Miley Cyrus appear in and got a nomination for "the entire cast"?
+
+**gold:** ['Sex and the City 2']
+
+**answer:** Miley Cyrus appeared in Hannah Montana: The Movie, which is the movie that got a nomination for "the entire cast".
+
+**entities:** ['Hannah Montana: The Movie']
+
+- plan: ['find movies that Miley Cyrus appeared in', 'find which of #1 got a nomination for "the entire cast"']
+- explored: ['film.actor.film', 'film.person_or_entity_appearing_in_film.films', 'film.performance.actor'] (max_score 0.573)
+- eval: continue resolved=['The Last Song', 'So Undercover', 'Hannah Montana: The Movie', 'Radio Disney Party Jams: The Concert']
+- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack'] (max_score 0.351)
+- eval: continue resolved=['Hannah Montana: The Movie', 'Radio Disney Party Jams: The Concert', 'The Last Song', 'So Undercover']
+- explored: ['film.film.featured_song', 'film.film_featured_song.performed_by', 'film.film_featured_song.featured_in_film', 'film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack'] (max_score 0.621)
+- eval: continue resolved=['Hannah Montana: The Movie']
+- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film.featured_song', 'film.film_featured_song.performed_by', 'film.film_featured_song.featured_in_film'] (max_score 0.366)
+- eval: backtrack resolved=[]
 - verifier: grounded unsupported=[]
 
 ---
@@ -802,6 +418,282 @@
 - eval: continue resolved=['Colorado', 'Arizona', 'Utah']
 - explored: ['government.governmental_jurisdiction.official_symbols', 'location.us_state.capital', 'base.locations.states_and_provences.country', 'government.governmental_jurisdiction.official_symbols', 'location.us_state.capital', 'base.locations.states_and_provences.country'] (max_score 0.674)
 - eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-213_024fd6ca0b4cb30927c22e93a552ae6c (wrong)
+
+**Q:** What person notable with the medical condition Attention deficit hyperactivity disorder id Scarlett Johansson date?
+
+**gold:** ['Justin Timberlake']
+
+**answer:** Mary-Kate Olsen is a notable person with Attention deficit hyperactivity disorder.
+
+**entities:** ['Mary-Kate Olsen']
+
+- plan: ['find the person notable with Attention deficit hyperactivity disorder and named Scarlett Johansson', 'find the date associated with #1']
+- explored: ['medicine.notable_person_with_medical_condition.condition', 'medicine.disease.notable_people_with_this_condition', 'fictional_universe.medical_condition_in_fiction.characters_with_this_condition', 'tv.tv_guest_personal_appearance.person', 'film.personal_film_appearance.person', 'people.person.gender'] (max_score 0.615)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['fictional_universe.fictional_character.medical_conditions', 'medicine.disease.medical_specialties', 'base.aubreymaturin.affliction.malady', 'film.performance.actor', 'film.person_or_entity_appearing_in_film.films', 'people.person.spouse_s'] (max_score 0.251)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.aubreymaturin.malady.sufferers', 'medicine.disease.includes_diseases', 'medicine.disease.includes_diseases', 'people.person.children', 'people.person.children', 'people.person.profession'] (max_score 0.205)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['medicine.symptom.symptom_of', 'medicine.risk_factor.diseases', 'medicine.risk_factor.diseases', 'theater.theater_role.actor', 'celebrities.sexual_orientation_phase.celebrity', 'celebrities.romantic_relationship.celebrity'] (max_score 0.201)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-213_71621b15ae9777fca8c1becaa188a3bb (wrong)
+
+**Q:** Who were the award nominees for the 2003 Boston Society of Film Critics Awards?
+
+**gold:** ['Josh Hartnett']
+
+**answer:** The award nominee was Scarlett Johansson for Lost in Translation.
+
+**entities:** ['Scarlett Johansson']
+
+- plan: ['find the 2003 Boston Society of Film Critics Awards', 'find the award nominees for #1']
+- explored: ['award.award_ceremony.awards_presented', 'award.award_ceremony.nominees', 'award.award_nomination.ceremony'] (max_score 0.587)
+- eval: continue resolved=['Boston Society of Film Critics Awards 2003']
+- explored: ['award.award_category.nominees', 'award.award_nomination.award', 'award.award_category.winners', 'award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'award.ranking.item'] (max_score 0.806)
+- eval: answer resolved=['Her', "People's Choice Award for Favorite Star Under 35", "People's Choice Award for Favorite Leading Lady", "33rd People's Choice Awards"]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-43_a29af73bf225f568206dcf810358236f (wrong)
+
+**Q:** What occupations were held by the person who stated "Everything I know I learned after I was thirty?"?
+
+**gold:** ['Statesman', 'Publisher', 'Physician', 'Writer', 'Journalist']
+
+**answer:** The person who stated "Everything I know I learned after I was thirty?" was Georges Clémenceau, who held the occupations Physician, Statesman, Publisher, Journalist, and Writer.
+
+**entities:** ['Georges Clémenceau']
+
+- plan: ['find the person who stated "Everything I know I learned after I was thirty?"', 'find the occupations held by #1']
+- explored: ['media_common.quotation.author', 'people.person.quotations', 'media_common.quotation.subjects'] (max_score 0.479)
+- eval: continue resolved=['Georges Clémenceau']
+- explored: ['people.person.profession', 'organization.organization_member.member_of', 'book.written_work.author'] (max_score 0.49)
+- eval: answer resolved=['Physician', 'Statesman', 'Publisher', 'Journalist']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-537_4439b7c167b6ccf30c53b610934c4521 (wrong)
+
+**Q:** What "coming of age" genre movies have actor charlie humman been in?
+
+**gold:** ['Nicholas Nickleby', 'Whatever Happened to Harold Smith?']
+
+**answer:** Charlie Humman has been in the coming of age movies Awaydays, All the Right Moves, Flicka, Diggers, With Honors, Waiting..., Hoot, Middle of Nowhere, Breaking Away, and Toe to Toe.
+
+**entities:** ['Awaydays', 'All the Right Moves', 'Flicka', 'Diggers', 'With Honors', 'Waiting...', 'Hoot', 'Middle of Nowhere', 'Breaking Away', 'Toe to Toe']
+
+- plan: ['find movies in the "coming of age" genre', 'find which of #1 have actor Charlie Hunnam been in']
+- explored: ['film.film.genre', 'film.film_subject.films', 'film.film.subjects', 'film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.747)
+- eval: continue resolved=['Crossover', 'Anywhere but Here', 'All I Want', 'Awaydays']
+- explored: ['film.film.genre', 'film.film_subject.films', 'film.film.music', 'film.film.genre', 'film.film.music', 'film.film_regional_release_date.film'] (max_score 0.732)
+- eval: continue resolved=['Crossover', 'Anywhere but Here', 'All I Want', 'Awaydays']
+- explored: ['film.film.genre', 'film.film_subject.films', 'media_common.media_genre.child_genres', 'film.film.genre', 'base.skosbase.vocabulary_equivalent_topic.equivalent_concept', 'film.film.genre'] (max_score 0.747)
+- eval: continue resolved=['Anywhere but Here', 'All I Want', 'Awaydays', 'All the Right Moves']
+- explored: ['film.film.starring', 'film.film_regional_release_date.film', 'film.film.release_date_s', 'film.film.starring', 'film.film_regional_release_date.film', 'film.film.release_date_s'] (max_score 0.53)
+- eval: answer resolved=['Awaydays']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-538_5f5da3e1d4ca7df9f19ce3fdfc5790e2 (wrong)
+
+**Q:** Which film featuring Taylor Swift includes organization toonsplainers?
+
+**gold:** ['The Lorax']
+
+**answer:** Taylor Swift: Speak Now World Tour Live is the film featuring Taylor Swift. The claim that it includes organization toonsplainers is not supported by the knowledge graph.
+
+**entities:** ['Taylor Swift: Speak Now World Tour Live']
+
+- plan: ['find the film featuring Taylor Swift', 'find the film from #1 that includes organization toonsplainers']
+- explored: ['film.film_featured_song.performed_by', 'film.producer.film', 'film.film.written_by', 'organization.organization.headquarters', 'organization.organization.phone_number', 'organization.organization_sector.organizations_in_this_sector'] (max_score 0.647)
+- eval: continue resolved=[]
+- explored: ['film.film_featured_song.featured_in_film', 'film.film_featured_song.performed_by', 'film.film.featured_song', 'film.film.directed_by', 'film.film.produced_by', 'film.producer.film'] (max_score 0.665)
+- eval: continue resolved=['Taylor Swift: Speak Now World Tour Live']
+- explored: ['film.film.featured_song', 'film.film_featured_song.featured_in_film', 'film.film.soundtrack', 'film.film_featured_song.performed_by', 'film.producer.film', 'film.film.written_by'] (max_score 0.667)
+- eval: continue resolved=['Taylor Swift: Speak Now World Tour Live']
+- explored: ['film.film.directed_by', 'film.film.written_by', 'film.director.film'] (max_score 0.296)
+- eval: backtrack resolved=[]
+- verifier: unsupported unsupported=['Taylor Swift: Speak Now World Tour Live includes organization toonexplainers']
+
+---
+
+## WebQTest-924_ad15b96e5de6c60b06f2295638c2e471 (wrong)
+
+**Q:** Which is the team founded in 1893 which Messi played for in 2010?
+
+**gold:** ['Argentina national football team']
+
+**answer:** FC Barcelona is the team founded in 1893 which Lionel Messi played for in 2010.
+
+**entities:** ['FC Barcelona']
+
+- plan: ['find the team founded in 1893', 'find which of #1 Messi played for in 2010']
+- explored: ['sports.pro_athlete.teams', 'sports.sports_team_roster.player', 'base.x2010fifaworldcupsouthafrica.world_cup_participant.world_cup_team'] (max_score 0.558)
+- eval: continue resolved=['FC Barcelona']
+- explored: ['organization.organization_founder.organizations_founded', 'organization.organization.founders', 'sports.sports_league_participation.team', 'sports.sports_team_roster.team', 'sports.sports_team.roster', 'sports.sports_team.sport'] (max_score 0.383)
+- eval: backtrack resolved=['FC Barcelona']
+- backtrack: evaluator
+- explored: ['sports.sports_team.location', 'sports.sports_team_location.teams', 'sports.sports_team_roster.team', 'soccer.football_player_stats.team', 'soccer.football_team.player_statistics', 'soccer.football_player_stats.team'] (max_score 0.351)
+- eval: backtrack resolved=['FC Barcelona']
+- backtrack: evaluator
+- explored: ['soccer.football_league_participation.team', 'sports.sports_team.league', 'sports.sports_facility.teams', 'sports.sport.pro_athletes', 'basketball.basketball_player.position_s', 'ice_hockey.hockey_player.hockey_position'] (max_score 0.316)
+- eval: continue resolved=['FC Barcelona']
+- explored: ['sports.sports_facility.teams', 'sports.sports_team.arena_stadium', 'sports.team_venue_relationship.venue', 'sports.sports_league.teams', 'soccer.football_league.teams', 'sports.sports_league_participation.league'] (max_score 0.592)
+- eval: backtrack resolved=['FC Barcelona']
+- backtrack: evaluator
+- explored: ['soccer.football_league_participation.team', 'sports.sports_team.league', 'sports.sports_facility.teams', 'sports.sport.pro_athletes', 'basketball.basketball_player.position_s', 'ice_hockey.hockey_player.hockey_position'] (max_score 0.316)
+- eval: continue resolved=['FC Barcelona']
+- explored: ['base.x2010fifaworldcupsouthafrica.current_world_cup_squad.current_club', 'soccer.football_player_stats.team', 'soccer.football_team.player_statistics'] (max_score 0.569)
+- eval: answer resolved=['FC Barcelona']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-983_1f8b6ebf20d1119eba090d8d0257bdc5 (wrong)
+
+**Q:** What university with 3708 postgraduates did Tennessee Williams attend?
+
+**gold:** ['The New School']
+
+**answer:** Tennessee Williams attended University of Iowa.
+
+**entities:** ['University of Iowa']
+
+- plan: ['find the university attended by Tennessee Williams', 'find which of #1 has 3708 postgraduates']
+- explored: ['education.education.student', 'people.person.education', 'award.award_honor.award_winner', 'base.descriptive_names.names.descriptive_name'] (max_score 0.512)
+- eval: continue resolved=['University of Missouri', 'University of Iowa', 'The New School', 'Washington University in St. Louis']
+- explored: ['education.university.number_of_postgraduates', 'education.university.number_of_undergraduates', 'education.university.local_tuition', 'education.university.number_of_postgraduates', 'education.university.number_of_undergraduates', 'education.university.departments'] (max_score 0.686)
+- eval: continue resolved=['University of Iowa', 'Washington University in St. Louis', 'The New School']
+- explored: ['education.university.departments', 'education.department.institution', 'education.academic.departments_old', 'education.university.departments', 'education.educational_institution.campuses', 'education.educational_institution.campuses'] (max_score 0.335)
+- eval: continue resolved=[]
+- explored: ['education.university.number_of_postgraduates', 'education.university.number_of_undergraduates', 'education.university.departments', 'education.university.number_of_postgraduates', 'education.university.number_of_undergraduates', 'education.university.departments'] (max_score 0.686)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1053_4c8649801d197e6eb5377d292c0b6ca8 (wrong)
+
+**Q:** Which actor played the character Henri Ducard in Star Wars?
+
+**gold:** ['Qui-Gon Jinn']
+
+**answer:** Liam Neeson played Henri Ducard.
+
+**entities:** ['Liam Neeson']
+
+- plan: ['find the character Henri Ducard in Star Wars', 'find the actor who played #1']
+- explored: ['film.film_character.portrayed_in_films', 'film.performance.character', 'fictional_universe.fictional_character.character_created_by', 'film.film.prequel', 'film.film_art_director.films_art_directed', 'film.director.film'] (max_score 0.587)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['fictional_universe.fictional_character.occupation', 'fictional_universe.fictional_character.species', 'fictional_universe.fictional_character.gender', 'film.film.film_casting_director', 'film.writer.film', 'film.cinematographer.film'] (max_score 0.25)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['fictional_universe.fictional_character_creator.fictional_characters_created', 'fictional_universe.work_of_fiction.setting', 'film.film.starring', 'film.film.film_series'] (max_score 0.194)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film_series.films_in_series', 'film.film.written_by', 'film.film.costume_design_by'] (max_score 0.189)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1069_3c89af72801c057504e78b3a263a9b77 (wrong)
+
+**Q:** What language is used in Denmark with the abbreviation DE?
+
+**gold:** ['German Language']
+
+**answer:** Danish Language
+
+**entities:** ['Danish Language']
+
+- plan: ['find the entity in Denmark with the abbreviation DE', 'find the language used in #1']
+- explored: ['base.aareas.schema.administrative_area_type.iso_country', 'location.country.official_language', 'location.administrative_division.country'] (max_score 0.263)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.aareas.schema.earth.sovereign_domain.sovereign_state', 'location.country.internet_tld', 'location.location.contains'] (max_score 0.238)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.location.contains', 'base.biblioness.bibs_location.country', 'base.jewlib.judaica_owner.parent_institution'] (max_score 0.23)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.country.currency_used', 'location.country.administrative_divisions', 'location.location.containedby'] (max_score 0.21)
+- eval: continue resolved=[]
+- explored: ['location.administrative_division.country', 'location.location.contains', 'location.country.administrative_divisions', 'location.administrative_division.country', 'location.country.administrative_divisions', 'location.location.containedby'] (max_score 0.256)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1180_67f5f717564163742ca2588b7e186fd8 (wrong)
+
+**Q:** The city of Wellsville can be found where in the United States?
+
+**gold:** ['Missouri']
+
+**answer:** Wellsville can be found in Montgomery County, United States of America.
+
+**entities:** ['Montgomery County']
+
+- plan: ['find the location of Wellsville in the United States']
+- explored: ['location.us_county.hud_county_place', 'location.hud_county_place.place', 'location.hud_county_place.place', 'location.mailing_address.citytown', 'location.location.primarily_containedby', 'location.location.primarily_containedby'] (max_score 0.599)
+- eval: continue resolved=['Wellsville', 'Montgomery County']
+- explored: ['location.us_county.hud_county_place', 'location.hud_county_place.place', 'location.hud_county_place.place', 'location.us_county.hud_county_place', 'location.us_county.county_seat', 'location.hud_county_place.county'] (max_score 0.599)
+- eval: answer resolved=['Montgomery County']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-124_0782789f35ce79d56102e26e54e5b700 (wrong)
+
+**Q:** What was directed by the actor who played Corneila Wallace?
+
+**gold:** ['By the Sea', 'In the Land of Blood and Honey', 'A Place in Time', 'Unbroken']
+
+**answer:** Angelina Jolie directed Unbroken, In the Land of Blood and Honey, A Place in Time, and By the Sea.
+
+**entities:** ['Angelina Jolie']
+
+- plan: ['find the actor who played Corneila Wallace', 'find what was directed by #1']
+- explored: ['film.film_character.portrayed_in_films', 'film.performance.character'] (max_score 0.672)
+- eval: continue resolved=['Angelina Jolie']
+- explored: ['film.film.directed_by', 'film.director.film', 'film.editor.film'] (max_score 0.614)
+- eval: answer resolved=['Unbroken', 'In the Land of Blood and Honey', 'A Place in Time', 'By the Sea']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1297_a0da13a7b70a064b8cffb58007f6739d (wrong)
+
+**Q:** Where did the artist grow up that recorded #Thatpower?
+
+**gold:** ['London']
+
+**answer:** Justin Bieber grew up in Stratford and Canada.
+
+**entities:** ['Stratford', 'Canada']
+
+- plan: ['find the artist that recorded #Thatpower', 'find where #1 grew up']
+- explored: ['music.recording.artist', 'music.featured_artist.recordings', 'music.recording.featured_artists'] (max_score 0.645)
+- eval: continue resolved=['Will i Am', 'Justin Bieber']
+- explored: ['people.place_lived.person', 'people.person.place_of_birth', 'people.person.places_lived', 'people.place_lived.person', 'people.person.place_of_birth', 'people.person.places_lived'] (max_score 0.504)
+- eval: answer resolved=['Los Angeles', 'Stratford', 'Canada', 'London']
 - verifier: grounded unsupported=[]
 
 ---
@@ -838,93 +730,930 @@
 
 ---
 
-## WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27 (wrong)
+## WebQTrn-1484_1fbd766e1b1bf978da23e8646cadf3a1 (wrong)
 
-**Q:** What was the actor's name that played the character Digital Underground Member in "Juice"?
+**Q:** The person who attended the education institution Colegio AlemÃ¡n Alexander von Humboldt did what kind of paintings?
+
+**gold:** ['Magic realism', 'Modern art', 'Surrealism']
+
+**answer:** Frida Kahlo did paintings such as Self-Portrait, The Two Fridas, Henry Ford Hospital, and Viva la Vida, Watermelons.
+
+**entities:** ['Frida Kahlo']
+
+- plan: ['find the person who attended Colegio AlemÃ¡n Alexander von Humboldt', 'find what kind of paintings #1 did']
+- explored: ['education.educational_institution.students_graduates', 'education.education.institution', 'symbols.namesake.named_after'] (max_score 0.416)
+- eval: continue resolved=['Frida Kahlo']
+- explored: ['visual_art.artwork.artist', 'visual_art.visual_artist.artworks', 'visual_art.artwork.art_subject'] (max_score 0.596)
+- eval: answer resolved=['Roots', 'What the Water Gave Me', 'Living Nature', 'Congress of People for Peace']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1677_15a55e684b4c9a686e6865cfcad59905 (wrong)
+
+**Q:** What movie produced by Chris Columbus did Adam Sandler play in?
+
+**gold:** ['Pixels']
+
+**answer:** Nine Months
+
+**entities:** ['Nine Months']
+
+- plan: ['find movies produced by Chris Columbus', 'find which of #1 Adam Sandler played in']
+- explored: ['film.producer.film', 'film.film.produced_by', 'film.producer.films_executive_produced', 'film.producer.film', 'film.film.produced_by', 'film.producer.films_executive_produced'] (max_score 0.582)
+- eval: continue resolved=['Jingle All the Way', 'Christmas with the Kranks', 'Bicentennial Man', 'I Love You, Beth Cooper']
+- explored: ['film.film.soundtrack', 'film.film.soundtrack', 'film.music_contributor.film', 'film.film.soundtrack', 'film.film.soundtrack', 'music.soundtrack.film'] (max_score 0.269)
+- eval: continue resolved=['Adam Sandler']
+- explored: ['film.film.soundtrack', 'film.film.soundtrack', 'film.music_contributor.film', 'film.film.soundtrack', 'film.film.soundtrack', 'music.soundtrack.film'] (max_score 0.269)
+- eval: continue resolved=['Jingle All the Way']
+- explored: ['film.film.soundtrack', 'film.film.soundtrack', 'film.music_contributor.film', 'film.film.soundtrack', 'film.film.soundtrack', 'music.soundtrack.film'] (max_score 0.269)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1677_bdfdca39c58846e51247fd78bc7683eb (wrong)
+
+**Q:** In which films decorated by Karen O'Hara did Adam Sandler appear?
+
+**gold:** ['Paul Blart: Mall Cop 2', 'Blended']
+
+**answer:** The answer could not be verified against the knowledge graph. Spider-Man and The American President are films decorated by Karen O'Hara, but Adam Sandler’s appearance in them is not supported.
+
+**entities:** ['Spider-Man', 'The American President']
+
+- plan: ["find films decorated by Karen O'Hara", 'find which of #1 feature Adam Sandler']
+- explored: ['film.film.film_set_decoration_by', 'film.film_set_designer.film_sets_designed', 'award.award_honor.award_winner', 'film.writer.film', 'film.film.written_by', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.637)
+- eval: continue resolved=['True Identity', 'Blended', 'License to Wed', 'Spider-Man']
+- explored: ['film.film_film_distributor_relationship.film', 'film.film.costume_design_by', 'film.film.directed_by', 'film.film_film_distributor_relationship.film', 'film.film.costume_design_by', 'film.music_contributor.film'] (max_score 0.194)
+- eval: continue resolved=['Spider-Man', 'License to Wed']
+- explored: ['comic_books.comic_book_creator.characters_created', 'comic_books.comic_book_creator.series_created', 'comic_books.comic_book_character.created_by', 'comic_books.comic_book_creator.characters_created', 'people.marriage.spouse', 'comic_books.comic_book_creator.series_created'] (max_score 0.226)
+- eval: continue resolved=['Spider-Man']
+- explored: ['fictional_universe.marriage_of_fictional_characters.spouses', 'comic_books.comic_book_creator.characters_created', 'fictional_universe.fictional_character.married_to', 'fictional_universe.marriage_of_fictional_characters.spouses', 'comic_books.comic_book_creator.characters_created', 'fictional_universe.fictional_character.married_to'] (max_score 0.27)
+- eval: answer resolved=['Spider-Man']
+- verifier: unsupported unsupported=['Adam Sandler appeared in Spider-Man', 'Adam Sandler appeared in The American President']
+
+---
+
+## WebQTrn-1758_477d7040a0ed5bfecb155b8b3d3082fb (wrong)
+
+**Q:** What is the current government of the place where "The Alchemist of Happiness" takes place?
+
+**gold:** ['Parliamentary system', 'Presidential system', 'Islamic republic', 'Unitary state', 'Theocracy']
+
+**answer:** The current government is Government of Iran.
+
+**entities:** ['Government of Iran']
+
+- plan: ['find the place where "The Alchemist of Happiness" takes place', 'find the current government of #1']
+- explored: ['film.film.featured_film_locations', 'film.film_location.featured_in_films', 'film.film.story_by'] (max_score 0.491)
+- eval: continue resolved=['Iran']
+- explored: ['government.governmental_jurisdiction.government', 'government.government.government_for', 'government.governmental_jurisdiction.governing_officials'] (max_score 0.576)
+- eval: answer resolved=['Government of Iran']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1841_5d1cba94c816bec220b9f98e97493b0f (wrong)
+
+**Q:** What nominee of the Laureus World Sports Award for Team of the Year represents a popular sport in Spain?
+
+**gold:** ['Spain national football team', 'Spain national football team', 'Spain national football team']
+
+**answer:** FC Barcelona represents a popular sport in Spain.
+
+**entities:** ['FC Barcelona']
+
+- plan: ['find nominees of the Laureus World Sports Award for Team of the Year', 'find which of #1 represent a popular sport in Spain']
+- explored: ['award.award_category.nominees', 'award.award_category.winners', 'award.award_nomination.award', 'sports.sport_country.athletes', 'sports.competitor_competition_relationship.country', 'olympics.olympic_athlete_affiliation.country'] (max_score 0.696)
+- eval: continue resolved=['Brawn GP']
+- explored: ['award.award_ceremony.nominees', 'award.award_nomination.ceremony', 'award.award_ceremony.awards_presented', 'award.award_ceremony.nominees', 'award.award_nomination.ceremony', 'award.award_ceremony.awards_presented'] (max_score 0.7)
+- eval: continue resolved=['Brawn GP']
+- explored: ['award.award_category.nominees', 'award.award_category.winners', 'award.award_nomination.award', 'sports.sports_award.team', 'award.award_nominee.award_nominations', 'award.award_honor.award_winner'] (max_score 0.696)
+- eval: continue resolved=['Brawn GP']
+- explored: ['award.award_ceremony.nominees', 'award.award_nomination.ceremony', 'award.award_ceremony.awards_presented', 'award.award_ceremony.nominees', 'award.award_nomination.ceremony', 'award.award_ceremony.awards_presented'] (max_score 0.7)
+- eval: continue resolved=['Brawn GP']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2047_3d5f855275265f74d81b862231578e33 (wrong)
+
+**Q:** What is the name of the structure opened in 1997 where the Chicago Cubs play?
+
+**gold:** ['Hohokam Stadium']
+
+**answer:** Wrigley Field
+
+**entities:** ['Wrigley Field']
+
+- plan: ['find where the Chicago Cubs play', 'find the structure opened in 1997 at #1', 'find the name of #2']
+- explored: ['sports.sports_team.venue', 'sports.sports_team.arena_stadium', 'sports.sports_team.location'] (max_score 0.61)
+- eval: continue resolved=['Wrigley Field']
+- explored: ['time.event.locations', 'location.location.events', 'sports.sports_team.arena_stadium'] (max_score 0.429)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['sports.sports_facility.home_venue_for', 'sports.sports_facility.teams', 'base.playball.baseball_stadium.naming_rights'] (max_score 0.279)
+- eval: continue resolved=[]
+- explored: ['sports.sports_team.arena_stadium', 'sports.sports_team.venue', 'base.schemastaging.sports_team_extra.training_ground', 'sports.sports_team.arena_stadium', 'sports.sports_team.venue', 'sports.sports_facility.teams'] (max_score 0.553)
+- eval: continue resolved=['Wrigley Field']
+- explored: ['base.schemastaging.sports_facility_extra.training_ground_for', 'sports.sports_team.arena_stadium', 'sports.sports_facility.home_venue_for', 'sports.sports_facility.home_venue_for', 'base.playball.baseball_stadium.naming_rights', 'sports.sports_facility.teams'] (max_score 0.284)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2069_14d783de97238bd1ef6eb28fe7221306 (wrong)
+
+**Q:** Which language is spoken in Chile, its main speaking country is Peru?
+
+**gold:** ['Puquina Language']
+
+**answer:** Spanish Language is spoken in Chile, and its main speaking country is Peru.
+
+**entities:** ['Spanish Language']
+
+- plan: ['find the language spoken in Chile', 'find the main speaking country of #1', 'find which language is spoken in #2']
+- explored: ['location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'location.country.official_language', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'location.country.official_language'] (max_score 0.698)
+- eval: continue resolved=['Spanish Language', 'Aymara language', 'Puquina Language', 'Mapudungun Language']
+- explored: ['language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in'] (max_score 0.755)
+- eval: continue resolved=['Spain', 'Peru', 'Chile']
+- explored: ['language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in'] (max_score 0.755)
+- eval: continue resolved=['Spanish Language', 'Aymara language', 'Puquina Language', 'Mapudungun Language']
+- explored: ['location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'language.human_language.main_country', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'language.human_language.main_country'] (max_score 0.653)
+- eval: continue resolved=['Spanish Language', 'Aymara language', 'Puquina Language']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2100_faefa67fba5946fa87b438a6df0b8e63 (wrong)
+
+**Q:** What city can the headquarters for Curno Brakes be found?
+
+**gold:** ['Curno']
+
+**answer:** Brembo
+
+**entities:** ['Brembo']
+
+- plan: ['find the headquarters for Curno Brakes', 'find the city where #1 can be found']
+- explored: ['location.location.containedby', 'location.mailing_address.citytown', 'location.statistical_region.population'] (max_score 0.218)
+- eval: continue resolved=['Curno']
+- explored: ['location.administrative_division.country', 'location.administrative_division.capital', 'location.administrative_division_capital_relationship.administrative_division', 'location.administrative_division.country', 'organization.organization.locations', 'location.administrative_division.first_level_division_of'] (max_score 0.3)
+- eval: continue resolved=['Brembo']
+- explored: ['location.administrative_division.country', 'organization.organization.locations', 'location.administrative_division.first_level_division_of', 'location.administrative_division.country', 'location.administrative_division.second_level_division_of', 'location.location.containedby'] (max_score 0.3)
+- eval: continue resolved=['Curno']
+- explored: ['location.administrative_division.country', 'location.administrative_division.second_level_division_of', 'location.location.containedby', 'location.administrative_division.country', 'location.administrative_division.second_level_division_of', 'location.location.containedby'] (max_score 0.3)
+- eval: backtrack resolved=['Curno']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2292_ea0bc3bb340865025c534c91eca19be9 (wrong)
+
+**Q:** What kind of economy does the country have that breeds Moscow watchdogs?
+
+**gold:** ['Communist state', 'Socialist state', 'Soviet democracy', 'Parliamentary republic']
+
+**answer:** The country is Soviet Union, and it has a Communist state economy.
+
+**entities:** ['Soviet Union']
+
+- plan: ['find the country that breeds Moscow watchdogs', 'find the kind of economy of #1']
+- explored: ['biology.breed_origin.breeds_originating_here', 'biology.animal_breed.place_of_origin', 'biology.breed_temperament.breeds'] (max_score 0.55)
+- eval: continue resolved=['Soviet Union']
+- explored: ['finance.currency.countries_formerly_used', 'government.form_of_government.countries', 'location.country.form_of_government'] (max_score 0.204)
+- eval: continue resolved=['Communist state', 'Socialist state']
+- explored: ['finance.currency.countries_used', 'finance.currency.countries_formerly_used', 'location.country.currency_used', 'government.form_of_government.countries', 'location.country.form_of_government', 'government.form_of_government.countries'] (max_score 0.222)
+- eval: answer resolved=['Socialist state', 'Communist state']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2540_1af583970c492fc3682ae363bbfca3d3 (wrong)
+
+**Q:** Who was influenced by Eugene Delacroix and inspired Monet?
+
+**gold:** ['Camille Pissarro', 'Pierre-Auguste Renoir']
+
+**answer:** Claude Monet was influenced by Eugène Delacroix, and Eugène Delacroix influenced Claude Monet.
+
+**entities:** ['Claude Monet']
+
+- plan: ['find people influenced by Eugene Delacroix', 'find which of #1 inspired Monet']
+- explored: ['influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced'] (max_score 0.581)
+- eval: continue resolved=['Vincent van Gogh', 'Purvis Young', 'Pierre-Auguste Renoir', 'Pierre Puvis de Chavannes']
+- explored: ['visual_art.artwork.artist', 'visual_art.visual_artist.associated_periods_or_movements', 'visual_art.visual_artist.art_forms', 'visual_art.artwork.artist', 'visual_art.art_series.artist', 'visual_art.art_period_movement.associated_artists'] (max_score 0.324)
+- eval: continue resolved=['Vincent van Gogh', 'Pierre-Auguste Renoir']
+- explored: ['visual_art.artwork.artist', 'visual_art.artwork.owners', 'visual_art.artwork.art_subject', 'visual_art.artwork.artist', 'visual_art.art_series.artworks', 'visual_art.artwork.art_form'] (max_score 0.309)
+- eval: answer resolved=['Vincent van Gogh', 'Pierre-Auguste Renoir']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2540_5e56c7691b80c044d23d2f29efc3d94f (wrong)
+
+**Q:** Who inspired Monet and influenced Paul Verlaine?
+
+**gold:** ['Stéphane Mallarmé']
+
+**answer:** Claude Monet was inspired by Eugène Boudin, and Paul Verlaine was associated with Symbolism.
+
+**entities:** ['Eugène Boudin', 'Symbolism']
+
+- plan: ['find who inspired Monet', 'find who influenced Paul Verlaine', 'find the overlap between #1 and #2']
+- explored: ['influence.influence_node.influenced_by', 'book.author.works_written', 'visual_art.art_series.artist', 'book.school_or_movement.associated_authors', 'book.author.works_written', 'book.author.works_written'] (max_score 0.493)
+- eval: continue resolved=['Wassily Kandinsky', 'Jean Brenner', 'Władysław Podkowiński', 'Carl Rungius']
+- explored: ['book.school_or_movement.associated_authors', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced', 'visual_art.visual_art_form.artists'] (max_score 0.25)
+- eval: continue resolved=['Symbolism']
+- explored: ['influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced'] (max_score 0.52)
+- eval: continue resolved=['Paul Cézanne', 'Paul Klee', 'Paul Gauguin']
+- explored: ['influence.influence_node.influenced_by', 'influence.influence_node.influenced_by', 'book.school_or_movement.associated_authors', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced', 'music.artist.track_contributions'] (max_score 0.535)
+- eval: backtrack resolved=['Paul Cézanne', 'Paul Klee', 'Paul Gauguin']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2569_6b6fb0182356d92873272424688be466 (wrong)
+
+**Q:** The building where the Houston Rockets and Houston Aeros played is now called what?
+
+**gold:** ['Lakewood Church Central Campus']
+
+**answer:** Toyota Center
+
+**entities:** ['Toyota Center']
+
+- plan: ['find the building where the Houston Rockets and Houston Aeros played', 'find what #1 is now called']
+- explored: ['sports.sports_team.arena_stadium', 'sports.sports_facility.teams', 'sports.sports_team.venue', 'sports.sports_team.arena_stadium', 'sports.sports_facility.teams', 'sports.sports_team.venue'] (max_score 0.586)
+- eval: continue resolved=['Toyota Center', 'Lakewood Church Central Campus']
+- explored: ['sports.sports_facility.home_venue_for', 'sports.sports_team.arena_stadium', 'sports.sports_facility.teams', 'sports.sports_facility.home_venue_for', 'sports.sports_team.arena_stadium', 'sports.sports_facility.teams'] (max_score 0.239)
+- eval: answer resolved=['Toyota Center', 'Lakewood Church Central Campus']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2570_ff6becc9074132acf2f300dbba1c1e4e (wrong)
+
+**Q:** Who was the president of the United States during World War 2 that started his governmental position after January 2, 1939?
+
+**gold:** ['Franklin D. Roosevelt', 'Harry S. Truman']
+
+**answer:** Dwight D. Eisenhower was the president of the United States during World War 2 that started his governmental position after January 2, 1939.
+
+**entities:** ['Dwight D. Eisenhower']
+
+- plan: ['find the president of the United States during World War 2', 'find which of #1 started his governmental position after January 2, 1939']
+- explored: ['government.government_position_held.office_position_or_title', 'government.electoral_college_elected_office.office', 'government.election.office', 'military.military_person.participated_in_conflicts', 'military.military_conflict.commanders', 'military.military_command.military_conflict'] (max_score 0.453)
+- eval: continue resolved=['Dwight D. Eisenhower']
+- explored: ['organization.role.leaders', 'organization.leadership.role', 'organization.role.governors', 'government.us_president.vice_president', 'government.us_vice_president.to_president', 'military.military_person.participated_in_conflicts'] (max_score 0.454)
+- eval: continue resolved=['Dwight D. Eisenhower']
+- explored: ['organization.leadership.person', 'business.board_member.leader_of', 'organization.organization.founders', 'organization.leadership.person', 'business.board_member.leader_of', 'organization.leadership.person'] (max_score 0.172)
+- eval: continue resolved=['Dwight D. Eisenhower']
+- explored: ['people.person.employment_history', 'business.employment_tenure.person', 'government.government_position_held.office_holder'] (max_score 0.411)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-25_23b0132339644b875bf6a966c5b0c131 (wrong)
+
+**Q:** Which Taylor Lautner movie has a sequel titled "The Twilight Saga: Breaking Dawn - Part 1"?
+
+**gold:** ['Eclipse']
+
+**answer:** The Twilight Saga: Breaking Dawn - Part 2.
+
+**entities:** ['The Twilight Saga: Breaking Dawn - Part 2']
+
+- plan: ['find the movie whose sequel is titled "The Twilight Saga: Breaking Dawn - Part 1"', 'find the Taylor Lautner movie among #1']
+- explored: ['film.film.prequel', 'film.film.prequel', 'film.film.sequel', 'film.actor.film', 'tv.tv_actor.starring_roles', 'film.personal_film_appearance.person'] (max_score 0.612)
+- eval: continue resolved=['The Twilight Saga: Breaking Dawn - Part 2']
+- explored: ['film.performance.film', 'film.film.story_by', 'film.film.sequel'] (max_score 0.535)
+- eval: answer resolved=['Taylor Lautner']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-25_2a2de50d3b65cc5d2c88f54e283a4b8a (wrong)
+
+**Q:** What movie featured Taylor Lautner and was released straight to video?
+
+**gold:** ['Shadow Fury', 'Shadow Fury']
+
+**answer:** Abduction
+
+**entities:** ['Abduction']
+
+- plan: ['find the movie that featured Taylor Lautner', 'find which of #1 were released straight to video']
+- explored: ['film.actor.film', 'film.performance.actor', 'film.personal_film_appearance.person', 'film.film.film_format', 'film.film_film_distributor_relationship.film_distribution_medium', 'film.film_regional_release_date.film_release_distribution_medium'] (max_score 0.623)
+- eval: continue resolved=['Abduction', "Valentine's Day", 'Incarceron', 'Tracers']
+- explored: ['film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film_film_distributor_relationship.film', 'film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film.story_by'] (max_score 0.319)
+- eval: continue resolved=['Abduction', 'Twilight']
+- explored: ['film.film_regional_release_date.film_release_distribution_medium', 'base.mediapackage.video_release.consumer_releases', 'base.mediapackage.media_release.video_contents', 'film.film_regional_release_date.film_release_distribution_medium', 'film.film_regional_release_date.film_regional_debut_venue', 'film.film_film_distributor_relationship.film_distribution_medium'] (max_score 0.528)
+- eval: continue resolved=['Abduction', 'Twilight']
+- explored: ['film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film.edited_by', 'film.film.release_date_s', 'film.film_regional_release_date.film', 'film.film.edited_by'] (max_score 0.319)
+- eval: continue resolved=['Abduction', 'Twilight']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-25_3a7068fa96cd9e08dc2b1dabe458c85d (wrong)
+
+**Q:** What movie did Taylor Lautner  play in that the running time for the tv program is 22 minutes?
+
+**gold:** ["He's a Bully, Charlie Brown"]
+
+**answer:** Taylor Lautner played in Summerland, which is the identified tv program with a running time of 22 minutes.
+
+**entities:** ['Summerland']
+
+- plan: ['find the TV program with a running time of 22 minutes', 'find the movie that Taylor Lautner played in that is related to #1']
+- explored: ['tv.regular_tv_appearance.actor', 'tv.tv_actor.starring_roles', 'tv.tv_actor.guest_roles'] (max_score 0.485)
+- eval: continue resolved=[]
+- explored: ['tv.tv_program.episodes', 'tv.tv_program.program_creator', 'tv.tv_program_creator.programs_created', 'tv.tv_character.appeared_in_tv_program', 'tv.regular_tv_appearance.character', 'tv.tv_character.appeared_in_tv_program'] (max_score 0.442)
+- eval: continue resolved=['Summerland']
+- explored: ['film.film.runtime', 'tv.tv_network_duration.program', 'tv.tv_program.episodes', 'tv.tv_program.episodes', 'tv.tv_guest_role.episodes_appeared_in', 'tv.tv_program.episodes'] (max_score 0.553)
+- eval: continue resolved=['Summerland']
+- explored: ['tv.tv_program.episodes', 'tv.tv_program.program_creator', 'tv.tv_program_creator.programs_created', 'tv.tv_program.episodes', 'tv.tv_program.seasons', 'tv.tv_program.genre'] (max_score 0.442)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-25_db9695c22f0f88f0733e1286c7fffe30 (wrong)
+
+**Q:** Which Taylor Lautner movie has a tvrage_id of 20997?
+
+**gold:** ['The Nick and Jessica Variety Hour']
+
+**answer:** Abduction
+
+**entities:** ['Abduction']
+
+- plan: ['find the movie starring Taylor Lautner with tvrage_id 20997']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.66)
+- eval: continue resolved=['Abduction']
+- explored: ['film.film.starring', 'film.director.film', 'film.film.directed_by', 'film.film.starring', 'film.director.film', 'film.personal_film_appearance.film'] (max_score 0.654)
+- eval: continue resolved=['Abduction']
+- explored: ['film.actor.film', 'film.performance.actor', 'people.person.gender', 'film.actor.film', 'film.performance.actor', 'people.person.gender'] (max_score 0.366)
+- eval: continue resolved=['Abduction']
+- explored: ['film.film.starring', 'film.director.film', 'film.film.directed_by', 'film.film.starring', 'film.director.film', 'film.film.directed_by'] (max_score 0.369)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-25_f65ceb2f4ef98392b0177705932740a5 (wrong)
+
+**Q:** What other movies has the actor that played the character Eliot Murtaugh play in?
+
+**gold:** ['Run the Tide', 'The Ridiculous Six', "He's a Bully, Charlie Brown", 'Twilight', 'The Twilight Saga: New Moon', "Valentine's Day", 'Cheaper by the Dozen 2', 'The Adventures of Sharkboy and Lavagirl', 'Shadow Fury', 'Eclipse', 'The Twilight Saga: Breaking Dawn - Part 1', 'The Nick and Jessica Variety Hour', 'Northern Lights', 'Abduction', 'The Twilight Saga: Breaking Dawn - Part 2', 'Field of Dreams 2: Lockout', 'Incarceron', 'Grown Ups 2', 'Tracers']
+
+**answer:** Taylor Lautner played Eliott Murtaugh, and other movies he played in include Twilight, The Twilight Saga: New Moon, Eclipse, The Twilight Saga: Breaking Dawn - Part 1, The Twilight Saga: Breaking Dawn - Part 2, Northern Lights, The Ridiculous Six, and Incarceron.
+
+**entities:** ['Taylor Lautner']
+
+- plan: ['find the actor that played the character Eliot Murtaugh', 'find other movies that #1 has played in']
+- explored: ['film.film_character.portrayed_in_films', 'film.performance.character'] (max_score 0.589)
+- eval: continue resolved=['Taylor Lautner']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.631)
+- eval: answer resolved=['Abduction', 'Incarceron', 'Tracers', 'Twilight']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2653_6c19bc1fe78f2c0015bfd29e5c12767c (wrong)
+
+**Q:** The government jurisdiction, that held the legislative session of the First Valls Government, was involved in which wars?
+
+**gold:** ['Gulf War', 'Battle of Talavera', 'Battle of Bussaco', 'Battle of Bailén', 'Battle of Berezina', 'Second Battle of the Aisne', 'Battle of Medellín', 'Battle of Passchendaele', 'Battle of Dien Bien Phu']
+
+**answer:** France was involved in Seven Years' War, First Indochina War, War of the Castilian Succession, Action of 1 January 1800, Action of 8 May 1744, Action of 31 March 1800, Revolutions and interventions in Hungary, and Williamite War in Ireland.
+
+**entities:** ["Seven Years' War", 'First Indochina War', 'War of the Castilian Succession', 'Action of 1 January 1800', 'Action of 8 May 1744', 'Action of 31 March 1800', 'Revolutions and interventions in Hungary', 'Williamite War in Ireland']
+
+- plan: ['find the government jurisdiction that held the legislative session of the First Valls Government', 'find which wars involved #1']
+- explored: ['government.legislative_session.legislature', 'government.government_position_held.legislative_sessions', 'government.governmental_body.sessions'] (max_score 0.716)
+- eval: continue resolved=['France']
+- explored: ['military.military_combatant_group.combatants', 'military.military_combatant.belongs_to_combatant_group', 'military.military_combatant.includes_allies'] (max_score 0.424)
+- eval: answer resolved=["Thirty Years' War", 'Operation Adolphe', 'French conquest of Senegal', 'Planned French invasion of Britain']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2748_4d6c65004ee28d487bc3921f625106b5 (wrong)
+
+**Q:** What language is spoken in the country that circulates a newspaper called Manager Daily?
+
+**gold:** ['Khmer language']
+
+**answer:** Thai Language is spoken in Thailand.
+
+**entities:** ['Thai Language']
+
+- plan: ['find the country that circulates a newspaper called Manager Daily', 'find the language spoken in #1']
+- explored: ['periodicals.newspaper_circulation_area.newspapers', 'book.newspaper.circulation_areas', 'book.newspaper.headquarters'] (max_score 0.687)
+- eval: continue resolved=['Thailand']
+- explored: ['location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'location.country.official_language'] (max_score 0.744)
+- eval: answer resolved=['Thai Language']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2784_025fdfafd914ff922ab8144f527c06ec (wrong)
+
+**Q:** In what films does the lyracist for "Panther Power" appear?
+
+**gold:** ['Murder Was the Case', 'Poetic Justice', "Gridlock'd", 'Above the Rim', 'Juice', 'Nothing but Trouble', 'Gang Related', 'Bullet']
+
+**answer:** The lyracist for "Panther Power" is Tupac Shakur. Tupac Shakur appears in Tupac: Assassination, Tupac Shakur: Thug Angel: The Life of an Outlaw, R.I.P. II: Eyes on Hip Hop, Tha Westside, Apprenticeship of Tupac Shakur, Tupac: Live at the House of Blues, Tupac: Resurrection, Thug Immortal: The Tupac Shakur Story, Freestyle: The Art of Rhyme, and R.I.P.: Shades of Hip Hop.
+
+**entities:** ['Tupac: Assassination', 'Tupac Shakur: Thug Angel: The Life of an Outlaw', 'R.I.P. II: Eyes on Hip Hop', 'Tha Westside', 'Apprenticeship of Tupac Shakur', 'Tupac: Live at the House of Blues', 'Tupac: Resurrection', 'Thug Immortal: The Tupac Shakur Story', 'Freestyle: The Art of Rhyme', 'R.I.P.: Shades of Hip Hop']
+
+- plan: ['find the lyracist for "Panther Power"', 'find the films that this person appears in']
+- explored: ['music.composition.lyricist', 'music.lyricist.lyrics_written'] (max_score 0.358)
+- eval: continue resolved=['Tupac Shakur']
+- explored: ['film.personal_film_appearance.person', 'film.person_or_entity_appearing_in_film.films', 'film.actor.film'] (max_score 0.806)
+- eval: answer resolved=['Apprenticeship of Tupac Shakur', 'Tupac: Resurrection', 'Welcome to Death Row', 'Biggie & Tupac']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2784_abedc8acd0fdcd2e595d7ec6d58d6058 (wrong)
+
+**Q:** In which movies does Tupac act in, that was edited by Malcolm Campbell?
+
+**gold:** ['Nothing but Trouble']
+
+**answer:** Gang Related is a movie Tupac acted in, but the claim that it was edited by Malcolm Campbell could not be verified against the knowledge graph.
+
+**entities:** ['Gang Related']
+
+- plan: ['find movies that Tupac acts in', 'find which of #1 were edited by Malcolm Campbell']
+- explored: ['film.actor.film', 'film.performance.actor', 'film.personal_film_appearance.person', 'film.editor.film', 'film.personal_film_appearance.person', 'film.film.edited_by'] (max_score 0.616)
+- eval: continue resolved=['Bullet', 'Gang Related', 'Above the Rim', 'Nothing but Trouble']
+- explored: ['film.film.edited_by', 'book.written_work.part_of_series', 'book.written_work.previous_in_series', 'film.film.edited_by', 'film.film.story_by', 'film.film.written_by'] (max_score 0.565)
+- eval: continue resolved=['Nothing but Trouble']
+- explored: ['film.film.edited_by', 'film.editor.film', 'film.person_or_entity_appearing_in_film.films', 'film.film.edited_by', 'film.editor.film', 'people.person.place_of_birth'] (max_score 0.565)
+- eval: continue resolved=['Nothing but Trouble', 'Above the Rim']
+- explored: ['film.film.edited_by', 'film.film.story_by', 'film.film.written_by', 'film.film.edited_by', 'film.film.story_by', 'film.film.written_by'] (max_score 0.265)
+- eval: answer resolved=['Nothing but Trouble']
+- verifier: unsupported unsupported=['Malcolm Campbell edited Gang Related']
+
+---
+
+## WebQTrn-2859_37bf80e89387cf09fca66eb7915a52b0 (wrong)
+
+**Q:** What jobs were done by the author who wrote "The New Atlantis"?
+
+**gold:** ['Spy', 'Statesman', 'Philosopher', 'Scientist', 'Author']
+
+**answer:** The author who wrote "The New Atlantis" was Francis Bacon. The jobs done by Francis Bacon were Philosopher, Artist, Author, Scientist, Statesman, and Visual Artist.
+
+**entities:** ['Francis Bacon']
+
+- plan: ['find the author who wrote "The New Atlantis"', 'find the jobs done by #1']
+- explored: ['book.author.works_written', 'book.book_edition.author_editor', 'book.author.book_editions_published'] (max_score 0.631)
+- eval: continue resolved=['Francis Bacon']
+- explored: ['people.person.profession', 'book.written_work.subjects', 'book.written_work.subjects'] (max_score 0.502)
+- eval: answer resolved=['Philosopher', 'Artist', 'Author', 'Scientist']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-303_2ee96aa7464485d80d214b61773f4a5c (wrong)
+
+**Q:** Who was the literary role model for the "Not Without Laughter (Thrift Edition)" piece poet?
+
+**gold:** ['Walt Whitman']
+
+**answer:** Langston Hughes
+
+**entities:** ['Langston Hughes']
+
+- plan: ['find the literary role model for the poet of "Not Without Laughter (Thrift Edition)"']
+- explored: ['book.book_edition.author_editor', 'book.book_edition.book', 'book.author.book_editions_published'] (max_score 0.508)
+- eval: continue resolved=['Langston Hughes']
+- explored: ['book.written_work.author', 'book.author.works_written', 'book.written_work.subjects', 'book.author.works_written', 'book.author.works_written', 'book.literary_series.author_s'] (max_score 0.545)
+- eval: continue resolved=['Langston Hughes']
+- explored: ['book.literary_series.author_s', 'book.author.works_written', 'book.author.works_written', 'book.author.works_written', 'book.written_work.author', 'book.written_work.subjects'] (max_score 0.297)
+- eval: backtrack resolved=['Langston Hughes']
+- backtrack: evaluator
+- explored: ['book.book_edition.book', 'book.book_edition.book', 'book.book_edition.author_editor', 'book.written_work.author', 'book.written_work.author', 'book.author.contributing_author_to'] (max_score 0.29)
+- eval: backtrack resolved=['Langston Hughes']
+- backtrack: evaluator
+- explored: ['book.book_edition.contributing_authors', 'book.author.series_written_or_contributed_to', 'book.written_work.subjects', 'book.written_work.original_language', 'book.author.book_editions_published', 'book.book_edition.publisher'] (max_score 0.258)
+- eval: backtrack resolved=['Langston Hughes']
+- backtrack: evaluator
+- explored: ['theater.theatrical_lyricist.play_lyrics_written', 'book.book_edition.author_editor', 'theater.play.lyricist', 'book.book.editions', 'book.book.editions', 'book.book_edition.binding'] (max_score 0.225)
+- eval: answer resolved=['Langston Hughes']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-3100_d059b24adec4064377b957ca598769be (wrong)
+
+**Q:** What part is the country with the capital named Santo Domingo?
+
+**gold:** ['Greater Antilles', 'Latin America', 'North America', 'Americas', 'País']
+
+**answer:** The country with the capital named Santo Domingo is Dominican Republic.
+
+**entities:** ['Dominican Republic']
+
+- plan: ['find the country with the capital named Santo Domingo', 'find the part of #1']
+- explored: ['location.country.capital', 'location.capital_of_administrative_division.capital_of', 'location.administrative_division_capital_relationship.capital'] (max_score 0.675)
+- eval: continue resolved=['Dominican Republic']
+- explored: ['location.country.administrative_divisions', 'location.country.first_level_divisions', 'location.administrative_division.country'] (max_score 0.553)
+- eval: answer resolved=['La Romana Province, Dominican Republic', 'Duarte Province', 'Distrito Nacional', 'Santiago Rodríguez Province']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-3170_8c4cd2a8dd5064dcd1e88389796138c7 (wrong)
+
+**Q:** What does the political appointee, Associate Director, White House Office of Public Liaison, have a degree in?
+
+**gold:** ['Political Science']
+
+**answer:** Kal Penn. The degree could not be determined from the facts provided.
+
+**entities:** ['Kal Penn']
+
+- plan: ['find the degree of the Associate Director of the White House Office of Public Liaison']
+- explored: ['government.government_position_held.office_position_or_title', 'government.government_office_or_title.office_holders'] (max_score 0.504)
+- eval: continue resolved=['Kal Penn']
+- explored: ['government.government_position_held.office_holder', 'people.person.profession', 'award.award_nomination.award_nominee', 'education.honorary_degree.recipient', 'organization.leadership.person', 'business.board_member.leader_of'] (max_score 0.494)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['government.politician.government_positions_held', 'award.award_nominee.award_nominations', 'film.performance.actor', 'education.honorary_degree_recipient.honorary_degrees', 'organization.organization_member.member_of', 'government.us_president.vice_president'] (max_score 0.256)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.actor.film', 'tv.tv_actor.starring_roles', 'tv.regular_tv_appearance.actor', 'people.appointment.appointed_by', 'government.political_appointer.appointees', 'business.employment_tenure.person'] (max_score 0.226)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['people.person.gender', 'people.person.languages', 'people.person.nationality', 'government.us_vice_president.to_president', 'government.government_position_held.office_holder', 'government.political_party_tenure.politician'] (max_score 0.211)
+- eval: answer resolved=['Kal Penn']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-3249_4fddfec17159cdf7caa87c1e3e1f34cd (wrong)
+
+**Q:** Which show does Tamera Mowry act on, where the TV program "thetvdb_id", is greater than 75171?
+
+**gold:** ['Strong Medicine', 'Roommates']
+
+**answer:** Tamera Mowry acts on Sister, Sister. The tvdb_id condition could not be determined from the facts provided, so no other show can be selected with confidence.
+
+**entities:** ['Sister, Sister']
+
+- plan: ['find the TV program with thetvdb_id greater than 75171 that Tamera Mowry acts on', 'find the show from #1']
+- explored: ['tv.regular_tv_appearance.actor', 'tv.tv_guest_role.actor', 'tv.tv_actor.guest_roles'] (max_score 0.501)
+- eval: continue resolved=['Sister, Sister', 'Detention', 'The Adventures of Hyperman', 'Strong Medicine']
+- explored: ['tv.tv_program.regular_cast', 'tv.regular_tv_appearance.series', 'tv.tv_program.genre', 'film.film.story_by', 'film.film.starring', 'media_common.netflix_genre.titles'] (max_score 0.603)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['tv.tv_genre.programs', 'tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'media_common.netflix_title.netflix_genres', 'film.film.film_casting_director', 'film.producer.film'] (max_score 0.329)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.starring', 'film.film_crew_gig.film', 'film.film.other_crew', 'film.film.music', 'film.film.language', 'film.film.country'] (max_score 0.199)
+- eval: continue resolved=['Sister, Sister', 'Detention', 'Strong Medicine', 'The Look for Less']
+- explored: ['tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'broadcast.tv_channel.language', 'tv.tv_program.languages', 'media_common.netflix_title.netflix_genres', 'broadcast.content.language'] (max_score 0.308)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.starring', 'film.film_crew_gig.film', 'film.film.other_crew', 'film.film.music', 'film.film.language', 'film.film.country'] (max_score 0.199)
+- eval: continue resolved=['Sister, Sister', 'Detention', 'Strong Medicine', 'The Look for Less']
+- explored: ['base.schemastaging.tv_star_dubbing_performance.language', 'broadcast.content.language', 'base.webvideo.internet_video_series.language', 'base.webvideo.internet_video_series.language', 'film.film.language', 'film.film.country'] (max_score 0.224)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-493_590fff78c30981ef9566ad54a453d002 (wrong)
+
+**Q:** Where does the breed Schipperke originated from?
+
+**gold:** ['Europe', 'Eurasia', 'Western Europe']
+
+**answer:** Schipperke originated from Belgium.
+
+**entities:** ['Belgium']
+
+- plan: ['find the origin of the breed Schipperke']
+- explored: ['biology.animal_breed.place_of_origin', 'biology.breed_origin.breeds_originating_here', 'biology.breed_registration.breed'] (max_score 0.742)
+- eval: answer resolved=['Belgium']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-493_cf7833e237b8cda1de396587129515c1 (wrong)
+
+**Q:** Where was the newspaper La Libre Belgique distributed during World War II?
+
+**gold:** ['Europe', 'Eurasia', 'Western Europe']
+
+**answer:** La Libre Belgique during World War II was distributed in Belgium.
+
+**entities:** ['Belgium']
+
+- plan: ['find World War II distribution locations of La Libre Belgique']
+- explored: ['periodicals.newspaper_circulation_area.newspapers', 'book.newspaper.circulation_areas'] (max_score 0.459)
+- eval: answer resolved=['Belgium']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-567_2c5591f1dbe7402405004d7a0836dd3b (wrong)
+
+**Q:** Which animated movies hs Ron Howard done?
+
+**gold:** ['Osmosis Jones']
+
+**answer:** Ron Howard did these animated movies: Willow and Splash. I could not determine any others from the facts provided.
+
+**entities:** ['Willow', 'Splash']
+
+- plan: ['find animated movies associated with Ron Howard']
+- explored: ['film.director.film', 'film.film.directed_by', 'film.actor.film'] (max_score 0.567)
+- eval: continue resolved=['Cocoon', 'Willow', 'Splash']
+- explored: ['film.film.genre', 'film.production_company.films', 'film.film_film_distributor_relationship.film', 'film.film_subject.films', 'film.film.featured_film_locations', 'film.film_art_director.films_art_directed'] (max_score 0.345)
+- eval: continue resolved=['Cocoon', 'Willow', 'Backdraft', 'The Missing']
+- explored: ['film.film_subject.films', 'film.film.subjects', 'film.film.genre', 'film.film_subject.films', 'film.film.subjects', 'film.film.genre'] (max_score 0.326)
+- eval: continue resolved=['Cocoon', 'Willow', 'Backdraft', 'Splash']
+- explored: ['film.film_subject.films', 'film.music_contributor.film', 'film.film_subject.films', 'film.film_art_director.films_art_directed', 'film.production_company.films', 'film.film_subject.films'] (max_score 0.326)
+- eval: answer resolved=['Cocoon', 'Willow', 'Backdraft', 'The Missing']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-60_4faaf65ae1cc1b138d41253c3fc0e493 (wrong)
+
+**Q:** What country once had a consumer price index of 0.03 and is where people speak Portuguese?
+
+**gold:** ['Angola']
+
+**answer:** Brazil
+
+**entities:** ['Brazil']
+
+- plan: ['find the country that once had a consumer price index of 0.03', 'find which of #1 is a country where people speak Portuguese']
+- explored: ['location.country.official_language', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in'] (max_score 0.231)
+- eval: continue resolved=['Brazil', 'Macau', 'Estado Novo', 'Equatorial Guinea']
+- explored: ['location.statistical_region.consumer_price_index', 'location.country.gdp_nominal', 'location.country.currency_used', 'location.statistical_region.consumer_price_index', 'location.country.currency_used', 'location.country.currency_formerly_used'] (max_score 0.791)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.country.currency_formerly_used', 'location.statistical_region.merchandise_trade_percent_of_gdp', 'location.statistical_region.cpi_inflation_rate', 'location.statistical_region.merchandise_trade_percent_of_gdp', 'location.statistical_region.cpi_inflation_rate', 'location.statistical_region.gdp_nominal'] (max_score 0.372)
+- eval: continue resolved=[]
+- explored: ['location.country.currency_formerly_used', 'finance.currency.countries_formerly_used', 'location.country.currency_formerly_used', 'finance.currency.countries_formerly_used', 'location.country.currency_formerly_used', 'finance.currency.countries_formerly_used'] (max_score 0.657)
+- eval: continue resolved=[]
+- explored: ['location.statistical_region.cpi_inflation_rate', 'location.statistical_region.merchandise_trade_percent_of_gdp', 'location.country.currency_formerly_used', 'location.statistical_region.consumer_price_index', 'location.statistical_region.cpi_inflation_rate', 'location.statistical_region.merchandise_trade_percent_of_gdp'] (max_score 0.791)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-64_017078a590fa5382bab9986c451d8d08 (wrong)
+
+**Q:** In the movie Juice, what character did the focal character in the image Meagainsttheworld play?
 
 **gold:** ['Bishop']
 
-**answer:** Tupac Shakur played the character Digital Underground member in Juice.
+**answer:** The answer could not be verified against the knowledge graph, but Q is the character associated with Juice.
+
+**entities:** ['Q']
+
+- plan: ['find the focal character in the image Meagainsttheworld', 'find the character played by #1 in the movie Juice']
+- explored: ['film.film.starring', 'film.cinematographer.film', 'film.film.costume_design_by'] (max_score 0.45)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.cinematography', 'film.film.film_set_decoration_by', 'film.film.film_casting_director'] (max_score 0.173)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film_cut.film', 'film.film.featured_film_locations', 'film.director.film'] (max_score 0.158)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.story_by', 'film.film.directed_by', 'film.film.country'] (max_score 0.154)
+- eval: continue resolved=['Bishop', 'Q', 'Raheem', 'Trip']
+- explored: ['base.litcentral.focal_location.conservation_project_s', 'base.litcentral.focal_location.conservation_plan_s', 'base.litcentral.focal_location.priority_species', 'film.cinematographer.film', 'film.personal_film_appearance.person', 'film.actor.film'] (max_score 0.258)
+- eval: continue resolved=['Keesha', 'Q', 'Raheem', 'Radames']
+- explored: ['base.litcentral.focal_location.conservation_project_s', 'base.abcbirds.conservation_project.project_location_s', 'base.litcentral.focal_location.conservation_plan_s', 'base.abcbirds.conservation_plan.focal_location', 'book.technical_report.institution', 'book.book_subject.works'] (max_score 0.258)
+- eval: continue resolved=['Keesha']
+- explored: ['base.litcentral.focal_location.conservation_project_s', 'base.litcentral.focal_location.conservation_plan_s', 'base.litcentral.focal_location.priority_species', 'film.cinematographer.film', 'base.litcentral.focal_taxa.conservation_program_s', 'film.film.cinematography'] (max_score 0.258)
+- eval: backtrack resolved=[]
+- verifier: unsupported unsupported=['Meagainsttheworld played character Q']
+
+---
+
+## WebQTrn-64_025fdfafd914ff922ab8144f527c06ec (wrong)
+
+**Q:** What was the name in "Juice" of the lyricist for "Panther Power"?
+
+**gold:** ['Bishop']
+
+**answer:** The lyricist for "Panther Power" in "Juice" was Tupac Shakur.
 
 **entities:** ['Tupac Shakur']
 
-- plan: ['find the character Digital Underground Member in Juice', 'find the actor who played #1']
-- explored: ['film.film_character.portrayed_in_films', 'film.performance.character', 'film.film.story_by', 'film.film.soundtrack', 'film.film.soundtrack'] (max_score 0.461)
+- plan: ['find the lyricist for "Panther Power"', 'find the name used in "Juice" for #1']
+- explored: ['music.lyricist.lyrics_written', 'music.composition.lyricist', 'music.lyricist.lyrics_written', 'music.composition.lyricist', 'music.artist.track'] (max_score 0.682)
 - eval: continue resolved=['Tupac Shakur']
-- explored: ['book.book.characters', 'base.popstra.celebrity.friendship', 'base.popstra.friendship.participant', 'film.film.story_by', 'film.film_story_contributor.film_story_credits', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.238)
+- explored: ['music.artist.label', 'symbols.name_source.namesakes', 'symbols.name_source.namesakes'] (max_score 0.481)
+- eval: backtrack resolved=['Tupac Shakur']
+- backtrack: evaluator
+- explored: ['symbols.namesake.named_after', 'symbols.namesake.named_after', 'music.record_label.artist'] (max_score 0.176)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['music.artist.origin', 'music.artist.contribution', 'music.artist.track_contributions'] (max_score 0.149)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.popstra.celebrity.canoodled', 'music.album.artist', 'music.recording.artist'] (max_score 0.138)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-64_08a3071aec88af141fc20ed22cfff0e2 (wrong)
+
+**Q:** What did the person who lived in Marin City once do?
+
+**gold:** ['Bishop']
+
+**answer:** The person who lived in Marin City was Tupac Shakur, and he once recorded California Love.
+
+**entities:** ['Tupac Shakur', 'California Love']
+
+- plan: ['find the person who lived in Marin City', 'find what #1 once did']
+- explored: ['people.place_lived.location', 'location.location.people_born_here', 'people.person.place_of_birth', 'book.written_work.author', 'book.author.works_written', 'film.film.story_by'] (max_score 0.626)
 - eval: continue resolved=['Tupac Shakur']
-- explored: ['film.performance.actor', 'film.actor.film', 'film.film_character.portrayed_in_films'] (max_score 0.593)
-- eval: answer resolved=['Tupac Shakur']
+- explored: ['music.artist.track_contributions', 'music.recording.artist', 'music.album.artist'] (max_score 0.446)
+- eval: continue resolved=['Tupac Shakur']
+- explored: ['music.track_contribution.track', 'media_common.quotation.subjects', 'music.artist.track', 'music.track_contribution.role', 'music.recording_contribution.performance_role', 'base.recordingstudios.studio_musician.insturments_played'] (max_score 0.487)
+- eval: answer resolved=['Out The Moon', 'Smile', 'Same Song', 'Gangsta Team']
 - verifier: grounded unsupported=[]
 
 ---
 
-## WebQTest-1000_7457bb008a1da743b19ff9ce3a5cac63 (wrong)
+## WebQTrn-683_7584ba13fff133af09542211fd90a33d (wrong)
 
-**Q:** Which countries included in Oceania, had a population of less than 523000?
+**Q:** Who is the actor tha tplayed Hawkeye in the film starred by Katarzyna Ancuta?
 
-**gold:** ['Tonga', 'Samoa', 'Northern Mariana Islands', 'Solomon Islands', 'Guam', 'New Caledonia', 'Marshall Islands', 'Vanuatu', 'Kiribati', 'Fiji', 'Cook Islands']
+**gold:** ['Jeremy Renner']
 
-**answer:** The countries included in Oceania that had a population of less than 523000 were Nauru, Tuvalu, and Norfolk Island.
+**answer:** Chris Hemsworth played Hawkeye in The Avengers.
 
-**entities:** ['Nauru', 'Tuvalu', 'Norfolk Island']
+**entities:** ['Chris Hemsworth']
 
-- plan: ['find countries included in Oceania', 'find which of #1 had a population of less than 523000']
-- explored: ['location.location.contains', 'location.location.contains', 'location.statistical_region.population'] (max_score 0.557)
-- eval: continue resolved=['Papua New Guinea', 'Coral Sea Islands', 'French Polynesia', 'Nauru']
-- explored: ['location.statistical_region.population', 'location.location.people_born_here', 'language.human_language.countries_spoken_in', 'location.statistical_region.internet_users_percent_population', 'location.statistical_region.renewable_freshwater_per_capita', 'location.statistical_region.literacy_rate'] (max_score 0.541)
-- eval: continue resolved=['Coral Sea Islands']
-- explored: ['people.ethnicity.geographic_distribution', 'people.ethnicity.population', 'people.ethnicity.included_in_group', 'people.ethnicity.geographic_distribution', 'people.ethnicity.included_in_group', 'people.ethnicity.languages_spoken'] (max_score 0.217)
-- eval: continue resolved=['Coral Sea Islands']
-- explored: ['location.statistical_region.population', 'location.statistical_region.internet_users_percent_population', 'location.statistical_region.renewable_freshwater_per_capita', 'location.statistical_region.internet_users_percent_population', 'location.statistical_region.renewable_freshwater_per_capita', 'people.ethnicity.geographic_distribution'] (max_score 0.541)
-- eval: continue resolved=['Coral Sea Islands', 'Nauru']
+- plan: ['find the film starred by Katarzyna Ancuta', 'find the actor who played Hawkeye in #1']
+- explored: ['film.film_crewmember.films_crewed', 'film.film_crew_gig.crewmember', 'film.film_character.portrayed_in_films', 'film.performance.character', 'tv.tv_character.appeared_in_tv_program'] (max_score 0.469)
+- eval: continue resolved=['The Avengers']
+- explored: ['film.film.starring', 'film.film.film_casting_director', 'film.film.personal_appearances'] (max_score 0.489)
+- eval: answer resolved=['Chris Hemsworth']
 - verifier: grounded unsupported=[]
 
 ---
 
-## WebQTest-1528_3c737d4a4dbf3b5acb082a4a1e43d792 (wrong)
+## WebQTrn-831_f2d789d28c11bc5b682263b07195d208 (wrong)
 
-**Q:** What Cameron Pace Group movie was Logan Lerman in?
+**Q:** What is the last movie by the artist who recorded Faster Kill Pussycat?
 
-**gold:** ['The Three Musketeers']
+**gold:** ['Something Wicked']
 
-**answer:** Logan Lerman was in Meet Bill.
+**answer:** Brittany Murphy. The last movie in the facts is The Dead Girl.
 
-**entities:** ['Meet Bill']
+**entities:** ['The Dead Girl']
 
-- plan: ['find the movie that Logan Lerman was in', 'find the Cameron Pace Group movie among #1']
-- explored: ['film.actor.film', 'film.person_or_entity_appearing_in_film.films', 'film.performance.actor', 'film.film_company.films', 'film.production_company.films', 'film.film_film_company_relationship.film_company'] (max_score 0.587)
-- eval: continue resolved=['Meet Bill', 'Hoot', 'The Only Living Boy in New York', 'Riding in Cars with Boys']
-- explored: ['film.film.starring', 'film.film.genre', 'film.film.country', 'film.film.starring', 'film.film.genre', 'film.film.country'] (max_score 0.298)
+- plan: ['find the artist who recorded Faster Kill Pussycat', 'find the last movie by #1']
+- explored: ['music.recording.artist', 'music.album.artist', 'music.artist.track'] (max_score 0.657)
+- eval: continue resolved=['Paul Oakenfold', 'Brittany Murphy']
+- explored: ['film.actor.film', 'film.music_contributor.film', 'film.film.music', 'film.actor.film', 'film.performance.actor', 'film.producer.film'] (max_score 0.589)
+- eval: continue resolved=['Brittany Murphy']
+- explored: ['film.film.starring', 'film.performance.film', 'film.film.country', 'film.film.starring', 'film.performance.film', 'film.producer.film'] (max_score 0.609)
+- eval: continue resolved=['Brittany Murphy']
+- explored: ['film.actor.film', 'film.performance.actor', 'film.producer.film', 'film.actor.film', 'film.music_contributor.film', 'film.film.music'] (max_score 0.589)
 - eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['film.film.film_set_decoration_by', 'film.film.music', 'film.director.film', 'film.film.soundtrack', 'film.film.soundtrack', 'film.film_film_distributor_relationship.film'] (max_score 0.278)
-- eval: answer resolved=['Life of Pi']
 - verifier: grounded unsupported=[]
 
 ---
 
-## WebQTrn-1053_4c8649801d197e6eb5377d292c0b6ca8 (wrong)
+## WebQTrn-849_fa1fffe7995213b6528da57ea4c8d226 (wrong)
 
-**Q:** Which actor played the character Henri Ducard in Star Wars?
+**Q:** Which country, with an army of 101,000, borders Germany?
 
-**gold:** ['Qui-Gon Jinn']
+**gold:** ['Belgium']
 
-**answer:** Liam Neeson played Henri Ducard.
+**answer:** Poland borders Germany. The claim that Poland has an army of 101,000 could not be verified against the knowledge graph.
 
-**entities:** ['Liam Neeson']
+**entities:** ['Poland']
 
-- plan: ['find the character Henri Ducard in Star Wars', 'find the actor who played #1']
-- explored: ['film.film_character.portrayed_in_films', 'film.performance.character', 'fictional_universe.fictional_character.character_created_by', 'film.film.prequel', 'film.film_art_director.films_art_directed', 'film.director.film'] (max_score 0.587)
+- plan: ['find countries that border Germany', 'find which of #1 have an army of 101,000']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country', 'film.film.country', 'film.film_regional_release_date.film', 'base.ontologies.ontology_instance_mapping.freebase_topic'] (max_score 0.309)
+- eval: continue resolved=['Germany']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.states_and_provences.continent', 'base.biblioness.bibs_location.country', 'location.country.administrative_divisions', 'location.administrative_division.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Luxembourg', 'Poland', 'Austria']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Liechtenstein']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.states_and_provences.continent', 'base.biblioness.bibs_location.country', 'location.country.administrative_divisions', 'location.administrative_division.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Liechtenstein', 'Europe']
+- verifier: unsupported unsupported=['Poland has an army of 101,000']
+
+---
+
+## WebQTrn-894_022431f6dfa30cf2e715eb171e0437ec (wrong)
+
+**Q:** What inspired Scott Fitzgerald and was also influenced by Mark Twain?
+
+**gold:** ['Sherwood Anderson']
+
+**answer:** Jazz Age inspired F. Scott Fitzgerald.
+
+**entities:** ['Jazz Age']
+
+- plan: ['find what inspired Scott Fitzgerald', 'find what was influenced by Mark Twain', 'find the overlap between #1 and #2']
+- explored: ['book.author.school_or_movement', 'book.written_work.author', 'book.school_or_movement.associated_authors', 'book.written_work.author', 'book.book_subject.works', 'fictional_universe.fictional_character.character_created_by'] (max_score 0.256)
+- eval: continue resolved=['Mark Twain']
+- explored: ['book.school_or_movement.associated_authors', 'book.author.school_or_movement', 'book.written_work.school_or_movement', 'book.written_work.author', 'media_common.adapted_work.adaptations', 'media_common.adaptation.adapted_from'] (max_score 0.23)
+- eval: continue resolved=['Jazz Age']
+- explored: ['book.author.works_written', 'book.author.works_written', 'book.author.contributing_author_to', 'book.author.works_written', 'book.school_or_movement.associated_authors', 'book.written_work.author'] (max_score 0.222)
 - eval: backtrack resolved=[]
 - backtrack: evaluator
-- explored: ['fictional_universe.fictional_character.occupation', 'fictional_universe.fictional_character.species', 'fictional_universe.fictional_character.gender', 'film.film.film_casting_director', 'film.writer.film', 'film.cinematographer.film'] (max_score 0.25)
+- explored: ['book.school_or_movement.associated_authors', 'book.author.school_or_movement', 'book.written_work.school_or_movement', 'book.written_work.author', 'media_common.adapted_work.adaptations', 'media_common.adaptation.adapted_from'] (max_score 0.23)
+- eval: backtrack resolved=['F. Scott Fitzgerald']
+- backtrack: evaluator
+- explored: ['book.school_or_movement.associated_works', 'book.book_subject.works', 'book.school_or_movement.associated_period', 'book.written_work.subjects', 'book.book.genre', 'media_common.adapted_work.adaptations'] (max_score 0.191)
+- eval: continue resolved=['Jazz Age']
+- explored: ['book.book_subject.works', 'book.school_or_movement.associated_works', 'book.written_work.school_or_movement', 'book.book_subject.works', 'book.school_or_movement.associated_works', 'book.written_work.author'] (max_score 0.243)
+- eval: continue resolved=['Jazz Age']
+- explored: ['base.inspiration.inspiration.inspired_by', 'base.inspiration.inspiration.inspired_by', 'base.inspiration.inspiration.inspiration_for', 'book.school_or_movement.associated_works', 'book.book_subject.works', 'book.school_or_movement.associated_period'] (max_score 0.275)
+- eval: continue resolved=['Jazz Age']
+- verifier: unsupported unsupported=['Jazz Age was also influenced by Mark Twain']
+
+---
+
+## WebQTrn-962_f69b9d7b30f2ef81193ae7b0a39c78c5 (wrong)
+
+**Q:** Who played in a movie that included a young Ray O Hardesty as a crew membner?
+
+**gold:** ['Michael Connor Humphreys']
+
+**answer:** Tom Hanks played in Forrest Gump, which included Ray O. Hardesty as a crew member.
+
+**entities:** ['Tom Hanks']
+
+- plan: ['find the movie that included a young Ray O Hardesty as a crew member', 'find who played in #1']
+- explored: ['film.film_crewmember.films_crewed', 'film.film_crew_gig.crewmember', 'film.film.other_crew', 'film.film_crew_gig.film', 'film.director.film'] (max_score 0.672)
+- eval: continue resolved=['Forrest Gump']
+- explored: ['film.film_character.portrayed_in_films', 'film.performance.character', 'film.film.film_casting_director'] (max_score 0.589)
+- eval: answer resolved=['Tom Hanks', 'Michael Connor Humphreys']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1000_0adacc5f8d85e317c77fbf2ffa83dae9 (hedge)
+
+**Q:** What countries in Oceania have an official symbol of their state trees?
+
+**gold:** ['Guam', 'Northern Mariana Islands']
+
+**answer:** Could not be determined from the provided facts which countries in Oceania have an official symbol of their state trees. The facts list several Oceania countries and several state tree official-symbol relationships, but they do not clearly connect any specific Oceania country to a state tree official symbol in a way that identifies the countries asked for.
+
+**entities:** []
+
+- plan: ['find countries in Oceania', 'find which of #1 have an official symbol of their state trees']
+- explored: ['location.location.contains', 'location.location.contains', 'location.statistical_region.population', 'location.location_symbol_relationship.Kind_of_symbol', 'location.offical_symbol_variety.symbols_of_this_kind'] (max_score 0.538)
+- eval: continue resolved=['Papua New Guinea', 'Nauru', 'New Zealand', 'Tonga']
+- explored: ['location.country.official_language', 'location.country.form_of_government', 'government.national_anthem_of_a_country.country', 'location.country.official_language', 'location.country.form_of_government', 'government.national_anthem_of_a_country.country'] (max_score 0.204)
+- eval: continue resolved=['Papua New Guinea']
+- explored: ['location.country.official_language', 'symbols.name_source.namesakes', 'location.country.languages_spoken', 'location.country.official_language', 'location.country.languages_spoken', 'language.language_family.languages'] (max_score 0.489)
+- eval: continue resolved=['Papua New Guinea']
+- explored: ['location.country.official_language', 'location.country.form_of_government', 'government.national_anthem_of_a_country.country', 'location.country.official_language', 'location.country.form_of_government', 'finance.currency.countries_used'] (max_score 0.204)
+- eval: continue resolved=['Papua New Guinea']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1000_1d3a86f839023bb35d439f56a673dbe6 (hedge)
+
+**Q:** In Oceania, what country has the smallest GDP deflator change of rate?
+
+**gold:** ['New Caledonia']
+
+**answer:** It could not be determined from the provided facts which country in Oceania has the smallest GDP deflator change of rate.
+
+**entities:** []
+
+- plan: ['find countries in Oceania', 'find the country in #1 with the smallest GDP deflator change of rate']
+- explored: ['location.location.contains', 'location.location.contains', 'location.statistical_region.population'] (max_score 0.538)
+- eval: continue resolved=['Papua New Guinea', 'Nauru', 'New Zealand', 'Tonga']
+- explored: ['location.statistical_region.gdp_deflator_change', 'location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_nominal_per_capita', 'location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_nominal_per_capita', 'finance.currency.countries_used'] (max_score 0.6)
+- eval: continue resolved=[]
+- explored: ['finance.currency.countries_used', 'location.country.currency_used', 'finance.currency.countries_formerly_used', 'finance.currency.countries_used', 'location.country.currency_used', 'finance.exchange_rate.target_of_exchange'] (max_score 0.307)
 - eval: backtrack resolved=[]
 - backtrack: evaluator
-- explored: ['fictional_universe.fictional_character_creator.fictional_characters_created', 'fictional_universe.work_of_fiction.setting', 'film.film.starring', 'film.film.film_series'] (max_score 0.194)
-- eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['film.film_series.films_in_series', 'film.film.written_by', 'film.film.costume_design_by'] (max_score 0.189)
+- explored: ['location.country.currency_formerly_used', 'base.lightweight.regional_dated_money_value.currency', 'business.market_size.currency', 'measurement_unit.dated_money_value.currency', 'finance.currency.target_of_exchange', 'finance.exchange_rate.target_of_exchange'] (max_score 0.276)
+- eval: continue resolved=[]
+- explored: ['location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_deflator_change', 'location.statistical_region.gdp_nominal_per_capita', 'finance.currency.countries_used', 'location.country.currency_used', 'location.statistical_region.gdp_real'] (max_score 0.324)
 - eval: backtrack resolved=[]
 - verifier: grounded unsupported=[]
 
@@ -960,6 +1689,29 @@
 
 ---
 
+## WebQTest-1012_872253e47dd6ddaa213ff31eeda8783b (hedge)
+
+**Q:** What is there to do in Hollywood, California in the Eastern Time Zone?
+
+**gold:** ['Universal Studios Hollywood']
+
+**answer:** It could not be determined from the provided facts what there is to do in Hollywood, California in the Eastern Time Zone. The facts only identify Hollywood as being in California and in the Greater Los Angeles Area, but they do not provide activities for Hollywood, California, and the Eastern Time Zone facts do not connect to Hollywood, California.
+
+**entities:** []
+
+- plan: ['find Hollywood, California', 'find things to do in #1', 'find which of #2 are in the Eastern Time Zone']
+- explored: ['location.neighborhood.neighborhood_of', 'location.neighborhood.neighborhood_of', 'base.biblioness.bibs_location.state', 'location.location.time_zones', 'base.schemastaging.phone_open_times.time_zone', 'base.schemastaging.context_name.pronunciation'] (max_score 0.494)
+- eval: continue resolved=['Hollywood']
+- explored: ['location.location.events', 'travel.travel_destination.tourist_attractions', 'location.place_with_neighborhoods.neighborhoods', 'location.location.events', 'travel.travel_destination.tourist_attractions', 'location.place_with_neighborhoods.neighborhoods'] (max_score 0.484)
+- eval: continue resolved=['Memphis', 'Portland']
+- explored: ['location.location.events', 'base.marchmadness.ncaa_basketball_tournament_stage.games', 'location.location.events', 'location.location.events', 'time.event.locations', 'base.marchmadness.ncaa_basketball_tournament_stage.games'] (max_score 0.199)
+- eval: continue resolved=['Memphis Zoo', 'Memphis Brooks Museum of Art', 'Memphis Botanic Garden', 'Graceland']
+- explored: ['zoos.zoo_category.zoos', 'travel.travel_destination.tourist_attractions', 'location.location.geolocation', 'film.film.featured_film_locations', 'protected_sites.natural_or_cultural_site_listing.listed_site', 'travel.travel_destination.tourist_attractions'] (max_score 0.349)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
 ## WebQTest-1091_61efa0b17cc53c2187422d88bf670f22 (hedge)
 
 **Q:** Is the religion of which Gautama Buddha is a founding figure also a type of religions are in the united states?
@@ -979,49 +1731,442 @@
 
 ---
 
-## WebQTest-537_e5da8cda32fb1aa37028f9f7f7b1d3a8 (hedge)
+## WebQTest-1168_1591d6a0e6cef93c6863edb2eb0e198f (hedge)
 
-**Q:** Which film was nominated for an award with the description, "Outstanding Director - Motion Picture", and Charlie Hunnam was in?
+**Q:** What kind of guitar did the author who published Kurt Cobain's journals play?
 
-**gold:** ['Children of Men']
+**gold:** ['Fender Jag-Stang']
 
-**answer:** Nicholas Nickleby could not be determined from the facts provided as the film nominated for an award with the description, "Outstanding Director - Motion Picture", and Charlie Hunnam was in.
+**answer:** It could not be determined from the provided facts what kind of guitar the author who published Kurt Cobain's journals played.
 
 **entities:** []
 
-- plan: ['find the award with the description "Outstanding Director - Motion Picture"', 'find the film that was nominated for #1 and that Charlie Hunnam was in']
-- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.349)
-- eval: backtrack resolved=[]
+- plan: ["find the author who published Kurt Cobain's journals", 'find the kind of guitar played by #1']
+- explored: ['book.book_edition.author_editor', 'book.author.book_editions_published', 'book.book_edition.publisher'] (max_score 0.526)
+- eval: backtrack resolved=['Kurt Cobain']
 - backtrack: evaluator
-- explored: ['tv.tv_actor.guest_roles', 'tv.tv_guest_role.actor', 'tv.regular_tv_appearance.actor'] (max_score 0.168)
+- explored: ['book.book_edition.book', 'book.book.editions', 'book.book_edition.binding'] (max_score 0.158)
+- eval: continue resolved=['Viking Press']
+- explored: ['book.book_edition.publisher', 'book.publishing_company.imprints', 'book.publisher_imprint_tenure.imprints'] (max_score 0.076)
 - eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['people.person.profession', 'base.popstra.dated.participant', 'people.person.spouse_s'] (max_score 0.132)
+- backtrack: low_score
+- explored: ['book.book_edition.binding', 'book.book.editions', 'book.book_edition.isbn'] (max_score 0.131)
 - eval: backtrack resolved=[]
-- backtrack: evaluator
-- explored: ['people.person.gender', 'people.person.education', 'base.popstra.friendship.participant'] (max_score 0.098)
+- backtrack: low_score
+- explored: [] (max_score 0.0)
 - eval: backtrack resolved=[]
 - verifier: grounded unsupported=[]
 
 ---
 
-## WebQTrn-125_003c6a046c47526d922683f22cf0e983 (hedge)
+## WebQTest-1171_a8ed8aa8e8eaf11e4b00b81b2ac2ac23 (hedge)
 
-**Q:** The subject of the film King: A Filmed Record... Montgomery to Memphis was shot at what location?
+**Q:** What actor was featured in Mike and Dave Need Wedding Dates and didthe voice of Darth Vader?
 
-**gold:** ['Memphis']
+**gold:** ['Zac Efron']
 
-**answer:** It could not be determined from the provided facts.
+**answer:** Neil Patrick Harris was featured in Mike and Dave Need Wedding Dates, but from the facts provided it could not be determined who did the voice of Darth Vader.
 
 **entities:** []
 
-- plan: ['find the subject of the film King: A Filmed Record... Montgomery to Memphis', 'find the location where #1 was shot']
-- explored: ['film.film.subjects', 'film.producer.film', 'film.film.music'] (max_score 0.579)
-- eval: continue resolved=['Martin Luther King, Jr.']
-- explored: ['base.crime.crime_victim.crime_type', 'people.deceased_person.place_of_death', 'base.activism.activist.area_of_activism'] (max_score 0.361)
-- eval: continue resolved=['Memphis']
-- explored: ['time.event.locations', 'location.location.events', 'location.location.containedby', 'base.activism.activist.area_of_activism', 'people.person.profession', 'people.profession.people_with_this_profession'] (max_score 0.506)
-- eval: answer resolved=['Memphis']
+- plan: ['find the actor featured in Mike and Dave Need Wedding Dates', 'find which of #1 did the voice of Darth Vader']
+- explored: ['fictional_universe.marriage_of_fictional_characters.spouses', 'fictional_universe.fictional_character.married_to', 'tv.regular_tv_appearance.character', 'tv.tv_guest_role.special_performance_type', 'film.personal_film_appearance.type_of_appearance', 'music.album.artist'] (max_score 0.208)
+- eval: continue resolved=['Zac Efron']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles', 'film.film_crew_gig.film', 'tv.tv_program.regular_cast', 'film.film_film_distributor_relationship.film'] (max_score 0.521)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['tv.regular_tv_appearance.actor', 'people.person.profession', 'people.person.gender', 'film.film.other_crew', 'tv.tv_program_writer_relationship.tv_program', 'film.music_contributor.film'] (max_score 0.279)
+- eval: continue resolved=['Matt Lanter']
+- explored: ['film.film.starring', 'film.film.other_crew', 'tv.tv_program_writer_relationship.tv_program', 'fictional_universe.marriage_of_fictional_characters.spouses', 'fictional_universe.fictional_character.married_to', 'tv.regular_tv_appearance.character'] (max_score 0.44)
+- eval: continue resolved=['Neil Patrick Harris']
+- explored: ['film.performance.character', 'film.film_character.portrayed_in_films', 'film.performance.actor'] (max_score 0.485)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-12_974c964a1a2810facfeb4b1a996e878a (hedge)
+
+**Q:** Who held a government post from 1979-01-03 and was the governor of Ohio in 2011?
+
+**gold:** ['John Kasich']
+
+**answer:** It could not be determined from the provided facts who held a government post from 1979-01-03 and was the governor of Ohio in 2011.
+
+**entities:** []
+
+- plan: ['find who held a government post from 1979-01-03', 'find who was the governor of Ohio in 2011', 'find who satisfies both #1 and #2']
+- explored: ['government.government_position_held.basic_title', 'government.government_position_held.office_position_or_title', 'government.government_office_or_title.office_holders', 'government.government_position_held.jurisdiction_of_office', 'government.government_position_held.district_represented', 'government.governmental_jurisdiction.government_positions'] (max_score 0.4)
+- eval: continue resolved=['Rosângela Matheus']
+- explored: ['government.government_position_held.office_holder', 'government.politician.government_positions_held', 'government.politician.party', 'government.government_position_held.office_holder', 'government.politician.government_positions_held', 'people.deceased_person.place_of_death'] (max_score 0.657)
+- eval: continue resolved=['Douglas McKay']
+- explored: ['government.government_position_held.office_position_or_title', 'government.government_office_or_title.office_holders', 'government.governmental_jurisdiction.government_positions', 'government.government_position_held.office_position_or_title', 'government.government_position_held.basic_title', 'government.government_office_or_title.office_holders'] (max_score 0.642)
+- eval: continue resolved=['Douglas McKay']
+- explored: ['government.government_position_held.office_holder', 'government.politician.government_positions_held', 'military.military_person.participated_in_conflicts', 'government.government_position_held.office_holder', 'government.politician.government_positions_held', 'people.deceased_person.place_of_death'] (max_score 0.657)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1301_5714a7a5f1feec1348045800b0c0c28c (hedge)
+
+**Q:** Which amusement park in Sacramento California, was first opened in 1986?
+
+**gold:** ['Raging Waters Sacramento']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find amusement parks in Sacramento, California', 'find which of #1 was first opened in 1986']
+- explored: ['travel.travel_destination.tourist_attractions', 'travel.tourist_attraction.near_travel_destination', 'location.location.events'] (max_score 0.562)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film_festival.location', 'time.event.locations', 'location.place_with_neighborhoods.neighborhoods'] (max_score 0.266)
+- eval: continue resolved=['Sacramento Zoo', 'California Automobile Museum']
+- explored: ['location.location.events', 'time.event.locations', 'base.peleton.road_bicycle_racing_event.start_location', 'location.location.events', 'film.film_festival_event.festival', 'time.event.locations'] (max_score 0.272)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film_festival.location', 'time.event.locations', 'location.place_with_neighborhoods.neighborhoods'] (max_score 0.266)
+- eval: continue resolved=['Sacramento Zoo']
+- explored: ['base.peleton.road_bicycle_racing_event.finish_location', 'base.peleton.road_bicycle_racing_event.teams_participating_uci_protour', 'base.peleton.road_bicycle_racing_event.stages_held', 'time.event.instance_of_recurring_event', 'time.event.instance_of_recurring_event', 'base.events.festival_series.type_of_festival'] (max_score 0.2)
+- eval: continue resolved=['Sacramento Zoo']
+- explored: ['location.location.events', 'time.event.locations', 'film.film_festival_focus.festivals_with_this_focus', 'location.location.events', 'time.event.locations', 'base.peleton.road_bicycle_racing_event.finish_location'] (max_score 0.272)
+- eval: continue resolved=['Sacramento Zoo']
+- explored: ['location.location.events', 'film.film_festival_event.festival', 'time.event.locations', 'base.peleton.road_bicycle_racing_event.finish_location', 'base.peleton.road_bicycle_racing_event.teams_participating_uci_protour', 'base.peleton.road_bicycle_racing_event.stages_held'] (max_score 0.272)
+- eval: backtrack resolved=[]
+- verifier: unsupported unsupported=['Sacramento Zoo was first opened in 1986']
+
+---
+
+## WebQTest-1379_8b1ff0551fb22f1d4e54d33d3656b8e8 (hedge)
+
+**Q:** What was Franz Liszt's earliest job that led to leading a religious organization?
+
+**gold:** ['Drums']
+
+**answer:** It could not be determined from the provided facts what Franz Liszt's earliest job was that led to leading a religious organization. The only employment-related entity given is Franz Liszt Academy of Music, Budapest, which does not identify such a job.
+
+**entities:** []
+
+- plan: ["find Franz Liszt's earliest job", 'find the job from #1 that led to leading a religious organization']
+- explored: ['people.person.employment_history', 'business.employment_tenure.person', 'base.catalog.cataloged_composer.music_catalog'] (max_score 0.541)
+- eval: backtrack resolved=['Franz Liszt Academy of Music, Budapest']
+- backtrack: evaluator
+- explored: ['base.catalog.music_catalog.cataloged_composer', 'music.recording.artist', 'music.composition.composer'] (max_score 0.215)
+- eval: continue resolved=['Franz Liszt Academy of Music, Budapest']
+- explored: ['base.catalog.cataloged_composer.music_catalog', 'base.catalog.music_catalog.cataloged_composer', 'base.catalog.music_catalog.music_catalog_creator', 'base.catalog.cataloged_composer.music_catalog', 'base.catalog.music_catalog.cataloged_composer', 'base.catalog.music_catalog.music_catalog_creator'] (max_score 0.215)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.catalog.music_catalog.cataloged_composer', 'music.recording.artist', 'music.composition.composer'] (max_score 0.215)
+- eval: continue resolved=['Franz Liszt Academy of Music, Budapest']
+- explored: ['base.catalog.music_catalog_entry.music_catalog', 'base.catalog.music_catalog.catalog_entries', 'base.catalog.music_catalog_creator.music_catalog', 'base.catalog.music_catalog_entry.music_catalog', 'base.catalog.music_catalog.catalog_entries', 'base.catalog.music_catalog.publication'] (max_score 0.167)
+- eval: continue resolved=['Franz Liszt Academy of Music, Budapest']
+- explored: ['music.recording.producer', 'music.composition.composer', 'base.catalog.music_catalog_entry.cataloged_composition', 'base.catalog.cataloged_composition.catalog_number', 'music.composition.composer', 'base.catalog.music_catalog_entry.cataloged_composition'] (max_score 0.167)
+- eval: backtrack resolved=['Franz Liszt Academy of Music, Budapest']
+- backtrack: evaluator
+- explored: ['base.catalog.music_catalog_entry.music_catalog', 'base.catalog.music_catalog.catalog_entries', 'base.catalog.music_catalog_creator.music_catalog', 'base.catalog.music_catalog_entry.music_catalog', 'base.catalog.music_catalog.catalog_entries', 'base.catalog.music_catalog.publication'] (max_score 0.167)
+- eval: continue resolved=['Franz Liszt Academy of Music, Budapest']
+- explored: ['base.catalog.cataloged_composition.catalog_number'] (max_score 0.075)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1528_6ecf5c92092ae9080307178a28b8d589 (hedge)
+
+**Q:** What movie was nominated for an award, was based on a book, and featured Logan Lerman as an actor?
+
+**gold:** ['The Perks of Being a Wallflower']
+
+**answer:** The movie could not be determined from the facts provided. Logan Lerman is linked to several films, including Hoot, Fury, The Perks of Being a Wallflower, Noah, Stuck in Love, The Scribe, Gamer, A Painted House, and The Kid, but the facts do not identify which one was both nominated for an award and based on a book.
+
+**entities:** []
+
+- plan: ['find the movie that was nominated for an award', 'find the movie from #1 that was based on a book', 'find the movie from #2 that featured Logan Lerman as an actor']
+- explored: ['award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'film.actor.film'] (max_score 0.725)
+- eval: continue resolved=['Teen Choice Award for Choice Movie Breakout Star - Male', 'Teen Choice Award for Choice Movie: Liplock', 'Teen Choice Award for Choice Movie: Rumble', "Critics' Choice Movie Award for Best Young Performer"]
+- explored: ['award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'film.actor.film', 'award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'film.actor.film'] (max_score 0.725)
+- eval: continue resolved=["Critics' Choice Movie Award for Best Actor", "Critics' Choice Movie Award for Best Acting Ensemble", '67th British Academy Film Awards']
+- explored: ['award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'film.actor.film', 'award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'award.award_winner.awards_won'] (max_score 0.725)
+- eval: continue resolved=["Critics' Choice Movie Award for Best Actor", "Critics' Choice Movie Award for Best Acting Ensemble"]
+- explored: ['award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'film.actor.film', 'award.award_nominee.award_nominations', 'award.award_nomination.award_nominee', 'award.award_winner.awards_won'] (max_score 0.725)
+- eval: backtrack resolved=['Christian Bale']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1528_ac9d054b50d6d55401844da4807076b2 (hedge)
+
+**Q:** Which movie did Logan Lerman act in, that was directed by Guy Barnes?
+
+**gold:** ['My One and Only']
+
+**answer:** Could not be determined from the provided facts. Logan Lerman is listed for several films, but no fact links any of those films to Guy Barnes as director.
+
+**entities:** []
+
+- plan: ['find the movie that was directed by Guy Barnes', 'find the movie from #1 that Logan Lerman acted in']
+- explored: ['film.film_art_director.films_art_directed', 'film.film.film_art_direction_by', 'film.film.film_production_design_by', 'film.actor.film', 'tv.tv_actor.starring_roles', 'film.personal_film_appearance.person'] (max_score 0.537)
+- eval: continue resolved=['Outlaw Country', 'In the Line of Duty: The F.B.I. Murders', 'American Harvest', 'The Missing']
+- explored: ['film.film.country', 'film.film.starring', 'film.writer.film', 'film.film.country', 'film.film.starring', 'film.film.directed_by'] (max_score 0.319)
+- eval: continue resolved=['The Patriot']
+- explored: ['film.film.country', 'film.film.featured_film_locations', 'film.film_location.featured_in_films', 'film.film.country', 'film.film.featured_film_locations', 'film.film_location.featured_in_films'] (max_score 0.319)
+- eval: answer resolved=['The Patriot']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1547_9a301711fdf36a2e2d6fdd7b21d65d3c (hedge)
+
+**Q:** What is the title of the book written by the United States Secretary of the Air Force?
+
+**gold:** ['In My Time: A Personal and Political Memoir']
+
+**answer:** Could not be determined from the provided facts which book was written by the United States Secretary of the Air Force.
+
+**entities:** []
+
+- plan: ['find the United States Secretary of the Air Force', 'find the book written by #1', 'find the title of #2']
+- explored: ['government.government_position_held.office_position_or_title', 'government.government_office_or_title.office_holders', 'military.military_service.rank', 'base.schemastaging.context_name.pronunciation', 'base.skosbase.vocabulary_equivalent_topic.equivalent_concept', 'base.descriptive_names.names.descriptive_name'] (max_score 0.523)
+- eval: continue resolved=['Verne Orr', 'Donald B. Rice']
+- explored: ['education.education.student', 'people.person.education', 'military.military_service.military_person', 'education.education.student', 'people.person.employment_history', 'government.political_party_tenure.politician'] (max_score 0.154)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['government.politician.government_positions_held', 'military.military_person.service', 'people.person.nationality', 'people.person.education', 'government.politician.party', 'people.person.place_of_birth'] (max_score 0.128)
+- eval: backtrack resolved=['Verne Orr', 'Donald B. Rice']
+- backtrack: evaluator
+- explored: ['government.government_position_held.office_holder', 'people.person.gender', 'business.employment_tenure.person', 'people.person.places_lived', 'military.military_service.military_person'] (max_score 0.095)
+- eval: continue resolved=['Verne Orr', 'Donald B. Rice']
+- explored: ['book.book_subject.works', 'book.written_work.subjects', 'book.newspaper.circulation_areas', 'book.book_character.appears_in_book', 'book.book.characters', 'base.militaryinfiction.military_rank_in_fiction.used_by'] (max_score 0.355)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['government.government_position_held.office_holder', 'people.person.gender', 'business.employment_tenure.person', 'people.person.places_lived', 'military.military_service.military_person'] (max_score 0.095)
+- eval: continue resolved=['Verne Orr']
+- explored: ['people.person.place_of_birth', 'base.biblioness.bibs_location.country', 'music.artist.origin', 'fictional_universe.fictional_character.character_created_by', 'fictional_universe.fictional_character.rank', 'fictional_universe.fictional_character.occupation'] (max_score 0.128)
+- eval: continue resolved=['Verne Orr']
+- explored: ['book.book_subject.works', 'book.written_work.author', 'book.written_work.subjects', 'book.book_character.appears_in_book', 'book.book.characters', 'fictional_universe.person_in_fiction.representations_in_fiction'] (max_score 0.34)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1686_554811ebe1463287ee640a214683ea57 (hedge)
+
+**Q:** Who held his governmental position from before Janaury 6, 2003 and was the 2009 Governor of Arizona?
+
+**gold:** ['Janet Napolitano']
+
+**answer:** Jan Brewer was the 2009 Governor of Arizona, but it could not be determined from the provided facts who held his governmental position from before Janaury 6, 2003.
+
+**entities:** []
+
+- plan: ['find the 2009 Governor of Arizona', 'find who held the same governmental position as #1 from before January 6, 2003']
+- explored: ['government.government_office_or_title.office_holders', 'government.government_position_held.office_position_or_title', 'organization.role.governors', 'government.governmental_jurisdiction.governing_officials', 'government.political_district.representatives', 'government.governmental_jurisdiction.government_positions'] (max_score 0.428)
+- eval: continue resolved=['David Gowan', 'David Livingston', 'Doug Coleman']
+- explored: ['organization.role.governors', 'organization.role.leaders', 'government.government_office_or_title.office_holders', 'government.politician.government_positions_held', 'government.government_position_held.office_holder', 'people.person.profession'] (max_score 0.556)
+- eval: continue resolved=['Doug Ducey']
+- explored: ['government.political_appointer.appointees', 'government.government_position_held.appointed_by', 'organization.organization.founders', 'organization.leadership.person', 'business.board_member.leader_of', 'people.person.employment_history'] (max_score 0.223)
+- eval: continue resolved=['David Gowan', 'David Livingston', 'Doug Coleman']
+- explored: ['government.politician.government_positions_held', 'government.government_position_held.office_holder', 'people.person.employment_history', 'government.governmental_jurisdiction.governing_officials', 'government.government_position_held.jurisdiction_of_office', 'government.governmental_jurisdiction.governing_officials'] (max_score 0.24)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1785_2fd3a482f02db22067954809fe7b222b (hedge)
+
+**Q:** What Kim Richards films have film netflix_id numbers lower than 70037542?
+
+**gold:** ['No Deposit, No Return', 'Escape to Witch Mountain', 'Tuff Turf', 'Raid on Entebbe', 'Return from Witch Mountain']
+
+**answer:** Could not be determined from the facts provided which of Kim Richards's films have film netflix_id numbers lower than 70037542, because no film netflix_id numbers are given for the films listed.
+
+**entities:** []
+
+- plan: ['find films featuring Kim Richards', 'find which of #1 have netflix_id numbers lower than 70037542']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.619)
+- eval: continue resolved=['Race to Witch Mountain', 'No Deposit, No Return', 'Black Snake Moan', 'Escape to Witch Mountain']
+- explored: ['media_common.netflix_title.netflix_genres', 'film.film.featured_film_locations', 'film.film.starring', 'media_common.netflix_title.netflix_genres', 'film.film.starring', 'film.film_regional_release_date.film'] (max_score 0.326)
+- eval: continue resolved=[]
+- explored: ['media_common.netflix_genre.titles', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres'] (max_score 0.318)
+- eval: continue resolved=[]
+- explored: ['media_common.netflix_genre.titles', 'media_common.netflix_title.netflix_genres', 'tv.tv_genre.programs', 'media_common.netflix_title.netflix_genres', 'film.film.genre', 'film.film.rating'] (max_score 0.318)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1785_98806527b045c387792db297c407c023 (hedge)
+
+**Q:** Which film starring Kim Richards has the largest Netflix ID?
+
+**gold:** ['Race to Witch Mountain']
+
+**answer:** It could not be determined from the provided facts which film starring Kim Richards has the largest Netflix ID, because no Netflix ID values are given for the films.
+
+**entities:** []
+
+- plan: ['find films starring Kim Richards', 'find the film from #1 with the largest Netflix ID']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.639)
+- eval: continue resolved=['Race to Witch Mountain', 'No Deposit, No Return', 'Escape to Witch Mountain', 'Return from Witch Mountain']
+- explored: ['media_common.netflix_title.netflix_genres', 'film.film.starring', 'film.film.featured_film_locations', 'media_common.netflix_title.netflix_genres', 'film.film.starring', 'film.film_regional_release_date.film'] (max_score 0.382)
+- eval: continue resolved=[]
+- explored: ['media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_genre.titles', 'media_common.netflix_title.netflix_genres'] (max_score 0.358)
+- eval: continue resolved=['Race to Witch Mountain']
+- explored: ['media_common.netflix_title.netflix_genres', 'film.film.film_series', 'film.film.film_series', 'media_common.netflix_title.netflix_genres', 'film.film.starring', 'film.film.story_by'] (max_score 0.322)
+- eval: continue resolved=['Race to Witch Mountain', 'Escape to Witch Mountain', 'Return from Witch Mountain']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1797_202ded8e5df1c80ea9770154e24e5ffb (hedge)
+
+**Q:** Who held Secretary of State after the Battle of Vicksburg?
+
+**gold:** ['Ulysses S. Grant']
+
+**answer:** It could not be determined from the provided facts who held Secretary of State after the Battle of Vicksburg.
+
+**entities:** []
+
+- plan: ['find the Battle of Vicksburg', 'find who held Secretary of State after #1']
+- explored: ['base.americancivilwar.battle.military_units_involved_in_this_conflict', 'base.americancivilwar.military_unit.conflicts_participated_in', 'military.military_conflict.combatants', 'government.government_office_or_title.category', 'government.government_office_category.offices', 'government.government_position_held.basic_title'] (max_score 0.51)
+- eval: continue resolved=['Siege of Vicksburg']
+- explored: ['base.americancivilwar.battle.military_units_involved_in_this_conflict', 'base.americancivilwar.military_unit.conflicts_participated_in', 'military.military_unit.place_of_origin', 'base.americancivilwar.military_unit.conflicts_participated_in', 'base.americancivilwar.battle.military_units_involved_in_this_conflict', 'military.military_unit.place_of_origin'] (max_score 0.3)
+- eval: continue resolved=['Siege of Vicksburg']
+- explored: ['military.military_command.military_conflict', 'military.military_conflict.commanders', 'military.military_person.participated_in_conflicts'] (max_score 0.209)
+- eval: continue resolved=[]
+- explored: ['military.military_command.military_combatant', 'military.casualties.combatant', 'military.military_combatant.armed_forces', 'military.military_command.military_combatant', 'military.casualties.combatant', 'government.government_position_held.jurisdiction_of_office'] (max_score 0.23)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1797_2fb9e2823ccf35d2103fa8846d6f2ca8 (hedge)
+
+**Q:** Of the people who fought in the Battle of Vicksburg, who has the earliest date of death?
+
+**gold:** ['John C. Pemberton']
+
+**answer:** Could not be determined from the provided facts, because no dates of death are given for the people who fought in the Siege of Vicksburg.
+
+**entities:** []
+
+- plan: ['find the people who fought in the Battle of Vicksburg', 'find which of #1 has the earliest date of death']
+- explored: ['military.military_person.participated_in_conflicts', 'military.military_conflict.military_personnel_involved', 'base.americancivilwar.battle.military_units_involved_in_this_conflict'] (max_score 0.571)
+- eval: continue resolved=['Henry Dow', 'John S. Bowen', 'Peter Joseph Osterhaus', 'David Farragut']
+- explored: ['people.deceased_person.place_of_death', 'people.person.place_of_birth', 'military.military_person.participated_in_conflicts', 'people.deceased_person.place_of_death', 'people.deceased_person.place_of_burial', 'people.person.place_of_birth'] (max_score 0.281)
+- eval: continue resolved=['John S. Bowen', 'Peter Joseph Osterhaus', 'David Farragut', 'Ralph Pomeroy Buckland']
+- explored: ['people.deceased_person.place_of_death', 'film.film_character.portrayed_in_films', 'location.hud_county_place.place', 'people.deceased_person.place_of_death', 'time.event.locations', 'film.film_festival.location'] (max_score 0.266)
+- eval: continue resolved=['John S. Bowen', 'Peter Joseph Osterhaus', 'David Farragut', 'Ralph Pomeroy Buckland']
+- explored: ['people.deceased_person.place_of_death', 'people.person.place_of_birth', 'military.military_person.participated_in_conflicts', 'people.deceased_person.place_of_death', 'people.deceased_person.cause_of_death', 'military.military_person.participated_in_conflicts'] (max_score 0.266)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1840_3d474acada1d3230d94e79aad9206043 (hedge)
+
+**Q:** What language spoken in Norway has the initials sma?
+
+**gold:** ['Saami, South Language']
+
+**answer:** Saami, North Language, Finnish, Kven Language, Saami, South Language, and Saami, Lule Language are spoken in Norway, but none of the provided facts identify which one has the initials sma. So it could not be determined from the facts above.
+
+**entities:** []
+
+- plan: ['find languages spoken in Norway', 'find which of #1 have the initials sma']
+- explored: ['location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'location.country.official_language'] (max_score 0.708)
+- eval: continue resolved=['Saami, North Language', 'Finnish, Kven Language', 'Saami, South Language', 'Saami, Lule Language']
+- explored: ['language.human_language.region', 'language.language_family.languages', 'language.human_language.countries_spoken_in', 'language.human_language.region', 'language.language_family.languages', 'language.human_language.countries_spoken_in'] (max_score 0.341)
+- eval: answer resolved=['Saami, North Language']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1923_a64ef0f5ce397a5e1ef6fcd550ebfcfb (hedge)
+
+**Q:** What movies has Miley Cyrus been in with music by Aaron Zigman?
+
+**gold:** ['Sex and the City 2', 'The Last Song']
+
+**answer:** Miley Cyrus has been in The Last Song, So Undercover, Hannah Montana: The Movie, Radio Disney Party Jams: The Concert, Bolt, Wizards on Deck with Hannah Montana, The World According to Miley Cyrus, and LOL. However, from the facts provided, it could not be determined which of these had music by Aaron Zigman.
+
+**entities:** []
+
+- plan: ['find movies that feature Miley Cyrus', 'find which of #1 have music by Aaron Zigman']
+- explored: ['film.actor.film', 'film.person_or_entity_appearing_in_film.films', 'film.performance.actor', 'film.film.music', 'film.music_contributor.film', 'music.artist.track_contributions'] (max_score 0.548)
+- eval: continue resolved=['The Last Song', 'So Undercover', 'Hannah Montana: The Movie', 'Radio Disney Party Jams: The Concert']
+- explored: ['film.film.music', 'music.track_contribution.track', 'film.film.soundtrack', 'film.film.music', 'film.music_contributor.film', 'film.film_crew_gig.film'] (max_score 0.541)
+- eval: answer resolved=['The Last Song']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-1923_a90c08a839ac4d0ac22ebbf436bb578b (hedge)
+
+**Q:** What movie featuring Miley Cyrus was directed by Tom Vaughan?
+
+**gold:** ['So Undercover']
+
+**answer:** The movie featuring Miley Cyrus that was directed by Tom Vaughan could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the movie featuring Miley Cyrus', 'find the movie from #1 that was directed by Tom Vaughan']
+- explored: ['film.actor.film', 'film.music_contributor.film', 'film.person_or_entity_appearing_in_film.films', 'film.film.directed_by', 'film.director.film', 'tv.tv_director.episodes_directed'] (max_score 0.565)
+- eval: continue resolved=['Hannah Montana and Miley Cyrus: Best of Both Worlds Concert', 'High School Musical 2', 'The Last Song', 'Sex and the City 2']
+- explored: ['film.film.featured_song', 'film.film.starring', 'film.film_featured_song.featured_in_film', 'film.film.starring', 'music.soundtrack.film', 'film.film.soundtrack'] (max_score 0.34)
+- eval: continue resolved=['The Last Song']
+- explored: ['film.film.music', 'film.music_contributor.film', 'music.artist.track', 'music.artist.track', 'music.track_contribution.track', 'music.recording.song'] (max_score 0.285)
+- eval: answer resolved=['The Last Song']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-361_5f8c05737061d5501b6a23a978b5589b (hedge)
+
+**Q:** What museum in Vienna that was established in 1891?
+
+**gold:** ['Kunsthistorisches Museum']
+
+**answer:** Kunsthistorisches Museum could be the museum in Vienna established in 1891, but this could not be determined from the provided facts alone.
+
+**entities:** []
+
+- plan: ['find museums in Vienna', 'find which of #1 were established in 1891']
+- explored: ['travel.travel_destination.tourist_attractions', 'travel.tourist_attraction.near_travel_destination', 'protected_sites.natural_or_cultural_site_listing.listed_site'] (max_score 0.525)
+- eval: continue resolved=['Liechtenstein Museum', 'Kunsthistorisches Museum', 'Naturhistorisches Museum', 'Haus der Musik']
+- explored: ['architecture.museum.type_of_museum', 'architecture.museum.address', 'visual_art.art_owner.artworks_owned', 'architecture.museum.type_of_museum', 'exhibitions.exhibition_producer.exhibitions_produced', 'visual_art.art_owner.artworks_owned'] (max_score 0.401)
+- eval: continue resolved=[]
+- explored: ['architecture.museum.type_of_museum', 'music.artist.track', 'architecture.building.building_function', 'architecture.museum.type_of_museum', 'architecture.museum.type_of_museum', 'architecture.museum.type_of_museum'] (max_score 0.386)
+- eval: continue resolved=[]
+- explored: ['architecture.museum.type_of_museum', 'visual_art.art_owner.artworks_owned', 'travel.travel_destination.tourist_attractions', 'architecture.museum.type_of_museum', 'architecture.museum.address', 'architecture.museum.director'] (max_score 0.371)
+- eval: continue resolved=['Kunsthistorisches Museum']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-389_27f6987805010183edbeba6b91a3cafd (hedge)
+
+**Q:** What type of music was created by Claude Bebussy and in the Album Epica?
+
+**gold:** ['Classical music']
+
+**answer:** Claude Debussy created music compositions such as Jeux. Epica is a Classical music album by Audiomachine. The specific music type created by Claude Debussy in the Album Epica could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the music created by Claude Bebussy', 'find the music in the album Epica']
+- explored: ['music.composition.composer', 'film.film.music', 'music.artist.track_contributions', 'music.album.artist', 'music.artist.album', 'music.album.genre'] (max_score 0.625)
+- eval: continue resolved=['Jeux', 'Images pour orchestre', "Children's Corner", 'De grève']
+- explored: ['music.composition.part_of', 'music.composition.includes', 'music.composition.composer', 'music.composer.compositions', 'music.composition.composer', 'music.composition.lyricist'] (max_score 0.344)
+- eval: continue resolved=['Epica']
+- explored: ['music.composition.part_of', 'music.composition.includes', 'music.composition.composer', 'music.composer.compositions', 'music.composition.lyricist', 'music.lyricist.lyrics_written'] (max_score 0.359)
+- eval: continue resolved=['Audiomachine']
+- explored: ['music.composition.part_of', 'music.composition.includes', 'music.composition.composer', 'music.composition.part_of', 'music.composition.includes', 'music.composition.composer'] (max_score 0.629)
+- eval: answer resolved=['Epica']
 - verifier: grounded unsupported=[]
 
 ---
@@ -1052,74 +2197,347 @@
 
 ---
 
-## WebQTrn-849_eba7931ddf28af4dfa20fb099196c91f (hedge)
+## WebQTest-537_b7771109a84a9b56518460dc9e8878ff (hedge)
 
-**Q:** What country bordering Germany that involved in the Gulf War?
+**Q:** What Charlie Hunnam work was production designed by Geoffrey Kirkland?
 
-**gold:** ['France']
+**gold:** ['Children of Men']
 
-**answer:** Germany borders Europe, and the Gulf War involved Saudi Arabia, Israel, Kuwait, Persian Gulf, Arabian Peninsula, and Iraq. From the facts given, it could not be determined which country bordering Germany was involved in the Gulf War.
+**answer:** It could not be determined from the provided facts which Charlie Hunnam work was production designed by Geoffrey Kirkland.
 
 **entities:** []
 
-- plan: ['find countries bordering Germany', 'find which of #1 were involved in the Gulf War']
-- explored: ['geography.river.basin_countries', 'geography.lake.basin_countries', 'base.locations.continents.countries_within', 'film.film.country', 'film.film_regional_release_date.film', 'base.ontologies.ontology_instance_mapping.freebase_topic'] (max_score 0.562)
-- eval: continue resolved=['Europe']
-- explored: ['geography.river.basin_countries', 'location.location.containedby', 'location.location.partially_contained_by', 'geography.river.basin_countries', 'location.location.containedby', 'location.location.partially_contained_by'] (max_score 0.277)
-- eval: continue resolved=['Germany']
-- explored: ['base.locations.countries.cities_within', 'base.locations.continents.countries_within', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.countries.continent', 'location.country.languages_spoken'] (max_score 0.35)
-- eval: continue resolved=['Germany']
-- explored: ['base.locations.countries.cities_within', 'base.biblioness.bibs_location.country', 'location.administrative_division.country', 'base.locations.continents.countries_within', 'base.locations.countries.continent', 'location.location.geolocation'] (max_score 0.35)
-- eval: continue resolved=['Germany']
+- plan: ['find the work of Charlie Hunnam that was production designed by Geoffrey Kirkland']
+- explored: ['film.film.film_production_design_by', 'film.film_production_designer.films_production_designed', 'people.person.profession', 'film.performance.actor', 'film.actor.film', 'tv.tv_actor.starring_roles'] (max_score 0.577)
+- eval: continue resolved=['Nicholas Nickleby', 'Children of Men']
+- explored: ['film.film.film_production_design_by', 'film.film_production_designer.films_production_designed', 'film.director.film', 'film.film.film_production_design_by', 'film.film_production_designer.films_production_designed', 'film.film.costume_design_by'] (max_score 0.568)
+- eval: continue resolved=[]
+- explored: ['film.film.film_production_design_by', 'film.film_production_designer.films_production_designed', 'people.person.profession', 'film.film.executive_produced_by', 'film.producer.films_executive_produced', 'people.profession.people_with_this_profession'] (max_score 0.577)
+- eval: continue resolved=['Charlie Hunnam']
+- explored: ['film.film.film_production_design_by', 'film.film_production_designer.films_production_designed', 'film.director.film', 'film.film.film_production_design_by', 'film.film_production_designer.films_production_designed', 'film.film.costume_design_by'] (max_score 0.568)
+- eval: backtrack resolved=[]
 - verifier: grounded unsupported=[]
 
 ---
 
-## WebQTrn-710_e3d40457273785e46c5b71732713a5f4 (hedge)
+## WebQTest-537_e5da8cda32fb1aa37028f9f7f7b1d3a8 (hedge)
 
-**Q:** When is the last time the team whose mascot is called Crazy Cab win the World Series?
+**Q:** Which film was nominated for an award with the description, "Outstanding Director - Motion Picture", and Charlie Hunnam was in?
 
-**gold:** ['2014 World Series']
+**gold:** ['Children of Men']
 
-**answer:** It could not be determined from the provided facts when the San Francisco Giants last won the World Series.
+**answer:** Nicholas Nickleby could not be determined from the facts provided as the film nominated for an award with the description, "Outstanding Director - Motion Picture", and Charlie Hunnam was in.
 
 **entities:** []
 
-- plan: ['find the team whose mascot is called Crazy Cab', 'find the last time #1 won the World Series']
-- explored: ['sports.mascot.team', 'sports.sports_team.team_mascot'] (max_score 0.702)
+- plan: ['find the award with the description "Outstanding Director - Motion Picture"', 'find the film that was nominated for #1 and that Charlie Hunnam was in']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.349)
 - eval: backtrack resolved=[]
 - backtrack: evaluator
-- explored: [] (max_score 0.0)
+- explored: ['tv.tv_actor.guest_roles', 'tv.tv_guest_role.actor', 'tv.regular_tv_appearance.actor'] (max_score 0.168)
 - eval: backtrack resolved=[]
-- backtrack: dead_end
-- explored: [] (max_score 0.0)
+- backtrack: evaluator
+- explored: ['people.person.profession', 'base.popstra.dated.participant', 'people.person.spouse_s'] (max_score 0.132)
 - eval: backtrack resolved=[]
-- backtrack: dead_end
-- explored: [] (max_score 0.0)
+- backtrack: evaluator
+- explored: ['people.person.gender', 'people.person.education', 'base.popstra.friendship.participant'] (max_score 0.098)
 - eval: backtrack resolved=[]
 - verifier: grounded unsupported=[]
 
 ---
 
-## WebQTest-1785_2fd3a482f02db22067954809fe7b222b (hedge)
+## WebQTest-538_fc5392eefef107aa88084b05ddd2e246 (hedge)
 
-**Q:** What Kim Richards films have film netflix_id numbers lower than 70037542?
+**Q:** Which film debuted at the 2012 9Âº Syfy Festival and featured Taylor Swift?
 
-**gold:** ['No Deposit, No Return', 'Escape to Witch Mountain', 'Tuff Turf', 'Raid on Entebbe', 'Return from Witch Mountain']
+**gold:** ['The Lorax']
 
-**answer:** Could not be determined from the facts provided which of Kim Richards's films have film netflix_id numbers lower than 70037542, because no film netflix_id numbers are given for the films listed.
+**answer:** It could not be determined from the provided facts which film debuted at the 2012 9Âº Syfy Festival and featured Taylor Swift.
 
 **entities:** []
 
-- plan: ['find films featuring Kim Richards', 'find which of #1 have netflix_id numbers lower than 70037542']
-- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.619)
-- eval: continue resolved=['Race to Witch Mountain', 'No Deposit, No Return', 'Black Snake Moan', 'Escape to Witch Mountain']
-- explored: ['media_common.netflix_title.netflix_genres', 'film.film.featured_film_locations', 'film.film.starring', 'media_common.netflix_title.netflix_genres', 'film.film.starring', 'film.film_regional_release_date.film'] (max_score 0.326)
+- plan: ['find the film that debuted at the 2012 9Âº Syfy Festival', 'find the film from #1 that featured Taylor Swift']
+- explored: ['film.producer.film', 'film.film.produced_by', 'film.actor.film'] (max_score 0.329)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film_subject.films', 'film.writer.film', 'film.film.written_by'] (max_score 0.298)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.subjects', 'film.personal_film_appearance.person', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.265)
 - eval: continue resolved=[]
-- explored: ['media_common.netflix_genre.titles', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres'] (max_score 0.318)
+- explored: ['film.film.release_date_s', 'film.film_regional_release_date.film', 'film.performance.film', 'film.film.genre', 'film.film_subject.films', 'film.film.subjects'] (max_score 0.398)
 - eval: continue resolved=[]
-- explored: ['media_common.netflix_genre.titles', 'media_common.netflix_title.netflix_genres', 'tv.tv_genre.programs', 'media_common.netflix_title.netflix_genres', 'film.film.genre', 'film.film.rating'] (max_score 0.318)
+- explored: ['film.film_festival.focus', 'film.film.genre', 'film.film_subject.films', 'film.film.subjects', 'film.personal_film_appearance.person', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.399)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.subjects', 'base.events.type_of_festival.focus_subject', 'base.events.subject_of_festival.festivals_of_this_type', 'film.performance.actor', 'film.producer.films_executive_produced', 'film.film.executive_produced_by'] (max_score 0.265)
+- eval: continue resolved=['Documentary film']
+- explored: ['film.film.film_festivals', 'film.film.directed_by', 'film.film.genre', 'film.film.film_festivals', 'film.director.film', 'film.film.directed_by'] (max_score 0.687)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-576_495085ad9dd6274cce483df63474ca21 (hedge)
+
+**Q:** Of the 7 countries in Central America, which has an ISO smaller than 188?
+
+**gold:** ['Belize']
+
+**answer:** It could not be determined from the provided facts which of Belize, Guatemala, Panama, Costa Rica, El Salvador, Honduras, or Nicaragua has an ISO smaller than 188, because no ISO values are given.
+
+**entities:** []
+
+- plan: ['find the 7 countries in Central America', 'find which of #1 have an ISO smaller than 188']
+- explored: ['location.location.contains', 'location.location.contains', 'location.location.containedby', 'film.film.country', 'film.film_regional_release_date.film', 'broadcast.radio_station.format'] (max_score 0.478)
+- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.capital', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.capital'] (max_score 0.654)
+- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.continents.states_provinces_within', 'location.country.capital', 'base.biblioness.bibs_location.country', 'location.statistical_region.population'] (max_score 0.654)
+- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.capital', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.capital'] (max_score 0.399)
+- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-576_99c43635b648023af901dc341b3bab6e (hedge)
+
+**Q:** In which of the seven countries making up Central America are there fewer than 1100 people in the country's army?
+
+**gold:** ['Belize']
+
+**answer:** Could not be determined from the provided facts which of Belize, Guatemala, Panama, Costa Rica, El Salvador, and Honduras have fewer than 1100 people in the country's army.
+
+**entities:** []
+
+- plan: ['find the seven countries making up Central America', "find which of #1 have fewer than 1100 people in the country's army"]
+- explored: ['location.location.contains', 'organization.organization.geographic_scope', 'location.location.geolocation', 'film.film.country', 'film.film_regional_release_date.film', 'music.genre.subgenre'] (max_score 0.432)
+- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- explored: ['base.locations.continents.countries_within', 'base.locations.countries.continent', 'location.country.form_of_government', 'base.locations.continents.countries_within', 'base.locations.countries.continent', 'location.country.form_of_government'] (max_score 0.616)
+- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.continents.states_provinces_within', 'location.country.form_of_government', 'base.schemastaging.context_name.pronunciation', 'base.ontologies.ontology_instance_mapping.freebase_topic'] (max_score 0.379)
+- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.form_of_government', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.form_of_government'] (max_score 0.649)
+- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-759_33c0a2138ef3f4a4f61dbee8dc9714e5 (hedge)
+
+**Q:** Who has Brad Pitt dated in the past, and was into Buddhism?
+
+**gold:** ['Thandie Newton']
+
+**answer:** Brad Pitt dated Sinitta, Sonita Henry, Jill Schoelen, Shalane McCall, Katja von Garnier, Juliette Lewis, Nicole Appleton, Robin Givens, Julia Ormond, Claire Forlani, Felicitas Woll, and Christina Applegate. However, from the facts provided, it could not be determined who among these was into Buddhism.
+
+**entities:** []
+
+- plan: ['find people Brad Pitt has dated in the past', 'find which of #1 were into Buddhism']
+- explored: ['celebrities.romantic_relationship.celebrity', 'base.popstra.celebrity.dated', 'celebrities.celebrity.sexual_relationships', 'celebrities.romantic_relationship.relationship_type', 'media_common.quotation.subjects', 'media_common.quotation_subject.quotations_about_this_subject'] (max_score 0.62)
+- eval: continue resolved=['Sinitta', 'Sonita Henry', 'Jill Schoelen', 'Katja von Garnier']
+- explored: ['people.person.religion', 'celebrities.romantic_relationship.celebrity', 'people.person.place_of_birth', 'celebrities.romantic_relationship.celebrity', 'celebrities.celebrity.sexual_relationships', 'music.artist.origin'] (max_score 0.461)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['celebrities.celebrity.sexual_relationships', 'film.actor.film', 'people.person.profession', 'people.person.profession', 'music.record_label.artist', 'people.person.nationality'] (max_score 0.135)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.performance.actor', 'base.popstra.lived_with.participant', 'people.person.nationality', 'people.person.gender', 'base.popstra.celebrity.dated', 'people.person.ethnicity'] (max_score 0.091)
+- eval: continue resolved=['Juliette Lewis']
+- explored: ['celebrities.celebrity.legal_entanglements', 'book.written_work.subjects', 'people.person.religion', 'book.written_work.subjects', 'fictional_universe.fictional_character.gender', 'book.author.works_written'] (max_score 0.167)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.performance.actor', 'base.popstra.lived_with.participant', 'people.person.nationality', 'people.person.gender', 'base.popstra.celebrity.dated', 'people.person.ethnicity'] (max_score 0.091)
 - eval: continue resolved=[]
+- explored: ['celebrities.legal_entanglement.celebrity', 'celebrities.romantic_relationship.celebrity', 'people.person.employment_history', 'book.written_work.previous_in_series', 'film.film.story_by', 'film.film.film_set_decoration_by'] (max_score 0.154)
+- eval: continue resolved=['Juliette Lewis']
+- explored: ['celebrities.romantic_relationship.relationship_type', 'book.written_work.subjects', 'celebrities.romantic_relationship.celebrity', 'film.personal_film_appearance.person', 'celebrities.romantic_relationship.celebrity', 'people.person.place_of_birth'] (max_score 0.166)
+- eval: answer resolved=['Juliette Lewis']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-924_6d72ea1b1b38e146c28c87fee57e7f96 (hedge)
+
+**Q:** What is the sports team that Messi played for in 2010 that uses the Estadio Monumental Antonio Vespucio Liberti museum?
+
+**gold:** ['Argentina national football team']
+
+**answer:** The sports team that Messi played for in 2010 that uses the Estadio Monumental Antonio Vespucio Liberti museum could not be determined from the provided facts. The facts show Lionel Messi played for FC Barcelona in 2010, while Estadio Monumental Antonio Vespucio Liberti is associated with Argentina national football team, Club Atlético River Plate, and Argentina national under-23 football team, but no direct link identifies which of these is the team in question.
+
+**entities:** []
+
+- plan: ['find the sports team that Messi played for in 2010', 'find which of #1 uses the Estadio Monumental Antonio Vespucio Liberti museum']
+- explored: ['base.x2010fifaworldcupsouthafrica.world_cup_participant.world_cup_team', 'sports.pro_athlete.teams', 'base.x2010fifaworldcupsouthafrica.current_world_cup_squad.players', 'sports.sports_facility.teams', 'soccer.football_match.held_at', 'soccer.football_pitch.matches'] (max_score 0.612)
+- eval: continue resolved=['FC Barcelona']
+- explored: ['sports.sports_team.arena_stadium', 'sports.sports_team.venue', 'sports.sports_facility.teams'] (max_score 0.539)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['sports.team_venue_relationship.team', 'sports.sports_team.location', 'soccer.football_league_participation.team'] (max_score 0.449)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['soccer.football_team.league', 'soccer.football_team.manager', 'soccer.football_team.matches'] (max_score 0.242)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['soccer.football_match.teams', 'soccer.football_team_management_tenure.team', 'soccer.football_league_season.teams'] (max_score 0.205)
+- eval: answer resolved=['Camp Nou']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-983_5117d407df6e21d30cd4893bcab84281 (hedge)
+
+**Q:** What university that has fewer than 26,965 undergraduates did Tennessee WIlliams attend?
+
+**gold:** ['University of Missouri', 'Washington University in St. Louis', 'The New School', 'University of Iowa']
+
+**answer:** Tennessee Williams attended University of Missouri, University of Iowa, The New School, and Washington University in St. Louis. From the facts given, it could not be determined which of these universities has fewer than 26,965 undergraduates.
+
+**entities:** []
+
+- plan: ['find the university attended by Tennessee Williams', 'find which of #1 have fewer than 26,965 undergraduates']
+- explored: ['education.education.student', 'people.person.education', 'award.award_honor.award_winner', 'base.descriptive_names.names.descriptive_name'] (max_score 0.512)
+- eval: continue resolved=['University of Missouri', 'University of Iowa', 'The New School', 'Washington University in St. Louis']
+- explored: ['education.university.number_of_undergraduates', 'education.university.number_of_postgraduates', 'education.educational_institution.campuses', 'education.university.number_of_undergraduates', 'education.university.number_of_postgraduates', 'education.university.departments'] (max_score 0.726)
+- eval: continue resolved=[]
+- explored: ['education.university.number_of_undergraduates', 'education.educational_institution.total_enrollment', 'education.university.number_of_postgraduates', 'education.educational_institution.campuses', 'education.educational_institution.campuses', 'education.educational_institution_campus.educational_institution'] (max_score 0.72)
+- eval: continue resolved=['University of Missouri', 'University of Iowa', 'The New School', 'Washington University in St. Louis']
+- explored: ['education.university.number_of_undergraduates', 'education.university.number_of_postgraduates', 'education.university.departments', 'education.university.number_of_undergraduates', 'education.university.number_of_postgraduates', 'education.university.departments'] (max_score 0.726)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTest-989_4b6636a049fa767111eef6ce82bf7054 (hedge)
+
+**Q:** What happened during ww2 when a lower estimate of 30000 casualties occurred in Dunkirk?
+
+**gold:** ['Battle of Dunkirk']
+
+**answer:** The Battle of Dunkirk happened during ww2, and it involved casualties including Military - Dead and Military - Wounded. The lower estimate of 30000 casualties is associated with the Battle of Dunkirk, but the specific event asked for could not be determined from the facts alone.
+
+**entities:** []
+
+- plan: ['find the event in ww2 where a lower estimate of 30000 casualties occurred in Dunkirk', 'find what happened during #1']
+- explored: ['location.location.events', 'time.event.locations', 'people.deceased_person.place_of_death', 'military.military_conflict.casualties', 'military.casualties.military_conflict', 'location.location.events'] (max_score 0.428)
+- eval: continue resolved=['Dunkirk evacuation']
+- explored: ['military.military_conflict.casualties', 'military.casualties.military_conflict', 'military.military_conflict.combatants', 'military.military_conflict.combatants', 'location.location.events', 'military.military_combatant_group.conflict'] (max_score 0.648)
+- eval: continue resolved=['Battle of Dunkirk']
+- explored: ['military.casualties.type_of_casualties', 'military.casualties_type.conflicts', 'military.casualties.type_of_casualties', 'military.military_combatant.casualties', 'military.casualties.combatant', 'location.location.events'] (max_score 0.351)
+- eval: continue resolved=['Battle of Dunkirk']
+- explored: ['military.military_conflict.casualties', 'military.casualties.military_conflict', 'military.military_conflict.military_personnel_involved', 'military.military_conflict.casualties', 'military.casualties.military_conflict', 'base.newsevents.photographed_event.photograph_s'] (max_score 0.363)
+- eval: continue resolved=['Battle of Dunkirk']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-125_003c6a046c47526d922683f22cf0e983 (hedge)
+
+**Q:** The subject of the film King: A Filmed Record... Montgomery to Memphis was shot at what location?
+
+**gold:** ['Memphis']
+
+**answer:** It could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find the subject of the film King: A Filmed Record... Montgomery to Memphis', 'find the location where #1 was shot']
+- explored: ['film.film.subjects', 'film.producer.film', 'film.film.music'] (max_score 0.579)
+- eval: continue resolved=['Martin Luther King, Jr.']
+- explored: ['base.crime.crime_victim.crime_type', 'people.deceased_person.place_of_death', 'base.activism.activist.area_of_activism'] (max_score 0.361)
+- eval: continue resolved=['Memphis']
+- explored: ['time.event.locations', 'location.location.events', 'location.location.containedby', 'base.activism.activist.area_of_activism', 'people.person.profession', 'people.profession.people_with_this_profession'] (max_score 0.506)
+- eval: answer resolved=['Memphis']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1294_a4b2006ad5ffa1964eb8aa93149cba5a (hedge)
+
+**Q:** Which actor who portrayed Vito Corleone also played in Joy?
+
+**gold:** ['Robert De Niro']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the actor who portrayed Vito Corleone', 'find which of #1 also played in Joy']
+- explored: ['film.film_character.portrayed_in_films', 'film.performance.character', 'tv.regular_tv_appearance.character', 'film.film_character.portrayed_in_films', 'film.performance.character', 'tv.regular_tv_appearance.character'] (max_score 0.618)
+- eval: continue resolved=['Marlon Brando', 'Robert De Niro', 'Oreste Baldini']
+- explored: ['film.actor.dubbing_performances', 'film.dubbing_performance.actor', 'film.actor.film', 'film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.545)
+- eval: answer resolved=['Robert De Niro']
+- verifier: unsupported unsupported=['Marlon Brando also played in Joy']
+- explored: ['film.actor.film', 'film.performance.actor', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.581)
+- eval: continue resolved=[]
+- explored: ['film.film_character.portrayed_in_films', 'film.performance.character', 'theater.theater_role.role', 'film.film.film_casting_director', 'film.film.starring', 'film.director.film'] (max_score 0.296)
+- eval: backtrack resolved=[]
+- verifier: unsupported unsupported=['Marlon Brando also played in Joy']
+
+---
+
+## WebQTrn-1392_d372995c4cada937a6f201d316698ad5 (hedge)
+
+**Q:** What school did the artist award nominated for This I remember go to School attend?
+
+**gold:** ['Allenswood Academy', 'The New School']
+
+**answer:** Eleanor Roosevelt attended Allenswood Academy and The New School. The school attended cannot be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the artist award nominated for This I remember', 'find the school attended by #1']
+- explored: ['award.award_nominated_work.award_nominations', 'award.award_nomination.nominated_for', 'book.written_work.author'] (max_score 0.714)
+- eval: backtrack resolved=['Eleanor Roosevelt']
+- backtrack: evaluator
+- explored: ['book.book_subject.works', 'book.author.works_written', 'book.written_work.subjects'] (max_score 0.057)
+- eval: continue resolved=['Eleanor Roosevelt']
+- explored: ['education.education.student', 'people.person.education', 'award.award_honor.award_winner'] (max_score 0.498)
+- eval: answer resolved=['Allenswood Academy', 'The New School']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1405_ced20d844a472e7fafced76fae0a1c7c (hedge)
+
+**Q:** What school, with a founding date in 1636, did President Kennedy attend?
+
+**gold:** ['Harvard College']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the school attended by President Kennedy', 'find which of #1 was founded in 1636']
+- explored: ['education.education.student', 'people.person.education', 'base.usnris.nris_listing.significant_person'] (max_score 0.546)
+- eval: continue resolved=['Harvard University', 'Harvard College', 'Princeton University', 'Dexter School']
+- explored: ['base.schemastaging.scholastic_library.institution', 'base.schemastaging.educational_institution_extra.libraries', 'education.university.fraternities_and_sororities', 'education.fraternity_sorority.colleges_and_universities', 'education.university.fraternities_and_sororities', 'education.educational_institution.campuses'] (max_score 0.606)
+- eval: answer resolved=['Harvard University']
+- verifier: unsupported unsupported=['Harvard University founded in 1636']
+- explored: ['organization.organization.place_founded', 'base.schemastaging.scholastic_library.institution', 'organization.organization_founder.organizations_founded'] (max_score 0.513)
+- eval: continue resolved=['Harvard University']
+- explored: ['base.schemastaging.scholastic_library.institution', 'base.schemastaging.educational_institution_extra.libraries', 'base.schemastaging.scholastic_library.institution', 'base.schemastaging.educational_institution_extra.libraries', 'base.jewlib.judaica_owner.parent_institution', 'organization.organization_founder.organizations_founded'] (max_score 0.292)
+- eval: answer resolved=['Harvard University']
+- verifier: unsupported unsupported=['Harvard University was founded in 1636']
+
+---
+
+## WebQTrn-1484_256d41885c1839681311ca57f4d7b6c4 (hedge)
+
+**Q:** What kind of paintings, that influenced Miguel Angel Asturias, did that Frida Kahola do?
+
+**gold:** ['Surrealism']
+
+**answer:** It could not be determined from the provided facts what kind of paintings Frida Kahola did that influenced Miguel Ángel Asturias. The facts only show that Miguel Ángel Asturias was influenced by Surrealism.
+
+**entities:** []
+
+- plan: ['find what influenced Miguel Angel Asturias', 'find paintings by Frida Kahola that match #1']
+- explored: ['influence.influence_node.influenced_by', 'influence.influence_node.influenced', 'book.written_work.author', 'influence.influence_node.influenced', 'influence.influence_node.influenced', 'influence.influence_node.influenced_by'] (max_score 0.518)
+- eval: continue resolved=['Surrealism']
+- explored: ['visual_art.visual_artist.associated_periods_or_movements', 'visual_art.artwork.period_or_movement', 'visual_art.artwork.art_subject'] (max_score 0.587)
+- eval: answer resolved=['Frida Kahlo']
 - verifier: grounded unsupported=[]
 
 ---
@@ -1156,180 +2574,47 @@
 
 ---
 
-## WebQTest-1923_a64ef0f5ce397a5e1ef6fcd550ebfcfb (hedge)
+## WebQTrn-1665_5b2c4b0d5faeffa7e6ed3767a4a57c89 (hedge)
 
-**Q:** What movies has Miley Cyrus been in with music by Aaron Zigman?
+**Q:** What location is the home of Jason Statham?
 
-**gold:** ['Sex and the City 2', 'The Last Song']
+**gold:** ['Sydenham']
 
-**answer:** Miley Cyrus has been in The Last Song, So Undercover, Hannah Montana: The Movie, Radio Disney Party Jams: The Concert, Bolt, Wizards on Deck with Hannah Montana, The World According to Miley Cyrus, and LOL. However, from the facts provided, it could not be determined which of these had music by Aaron Zigman.
+**answer:** Great Yarmouth and Sydenham are locations Jason Statham has lived in, but the home of Jason Statham could not be determined from the facts provided.
 
 **entities:** []
 
-- plan: ['find movies that feature Miley Cyrus', 'find which of #1 have music by Aaron Zigman']
-- explored: ['film.actor.film', 'film.person_or_entity_appearing_in_film.films', 'film.performance.actor', 'film.film.music', 'film.music_contributor.film', 'music.artist.track_contributions'] (max_score 0.548)
-- eval: continue resolved=['The Last Song', 'So Undercover', 'Hannah Montana: The Movie', 'Radio Disney Party Jams: The Concert']
-- explored: ['film.film.music', 'music.track_contribution.track', 'film.film.soundtrack', 'film.film.music', 'film.music_contributor.film', 'film.film_crew_gig.film'] (max_score 0.541)
-- eval: answer resolved=['The Last Song']
+- plan: ['find the home of Jason Statham']
+- explored: ['people.place_lived.person', 'people.person.places_lived', 'people.person.place_of_birth'] (max_score 0.467)
+- eval: continue resolved=['Great Yarmouth', 'Sydenham', 'Shirebrook']
+- explored: ['people.place_lived.location', 'location.location.containedby', 'location.location.containedby', 'people.place_lived.location', 'location.location.containedby', 'government.government_position_held.district_represented'] (max_score 0.235)
+- eval: continue resolved=['Shirebrook']
+- explored: ['people.place_lived.person', 'people.person.places_lived', 'people.person.spouse_s', 'location.hud_county_place.place', 'location.hud_county_place.place', 'location.hud_county_place.county'] (max_score 0.497)
+- eval: answer resolved=['Great Yarmouth', 'Sydenham']
 - verifier: grounded unsupported=[]
 
 ---
 
-## WebQTest-576_99c43635b648023af901dc341b3bab6e (hedge)
+## WebQTrn-1677_22c4d321fc60b69e1d966c77d4107a74 (hedge)
 
-**Q:** In which of the seven countries making up Central America are there fewer than 1100 people in the country's army?
+**Q:** What movie starring Adam Sandler was filmed in New York City?
 
-**gold:** ['Belize']
+**gold:** ["You Don't Mess with the Zohan"]
 
-**answer:** Could not be determined from the provided facts which of Belize, Guatemala, Panama, Costa Rica, El Salvador, and Honduras have fewer than 1100 people in the country's army.
+**answer:** Could not be determined from the facts provided.
 
 **entities:** []
 
-- plan: ['find the seven countries making up Central America', "find which of #1 have fewer than 1100 people in the country's army"]
-- explored: ['location.location.contains', 'organization.organization.geographic_scope', 'location.location.geolocation', 'film.film.country', 'film.film_regional_release_date.film', 'music.genre.subgenre'] (max_score 0.432)
-- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
-- explored: ['base.locations.continents.countries_within', 'base.locations.countries.continent', 'location.country.form_of_government', 'base.locations.continents.countries_within', 'base.locations.countries.continent', 'location.country.form_of_government'] (max_score 0.616)
-- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.continents.states_provinces_within', 'location.country.form_of_government', 'base.schemastaging.context_name.pronunciation', 'base.ontologies.ontology_instance_mapping.freebase_topic'] (max_score 0.379)
-- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.form_of_government', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.form_of_government'] (max_score 0.649)
-- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
+- plan: ['find movies starring Adam Sandler', 'find which of #1 were filmed in New York City']
+- explored: ['film.actor.film', 'film.performance.actor', 'film.writer.film', 'film.film_subject.films', 'film.film.featured_film_locations', 'film.film.locations'] (max_score 0.679)
+- eval: continue resolved=['Confessions of a Teenage Drama Queen', 'Click', 'Men, Women & Children', 'Just Go With It']
+- explored: ['film.film.featured_film_locations', 'film.film_film_distributor_relationship.film', 'film.film_crew_gig.film', 'film.film.subjects', 'film.film_film_distributor_relationship.film', 'film.film_crew_gig.film'] (max_score 0.307)
+- eval: continue resolved=['50 First Dates']
+- explored: ['film.film.personal_appearances', 'film.personal_film_appearance.film', 'film.film.locations', 'film.film.featured_film_locations', 'film.film.featured_film_locations', 'film.film.story_by'] (max_score 0.333)
+- eval: continue resolved=['50 First Dates']
+- explored: ['film.film.locations', 'film.film.featured_film_locations', 'film.film_film_distributor_relationship.film', 'film.film.locations', 'film.film.featured_film_locations', 'film.film.film_collections'] (max_score 0.316)
+- eval: continue resolved=['13 Going on 30']
 - verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-567_724a3b769671b1ea52a76af3a90687f4 (hedge)
-
-**Q:** What movie was decorated by Antonio Mateos and made by Ron Howard?
-
-**gold:** ['The Spikes Gang']
-
-**answer:** Patton was decorated by Antonio Mateos and made by Ron Howard could not be determined from the facts provided.
-
-**entities:** []
-
-- plan: ['find the movie decorated by Antonio Mateos', 'find the movie made by Ron Howard', 'find the movie that satisfies both #1 and #2']
-- explored: ['film.film.film_set_decoration_by', 'film.film_set_designer.film_sets_designed', 'award.award_honor.award_winner', 'film.film.directed_by', 'film.film.story_by', 'film.actor.film'] (max_score 0.656)
-- eval: continue resolved=['Patton', 'The Spikes Gang', 'Custer of the West', 'Krakatoa, East of Java']
-- explored: ['film.film.directed_by', 'film.film.starring', 'film.film.story_by', 'film.film.directed_by', 'film.film.starring', 'film.film.story_by'] (max_score 0.659)
-- eval: continue resolved=['Cocoon', 'Frost/Nixon', 'Parenthood', 'Willow']
-- explored: ['film.film.sequel', 'film.film.film_series', 'film.film.genre', 'film.film.genre', 'film.film.featured_film_locations', 'film.film.starring'] (max_score 0.34)
-- eval: continue resolved=['Patton', 'The Spikes Gang', 'Custer of the West', 'Krakatoa, East of Java']
-- explored: ['film.film.sequel', 'film.film.film_series', 'film.film.genre', 'film.film.film_series', 'film.film.genre', 'film.film.genre'] (max_score 0.34)
-- eval: backtrack resolved=[]
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-576_495085ad9dd6274cce483df63474ca21 (hedge)
-
-**Q:** Of the 7 countries in Central America, which has an ISO smaller than 188?
-
-**gold:** ['Belize']
-
-**answer:** It could not be determined from the provided facts which of Belize, Guatemala, Panama, Costa Rica, El Salvador, Honduras, or Nicaragua has an ISO smaller than 188, because no ISO values are given.
-
-**entities:** []
-
-- plan: ['find the 7 countries in Central America', 'find which of #1 have an ISO smaller than 188']
-- explored: ['location.location.contains', 'location.location.contains', 'location.location.containedby', 'film.film.country', 'film.film_regional_release_date.film', 'broadcast.radio_station.format'] (max_score 0.478)
-- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.capital', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.capital'] (max_score 0.654)
-- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.continents.states_provinces_within', 'location.country.capital', 'base.biblioness.bibs_location.country', 'location.statistical_region.population'] (max_score 0.654)
-- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
-- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.capital', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.country.capital'] (max_score 0.399)
-- eval: continue resolved=['Belize', 'Guatemala', 'Panama', 'Costa Rica']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-3249_0b9c49912f43238136954d463b417194 (hedge)
-
-**Q:** Which program featuring Tamera Mowry has the largest "tvrage_id?"?
-
-**gold:** ['Roommates']
-
-**answer:** Tia & Tamera is the program featuring Tamera Mowry that can be identified from the facts, but the largest tvrage_id could not be determined because no tvrage_id values are provided.
-
-**entities:** []
-
-- plan: ['find programs featuring Tamera Mowry', 'find the program in #1 with the largest tvrage_id']
-- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_personality.tv_regular_appearances'] (max_score 0.423)
-- eval: continue resolved=['Tia & Tamera']
-- explored: ['tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'tv.tv_program.seasons'] (max_score 0.268)
-- eval: continue resolved=['Tia & Tamera']
-- explored: ['tv.tv_program.country_of_origin', 'tv.tv_network.areas_served', 'tv.tv_program.filming_locations', 'tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'broadcast.tv_channel.language'] (max_score 0.268)
-- eval: continue resolved=['Tia & Tamera']
-- explored: ['tv.tv_program.program_creator', 'tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'tv.tv_program.original_network'] (max_score 0.275)
-- eval: continue resolved=['Tia & Tamera']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-1528_ac9d054b50d6d55401844da4807076b2 (hedge)
-
-**Q:** Which movie did Logan Lerman act in, that was directed by Guy Barnes?
-
-**gold:** ['My One and Only']
-
-**answer:** Could not be determined from the provided facts. Logan Lerman is listed for several films, but no fact links any of those films to Guy Barnes as director.
-
-**entities:** []
-
-- plan: ['find the movie that was directed by Guy Barnes', 'find the movie from #1 that Logan Lerman acted in']
-- explored: ['film.film_art_director.films_art_directed', 'film.film.film_art_direction_by', 'film.film.film_production_design_by', 'film.actor.film', 'tv.tv_actor.starring_roles', 'film.personal_film_appearance.person'] (max_score 0.537)
-- eval: continue resolved=['Outlaw Country', 'In the Line of Duty: The F.B.I. Murders', 'American Harvest', 'The Missing']
-- explored: ['film.film.country', 'film.film.starring', 'film.writer.film', 'film.film.country', 'film.film.starring', 'film.film.directed_by'] (max_score 0.319)
-- eval: continue resolved=['The Patriot']
-- explored: ['film.film.country', 'film.film.featured_film_locations', 'film.film_location.featured_in_films', 'film.film.country', 'film.film.featured_film_locations', 'film.film_location.featured_in_films'] (max_score 0.319)
-- eval: answer resolved=['The Patriot']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTest-1923_a90c08a839ac4d0ac22ebbf436bb578b (hedge)
-
-**Q:** What movie featuring Miley Cyrus was directed by Tom Vaughan?
-
-**gold:** ['So Undercover']
-
-**answer:** The movie featuring Miley Cyrus that was directed by Tom Vaughan could not be determined from the facts provided.
-
-**entities:** []
-
-- plan: ['find the movie featuring Miley Cyrus', 'find the movie from #1 that was directed by Tom Vaughan']
-- explored: ['film.actor.film', 'film.music_contributor.film', 'film.person_or_entity_appearing_in_film.films', 'film.film.directed_by', 'film.director.film', 'tv.tv_director.episodes_directed'] (max_score 0.565)
-- eval: continue resolved=['Hannah Montana and Miley Cyrus: Best of Both Worlds Concert', 'High School Musical 2', 'The Last Song', 'Sex and the City 2']
-- explored: ['film.film.featured_song', 'film.film.starring', 'film.film_featured_song.featured_in_film', 'film.film.starring', 'music.soundtrack.film', 'film.film.soundtrack'] (max_score 0.34)
-- eval: continue resolved=['The Last Song']
-- explored: ['film.film.music', 'film.music_contributor.film', 'music.artist.track', 'music.artist.track', 'music.track_contribution.track', 'music.recording.song'] (max_score 0.285)
-- eval: answer resolved=['The Last Song']
-- verifier: grounded unsupported=[]
-
----
-
-## WebQTrn-1294_a4b2006ad5ffa1964eb8aa93149cba5a (hedge)
-
-**Q:** Which actor who portrayed Vito Corleone also played in Joy?
-
-**gold:** ['Robert De Niro']
-
-**answer:** The answer could not be verified against the knowledge graph.
-
-**entities:** []
-
-- plan: ['find the actor who portrayed Vito Corleone', 'find which of #1 also played in Joy']
-- explored: ['film.film_character.portrayed_in_films', 'film.performance.character', 'tv.regular_tv_appearance.character', 'film.film_character.portrayed_in_films', 'film.performance.character', 'tv.regular_tv_appearance.character'] (max_score 0.618)
-- eval: continue resolved=['Marlon Brando', 'Robert De Niro', 'Oreste Baldini']
-- explored: ['film.actor.dubbing_performances', 'film.dubbing_performance.actor', 'film.actor.film', 'film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.545)
-- eval: answer resolved=['Robert De Niro']
-- verifier: unsupported unsupported=['Marlon Brando also played in Joy']
-- explored: ['film.actor.film', 'film.performance.actor', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.581)
-- eval: continue resolved=[]
-- explored: ['film.film_character.portrayed_in_films', 'film.performance.character', 'theater.theater_role.role', 'film.film.film_casting_director', 'film.film.starring', 'film.director.film'] (max_score 0.296)
-- eval: backtrack resolved=[]
-- verifier: unsupported unsupported=['Marlon Brando also played in Joy']
 
 ---
 
@@ -1362,25 +2647,459 @@
 
 ---
 
-## WebQTest-1012_872253e47dd6ddaa213ff31eeda8783b (hedge)
+## WebQTrn-1677_35504fa84f9be86a31a22c167e7c17ef (hedge)
 
-**Q:** What is there to do in Hollywood, California in the Eastern Time Zone?
+**Q:** Which Adam Sandler movies were edited by Chris Columbus?
 
-**gold:** ['Universal Studios Hollywood']
+**gold:** ['Pixels']
 
-**answer:** It could not be determined from the provided facts what there is to do in Hollywood, California in the Eastern Time Zone. The facts only identify Hollywood as being in California and in the Greater Los Angeles Area, but they do not provide activities for Hollywood, California, and the Eastern Time Zone facts do not connect to Hollywood, California.
+**answer:** It could not be determined from the provided facts which Adam Sandler movies were edited by Chris Columbus.
 
 **entities:** []
 
-- plan: ['find Hollywood, California', 'find things to do in #1', 'find which of #2 are in the Eastern Time Zone']
-- explored: ['location.neighborhood.neighborhood_of', 'location.neighborhood.neighborhood_of', 'base.biblioness.bibs_location.state', 'location.location.time_zones', 'base.schemastaging.phone_open_times.time_zone', 'base.schemastaging.context_name.pronunciation'] (max_score 0.494)
-- eval: continue resolved=['Hollywood']
-- explored: ['location.location.events', 'travel.travel_destination.tourist_attractions', 'location.place_with_neighborhoods.neighborhoods', 'location.location.events', 'travel.travel_destination.tourist_attractions', 'location.place_with_neighborhoods.neighborhoods'] (max_score 0.484)
-- eval: continue resolved=['Memphis', 'Portland']
-- explored: ['location.location.events', 'base.marchmadness.ncaa_basketball_tournament_stage.games', 'location.location.events', 'location.location.events', 'time.event.locations', 'base.marchmadness.ncaa_basketball_tournament_stage.games'] (max_score 0.199)
-- eval: continue resolved=['Memphis Zoo', 'Memphis Brooks Museum of Art', 'Memphis Botanic Garden', 'Graceland']
-- explored: ['zoos.zoo_category.zoos', 'travel.travel_destination.tourist_attractions', 'location.location.geolocation', 'film.film.featured_film_locations', 'protected_sites.natural_or_cultural_site_listing.listed_site', 'travel.travel_destination.tourist_attractions'] (max_score 0.349)
+- plan: ['find Adam Sandler movies', 'find which of #1 were edited by Chris Columbus']
+- explored: ['film.actor.film', 'film.personal_film_appearance.person', 'film.performance.actor', 'film.actor.film', 'film.director.film', 'film.film.directed_by'] (max_score 0.614)
+- eval: continue resolved=['Dirty Work', 'Click', 'Men, Women & Children', 'Just Go With It']
+- explored: ['film.film.starring', 'film.director.film', 'film.film.directed_by', 'film.production_company.films', 'film.personal_film_appearance.film', 'film.director.film'] (max_score 0.593)
+- eval: continue resolved=['Dirty Work', 'Click', 'Men, Women & Children', 'Just Go With It']
+- explored: ['film.actor.film', 'film.film_subject.films', 'film.film.subjects', 'film.actor.film', 'film.director.film', 'film.film.directed_by'] (max_score 0.314)
+- eval: continue resolved=['Dirty Work', 'Click', 'Men, Women & Children', 'Just Go With It']
+- explored: ['film.film.edited_by', 'book.author.works_written', 'film.film.film_art_direction_by', 'film.film.edited_by', 'media_common.adapted_work.adaptations', 'film.film.subjects'] (max_score 0.548)
+- eval: backtrack resolved=['Dirty Work']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1677_a7b0673d818a426f402b6a2c2573d137 (hedge)
+
+**Q:** What movie starring Adam Sandler was nominated for the "and his diapers" Award?
+
+**gold:** ['Deuce Bigalow: European Gigolo']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the movie starring Adam Sandler that was nominated for the "and his diapers" Award']
+- explored: ['film.actor.film', 'film.performance.actor', 'film.writer.film'] (max_score 0.522)
+- eval: continue resolved=['Jack and Jill']
+- explored: ['award.award_nominated_work.award_nominations', 'award.award_nomination.nominated_for', 'film.music_contributor.film', 'film.film.starring', 'film.music_contributor.film', 'film.director.film'] (max_score 0.531)
+- eval: continue resolved=['Jack and Jill']
+- explored: ['award.award_nominated_work.award_nominations', 'award.award_nomination.nominated_for', 'film.film.starring', 'award.award_nomination.award', 'award.award.category', 'award.award_category.winners'] (max_score 0.54)
+- eval: answer resolved=['Teen Choice Award for Choice Hissy Fit: Film']
+- verifier: unsupported unsupported=['Jack and Jill was nominated for Teen Choice Award for Choice Hissy Fit: Film']
+- explored: ['award.award_nominated_work.award_nominations', 'award.award_nomination.nominated_for', 'film.film.rating'] (max_score 0.578)
+- eval: answer resolved=['Adam Sandler']
+- verifier: unsupported unsupported=['Jack and Jill was nominated for Teen Choice Award for Choice Hissy Fit: Film']
+
+---
+
+## WebQTrn-1677_c006ead7cde93a8aff111388eaa455c1 (hedge)
+
+**Q:** Which movie is about baseball and featured Adam Sandler?
+
+**gold:** ['The Benchwarmers']
+
+**answer:** It could not be determined from the provided facts which baseball movie featured Adam Sandler. The baseball-related films listed do not overlap with the Adam Sandler film facts given.
+
+**entities:** []
+
+- plan: ['find movies about baseball', 'find which of #1 featured Adam Sandler']
+- explored: ['film.film_subject.films', 'film.film.subjects', 'sports.sports_league.sport', 'film.film.story_by', 'film.writer.film', 'film.actor.film'] (max_score 0.596)
+- eval: continue resolved=['Major League II', 'A League of Their Own', 'Big Leaguer', 'Little Big League']
+- explored: ['film.film.starring', 'media_common.netflix_genre.titles', 'film.writer.film', 'film.film.starring', 'media_common.netflix_genre.titles', 'film.film.sequel'] (max_score 0.446)
+- eval: continue resolved=[]
+- explored: ['film.film.story_by', 'award.hall_of_fame_inductee.hall_of_fame_inductions', 'award.hall_of_fame_induction.inductee', 'film.film.directed_by', 'film.actor.film', 'film.director.film'] (max_score 0.199)
 - eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.starring', 'media_common.netflix_genre.titles', 'film.writer.film', 'film.film.starring', 'media_common.netflix_genre.titles', 'film.film.sequel'] (max_score 0.446)
+- eval: continue resolved=[]
+- explored: ['film.writer.film', 'film.film_story_contributor.film_story_credits', 'film.film.written_by', 'tv.tv_program.program_creator', 'film.performance.actor', 'tv.tv_program_creator.programs_created'] (max_score 0.141)
+- eval: continue resolved=[]
+- explored: ['film.film.story_by', 'film.film.starring', 'film.writer.film', 'film.film.story_by', 'film.film.starring', 'film.writer.film'] (max_score 0.199)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1762_ea65a065bc9b8f5eda6ea8c0716c84b8 (hedge)
+
+**Q:** What does Icelandic sound like that is part of the language family Aragornese Language?
+
+**gold:** ['Indo-European languages']
+
+**answer:** Icelandic Language is part of North Germanic languages, while Aragonese Language is part of Romance languages. So Icelandic Language is not part of the language family Aragornese Language; it could not be determined as matching that family from the facts given.
+
+**entities:** []
+
+- plan: ['find the language family Aragornese Language', 'find what Icelandic sounds like in #1']
+- explored: ['language.language_family.languages', 'language.human_language.language_family', 'language.human_language.region', 'language.language_family.languages', 'language.human_language.language_family', 'language.human_language.region'] (max_score 0.839)
+- eval: continue resolved=['Aragonese Language']
+- explored: ['language.language_family.languages', 'language.human_language.language_family', 'language.language_family.languages', 'language.language_family.member_of_language_families', 'language.language_family.member_of_language_families', 'language.language_family.languages'] (max_score 0.56)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['language.human_language.language_family', 'language.language_family.sub_families', 'language.language_family.sub_families', 'language.language_family.sub_families', 'people.ethnicity.languages_spoken', 'language.language_family.sub_families'] (max_score 0.53)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['language.language_family.geographic_distribution', 'base.schemastaging.context_name.pronunciation', 'education.education.major_field_of_study', 'education.education.major_field_of_study', 'base.ontologies.ontology_instance_mapping.freebase_topic', 'education.field_of_study.students_majoring'] (max_score 0.444)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['education.field_of_study.journals_in_this_discipline', 'book.journal.discipline', 'base.ontologies.ontology_instance_mapping.freebase_topic', 'base.ontologies.ontology_instance.equivalent_instances'] (max_score 0.04)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1770_540abec8ff3d2f4e81bfc5be9ea8e816 (hedge)
+
+**Q:** Featured in the film Beyonce: Baby and Beyond, what is Beyonce's daughter's name?
+
+**gold:** ['Blue Ivy']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find the film Beyonce: Baby and Beyond', "find Beyonce's daughter featured in #1", 'find the name of #2']
+- explored: ['film.film.genre', 'film.film_subject.films', 'film.film.subjects'] (max_score 0.298)
+- eval: continue resolved=['Beyoncé Knowles']
+- explored: ['people.sibling_relationship.sibling', 'base.popstra.celebrity.infidelity_victim', 'celebrities.romantic_relationship.celebrity'] (max_score 0.419)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['celebrities.celebrity.sexual_relationships', 'film.film_featured_song.performed_by', 'celebrities.sexual_orientation_phase.celebrity'] (max_score 0.15)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.popstra.celebrity.vacations_in', 'celebrities.celebrity.sexual_orientation', 'base.popstra.celebrity.operation'] (max_score 0.132)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.popstra.celebrity.canoodled', 'base.popstra.celebrity.dated', 'base.popstra.celebrity.infidelity_perpetrator'] (max_score 0.131)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1770_6325ee890e333f0d4fe222c15a95906f (hedge)
+
+**Q:** What is the name of the daughter of the actor that played the character Etta James?
+
+**gold:** ['Blue Ivy']
+
+**answer:** The daughter of the actor that played Etta James could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the actor that played the character Etta James', 'find the daughter of #1', 'find the name of #2']
+- explored: ['tv.tv_actor.starring_roles', 'film.film_character.portrayed_in_films', 'tv.tv_guest_role.actor'] (max_score 0.388)
+- eval: continue resolved=['Beyoncé Knowles']
+- explored: ['people.sibling_relationship.sibling', 'base.popstra.celebrity.infidelity_victim', 'celebrities.romantic_relationship.celebrity'] (max_score 0.426)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['celebrities.celebrity.sexual_relationships', 'base.popstra.celebrity.infidelity_perpetrator', 'base.popstra.infidelity.victim'] (max_score 0.166)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['celebrities.sexual_orientation_phase.celebrity', 'base.popstra.celebrity.friendship', 'base.popstra.celebrity.dated'] (max_score 0.161)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['celebrities.celebrity.sexual_orientation', 'celebrities.celebrity.celebrity_friends', 'base.popstra.celebrity.operation'] (max_score 0.149)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1770_6a7c160ace84e7908302f805739ad06d (hedge)
+
+**Q:** Who is the daughter of the composer for the work "dangerously in Love 2"?
+
+**gold:** ['Blue Ivy']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find the composer for the work "dangerously in Love 2"', 'find the daughter of #1']
+- explored: ['music.composition.composer', 'music.composer.compositions', 'music.composition.recordings'] (max_score 0.703)
+- eval: continue resolved=['Beyoncé Knowles']
+- explored: ['people.sibling_relationship.sibling', 'base.popstra.celebrity.infidelity_victim', 'celebrities.romantic_relationship.celebrity'] (max_score 0.426)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['celebrities.celebrity.sexual_relationships', 'base.popstra.celebrity.infidelity_perpetrator', 'base.popstra.infidelity.victim'] (max_score 0.166)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['celebrities.sexual_orientation_phase.celebrity', 'base.popstra.celebrity.friendship', 'base.popstra.celebrity.dated'] (max_score 0.161)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['celebrities.celebrity.sexual_orientation', 'celebrities.celebrity.celebrity_friends', 'base.popstra.celebrity.operation'] (max_score 0.149)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-1812_688d69d484eeaffda36f06fbba9fe9fb (hedge)
+
+**Q:** What country in the Caribbean has the smallest population?
+
+**gold:** ['Anguilla']
+
+**answer:** Based on the provided facts, it could not be determined which country in the Caribbean has the smallest population.
+
+**entities:** []
+
+- plan: ['find countries in the Caribbean', 'find the country among #1 with the smallest population']
+- explored: ['location.location.contains', 'location.location.contains', 'location.location.geolocation', 'film.film.country', 'film.film_regional_release_date.film', 'media_common.netflix_title.netflix_genres'] (max_score 0.529)
+- eval: continue resolved=['Saint Kitts and Nevis', 'Anguilla', 'British Virgin Islands', 'Saint Lucia']
+- explored: ['geography.island.island_group', 'location.statistical_region.population', 'location.location.people_born_here', 'location.statistical_region.population', 'location.location.people_born_here', 'location.statistical_region.religions'] (max_score 0.619)
+- eval: continue resolved=['Saint Kitts and Nevis', 'Anguilla', 'British Virgin Islands', 'Saint Lucia']
+- explored: ['geography.island_group.islands_in_group', 'geography.island.island_group', 'geography.body_of_water.islands', 'geography.island_group.islands_in_group', 'geography.island.island_group', 'geography.body_of_water.islands'] (max_score 0.357)
+- eval: continue resolved=[]
+- explored: ['geography.island_group.islands_in_group', 'geography.island.island_group', 'location.statistical_region.population', 'geography.island_group.islands_in_group', 'geography.island.island_group', 'location.country.first_level_divisions'] (max_score 0.357)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2047_38077debd523fe1b08b3d6e13538402b (hedge)
+
+**Q:** Which venue where the Chicago cubs play has a capacity of 12500?
+
+**gold:** ['Hohokam Stadium']
+
+**answer:** Wrigley Field is the venue where the Chicago Cubs play, but the capacity of 12500 could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the venue where the Chicago Cubs play', 'find which of #1 has a capacity of 12500']
+- explored: ['sports.sports_team.venue', 'sports.sports_team.arena_stadium', 'sports.team_venue_relationship.team'] (max_score 0.712)
+- eval: continue resolved=['Wrigley Field']
+- explored: ['sports.sports_facility.home_venue_for', 'sports.sports_facility.teams', 'sports.team_venue_relationship.venue'] (max_score 0.279)
+- eval: continue resolved=['Wrigley Field']
+- explored: ['sports.sports_facility.teams', 'sports.sports_team.venue', 'sports.sports_team.arena_stadium', 'sports.sports_team.venue', 'sports.sports_facility.teams', 'sports.sports_team.arena_stadium'] (max_score 0.52)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['sports.sports_facility.home_venue_for', 'sports.sports_facility.teams', 'sports.team_venue_relationship.venue'] (max_score 0.279)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['sports.sports_team.arena_stadium', 'base.playball.baseball_stadium.naming_rights', 'location.location.street_address'] (max_score 0.239)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.schemastaging.sports_team_extra.training_ground', 'baseball.baseball_league.teams', 'baseball.baseball_team.league', 'sports.sports_league_participation.team', 'sports.team_venue_relationship.team', 'sports.sports_team.league'] (max_score 0.237)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2069_c1d589c22e4bcb71dd3832d4a8a1dbe9 (hedge)
+
+**Q:** What is the language spoken in Chile that was in "Beloved"?
+
+**gold:** ['Spanish Language']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find the thing in "Beloved" that is in Chile', 'find the language spoken in #1']
+- explored: ['location.location.contains', 'location.country.national_anthem', 'location.location.containedby', 'film.film.story_by', 'music.soundtrack.film', 'film.film.film_set_decoration_by'] (max_score 0.197)
+- eval: continue resolved=['Chile']
+- explored: ['location.location.contains', 'location.location.contains', 'location.location.containedby', 'location.location.contains', 'location.location.contains', 'location.location.containedby'] (max_score 0.197)
+- eval: continue resolved=[]
+- explored: ['location.location.contains', 'location.location.contains', 'people.place_lived.location', 'location.location.contains', 'location.location.contains', 'location.location.containedby'] (max_score 0.197)
+- eval: continue resolved=[]
+- explored: ['location.location.contains', 'location.location.containedby', 'education.education.institution', 'location.location.contains', 'location.location.containedby', 'education.education.institution'] (max_score 0.197)
+- eval: continue resolved=['Chile']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2152_c9be001aaf5f69c9067ba4b530ca0a93 (hedge)
+
+**Q:** Of all the sports teams in the American League West, which team was founded first?
+
+**gold:** ['Oakland Athletics']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the sports teams in the American League West', 'find which of #1 was founded first']
+- explored: ['sports.sports_league.teams', 'baseball.baseball_division.teams', 'sports.sports_league_participation.league'] (max_score 0.782)
+- eval: continue resolved=['Oakland Athletics', 'Texas Rangers', 'Seattle Mariners', 'Seattle Pilots']
+- explored: ['baseball.baseball_historical_managerial_position.team', 'baseball.baseball_league.teams', 'baseball.baseball_team.historical_managers', 'baseball.baseball_historical_managerial_position.team', 'baseball.baseball_league.teams', 'baseball.baseball_team.historical_managers'] (max_score 0.328)
+- eval: continue resolved=['Oakland Athletics', 'Texas Rangers', 'Seattle Mariners', 'Seattle Pilots']
+- explored: ['baseball.baseball_manager.former_teams_managed', 'base.schemastaging.sports_team_manager.teams_managed', 'baseball.baseball_historical_managerial_position.manager', 'baseball.baseball_manager.former_teams_managed', 'baseball.baseball_historical_managerial_position.manager', 'sports.drafted_athlete.drafted'] (max_score 0.293)
+- eval: continue resolved=['Oakland Athletics', 'Texas Rangers', 'Seattle Mariners', 'Seattle Pilots']
+- explored: ['organization.organization_founder.organizations_founded', 'organization.organization.founders', 'baseball.baseball_historical_managerial_position.team', 'baseball.baseball_historical_managerial_position.team', 'baseball.baseball_league.teams', 'baseball.baseball_team.historical_managers'] (max_score 0.34)
+- eval: continue resolved=['Oakland Athletics', 'Texas Rangers', 'Seattle Mariners', 'Seattle Pilots']
+- verifier: unsupported unsupported=['Oakland Athletics was founded first among American League West teams listed']
+
+---
+
+## WebQTrn-241_7a1f9047f5100e2853d54d69c6793f2d (hedge)
+
+**Q:** What countries border the government jurisdiction held by the French Minister of the Economy, Finance and Industry?
+
+**gold:** ['Belgium', 'Germany', 'Italy', 'Luxembourg', 'Monaco', 'Spain', 'Switzerland', 'United Kingdom', 'Andorra']
+
+**answer:** France borders several countries, but the provided facts do not include which countries border France. Therefore, it could not be determined from the given facts.
+
+**entities:** []
+
+- plan: ['find the government jurisdiction held by the French Minister of the Economy, Finance and Industry', 'find countries that border #1']
+- explored: ['government.government_agency.jurisdiction', 'government.governmental_jurisdiction.agencies', 'government.government_agency.government', 'film.film.country', 'film.film.distributors', 'film.film_regional_release_date.film'] (max_score 0.672)
+- eval: continue resolved=['France']
+- explored: ['base.locations.countries.cities_within', 'base.locations.countries.continent', 'base.locations.countries.planet'] (max_score 0.323)
+- eval: continue resolved=['France']
+- explored: ['base.locations.countries.cities_within', 'location.fr_region.capital', 'location.fr_region.departments', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'location.location.geolocation'] (max_score 0.323)
+- eval: continue resolved=['France']
+- explored: ['base.locations.states_and_provences.country', 'base.locations.countries.counties_within', 'base.locations.countries.cities_within', 'base.locations.countries.cities_within', 'base.locations.countries.continent', 'base.locations.countries.planet'] (max_score 0.354)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2570_99dba9274e8d6c826fdb25827fe613b3 (hedge)
+
+**Q:** Which Presidents of the United States were used as subjects of the book Sherlock Holmes and the Voice of Terror?
+
+**gold:** ['Franklin D. Roosevelt', 'Harry S. Truman']
+
+**answer:** It could not be determined from the provided facts which Presidents of the United States were used as subjects of Sherlock Holmes and the Voice of Terror.
+
+**entities:** []
+
+- plan: ['find the book Sherlock Holmes and the Voice of Terror', 'find the Presidents of the United States used as subjects of #1']
+- explored: ['film.film.story_by', 'film.film.written_by', 'film.writer.film', 'book.book_subject.works', 'book.written_work.subjects', 'film.film_character.portrayed_in_films'] (max_score 0.51)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.director.film', 'film.film.subjects', 'film.film.directed_by', 'film.performance.character', 'fictional_universe.fictional_character.occupation', 'base.schemastaging.context_name.pronunciation'] (max_score 0.227)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.prequel', 'film.film.prequel', 'film.film.starring', 'fictional_universe.character_occupation.characters_with_this_occupation', 'government.government_office_or_title.jurisdiction', 'base.ontologies.ontology_instance.equivalent_instances'] (max_score 0.196)
+- eval: continue resolved=['Sherlock Holmes and the Voice of Terror']
+- explored: ['book.book_subject.works', 'tv.tv_program.subjects', 'tv.tv_program.subjects', 'book.written_work.subjects', 'award.ranking.item', 'book.book.editions'] (max_score 0.205)
+- eval: continue resolved=['Richard Nixon', 'George W. Bush', 'Taft', 'Bush']
+- explored: ['book.book_subject.works', 'book.written_work.subjects', 'book.contents.work', 'book.book_subject.works', 'book.written_work.subjects', 'book.book.editions'] (max_score 0.22)
+- eval: continue resolved=['President of the United States']
+- explored: ['book.book_subject.works', 'tv.tv_program.subjects', 'tv.tv_program.subjects', 'book.book_subject.works', 'book.written_work.subjects', 'book.contents.work'] (max_score 0.205)
+- eval: continue resolved=['Richard Nixon', 'George W. Bush', 'Taft', 'Bush']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-25_62939f05e216712e4700e993437a980a (hedge)
+
+**Q:** What was the latest film that Taylor Lautner played in?
+
+**gold:** ['Grown Ups 2']
+
+**answer:** The latest film that Taylor Lautner played in could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the films Taylor Lautner played in', 'find the latest film in #1']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_actor.starring_roles'] (max_score 0.67)
+- eval: continue resolved=['Abduction', "Valentine's Day", 'Incarceron', 'Tracers']
+- explored: ['film.film_regional_release_date.film', 'film.film.release_date_s', 'film.film.starring', 'film.film_regional_release_date.film', 'film.film.release_date_s', 'film.film.story_by'] (max_score 0.665)
+- eval: continue resolved=[]
+- explored: ['film.film.story_by', 'film.film.starring', 'film.film.featured_film_locations', 'film.film.featured_film_locations', 'film.film_location.featured_in_films', 'film.film_subject.films'] (max_score 0.352)
+- eval: continue resolved=[]
+- explored: ['film.film.story_by', 'film.film.directed_by', 'film.writer.film', 'film.film.featured_film_locations', 'film.film.directed_by', 'film.film_location.featured_in_films'] (max_score 0.352)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-25_d315c4815af961d22882675a61b35b81 (hedge)
+
+**Q:** What movie did production designer David Brisbin produce that Taylor Lautner plays in?
+
+**gold:** ['The Twilight Saga: New Moon']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find movies produced by David Brisbin', 'find which of #1 Taylor Lautner plays in']
+- explored: ['film.film_art_director.films_art_directed', 'film.film.film_production_design_by', 'film.film_production_designer.films_production_designed', 'film.actor.film', 'film.performance.actor', 'film.person_or_entity_appearing_in_film.films'] (max_score 0.574)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['film.film.film_art_direction_by', 'people.person.profession', 'people.person.gender', 'film.personal_film_appearance.person', 'tv.tv_actor.starring_roles', 'tv.tv_actor.guest_roles'] (max_score 0.529)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['tv.regular_tv_appearance.actor', 'award.award_nominee.award_nominations', 'celebrities.celebrity.celebrity_friends'] (max_score 0.155)
+- eval: backtrack resolved=['Desert Hearts', 'Love Letters', 'Animal Behavior', 'The Corruptor']
+- backtrack: evaluator
+- explored: ['celebrities.friendship.friend', 'tv.tv_guest_role.actor', 'award.award_nomination.award_nominee'] (max_score 0.135)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-261_7bc18657d5150879fc643779b6ad5e48 (hedge)
+
+**Q:** Where is the topic of the image "Whistler Skilift 040" found?
+
+**gold:** ['British Columbia', 'Coast Mountains', 'North American Cordillera', 'Pacific Coast Ranges', 'North America', 'Fitzsimmons Range', 'Pacific Ranges', 'Garibaldi Ranges', 'Canada']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find the topic of the image "Whistler Skilift 040"', 'find where #1 is found']
+- explored: [] (max_score 0.0)
+- eval: continue resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: continue resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: continue resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2653_ea8442cb2c503dcbd06d9b7a77fed60d (hedge)
+
+**Q:** What war did France participate in where it's fighting force was the smallest?
+
+**gold:** ['Battle of Bailén']
+
+**answer:** It could not be determined from the provided facts which war France participated in where its fighting force was the smallest.
+
+**entities:** []
+
+- plan: ['find wars that France participated in', "find which of #1 had France's fighting force as the smallest"]
+- explored: ['military.military_combatant.includes_allies', 'military.military_combatant_group.combatants', 'military.military_combatant.belongs_to_combatant_group'] (max_score 0.575)
+- eval: continue resolved=["Thirty Years' War", 'War in Afghanistan', 'Operation Adolphe', 'French conquest of Senegal']
+- explored: ['military.casualties.military_conflict', 'military.force_strength.military_conflict', 'military.military_combatant_group.conflict', 'military.force_strength.military_conflict', 'military.military_combatant_group.conflict', 'military.military_command.military_conflict'] (max_score 0.555)
+- eval: continue resolved=[]
+- explored: ['military.military_combatant.military_conflicts', 'military.military_combatant.force_deployments', 'military.military_combatant.armed_forces', 'military.military_combatant.military_conflicts', 'military.military_combatant.force_deployments', 'location.statistical_region.size_of_armed_forces'] (max_score 0.295)
+- eval: continue resolved=['War in Afghanistan']
+- explored: ['military.military_combatant_group.conflict', 'military.military_conflict.combatants', 'time.event.locations', 'military.military_combatant_group.conflict', 'military.military_conflict.combatants', 'time.event.included_in_event'] (max_score 0.261)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2721_2d207ed91313bd46c4ffd81c9e26a912 (hedge)
+
+**Q:** What was the name of Adolf Hitler's parent who died on January 3, 1903?
+
+**gold:** ['Alois Hitler']
+
+**answer:** It could not be determined from the provided facts which of Adolf Hitler's parents died on January 3, 1903.
+
+**entities:** []
+
+- plan: ['find the parent of Adolf Hitler who died on January 3, 1903', 'find the name of #1']
+- explored: ['people.person.parents', 'people.person.parents', 'people.deceased_person.cause_of_death'] (max_score 0.426)
+- eval: continue resolved=['Klara Hitler', 'Alois Hitler']
+- explored: ['people.person.parents', 'people.person.parents', 'people.deceased_person.cause_of_death', 'people.person.parents', 'people.person.parents', 'people.deceased_person.place_of_death'] (max_score 0.441)
+- eval: continue resolved=['Alois Hitler']
+- explored: ['people.person.place_of_birth', 'people.person.nationality', 'people.person.gender'] (max_score 0.161)
+- eval: answer resolved=['Alois Hitler']
 - verifier: grounded unsupported=[]
 
 ---
@@ -1404,6 +3123,651 @@
 - eval: continue resolved=['J. J. Nelson', 'Johnny Rodgers', 'Leo Lewis', 'Josh Cribbs']
 - explored: ['people.person.place_of_birth', 'sports.pro_sports_played.athlete', 'sports.pro_athlete.sports_played_professionally', 'people.person.place_of_birth', 'people.person.nationality', 'book.written_work.author'] (max_score 0.499)
 - eval: continue resolved=['J. J. Nelson', 'Johnny Rodgers', 'Leo Lewis', 'Josh Cribbs']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-2904_99f2c6359f65cb116bf380f01af55d6b (hedge)
+
+**Q:** Where does Lauren Conrad live that appointed Dianne Feinstein to a governmental position?
+
+**gold:** ['San Francisco']
+
+**answer:** Lauren Conrad could not be determined from the provided facts. The facts only connect Dianne Feinstein to San Francisco and the San Francisco Board of Supervisors, but do not state where Lauren Conrad lives.
+
+**entities:** []
+
+- plan: ['find the governmental position to which Dianne Feinstein was appointed', 'find where Lauren Conrad lives that appointed #1']
+- explored: ['government.government_position_held.appointed_by', 'government.politician.government_positions_held', 'government.political_appointer.appointees', 'award.award_nomination.award_nominee', 'business.employment_tenure.person', 'tv.tv_guest_role.actor'] (max_score 0.597)
+- eval: continue resolved=['San Francisco Board of Supervisors', 'San Francisco Supervisor', 'San Francisco', 'Councillor']
+- explored: ['base.biblioness.bibs_location.state', 'organization.organization.locations', 'base.thatguy.locally_famous_person.location', 'government.government_office_or_title.governmental_body_if_any', 'government.governmental_body.offices_positions', 'government.governmental_body.members'] (max_score 0.241)
+- eval: continue resolved=['Dianne Feinstein']
+- explored: ['base.biblioness.bibs_location.state', 'location.mailing_address.citytown', 'base.aareas.schema.administrative_area.administrative_children', 'organization.organization.locations', 'organization.organization.board_members', 'business.business_location.parent_company'] (max_score 0.241)
+- eval: backtrack resolved=['Dianne Feinstein']
+- backtrack: evaluator
+- explored: ['base.biblioness.bibs_location.state', 'organization.organization.locations', 'base.thatguy.locally_famous_person.location', 'government.government_office_or_title.governmental_body_if_any', 'government.governmental_body.offices_positions', 'government.governmental_body.members'] (max_score 0.241)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['base.aareas.schema.administrative_area.administrative_children', 'government.political_district.representatives', 'location.administrative_division_capital_relationship.administrative_division', 'organization.organization.headquarters', 'organization.organization_board_membership.organization', 'organization.organization.founders'] (max_score 0.203)
+- eval: answer resolved=['Michela Alioto-Pier', 'Jane Kim', 'Chris Daly', 'Dianne Feinstein']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-303_770773a5150d1cdd3cfadfc25022720b (hedge)
+
+**Q:** Who inspired the person who wrote the lyrics for "Street Scene: Act I. No. 6b Quartet" to write poetry?
+
+**gold:** ['Walt Whitman']
+
+**answer:** It could not be determined from the provided facts who inspired Langston Hughes to write poetry.
+
+**entities:** []
+
+- plan: ['find the person who wrote the lyrics for "Street Scene: Act I. No. 6b Quartet"', 'find who inspired #1 to write poetry']
+- explored: ['music.lyricist.lyrics_written', 'music.composition.lyricist', 'music.recording.song'] (max_score 0.547)
+- eval: continue resolved=['Langston Hughes']
+- explored: ['music.lyricist.lyrics_written', 'book.written_work.author', 'book.written_work.author'] (max_score 0.285)
+- eval: continue resolved=[]
+- explored: ['music.lyricist.lyrics_written', 'music.composition.lyricist', 'music.composition.composer', 'music.lyricist.lyrics_written', 'music.composition.lyricist', 'music.composition.composer'] (max_score 0.285)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['music.lyricist.lyrics_written', 'book.written_work.author', 'book.written_work.author'] (max_score 0.285)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['music.composition.language', 'music.composition.recordings', 'music.composition.recordings', 'music.composition.form', 'music.composition.language', 'music.composition.recordings'] (max_score 0.102)
+- eval: continue resolved=[]
+- explored: ['music.lyricist.lyrics_written', 'music.recording.artist', 'book.book_subject.works', 'music.lyricist.lyrics_written', 'book.written_work.school_or_movement', 'music.composition.lyricist'] (max_score 0.285)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-3084_ec0835b1ad2d181fa3b4195d539d862a (hedge)
+
+**Q:** What  country imports from Japan and has currency called Fiji?
+
+**gold:** ['Tuvalu']
+
+**answer:** It could not be determined from the provided facts which country imports from Japan and has currency called Fiji.
+
+**entities:** []
+
+- plan: ['find countries that import from Japan', 'find which of #1 have currency called Fiji']
+- explored: ['location.imports_and_exports.imported_from', 'location.statistical_region.places_imported_from', 'location.imports_and_exports.exported_to', 'location.imports_and_exports.imported_from', 'location.imports_and_exports.exported_to', 'location.statistical_region.places_imported_from'] (max_score 0.654)
+- eval: continue resolved=['United States of America', 'Dubai', 'Kiribati', 'Tuvalu']
+- explored: ['finance.currency.countries_used', 'location.country.currency_used', 'measurement_unit.money_value.currency', 'finance.currency.countries_used', 'location.country.currency_used', 'location.administrative_division.country'] (max_score 0.682)
+- eval: answer resolved=['United States of America']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-3249_0b9c49912f43238136954d463b417194 (hedge)
+
+**Q:** Which program featuring Tamera Mowry has the largest "tvrage_id?"?
+
+**gold:** ['Roommates']
+
+**answer:** Tia & Tamera is the program featuring Tamera Mowry that can be identified from the facts, but the largest tvrage_id could not be determined because no tvrage_id values are provided.
+
+**entities:** []
+
+- plan: ['find programs featuring Tamera Mowry', 'find the program in #1 with the largest tvrage_id']
+- explored: ['film.actor.film', 'film.performance.actor', 'tv.tv_personality.tv_regular_appearances'] (max_score 0.423)
+- eval: continue resolved=['Tia & Tamera']
+- explored: ['tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'tv.tv_program.seasons'] (max_score 0.268)
+- eval: continue resolved=['Tia & Tamera']
+- explored: ['tv.tv_program.country_of_origin', 'tv.tv_network.areas_served', 'tv.tv_program.filming_locations', 'tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'broadcast.tv_channel.language'] (max_score 0.268)
+- eval: continue resolved=['Tia & Tamera']
+- explored: ['tv.tv_program.program_creator', 'tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'tv.tv_program.country_of_origin', 'tv.tv_program.languages', 'tv.tv_program.original_network'] (max_score 0.275)
+- eval: continue resolved=['Tia & Tamera']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-3249_6dbfa476f0510018f470c29993293e68 (hedge)
+
+**Q:** What tv show features Tamera Mowry and has a program "tvrage_id" lower than 5379?
+
+**gold:** ['Sister, Sister', 'Detention']
+
+**answer:** Tia & Tamera, The Real Talk Show, Sister, Sister, Detention, Strong Medicine, The Look for Less, and Roommates all feature Tamera Mowry, but the program tvrage_id is not provided in the facts, so it could not be determined which of these has a tvrage_id lower than 5379.
+
+**entities:** []
+
+- plan: ['find tv shows that feature Tamera Mowry', 'find which of #1 have a program "tvrage_id" lower than 5379']
+- explored: ['tv.tv_personality.tv_regular_appearances', 'tv.regular_tv_appearance.actor', 'tv.tv_regular_personal_appearance.person'] (max_score 0.594)
+- eval: continue resolved=['Tia & Tamera', 'The Real Talk Show', 'Sister, Sister', 'Detention']
+- explored: ['tv.tv_program.episodes', 'tv.tv_program.regular_cast', 'tv.tv_program.genre', 'tv.tv_program.regular_cast', 'tv.tv_program.genre', 'tv.regular_tv_appearance.series'] (max_score 0.35)
+- eval: continue resolved=['Tia & Tamera']
+- explored: ['tv.tv_program.episodes', 'tv.tv_program.original_network', 'tv.tv_program.regular_cast', 'tv.tv_program.episodes', 'tv.tv_program.original_network', 'tv.tv_program.regular_cast'] (max_score 0.335)
+- eval: continue resolved=['Tia & Tamera', 'The Real Talk Show', 'Sister, Sister', 'Detention']
+- explored: ['tv.tv_program.episodes', 'tv.tv_program.episodes', 'tv.tv_program.episodes', 'tv.tv_program.episodes', 'tv.tv_program.episodes'] (max_score 0.338)
+- eval: continue resolved=['Tia & Tamera', 'The Adventures of Hyperman']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-3515_76ac752ffcee1b2759600cbec55107c7 (hedge)
+
+**Q:** Which college attended by Paul Ryan was founded after 1809?
+
+**gold:** ['American University']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find colleges attended by Paul Ryan', 'find which of #1 were founded after 1809']
+- explored: ['education.education.student', 'people.person.education', 'award.award_nominee.award_nominations', 'base.descriptive_names.names.descriptive_name'] (max_score 0.492)
+- eval: continue resolved=['American University', 'Miami University']
+- explored: ['education.university.number_of_undergraduates', 'education.educational_institution.campuses', 'education.educational_institution.campuses', 'education.university.number_of_undergraduates', 'education.educational_institution.campuses', 'education.educational_institution.campuses'] (max_score 0.261)
+- eval: continue resolved=['American University', 'Miami University']
+- explored: ['education.university.number_of_undergraduates', 'education.educational_institution.campuses', 'education.educational_institution.campuses', 'education.university.number_of_undergraduates', 'education.educational_institution.campuses', 'education.educational_institution.campuses'] (max_score 0.261)
+- eval: continue resolved=[]
+- explored: ['education.university.number_of_undergraduates', 'education.educational_institution.campuses', 'education.educational_institution.campuses', 'education.university.number_of_undergraduates', 'education.educational_institution.campuses', 'education.educational_institution.campuses'] (max_score 0.261)
+- eval: answer resolved=['American University', 'Miami University']
+- verifier: unsupported unsupported=['Miami University was founded after 1809']
+
+---
+
+## WebQTrn-3543_3f03848605c6758ff2230a955cd92d65 (hedge)
+
+**Q:** Which countries does Japan export that that have a GDP deflator change of rate -0.61?
+
+**gold:** ['Kiribati']
+
+**answer:** Could not be determined from the provided facts which of Japan's export destinations have a GDP deflator change rate of -0.61.
+
+**entities:** []
+
+- plan: ['find countries that Japan exports to', 'find which of #1 have a GDP deflator change of rate -0.61']
+- explored: ['location.imports_and_exports.exported_to', 'location.statistical_region.places_exported_to', 'location.imports_and_exports.imported_from'] (max_score 0.677)
+- eval: continue resolved=['Sudan', 'Tanzania', 'Canada', 'New Zealand']
+- explored: ['location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_nominal', 'location.statistical_region.gdp_nominal_per_capita', 'location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_nominal_per_capita', 'location.statistical_region.gdp_real'] (max_score 0.464)
+- eval: continue resolved=[]
+- explored: ['location.country.currency_used', 'location.country.currency_formerly_used', 'finance.currency.countries_used', 'location.country.currency_used', 'finance.currency.countries_used', 'measurement_unit.dated_money_value.currency'] (max_score 0.302)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_nominal', 'location.statistical_region.gdp_nominal_per_capita', 'location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_nominal_per_capita', 'location.statistical_region.gdp_real'] (max_score 0.464)
+- eval: continue resolved=['Tanzania']
+- explored: ['finance.currency.countries_formerly_used', 'location.imports_exports_by_industry.currency', 'location.imports_and_exports.currency', 'finance.exchange_rate.target_of_exchange', 'finance.currency.target_of_exchange'] (max_score 0.259)
+- eval: continue resolved=[]
+- explored: ['location.statistical_region.gdp_deflator_change', 'location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_nominal', 'location.statistical_region.gdp_growth_rate', 'location.statistical_region.gdp_nominal', 'location.statistical_region.gdp_nominal_per_capita'] (max_score 0.434)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-3543_b5eabb006685da5755fdf968500b7cd4 (hedge)
+
+**Q:** What nation to which Japan exports has a standing army of 104000 people?
+
+**gold:** ['Sudan']
+
+**answer:** It could not be determined from the provided facts which nation Japan exports to has a standing army of 104000 people.
+
+**entities:** []
+
+- plan: ['find nations to which Japan exports', 'find which of #1 have a standing army of 104000 people']
+- explored: ['location.imports_and_exports.exported_to', 'location.statistical_region.places_exported_to', 'location.statistical_region.high_tech_as_percent_of_manufactured_exports'] (max_score 0.641)
+- eval: continue resolved=['Sudan', 'Tanzania', 'Kiribati', 'Canada']
+- explored: ['location.statistical_region.size_of_armed_forces', 'location.statistical_region.military_expenditure_percent_gdp', 'base.locations.countries.continent', 'location.statistical_region.size_of_armed_forces', 'location.statistical_region.military_expenditure_percent_gdp', 'base.locations.countries.continent'] (max_score 0.591)
+- eval: continue resolved=[]
+- explored: ['military.military_unit.place_of_origin', 'military.military_unit_place_of_origin.military_units', 'organization.organization.place_founded', 'base.locations.countries.continent', 'location.statistical_region.population', 'base.locations.continents.countries_within'] (max_score 0.273)
+- eval: continue resolved=['Tanzania']
+- explored: ['location.statistical_region.size_of_armed_forces', 'military.military_unit.place_of_origin', 'location.statistical_region.military_expenditure_percent_gdp', 'location.statistical_region.size_of_armed_forces', 'location.statistical_region.military_expenditure_percent_gdp', 'base.locations.countries.continent'] (max_score 0.591)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-423_135747a75bf43cdc1e0a1cb41f49965e (hedge)
+
+**Q:** What is there to do in Laughlin, NV that has a venue capacity of 800?
+
+**gold:** ['Riverside Resort Hotel & Casino']
+
+**answer:** It could not be determined from the provided facts what in Laughlin, NV has a venue capacity of 800.
+
+**entities:** []
+
+- plan: ['find Laughlin, NV that has a venue capacity of 800', 'find what is there to do in #1']
+- explored: ['location.location.events', 'time.event.locations', 'location.hud_county_place.place'] (max_score 0.258)
+- eval: continue resolved=['Laughlin']
+- explored: ['location.location.events', 'time.event.locations', 'location.location.events', 'film.film_festival_event.festival', 'film.film.film_festivals', 'location.location.events'] (max_score 0.198)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['time.event.locations', 'film.film_festival_event.films', 'location.hud_county_place.place', 'location.us_county.hud_county_place', 'base.wikipedia_infobox.settlement.area_code'] (max_score 0.188)
+- eval: continue resolved=['Laughlin']
+- explored: ['location.hud_county_place.place', 'base.wikipedia_infobox.settlement.area_code', 'location.us_county.hud_county_place', 'location.location.events', 'time.event.locations', 'location.location.nearby_airports'] (max_score 0.245)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['time.event.locations', 'film.film_festival_event.films', 'location.location.contains', 'location.location.containedby', 'location.location.containedby'] (max_score 0.188)
+- eval: continue resolved=['Laughlin']
+- explored: ['location.location.contains', 'location.location.containedby', 'location.location.containedby', 'location.location.contains', 'base.casinos.casino.owner', 'location.location.containedby'] (max_score 0.44)
+- eval: continue resolved=[]
+- explored: ['location.location.contains', 'location.location.containedby', 'location.location.containedby', 'location.location.events', 'time.event.locations', 'time.event.instance_of_recurring_event'] (max_score 0.245)
+- eval: continue resolved=['Laughlin']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-452_e1d6f53f49be4abf9b71b6f18c67ac13 (hedge)
+
+**Q:** What three Cities did Lala the subject of the film Carmelo's Way call home?
+
+**gold:** ['New York City', 'Baltimore', 'Brooklyn']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ["find the subject of the film Carmelo's Way named Lala", 'find the three cities that #1 called home']
+- explored: ['film.film_subject.films', 'film.film.subjects', 'film.film.genre'] (max_score 0.573)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: [] (max_score 0.0)
+- eval: backtrack resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: backtrack resolved=['Carmelo Anthony']
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-452_f79ffe93341047ed2d8a39e5bb7d9156 (hedge)
+
+**Q:** What city has a located ID less than 1783503 and is home to Lala Anthony?
+
+**gold:** ['Baltimore']
+
+**answer:** New York City is the city that fits the clue, but the located ID condition could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the city that is home to Lala Anthony', 'find which of #1 have a located ID less than 1783503']
+- explored: ['location.location.people_born_here', 'people.person.places_lived', 'people.place_lived.person'] (max_score 0.198)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['people.person.place_of_birth', 'film.actor.film', 'people.person.sibling_s'] (max_score 0.138)
+- eval: continue resolved=['Carmelo Anthony']
+- explored: ['location.neighborhood.neighborhood_of', 'location.place_with_neighborhoods.neighborhoods', 'location.location.contains', 'film.film.featured_film_locations', 'film.film_location.featured_in_films', 'film.film.country'] (max_score 0.304)
+- eval: continue resolved=['New York City']
+- explored: ['people.place_lived.location', 'location.neighborhood.neighborhood_of', 'location.location.nearby_airports', 'people.place_lived.location', 'location.neighborhood.neighborhood_of', 'location.neighborhood.neighborhood_of'] (max_score 0.507)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['location.location.contains', 'base.petbreeds.dog_city_relationship.cities', 'travel.travel_destination.local_transportation', 'location.place_with_neighborhoods.neighborhoods', 'location.place_with_neighborhoods.neighborhoods', 'location.location.contains'] (max_score 0.293)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['travel.transportation.travel_destination', 'base.meedan.arabic_language_media_source.city', 'travel.travel_destination.how_to_get_here', 'location.location.contains', 'travel.tourist_attraction.near_travel_destination', 'location.location.people_born_here'] (max_score 0.257)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-567_5b0f028745dcda2aac706f1a6b8a965c (hedge)
+
+**Q:** What Ron Howard movie has a tv program episode run time less than 95?
+
+**gold:** ['Huckleberry Finn', 'Bitter Harvest']
+
+**answer:** Could not be determined from the provided facts which Ron Howard movie has a tv program episode run time less than 95.
+
+**entities:** []
+
+- plan: ['find Ron Howard movies', 'find which of #1 have a tv program episode run time less than 95']
+- explored: ['film.actor.film', 'film.director.film', 'film.film.directed_by'] (max_score 0.632)
+- eval: continue resolved=['Grand Theft Auto', 'Welcome to Hollywood', 'The Journey', 'The Wild Country']
+- explored: ['film.director.film', 'film.film.directed_by', 'film.film.starring', 'film.director.film', 'film.film.directed_by', 'film.film.starring'] (max_score 0.582)
+- eval: continue resolved=['Grand Theft Auto', 'Welcome to Hollywood', 'The Journey', 'The Wild Country']
+- explored: ['film.actor.film', 'film.director.film', 'film.film.directed_by', 'film.actor.film', 'film.performance.actor', 'film.writer.film'] (max_score 0.632)
+- eval: continue resolved=['Welcome to Hollywood', 'Cannes: All Access', 'Far and Away', 'Presidential Reunion']
+- explored: ['film.film.runtime', 'film.film_festival_event.films', 'film.film.film_festivals', 'film.film.runtime', 'film.film.starring', 'film.film.country'] (max_score 0.557)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-567_724a3b769671b1ea52a76af3a90687f4 (hedge)
+
+**Q:** What movie was decorated by Antonio Mateos and made by Ron Howard?
+
+**gold:** ['The Spikes Gang']
+
+**answer:** Patton was decorated by Antonio Mateos and made by Ron Howard could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find the movie decorated by Antonio Mateos', 'find the movie made by Ron Howard', 'find the movie that satisfies both #1 and #2']
+- explored: ['film.film.film_set_decoration_by', 'film.film_set_designer.film_sets_designed', 'award.award_honor.award_winner', 'film.film.directed_by', 'film.film.story_by', 'film.actor.film'] (max_score 0.656)
+- eval: continue resolved=['Patton', 'The Spikes Gang', 'Custer of the West', 'Krakatoa, East of Java']
+- explored: ['film.film.directed_by', 'film.film.starring', 'film.film.story_by', 'film.film.directed_by', 'film.film.starring', 'film.film.story_by'] (max_score 0.659)
+- eval: continue resolved=['Cocoon', 'Frost/Nixon', 'Parenthood', 'Willow']
+- explored: ['film.film.sequel', 'film.film.film_series', 'film.film.genre', 'film.film.genre', 'film.film.featured_film_locations', 'film.film.starring'] (max_score 0.34)
+- eval: continue resolved=['Patton', 'The Spikes Gang', 'Custer of the West', 'Krakatoa, East of Java']
+- explored: ['film.film.sequel', 'film.film.film_series', 'film.film.genre', 'film.film.film_series', 'film.film.genre', 'film.film.genre'] (max_score 0.34)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-567_8e46718c3fc1361ff1c02b62a853b402 (hedge)
+
+**Q:** What Ron Howard movies that were produced by Universal Studio?
+
+**gold:** ['More American Graffiti', 'A Beautiful Mind', "Dr. Seuss' How the Grinch Stole Christmas"]
+
+**answer:** Ron Howard movies produced by Universal Studio could not be determined from the facts provided.
+
+**entities:** []
+
+- plan: ['find Ron Howard movies', 'find which of #1 were produced by Universal Studio']
+- explored: ['film.actor.film', 'film.director.film', 'film.performance.actor', 'film.film.featured_film_locations', 'film.film_location.featured_in_films', 'film.film.production_companies'] (max_score 0.632)
+- eval: continue resolved=['EDtv', 'A Beautiful Mind', 'Far and Away', 'Presidential Reunion']
+- explored: ['film.director.film', 'film.film.directed_by', 'film.film.starring', 'film.director.film', 'film.film.directed_by', 'film.film.starring'] (max_score 0.582)
+- eval: continue resolved=['EDtv', 'A Beautiful Mind', 'Far and Away', 'Presidential Reunion']
+- explored: ['film.actor.film', 'film.director.film', 'film.film.directed_by', 'film.actor.film', 'film.performance.actor', 'film.writer.film'] (max_score 0.632)
+- eval: continue resolved=['Welcome to Hollywood', 'Cannes: All Access', 'Grand Theft Auto', 'Far and Away']
+- explored: ['film.director.film', 'film.film.directed_by', 'film.film.starring', 'film.director.film', 'film.film.directed_by', 'film.film.starring'] (max_score 0.582)
+- eval: continue resolved=['Welcome to Hollywood', 'Cannes: All Access', 'Grand Theft Auto', 'Far and Away']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-567_b63fe0fde281c871990cc523c2df1e9b (hedge)
+
+**Q:** Which of Ron Howard's movies has a netflix_id higher than 60002655?
+
+**gold:** ['Cannes: All Access', 'Under the Boardwalk: The Monopoly Story', 'American Graffiti', 'The Spikes Gang', 'Osmosis Jones', 'Bitter Harvest', 'A Beautiful Mind', 'The Shootist', "I'm a Fool", 'Five Minutes to Live', "The Courtship of Eddie's Father", 'The Independent', 'More American Graffiti', 'Village of the Giants']
+
+**answer:** Could not be determined from the provided facts, because no netflix_id values are given for Ron Howard's movies.
+
+**entities:** []
+
+- plan: ['find movies directed by Ron Howard', 'find which of #1 have a netflix_id higher than 60002655']
+- explored: ['film.film.directed_by', 'film.director.film', 'film.actor.film'] (max_score 0.679)
+- eval: continue resolved=['Cocoon', 'Willow', 'The Dilemma', 'Night Shift']
+- explored: ['film.film.directed_by', 'film.film_art_director.films_art_directed', 'film.director.film', 'film.film.directed_by', 'film.director.film', 'film.film.starring'] (max_score 0.679)
+- eval: continue resolved=['Cocoon', 'Willow', 'The Dilemma', 'Night Shift']
+- explored: ['media_common.netflix_title.netflix_genres', 'film.film.rating', 'film.film.story_by', 'media_common.netflix_title.netflix_genres', 'film.film.rating', 'film.film.story_by'] (max_score 0.354)
+- eval: continue resolved=[]
+- explored: ['media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.netflix_title.netflix_genres', 'media_common.media_genre.parent_genre', 'media_common.media_genre.child_genres'] (max_score 0.354)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-568_f4dd5e4885d4e73788e2f0e9a63d6035 (hedge)
+
+**Q:** What county is home to The Charlotte News?
+
+**gold:** ['Mecklenburg County']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the home county of The Charlotte News']
+- explored: ['book.newspaper.headquarters', 'periodicals.newspaper_circulation_area.newspapers', 'book.newspaper.circulation_areas'] (max_score 0.597)
+- eval: continue resolved=['Charlotte']
+- explored: ['location.us_county.hud_county_place', 'location.hud_county_place.county', 'periodicals.newspaper_circulation_area.newspapers', 'periodicals.newspaper_circulation_area.newspapers', 'base.abcbirds.conservation_project.project_location_s', 'base.locations.states_and_provences.country'] (max_score 0.547)
+- eval: answer resolved=['Mecklenburg County']
+- verifier: unsupported unsupported=['The Charlotte News home to Mecklenburg County']
+- explored: ['book.newspaper.headquarters', 'periodicals.newspaper_circulation_area.newspapers', 'book.newspaper.circulation_areas'] (max_score 0.592)
+- eval: answer resolved=['Charlotte', 'Mecklenburg County']
+- verifier: unsupported unsupported=['The Charlotte News is home to Mecklenburg County']
+
+---
+
+## WebQTrn-60_7abf3620549d6d7aaf194ce37a34bbd8 (hedge)
+
+**Q:** In which Portuguese speaking country was Carlos Tavares born?
+
+**gold:** ['Portugal']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the country where Carlos Tavares was born', 'find which of #1 is Portuguese-speaking']
+- explored: ['location.country.official_language', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in', 'organization.leadership.person'] (max_score 0.207)
+- eval: continue resolved=[]
+- explored: ['location.location.people_born_here', 'location.country.capital', 'sports.sport_country.athletes', 'location.location.people_born_here', 'location.country.capital', 'location.country.official_language'] (max_score 0.568)
+- eval: continue resolved=['Cape Verde']
+- explored: ['location.location.people_born_here', 'location.location.people_born_here', 'location.location.people_born_here', 'location.location.people_born_here', 'location.location.people_born_here', 'people.person.nationality'] (max_score 0.283)
+- eval: continue resolved=['Cape Verde']
+- explored: ['location.location.people_born_here', 'location.country.capital', 'sports.sport_country.athletes', 'location.country.capital', 'sports.sport_country.athletes', 'base.biblioness.bibs_location.country'] (max_score 0.568)
+- eval: backtrack resolved=[]
+- verifier: unsupported unsupported=['Carlos Tavares was born in Cape Verde']
+
+---
+
+## WebQTrn-60_eae3033643523fd3a54b6c147fdfa728 (hedge)
+
+**Q:** What Portuguese=speaking country had the net migration number of -10000?
+
+**gold:** ['Guinea-Bissau']
+
+**answer:** The answer could not be verified against the knowledge graph.
+
+**entities:** []
+
+- plan: ['find the country with net migration number of -10000', 'find which of #1 have Portuguese as an official language']
+- explored: ['location.country.official_language', 'location.country.languages_spoken', 'language.human_language.countries_spoken_in'] (max_score 0.265)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['language.human_language.main_country', 'people.ethnicity.languages_spoken', 'base.rosetta.local_name.languoid'] (max_score 0.155)
+- eval: continue resolved=[]
+- explored: ['location.statistical_region.net_migration', 'location.country.internet_tld', 'location.country.currency_used', 'people.ethnicity.geographic_distribution', 'people.ethnicity.included_in_group', 'people.ethnicity.languages_spoken'] (max_score 0.623)
+- eval: continue resolved=['Portugal']
+- explored: ['location.country.internet_tld', 'internet.top_level_domain.status', 'internet.top_level_domain.domain_type', 'location.country.currency_used', 'location.country.currency_formerly_used', 'location.imports_exports_by_industry.currency'] (max_score 0.289)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['internet.top_level_domain.sponsor', 'internet.top_level_domain.registry', 'internet.top_level_domain_sponsor.domains', 'location.imports_and_exports.currency', 'finance.currency.countries_formerly_used', 'finance.currency.countries_used'] (max_score 0.234)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['internet.top_level_domain_registry.domains', 'measurement_unit.dated_money_value.currency', 'measurement_unit.money_value.currency', 'base.schemastaging.athlete_salary.currency', 'base.locations.continents.planet', 'location.location.containedby'] (max_score 0.19)
+- eval: backtrack resolved=[]
+- verifier: unsupported unsupported=['Portugal is the Portuguese-speaking country with net migration number -10000']
+- explored: ['location.statistical_region.net_migration', 'location.country.official_language', 'location.country.languages_spoken'] (max_score 0.515)
+- eval: continue resolved=['Portugal']
+- verifier: unsupported unsupported=['Portugal is the Portuguese-speaking country with net migration number -10000']
+
+---
+
+## WebQTrn-62_b2f9ab8521bc316c4c97cfbba4229932 (hedge)
+
+**Q:** What are the names of the kids nominated for an Artist Award for "Donald's Crime"?
+
+**gold:** ['Diane Disney Miller', 'Sharon Mae Disney']
+
+**answer:** The kids nominated for an Artist Award for "Donalds Crime" could not be determined from the provided facts. The facts only identify Walt Disney as the nominee for the relevant award nomination.
+
+**entities:** []
+
+- plan: ['find the Artist Award nomination for "Donald\'s Crime"', 'find the kids nominated in #1']
+- explored: ['award.award_nominated_work.award_nominations', 'award.award_nomination.nominated_for', 'film.music_contributor.film'] (max_score 0.693)
+- eval: continue resolved=['Walt Disney']
+- explored: ['award.award_nomination.award', 'award.award_category.winners', 'award.award.category', 'award.award_nomination.ceremony', 'award.award_ceremony.awards_presented', 'award.award_honor.ceremony'] (max_score 0.667)
+- eval: continue resolved=['Academy Award for Best Short Film (Animated)']
+- explored: ['award.award_nomination.award', 'award.award_category.winners', 'award.award.category'] (max_score 0.639)
+- eval: answer resolved=['Three Orphan Kittens']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-710_e3d40457273785e46c5b71732713a5f4 (hedge)
+
+**Q:** When is the last time the team whose mascot is called Crazy Cab win the World Series?
+
+**gold:** ['2014 World Series']
+
+**answer:** It could not be determined from the provided facts when the San Francisco Giants last won the World Series.
+
+**entities:** []
+
+- plan: ['find the team whose mascot is called Crazy Cab', 'find the last time #1 won the World Series']
+- explored: ['sports.mascot.team', 'sports.sports_team.team_mascot'] (max_score 0.702)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: [] (max_score 0.0)
+- eval: backtrack resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: backtrack resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: backtrack resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-831_c191674d835a2284701f16d70a146360 (hedge)
+
+**Q:** What is the last movie recorded by Faster Kill Pussycat (club mix)?
+
+**gold:** ['Brooklyn']
+
+**answer:** It could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find the movie recorded by Faster Kill Pussycat (club mix)', 'find the last movie in #1']
+- explored: ['music.recording.song', 'music.artist.track', 'music.recording.tracks'] (max_score 0.353)
+- eval: continue resolved=['Faster Kill Pussycat']
+- explored: ['music.recording.song', 'music.artist.track', 'music.recording.tracks', 'music.recording.song', 'music.recording.song', 'music.artist.track'] (max_score 0.608)
+- eval: continue resolved=['The Ramen Girl']
+- explored: ['film.film.starring', 'film.film.release_date_s', 'film.film_regional_release_date.film'] (max_score 0.276)
+- eval: continue resolved=['The Ramen Girl']
+- explored: ['film.film.starring', 'film.film_subject.films', 'film.film.subjects', 'film.film_subject.films', 'film.film.featured_film_locations', 'film.film.subjects'] (max_score 0.291)
+- eval: answer resolved=['The Ramen Girl']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-849_8bb131f101e71d906d4a6dd2dbed06f7 (hedge)
+
+**Q:** What countries border German and which one has a nominal GDP per capita of 36,000?
+
+**gold:** ['Austria']
+
+**answer:** Germany borders Denmark, Poland, Austria, Belgium, Netherlands, and Liechtenstein. From the provided facts, it could not be determined which one has a nominal GDP per capita of 36,000.
+
+**entities:** []
+
+- plan: ['find countries that border Germany', 'find which of #1 has a nominal GDP per capita of 36,000']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country', 'film.film.country', 'film.film_regional_release_date.film', 'base.ontologies.ontology_instance_mapping.freebase_topic'] (max_score 0.309)
+- eval: continue resolved=['Germany']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.states_and_provences.continent', 'base.biblioness.bibs_location.country', 'location.country.administrative_divisions', 'location.administrative_division.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Luxembourg', 'Poland', 'Austria']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Liechtenstein']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.states_and_provences.continent', 'base.biblioness.bibs_location.country', 'location.country.administrative_divisions', 'location.administrative_division.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Liechtenstein', 'Europe']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-849_eba7931ddf28af4dfa20fb099196c91f (hedge)
+
+**Q:** What country bordering Germany that involved in the Gulf War?
+
+**gold:** ['France']
+
+**answer:** Germany borders Europe, and the Gulf War involved Saudi Arabia, Israel, Kuwait, Persian Gulf, Arabian Peninsula, and Iraq. From the facts given, it could not be determined which country bordering Germany was involved in the Gulf War.
+
+**entities:** []
+
+- plan: ['find countries bordering Germany', 'find which of #1 were involved in the Gulf War']
+- explored: ['geography.river.basin_countries', 'geography.lake.basin_countries', 'base.locations.continents.countries_within', 'film.film.country', 'film.film_regional_release_date.film', 'base.ontologies.ontology_instance_mapping.freebase_topic'] (max_score 0.562)
+- eval: continue resolved=['Europe']
+- explored: ['geography.river.basin_countries', 'location.location.containedby', 'location.location.partially_contained_by', 'geography.river.basin_countries', 'location.location.containedby', 'location.location.partially_contained_by'] (max_score 0.277)
+- eval: continue resolved=['Germany']
+- explored: ['base.locations.countries.cities_within', 'base.locations.continents.countries_within', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.countries.continent', 'location.country.languages_spoken'] (max_score 0.35)
+- eval: continue resolved=['Germany']
+- explored: ['base.locations.countries.cities_within', 'base.biblioness.bibs_location.country', 'location.administrative_division.country', 'base.locations.continents.countries_within', 'base.locations.countries.continent', 'location.location.geolocation'] (max_score 0.35)
+- eval: continue resolved=['Germany']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-849_f0ffa14797f7486fb0510a740e1cc8d6 (hedge)
+
+**Q:** Of the countries that border Germany, which country has an iso alpha 3 of CHE?
+
+**gold:** ['Switzerland']
+
+**answer:** Switzerland could not be determined from the provided facts as a country that borders Germany, because the facts list neighboring countries only indirectly and do not explicitly state Germany's borders or Switzerland's iso alpha 3 code.
+
+**entities:** []
+
+- plan: ['find countries that border Germany', 'find which of #1 has iso alpha 3 CHE']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country', 'film.film.country', 'film.film_regional_release_date.film', 'base.ontologies.ontology_instance_mapping.freebase_topic'] (max_score 0.309)
+- eval: continue resolved=['Germany']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.states_and_provences.continent', 'base.biblioness.bibs_location.country', 'location.country.administrative_divisions', 'location.administrative_division.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Luxembourg', 'Poland', 'Austria']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country', 'base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.biblioness.bibs_location.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Liechtenstein']
+- explored: ['base.locations.countries.continent', 'base.locations.continents.countries_within', 'base.locations.states_and_provences.continent', 'base.biblioness.bibs_location.country', 'location.country.administrative_divisions', 'location.administrative_division.country'] (max_score 0.309)
+- eval: continue resolved=['Belgium', 'Liechtenstein', 'Europe']
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-886_36e0f3794f873b19127b97c24fcb3743 (hedge)
+
+**Q:** What school was attended by the person who was the focal point of the image "Sergio romo 2010"?
+
+**gold:** ['University of North Alabama']
+
+**answer:** Could not be determined from the provided facts.
+
+**entities:** []
+
+- plan: ['find the person who was the focal point of the image "Sergio romo 2010"', 'find the school attended by #1']
+- explored: [] (max_score 0.0)
+- eval: continue resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: continue resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: continue resolved=[]
+- backtrack: dead_end
+- explored: [] (max_score 0.0)
+- eval: continue resolved=[]
+- verifier: grounded unsupported=[]
+
+---
+
+## WebQTrn-894_dc126021d39290ceeecabd0361b65c4b (hedge)
+
+**Q:** Which person inspired Scott Fitzgerald and died on 1821-02-23?
+
+**gold:** ['John Keats']
+
+**answer:** It could not be determined from the provided facts which person inspired F. Scott Fitzgerald and died on 1821-02-23.
+
+**entities:** []
+
+- plan: ['find the person who inspired Scott Fitzgerald', 'find who died on 1821-02-23 and is #1']
+- explored: ['fictional_universe.fictional_character.based_on', 'fictional_universe.fictional_character.based_on', 'influence.influence_node.influenced'] (max_score 0.513)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['influence.influence_node.influenced', 'influence.influence_node.influenced_by', 'influence.influence_node.influenced_by'] (max_score 0.417)
+- eval: continue resolved=['George R. R. Martin', 'Ross Macdonald', 'J. D. Salinger', 'Ann Scott']
+- explored: ['people.deceased_person.place_of_death', 'film.film.story_by', 'book.book_subject.works', 'people.deceased_person.place_of_death', 'people.deceased_person.cause_of_death', 'people.person.places_lived'] (max_score 0.558)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['people.deceased_person.place_of_death', 'people.deceased_person.cause_of_death', 'base.usnris.nris_listing.significant_person'] (max_score 0.273)
+- eval: backtrack resolved=[]
+- backtrack: evaluator
+- explored: ['people.person.nationality', 'people.person.profession', 'film.film_story_contributor.film_story_credits', 'people.person.place_of_birth', 'people.place_lived.person', 'book.written_work.author'] (max_score 0.197)
+- eval: backtrack resolved=[]
 - verifier: grounded unsupported=[]
 
 ---

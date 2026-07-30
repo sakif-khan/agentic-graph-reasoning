@@ -5,34 +5,33 @@ Builds the manual-census reading packets for AGR's genuine failures
 Stage-B surface-form near-misses, and Stage-A (noplanner census) qids
 already categorized.
 
-WebQSP: full census (all remaining failures).
-CWQ: stratified sample (wrongs over-represented 2:1 by design; report
-wrongs and hedges separately -- never pool into one histogram).
+Full census for BOTH datasets (no sampling; supersedes the earlier CWQ
+stratified sample). Wrongs and hedges remain separate strata -- never
+pool them into one histogram.
 
-Outputs failures_{ds}.md + labels_{ds}.csv.
-Refuses to overwrite a labels CSV that already contains filled categories.
+Idempotent: filled labels in an existing labels_{ds}.csv are carried
+forward by qid. New qids get blank rows to read; labels whose qid left
+the population (e.g. newly adjudicated gold noise) are saved to
+labels_{ds}_dropped.csv, never silently discarded.
+
+Outputs failures_{ds}.md + labels_{ds}.csv + sampling_manifest.json.
 """
-import csv, json, random, sys, unicodedata
+import csv, json, unicodedata
 from pathlib import Path
 
 DIR = Path("results/phase4")
-SEED = 42
-CWQ_N_WRONG, CWQ_N_HEDGE = 40, 20
 
 
 def norm(s):
     return unicodedata.normalize("NFKC", str(s)).strip().lower()
 
 
-def guard_labels(path):
-    """Abort if a labels file with human work in it already exists."""
+def load_labels(path):
+    """qid -> previously filled label row (category is non-empty)."""
     if not path.exists():
-        return
-    filled = sum(1 for r in csv.DictReader(open(path, encoding="utf-8"))
-                 if (r.get("category") or "").strip())
-    if filled:
-        sys.exit(f"REFUSING to overwrite {path}: {filled} rows already "
-                 f"labeled. Move or delete it manually to resample.")
+        return {}
+    return {r["qid"]: r for r in csv.DictReader(open(path, encoding="utf-8"))
+            if (r.get("category") or "").strip()}
 
 
 def stage_a_qids():
@@ -72,14 +71,13 @@ def write_packet(f, r, kind):
 
 
 def main():
-    random.seed(SEED)
     excl = json.load(open(DIR / "census_exclusions.json", encoding="utf-8"))
     skip_a = stage_a_qids()
     manifest = {}
 
     for ds in ("webqsp", "cwq"):
         lbl_path = DIR / f"labels_{ds}.csv"
-        guard_labels(lbl_path)
+        old = load_labels(lbl_path)
 
         recs = {r["qid"]: r for r in
                 (json.loads(l) for l in
@@ -100,38 +98,53 @@ def main():
             elif not pred and gold:
                 hedges.append(qid)
 
-        if ds == "webqsp":                       # full census
-            s_wrong, s_hedge = sorted(wrongs), sorted(hedges)
-        else:                                    # stratified sample
-            s_wrong = random.sample(wrongs, min(CWQ_N_WRONG, len(wrongs)))
-            s_hedge = random.sample(hedges, min(CWQ_N_HEDGE, len(hedges)))
+        s_wrong, s_hedge = sorted(wrongs), sorted(hedges)    # full census
+        census = s_wrong + s_hedge
+
+        carried = [q for q in census if q in old]
+        to_read = [q for q in census if q not in old]
+        dropped = sorted(set(old) - set(census))
 
         manifest[ds] = {
             "population_wrong": len(wrongs), "population_hedge": len(hedges),
-            "sampled_wrong": len(s_wrong), "sampled_hedge": len(s_hedge),
-            "rate_wrong": round(len(s_wrong) / max(len(wrongs), 1), 3),
-            "rate_hedge": round(len(s_hedge) / max(len(hedges), 1), 3),
             "n_skipped": len(skip & set(recs)),
-            "mode": "full_census" if ds == "webqsp" else "stratified_sample",
-            "seed": SEED,
+            "mode": "full_census",
+            "labels_carried": len(carried), "labels_to_read": len(to_read),
+            "labels_dropped": len(dropped),
         }
-        print(f"{ds}: population {len(wrongs)}W/{len(hedges)}H "
-              f"({manifest[ds]['n_skipped']} skipped) -> "
-              f"{len(s_wrong)}W+{len(s_hedge)}H "
-              f"[{manifest[ds]['mode']}; rates "
-              f"W={manifest[ds]['rate_wrong']:.0%} "
-              f"H={manifest[ds]['rate_hedge']:.0%}]")
+        print(f"{ds}: census {len(wrongs)}W/{len(hedges)}H "
+              f"({manifest[ds]['n_skipped']} skipped) "
+              f"[labels: {len(carried)} carried, {len(to_read)} to read, "
+              f"{len(dropped)} dropped]")
+
+        if dropped:
+            drop_path = DIR / f"labels_{ds}_dropped.csv"
+            with open(drop_path, "w", newline="", encoding="utf-8") as df:
+                w = csv.writer(df)
+                w.writerow(["qid", "kind", "category", "subtype", "note"])
+                for q in dropped:
+                    r = old[q]
+                    w.writerow([r["qid"], r["kind"], r["category"],
+                                r["subtype"], r["note"]])
+            print(f"  dropped (left the population; saved to {drop_path.name}):")
+            for q in dropped:
+                print(f"    {q}  [{old[q]['category']}]")
 
         with open(DIR / f"failures_{ds}.md", "w", encoding="utf-8") as f, \
              open(lbl_path, "w", newline="", encoding="utf-8") as csvf:
             w = csv.writer(csvf)
             w.writerow(["qid", "kind", "category", "subtype", "note"])
-            for qid in s_wrong:
-                write_packet(f, recs[qid], "wrong")
-                w.writerow([qid, "wrong", "", "", ""])
-            for qid in s_hedge:
-                write_packet(f, recs[qid], "hedge")
-                w.writerow([qid, "hedge", "", "", ""])
+            for kind, qids in (("wrong", s_wrong), ("hedge", s_hedge)):
+                for qid in qids:
+                    write_packet(f, recs[qid], kind)
+                    r = old.get(qid)
+                    if r and r["kind"] != kind:
+                        print(f"  WARNING {qid}: kind changed "
+                              f"{r['kind']} -> {kind} (label carried anyway)")
+                    w.writerow([qid, kind,
+                                r["category"] if r else "",
+                                r["subtype"] if r else "",
+                                r["note"] if r else ""])
 
     json.dump(manifest, open(DIR / "sampling_manifest.json", "w"), indent=1)
     print("wrote sampling_manifest.json")

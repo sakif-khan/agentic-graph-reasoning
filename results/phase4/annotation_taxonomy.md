@@ -85,6 +85,11 @@ safety net catching a real one.
 
 ## Distribution (this pass)
 
+> **Note:** the cwq column below reflects the superseded 40W+20H stratified sample (drawn
+> before `WebQTrn-64_d8e43a...` was adjudicated as gold noise). The census has since moved to
+> full coverage for both datasets (70W+87H for cwq); update this table once the ~98 new cwq
+> packets are read.
+
 | category | webqsp | cwq |
 |---|---:|---:|
 | relation_selection | 24 | 16 |
