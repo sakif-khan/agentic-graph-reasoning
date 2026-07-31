@@ -1,0 +1,4 @@
+% Put your thesis defense date here. This will be in the format
+% dd/mm/yyyy. Following an exact format with a correct date is
+% important.
+15/01/2019

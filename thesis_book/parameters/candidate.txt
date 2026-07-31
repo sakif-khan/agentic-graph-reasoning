@@ -1,0 +1,3 @@
+% Put in this file the name, ID, session of the thesis student.
+Candidate Student Name, 1015052071, October 2015
+

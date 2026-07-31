@@ -1,0 +1,24 @@
+Change contents as needed of the files in directory `parameters' and
+ 'inputs'. The contents are self-explanatory. Do not rename any of the
+ above files.
+
+Other contents are related to your particular thesis and should be
+named and input in buetcsepgthesis.tex (you will want to rename this
+file).
+
+Bibliography entries are in:
+    buetcsepgthesis.bib
+
+You can choose one of the bibliography styles (ACM, IEEE, or alpha) by
+commenting/uncommenting respective lines in buetcsepgthesisbibliography.tex.
+
+Should you need to suppress the,
+   list of figures,
+   list of tables, or
+   list of algorithms
+uncomment the following lines as needed in buetcsepgthesis.tex:
+
+%\suppresslistoffigures 
+%\suppresslistoftables
+%\suppresslistofalgorithms
+

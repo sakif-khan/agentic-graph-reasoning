@@ -1,0 +1,4 @@
+% Put names of internal examiners, one per line. Name followed by designation
+Dr.\ M.\ Kaykobad, Professor
+Dr.\ Abu Sayed Md.\ Latiful Hoque, Professor
+
