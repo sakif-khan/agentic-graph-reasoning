@@ -16,6 +16,14 @@
 \RequirePackage[a4paper,left=25.0mm, right=25.0mm, top=20.0mm, bottom=10.0mm,includeheadfoot]{geometry}
 \RequirePackage{times}
 \RequirePackage{microtype}
+% hyperref (loaded below) redefines \@footnotetext to wrap footnotes in a
+% PDF link anchor once hyperfootnotes are active; microtype's `footnote'
+% interface patch does a literal-text match against the kernel's original
+% \@footnotetext and no longer finds it, so it always warns "Unable to
+% apply patch `footnote'" even though no footnote has been typeset yet.
+% Skip just that one interface -- all other microtype patches (item, toc,
+% eqnum, protrusion/expansion in general) are unaffected.
+\microtypesetup{nopatch=footnote}
 \RequirePackage{cite}
 \RequirePackage{url}
 \RequirePackage{listings}
