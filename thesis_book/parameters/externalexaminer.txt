@@ -5,5 +5,7 @@
 % output. Use quotes if necessary when actual text contains
 % comma. Maximum three lines for affiliation. There should be five
 % fields in the following row. RETAIN THE EXTRA COMMAS.
+% TODO: not yet assigned as of the CASR proposal stage -- replace the
+% placeholder row below once the external examiner is confirmed.
 Dr.\ Honorable External Examiner, Professor, Department of CSE, "University of External, Dhaka",
 

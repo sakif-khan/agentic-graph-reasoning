@@ -1,3 +1,4 @@
-Title of Your Thesis We Tested a Very Very Long Title to See What Happens
-in This Case Then We Made it Longer and We Can Make It Even Longer Than
-Longer
+% Title as registered with CASR (proposal). Revisit before final
+% submission since the implementation deviated from the proposal.
+Agentic Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact
+Verification and Hallucination Mitigation in Large Language Models

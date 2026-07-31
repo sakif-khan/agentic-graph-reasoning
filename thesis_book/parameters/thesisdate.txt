@@ -1,4 +1,6 @@
 % Put your thesis defense date here. This will be in the format
 % dd/mm/yyyy. Following an exact format with a correct date is
 % important.
-15/01/2019
+% Currently set to the "Expected Defense date" from the CASR proposal
+% (06/06/2026) -- update once the actual defense date is fixed.
+06/06/2026
