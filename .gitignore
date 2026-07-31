@@ -60,6 +60,28 @@ tensorboard/
 profile_results/
 
 # ==========================================
+# LaTeX build artifacts (thesis_book)
+# ==========================================
+thesis_book/*.aux
+thesis_book/*.bbl
+thesis_book/*.bcf
+thesis_book/*.blg
+thesis_book/*.fdb_latexmk
+thesis_book/*.fls
+thesis_book/*.idx
+thesis_book/*.ilg
+thesis_book/*.ind
+thesis_book/*.loa
+thesis_book/*.lof
+thesis_book/*.lot
+thesis_book/*.out
+thesis_book/*.pdf
+thesis_book/*.run.xml
+thesis_book/*.synctex.gz
+thesis_book/*.toc
+thesis_book/*~
+
+# ==========================================
 # OS / System Artifacts
 # ==========================================
 .DS_Store
