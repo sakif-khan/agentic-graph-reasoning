@@ -1,0 +1,357 @@
+% You should not change anything in this file unless you really know
+% what you are doing.
+\RequirePackage[nofancy,notoday]{rcsinfo}
+\rcsInfo $Id: buetcsepgthesis.sty,v 0.98 2019/05/14 17:28:39 masroor Exp $
+
+\RequirePackage{graphicx}
+\RequirePackage{algorithmic}
+\RequirePackage{algorithm}
+\RequirePackage{amsthm}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsfonts}
+\RequirePackage{mathtools}
+
+\RequirePackage[a4paper,left=25.0mm, right=25.0mm, top=20.0mm, bottom=10.0mm,includeheadfoot]{geometry}
+\RequirePackage{times}
+\RequirePackage{microtype}
+\RequirePackage{cite}
+\RequirePackage{url}
+\RequirePackage{listings}
+\RequirePackage[final, colorlinks, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+% Prevent math from being upcased
+% http://tex.stackexchange.com/questions/46525/preventing-makeuppercase-from-affecting-mathematics
+\RequirePackage{textcase}
+
+% Definition macros
+\def\cse{Department of Computer Science and Engineering}
+\def\buet{Bangladesh University of Engineering and Technology}
+
+% sets spacing between paragraphs
+\parskip \smallskipamount
+
+% Clever referencing
+\RequirePackage{cleveref}
+
+% Caption setup
+\RequirePackage{caption} 
+\captionsetup[table]{skip=2.50mm}
+
+% 1.5 spacing
+\RequirePackage{setspace}
+\onehalfspacing
+\RequirePackage{xspace}
+
+% sets leading space for paragraphs
+\parindent 0.0mm		  
+
+\RequirePackage{datatool}
+
+% Candidate details
+\DTLloaddb[noheader]{Candidate}{parameters/candidate.txt}
+\def\c@ndid@tedet@ils{\DTLforeach*{Candidate}{\CN=Column1,\CID=Column2,\CS=Column3}
+  {\def\CandidateName{\CN\xspace}
+    \def\CandidateID{\CID\xspace}
+    \def\CandidateSession{\CS\xspace}}}
+
+% Supervisor details
+\DTLloaddb[noheader]{Supervisor}{parameters/supervisor.txt}
+\def\supervisordet@ils{\DTLforeach*{Supervisor}{\SN=Column1,\SD=Column2}
+  {\def\SupervisorName{\SN\xspace}
+    \def\SupervisorDesignation{\SD\xspace}}}
+
+% Thesis parameters
+\def\thesistitle{\input{parameters/thesistitle.txt}\unskip}
+
+% Degree type, M.Sc Engg or M.Engg
+\newbool{mscengg}
+\booltrue{mscengg}
+\DTLloaddb[noheader]{DegreeType}{parameters/degreename.txt}
+\def\degreen@mes{\DTLforeach*{DegreeType}{\DegreeType=Column1}
+  {\ifnum\DegreeType=2
+    \def\degreefullname{Master of Engineering in Computer Science and Engineering\xspace}
+    \def\degreeshortname{M.\ Engg.\ (CSE)\xspace}
+    \boolfalse{mscengg}
+    \else
+    \def\degreefullname{Master of Science in Computer Science and Engineering\xspace}
+    \def\degreeshortname{M.Sc.\ Engg.\ (CSE)\xspace}
+    \fi}}
+
+% Thesis dates
+\RequirePackage{datetime}
+\begingroup
+% Date separator
+\DTLsetseparator{/}
+\DTLloaddb[noheader]{ThesisDate}{parameters/thesisdate.txt}
+\gdef\thesisd@tes{\DTLforeach*{ThesisDate}{\D=Column1,\M=Column2,\Y=Column3}
+  {\newdate{thesisd@te}{\D}{\M}{\Y}
+    \gdef\thesisshortdate{\monthname[\M] \Y}
+    \gdef\thesislongdate{{\usdate\displaydate{thesisd@te}}}}}
+\endgroup
+
+% Thesis title page 
+\def\thesistitlepage{
+  \thispagestyle{empty}
+  % https://tex.stackexchange.com/a/18927/14103
+  \pagenumbering{Alph}
+  \begin{center}
+    {\large \degreeshortname Thesis}\\
+    \vspace*{\stretch{2}}
+    {\fontsize{18.0}{17.0}\selectfont\bfseries\thesistitle\par}
+
+
+%    {\fontsize{\@xxpt}{19.50}\selectfont\theauthor\par}
+
+    
+    \vspace*{\stretch{5}}
+    Submitted by\\
+    {\large\CandidateName\\\CandidateID\\}
+    \vspace*{\stretch{3}}
+    {Supervised by}\\
+    {\large\SupervisorName}\\
+    \vspace*{\stretch{2}}
+    \includegraphics[width=30mm]{figures/buetlogo}\\
+    \vspace*{\stretch{2}}
+    {Submitted to}\\
+    \textbf{\cse}\\
+    \textbf{\buet}\\
+    Dhaka, Bangladesh\\
+    \bigskip
+    {in partial fulfillment of the requirements for the
+      degree of}\\
+    {\degreefullname}\\
+    \vspace*{\stretch{1}} \thesisshortdate
+  \end{center}}
+
+
+% Thesis certification page
+\newcounter{ex@minercount}
+\def\sign@tureline{\stepcounter{ex@minercount}
+  \\[1.250\bigskipamount]
+  \arabic{ex@minercount}.&\rule{0.4\textwidth}{0.50pt}}
+
+% This macro adjusts (reduces) font size depending on contents in this
+% page.
+\RequirePackage{relsize}
+\long\def\fittop@ge#1{%
+  \sbox0{\begin{minipage}[b]{\textwidth}#1\end{minipage}}%
+  \ifdim\ht0>\textheight
+  \smaller%
+  \typeout{Trying \f@size pt size for certification page}%
+  \fittop@ge{#1}%
+  \else
+  \noindent\usebox0
+  \fi}
+
+\def\thesisacceptancepage{%
+  % We need to preload the databases, otherwise multiloading error may
+  % occur during font size trial.
+  \ifbool{mscengg}{%
+    \DTLloaddb[noheader]{Head}{parameters/headofcse.txt}}{\relax}
+  \DTLloaddb[noheader]{Internal}{parameters/internalexaminers.txt}
+  \ifbool{mscengg}{%
+    \DTLloaddb[noheader]{External}{parameters/externalexaminer.txt}}{\relax}
+  \fittop@ge{\thesis@ccept@ncep@ge}}
+
+
+\def\thesis@ccept@ncep@ge{%
+  \phantomsection\addcontentsline{toc}{chapter}{Board of Examiners}  
+  The thesis titled ``\textbf{\thesistitle}'', submitted by
+  \CandidateName, Student ID~\CandidateID, Session~\CandidateSession,
+  to the \cse, \buet, has been accepted as satisfactory in partial
+  fulfilment of the requirements for the degree of \degreefullname and
+  approved as to its style and contents on~\thesislongdate.
+  \nobreak
+  \vspace{\stretch{2}}
+  \nobreak
+  \subsection*{\centering Board of Examiners}
+  \nobreak
+  \begingroup
+  \renewcommand{\arraystretch}{1.0}
+  \setcounter{ex@minercount}{0}
+  \begin{tabular*}{\textwidth}{rl@{\extracolsep{\fill}}r}
+    \sign@tureline\\
+    &\SupervisorName&Chairman\\
+    &\SupervisorDesignation&(Supervisor)\\
+    &Department of CSE, BUET, Dhaka
+    % Head is needed for M.Sc Engg
+      \ifbool{mscengg}{%
+      \DTLforeach*{Head}{\HeadName=Column1,\HeadDesignation=Column2}
+      {\sign@tureline\\
+    &\HeadName&Member\\
+    &\HeadDesignation&(Ex-Officio)\\
+    &Department of CSE, BUET, Dhaka}}{\relax}
+      \DTLforeach*{Internal}{\InternalName=Column1,\InternalDesignation=Column2}
+      {\sign@tureline\\
+    &\InternalName&Member\\
+    &\InternalDesignation\\
+    &Department of CSE, BUET, Dhaka}
+    % External examiner is needed for M.Sc Engg
+      \ifbool{mscengg}{%
+      \DTLforeach*{External}{\ExternalName=Column1,\ExternalDesignation=Column2,\ExternalAffiliationA=Column3,\ExternalAffiliationB=Column4,\ExternalAffiliationC=Column5}
+      {\sign@tureline\\
+    &\ExternalName&Member\\
+    &\ExternalDesignation&(External)\\
+    &\ifdefempty{\ExternalAffiliationA}{\relax}{\ExternalAffiliationA\\}
+    &\ifdefempty{\ExternalAffiliationB}{\relax}{\ExternalAffiliationB\\}
+    &\ifdefempty{\ExternalAffiliationC}{\relax}{\ExternalAffiliationC\\}}}{\relax}
+  \end{tabular*}
+  \endgroup
+  \vspace{\stretch{1}}}
+
+% Thesis candidates' declaration
+\def\thesiscandidatesdeclaration{
+  \section*{\centering Candidate's Declaration}
+  \phantomsection\addcontentsline{toc}{chapter}{Candidate's Declaration}
+    
+  I, do, hereby, certify that the work presented in this thesis,
+  titled, ``\thesistitle'', is the outcome of the investigation and
+  research carried out by me under the supervision of \SupervisorName,
+  \SupervisorDesignation, Department of CSE, BUET.
+
+  \bigskip
+
+  I also declare that neither this thesis nor any part thereof has
+  been submitted anywhere else for the award of any degree, diploma or
+  other qualifications.
+
+  \vspace*{25.0mm}
+  \rule{0.4\textwidth}{0.4pt}
+  \vspace*{-\medskipamount}
+  
+  \CandidateName
+
+  \CandidateID}
+
+% Dedication page
+\RequirePackage{calligra}
+\def\dedic@tionp@ge{\relax}
+\def\insertdedicationpage{\def\dedic@tionp@ge{%
+    \thispagestyle{empty}
+    \input inputs/buetcsepgthesisdedication.tex}}
+
+
+
+% Inclusion of lof and lot in toc
+\RequirePackage[nottoc,notbib]{tocbibind}
+\RequirePackage{tocloft}
+
+\RequirePackage{etoolbox}
+\newtoggle{suppress@lof}
+\newtoggle{suppress@lot}
+\newtoggle{suppress@lo@}
+
+\def\suppresslistoffigures{\global\toggletrue{suppress@lof}}
+\def\suppresslistoftables{\global\toggletrue{suppress@lot}}
+\def\suppresslistofalgorithms{\global\toggletrue{suppress@lo@}}
+
+
+\def\listsandtoc{
+  % Table of contents
+  \tableofcontents
+
+  % List of figures, if not suppressed
+  \iftoggle{suppress@lof}{\relax}{\cleardoublepage\listoffigures}
+
+  % List of tables, if not suppressed
+  \iftoggle{suppress@lot}{\relax}{\cleardoublepage\listoftables}
+
+  % List of algorithms, if not suppressed
+  \iftoggle{suppress@lo@}{\relax}{\cleardoublepage
+    \phantomsection\addcontentsline{toc}{chapter}{\listalgorithmname}
+    \listofalgorithms}
+}
+
+% Abstract environment redefined
+\renewenvironment{abstract}{\section*{\centering\abstractname}
+  \phantomsection\addcontentsline{toc}{chapter}{\abstractname}
+  \quotation}{\endquotation}
+
+% Starting materials
+\def\st@rtingm@teri@ls{
+  \thesistitlepage
+
+  \cleardoublepage
+  \dedic@tionp@ge
+
+  \cleardoublepage
+  \pagenumbering{roman}
+  \thesiscandidatesdeclaration
+
+  \cleardoublepage
+  \thesisacceptancepage
+
+  \cleardoublepage
+  \input {inputs/buetcsepgthesisacknowledgement.tex}
+
+  \cleardoublepage
+  \listsandtoc
+  
+  \cleardoublepage
+  \begin{abstract}
+    \input{inputs/buetcsepgthesisabstract.tex}
+  \end{abstract}}
+
+
+% Fancy page style
+\RequirePackage{fancyhdr}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.250mm}
+\renewcommand{\footrulewidth}{0.0mm}
+\setlength{\headheight}{15.0pt}
+\fancyheadoffset[R]{0.075\textwidth}
+\fancyhead[L]{\slshape \rightmark}
+\fancyhead[R]{\textbf{\thepage}}
+
+% Starting materials
+\AtBeginDocument{%
+  \c@ndid@tedet@ils
+  \supervisordet@ils
+  \degreen@mes
+  \thesisd@tes
+  \st@rtingm@teri@ls
+  \cleardoublepage
+  \pagestyle{fancy}
+  \pagenumbering{arabic}
+  \setcounter{page}{1}
+}
+
+% For index creation
+\RequirePackage{imakeidx}
+
+% Date and time related operations
+\RequirePackage{datetime}
+
+\AtEndDocument{%
+  \clearpage
+  \pagestyle{plain}
+  
+  \begingroup
+  
+  \flushright
+
+  \vspace*{0.0mm}
+  \vfill\vfill\vfill\vfill\vfill
+  \sffamily
+
+  Generated using Postgraduate Thesis \LaTeX\xspace Template,
+  Version~\rcsInfoRevision. \cse, \buet, Dhaka, Bangladesh.
+
+  \bigskip
+
+  \settimeformat{ampmtime}
+
+  This thesis was generated on~\today\xspace at~\currenttime.
+
+  \vfill
+
+  \endgroup}
+
+% Text controls
+\pretolerance=4000
+\emergencystretch=0.250ex
+\hyphenpenalty 4000
+\tolerance 9000
+
+\endinput

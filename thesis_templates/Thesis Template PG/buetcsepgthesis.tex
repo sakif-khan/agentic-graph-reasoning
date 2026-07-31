@@ -1,0 +1,60 @@
+% You will want to RENAME this file
+\documentclass[12pt,notitlepage,oneside]{report}
+
+\usepackage{buetcsepgthesis}
+
+% Uncomment the following line if you need to write in Bangla
+% \usepackage{usebangla}
+
+% Uncomment any of the following lines should you need to
+% suppress the LOF, or LOT or LOA
+
+% \suppresslistoffigures 
+% \suppresslistoftables
+% \suppresslistofalgorithms
+
+% Uncomment the following if you want to insert a dedication page. Put
+% the appropraite material in inputs/buetcsepgthesisdedication.tex.
+% \insertdedicationpage
+
+% For index creation, comment this out if you do not want to create an
+% index
+\makeindex[intoc]
+
+\begin{document}
+
+% Edit as needed below this line
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Chapter-1 Introduction
+\input{buetcsepgthesisintroduction.tex}
+
+% Citation examples
+\input{buetcsepgthesisciteexamples.tex}
+
+% Another chapter
+\input{buetcsepgthesisanotherchapter.tex}
+
+% Chapter showing example of index creation
+\input{buetcsepgthesisindexcreation.tex} 
+
+% Bangla example, uncomment if you need this
+% \input {banglaexample.tex}
+
+% Chapter with math in ttile
+\input{buetcsepgthesischapterwithmathintitle.tex}
+
+% Bibliographies and appendices
+\input{buetcsepgthesisbibliography.tex}
+
+% Index, comment this out if you do not want to create an index
+\printindex
+
+\appendix
+% Algorithms
+\input{buetcsepgthesisalgorithms.tex}
+
+% Codes
+\input{buetcsepgthesiscodes.tex}
+
+\end{document}
