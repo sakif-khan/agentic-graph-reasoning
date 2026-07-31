@@ -1,3 +1,2 @@
-% Put 1 for M.Sc. Engg., 2 for M. Engg., 1 is the default
 1
 

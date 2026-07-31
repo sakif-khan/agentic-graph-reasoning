@@ -1,11 +1,2 @@
-% This file is not relevant for M.Engg.
-% Put name of external examiner. Name followed by designation and
-% affiliation. Be carefull about commas, these are field
-% separators. Each comma will take the field to a new line in
-% output. Use quotes if necessary when actual text contains
-% comma. Maximum three lines for affiliation. There should be five
-% fields in the following row. RETAIN THE EXTRA COMMAS.
-% TODO: not yet assigned as of the CASR proposal stage -- replace the
-% placeholder row below once the external examiner is confirmed.
 Dr.\ Honorable External Examiner, Professor, Department of CSE, "University of External, Dhaka",
 

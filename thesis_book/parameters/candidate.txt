@@ -1,3 +1,2 @@
-% Put in this file the name, ID, session of the thesis student.
 Md.\ Sakif Khan, 0421052099, April 2021
 

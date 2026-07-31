@@ -1,6 +1,3 @@
-% Put names of internal examiners, one per line. Name followed by designation
-% TODO: not yet assigned as of the CASR proposal stage -- replace the
-% placeholder rows below once the board of examiners is finalized.
 Dr.\ M.\ Kaykobad, Professor
 Dr.\ Abu Sayed Md.\ Latiful Hoque, Professor
 
