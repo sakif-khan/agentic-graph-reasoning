@@ -3,7 +3,7 @@
 **Title:** Agentic Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact
 Verification and Hallucination Mitigation in Large Language Models
 
-**Target:** 60–90 pages of body text. Per-chapter page estimates below total ~86 pages
+**Target:** 60–90 pages of body text. The per-chapter estimates below total **87 pages**
 (front matter is roman-numbered and does not count against the budget).
 
 Structural conventions follow `thesis_templates/buetcsepgthesis.pdf` (the approved
@@ -11,6 +11,18 @@ UNN thesis): a heavily sub-sectioned Introduction that ends with *Our Contributi
 *Thesis Organization*, a separate *Preliminaries* chapter for concepts the reader must
 have before the technical chapters, and a Conclusion that walks the reader back through
 the thesis chapter by chapter before opening the future-work discussion.
+
+### Terminology discipline
+
+The word **"tier"** is reserved for **one** concept in this thesis: the two-tier
+groundedness *metric* (§7.5.3, §8.5). Two other cascades in the system must therefore be
+named differently wherever they appear:
+
+- The verification layer's two checks (§6.3) are the **structural check** and the
+  **entailment check** — never "Tier 1 / Tier 2".
+- The entity resolver's three-stage cascade (§4.6) is **exact / lexical / vector**
+  matching — never "Tier 1 / Tier 2 / Tier 3", despite the identifiers used in
+  `scripts/entity_resolver.py`.
 
 ---
 
@@ -27,7 +39,7 @@ the thesis chapter by chapter before opening the future-work discussion.
 
 ---
 
-## 1. Introduction — *~9 pages*
+## 1. Introduction — *~8 pages*
 
 1.1 Hallucination in Large Language Models
 &nbsp;&nbsp;&nbsp;&nbsp;1.1.1 Where Hallucination Originates: Training Data, Model, and Prompt
@@ -47,10 +59,16 @@ the thesis chapter by chapter before opening the future-work discussion.
 
 1.5 Research Questions
 &nbsp;&nbsp;&nbsp;&nbsp;1.5.1 RQ1: Does Agentic Navigation Improve Multi-Hop Factual Accuracy?
-&nbsp;&nbsp;&nbsp;&nbsp;1.5.2 RQ2: Does Pre-Generation Structural Verification Reduce Hallucination?
+&nbsp;&nbsp;&nbsp;&nbsp;1.5.2 RQ2: What Does Pre-Generation Verification Contribute Beyond Graph Navigation?
 &nbsp;&nbsp;&nbsp;&nbsp;1.5.3 RQ3: Which Components Contribute What, at What Token Cost?
 
 1.6 Our Contribution
+&nbsp;&nbsp;&nbsp;&nbsp;1.6.1 The AGR Framework and Its Verification Layer
+&nbsp;&nbsp;&nbsp;&nbsp;1.6.2 A Component-Level Ablation of Agentic Mechanisms
+&nbsp;&nbsp;&nbsp;&nbsp;1.6.3 Stratum-Dependent Decomposition: When Planning Hurts
+&nbsp;&nbsp;&nbsp;&nbsp;1.6.4 The Echo Attractor as a Named Failure Mode
+&nbsp;&nbsp;&nbsp;&nbsp;1.6.5 Quantified Benchmark Defect Rates for WebQSP and CWQ
+&nbsp;&nbsp;&nbsp;&nbsp;1.6.6 An Evaluation Protocol with Pre-Registered Thresholds
 
 1.7 Scope and Delimitations
 
@@ -58,7 +76,7 @@ the thesis chapter by chapter before opening the future-work discussion.
 
 ---
 
-## 2. Background and Preliminaries — *~8 pages*
+## 2. Background and Preliminaries — *~6 pages*
 
 2.1 Knowledge Graphs
 &nbsp;&nbsp;&nbsp;&nbsp;2.1.1 Triples, Entities, and Relations
@@ -67,8 +85,8 @@ the thesis chapter by chapter before opening the future-work discussion.
 
 2.2 Knowledge Graph Question Answering
 &nbsp;&nbsp;&nbsp;&nbsp;2.2.1 Multi-Hop Questions and Constraint Satisfaction
-&nbsp;&nbsp;&nbsp;&nbsp;2.2.2 Semantic Parsing versus Information Retrieval Approaches
-&nbsp;&nbsp;&nbsp;&nbsp;2.2.3 Evaluation Conventions: Hits@1 and F1
+&nbsp;&nbsp;&nbsp;&nbsp;2.2.2 Evaluation Conventions: Hits@1 and F1
+&nbsp;&nbsp;&nbsp;&nbsp;*(semantic parsing vs. information retrieval: one paragraph inside 2.2.1)*
 
 2.3 Large Language Models as Reasoning Engines
 &nbsp;&nbsp;&nbsp;&nbsp;2.3.1 In-Context Learning and Chain-of-Thought Prompting
@@ -85,18 +103,16 @@ the thesis chapter by chapter before opening the future-work discussion.
 &nbsp;&nbsp;&nbsp;&nbsp;2.5.3 Relation to Monte Carlo Tree Search: A Terminological Clarification
 
 2.6 Statistical Tools Used in This Thesis
-&nbsp;&nbsp;&nbsp;&nbsp;2.6.1 Bootstrap Confidence Intervals
-&nbsp;&nbsp;&nbsp;&nbsp;2.6.2 McNemar's Test for Paired Correctness
-&nbsp;&nbsp;&nbsp;&nbsp;2.6.3 Cohen's κ for Annotator Agreement
+&nbsp;&nbsp;&nbsp;&nbsp;*(one page: bootstrap confidence intervals, McNemar's test for paired
+correctness, Cohen's κ — definitions and the reason each was chosen, no derivations)*
 
 ---
 
-## 3. Related Work — *~9 pages*
+## 3. Related Work — *~8 pages*
 
 3.1 Static Graph-Augmented Generation
 &nbsp;&nbsp;&nbsp;&nbsp;3.1.1 GraphRAG and Query-Focused Summarization
 &nbsp;&nbsp;&nbsp;&nbsp;3.1.2 HippoRAG and Memory-Structured Retrieval
-&nbsp;&nbsp;&nbsp;&nbsp;3.1.3 Temporal Extensions (T-GRAG)
 
 3.2 Path-Retrieval and Semantic-Parsing KGQA
 &nbsp;&nbsp;&nbsp;&nbsp;3.2.1 Reasoning-on-Graphs
@@ -109,8 +125,7 @@ the thesis chapter by chapter before opening the future-work discussion.
 
 3.4 Verification and Self-Correction in Language Models
 &nbsp;&nbsp;&nbsp;&nbsp;3.4.1 Chain-of-Verification
-&nbsp;&nbsp;&nbsp;&nbsp;3.4.2 Multi-Agent Debate
-&nbsp;&nbsp;&nbsp;&nbsp;3.4.3 Ontology-Guided and Self-Correcting Graph RAG
+&nbsp;&nbsp;&nbsp;&nbsp;3.4.2 Ontology-Guided and Self-Correcting Graph RAG
 
 3.5 Measuring Factuality
 &nbsp;&nbsp;&nbsp;&nbsp;3.5.1 Claim-Decomposition Metrics
@@ -119,7 +134,7 @@ the thesis chapter by chapter before opening the future-work discussion.
 3.6 Comparative Summary of Agentic KGQA Systems
 &nbsp;&nbsp;&nbsp;&nbsp;*(the cross-system table: exploration strategy, decomposition, backtracking,
 pre-generation verification, datasets, reported Hits@1 — this table also justifies the
-baseline selection in Chapter 7)*
+baseline selection in §7.4)*
 
 3.7 Positioning of This Work
 
@@ -135,8 +150,8 @@ baseline selection in Chapter 7)*
 &nbsp;&nbsp;&nbsp;&nbsp;4.2.1 The Freebase Snapshot
 &nbsp;&nbsp;&nbsp;&nbsp;4.2.2 WebQSP and ComplexWebQuestions as Question Sets
 
-4.3 Subgraph Extraction
-&nbsp;&nbsp;&nbsp;&nbsp;4.3.1 Topic-Entity Seeding and k-Hop Expansion
+4.3 Graph Construction
+&nbsp;&nbsp;&nbsp;&nbsp;4.3.1 Union of Per-Question Subgraphs from the RoG Distribution
 &nbsp;&nbsp;&nbsp;&nbsp;4.3.2 Relation Filtering and Noise Removal
 &nbsp;&nbsp;&nbsp;&nbsp;4.3.3 Treatment of Mediator Nodes and Its Effect on Hop Counts
 
@@ -151,15 +166,21 @@ baseline selection in Chapter 7)*
 &nbsp;&nbsp;&nbsp;&nbsp;4.5.3 Scope: Linking and Candidate Ranking, Never Ground Truth
 
 4.6 Entity Resolution and Surface-Form Linking
+&nbsp;&nbsp;&nbsp;&nbsp;4.6.1 The Exact / Lexical / Vector Cascade
+&nbsp;&nbsp;&nbsp;&nbsp;4.6.2 Threshold Selection on Development Data
 
 4.7 Environment Validation Gate
 &nbsp;&nbsp;&nbsp;&nbsp;4.7.1 Answer-Reachability Protocol
 &nbsp;&nbsp;&nbsp;&nbsp;4.7.2 Coverage Results and the Induced Accuracy Ceiling
 &nbsp;&nbsp;&nbsp;&nbsp;4.7.3 Analysis of Linking Misses and Gate Failures
+&nbsp;&nbsp;&nbsp;&nbsp;4.7.4 What the Environment Cannot Express
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(no date literals, no numeric literals, no ordinal
+encodings — all three verified; defines the* unanswerable-in-environment *question class
+that §9.6 later invokes rather than introduces)*
 
 ---
 
-## 5. The AGR Framework: Architecture and Navigation — *~12 pages*
+## 5. The AGR Framework: Architecture and Navigation — *~11 pages*
 
 5.1 Architectural Overview
 &nbsp;&nbsp;&nbsp;&nbsp;*(figure: the Planner → Explorer → Evaluator → {Backtrack | Verify} → Answerer
@@ -167,11 +188,13 @@ state machine)*
 
 5.2 The Graph Tool API
 &nbsp;&nbsp;&nbsp;&nbsp;5.2.1 Rationale: Constrained Tools Instead of Free-Form Cypher Generation
-&nbsp;&nbsp;&nbsp;&nbsp;5.2.2 `search_entity`
-&nbsp;&nbsp;&nbsp;&nbsp;5.2.3 `get_relations`
-&nbsp;&nbsp;&nbsp;&nbsp;5.2.4 `get_neighbors`
-&nbsp;&nbsp;&nbsp;&nbsp;5.2.5 `verify_triple`
-&nbsp;&nbsp;&nbsp;&nbsp;5.2.6 Determinism, Caching, and Tool-Call Logging
+&nbsp;&nbsp;&nbsp;&nbsp;5.2.2 The Five Operations
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(table + prose: `search_entity`, `get_relations`,
+`get_neighbors`, `verify_triple`, `verify_connection`)*
+&nbsp;&nbsp;&nbsp;&nbsp;5.2.3 Relation-Agnostic Adjacency and Traversal Through Mediators
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(`verify_connection` — what the structural check
+in §6.3.1 actually calls, and why endpoint adjacency rather than exact-triple matching)*
+&nbsp;&nbsp;&nbsp;&nbsp;5.2.4 Determinism, Caching, and Tool-Call Logging
 
 5.3 Agent State Representation
 
@@ -206,10 +229,10 @@ state machine)*
 
 6.2 Claim Decomposition of the Draft Answer
 
-6.3 Two-Tier Claim Checking
-&nbsp;&nbsp;&nbsp;&nbsp;6.3.1 Tier 1: Structural Grounding Against the Traversed Subgraph
-&nbsp;&nbsp;&nbsp;&nbsp;6.3.2 Tier 2: LLM Entailment for Paraphrased Claims
-&nbsp;&nbsp;&nbsp;&nbsp;6.3.3 Why Structural Checking Comes First
+6.3 Two-Stage Claim Checking
+&nbsp;&nbsp;&nbsp;&nbsp;6.3.1 The Structural Check
+&nbsp;&nbsp;&nbsp;&nbsp;6.3.2 The Entailment Check
+&nbsp;&nbsp;&nbsp;&nbsp;6.3.3 Why the Structural Check Runs First
 
 6.4 Repair Policies for Unsupported Claims
 &nbsp;&nbsp;&nbsp;&nbsp;6.4.1 Targeted Re-Exploration Under Remaining Budget
@@ -226,9 +249,13 @@ state machine)*
 
 ---
 
-## 7. Experimental Setup — *~10 pages*
+## 7. Experimental Setup — *~11 pages*
 
 7.1 Mapping Experiments to Research Questions
+&nbsp;&nbsp;&nbsp;&nbsp;7.1.1 Pre-Registration and the No-Tuning Policy
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(no tuning after test data is touched; κ ≥ 0.7,
+the 15% baseline-certification diagnostic, and the α/τ freeze all fixed before
+measurement)*
 
 7.2 Test Sets
 &nbsp;&nbsp;&nbsp;&nbsp;7.2.1 WebQSP
@@ -237,6 +264,11 @@ state machine)*
 &nbsp;&nbsp;&nbsp;&nbsp;7.2.4 Hop-Count Stratification
 
 7.3 Backbone Model Selection and Qualification
+&nbsp;&nbsp;&nbsp;&nbsp;7.3.1 Trajectory Stability Under Temperature-Zero Decoding
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(hosted APIs are only approximately
+deterministic at temperature 0; sequential agents amplify per-call divergence; measured
+trajectory stability across the qualification runs)*
+&nbsp;&nbsp;&nbsp;&nbsp;7.3.2 Response Caching as the Reproducibility Backstop
 
 7.4 Baseline Systems
 &nbsp;&nbsp;&nbsp;&nbsp;7.4.1 No-Retrieval LLM (Parametric-Memory Control)
@@ -244,12 +276,17 @@ state machine)*
 &nbsp;&nbsp;&nbsp;&nbsp;7.4.3 Static GraphRAG
 &nbsp;&nbsp;&nbsp;&nbsp;7.4.4 Think-on-Graph (Agentic Baseline)
 &nbsp;&nbsp;&nbsp;&nbsp;7.4.5 Variables Held Constant Across All Systems
+&nbsp;&nbsp;&nbsp;&nbsp;7.4.6 Baseline Certification Protocol
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(the pre-registered gold-visible-while-hedged
+diagnostic, dev-only debugging of all four baselines, and the ToG budget-clip rates)*
 
 7.5 Metrics
 &nbsp;&nbsp;&nbsp;&nbsp;7.5.1 Answer Accuracy: Hits@1 and F1
 &nbsp;&nbsp;&nbsp;&nbsp;7.5.2 Accounting for Hedges and Abstentions
-&nbsp;&nbsp;&nbsp;&nbsp;7.5.3 Groundedness and Hallucination Rate
+&nbsp;&nbsp;&nbsp;&nbsp;7.5.3 Two-Tier Groundedness and Hallucination Rate
 &nbsp;&nbsp;&nbsp;&nbsp;7.5.4 Efficiency: Tokens, LLM Calls, and Wall-Clock Latency
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(latency is computed over cold-cache records
+only — state this wherever wall-clock is reported)*
 
 7.6 The Groundedness Judge and Its Validation
 &nbsp;&nbsp;&nbsp;&nbsp;7.6.1 Independence of the Judge from the Answering System
@@ -282,35 +319,53 @@ state machine)*
 8.4 Accuracy Broken Down by Hop Count
 
 8.5 Groundedness and Hallucination Rate Across Systems
+&nbsp;&nbsp;&nbsp;&nbsp;*(headline: structural groundedness is a property of the navigation
+paradigm, not of the verifier — AGR and ToG both reach it. Frame accordingly; do not
+attribute it to the verification layer.)*
 
 8.6 Efficiency and Cost
 &nbsp;&nbsp;&nbsp;&nbsp;8.6.1 Token and Call Budgets per System
 &nbsp;&nbsp;&nbsp;&nbsp;8.6.2 The Accuracy–Cost Frontier
 
 8.7 Ablation Study
-&nbsp;&nbsp;&nbsp;&nbsp;8.7.1 Without the Planner
+&nbsp;&nbsp;&nbsp;&nbsp;8.7.1 Without the Planner: A Stratum-Dependent Effect
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(removal helps WebQSP and trends toward
+hurting CWQ — the asymmetry is the finding, not the pooled average)*
 &nbsp;&nbsp;&nbsp;&nbsp;8.7.2 Without Backtracking
 &nbsp;&nbsp;&nbsp;&nbsp;8.7.3 Without the Verification Layer
 &nbsp;&nbsp;&nbsp;&nbsp;8.7.4 Embedding-Only Scoring
-&nbsp;&nbsp;&nbsp;&nbsp;8.7.5 Paired Significance Testing
+&nbsp;&nbsp;&nbsp;&nbsp;8.7.5 Paired Significance Testing and Statistical Power
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(open by stating that only the planner
+condition reached significance at n ≈ 200; the other three are reported as "no detectable
+effect at this sample size," never as confirmed nulls)*
 
 8.8 Findings Against RQ1, RQ2, and RQ3
+&nbsp;&nbsp;&nbsp;&nbsp;*(RQ2's answer is three-part: navigation eliminates structural
+hallucination; verification contributes precision and F1; verification shows no
+measurable Hits@1 effect in ablation)*
 
 ---
 
 ## 9. Error Analysis and Discussion — *~8 pages*
 
 9.1 Annotation Protocol and the Failure Taxonomy
+&nbsp;&nbsp;&nbsp;&nbsp;9.1.1 Category and Subtype Schema
+&nbsp;&nbsp;&nbsp;&nbsp;9.1.2 Sampling Asymmetry: Census versus Stratified Sample
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(WebQSP is a full census of remaining
+failures; CWQ is a stratified sample of wrongs and hedges — so wrong-answer and hedge
+histograms are reported separately and never pooled)*
 
 9.2 Distribution of Failure Categories Across Datasets
 
 9.3 Decomposition and Planning Errors
+&nbsp;&nbsp;&nbsp;&nbsp;*(including the context-stripping mechanism)*
 
 9.4 Relation-Selection and Navigation Errors
 
 9.5 Verifier False Positives and False Negatives
 
 9.6 Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and Ordinals
+&nbsp;&nbsp;&nbsp;&nbsp;*(invokes the unanswerable-in-environment class defined in §4.7.4)*
 
 9.7 The Echo Attractor: Answering with the Topic or an Intermediate Entity
 
@@ -346,6 +401,9 @@ state machine)*
 - Appendix B: Tool API Specification and Cypher Templates
 - Appendix C: Sampled Question IDs and Run Manifests
 - Appendix D: Annotation Instructions and Label Schema
+- Appendix E: Implementation Notes *(~2 pages: LangGraph `config` parameter injection,
+  the routers-read / nodes-write state discipline, and the partial-edit hazard — §7.10
+  points here)*
 
 ---
 
@@ -353,21 +411,23 @@ state machine)*
 
 | Chapter | Pages |
 |---|---:|
-| 1 Introduction | 9 |
-| 2 Background and Preliminaries | 8 |
-| 3 Related Work | 9 |
+| 1 Introduction | 8 |
+| 2 Background and Preliminaries | 6 |
+| 3 Related Work | 8 |
 | 4 The Knowledge Environment | 10 |
-| 5 The AGR Framework | 12 |
+| 5 The AGR Framework | 11 |
 | 6 The Structural Verification Layer | 8 |
-| 7 Experimental Setup | 10 |
+| 7 Experimental Setup | 11 |
 | 8 Results | 12 |
 | 9 Error Analysis and Discussion | 8 |
 | 10 Conclusion | 5 |
-| **Body total** | **91** |
-| References + Index + Appendices | ~10 |
+| **Body total** | **87** |
+| References + Index + Appendices | ~12 |
 
-If the count runs long, the two safe compressions are folding Chapter 9 into Chapter 8
-as sections 8.9–8.15, and trimming Chapter 2 to only the concepts actually used later.
+**Chapter 9 is not a compression target.** The error analysis and the benchmark-defect
+work are what distinguish this thesis from a system report. If the count runs long, cut
+further from §2.6, §3.1, and §3.4 — the material there is background the committee
+already has.
 
 ---
 
