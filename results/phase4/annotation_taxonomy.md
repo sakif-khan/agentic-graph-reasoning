@@ -5,13 +5,19 @@ Companion reference for `labels_webqsp.csv` / `labels_cwq.csv`, which label ever
 and a one-sentence `note` pinpointing where the trajectory *first* left the correct path
 (plan → explored relations → backtracks → verifier) — not the last symptom.
 
+Convention for the verifier categories: the verifier's *positive* class is "claim is
+supported". A **false negative** is therefore a claim wrongly **rejected** (hedged a right
+one); a **false positive** is a claim wrongly **accepted** (passed a wrong one). The gloss
+below previously paired these in the opposite order; it has been corrected to match both
+the standard convention and how the Stage D labels actually use the names.
+
 | category | subtypes | meaning |
 |---|---|---|
 | `decomposition_error` | `over_decomposition`, `paraphrase_drift`, `context_stripping`, `extraction_bug` | planner/draft pipeline caused it |
 | `relation_selection` | — | scorer picked the wrong edge |
 | `composite_claim` | `conjunction_uncovered`, `no_set_intersection` | multi-constraint handled partially |
 | `premature_termination` | `budget`, `evaluator` | stopped before the answer |
-| `verifier_fn` / `verifier_fp` | `structural_not_semantic` | passed a wrong claim / hedged a right one |
+| `verifier_fn` / `verifier_fp` | `structural_not_semantic` | hedged a right one / passed a wrong claim |
 | `kg_gap` | `date_literal`, `numeric_literal`, `temporal_qualifier`, `ordinal`, `data_error` | environment can't express it |
 | `answer_selection` | — | correct candidate retrieved, drafter chose another |
 | `echo` | `topic`, `intermediate`, `granularity` | the shared-attractor pattern |

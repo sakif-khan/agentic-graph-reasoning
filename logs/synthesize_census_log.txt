@@ -1,3 +1,4 @@
+
 === webqsp ===
   Stage D: 65   Stage-D-dropped: 0   Stage A: 21   total: 86
   -- wrong (n=53) --
@@ -40,9 +41,10 @@
     relation_selection        19  (21%)
     ambiguous_question         5  (5%)
     other                      5  (5%)
-    answer_selection           4  (4%)
+    answer_selection           5  (5%)
     gold_noise                 3  (3%)
-    verifier_fn                3  (3%)
     premature_termination      2  (2%)
     echo                       2  (2%)
     decomposition_error        2  (2%)
+    verifier_fn                1  (1%)
+    verifier_fp                1  (1%)
