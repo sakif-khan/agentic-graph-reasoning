@@ -25,14 +25,24 @@ named differently wherever they appear:
   `scripts/entity_resolver.py`.
 
 Verifier errors are described as **wrongly rejected** / **wrongly accepted** throughout
-(§6.8, §9.5). Do not use `verifier_fn` / `verifier_fp` in the thesis text: the two sources
-disagree about what those names mean. `annotation_taxonomy.md:14` glosses the pair as
-"passed a wrong claim / hedged a right one", but all six labelled rows in
-`labels_{webqsp,cwq}.csv` use `verifier_fn` for *hedged a right one*, and the annotator's
-own note at `annotation_taxonomy.md:80` ("forced into `verifier_fn` since no verifier
-rejection is involved") confirms that usage is deliberate. **The labels are internally
-consistent; the table's gloss is reversed and should be corrected at source** before either
-is quoted.
+(§6.8, §9.5), never as `verifier_fn` / `verifier_fp`.
+
+Under the standard convention — the verifier's positive class is *"claim is supported"* —
+a **false positive is a wrongly accepted claim** and a **false negative is a wrongly
+rejected one**. The CSV labels follow this convention correctly: every `verifier_fn` row
+in `labels_{webqsp,cwq}.csv` describes a rejected-but-correct claim. The gloss in
+`annotation_taxonomy.md:14` — "`verifier_fn` / `verifier_fp` … passed a wrong claim /
+hedged a right one" — pairs the names in the opposite order and is **reversed relative to
+both the convention and the labels' own usage**. The annotator's note at
+`annotation_taxonomy.md:80` ("flagged for discussion rather than forced into `verifier_fn`
+since no verifier rejection is involved") is not a stray row using a different mental
+model; those cases are labelled `other`, and the note confirms the annotator treats *fn*
+as requiring a rejection.
+
+**Action: correct line 14's gloss at source; leave every label untouched.** Then define
+the convention once in §9.5.1 and use plain English thereafter, because with
+`supported`/`unsupported` outputs a reader has no reliable way to infer which class is
+"positive".
 
 ---
 
@@ -397,17 +407,26 @@ histograms are reported separately and never pooled)*
 
 9.2 Distribution of Failure Categories Across Datasets
 
-9.3 Decomposition and Planning Errors
+9.3 Decomposition, Drafting, and Answer-Selection Errors
 &nbsp;&nbsp;&nbsp;&nbsp;*(including the context-stripping mechanism)*
+&nbsp;&nbsp;&nbsp;&nbsp;9.3.1 Right Candidate Retrieved, Wrong One Drafted
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(The De Niro case,
+`WebQTrn-1294_a4b2006a…`, relabelled. The census filed it as `verifier_fn` on the theory
+that the verifier checked a claim about a different candidate than the one the evaluator
+resolved. The run record refutes that: the* draft itself *reads "Marlon Brando also played
+in Joy", and the verifier rejected exactly what the drafter asserted. Brando did not
+appear in* Joy; *De Niro did. The verifier was correct and the error is upstream, in the
+answerer — the taxonomy's own `answer_selection` category. Correct the label in
+`labels_cwq.csv` before this is written up.)*
 
 9.4 Relation-Selection and Navigation Errors
 
 9.5 Verifier Rejection and Acceptance Errors
-&nbsp;&nbsp;&nbsp;&nbsp;**Confirmed as a standalone section — eight specimens, both
-polarities.** Inventory: six census cases labelled `verifier_fn` /
-`structural_not_semantic` (3 WebQSP + 3 CWQ), all of them the verifier *rejecting a
-correct claim*; plus the Wilson and Seth MacFarlane cases, both the verifier *accepting an
-unsupported one*.
+&nbsp;&nbsp;&nbsp;&nbsp;**Confirmed as a standalone section — seven specimens, both
+polarities.** Inventory: five census cases labelled `verifier_fn` /
+`structural_not_semantic`, all of them the verifier *rejecting a correct claim*; plus the
+Wilson and Seth MacFarlane cases, both the verifier *accepting an unsupported one*. (The
+census carries six `verifier_fn` rows, but the De Niro row is mislabelled — see §9.3.)
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.1 Defining the Error Polarities
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Open with an explicit convention and use
 it consistently thereafter.** The annotation labels and the taxonomy table in
@@ -417,19 +436,26 @@ polarities in prose — *wrongly rejected* and *wrongly accepted* — and avoid 
 entirely, since the verifier's output is `supported` / `unsupported` and "positive" has no
 stable referent.
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.2 Wrongly Rejected: Semantically Correct, Structurally Unmatched
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(The six census cases. All share one
-mechanism — the claim is true and the answer correct, but no single triple states it in
-the drafted phrasing, so a transitively-true or differently-anchored fact is rejected and
-the retry loses the answer. The De Niro case is distinct and worth separating: the
-rejection message references a different candidate entirely, suggesting a claim/candidate
-pairing bug rather than a structural mismatch.)*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(The five genuine census cases —
+W. H. Smith, the four campaign entities, California/Nevada, Houston Oilers, Mecklenburg
+County. All share one mechanism: the claim is true and the answer correct, but no single
+triple states it in the drafted phrasing, so a transitively-true or differently-anchored
+fact is rejected and the retry loses the answer. This is a single, cleanly-argued failure
+mode — resist the urge to subdivide it.)*
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.3 Wrongly Accepted: Unsupported Claims Passed as Grounded
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Wilson, plus MacFarlane — the graph
 contains no edge from Seth MacFarlane to Lion-O or ThunderCats, confirmed by direct query,
 yet the claim passed as `grounded`.)*
-&nbsp;&nbsp;&nbsp;&nbsp;9.5.4 Rates Across the Test Matrix
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(the `unsupported` firings in
-`score_run_phase4.csv` are the population these specimens are drawn from)*
+&nbsp;&nbsp;&nbsp;&nbsp;9.5.4 Rate for One Polarity, and a Blank for the Other
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Aggregate counts are the
+`verifier.grounded` / `verifier.unsupported` columns of `score_run_phase4.csv`; per-record
+outcomes are the `verifier_outcome` field of `results/phase4/test_{ds}_agr.jsonl`. AGR
+fires* unsupported *on 16/400 WebQSP and 36/400 CWQ, against 384 and 364 grounded. The
+wrongly-rejected specimens are drawn from those 52 firings, so that polarity has a
+denominator. Wrongly-accepted cases have* no logged population at all *— they sit
+undifferentiated inside the 748 grounded outcomes, because accepted claims are never
+persisted (§9.9.3). Report a rate for rejection and an explicit blank for acceptance;
+do not average them into a single "verifier error rate".)*
 
 9.6 Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and Ordinals
 &nbsp;&nbsp;&nbsp;&nbsp;*(invokes the unanswerable-in-environment class defined in §4.7.4)*
