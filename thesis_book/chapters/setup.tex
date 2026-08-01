@@ -1,0 +1,84 @@
+\chapter{Experimental Setup}\label{ch:setup}
+
+\section{Mapping Experiments to Research Questions}\label{sec:experiment-map}
+\subsection{Pre-Registration and the No-Tuning Policy}
+% No tuning after test data is touched; kappa >= 0.7, the 15% baseline
+% certification diagnostic, and the alpha/tau freeze all fixed before
+% measurement.
+\subsection{Metrics Proposed but Not Run}\label{sec:metrics-not-run}
+% One paragraph accounting for path fidelity, which the approved proposal named
+% as its third evaluation criterion. State the reason once: it requires gold
+% SPARQL relation chains, and the RoG distribution's name-keyed triples do not
+% carry them, so reconstructing the chains fell outside budget. Section
+% ~\ref{sec:future-path-fidelity} picks it up without relitigating.
+
+\section{Test Sets}\label{sec:test-sets}
+\subsection{WebQSP}
+\subsection{ComplexWebQuestions}
+\subsection{Stratified Sampling, Seeds, and Published Question IDs}
+\subsection{Hop-Count Stratification}
+
+\section{Backbone Model Selection and Qualification}\label{sec:backbone}
+\subsection{Trajectory Stability Under Temperature-Zero Decoding}
+% Hosted APIs are only approximately deterministic at temperature 0; sequential
+% agents amplify per-call divergence. Report measured trajectory stability.
+\subsection{Response Caching as the Reproducibility Backstop}
+
+\section{Baseline Systems}\label{sec:baselines}
+\subsection{No-Retrieval LLM (Parametric-Memory Control)}
+\subsection{Vector-RAG over Verbalized Triples}
+\subsection{Static GraphRAG}
+\subsection{Think-on-Graph (Agentic Baseline)}
+\subsection{Variables Held Constant Across All Systems}
+\subsection{Baseline Certification Protocol}
+% The pre-registered gold-visible-while-hedged diagnostic, dev-only debugging of
+% all four baselines, and the ToG budget-clip rates.
+
+\section{Metrics}\label{sec:metrics}
+\subsection{Answer Accuracy: Hits@1 and F1}
+\subsection{Accounting for Hedges and Abstentions}
+\subsection{Two-Tier Groundedness and Hallucination Rate}\label{sec:groundedness-metric}
+\subsection{Efficiency: Tokens, LLM Calls, and Wall-Clock Latency}
+% Latency is computed over cold-cache records only. State this wherever
+% wall-clock is reported.
+
+\section{The Groundedness Judge and Its Validation}\label{sec:judge}
+\subsection{Independence of the Judge from the Answering System}
+\subsection{Human Annotation Protocol}
+\subsection{Agreement Between Judge and Human Annotator}
+% STATE THE EXACT VALUE, NOT THE ROUNDED ONE. Cohen's kappa is 0.6995 on n=100
+% (85% observed agreement), against a pre-registered threshold of kappa >= 0.7.
+% Rounded to three decimals it reads 0.700 and appears to clear; IT DOES NOT.
+% Report it as marginally BELOW the threshold, say what that means for how much
+% weight the Tier-2 numbers can carry, and do not silently round up --- a
+% pre-registered threshold reported as met when it was missed by 0.0005 is
+% exactly what a viva finds. The honest framing: agreement is substantial by any
+% conventional reading of kappa, and the pre-registered bar was set marginally
+% above what was achieved.
+%
+% NOTE: scripts/compute_kappa.py reads data/kappa_sheet.csv and
+% data/kappa_key.json, which do not exist --- the artifacts live under
+% results/phase4/tier2_judge/. scripts/build_thesis_numbers.py reads the real
+% paths and recomputes the value.
+
+\section{Gold-Answer Quality Control}\label{sec:gold-quality}
+\subsection{The Gold-Noise Problem in WebQSP and CWQ}
+\subsection{Consensus Pre-Pass and Per-Item Adjudication}
+\subsection{Two Evidence Signatures of Label Error}\label{sec:evidence-signatures}
+% World-fact errors require MIXED consensus (parametric and graph-based systems
+% agreeing against the label). Annotation-pipeline errors show up as GRAPH-ONLY
+% consensus. Give the diagnostic and one specimen of each. The San Antonio City
+% Council item (WebQTest-634..., mixed_evidence: true, four systems converging
+% on Bexar County against a Comal County gold) is the worked mixed-evidence
+% specimen; see Section~\ref{sec:gold-provenance} for where that label came from.
+\subsection{Census-Based Exclusions and the Dual-Reporting Policy}
+
+\section{Ablation Conditions}\label{sec:ablation-conditions}
+
+\section{Hyperparameter Selection on the Development Set}\label{sec:hyperparams}
+\subsection{The $\alpha$--$\tau$ Sweep Protocol}
+\subsection{Development Set Construction and Coverage}
+
+\section{Implementation, Environment, and Reproducibility}\label{sec:implementation}
+
+\endinput

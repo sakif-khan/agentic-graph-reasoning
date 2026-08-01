@@ -1,0 +1,33 @@
+\chapter{The Structural Verification Layer}\label{ch:verification}
+
+\section{Motivation: Verifying Before Emitting, Not After}\label{sec:verify-motivation}
+
+\section{Claim Decomposition of the Draft Answer}\label{sec:claim-decomposition}
+
+\section{Two-Stage Claim Checking}\label{sec:two-stage}
+% Call these the STRUCTURAL CHECK and the ENTAILMENT CHECK. Never "Tier 1 /
+% Tier 2" --- "tier" is reserved for the groundedness metric in
+% Chapter~\ref{ch:setup}.
+\subsection{The Structural Check}\label{sec:structural-check}
+\subsection{The Entailment Check}\label{sec:entailment-check}
+\subsection{Why the Structural Check Runs First}
+
+\section{Repair Policies for Unsupported Claims}\label{sec:repair}
+\subsection{Targeted Re-Exploration Under Remaining Budget}
+\subsection{Answer Rewriting and Hedging}
+\subsection{Iteration Cap and the Draft-Only Fallback}
+
+\section{Entity Filtering of the Final Answer}\label{sec:entity-filtering}
+
+\section{Output Contract: Answer Paired with Supporting Triples}\label{sec:output-contract}
+
+\section{A Worked Example}\label{sec:verify-example}
+
+\section{Failure Modes by Construction: Wrongful Rejection and Wrongful
+  Acceptance}\label{sec:verify-failure-modes}
+% Analytical, derived from the design rather than the data --- but
+% Section~\ref{sec:verifier-errors} has empirical specimens for both polarities,
+% so name the mechanism each one instantiates and forward-reference them. Use
+% the polarity vocabulary fixed in Section~\ref{sec:polarities}; no fn/fp here.
+
+\endinput

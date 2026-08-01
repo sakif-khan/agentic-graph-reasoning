@@ -1,0 +1,39 @@
+\chapter{Results}\label{ch:results}
+
+\section{Development-Set Tuning Outcomes}\label{sec:dev-tuning}
+% Report the alpha = 0.5 non-monotonicity rather than smoothing the sweep into a
+% clean curve, and say in one sentence why.
+
+\section{Main Results on WebQSP}\label{sec:webqsp-results}
+
+\section{Main Results on ComplexWebQuestions}\label{sec:cwq-results}
+
+\section{Accuracy Broken Down by Hop Count}\label{sec:hop-results}
+
+\section{Groundedness and Hallucination Rate Across Systems}\label{sec:groundedness-results}
+% Headline: structural groundedness is a property of the NAVIGATION PARADIGM,
+% not of the verifier --- AGR and ToG both reach it. Frame accordingly; do not
+% attribute it to the verification layer.
+
+\section{Efficiency and Cost}\label{sec:efficiency}
+\subsection{Token and Call Budgets per System}
+\subsection{The Accuracy--Cost Frontier}
+
+\section{Ablation Study}\label{sec:ablations}
+\subsection{Without the Planner: A Stratum-Dependent Effect}
+% Removal helps WebQSP and trends toward hurting CWQ. The asymmetry is the
+% finding, not the pooled average.
+\subsection{Without Backtracking}
+\subsection{Without the Verification Layer}
+\subsection{Embedding-Only Scoring}
+\subsection{Paired Significance Testing and Statistical Power}
+% Open by stating that only the planner condition reached significance at
+% n ~ 200; the other three are reported as "no detectable effect at this sample
+% size", never as confirmed nulls.
+
+\section{Findings Against RQ1, RQ2, and RQ3}\label{sec:findings}
+% RQ2's answer is three-part: navigation eliminates structural hallucination;
+% verification contributes precision and F1; verification shows no measurable
+% Hits@1 effect in ablation.
+
+\endinput

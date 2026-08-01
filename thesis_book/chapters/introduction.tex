@@ -1,0 +1,43 @@
+\chapter{Introduction}\label{ch:intro}
+
+\section{Hallucination in Large Language Models}\label{sec:hallucination}
+\subsection{Where Hallucination Originates: Training Data, Model, and Prompt}
+\subsection{Why Multi-Hop Questions Are the Hard Case}
+
+\section{From Retrieval Augmentation to Graph-Structured Grounding}\label{sec:rag-to-graph}
+\subsection{Vector Retrieval and Its Structural Blind Spot}
+\subsection{Knowledge Graphs and Static GraphRAG}
+\subsection{Agentic Retrieval: Reasoning as Navigation}
+
+\section{Limitations of Existing Agentic KGQA Systems}\label{sec:limitations}
+% Frame 1.3.1 as a PRECISION deficit, not a groundedness one. Prior agentic
+% systems emit whatever the final LLM call produces from the traversed context,
+% with no check that each asserted entity is supported AS AN ANSWER. Point
+% forward to the precision gap in Chapter~\ref{ch:results}. Do NOT claim prior
+% systems hallucinate structurally --- Section~\ref{sec:groundedness-results}
+% shows they do not.
+\subsection{No Check on What the Final Answer Asserts}
+\subsection{Unquantified Contribution of Individual Agentic Mechanisms}
+\subsection{Accuracy Reported Without Cost}
+
+\section{Problem Statement}\label{sec:problem}
+
+\section{Research Questions}\label{sec:rqs}
+\subsection{RQ1: Does Agentic Navigation Improve Multi-Hop Factual Accuracy?}
+\subsection{RQ2: What Does Pre-Generation Verification Contribute Beyond Graph
+  Navigation?}
+\subsection{RQ3: Which Components Contribute What, at What Token Cost?}
+
+\section{Our Contribution}\label{sec:contribution}
+\subsection{The AGR Framework and Its Verification Layer}
+\subsection{A Component-Level Ablation of Agentic Mechanisms}
+\subsection{Stratum-Dependent Decomposition: When Planning Hurts}
+\subsection{The Echo Attractor as a Named Failure Mode}
+\subsection{Quantified Benchmark Defect Rates for WebQSP and CWQ}
+\subsection{An Evaluation Protocol with Pre-Registered Thresholds}
+
+\section{Scope and Delimitations}\label{sec:scope}
+
+\section{Thesis Organization}\label{sec:organization}
+
+\endinput

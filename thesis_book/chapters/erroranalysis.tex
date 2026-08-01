@@ -1,0 +1,148 @@
+\chapter{Error Analysis and Discussion}\label{ch:erroranalysis}
+
+% BUDGET: 10 pages. Raised from 8 deliberately, not under page pressure --- this
+% chapter carries three failure families in Section~\ref{sec:decomposition-errors},
+% four subsections in Section~\ref{sec:verifier-errors}, and a provenance
+% subsection in Section~\ref{sec:benchmark-defects}. The two extra pages come
+% from Chapters~\ref{ch:prelim} and~\ref{ch:related}. This chapter is NOT a
+% compression target: the error analysis and benchmark-defect work are what
+% distinguish this thesis from a system report.
+
+\section{Annotation Protocol and the Failure Taxonomy}\label{sec:taxonomy}
+\subsection{Category and Subtype Schema}
+\subsection{Sampling Asymmetry: Census versus Stratified Sample}
+% WebQSP is a full census of remaining failures; CWQ is a stratified sample of
+% wrongs and hedges --- so wrong-answer and hedge histograms are reported
+% separately and never pooled.
+
+\section{Distribution of Failure Categories Across Datasets}\label{sec:failure-distribution}
+% Source: the Stage E merged histogram in thesis_numbers.json
+% (failure_histogram), generated from logs/synthesize_census_log.txt --- Stage D
+% + Stage A, 86 WebQSP and 173 CWQ rows, wrong and hedge kept separate.
+%
+% HEADLINE: the SHAPE FLIP between datasets. WebQSP is dominated by
+% relation_selection and decomposition_error; CWQ by composite_claim and kg_gap,
+% both nearly absent from WebQSP.
+%
+% Do NOT leave the structural explanation asserted --- it is demonstrable from
+% data already in hand, and two citations in the same paragraph turn it into a
+% shown result:
+%   1. Stratum distribution: WebQSP is 64% one-hop (256/400) with a
+%      four-question h3plus tail; CWQ is majority h2 (211/400) with a real
+%      h3plus tail of 49.
+%   2. The kg_gap cases trace to the expressiveness limits verified in
+%      Section~\ref{sec:unanswerable} --- no date literals, no numeric literals,
+%      no ordinals --- which CWQ's templates invoke constantly and WebQSP's
+%      rarely.
+
+\section{Decomposition, Drafting, and Answer-Selection Errors}\label{sec:decomposition-errors}
+% Three families in the space originally budgeted for one. Give context-stripping
+% the full worked treatment --- it is the strongest mechanism finding here --- and
+% let the Stage A extraction-bug trio share a SINGLE worked example with the
+% De Niro case below. They are the same family: the drafter or extractor
+% selecting the wrong entity out of correct prose.
+\subsection{Right Candidate Retrieved, Wrong One Drafted}\label{sec:answer-selection}
+% The De Niro case, WebQTrn-1294_a4b2006a..., relabelled. The census originally
+% filed it as verifier_fn on the theory that the verifier checked a claim about a
+% different candidate than the evaluator resolved. The run record refutes that:
+% the DRAFT itself reads "Marlon Brando also played in Joy", and the verifier
+% rejected exactly what the drafter asserted. Brando did not appear in Joy;
+% De Niro did. The verifier was correct; the error is upstream in the answerer.
+% Label corrected to answer_selection in labels_cwq.csv.
+
+\section{Relation-Selection and Navigation Errors}\label{sec:relation-errors}
+
+\section{Verifier Rejection and Acceptance Errors}\label{sec:verifier-errors}
+% The two polarities are very unevenly evidenced, and THAT IMBALANCE IS ITSELF
+% THE FINDING. Verified inventory across the full Stage E census:
+%   - Wrongly rejected -- FIVE cases: WebQTest-1133, -38, -725 (webqsp, hedge),
+%     WebQTest-1348 (cwq, wrong), WebQTrn-568 (cwq, hedge).
+%   - Wrongly accepted -- ONE clean case: WebQTrn-1597 (MacFarlane), from
+%     Stage A, whose note records "not grounded in any real edge despite
+%     verifier_outcome: grounded". Direct Cypher query confirms no MacFarlane
+%     edge to Lion-O or ThunderCats exists.
+%   - Two boundary cases that are NOT verifier defects: De Niro (relabelled
+%     answer_selection, Section~\ref{sec:answer-selection}) and Wilson /
+%     WebQTest-1620 (labelled kg_gap/date_literal).
+%
+% Open by cross-referencing Section~\ref{sec:answer-selection}: the verifier's
+% correct rejections are not merely the background population of the 52 firings
+% --- one of them is narrated there as a positive demonstration of the layer
+% doing its job.
+\subsection{Defining the Error Polarities}\label{sec:polarities}
+% State the convention once: the verifier's positive class is "claim is
+% supported", so a false positive is a wrongly ACCEPTED claim and a false
+% negative a wrongly REJECTED one. Then use plain English --- "wrongly rejected"
+% / "wrongly accepted" --- for the rest of the thesis, because with
+% supported/unsupported outputs a reader cannot infer which class is positive.
+\subsection{Wrongly Rejected: Semantically Correct, Structurally Unmatched}
+% The five genuine census cases: W. H. Smith, the four campaign entities,
+% California/Nevada, Houston Oilers, Mecklenburg County. All share one
+% mechanism --- the claim is true and the answer correct, but no single triple
+% states it in the drafted phrasing, so a transitively-true or
+% differently-anchored fact is rejected and the retry loses the answer.
+% A single cleanly-argued failure mode; resist subdividing it.
+\subsection{Wrongly Accepted: Unsupported Claims Passed as Grounded}
+% MacFarlane is the ONLY clean specimen: no edge exists, yet the claim passed as
+% grounded. Use Wilson (WebQTest-1620) as the contrasting BOUNDARY case rather
+% than a second defect --- there the asserted inauguration entities DO exist and
+% the edges ARE real, so the structural check passed correctly; the answer is
+% nonetheless wrong because the environment holds no date literal. That contrast
+% is the section's most useful point, and it is the same argument
+% Section~\ref{sec:limitations} makes: structural grounding is a claim about edge
+% existence, not about answer adequacy.
+\subsection{Rate for One Polarity, and a Blank for the Other}
+% Counts from thesis_numbers.json. AGR fires unsupported on 16/400 WebQSP and
+% 36/400 CWQ, against 384 and 364 grounded. The wrongly-rejected specimens are
+% drawn from those 52 firings, so that polarity has a denominator.
+% Wrongly-accepted cases have NO logged population --- they sit undifferentiated
+% inside the 748 grounded outcomes, because accepted claims are never persisted
+% (Section~\ref{sec:threats}). Report a rate for rejection and an explicit blank
+% for acceptance; do NOT average them into one "verifier error rate".
+
+\section{Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and
+  Ordinals}\label{sec:kg-gaps}
+% Invokes the unanswerable-in-environment class defined in
+% Section~\ref{sec:unanswerable}.
+
+\section{The Echo Attractor: Answering with the Topic or an Intermediate
+  Entity}\label{sec:echo}
+
+\section{Benchmark Defects: Gold Noise and Ambiguous Questions}\label{sec:benchmark-defects}
+% Open by separating two numbers: the share of questions the consensus pass
+% FLAGGED, and the much smaller share adjudication confirmed as genuine label
+% defects. Most flagged items were not label errors --- they were all five
+% systems converging on the same wrong answer. That phenomenon belongs to
+% Section~\ref{sec:echo}; point there and keep this section to defects proper.
+\subsection{Where Bad Gold Comes From: Flattened Multi-Valued
+  Relations}\label{sec:gold-provenance}
+% Built on the San Antonio case. The graph does carry
+% San Antonio -[location.location.containedby]-> Comal County, alongside two HUD
+% county-place edges. That edge is not fabricated: San Antonio's city limits
+% genuinely extend into Comal and Medina counties, though the city and its
+% council sit overwhelmingly in Bexar. The defect is therefore neither a pure
+% label error nor a pure graph error but a MULTI-VALUED CONTAINMENT RELATION
+% FLATTENED TO A SINGLE VALUE, with the annotation pipeline then selecting the
+% marginal value. More accurate and more useful than calling it a data error,
+% and it explains why the consensus diagnostic caught it.
+%
+% OUTSTANDING: the adjudication note in prepass_goldnoise_cwq.json calls Comal
+% "a neighbouring county", which understates the overlap. Correct it there
+% before quoting it here.
+
+\section{Discussion}\label{sec:discussion}
+\subsection{What Agency Buys, and What It Costs}
+\subsection{When Verification Helps and When It Over-Hedges}
+\subsection{Threats to Validity}\label{sec:threats}
+% Include the verifier instrumentation gap: verifier_node logs only UNSUPPORTED
+% claims, never the accepted ones with their matched triples. Wrongful-acceptance
+% cases are therefore not self-diagnosing from logs --- the MacFarlane specimen
+% surfaced only because Stage A read that trajectory by hand. That polarity is
+% consequently reported anecdotally while wrongful rejection is reported at
+% census scale, and the asymmetry must be stated rather than left for a reader
+% to infer.
+%
+% Also: Cohen's kappa is 0.6995 against a pre-registered threshold of 0.7 ---
+% see Section~\ref{sec:judge}.
+
+\endinput

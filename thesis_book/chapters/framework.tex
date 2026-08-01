@@ -1,0 +1,43 @@
+\chapter{The AGR Framework: Architecture and Navigation}\label{ch:framework}
+
+\section{Architectural Overview}\label{sec:architecture}
+% Figure: the Planner -> Explorer -> Evaluator -> {Backtrack | Verify} ->
+% Answerer state machine.
+
+\section{The Graph Tool API}\label{sec:tool-api}
+\subsection{Rationale: Constrained Tools Instead of Free-Form Cypher Generation}
+\subsection{The Five Operations}
+% Table + prose covering search_entity, get_relations, get_neighbors,
+% verify_triple, verify_connection. Five, not four.
+\subsection{Relation-Agnostic Adjacency and Traversal Through Mediators}
+% verify_connection --- what the structural check in
+% Section~\ref{sec:structural-check} actually calls, and why endpoint adjacency
+% rather than exact-triple matching.
+\subsection{Determinism, Caching, and Tool-Call Logging}
+
+\section{Agent State Representation}\label{sec:state}
+
+\section{The Planner}\label{sec:planner}
+\subsection{Decomposition into Ordered Sub-Objectives}
+\subsection{Plan Validation and Degenerate-Plan Handling}
+
+\section{The Explorer}\label{sec:explorer}
+\subsection{Frontier Construction}
+\subsection{The Hybrid Scoring Function}
+\subsection{Embedding Pre-Filtering and Batched LLM Scoring}
+\subsection{Beam Selection and Expansion}
+
+\section{The Evaluator and Routing Policy}\label{sec:evaluator}
+\subsection{Sub-Objective Completion Judgment}
+\subsection{Backtracking Triggers: Score Threshold, Dead Ends, Evaluator Veto}
+\subsection{The Backtrack Stack and Branch Invalidation}
+
+\section{The Answerer}\label{sec:answerer}
+
+\section{Budgets and Termination Guarantees}\label{sec:budgets}
+
+\section{Instrumentation: What Every Run Records}\label{sec:instrumentation}
+
+\section{The Complete Navigation Algorithm}\label{sec:navigation-algorithm}
+
+\endinput

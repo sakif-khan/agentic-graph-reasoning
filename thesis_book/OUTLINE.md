@@ -37,20 +37,17 @@ Verifier errors are described as **wrongly rejected** / **wrongly accepted** thr
 
 Under the standard convention — the verifier's positive class is *"claim is supported"* —
 a **false positive is a wrongly accepted claim** and a **false negative is a wrongly
-rejected one**. The CSV labels follow this convention correctly: every `verifier_fn` row
-in `labels_{webqsp,cwq}.csv` describes a rejected-but-correct claim. The gloss in
-`annotation_taxonomy.md:14` — "`verifier_fn` / `verifier_fp` … passed a wrong claim /
-hedged a right one" — pairs the names in the opposite order and is **reversed relative to
-both the convention and the labels' own usage**. The annotator's note at
-`annotation_taxonomy.md:80` ("flagged for discussion rather than forced into `verifier_fn`
-since no verifier rejection is involved") is not a stray row using a different mental
-model; those cases are labelled `other`, and the note confirms the annotator treats *fn*
-as requiring a rejection.
-
-**Action: correct line 14's gloss at source; leave every label untouched.** Then define
-the convention once in §9.5.1 and use plain English thereafter, because with
+rejected one**. Define this once in §9.5.1 and use plain English thereafter, because with
 `supported`/`unsupported` outputs a reader has no reliable way to infer which class is
 "positive".
+
+*Resolved — the three source corrections below are already applied; recorded here so the
+provenance survives into Appendix D.* The gloss at `annotation_taxonomy.md:14` originally
+paired the names in the reverse order and has been corrected, with the convention now
+stated above the table. Stage D's labels always followed the standard convention and were
+left untouched. Two rows did not and were relabelled: the De Niro case (§9.3.1, → 
+`answer_selection`) and the MacFarlane case (§9.5.3, → `verifier_fp`, Stage A having used
+the reversed convention). `logs/synthesize_census_log.txt` was regenerated afterwards.
 
 ---
 
@@ -110,7 +107,7 @@ hallucinate structurally: §8.5 shows they do not.)*
 
 ---
 
-## 2. Background and Preliminaries — *~6 pages*
+## 2. Background and Preliminaries — *~5 pages*
 
 2.1 Knowledge Graphs
 &nbsp;&nbsp;&nbsp;&nbsp;2.1.1 Triples, Entities, and Relations
@@ -142,7 +139,7 @@ correctness, Cohen's κ — definitions and the reason each was chosen, no deriv
 
 ---
 
-## 3. Related Work — *~8 pages*
+## 3. Related Work — *~7 pages*
 
 3.1 Static Graph-Augmented Generation
 &nbsp;&nbsp;&nbsp;&nbsp;3.1.1 GraphRAG and Query-Focused Summarization
@@ -200,7 +197,7 @@ baseline selection in §7.4)*
 &nbsp;&nbsp;&nbsp;&nbsp;4.5.3 Scope: Linking and Candidate Ranking, Never Ground Truth
 
 4.6 Entity Resolution and Surface-Form Linking
-&nbsp;&nbsp;&nbsp;&nbsp;4.6.1 The Exact / Lexical / Vector Cascade
+&nbsp;&nbsp;&nbsp;&nbsp;4.6.1 The Exact, Lexical, and Vector Cascade
 &nbsp;&nbsp;&nbsp;&nbsp;4.6.2 Threshold Selection on Development Data
 
 4.7 Environment Validation Gate
@@ -413,7 +410,7 @@ measurable Hits@1 effect in ablation)*
 
 ---
 
-## 9. Error Analysis and Discussion — *~8 pages*
+## 9. Error Analysis and Discussion — *~10 pages*
 
 9.1 Annotation Protocol and the Failure Taxonomy
 &nbsp;&nbsp;&nbsp;&nbsp;9.1.1 Category and Subtype Schema
@@ -454,8 +451,8 @@ that the verifier checked a claim about a different candidate than the one the e
 resolved. The run record refutes that: the* draft itself *reads "Marlon Brando also played
 in Joy", and the verifier rejected exactly what the drafter asserted. Brando did not
 appear in* Joy; *De Niro did. The verifier was correct and the error is upstream, in the
-answerer — the taxonomy's own `answer_selection` category. Correct the label in
-`labels_cwq.csv` before this is written up.)*
+answerer — the taxonomy's own `answer_selection` category, to which the label has been
+corrected.)*
 
 9.4 Relation-Selection and Navigation Errors
 
@@ -477,12 +474,13 @@ correct rejections are not merely the background population of the 52 firings, o
 is narrated there as a positive demonstration of the layer doing its job.*
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.1 Defining the Error Polarities
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Open with an explicit convention and use
-it consistently thereafter.** The annotation labels and the taxonomy table in
-`results/phase4/annotation_taxonomy.md` disagree about which polarity `verifier_fn` names
-(see the note below); the thesis must not inherit that ambiguity. Recommended: name the
-polarities in prose — *wrongly rejected* and *wrongly accepted* — and avoid fn/fp
-entirely, since the verifier's output is `supported` / `unsupported` and "positive" has no
-stable referent.
+it consistently thereafter.** State that the verifier's positive class is "claim is
+supported", so a false positive is a wrongly accepted claim and a false negative a wrongly
+rejected one — then name the polarities in prose (*wrongly rejected* / *wrongly accepted*)
+and avoid fn/fp for the rest of the thesis, since the verifier's output is `supported` /
+`unsupported` and "positive" has no stable referent for a reader. The label sources now
+follow this convention consistently; see the terminology note at the head of this outline
+for what was corrected to get there.
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.2 Wrongly Rejected: Semantically Correct, Structurally Unmatched
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(The five genuine census cases —
 W. H. Smith, the four campaign entities, California/Nevada, Houston Oilers, Mecklenburg

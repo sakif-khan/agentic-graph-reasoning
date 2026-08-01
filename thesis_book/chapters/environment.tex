@@ -1,0 +1,45 @@
+\chapter{The Knowledge Environment}\label{ch:environment}
+
+\section{Design Goals}\label{sec:env-goals}
+\subsection{Decoupling the Graph Source from the Question Sets}
+\subsection{Why a Curated Subgraph Rather Than LLM-Extracted Triples}
+
+\section{Source Data}\label{sec:source-data}
+\subsection{The Freebase Snapshot}
+\subsection{WebQSP and ComplexWebQuestions as Question Sets}
+
+\section{Graph Construction}\label{sec:graph-construction}
+% NOTE: the graph is the UNION of RoG's pre-extracted per-question subgraphs
+% (name-keyed triples from the WebQSP and CWQ parquet dumps), NOT a topic-entity
+% seeding plus k-hop expansion performed here. This determines the coverage
+% ceiling and is exactly what an examiner probes.
+\subsection{Union of Per-Question Subgraphs from the RoG Distribution}
+\subsection{Relation Filtering and Noise Removal}
+\subsection{Treatment of Mediator Nodes and Its Effect on Hop Counts}
+
+\section{Graph Store Construction}\label{sec:graph-store}
+\subsection{Property-Graph Schema}
+\subsection{Bulk Import into Neo4j}
+\subsection{Graph Statistics}
+
+\section{The Vector Index}\label{sec:vector-index}
+\subsection{Entity Embeddings}
+\subsection{Relation-Vocabulary Embeddings}
+\subsection{Scope: Linking and Candidate Ranking, Never Ground Truth}
+
+\section{Entity Resolution and Surface-Form Linking}\label{sec:entity-resolution}
+% Call this cascade exact / lexical / vector. Never "Tier 1/2/3" --- "tier" is
+% reserved for the groundedness metric in Chapter~\ref{ch:setup}.
+\subsection{The Exact, Lexical, and Vector Cascade}
+\subsection{Threshold Selection on Development Data}
+
+\section{Environment Validation Gate}\label{sec:validation-gate}
+\subsection{Answer-Reachability Protocol}
+\subsection{Coverage Results and the Induced Accuracy Ceiling}
+\subsection{Analysis of Linking Misses and Gate Failures}
+\subsection{What the Environment Cannot Express}\label{sec:unanswerable}
+% No date literals, no numeric literals, no ordinal encodings --- all three
+% verified. Define the "unanswerable-in-environment" question class here;
+% Section~\ref{sec:kg-gaps} invokes it rather than introducing it.
+
+\endinput
