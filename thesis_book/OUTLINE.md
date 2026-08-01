@@ -51,7 +51,13 @@ named differently wherever they appear:
 &nbsp;&nbsp;&nbsp;&nbsp;1.2.3 Agentic Retrieval: Reasoning as Navigation
 
 1.3 Limitations of Existing Agentic KGQA Systems
-&nbsp;&nbsp;&nbsp;&nbsp;1.3.1 No Verification Before the Answer Is Emitted
+&nbsp;&nbsp;&nbsp;&nbsp;1.3.1 No Check on What the Final Answer Asserts
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Motivate this as a* precision *deficit, not
+a groundedness one. Prior agentic systems emit whatever the final LLM call produces from
+the traversed context, with no check that each asserted entity is supported* as an answer
+*— which surfaces as over-assertion on multi-answer questions and as grounded-but-wrong
+answers. Point forward to the precision gap in §8.2. Do not claim prior systems
+hallucinate structurally: §8.5 shows they do not.)*
 &nbsp;&nbsp;&nbsp;&nbsp;1.3.2 Unquantified Contribution of Individual Agentic Mechanisms
 &nbsp;&nbsp;&nbsp;&nbsp;1.3.3 Accuracy Reported Without Cost
 
@@ -256,6 +262,13 @@ in §6.3.1 actually calls, and why endpoint adjacency rather than exact-triple m
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(no tuning after test data is touched; κ ≥ 0.7,
 the 15% baseline-certification diagnostic, and the α/τ freeze all fixed before
 measurement)*
+&nbsp;&nbsp;&nbsp;&nbsp;7.1.2 Metrics Proposed but Not Run
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(One short paragraph accounting for path
+fidelity, which the approved proposal named as its third evaluation criterion. State the
+reason once: it requires gold SPARQL relation chains, and the RoG distribution's
+name-keyed triples do not carry them, so reconstructing the chains fell outside the
+budget. §10.3.1 then picks it up as future work without relitigating. Two mentions, one
+reason, no defensiveness.)*
 
 7.2 Test Sets
 &nbsp;&nbsp;&nbsp;&nbsp;7.2.1 WebQSP
@@ -296,7 +309,14 @@ only — state this wherever wall-clock is reported)*
 7.7 Gold-Answer Quality Control
 &nbsp;&nbsp;&nbsp;&nbsp;7.7.1 The Gold-Noise Problem in WebQSP and CWQ
 &nbsp;&nbsp;&nbsp;&nbsp;7.7.2 Consensus Pre-Pass and Per-Item Adjudication
-&nbsp;&nbsp;&nbsp;&nbsp;7.7.3 Census-Based Exclusions and the Dual-Reporting Policy
+&nbsp;&nbsp;&nbsp;&nbsp;7.7.3 Two Evidence Signatures of Label Error
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Label errors come in two kinds with
+opposite signatures, and separating them is what makes the adjudication reproducible
+rather than ad hoc. World-fact errors require* mixed *consensus — parametric and
+graph-based systems agreeing against the label. Annotation-pipeline errors show up as*
+graph-only *consensus, where every graph-grounded system finds the answer the label
+contradicts. Give the diagnostic and one specimen of each.)*
+&nbsp;&nbsp;&nbsp;&nbsp;7.7.4 Census-Based Exclusions and the Dual-Reporting Policy
 
 7.8 Ablation Conditions
 
@@ -311,6 +331,9 @@ only — state this wherever wall-clock is reported)*
 ## 8. Results — *~12 pages*
 
 8.1 Development-Set Tuning Outcomes
+&nbsp;&nbsp;&nbsp;&nbsp;*(Report the α = 0.5 non-monotonicity rather than smoothing the
+sweep into a clean curve, and say in one sentence why: the data show it, and a presented
+curve that hides a known irregularity is the kind of thing a defense finds.)*
 
 8.2 Main Results on WebQSP
 
@@ -363,6 +386,9 @@ histograms are reported separately and never pooled)*
 9.4 Relation-Selection and Navigation Errors
 
 9.5 Verifier False Positives and False Negatives
+&nbsp;&nbsp;&nbsp;&nbsp;*(Provisional. If the Stage D census does not yield more verifier
+cases than the structural-pass specimens currently in hand, fold this into §9.3/§9.4 and
+reclaim the half page rather than padding it.)*
 
 9.6 Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and Ordinals
 &nbsp;&nbsp;&nbsp;&nbsp;*(invokes the unanswerable-in-environment class defined in §4.7.4)*
@@ -370,6 +396,11 @@ histograms are reported separately and never pooled)*
 9.7 The Echo Attractor: Answering with the Topic or an Intermediate Entity
 
 9.8 Benchmark Defects: Gold Noise and Ambiguous Questions
+&nbsp;&nbsp;&nbsp;&nbsp;*(Open by separating two numbers that are easy to conflate: the
+share of questions the consensus pass* flagged, *and the much smaller share adjudication
+confirmed as genuine label defects. Most flagged items were not label errors — they were
+all five systems converging on the same wrong answer. That phenomenon is §9.7's; point
+there for it and keep this section to the defects proper.)*
 
 9.9 Discussion
 &nbsp;&nbsp;&nbsp;&nbsp;9.9.1 What Agency Buys, and What It Costs
@@ -402,8 +433,11 @@ histograms are reported separately and never pooled)*
 - Appendix C: Sampled Question IDs and Run Manifests
 - Appendix D: Annotation Instructions and Label Schema
 - Appendix E: Implementation Notes *(~2 pages: LangGraph `config` parameter injection,
-  the routers-read / nodes-write state discipline, and the partial-edit hazard — §7.10
-  points here)*
+  the routers-read / nodes-write state discipline, the partial-edit hazard, and the
+  cache-identity verification pattern — proving a code change did not perturb the frozen
+  path by confirming 100% cache replay. The last of these is a reproducibility technique
+  rather than a bug story, and carries the most weight with a methods-minded examiner.
+  §7.10 points here.)*
 
 ---
 
