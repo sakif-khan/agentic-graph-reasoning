@@ -1,0 +1,5 @@
+wrote results\phase4\thesis_numbers.json
+  systems scored      : 10
+  ablation conditions : 10
+  mcnemar comparisons : 16
+  cohen's kappa       : 0.6995

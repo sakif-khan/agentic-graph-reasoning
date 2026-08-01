@@ -1,5 +1,3 @@
 webqsp: census 43W/22H (43 skipped) [labels: 65 carried, 0 to read, 0 dropped]
-cwq: census 70W/87H (38 skipped) [labels: 59 carried, 98 to read, 1 dropped]
-  dropped (left the population; saved to labels_cwq_dropped.csv):
-    WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27  [gold_noise]
+cwq: census 70W/87H (38 skipped) [labels: 157 carried, 0 to read, 0 dropped]
 wrote sampling_manifest.json

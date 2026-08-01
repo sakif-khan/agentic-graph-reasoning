@@ -250,9 +250,11 @@
 | verifier     | unsupported                                                                                                            | grounded                                                                                        |
 | calls/tokens | 16/15311                                                                                                               | 3/3828                                                                                          |
 
-**category:** verifier_fn
+**category:** verifier_fp
 
-**note:** noplanner's answer was not grounded in any real edge despite verifier_outcome: grounded in the log.
+**subtype:** structural_not_semantic
+
+**note:** noplanner's answer was not grounded in any real edge despite verifier_outcome: grounded in the log; a direct Cypher query confirms no Seth MacFarlane edge to Lion-O or ThunderCats exists.
 
 ---
 

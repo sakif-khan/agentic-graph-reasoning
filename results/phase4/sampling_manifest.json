@@ -13,8 +13,8 @@
   "population_hedge": 87,
   "n_skipped": 38,
   "mode": "full_census",
-  "labels_carried": 59,
-  "labels_to_read": 98,
-  "labels_dropped": 1
+  "labels_carried": 157,
+  "labels_to_read": 0,
+  "labels_dropped": 0
  }
 }

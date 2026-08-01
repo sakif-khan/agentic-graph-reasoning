@@ -4,6 +4,36 @@
 % results/phase4/annotation_taxonomy.md, whose fn/fp gloss has been corrected and
 % which now states the convention explicitly above the table.
 %
+% WHICH LABEL FILES ARE AUTHORITATIVE (they are not all the same):
+%   - labels_{ds}.csv           -- authoritative. dump_failure_packets.py
+%                                  rewrites it but CARRIES existing labels
+%                                  forward, so hand edits survive a re-run.
+%   - noplanner_categories_{ds}.csv -- GENERATED, no carry-forward. Edit
+%                                  noplanner_discordant_{ds}.md instead (the
+%                                  **category:**/**subtype:**/**note:** fields);
+%                                  pull_noplanner_categories.py transcribes it.
+%                                  Editing the CSV directly is silently undone
+%                                  on the next run.
+%   - labels_{ds}_dropped.csv   -- LIVE INPUT to the histogram, not an archive:
+%                                  synthesize_census.py merges its rows and
+%                                  counts them in the total (cwq: 157 + 1 + 15
+%                                  = 173). It is also the one artifact nothing
+%                                  regenerates -- dump_failure_packets.py writes
+%                                  it only when a row leaves the population, so
+%                                  once the census is fully labelled a re-run
+%                                  will NOT recreate it. Never delete it;
+%                                  recover from git history if lost.
+%   - sampling_manifest.json    -- write-only; nothing reads it back. Its
+%                                  labels_carried/to_read/dropped fields are
+%                                  progress counters that go to 157/0/0 once
+%                                  annotation completes. The thesis cites only
+%                                  population_wrong/hedge, n_skipped, and mode,
+%                                  which are stable across re-runs.
+%   - synthesize_census_log.txt, thesis_numbers.json -- pure outputs. Never edit.
+%
+% Regeneration order after any relabelling:
+%   pull_noplanner_categories.py -> synthesize_census.py -> build_thesis_numbers.py
+%
 % Record the label-correction provenance here so it survives into the thesis:
 %   - annotation_taxonomy.md:14 -- gloss had the fn/fp pair reversed relative to
 %     both the standard convention and Stage D's own usage; corrected.
