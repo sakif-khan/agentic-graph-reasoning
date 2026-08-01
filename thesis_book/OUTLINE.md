@@ -12,6 +12,14 @@ UNN thesis): a heavily sub-sectioned Introduction that ends with *Our Contributi
 have before the technical chapters, and a Conclusion that walks the reader back through
 the thesis chapter by chapter before opening the future-work discussion.
 
+### Numbers
+
+Every figure the thesis states comes from `results/phase4/thesis_numbers.json`, generated
+by `scripts/build_thesis_numbers.py` from the scoring, groundedness, judge, and census
+artifacts. Do not transcribe a number from a log by hand, and do not hand-edit that file —
+rerun the script. Each block records the artifact it was parsed from, so if a rerun moves a
+value you can find the sentences that depend on it.
+
 ### Terminology discipline
 
 The word **"tier"** is reserved for **one** concept in this thesis: the two-tier
@@ -329,6 +337,15 @@ only — state this wherever wall-clock is reported)*
 &nbsp;&nbsp;&nbsp;&nbsp;7.6.1 Independence of the Judge from the Answering System
 &nbsp;&nbsp;&nbsp;&nbsp;7.6.2 Human Annotation Protocol
 &nbsp;&nbsp;&nbsp;&nbsp;7.6.3 Agreement Between Judge and Human Annotator
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**State the exact value, not the rounded
+one.** Cohen's κ is **0.6995** on n = 100 (85% observed agreement), against a
+pre-registered threshold of κ ≥ 0.7. Rounded to three decimals it reads 0.700 and appears
+to clear; it does not. Report it as *marginally below* the threshold, say what that means
+for how much weight the Tier-2 numbers can carry, and do not silently round up — a
+pre-registered threshold reported as met when it was missed by 0.0005 is exactly the kind
+of thing that destroys a viva. The honest framing is that agreement is substantial by any
+conventional reading of κ, and that the pre-registered bar was set marginally above what
+was achieved.
 
 7.7 Gold-Answer Quality Control
 &nbsp;&nbsp;&nbsp;&nbsp;7.7.1 The Gold-Noise Problem in WebQSP and CWQ
@@ -406,9 +423,30 @@ failures; CWQ is a stratified sample of wrongs and hedges — so wrong-answer an
 histograms are reported separately and never pooled)*
 
 9.2 Distribution of Failure Categories Across Datasets
+&nbsp;&nbsp;&nbsp;&nbsp;*(Source: the Stage E merged histogram,
+`logs/synthesize_census_log.txt` — Stage D + Stage A, 86 WebQSP and 173 CWQ rows, wrong
+and hedge kept separate throughout. The headline is the* shape flip *between datasets:
+WebQSP is dominated by `relation_selection` and `decomposition_error`, while CWQ is
+dominated by `composite_claim` and `kg_gap` — both of which are nearly absent from WebQSP.
+That is not noise; it follows from CWQ's questions being multi-constraint by construction,
+with `composite_claim` catching dropped constraints and `kg_gap` catching the internal
+numeric IDs and superlatives its templates keep producing. The log is current as of the
+three label corrections recorded in §9.3.1 and §9.5 — regenerate it if any further
+relabelling happens, since totals are unaffected but three CWQ hedge rows move.*
+&nbsp;&nbsp;&nbsp;&nbsp;*Do not leave the structural explanation asserted — it is
+demonstrable from data already in hand, and two citations in the same paragraph turn it
+into a shown result. First, the stratum distribution: WebQSP is 64% one-hop (256/400) with
+a four-question h3plus tail, whereas CWQ is majority h2 (211/400) with a real h3plus tail
+of 49. Second, the `kg_gap` cases trace to the specific expressiveness limits verified in
+§4.7.4 — no date literals, no numeric literals, no ordinals — which CWQ's templates invoke
+constantly and WebQSP's rarely.)*
 
 9.3 Decomposition, Drafting, and Answer-Selection Errors
-&nbsp;&nbsp;&nbsp;&nbsp;*(including the context-stripping mechanism)*
+&nbsp;&nbsp;&nbsp;&nbsp;*(including the context-stripping mechanism. This section now
+carries three families in the space originally budgeted for one, so give context-stripping
+the full worked treatment — it is the strongest mechanism finding here — and let the Stage A
+extraction-bug trio share a single worked example with the De Niro case below. They are the
+same family: the drafter or extractor selecting the wrong entity out of correct prose.)*
 &nbsp;&nbsp;&nbsp;&nbsp;9.3.1 Right Candidate Retrieved, Wrong One Drafted
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(The De Niro case,
 `WebQTrn-1294_a4b2006a…`, relabelled. The census filed it as `verifier_fn` on the theory
@@ -422,11 +460,21 @@ answerer — the taxonomy's own `answer_selection` category. Correct the label i
 9.4 Relation-Selection and Navigation Errors
 
 9.5 Verifier Rejection and Acceptance Errors
-&nbsp;&nbsp;&nbsp;&nbsp;**Confirmed as a standalone section — seven specimens, both
-polarities.** Inventory: five census cases labelled `verifier_fn` /
-`structural_not_semantic`, all of them the verifier *rejecting a correct claim*; plus the
-Wilson and Seth MacFarlane cases, both the verifier *accepting an unsupported one*. (The
-census carries six `verifier_fn` rows, but the De Niro row is mislabelled — see §9.3.)
+&nbsp;&nbsp;&nbsp;&nbsp;**Stands as a section, but the two polarities are very unevenly
+evidenced — and that imbalance is itself the finding.** Verified inventory across the full
+Stage E census:
+&nbsp;&nbsp;&nbsp;&nbsp;• *Wrongly rejected* — **five** cases: WebQTest-1133, -38, -725
+(WebQSP, hedge), WebQTest-1348 (CWQ, wrong), WebQTrn-568 (CWQ, hedge).
+&nbsp;&nbsp;&nbsp;&nbsp;• *Wrongly accepted* — **one** clean case: WebQTrn-1597
+(MacFarlane), from Stage A, whose note already records "not grounded in any real edge
+despite `verifier_outcome: grounded`". The direct Cypher query confirms no MacFarlane
+edge to Lion-O or ThunderCats exists.
+&nbsp;&nbsp;&nbsp;&nbsp;• *Two instructive boundary cases that are **not** verifier
+defects:* De Niro (relabelled `answer_selection`, §9.3.1) and Wilson / WebQTest-1620
+(labelled `kg_gap` / `date_literal` — see §9.5.3).
+&nbsp;&nbsp;&nbsp;&nbsp;*Open the section by cross-referencing §9.3.1: the verifier's
+correct rejections are not merely the background population of the 52 firings, one of them
+is narrated there as a positive demonstration of the layer doing its job.*
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.1 Defining the Error Polarities
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Open with an explicit convention and use
 it consistently thereafter.** The annotation labels and the taxonomy table in
@@ -443,9 +491,13 @@ triple states it in the drafted phrasing, so a transitively-true or differently-
 fact is rejected and the retry loses the answer. This is a single, cleanly-argued failure
 mode — resist the urge to subdivide it.)*
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.3 Wrongly Accepted: Unsupported Claims Passed as Grounded
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Wilson, plus MacFarlane — the graph
-contains no edge from Seth MacFarlane to Lion-O or ThunderCats, confirmed by direct query,
-yet the claim passed as `grounded`.)*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(MacFarlane is the only clean specimen:
+no edge exists, yet the claim passed as `grounded`. Use Wilson (WebQTest-1620) as the
+contrasting boundary case rather than a second defect — there the asserted inauguration
+entities* do *exist and the edges* are *real, so the structural check passed correctly;
+the answer is nonetheless wrong because the environment holds no date literal. That
+contrast is the section's most useful point, and it is the same argument §1.3.1 makes:
+structural grounding is a claim about edge existence, not about answer adequacy.)*
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.4 Rate for One Polarity, and a Blank for the Other
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Aggregate counts are the
 `verifier.grounded` / `verifier.unsupported` columns of `score_run_phase4.csv`; per-record
@@ -538,22 +590,25 @@ wrongful-acceptance class from anecdote to rate)*
 | Chapter | Pages |
 |---|---:|
 | 1 Introduction | 8 |
-| 2 Background and Preliminaries | 6 |
-| 3 Related Work | 8 |
+| 2 Background and Preliminaries | 5 |
+| 3 Related Work | 7 |
 | 4 The Knowledge Environment | 10 |
 | 5 The AGR Framework | 11 |
 | 6 The Structural Verification Layer | 8 |
 | 7 Experimental Setup | 11 |
 | 8 Results | 12 |
-| 9 Error Analysis and Discussion | 8 |
+| 9 Error Analysis and Discussion | 10 |
 | 10 Conclusion | 5 |
 | **Body total** | **87** |
 | References + Index + Appendices | ~12 |
 
-**Chapter 9 is not a compression target.** The error analysis and the benchmark-defect
-work are what distinguish this thesis from a system report. If the count runs long, cut
-further from §2.6, §3.1, and §3.4 — the material there is background the committee
-already has.
+**Chapter 9 is not a compression target** — decided deliberately, not under page
+pressure. It now carries three families in §9.3, four subsections in §9.5, and a
+provenance subsection in §9.8, which does not fit in eight pages. It is budgeted at **10**,
+with the two pages taken from Chapters 2 and 3, where the material is background the
+committee already has. The error analysis and benchmark-defect work are what distinguish
+this thesis from a system report; if the count still runs long, cut §2.6, §3.1, and §3.4
+further before touching Chapter 9.
 
 ---
 
