@@ -24,6 +24,16 @@ named differently wherever they appear:
   matching — never "Tier 1 / Tier 2 / Tier 3", despite the identifiers used in
   `scripts/entity_resolver.py`.
 
+Verifier errors are described as **wrongly rejected** / **wrongly accepted** throughout
+(§6.8, §9.5). Do not use `verifier_fn` / `verifier_fp` in the thesis text: the two sources
+disagree about what those names mean. `annotation_taxonomy.md:14` glosses the pair as
+"passed a wrong claim / hedged a right one", but all six labelled rows in
+`labels_{webqsp,cwq}.csv` use `verifier_fn` for *hedged a right one*, and the annotator's
+own note at `annotation_taxonomy.md:80` ("forced into `verifier_fn` since no verifier
+rejection is involved") confirms that usage is deliberate. **The labels are internally
+consistent; the table's gloss is reversed and should be corrected at source** before either
+is quoted.
+
 ---
 
 ## Front Matter (template-generated, roman numerals)
@@ -251,7 +261,11 @@ in §6.3.1 actually calls, and why endpoint adjacency rather than exact-triple m
 
 6.7 A Worked Example
 
-6.8 Failure Modes by Construction: False Positives and False Negatives
+6.8 Failure Modes by Construction: Wrongful Rejection and Wrongful Acceptance
+&nbsp;&nbsp;&nbsp;&nbsp;*(Analytical, derived from the design rather than the data — but
+§9.5 now has empirical specimens for both polarities, so this section should name the
+mechanism each one instantiates and forward-reference them. Use the same polarity
+vocabulary §9.5.1 fixes; do not use fn/fp here.)*
 
 ---
 
@@ -315,7 +329,10 @@ opposite signatures, and separating them is what makes the adjudication reproduc
 rather than ad hoc. World-fact errors require* mixed *consensus — parametric and
 graph-based systems agreeing against the label. Annotation-pipeline errors show up as*
 graph-only *consensus, where every graph-grounded system finds the answer the label
-contradicts. Give the diagnostic and one specimen of each.)*
+contradicts. Give the diagnostic and one specimen of each. The San Antonio City Council
+item (`WebQTest-634…`, `mixed_evidence: true`, four systems converging on Bexar County
+against a Comal County gold) is the worked mixed-evidence specimen — and see §9.8 for
+where that particular label came from.)*
 &nbsp;&nbsp;&nbsp;&nbsp;7.7.4 Census-Based Exclusions and the Dual-Reporting Policy
 
 7.8 Ablation Conditions
@@ -385,10 +402,34 @@ histograms are reported separately and never pooled)*
 
 9.4 Relation-Selection and Navigation Errors
 
-9.5 Verifier False Positives and False Negatives
-&nbsp;&nbsp;&nbsp;&nbsp;*(Provisional. If the Stage D census does not yield more verifier
-cases than the structural-pass specimens currently in hand, fold this into §9.3/§9.4 and
-reclaim the half page rather than padding it.)*
+9.5 Verifier Rejection and Acceptance Errors
+&nbsp;&nbsp;&nbsp;&nbsp;**Confirmed as a standalone section — eight specimens, both
+polarities.** Inventory: six census cases labelled `verifier_fn` /
+`structural_not_semantic` (3 WebQSP + 3 CWQ), all of them the verifier *rejecting a
+correct claim*; plus the Wilson and Seth MacFarlane cases, both the verifier *accepting an
+unsupported one*.
+&nbsp;&nbsp;&nbsp;&nbsp;9.5.1 Defining the Error Polarities
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Open with an explicit convention and use
+it consistently thereafter.** The annotation labels and the taxonomy table in
+`results/phase4/annotation_taxonomy.md` disagree about which polarity `verifier_fn` names
+(see the note below); the thesis must not inherit that ambiguity. Recommended: name the
+polarities in prose — *wrongly rejected* and *wrongly accepted* — and avoid fn/fp
+entirely, since the verifier's output is `supported` / `unsupported` and "positive" has no
+stable referent.
+&nbsp;&nbsp;&nbsp;&nbsp;9.5.2 Wrongly Rejected: Semantically Correct, Structurally Unmatched
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(The six census cases. All share one
+mechanism — the claim is true and the answer correct, but no single triple states it in
+the drafted phrasing, so a transitively-true or differently-anchored fact is rejected and
+the retry loses the answer. The De Niro case is distinct and worth separating: the
+rejection message references a different candidate entirely, suggesting a claim/candidate
+pairing bug rather than a structural mismatch.)*
+&nbsp;&nbsp;&nbsp;&nbsp;9.5.3 Wrongly Accepted: Unsupported Claims Passed as Grounded
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Wilson, plus MacFarlane — the graph
+contains no edge from Seth MacFarlane to Lion-O or ThunderCats, confirmed by direct query,
+yet the claim passed as `grounded`.)*
+&nbsp;&nbsp;&nbsp;&nbsp;9.5.4 Rates Across the Test Matrix
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(the `unsupported` firings in
+`score_run_phase4.csv` are the population these specimens are drawn from)*
 
 9.6 Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and Ordinals
 &nbsp;&nbsp;&nbsp;&nbsp;*(invokes the unanswerable-in-environment class defined in §4.7.4)*
@@ -401,11 +442,30 @@ share of questions the consensus pass* flagged, *and the much smaller share adju
 confirmed as genuine label defects. Most flagged items were not label errors — they were
 all five systems converging on the same wrong answer. That phenomenon is §9.7's; point
 there for it and keep this section to the defects proper.)*
+&nbsp;&nbsp;&nbsp;&nbsp;9.8.1 Where Bad Gold Comes From: Flattened Multi-Valued Relations
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(A short, concrete provenance argument
+built on the San Antonio case. The graph does carry
+`San Antonio —location.location.containedby→ Comal County`, alongside two HUD
+county-place edges. That edge is not fabricated: San Antonio's city limits genuinely
+extend into Comal and Medina counties, though the city and its council sit overwhelmingly
+in Bexar. The defect is therefore neither a pure label error nor a pure graph error but a*
+multi-valued containment relation flattened to a single value, *with the annotation
+pipeline then selecting the marginal value. Framing it this way is both more accurate and
+more useful than calling it a data error, and it explains why the consensus diagnostic
+caught it. Note also that the adjudication note in `prepass_goldnoise_cwq.json` calls Comal
+"a neighbouring county," which understates the overlap — worth correcting there before it
+is quoted in the thesis.)*
 
 9.9 Discussion
 &nbsp;&nbsp;&nbsp;&nbsp;9.9.1 What Agency Buys, and What It Costs
 &nbsp;&nbsp;&nbsp;&nbsp;9.9.2 When Verification Helps and When It Over-Hedges
 &nbsp;&nbsp;&nbsp;&nbsp;9.9.3 Threats to Validity
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Include the verifier instrumentation
+gap: `verifier_node` logs only* unsupported *claims, never the accepted ones with their
+matched triples. Wrongful-acceptance cases are therefore not self-diagnosing from the logs
+— both specimens in §9.5.3 required manual trace reconstruction. That polarity is
+consequently reported anecdotally while wrongful rejection is reported at census scale,
+and the asymmetry must be stated rather than left for a reader to infer.)*
 
 ---
 
@@ -417,10 +477,14 @@ there for it and keep this section to the defects proper.)*
 
 10.3 Future Work
 &nbsp;&nbsp;&nbsp;&nbsp;10.3.1 Path Fidelity Against Gold SPARQL Relation Chains
-&nbsp;&nbsp;&nbsp;&nbsp;10.3.2 LLM-Constructed Knowledge Graphs as a Controlled Comparison
-&nbsp;&nbsp;&nbsp;&nbsp;10.3.3 Rollout-Based Value Estimation
-&nbsp;&nbsp;&nbsp;&nbsp;10.3.4 Temporal and Multi-Source Knowledge Environments
-&nbsp;&nbsp;&nbsp;&nbsp;10.3.5 Transfer to High-Stakes Domains
+&nbsp;&nbsp;&nbsp;&nbsp;10.3.2 Logging Accepted Claims to Make Wrongful Acceptance Measurable
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(the fix for the §9.9.3 instrumentation
+gap: persist each accepted claim with the triples that matched it, converting the
+wrongful-acceptance class from anecdote to rate)*
+&nbsp;&nbsp;&nbsp;&nbsp;10.3.3 LLM-Constructed Knowledge Graphs as a Controlled Comparison
+&nbsp;&nbsp;&nbsp;&nbsp;10.3.4 Rollout-Based Value Estimation
+&nbsp;&nbsp;&nbsp;&nbsp;10.3.5 Temporal and Multi-Source Knowledge Environments
+&nbsp;&nbsp;&nbsp;&nbsp;10.3.6 Transfer to High-Stakes Domains
 
 ---
 
@@ -437,7 +501,9 @@ there for it and keep this section to the defects proper.)*
   cache-identity verification pattern — proving a code change did not perturb the frozen
   path by confirming 100% cache replay. The last of these is a reproducibility technique
   rather than a bug story, and carries the most weight with a methods-minded examiner.
-  §7.10 points here.)*
+  Also record the verifier logging gap from §9.9.3 here, as a worked example of an
+  instrumentation decision that constrained what could later be measured. §7.10 points
+  here.)*
 
 ---
 
