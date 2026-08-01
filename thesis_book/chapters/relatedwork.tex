@@ -1,36 +1,320 @@
 \chapter{Related Work}\label{ch:related}
 
-% BUDGET: 7 pages (reduced from 8 to fund Chapter~\ref{ch:erroranalysis}).
-% If the thesis runs long, Sections~\ref{sec:static-graphrag}
-% and~\ref{sec:verification-related} are peripheral to the contribution and are
-% the next cuts.
+This chapter surveys the work AGR builds on and competes with. It proceeds from
+static graph-augmented generation, through path-retrieval and agentic
+exploration, to verification and factuality measurement, and closes with a
+structured comparison of the six closest systems. That comparison serves two
+purposes: it locates the gap this thesis addresses, and it justifies the choice
+of baselines in \Cref{sec:baselines}.
 
 \section{Static Graph-Augmented Generation}\label{sec:static-graphrag}
+
 \subsection{GraphRAG and Query-Focused Summarization}
+
+GraphRAG~\cite{edge2024local} constructs a knowledge graph from a text corpus
+using a language model, partitions it into communities, and pre-computes
+summaries at each level, so a query can be answered from structured context
+rather than retrieved passages. Its strength is global questions --- those whose
+answer depends on the corpus as a whole rather than any single passage --- which
+flat retrieval handles poorly.
+
+The relevant limitation is that retrieval remains a single step preceding
+generation. The context is assembled before the model has begun reasoning, so it
+cannot be conditioned on intermediate findings. GraphRAG also builds its graph by
+language-model extraction, which is appropriate for unstructured corpora but
+introduces extraction error into the reference itself --- a consideration that
+shapes the environment design in \Cref{sec:env-goals}.
+
 \subsection{HippoRAG and Memory-Structured Retrieval}
 
+HippoRAG~\cite{gutierrez2024hipporag} draws on the hippocampal indexing theory of
+human memory, combining a knowledge graph with a personalised PageRank retrieval
+step so that a single query can integrate evidence distributed across many
+passages. It substantially improves multi-hop retrieval over flat baselines at
+low cost.
+
+Its retrieval is nonetheless a single graph-propagation step, not an
+agent-directed traversal: the propagation is fixed and the model does not choose
+where to look next. Temporal extensions such as T-GRAG~\cite{li2025tgrag} address
+a different axis --- conflicting and redundant facts across time --- which is
+orthogonal to the navigation question and is noted here for completeness rather
+than compared against.
+
 \section{Path-Retrieval and Semantic-Parsing KGQA}\label{sec:path-kgqa}
+
 \subsection{Reasoning-on-Graphs}
+
+Reasoning-on-Graphs (RoG)~\cite{luo2024reasoning} adopts a
+planning--retrieval--reasoning pipeline: a fine-tuned model generates relation
+paths grounded in the graph schema, those paths are used to retrieve matching
+instantiations, and the model reasons over the retrieved paths. Because answers
+are produced from retrieved paths, RoG is faithful by construction and can
+present the path as an explanation.
+
+Two properties distinguish it from the present work. It is \emph{fine-tuned},
+which places its reported numbers outside direct comparison with prompting
+methods. And its plan is generated in one shot before retrieval: if the generated
+relation path does not instantiate in the graph, there is no mechanism to revise
+it mid-course. The pre-generation verification question does not arise, because
+grounding is guaranteed structurally rather than checked.
+
 \subsection{StructGPT and KG-Agent}
 
+StructGPT~\cite{jiang2023structgpt} provides a general interface for reasoning
+over structured data --- knowledge graphs, tables, and databases --- through an
+invoke--linearise--generate loop, in which specialised interfaces extract
+evidence that is linearised into text for the model. It is deliberately general
+rather than graph-specific, and performs no open-ended graph search.
+
+KG-Agent~\cite{jiang2024kgagent} is closer to the agentic setting: a
+multifunctional toolbox, a knowledge-graph executor, and a dynamic memory, driven
+by an instruction-tuned model that autonomously selects tools across iterations.
+It demonstrates that a small fine-tuned model with good tool abstractions is
+competitive with much larger prompted ones. It plans implicitly through tool
+selection rather than committing to explicit sub-objectives, provides no
+backtracking mechanism, and performs no verification of the final answer.
+
 \section{Agentic Graph Exploration}\label{sec:agentic-exploration}
+
 \subsection{Think-on-Graph}
+
+Think-on-Graph (ToG)~\cite{sun2024think} established the template for
+training-free agentic KGQA. The model performs iterative beam search over the
+graph: at each step it is shown candidate relations and entities and prunes them
+itself, with beam width and maximum depth both set to three. Exploration
+terminates when the model judges the retrieved paths sufficient, at which point
+it answers directly.
+
+ToG is the most directly comparable prior system to AGR --- training-free,
+prompting-based, operating on Freebase, evaluated on the same benchmarks --- and
+is therefore the agentic baseline in \Cref{sec:baselines}. Its limitations are
+instructive. There is no explicit decomposition, so multi-constraint questions
+are handled implicitly. Low-scoring branches are pruned within the beam, but
+there is no mechanism to return to an abandoned node once the beam has moved on.
+And the transition from exploration to answering is a single model judgement:
+nothing checks the answer that follows.
+
 \subsection{Plan-on-Graph}
+
+Plan-on-Graph (PoG)~\cite{chen2024plan} is the closest system to AGR in ambition.
+It decomposes the question into sub-objectives including constraint conditions,
+explores adaptively with a breadth that varies by sub-objective, and adds
+Guidance, Memory, and Reflection mechanisms. Reflection decides both whether to
+self-correct and which entity to backtrack to, making PoG the one surveyed system
+with genuine backtracking.
+
+PoG's self-correction operates on the \emph{search process}: it reconsiders where
+to explore. It does not decompose the draft answer into claims and check each
+against the retrieved triples before responding. The distinction is the gap this
+thesis occupies, and it is stated precisely in \Cref{sec:positioning}.
+
+A naming hazard must be recorded here. A second, unrelated system is also
+abbreviated PoG --- Paths-over-Graph~\cite{tan2024paths} --- and reports
+considerably higher figures. Survey tables that cite ``PoG'' without
+disambiguation are a known source of contaminated comparisons, and this thesis
+always writes Plan-on-Graph or Paths-over-Graph in full.
+
 \subsection{Generate-on-Graph and Reasoning with Trees}
 
-\section{Verification and Self-Correction in Language Models}\label{sec:verification-related}
+Generate-on-Graph (GoG)~\cite{xu2024generate} targets the incomplete-graph
+setting through a thinking--searching--generating loop: when the graph lacks a
+required fact, the model generates candidate triples from its parametric
+knowledge and continues. It also expands subgraphs dynamically to handle the
+mediator nodes described in \Cref{sec:kgs}, which ToG tends to skip. The
+trade-off is directly opposed to this thesis's: GoG deliberately admits
+model-generated facts into the evidence, whereas AGR admits only graph triples.
+
+Reasoning with Trees~\cite{shen2025reasoning} applies explicit tree search to
+knowledge graph question answering. It is cited in \Cref{sec:mcts-clarification}
+as an example of genuine tree-search machinery, in contrast with the guided
+best-first search implemented here.
+
+\section{Verification and Self-Correction in Language
+  Models}\label{sec:verification-related}
+
 \subsection{Chain-of-Verification}
+
+Chain-of-Verification (CoVe)~\cite{dhuliawala2024chain} has the model draft a
+response, plan verification questions about it, answer those independently, and
+regenerate a corrected response. It establishes the core premise of this thesis's
+verification layer --- that decomposing a draft and checking its parts reduces
+factual error --- but performs the checks against the model's own knowledge
+rather than an external symbolic source. Multi-agent debate~\cite{du2024improving}
+achieves a related effect by having several model instances critique one another.
+
+This distinction matters given evidence that language models cannot reliably
+self-correct reasoning without external feedback~\cite{huang2024selfcorrect}. A
+verification step whose ground truth is the same model that produced the error is
+limited by construction. AGR's verification is grounded in traversed triples,
+making the check external to the generator.
+
 \subsection{Ontology-Guided and Self-Correcting Graph RAG}
 
+A self-correcting agentic graph RAG system for clinical decision support in
+hepatology~\cite{hu2025selfcorrecting} demonstrates the combination of agentic
+retrieval with a correction loop in a high-stakes domain, and ontology-guided
+reasoning constrains an agent to logically valid relation use. These
+substantiate the practical motivation for verification, though in domain-specific
+settings rather than on the open-domain benchmarks used here. Reflexion-style
+verbal self-improvement~\cite{shinn2023reflexion} provides the general agentic
+pattern of which these are graph-specific instances.
+
 \section{Measuring Factuality}\label{sec:factuality-related}
+
 \subsection{Claim-Decomposition Metrics}
+
+FActScore~\cite{min2023factscore} evaluates long-form generation by decomposing
+text into atomic facts and verifying each against a reference source, reporting
+the supported proportion. This decomposition-then-verify protocol is the basis
+for the groundedness metric in \Cref{sec:groundedness-metric}, with the knowledge
+graph serving as the reference. The essential methodological requirement, adopted
+here, is that the verifying judge must be independent of the system that produced
+the text.
+
 \subsection{Factuality Benchmarks and Their Limits}
 
+FactBench~\cite{bayat2025factbench} provides a dynamic benchmark for in-the-wild
+factuality evaluation. The original proposal for this thesis intended to use it
+both as a source for the knowledge environment and as the hallucination
+evaluator. That plan was abandoned, and the reason is methodological rather than
+practical: if the evaluator's facts are contained in the graph the system
+retrieves from, a low hallucination rate follows by construction rather than by
+merit. The evaluation in \Cref{ch:setup} therefore measures claim grounding
+against the graph with a human-validated judge, keeping the evaluator's ground
+truth outside the system's evidence.
+
 \section{Comparative Summary of Agentic KGQA Systems}\label{sec:comparison-table}
-% The cross-system table: exploration strategy, decomposition, backtracking,
-% pre-generation verification, datasets, reported Hits@1. This table also
-% justifies the baseline selection in Section~\ref{sec:baselines}.
+
+\Cref{tab:mechanisms} compares the six closest systems on the mechanisms
+relevant to this thesis, and \Cref{tab:reported} records their evaluation
+settings and published accuracy.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{Mechanism comparison of the six closest prior systems. No system
+      performs claim-level verification of the final answer against retrieved
+      triples before responding.}
+    \label{tab:mechanisms}
+    \footnotesize
+    \begin{tabular}{|l|p{38mm}|p{22mm}|p{22mm}|p{25mm}|}
+      \hline
+      \textbf{System} & \textbf{Exploration strategy} & \textbf{Decomposes
+      query?} & \textbf{Backtracks?} & \textbf{Verifies before answering?} \\
+      \hline
+      ToG~\cite{sun2024think} & Training-free LLM-guided iterative beam search;
+      beam width and depth both 3 & No & No --- prunes within beam, cannot
+      return & No \\
+      \hline
+      PoG~\cite{chen2024plan} & Self-correcting adaptive planning with Guidance,
+      Memory, Reflection & Yes, into sub-objectives with constraints & Yes ---
+      Reflection selects the entity to return to & Partial --- corrects the
+      search, not the answer \\
+      \hline
+      RoG~\cite{luo2024reasoning} & Planning--retrieval--reasoning over generated
+      relation paths & Partial --- relation-path plans & No & Faithful by
+      construction; no explicit check \\
+      \hline
+      KG-Agent~\cite{jiang2024kgagent} & Toolbox with KG executor and dynamic
+      memory; autonomous tool selection & Implicit, via tool calls & No & No \\
+      \hline
+      GoG~\cite{xu2024generate} & Thinking--searching--generating; generates
+      triples when the KG is incomplete & Yes & No --- expands subgraph instead
+      & No \\
+      \hline
+      StructGPT~\cite{jiang2023structgpt} & Iterative reading-then-reasoning via
+      invoke--linearise--generate interfaces & No & No & No \\
+      \hline
+      \textbf{AGR} (this work) & Guided best-first beam search with explicit
+      backtracking & Yes, into ordered sub-objectives & Yes --- threshold, dead
+      end, or evaluator veto & \textbf{Yes --- claim-level, pre-generation} \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{Reported evaluation settings and Hits@1 as published. These figures
+      are \emph{not} directly comparable to one another: backbones differ, some
+      papers evaluate on sampled subsets, and the backbone accounts for much of
+      the variation.}
+    \label{tab:reported}
+    \footnotesize
+    \begin{tabular}{|l|l|p{45mm}|c|c|}
+      \hline
+      \textbf{System} & \textbf{Backbone} & \textbf{Datasets} &
+      \textbf{WebQSP} & \textbf{CWQ} \\
+      \hline
+      ToG & GPT-3.5 & CWQ, WebQSP, GrailQA~\cite{gu2021beyond}, QALD10-en,
+      SimpleQuestions, WebQuestions, T-REx, Zero-Shot RE, Creak & 76.2 & 58.9 \\
+      \cline{2-5}
+       & GPT-4 & & 82.6 & 69.5 \\
+      \hline
+      PoG & GPT-3.5 & CWQ, WebQSP, GrailQA & $\approx$82.0 & $\approx$63.2 \\
+      \cline{2-5}
+       & GPT-4 & & $\approx$87.3 & $\approx$75.0 \\
+      \hline
+      RoG & Fine-tuned LLaMA2-7B & WebQSP, CWQ & 85.7 & 62.6 \\
+      \hline
+      KG-Agent & Fine-tuned 7B & WebQSP, CWQ, plus other KBs & 83.3 & 72.2 \\
+      \hline
+      GoG & GPT-3.5 & WebQSP, CWQ (complete and incomplete KG) & 78.7 & 55.7 \\
+      \cline{2-5}
+       & GPT-4 & & 84.4 & 75.2 \\
+      \hline
+      StructGPT & GPT-3.5 & WebQSP, MetaQA, TableQA, Text-to-SQL & 72.6 & --- \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+Three caveats attach to \Cref{tab:reported} and are carried into every
+comparison in this thesis.
+
+First, the figures are drawn from the original publications and reflect different
+backbones. RoG and KG-Agent are fine-tuned, and their numbers are not comparable
+with prompting methods at all. Among the prompting methods, the backbone accounts
+for much of the spread --- the same methods drop sharply when run on smaller
+open-weight models. This is the direct motivation for holding the backbone
+constant across every system in \Cref{ch:setup}: the literature does not, so a
+cross-paper table cannot settle which architecture is better.
+
+Second, evaluation protocols differ. Some papers evaluate on sampled test
+subsets, and answer-matching conventions are not uniform across implementations.
+
+Third, the Plan-on-Graph figures are marked as approximate. They are consistent
+with values reported in follow-up work, but should be confirmed against the
+primary tables before being relied upon in any quantitative claim. No claim in
+this thesis depends on them; they appear here to situate the design space.
 
 \section{Positioning of This Work}\label{sec:positioning}
+
+\Cref{tab:mechanisms} makes the gap explicit. Decomposition is well established
+--- PoG and GoG both do it. Backtracking exists, in PoG. Faithful grounding by
+construction exists, in RoG. But in the final column, \emph{no surveyed system
+decomposes its draft answer into atomic claims and checks each against the
+retrieved triples before responding}. PoG's Reflection corrects the search while
+it is running; RoG's answers are grounded because of how they are produced, not
+because anything examined them. The slot is open.
+
+AGR's contribution is therefore positioned as follows.
+
+The \textbf{primary} contribution is the Structural Verification Layer: a
+claim-level check against traversed triples, executed before the answer is
+emitted, with repair policies that either resume exploration or remove
+unsupported content. \Cref{ch:verification} specifies it.
+
+The \textbf{secondary} contribution is a systematic component ablation
+quantifying what each agentic mechanism actually contributes, in accuracy and in
+tokens. As \Cref{tab:mechanisms} shows, these mechanisms are typically reported
+as bundles; which of them earns its cost is not established in this literature.
+
+A deliberate consequence of this positioning is that the thesis does not depend
+on beating prior systems on raw Hits@1. The comparison that matters is against
+the same architecture with the verification layer removed, on the same graph,
+with the same backbone --- which is why the ablation in \Cref{sec:ablations},
+rather than \Cref{tab:reported}, carries the argument. Where AGR is compared
+against a prior system, that comparison is run under controlled conditions in
+this thesis's own environment rather than quoted across papers.
 
 \endinput

@@ -1,36 +1,248 @@
 \chapter{Background and Preliminaries}\label{ch:prelim}
 
-% BUDGET: 5 pages (reduced from 6 to fund Chapter~\ref{ch:erroranalysis}).
-% If the thesis runs long, Section~\ref{sec:stats} is the first cut.
+This chapter establishes the concepts and notation the technical chapters
+assume. It is deliberately compact: only material actually used later is
+included, and standard results are stated rather than derived.
 
 \section{Knowledge Graphs}\label{sec:kgs}
+
 \subsection{Triples, Entities, and Relations}
-\subsection{Freebase: MIDs, Schema, and Mediator (CVT) Nodes}
+
+A \emph{knowledge graph} $G = (E, R, T)$ consists of a set of entities $E$, a set
+of relation types $R$, and a set of triples $T \subseteq E \times R \times E$. A
+triple\index{triple} $(h, r, t)$ asserts that relation $r$ holds from head entity
+$h$ to tail entity $t$ --- for example, \textsf{(Ada Lovelace, place\_of\_birth,
+London)}. Relations are directed and typed, and both directions carry meaning: the
+inverse of \textsf{place\_of\_birth} is a legitimate but distinct relation.
+
+Two properties matter for what follows. Triples are \emph{atomic}: each asserts
+exactly one fact, so a claim can be checked against the graph by testing for the
+existence of specific edges. And they are \emph{composable}: a chain
+$(e_0, r_1, e_1), (e_1, r_2, e_2), \dots$ expresses a multi-step relationship
+that no single triple states, which is what makes a knowledge graph the natural
+substrate for multi-hop questions.
+
+\subsection{Freebase: MIDs, Schema, and Mediator Nodes}
+
+Freebase~\cite{bollacker2008freebase} is a large collaboratively-built knowledge
+base, frozen since 2016, and the substrate for the standard knowledge graph
+question answering benchmarks. Three of its characteristics affect any system
+built on it.
+
+Entities are identified by opaque \emph{machine identifiers}\index{MID} (MIDs)
+such as \textsf{m.02mjmr}, with human-readable names attached as a separate
+property. Names are neither unique nor stable, so entity identity and entity
+surface form must be handled separately.
+
+Relations are namespaced paths such as
+\textsf{people.person.place\_of\_birth}, encoding domain, type, and property.
+The vocabulary is large --- tens of thousands of relation types --- and includes
+many that carry no factual content, such as internal type and key predicates.
+
+Most consequentially, Freebase represents $n$-ary facts through
+\emph{mediator}\index{mediator node} or \emph{compound value type} (CVT) nodes.
+A fact with more than two participants --- an actor playing a particular
+character in a particular film --- is not a single edge but an anonymous
+intermediate node linking the participants. A relationship a user would describe
+as one hop is therefore two edges in the graph. Any system reporting hop counts
+over Freebase must state how it treats these nodes, since the choice changes
+every depth measurement; systems that ignore them lose the facts they
+encode~\cite{xu2024generate}.
+
 \subsection{Property Graphs, Neo4j, and Cypher}
 
+The triple model above is the RDF view. An alternative is the \emph{property
+graph}\index{property graph} model, in which nodes and edges are both typed and
+may carry arbitrary key--value properties. This is the model implemented by
+Neo4j~\cite{robinson2015graph} and queried by Cypher~\cite{francis2018cypher}, a
+declarative language whose \textsf{MATCH} clause expresses graph patterns
+directly. A triple store maps onto it naturally: entities become nodes carrying
+their MID and name, and relations become typed edges. Traversal patterns that
+would require recursive joins in a relational schema are expressed as literal
+path patterns, which is the practical reason for choosing a graph store here.
+
 \section{Knowledge Graph Question Answering}\label{sec:kgqa}
-% Semantic parsing vs. information retrieval: one paragraph inside the first
-% subsection, not a subsection of its own.
+
 \subsection{Multi-Hop Questions and Constraint Satisfaction}
+
+Knowledge graph question answering (KGQA)\index{KGQA} takes a natural-language
+question and a graph, and returns the entity or entities that answer it. A
+question is \emph{$k$-hop} if answering it requires traversing $k$ edges from the
+entities named in the question --- its \emph{topic entities} --- to the answer.
+
+Beyond hop count, questions vary in \emph{constraints}: conditions that filter
+candidates rather than extending the chain. ``Which of Tolstoy's novels was
+published after 1875?'' is one hop plus a temporal constraint. Constraints must
+be satisfied jointly with the chain, and a system that traverses correctly while
+silently dropping a constraint returns a superset of the answer --- a failure
+that hop-count analysis alone does not expose.
+
+Two families of approach have historically divided this field. \emph{Semantic
+parsing} methods translate the question into a formal query (SPARQL or
+equivalent) and execute it, giving exact and interpretable results but requiring
+the parse to be exactly right~\cite{berant2013semantic,yih2016value}.
+\emph{Information retrieval} methods retrieve a relevant subgraph and rank
+candidate answers within it, degrading more gracefully but sacrificing
+transparency. The agentic systems considered in this thesis are closer to the
+second family, but recover much of the first family's transparency by logging the
+traversal itself.
+
 \subsection{Evaluation Conventions: Hits@1 and F1}
 
+Two metrics are conventional. \emph{Hits@1}\index{Hits@1} is the proportion of
+questions for which the system's top-ranked answer appears in the gold answer
+set; it is a per-question binary correctness measure and the headline number in
+most of this literature.
+
+Because many questions admit multiple correct answers, Hits@1 alone rewards a
+system that names one correct entity and ignores the rest. \emph{F1} therefore
+complements it, computed per question between the predicted answer set $A$ and
+the gold set $A^{*}$:
+\[
+P = \frac{|A \cap A^{*}|}{|A|}, \qquad
+R = \frac{|A \cap A^{*}|}{|A^{*}|}, \qquad
+F_1 = \frac{2PR}{P + R},
+\]
+and averaged over questions. The distinction between $P$ and $R$ is load-bearing
+in this thesis: a system that asserts many entities can achieve high recall while
+its precision falls, and \Cref{sec:limitations} argues that precisely this
+failure goes unmeasured when only Hits@1 is reported.
+
 \section{Large Language Models as Reasoning Engines}\label{sec:llms}
+
 \subsection{In-Context Learning and Chain-of-Thought Prompting}
+
+Sufficiently large language models perform tasks specified entirely in their
+prompt, without gradient updates --- \emph{in-context
+learning}\index{in-context learning}~\cite{brown2020language}. Prompting the
+model to produce intermediate reasoning steps before its final answer,
+\emph{chain-of-thought} prompting~\cite{wei2022chain}, substantially improves
+performance on multi-step problems. Both are used here: the agent's planner,
+scorer, evaluator, and verifier are all prompted components of a single frozen
+model, and no component is fine-tuned. This matters for comparability, since
+several systems surveyed in \Cref{ch:related} are fine-tuned and therefore not
+directly comparable to prompting methods.
+
 \subsection{Tool Use and the ReAct Loop}
+
+A language model can be given \emph{tools}: named operations it may invoke, whose
+results re-enter its context~\cite{schick2023toolformer}. The
+\emph{ReAct}\index{ReAct} pattern~\cite{yao2023react} interleaves reasoning and
+action in a loop --- the model reasons about what to do, acts, observes the
+result, and reasons again --- which is the control structure underlying agentic
+graph navigation. Where the tools are graph operations, each iteration extends a
+traversal, and the sequence of tool calls is a complete record of how the answer
+was reached.
+
 \subsection{A Working Definition of Hallucination for This Thesis}
 
+``Hallucination'' is used loosely in the literature. This thesis adopts a narrow,
+operational definition tied to the knowledge environment: an asserted entity is
+\emph{ungrounded} if it does not exist in the graph, or exists but is not
+reachable from the question's topic entities within the traversal budget. A claim
+is \emph{unsupported} if the traversed triples do not entail it.
+
+Two consequences of this definition should be stated plainly. It is relative to
+the environment: an entity absent from the graph is ungrounded even if true in
+the world. And groundedness is not correctness --- an answer can be perfectly
+grounded, every entity real and reachable, and still be the wrong answer to the
+question. \Cref{ch:results} shows that this gap is not hypothetical, and
+\Cref{sec:limitations} is built on it.
+
 \section{Retrieval-Augmented Generation}\label{sec:rag}
+
 \subsection{Dense Retrieval and Sentence Embeddings}
+
+Dense retrieval encodes queries and documents into a shared vector space and
+retrieves by nearest neighbour, capturing semantic similarity where lexical
+matching fails~\cite{karpukhin2020dense}. Sentence-level encoders such as
+Sentence-BERT~\cite{reimers2019sentence} produce embeddings suitable for direct
+cosine comparison. In this thesis, embeddings serve two bounded purposes ---
+linking question phrases to graph entities, and pre-ranking relation candidates
+during exploration. They never establish that a fact is true; that role belongs
+exclusively to the symbolic triples.
+
 \subsection{Graph-Based Retrieval}
 
+Graph-based retrieval replaces flat passages with structured
+context~\cite{edge2024local,gutierrez2024hipporag}. The retrieved unit is a
+subgraph rather than a document, which preserves relationships explicitly. The
+distinction that matters for this thesis is not graph versus vector but
+\emph{static versus interleaved}: whether retrieval happens once before reasoning
+begins, or repeatedly as reasoning proceeds.
+
 \section{Search over Graphs}\label{sec:search}
+
 \subsection{Best-First and Beam Search}
+
+\emph{Best-first search}\index{best-first search} maintains a frontier of
+candidate nodes ordered by a heuristic estimate of promise and expands the most
+promising first~\cite{hart1968formal,pearl1984heuristics}. \emph{Beam search}
+bounds the frontier to the $b$ highest-scoring candidates at each depth,
+trading completeness for a fixed memory and computation budget. With an
+expensive scoring function --- here, a language model call --- the beam width is
+also the principal cost control.
+
 \subsection{Backtracking and Dead-End Detection}
-\subsection{Relation to Monte Carlo Tree Search: A Terminological Clarification}
+
+Bounded search commits to choices that may prove wrong. \emph{Backtracking}
+recovers by abandoning the current branch and resuming from a previously
+unexplored alternative, which requires maintaining a stack of such alternatives
+and a trigger condition for when to pop it. Trigger conditions and the stack
+discipline used here are specified in \Cref{sec:evaluator}.
+
+\subsection{Relation to Monte Carlo Tree Search: A Terminological
+  Clarification}\label{sec:mcts-clarification}
+
+The original proposal for this work described its navigation strategy as
+``inspired by Monte Carlo Tree Search''. That description is withdrawn here, and
+the reason is worth stating explicitly.
+
+Monte Carlo Tree Search~\cite{kocsis2006bandit,browne2012survey} is defined by
+four phases: selection, expansion, \emph{simulation} (a rollout to a terminal
+state), and \emph{backpropagation} of the rollout's value to the ancestors of the
+expanded node. The two phases that give MCTS its statistical character are
+simulation and backpropagation, which together let node values be estimated from
+sampled outcomes rather than from a fixed heuristic.
+
+The method used in this thesis has neither. There are no rollouts, and no value
+is propagated back up the search tree; each candidate is scored once, by a fixed
+function combining embedding similarity with a language-model judgement, and that
+score is never revised in light of what is found later. What the method is, is
+\emph{guided best-first search with a bounded beam and backtracking}. It is
+described that way throughout. Related work has applied genuine tree-search
+methods to knowledge graph reasoning~\cite{shen2025reasoning}; conflating that
+with the present approach would overstate what is implemented here.
 
 \section{Statistical Tools Used in This Thesis}\label{sec:stats}
-% One page: bootstrap confidence intervals, McNemar's test for paired
-% correctness, Cohen's kappa. Definitions and the reason each was chosen; no
-% derivations.
+
+Three tools recur, each chosen for a specific property of the data.
+
+\emph{Bootstrap confidence intervals}~\cite{efron1979bootstrap} quantify sampling
+uncertainty by resampling the evaluated questions with replacement and
+recomputing the metric; the $2.5$th and $97.5$th percentiles of the resulting
+distribution give a 95\% interval. They are used because the test sets are
+samples, and because they require no distributional assumption about metrics
+such as per-question F1.
+
+\emph{McNemar's test}~\cite{mcnemar1947note} assesses whether two systems differ
+in accuracy when both are evaluated on the \emph{same} questions. It considers
+only the discordant pairs --- questions one system answers correctly and the
+other does not --- and tests whether the split between the two discordant counts
+departs from chance. Paired testing is essential here because all systems are run
+on identical question samples, so an unpaired test would discard the pairing and
+lose power.
+
+\emph{Cohen's $\kappa$}~\cite{cohen1960coefficient} measures agreement between
+two annotators on a categorical judgement, correcting for agreement expected by
+chance:
+\[
+\kappa = \frac{p_o - p_e}{1 - p_e},
+\]
+where $p_o$ is observed agreement and $p_e$ is the agreement expected if both
+annotators labelled independently at their observed marginal rates. It is used to
+validate the automatic groundedness judge against human annotation. Conventional
+interpretation follows Landis and Koch~\cite{landis1977measurement}, on whose
+scale values between $0.61$ and $0.80$ denote substantial agreement.
 
 \endinput

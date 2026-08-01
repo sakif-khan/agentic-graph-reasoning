@@ -80,6 +80,8 @@ thesis_book/*.synctex.gz
 thesis_book/*.toc
 thesis_book/*~
 
+thesis_templates/brainstorming/
+
 # ==========================================
 # OS / System Artifacts
 # ==========================================
