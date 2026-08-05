@@ -585,20 +585,28 @@ wrongful-acceptance class from anecdote to rate)*
 
 ## Page Budget
 
-| Chapter | Pages |
-|---|---:|
-| 1 Introduction | 8 |
-| 2 Background and Preliminaries | 5 |
-| 3 Related Work | 7 |
-| 4 The Knowledge Environment | 10 |
-| 5 The AGR Framework | 11 |
-| 6 The Structural Verification Layer | 8 |
-| 7 Experimental Setup | 11 |
-| 8 Results | 12 |
-| 9 Error Analysis and Discussion | 10 |
-| 10 Conclusion | 5 |
-| **Body total** | **87** |
-| References + Index + Appendices | ~12 |
+| Chapter | Budget | Actual |
+|---|---:|---:|
+| 1 Introduction | 8 | 7 |
+| 2 Background and Preliminaries | 5 | 6 |
+| 3 Related Work | 7 | 8 |
+| 4 The Knowledge Environment | 10 | 9 |
+| 5 The AGR Framework | 11 | 13 |
+| 6 The Structural Verification Layer | 8 | 13 |
+| 7 Experimental Setup | 11 | — |
+| 8 Results | 12 | — |
+| 9 Error Analysis and Discussion | 10 | — |
+| 10 Conclusion | 5 | — |
+| **Body total** | **87** | **55 of 6 written** |
+| References + Index + Appendices | ~12 | 6 + appendices |
+
+**Drift, as of Chapter 6.** Chapters 1–6 were budgeted at 49 pages and came in at
+56. Chapter 6 carries five of the seven: it holds an algorithm, the attribution-census
+table, a worked example, and the by-construction failure analysis, and none of those
+sections is padded (each is 1–2 pages). Chapter 5's two extra pages are the τ
+signal-maximum derivation and the design-validation table. If Chapters 7–10 land at
+budget the body reaches ~94, over the 90-page ceiling; the compression targets in that
+case are §2.6, §3.1, and §3.4 as noted below — **not** Chapters 6 or 9.
 
 **Chapter 9 is not a compression target** — decided deliberately, not under page
 pressure. It now carries three families in §9.3, four subsections in §9.5, and a

@@ -129,6 +129,36 @@ knowledge graph question answering. It is cited in \Cref{sec:mcts-clarification}
 as an example of genuine tree-search machinery, in contrast with the guided
 best-first search implemented here.
 
+\subsection{KBQA-o1 and Genuine Tree Search}\label{sec:kbqao1}
+
+KBQA-o1~\cite{luo2025kbqao1} is the closest system to the search strategy the
+present work's proposal originally described, and therefore the most important
+one to distinguish from it. It performs agentic knowledge base question
+answering with full Monte Carlo Tree Search --- a policy model proposing actions,
+a reward model scoring them, and rollouts whose values propagate back through the
+tree --- wrapped around a ReAct-style agent that generates logical forms
+step by step against a Freebase environment. The exploration additionally
+generates annotations used for incremental fine-tuning, so the search improves
+the model that drives it.
+
+Two aspects bear on this thesis. First, KBQA-o1 is what the withdrawn
+``MCTS-inspired'' description of \Cref{sec:mcts-clarification} would have
+claimed: it has the rollouts and value backpropagation that AGR does not, and
+naming the difference honestly is what keeps the two separable.
+
+Second, its ablation is directly relevant to the methodological argument of
+\Cref{sec:positioning}. Removing MCTS from KBQA-o1 while leaving every other
+component intact drops overall GrailQA F1 from 78.5 to 48.5 --- a
+thirty-point attribution to a single mechanism, obtained precisely because the
+authors ablated components rather than reporting the assembly as a whole. That
+is the same instrument this thesis applies in \Cref{sec:ablations}, and it is
+evidence that the instrument is informative.
+
+KBQA-o1 is not a baseline here. It is fine-tuned rather than prompted, evaluates
+under a low-resource few-shot protocol, and does not report
+ComplexWebQuestions, so no controlled comparison against it is available in this
+environment.
+
 \section{Verification and Self-Correction in Language
   Models}\label{sec:verification-related}
 
@@ -224,6 +254,10 @@ settings and published accuracy.
       StructGPT~\cite{jiang2023structgpt} & Iterative reading-then-reasoning via
       invoke--linearise--generate interfaces & No & No & No \\
       \hline
+      KBQA-o1~\cite{luo2025kbqao1} & Monte Carlo Tree Search with policy and
+      reward models over a ReAct agent; fine-tuned & Implicit, stepwise logical
+      form & Via MCTS tree revisiting & No \\
+      \hline
       \textbf{AGR} (this work) & Guided best-first beam search with explicit
       backtracking & Yes, into ordered sub-objectives & Yes --- threshold, dead
       end, or evaluator veto & \textbf{Yes --- claim-level, pre-generation} \\
@@ -264,7 +298,18 @@ settings and published accuracy.
       \hline
       StructGPT & GPT-3.5 & WebQSP, MetaQA, TableQA, Text-to-SQL & 72.6 & --- \\
       \hline
+      KBQA-o1 & Llama-3.1-8B & GrailQA, WebQSP, GraphQ; 100-shot low-resource
+      protocol & 59.8$^{\dagger}$ & --- \\
+      \cline{2-5}
+       & Llama-3.3-70B & & 67.0$^{\dagger}$ & --- \\
+      \hline
     \end{tabular}
+
+    \vspace{1mm}
+    {\footnotesize $^{\dagger}$ KBQA-o1 reports \textbf{F1}, not Hits@1, and
+    evaluates under a 100-shot low-resource protocol; these cells are therefore
+    \emph{not} comparable with the rest of the column and are shown only to
+    situate the system. It does not evaluate CWQ.}
   \end{center}
 \end{table}
 

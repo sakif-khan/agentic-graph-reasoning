@@ -405,7 +405,8 @@ push the answer out of view in exactly the situations where the expansion
 succeeded. \Cref{sec:design-validation} documents the case that forced this
 change.
 
-\subsection{The Groundedness Filter on Resolutions}
+\subsection{The Groundedness Filter on
+  Resolutions}\label{sec:groundedness-filter}
 
 The evaluator's \textsf{resolved} entity names are not accepted as given. Each
 is looked up against a table built from the tail entities of the
@@ -437,10 +438,31 @@ Backtracking fires on the first of three conditions, evaluated in this order:
 
 \begin{enumerate}
   \item \textbf{Dead end} --- the last expansion produced no new triples.
-  \item \textbf{Low score} --- the best candidate score at the frontier fell
-    below the threshold $\tau$.
+  \item \textbf{Low score} --- the frontier's \emph{signal maximum} fell below
+    the threshold $\tau$.
   \item \textbf{Evaluator veto} --- the model judged the direction a dead end.
 \end{enumerate}
+
+The second trigger deserves a precise statement, because it is easy to assume it
+tests the blended score and it does not. The quantity compared against $\tau$ is
+\[
+  \sigma \;=\; \max\bigl(\,\underbrace{\max_{c \in E} \mathrm{score}(c)}
+    _{\text{blended, expanded edges}},\;
+    \underbrace{\max_{c \in R} \cos(v(r_c), v(o))}_{\text{embedding, all
+      candidates}},\;
+    \underbrace{\max_{c \in R_{K}} s_{\mathrm{LLM}}(c, o)}_{\text{model, rated
+      candidates}}\bigr),
+\]
+the largest of three signals: the best blended score among the edges actually
+expanded, the best raw embedding similarity over every candidate relation the
+anchors offered, and the best model score over the top-$K$ candidates the model
+was asked to rate. The trigger therefore fires only when \emph{all three}
+signals are weak. A frontier where the blend is depressed --- because $\alpha$
+happens to discount whichever signal is confident here --- does not backtrack if
+either underlying signal still points somewhere. This makes the trigger
+deliberately conservative: it abandons a branch only on unanimous evidence of
+hopelessness, and \Cref{sec:dev-tuning} shows the consequence, which is that
+$\tau$ barely fires at the values swept.
 
 The order matters. The first two are deterministic and cost nothing; checking
 them before deferring to the model's judgement means a mechanically hopeless
@@ -471,18 +493,26 @@ construction: no adversarial model output can change what they do.
 
 \section{The Answerer}\label{sec:answerer}
 
-The answerer produces the response from the traversed facts and the accumulated
-candidate entities. It has three paths. Normally it makes one model call. If the
-model budget is exhausted, it falls back without a call to the resolved entities
-of completed plan steps, or failing that to the accumulated candidates,
-producing a degraded but non-empty answer. If the call raises for any other
-reason, the error is recorded in the trace and the answer is an explicit failure
-string.
+The answerer is a finalizer rather than a generator. Which of its three paths
+runs is decided entirely by what the verification layer left in state, and two
+of the three are specified in \Cref{ch:verification}: the \emph{verified} path,
+where no claim was unsupported and the draft is emitted with no further model
+call, and the \emph{repair} path, where unsupported claims remain and one
+rewrite call restates the answer around a deterministically filtered entity list
+(\Cref{sec:entity-filtering}). On the development set the verified path handled
+77 of 80 questions at zero additional cost.
 
-The distinction between the second and third paths is deliberate. An earlier
-version caught all exceptions as budget exhaustion, which silently misreported
-genuine errors as expected behaviour --- exactly the kind of defect that
-inflates apparent robustness.
+The third path exists for the case where the verifier raised before producing a
+draft at all. It makes one model call over the traversed facts and the
+accumulated candidates. If the model budget is exhausted it falls back without a
+call to the resolved entities of completed plan steps, or failing that to the
+accumulated candidates, producing a degraded but non-empty answer. If the call
+raises for any other reason, the error is recorded in the trace and the answer
+is an explicit failure string.
+
+That last distinction is deliberate. An earlier version caught all exceptions as
+budget exhaustion, which silently misreported genuine errors as expected
+behaviour --- exactly the kind of defect that inflates apparent robustness.
 
 \section{Budgets and Termination Guarantees}\label{sec:budgets}
 
@@ -665,7 +695,8 @@ independently should not be trusted, and should not be analysed.
       $T \gets \emptyset$;\quad $C \gets \emptyset$;\quad
       $\mathit{stack} \gets \emptyset$;\quad $\mathit{ban} \gets \emptyset$
     \WHILE{budgets permit}
-      \STATE push $(F, \mathit{depth}, \mathit{score})$ onto $\mathit{stack}$
+      \STATE push $(F, \mathit{depth}, \sigma)$ onto $\mathit{stack}$
+        \COMMENT{$\sigma$ from the previous pass; $0$ initially}
       \STATE $R \gets \bigcup_{e \in F} \textsc{GetRelations}(e)$
       \STATE $\mathit{scored} \gets \alpha\cos(\cdot) + (1-\alpha)\mathrm{LLM}
         (\cdot)$ over $R$ against the active objective
@@ -673,6 +704,9 @@ independently should not be trusted, and should not be analysed.
         $\mathit{ban}$
       \STATE $T \gets T \cup \textsc{GetNeighbors}(E)$;\quad
         $F \gets$ top-$m$ new entities by score
+      \STATE $\sigma \gets \max(\max_{c \in E}\mathit{scored}(c),\;
+        \max_{c \in R}\cos(\cdot),\; \max_{c \in R_K}\mathrm{LLM}(\cdot))$
+        \COMMENT{signal maximum}
       \STATE $(d, \mathit{done}, \rho) \gets \textsc{Evaluate}
         (\text{objective}, \textsc{TopFacts}(T))$
       \STATE $\rho \gets \{x \in \rho : x \text{ appears in } T\}$;\quad
@@ -682,7 +716,7 @@ independently should not be trusted, and should not be analysed.
         \STATE advance $P$; \textbf{if} no objective remains \textbf{then}
           $d \gets \textsf{answer}$ \textbf{else} $F \gets \rho$
       \ENDIF
-      \IF{$|T_{\mathrm{new}}| = 0$ \OR $\mathit{score} < \tau$ \OR
+      \IF{$|T_{\mathrm{new}}| = 0$ \OR $\sigma < \tau$ \OR
           $d = \textsf{backtrack}$}
         \STATE $\mathit{ban} \gets \mathit{ban} \cup E$;\quad
           $(F, \mathit{depth}) \gets$ pop highest-scoring snapshot

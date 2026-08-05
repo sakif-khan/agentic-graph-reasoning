@@ -134,7 +134,8 @@ graph navigation. Where the tools are graph operations, each iteration extends a
 traversal, and the sequence of tool calls is a complete record of how the answer
 was reached.
 
-\subsection{A Working Definition of Hallucination for This Thesis}
+\subsection{A Working Definition of Hallucination for This
+  Thesis}\label{sec:hallucination-def}
 
 ``Hallucination'' is used loosely in the literature. This thesis adopts a narrow,
 operational definition tied to the knowledge environment: an asserted entity is
@@ -210,9 +211,16 @@ is propagated back up the search tree; each candidate is scored once, by a fixed
 function combining embedding similarity with a language-model judgement, and that
 score is never revised in light of what is found later. What the method is, is
 \emph{guided best-first search with a bounded beam and backtracking}. It is
-described that way throughout. Related work has applied genuine tree-search
-methods to knowledge graph reasoning~\cite{shen2025reasoning}; conflating that
-with the present approach would overstate what is implemented here.
+described that way throughout.
+
+The contrast is not hypothetical. Genuine tree search has been applied to this
+exact task: KBQA-o1~\cite{luo2025kbqao1} drives an agentic knowledge base
+question answering process with full MCTS --- policy and reward models, rollouts,
+and value backpropagation --- over Freebase, and Reasoning with
+Trees~\cite{shen2025reasoning} likewise builds an explicit search tree. That
+those systems exist is precisely why the terminology matters here: describing a
+single-pass scoring heuristic as MCTS-inspired would invite comparison with
+machinery this framework does not implement.
 
 \section{Statistical Tools Used in This Thesis}\label{sec:stats}
 
