@@ -74,7 +74,6 @@ thesis_book/*.loa
 thesis_book/*.lof
 thesis_book/*.lot
 thesis_book/*.out
-thesis_book/*.pdf
 thesis_book/*.run.xml
 thesis_book/*.synctex.gz
 thesis_book/*.toc
