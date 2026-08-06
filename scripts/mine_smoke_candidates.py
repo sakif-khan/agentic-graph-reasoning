@@ -1,7 +1,7 @@
 """Mine dev-set candidates from TRAIN splits, classified into exactly one of
 five buckets (priority order): unanswerable_env > conjunction > cvt_heavy >
 one_hop > two_hop. The sixth bucket (unanswerable_fake) is hand-written,
-never mined. Output: scripts/smoke_candidates_v2.json
+never mined. Output: results/phase3/smoke_candidates_v2.json
 """
 import json, random, re
 
@@ -89,7 +89,7 @@ def main():
                     "via_cvt": via_cvt,
                 })
 
-    json.dump(buckets, open("data/smoke_candidates_v2.json", "w",
+    json.dump(buckets, open("results/phase3/smoke_candidates_v2.json", "w",
                             encoding="utf-8"), indent=1, ensure_ascii=False)
 
     print(f"{'bucket':<18} count   examples")

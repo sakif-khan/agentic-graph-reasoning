@@ -85,8 +85,8 @@ def main():
         "results/phase4/test_webqsp_agr.jsonl",
         "results/phase4/test_cwq_agr.jsonl",
     ]
-    strata = {"webqsp": stratum_map("data/test_webqsp.json"),
-              "cwq": stratum_map("data/test_cwq.json")}
+    strata = {"webqsp": stratum_map("results/phase4/test_webqsp.json"),
+              "cwq": stratum_map("results/phase4/test_cwq.json")}
     runs = {}                                   # (dataset, system) -> rows
     for p in files:
         parts = p.replace("\\", "/").split("/")[-1].replace(".jsonl", "").split("_")

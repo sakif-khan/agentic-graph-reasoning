@@ -9,7 +9,8 @@ REL = "people.person.parents"   # <- a relation it really has
 def main():
     driver = get_driver()
     model = get_embedder()
-    tools = KGTools(driver, EntityResolver(driver, model), "logs/check_tools.jsonl")
+    tools = KGTools(driver, EntityResolver(driver, model),
+                    "results/phase2/check_tools.jsonl")
     tools.qid = "manual-check"
 
     hits = tools.search_entity(NAME)

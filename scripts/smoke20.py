@@ -20,18 +20,19 @@ def main():
     driver = get_driver()
     embed = get_embedder()
     llm = get_llm()
-    tools = KGTools(driver, EntityResolver(driver, embed), f"logs/{RUN_NAME}_tools.jsonl")
+    tools = KGTools(driver, EntityResolver(driver, embed),
+                    f"results/phase3/{RUN_NAME}_tools.jsonl")
     scorer = get_scorer(run_cfg.alpha)
     agr = build_graph(llm, tools, scorer, run_cfg)
 
-    logger = RunLogger(path=f"logs/{RUN_NAME}.jsonl",
+    logger = RunLogger(path=f"results/phase3/{RUN_NAME}.jsonl",
                        backbone=llm.describe(),
                        budget_cfg=budget_cfg,
                        run_config=run_cfg.as_dict())
 
     # hand-pick from your dev splits: 6x 1-hop, 8x 2-hop composition,
     # 3x conjunction, 2x CVT-heavy, 1x unanswerable(fake entity)
-    QUESTIONS = json.load(open("data/smoke20.json", encoding="utf-8"))
+    QUESTIONS = json.load(open("results/phase3/smoke20.json", encoding="utf-8"))
     # each: {"qid":..., "question":..., "gold_q_entities":[...], "answers":[...]}
 
     for question in QUESTIONS:

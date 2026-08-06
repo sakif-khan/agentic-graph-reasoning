@@ -1,6 +1,7 @@
 """One-off: prove the planner.py edit didn't change frozen (use_planner=True)
 behavior. Run once after any edit to planner_node; not part of the pipeline."""
 import json
+from pathlib import Path
 
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
@@ -21,8 +22,10 @@ def main():
     rc = RunConfig()            # defaults ARE the frozen values: a=0.7, t=0.2,
                                 # verify_claims=True, use_planner=True
     budget_cfg = BudgetConfig()
+    # the certificate is the printed assertion, not this tool log -- throwaway
+    Path("scratch").mkdir(exist_ok=True)
     tools = KGTools(driver, EntityResolver(driver, embed),
-                    "logs/_verify_planner_tools.jsonl")
+                    "scratch/_verify_planner_tools.jsonl")
     scorer = get_scorer(rc.alpha)
     agr = build_graph(llm, tools, scorer, rc)
 

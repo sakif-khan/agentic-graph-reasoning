@@ -51,6 +51,9 @@ checkpoints/
 # ==========================================
 # Logs, Profiling & Experiment Tracking
 # ==========================================
+# Experiment artifacts live in results/phase{1..4}/, never here. `scratch/` is
+# throwaway output from the ad-hoc probes (run_one.py, verify_planner_noop.py).
+scratch/
 temp/
 *.log
 wandb/

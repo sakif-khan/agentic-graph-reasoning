@@ -18,19 +18,20 @@ def main():
 
     budget_cfg = BudgetConfig()
 
-    TEST_FILES = ["data/test_webqsp.json", "data/test_cwq.json"]
+    TEST_FILES = ["results/phase4/test_webqsp.json",
+                  "results/phase4/test_cwq.json"]
 
     for test_file in TEST_FILES:
         tag = Path(test_file).stem
         name = f"{tag}_agr"
 
-        log_path = f"logs/{name}.jsonl"
+        log_path = f"results/phase4/{name}.jsonl"
         done = set()
         if Path(log_path).exists():
             done = {json.loads(l)["qid"]
                     for l in open(log_path, encoding="utf-8")}
         tools = KGTools(driver, EntityResolver(driver, embed),
-                        f"logs/{name}_tools.jsonl")
+                        f"results/phase4/{name}_tools.jsonl")
         scorer = get_scorer(run_cfg.alpha)
         agr = build_graph(llm, tools, scorer, run_cfg)
         questions = json.load(open(test_file, encoding="utf-8"))
@@ -59,7 +60,8 @@ def main():
         print(f"=== {name}: {len(questions) - len(done) - len(failures)} ok, "
               f"{len(failures)} failed ===")
         if failures:
-            json.dump(failures, open(f"logs/{name}_failures.json", "w"), indent=1)
+            json.dump(failures, open(f"results/phase4/{name}_failures.json", "w"),
+                      indent=1)
 
     driver.close()
 

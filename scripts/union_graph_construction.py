@@ -121,25 +121,25 @@ def main():
               f"{stat['any_reachable']/n:.1%}")
         print(f"  questions with no topic entity in graph: {stat['no_topic']}")
 
-    with open("coverage_report.json", "w", encoding="utf-8") as f:
+    with open("results/phase1/coverage_report.json", "w", encoding="utf-8") as f:
         json.dump({"stats": stats, "hop_cap": HOP_CAP,
                    "per_question": per_question}, f, ensure_ascii=False, indent=1)
 
     # ---------- CSV export for neo4j-admin import ----------
-    with gzip.open("nodes.csv.gz", "wt", newline="", encoding="utf-8") as f:
+    with gzip.open("data/nodes.csv.gz", "wt", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["id:ID", "name", "is_cvt:boolean", ":LABEL"])
         for i, name in enumerate(entities):
             w.writerow([i, name, str(bool(MID_RE.match(name))).lower(), "Entity"])
 
-    with gzip.open("rels.csv.gz", "wt", newline="", encoding="utf-8") as f:
+    with gzip.open("data/rels.csv.gz", "wt", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow([":START_ID", ":END_ID", ":TYPE", "fb_name"])
         for h, r, t in triples:
             w.writerow([h, t, sanitize(rels[r]), rels[r]])
 
-    print(f"\nWrote nodes.csv.gz ({len(entities):,} nodes) and "
-          f"rels.csv.gz ({len(triples):,} rels).")
+    print(f"\nWrote data/nodes.csv.gz ({len(entities):,} nodes) and "
+          f"data/rels.csv.gz ({len(triples):,} rels).")
 
 
 if __name__ == "__main__":

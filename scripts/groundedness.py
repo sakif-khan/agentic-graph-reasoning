@@ -1,6 +1,8 @@
 """Tier-1 structural groundedness over run JSONLs.
-Usage: python scripts/groundedness.py logs/test_webqsp_*.jsonl logs/test_cwq_*.jsonl
-Writes per-record sidecars to logs/grounded_<runname>.jsonl (input to Tier 2).
+Usage: python scripts/groundedness.py
+(reads the fixed run list under results/phase4/)
+Writes per-record sidecars to
+results/phase4/tier1_groundedness/grounded_<runname>.jsonl (input to Tier 2).
 """
 import json, unicodedata
 from agr.runtime import get_driver
@@ -35,7 +37,8 @@ def main():
     # question -> topic entities, from the locked test files
     topics = {}
     for ds in ("webqsp", "cwq"):
-        for q in json.load(open(f"data/test_{ds}.json", encoding="utf-8")):
+        for q in json.load(open(f"results/phase4/test_{ds}.json",
+                                encoding="utf-8")):
             topics[q["qid"]] = q["gold_q_entities"]
 
     files = [
@@ -59,7 +62,8 @@ def main():
         for path in files:
             n_ent = n_ungr = n_ans = n_q_ungr = 0
             runname = path.replace("\\", "/").split("/")[-1].replace(".jsonl", "")
-            with open(f"logs/grounded_{runname}.jsonl", "w",
+            with open(f"results/phase4/tier1_groundedness/"
+                      f"grounded_{runname}.jsonl", "w",
                       encoding="utf-8") as out:
                 for line in open(path, encoding="utf-8"):
                     r = json.loads(line)

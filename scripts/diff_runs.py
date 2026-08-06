@@ -7,7 +7,9 @@ def load(p):
 
 def main():
     if len(sys.argv) != 3:
-        sys.exit("usage: python scripts/diff_runs.py logs/dev80_a0.7_t0.2.jsonl logs/dev80_a0.7_t0.2_draftonly.jsonl")
+        sys.exit("usage: python scripts/diff_runs.py "
+                 "results/phase3/dev80_a0.7_t0.2.jsonl "
+                 "results/phase3/pre_filterfix_dev80_a0.7_t0.2_draftonly.jsonl")
 
     a, b = load(sys.argv[1]), load(sys.argv[2])
     for qid in a:

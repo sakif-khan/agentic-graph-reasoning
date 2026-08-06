@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.scorer import EmbeddingScorer
@@ -12,7 +14,10 @@ def main():
     embed = get_embedder()
     llm = get_llm()
 
-    tools = KGTools(driver, EntityResolver(driver, embed), "logs/tools.jsonl")
+    # ad-hoc single-question probe: its tool log is throwaway, so it goes to
+    # the untracked scratch dir, never into results/
+    Path("scratch").mkdir(exist_ok=True)
+    tools = KGTools(driver, EntityResolver(driver, embed), "scratch/tools.jsonl")
     scorer = EmbeddingScorer("data/relation_embeddings.npy", "data/relation_names.json")
     agr = build_graph(llm, tools, scorer, run_cfg)
 

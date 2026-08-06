@@ -1,10 +1,15 @@
 """Restore cold-run records into the canonical AGR WebQSP file,
-with strict verification. Run ONCE, then archive inputs."""
+with strict verification. Run ONCE, then archive inputs.
+
+SPENT: already run; the .bak input was consumed and removed, and the merged
+output was promoted to results/phase4/test_webqsp_agr.jsonl. Kept for the
+record -- the absent paths below are expected, not breakage.
+"""
 import copy, json, sys
 
-COLD, WARM, OUT = ("logs/test_webqsp_agr.jsonl.bak",
-                   "logs/test_webqsp_agr.jsonl",
-                   "logs/test_webqsp_agr_merged.jsonl")
+COLD, WARM, OUT = ("results/phase4/test_webqsp_agr.jsonl.bak",
+                   "results/phase4/test_webqsp_agr.jsonl",
+                   "results/phase4/test_webqsp_agr_merged.jsonl")
 
 def load(p):
     return {json.loads(l)["qid"]: json.loads(l)

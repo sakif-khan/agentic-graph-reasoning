@@ -19,7 +19,8 @@ def main():
     budget_cfg = BudgetConfig()
 
     SYSTEMS = ["noretrieval", "vectorrag", "graphrag", "tog"]
-    TEST_FILES = ["data/test_webqsp.json", "data/test_cwq.json"]
+    TEST_FILES = ["results/phase4/test_webqsp.json",
+                  "results/phase4/test_cwq.json"]
 
     for system in SYSTEMS:
         for test_file in TEST_FILES:
@@ -42,12 +43,12 @@ def main():
                 from agr.resolver import EntityResolver
                 from agr.kg_tools import KGTools
                 tools = KGTools(driver, EntityResolver(driver, embed),
-                                f"logs/{name}_tools.jsonl")
+                                f"results/phase4/{name}_tools.jsonl")
                 runner = ToG(llm, tools)
             else:
                 sys.exit(f"unknown system {system}")
 
-            log_path = f"logs/{name}.jsonl"
+            log_path = f"results/phase4/{name}.jsonl"
             logger = RunLogger(log_path, llm.describe(), budget_cfg,
                                {**run_cfg.as_dict(), "system": system})
 
@@ -72,7 +73,8 @@ def main():
                     print(f'  [{q["qid"]}] FAILED: {e!r}')
             print(f"=== {name}: {len(failures)} failures ===")
             if failures:
-                json.dump(failures, open(f"logs/{name}_failures.json", "w"), indent=1)
+                json.dump(failures, open(f"results/phase4/{name}_failures.json",
+                                         "w"), indent=1)
 
     driver.close()
 

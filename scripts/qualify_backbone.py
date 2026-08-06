@@ -57,7 +57,7 @@ def run_question(agr, tools, q):
 
 
 def main():
-    QUESTIONS = json.load(open("data/smoke20.json", encoding="utf-8"))
+    QUESTIONS = json.load(open("results/phase3/smoke20.json", encoding="utf-8"))
     DETERMINISM_QIDS = [QUESTIONS[i]["id"] for i in (0, 6, 14)]  # 1-5 one-hop, 6-13 two-hop, 14-16 conjunction
 
     driver = get_driver()
@@ -69,7 +69,7 @@ def main():
     for model, params in CANDIDATES.items():
         llm = LLMClient(model=model, api_key=OPENAI_API_KEY, **params, cache_dir=None)
         tools = KGTools(driver, EntityResolver(driver, embed),
-                        f"logs/qualify_{model.replace('/', '_')}.jsonl")
+                        f"results/phase2/qualify_{model.replace('/', '_')}.jsonl")
         agr = build_graph(llm, tools, scorer, run_cfg)
 
         rows = [run_question(agr, tools, q) for q in QUESTIONS]
@@ -77,8 +77,8 @@ def main():
         repeats = {q["id"]: run_question(agr, tools, q)
                    for q in QUESTIONS if q["id"] in DETERMINISM_QIDS}
 
-        with open(f"logs/qualify_{model.replace('/', '_')}_full.jsonl", "w",
-                  encoding="utf-8") as f:
+        with open(f"results/phase2/qualify_{model.replace('/', '_')}_full.jsonl",
+                  "w", encoding="utf-8") as f:
             for r in rows:
                 f.write(json.dumps({**r, "backbone": llm.describe()},
                                    ensure_ascii=False) + "\n")

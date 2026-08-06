@@ -14,7 +14,7 @@ def verbalize(rel: str) -> str:
 def main():
     # 1. Collect distinct relation names from the CSV generated in Step 1.2
     rel_names = set()
-    with gzip.open("rels.csv.gz", "rt", encoding="utf-8") as f:
+    with gzip.open("data/rels.csv.gz", "rt", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             rel_names.add(row["fb_name"])
@@ -32,8 +32,8 @@ def main():
                         normalize_embeddings=True, show_progress_bar=True)
 
     # 4. Persist as local artifacts
-    np.save("relation_embeddings.npy", vecs.astype(np.float32))
-    with open("relation_names.json", "w", encoding="utf-8") as f:
+    np.save("data/relation_embeddings.npy", vecs.astype(np.float32))
+    with open("data/relation_names.json", "w", encoding="utf-8") as f:
         json.dump(rel_names, f)
 
 

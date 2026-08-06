@@ -1,5 +1,5 @@
 # Score a RunLogger JSONL: hits / hedges / wrong + cost columns.
-# Usage: python scripts\score_run.py logs\smoke20_a0.5_t0.2.jsonl [more.jsonl ...]
+# Usage: python scripts\score_run.py results\phase3\smoke20_a0.5_t0.2.jsonl [more.jsonl ...]
 
 import json, sys, unicodedata
 

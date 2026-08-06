@@ -25,7 +25,8 @@ def path_exists(session, q_entity, a_entity, cap=4):
 
 
 def main():
-    report = json.load(open("coverage_report.json", encoding="utf-8"))
+    report = json.load(open("results/phase1/coverage_report.json",
+                            encoding="utf-8"))
     reachable_qs = [question for question in report["per_question"] if question["reachable"]]
     random.seed(42)
     sample = random.sample(reachable_qs, min(400, len(reachable_qs)))
@@ -42,7 +43,7 @@ def main():
                 fail.append(question)
 
     print(f"Neo4j-verified: {ok}/{len(sample)}")
-    json.dump(fail, open("gate_failures.json", "w"), indent=1)
+    json.dump(fail, open("results/phase1/gate_failures.json", "w"), indent=1)
 
 
 if __name__ == "__main__":

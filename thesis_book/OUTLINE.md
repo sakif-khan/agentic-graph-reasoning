@@ -47,7 +47,8 @@ paired the names in the reverse order and has been corrected, with the conventio
 stated above the table. Stage D's labels always followed the standard convention and were
 left untouched. Two rows did not and were relabelled: the De Niro case (§9.3.1, → 
 `answer_selection`) and the MacFarlane case (§9.5.3, → `verifier_fp`, Stage A having used
-the reversed convention). `logs/synthesize_census_log.txt` was regenerated afterwards.
+the reversed convention). `results/phase4/synthesize_census_log.txt` was regenerated
+afterwards.
 
 ---
 
@@ -392,8 +393,8 @@ against a Comal County gold) is the worked mixed-evidence specimen — and see �
 where that particular label came from.)*
 &nbsp;&nbsp;&nbsp;&nbsp;7.7.4 Census-Based Exclusions and the Dual-Reporting Policy
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Verified numbers, from
-`logs/make_goldnoise_exclusions_log.txt`, `goldnoise_summary.json` and
-`logs/census_exclusions_agr_log.txt` — quote these, not the intermediate figures that appear
+`results/phase4/make_goldnoise_exclusions_log.txt`, `goldnoise_summary.json` and
+`results/phase4/census_exclusions_agr_log.txt` — quote these, not the intermediate figures that appear
 in the project record. The pass emits one row per (qid, consensus answer) pair, so rows and
 questions must be reported as separate units:* **WebQSP 89 rows over 58 distinct questions**
 *→ 36 `gold_ok`, 12 `gold_wrong`, 10 `ambiguous_question` → **22 excluded (5.5%)**;*
@@ -482,7 +483,7 @@ census (21 / 15) — 86 and 173, 259 failures in total.
 
 9.2 Distribution of Failure Categories Across Datasets
 &nbsp;&nbsp;&nbsp;&nbsp;*(Source: the Stage E merged histogram,
-`logs/synthesize_census_log.txt` and `results/phase4/synthesis.md` §2 — Stage D + Stage A,
+`results/phase4/synthesize_census_log.txt` and `results/phase4/synthesis.md` §2 — Stage D + Stage A,
 86 WebQSP and 173 CWQ rows, wrong and hedge kept separate throughout. The headline is the*
 shape flip *between datasets — but state it the way `synthesis.md` does, because the obvious
 phrasing is wrong.* `relation_selection` *is the largest category in* **both** *datasets (26

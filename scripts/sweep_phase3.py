@@ -25,7 +25,7 @@ def main():
         RunConfig(alpha=0.7, tau=0.2, verify_claims=False),
     ]
 
-    QUESTIONS = json.load(open("data/dev80.json", encoding="utf-8"))
+    QUESTIONS = json.load(open("results/phase3/dev80.json", encoding="utf-8"))
     driver = get_driver()
     embed = get_embedder()
     llm = get_llm()
@@ -34,16 +34,16 @@ def main():
     for rc in CONDITIONS:
         name = (f"dev80_a{rc.alpha}_t{rc.tau}"
                 + ("" if rc.verify_claims else "_draftonly"))
-        log_path = f"logs/{name}.jsonl"
+        log_path = f"results/phase3/{name}.jsonl"
         done = set()
         if Path(log_path).exists():
             done = {json.loads(l)["qid"]
                     for l in open(log_path, encoding="utf-8")}
         tools = KGTools(driver, EntityResolver(driver, embed),
-                        f"logs/{name}_tools.jsonl")
+                        f"results/phase3/{name}_tools.jsonl")
         scorer = get_scorer(rc.alpha)
         agr = build_graph(llm, tools, scorer, rc)
-        logger = RunLogger(f"logs/{name}.jsonl", llm.describe(),
+        logger = RunLogger(log_path, llm.describe(),
                            budget_cfg, rc.as_dict())
         print(f"\n=== {name} ===")
         failures = []
@@ -68,7 +68,8 @@ def main():
         print(f"=== {name}: {len(QUESTIONS) - len(done) - len(failures)} ok, "
               f"{len(failures)} failed ===")
         if failures:
-            json.dump(failures, open(f"logs/{name}_failures.json", "w"), indent=1)
+            json.dump(failures, open(f"results/phase3/{name}_failures.json", "w"),
+                      indent=1)
 
     driver.close()
 

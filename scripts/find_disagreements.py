@@ -2,15 +2,17 @@
 
 Joins kappa_sheet.csv (your blind labels) with kappa_key.json (the judged
 sample, in sheet order), verifies alignment, enriches from judge_support.json,
-and writes logs/kappa_disagreements.json with a manual annotation placeholder.
+and writes results/phase4/tier2_judge/kappa_disagreements.json with a manual
+annotation placeholder.
 """
 import csv, json, sys
 
 def main():
-    SHEET = "data/kappa_sheet.csv"
-    KEY = "data/kappa_key.json"
-    FULL = "logs/judge_support.json"
-    OUT = "logs/kappa_disagreements.json"
+    T2 = "results/phase4/tier2_judge"
+    SHEET = f"{T2}/kappa_sheet.csv"
+    KEY = f"{T2}/kappa_key.json"
+    FULL = f"{T2}/judge_support.json"
+    OUT = f"{T2}/kappa_disagreements.json"
 
     # ---- load your labels, keyed by sheet idx ----
     your = {}

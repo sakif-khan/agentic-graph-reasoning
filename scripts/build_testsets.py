@@ -1,5 +1,6 @@
 """Build certified, stratified test samples from the RoG TEST splits.
-Outputs: scripts/test_webqsp.json, scripts/test_cwq.json (+ certification).
+Outputs: results/phase4/test_webqsp.json, results/phase4/test_cwq.json
+(+ certification).
 Run ONCE. Never edit the outputs. Seed and sample IDs are the record.
 """
 import json, random
@@ -43,7 +44,7 @@ def main():
     driver = get_driver()
 
     dev80_qids = {q["qid"] for q in
-                  json.load(open("data/dev80.json", encoding="utf-8"))}
+                  json.load(open("results/phase3/dev80.json", encoding="utf-8"))}
 
     random.seed(SEED)
 
@@ -109,7 +110,7 @@ def main():
         print(f"[{ds_name}] coverage: full={full} partial={partial} zero={zero} "
               f"Hits@1 ceiling={ceiling:.1%}")
 
-        json.dump(sample, open(f"data/test_{ds_name}.json", "w",
+        json.dump(sample, open(f"results/phase4/test_{ds_name}.json", "w",
                                encoding="utf-8"), indent=1, ensure_ascii=False)
 
     driver.close()

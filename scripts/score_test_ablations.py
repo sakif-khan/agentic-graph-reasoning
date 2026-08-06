@@ -1,6 +1,6 @@
-"""Phase 4 metrics over RunLogger JSONLs.
-Usage: python scripts/score_test.py results/phase4/test_webqsp_*.jsonl results/phase4/test_cwq_*.jsonl
-(excludes *_tools.jsonl automatically)"""
+"""Phase 4 ablation metrics over RunLogger JSONLs.
+Usage: python scripts/score_test_ablations.py
+(reads the fixed condition list under results/phase4/ablations/)"""
 import json, random, unicodedata
 from collections import defaultdict
 
@@ -73,17 +73,18 @@ def mcnemar(a_rows, b_rows):
     return min(p, 1.0), b10, b01
 
 def main():
+    ABL = "results/phase4/ablations"
     files = [
-        "logs/test_webqsp_half_abl_full.jsonl",
-        "logs/test_cwq_half_abl_full.jsonl",
-        "logs/test_webqsp_half_abl_noplanner.jsonl",
-        "logs/test_cwq_half_abl_noplanner.jsonl",
-        "logs/test_webqsp_half_abl_nobacktrack.jsonl",
-        "logs/test_cwq_half_abl_nobacktrack.jsonl",
-        "logs/test_webqsp_half_abl_noverifier.jsonl",
-        "logs/test_cwq_half_abl_noverifier.jsonl",
-        "logs/test_webqsp_half_abl_embonly.jsonl",
-        "logs/test_cwq_half_abl_embonly.jsonl",
+        f"{ABL}/test_webqsp_half_abl_full.jsonl",
+        f"{ABL}/test_cwq_half_abl_full.jsonl",
+        f"{ABL}/test_webqsp_half_abl_noplanner.jsonl",
+        f"{ABL}/test_cwq_half_abl_noplanner.jsonl",
+        f"{ABL}/test_webqsp_half_abl_nobacktrack.jsonl",
+        f"{ABL}/test_cwq_half_abl_nobacktrack.jsonl",
+        f"{ABL}/test_webqsp_half_abl_noverifier.jsonl",
+        f"{ABL}/test_cwq_half_abl_noverifier.jsonl",
+        f"{ABL}/test_webqsp_half_abl_embonly.jsonl",
+        f"{ABL}/test_cwq_half_abl_embonly.jsonl",
     ]
     strata = {"webqsp": stratum_map("results/phase4/test_webqsp_half.json"),
               "cwq": stratum_map("results/phase4/test_cwq_half.json")}

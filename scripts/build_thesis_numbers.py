@@ -193,10 +193,8 @@ def main():
         "judge_validation": {
             "_source": ("results/phase4/tier2_judge/kappa_sheet.csv + "
                         "kappa_key.json"),
-            "_note": ("NOTE: scripts/compute_kappa.py still reads data/"
-                      "kappa_sheet.csv and data/kappa_key.json, which do not "
-                      "exist -- the artifacts live under results/phase4/"
-                      "tier2_judge/. Fix those paths before rerunning it."),
+            "_note": ("scripts/compute_kappa.py recomputes this independently "
+                      "from the same two files and must agree."),
             **compute_kappa(P4 / "tier2_judge" / "kappa_sheet.csv",
                             P4 / "tier2_judge" / "kappa_key.json"),
         },
@@ -206,11 +204,11 @@ def main():
             **{ds: len(v) for ds, v in exclusions.items()},
         },
         "failure_histogram": {
-            "_source": "logs/synthesize_census_log.txt",
+            "_source": "results/phase4/synthesize_census_log.txt",
             "_note": ("Stage D + Stage A merged. wrong and hedge are never "
                       "pooled. Regenerate via scripts/synthesize_census.py "
                       "after any relabelling."),
-            **parse_census("logs/synthesize_census_log.txt"),
+            **parse_census(P4 / "synthesize_census_log.txt"),
         },
     }
 

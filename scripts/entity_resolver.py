@@ -55,7 +55,7 @@ def main():
                     misses.append((ds_name, q_entity, results[:3] if results else []))
 
     print(tiers)
-    json.dump(misses, open("linking_misses.json", "w"), indent=1)
+    json.dump(misses, open("results/phase1/linking_misses.json", "w"), indent=1)
 
 
 if __name__ == "__main__":

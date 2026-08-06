@@ -5,7 +5,7 @@ from agr.runtime import get_driver
 
 def main():
     driver = get_driver()
-    questions = json.load(open("data/dev80.json", encoding="utf-8"))
+    questions = json.load(open("results/phase3/dev80.json", encoding="utf-8"))
 
     report = []
     with driver.session() as session:
@@ -32,7 +32,7 @@ def main():
                 print(f'[{question["qid"]}] {n_ok}/{len(per_gold)} gold reachable: '
                       f'{[a for a, v in per_gold.items() if not v["reachable"]]}')
 
-    json.dump(report, open("logs/dev80_coverage.json", "w"), indent=1)
+    json.dump(report, open("results/phase3/dev80_coverage.json", "w"), indent=1)
     full = sum(1 for r in report if r["n_reachable"] == r["n_gold"])
     partial = sum(1 for r in report if 0 < r["n_reachable"] < r["n_gold"])
     print(f"\nfull coverage: {full}, partial: {partial}, "

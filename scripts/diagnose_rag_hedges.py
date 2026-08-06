@@ -7,12 +7,12 @@ def norm(s): return unicodedata.normalize("NFKC", s).strip().lower()
 
 def main():
     paths = [
-        "logs/test_webqsp_vectorrag.jsonl",
-        "logs/test_cwq_vectorrag.jsonl",
-        "logs/test_webqsp_graphrag.jsonl",
-        "logs/test_cwq_graphrag.jsonl",
-        "logs/test_webqsp_tog.jsonl",
-        "logs/test_cwq_tog.jsonl",
+        "results/phase4/test_webqsp_vectorrag.jsonl",
+        "results/phase4/test_cwq_vectorrag.jsonl",
+        "results/phase4/test_webqsp_graphrag.jsonl",
+        "results/phase4/test_cwq_graphrag.jsonl",
+        "results/phase4/test_webqsp_tog.jsonl",
+        "results/phase4/test_cwq_tog.jsonl",
         ]
 
     for path in paths:
@@ -36,7 +36,8 @@ def main():
               f"{gold_in_sample} ({gold_in_sample/max(n_hedge,1):.0%}), "
               f"exhausted={exhausted}")
 
-    tog_paths = ["logs/test_webqsp_tog.jsonl", "logs/test_cwq_tog.jsonl"]
+    tog_paths = ["results/phase4/test_webqsp_tog.jsonl",
+                 "results/phase4/test_cwq_tog.jsonl"]
 
     for path in tog_paths:
         n = clip = 0

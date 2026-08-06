@@ -31,13 +31,13 @@ def main():
 
         for label, rc, budget_cfg in CONDITIONS:
             name = f"{tag}_abl_{label}"
-            log_path = f"logs/{name}.jsonl"
+            log_path = f"results/phase4/ablations/{name}.jsonl"
             done = set()
             if Path(log_path).exists():
                 done = {json.loads(l)["qid"]
                         for l in open(log_path, encoding="utf-8")}
             tools = KGTools(driver, EntityResolver(driver, embed),
-                            f"logs/{name}_tools.jsonl")
+                            f"results/phase4/ablations/{name}_tools.jsonl")
             scorer = get_scorer(rc.alpha)
             agr = build_graph(llm, tools, scorer, rc)
             logger = RunLogger(log_path, llm.describe(), budget_cfg,
@@ -65,7 +65,9 @@ def main():
             print(f"=== {name}: {len(questions) - len(done) - len(failures)} ok, "
                 f"{len(failures)} failed ===")
             if failures:
-                json.dump(failures, open(f"logs/{name}_failures.json", "w"), indent=1)
+                json.dump(failures,
+                          open(f"results/phase4/ablations/{name}_failures.json",
+                               "w"), indent=1)
 
     driver.close()
 

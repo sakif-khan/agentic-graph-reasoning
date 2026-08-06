@@ -47,12 +47,14 @@ def main():
 
     qmeta = {}
     for ds in ("webqsp", "cwq"):
-        for q in json.load(open(f"data/test_{ds}.json", encoding="utf-8")):
+        for q in json.load(open(f"results/phase4/test_{ds}.json",
+                                encoding="utf-8")):
             qmeta[q["qid"]] = q
 
     rows = []
     with driver.session() as session:
-        for path in sorted(glob.glob("logs/grounded_test_*.jsonl")):
+        for path in sorted(glob.glob(
+                "results/phase4/tier1_groundedness/grounded_test_*.jsonl")):
             recs = [json.loads(l) for l in open(path, encoding="utf-8")]
             # sampling frame: one row per asserted entity, stratified hit/miss
             frame = [(r, e, ok) for r in recs
@@ -80,8 +82,8 @@ def main():
                             "supported": supported, "reason": reason,
                             "was_hit": r["hit"]})
 
-    json.dump(rows, open("logs/judge_support.json", "w", encoding="utf-8"),
-              indent=1, ensure_ascii=False)
+    json.dump(rows, open("results/phase4/tier2_judge/judge_support.json", "w",
+                         encoding="utf-8"), indent=1, ensure_ascii=False)
 
     # summary
     from collections import defaultdict
@@ -96,12 +98,14 @@ def main():
 
     # blind hand-label sheet for kappa: 100 random judged items, verdicts hidden
     lab = random.sample([r for r in rows if r["supported"] is not None], 100)
-    with open("data/kappa_sheet.csv", "w", newline="", encoding="utf-8") as f:
+    with open("results/phase4/tier2_judge/kappa_sheet.csv", "w", newline="",
+              encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["idx", "question", "entity", "paths", "your_label(1/0)"])
         for i, r in enumerate(lab):
             w.writerow([i, r["question"], r["entity"], " || ".join(r["paths"]), ""])
-    json.dump(lab, open("data/kappa_key.json", "w", encoding="utf-8"), indent=1)
+    json.dump(lab, open("results/phase4/tier2_judge/kappa_key.json", "w",
+                        encoding="utf-8"), indent=1)
 
 if __name__ == "__main__":
     main()
