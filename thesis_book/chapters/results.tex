@@ -109,6 +109,9 @@ are authoritative.
       (\Cref{tab:testsets}).}
     \label{tab:main}
     \small
+    % Seven columns of bracketed intervals leave this a point or so wider than
+    % the text block; trimming the intercolumn padding is enough to seat it.
+    \setlength{\tabcolsep}{5pt}
     \begin{tabular}{|l|l|l|l|r|r|r|}
       \hline
       \textbf{Data} & \textbf{System} & \textbf{Hits@1} & \textbf{F1} &
@@ -456,6 +459,8 @@ a positive $\Delta$ means removing the component \emph{improved} the metric.
       condition is a full cache replay.}
     \label{tab:ablation}
     \small
+    % Same seven-column shape as \Cref{tab:main}, and the same slight trim.
+    \setlength{\tabcolsep}{5pt}
     \begin{tabular}{|l|l|l|l|r|r|r|}
       \hline
       \textbf{Data} & \textbf{Condition} & \textbf{Hits@1} & \textbf{F1} &

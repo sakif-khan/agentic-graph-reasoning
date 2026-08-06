@@ -363,7 +363,7 @@ the two runs were diffed per question. Exactly three questions differed.
       the entity list; ``post-fix'' is deterministic filtering.}
     \label{tab:census}
     \footnotesize
-    \begin{tabular}{|p{29mm}|p{35mm}|p{35mm}|p{29mm}|}
+    \begin{tabular}{|L{29mm}|L{35mm}|L{35mm}|L{29mm}|}
       \hline
       \textbf{Question} & \textbf{Draft-only} & \textbf{Verified, pre-fix} &
       \textbf{Verified, post-fix} \\
@@ -498,8 +498,12 @@ arguments and result.
 \emph{Which university, founded in 1701, did actor James Franco attend?}
 Gold: \textsf{University Yale}.
 
+% TeX stops hyphenating a word at its first non-letter, so a dotted relation
+% name can only ever break inside its first segment -- and it does, inserting a
+% hyphen into the name. \allowbreak offers the dots as break points instead.
 Navigation resolves \textsf{James Franco} as the anchor and expands along
-\textsf{education.education.student} and \textsf{people.person.education}. The
+\textsf{education.\allowbreak education.\allowbreak student} and
+\textsf{people.\allowbreak person.\allowbreak education}. The
 plan's first objective --- find the university founded in 1701 --- is never
 satisfied, because the environment holds essentially no date literals
 (\Cref{sec:unanswerable}). Three evaluator-triggered backtracks follow, and the

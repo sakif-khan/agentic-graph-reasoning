@@ -238,7 +238,8 @@ the current sub-objective in embedding space, so the 7{,}058 relation names are
 embedded once and held in memory rather than embedded per step.
 
 Two details make this work. Relation names are \emph{verbalised} before encoding:
-\textsf{people.person.place\_of\_birth} becomes ``people person place of birth'',
+\textsf{people.\allowbreak person.\allowbreak place\_of\_birth} becomes
+``people person place of birth'',
 with consecutive duplicate tokens removed. The encoder was trained on natural
 language, and the verbalised phrase lands near a question like ``where was X
 born'' in embedding space where the raw dotted path does not. And relations are

@@ -15,6 +15,14 @@
 
 \RequirePackage[a4paper,left=25.0mm, right=25.0mm, top=20.0mm, bottom=10.0mm,includeheadfoot]{geometry}
 \RequirePackage{times}
+% times sets the sans face to Helvetica at full size, but Helvetica's x-height
+% is far larger than Times's, so sans text set at the same nominal size looks
+% bigger and heavier than the prose around it. The thesis marks identifiers in
+% sans, and in a paragraph carrying several of them the page reads speckled.
+% Scaling Helvetica to 92% matches the two faces optically. This is the
+% conventional pairing correction, not a size change: the nominal size is
+% unchanged, so nothing about the layout or the marking is affected.
+\RequirePackage[scaled=0.92]{helvet}
 \RequirePackage{microtype}
 % hyperref (loaded below) redefines \@footnotetext to wrap footnotes in a
 % PDF link anchor once hyperfootnotes are active; microtype's `footnote'
@@ -46,6 +54,34 @@
 % Caption setup
 \RequirePackage{caption} 
 \captionsetup[table]{skip=2.50mm}
+
+% Fixed-width table columns, set ragged right rather than justified. A narrow
+% p-column holds only two or three words per line, so justifying it opens large
+% interword gaps and TeX reports an underfull \hbox for every such line. Use
+% L{width} in place of p{width} for any column narrow enough for that to
+% happen; \arraybackslash restores \\ as the row separator, which \raggedright
+% would otherwise redefine.
+\RequirePackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Section headings, likewise. The standard classes typeset headings justified,
+% so a title long enough to wrap stretches its first line. These definitions
+% are report.cls's own, with \raggedright appended to the style argument; the
+% spacing above and below each heading is unchanged. \paragraph and
+% \subparagraph are deliberately left alone: they run in with the text that
+% follows, and \raggedright there would unjustify that whole paragraph.
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                     {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                     {2.3ex \@plus.2ex}%
+                                     {\normalfont\Large\bfseries\raggedright}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                       {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                       {1.5ex \@plus .2ex}%
+                                       {\normalfont\large\bfseries\raggedright}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                       {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                       {1.5ex \@plus .2ex}%
+                                       {\normalfont\normalsize\bfseries\raggedright}}
 
 % 1.5 spacing
 \RequirePackage{setspace}
@@ -314,7 +350,7 @@
 \renewcommand{\footrulewidth}{0.0mm}
 \setlength{\headheight}{15.0pt}
 \fancyheadoffset[R]{0.075\textwidth}
-\fancyhead[L]{\slshape \rightmark}
+\fancyhead[L]{\slshape \nouppercase{\rightmark}}
 \fancyhead[R]{\textbf{\thepage}}
 
 % Starting materials

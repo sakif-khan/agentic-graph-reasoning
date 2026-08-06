@@ -13,6 +13,15 @@
 % buetcsepgthesis.bib carries the references in the template's own bib style.
 % agr.bib is the annotated backup: the same 45 entries in the same order, with
 % the provenance comments. Switch the argument below to build against it.
+%
+% One reference runs 0.87pt into the right margin. The class already typesets
+% thebibliography under \sloppy, which tolerates 0.5pt of overhang and gives TeX
+% 3em of emergency stretch, and even so this line will not fit: its conference
+% name ends in a parenthesised subtitle, and TeX will not hyphenate a word that
+% begins with a bracket. Widen the tolerated overhang to 1pt for the reference
+% list alone. \apptocmd appends after the environment's own \sloppy, which would
+% otherwise reset it. Nothing outside the reference list is affected.
+\apptocmd{\thebibliography}{\hfuzz=1pt}{}{}
 \bibliography{buetcsepgthesis}
 
 \endinput

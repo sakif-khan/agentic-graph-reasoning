@@ -102,8 +102,9 @@ emitted invalid syntax. Since the thesis's central claims are about reasoning
 and verification, a confound that contaminates every error category is
 unacceptable.
 
-The tools are therefore parameterised Cypher templates, written once and
-unit-tested (\Cref{sec:implementation}). They accept entity identifiers and
+The tools are therefore parameterised Cypher templates
+(\Cref{sec:implementation}), written once and unit-tested. They accept entity
+identifiers and
 return names alongside them, so the model always sees human-readable text while
 the program tracks identity. Every invocation is appended to a JSONL log with
 its arguments, result, and latency.
@@ -122,7 +123,7 @@ layer of \Cref{ch:verification} required a relation-agnostic adjacency test.
       \Cref{sec:entity-resolution}.}
     \label{tab:tools}
     \footnotesize
-    \begin{tabular}{|l|p{47mm}|p{47mm}|}
+    \begin{tabular}{|l|L{47mm}|L{47mm}|}
       \hline
       \textbf{Operation} & \textbf{Returns} & \textbf{Role} \\
       \hline
@@ -215,7 +216,7 @@ The state is a typed dictionary threaded through every node.
       node returns them.}
     \label{tab:state}
     \footnotesize
-    \begin{tabular}{|l|p{88mm}|}
+    \begin{tabular}{|l|L{88mm}|}
       \hline
       \textbf{Group} & \textbf{Fields} \\
       \hline
@@ -526,7 +527,7 @@ them.
       recorded in every run record, so results can always be attributed to the
       configuration that produced them.}
     \label{tab:budget}
-    \begin{tabular}{|l|r|p{58mm}|}
+    \begin{tabular}{|l|r|L{58mm}|}
       \hline
       \textbf{Parameter} & \textbf{Value} & \textbf{Enforced in} \\
       \hline
@@ -569,8 +570,8 @@ the budget snapshot, wall-clock time, and --- for provenance --- the backbone
 description, the budget configuration hash, the run configuration, and the
 current git commit.
 
-The response cache deserves separate description because it underwrites the
-thesis's reproducibility claims. Every model call is keyed by a hash over the
+The response cache deserves separate description: it underwrites the thesis's
+reproducibility claims. Every model call is keyed by a hash over the
 model identifier, temperature, reasoning-effort setting, and the full prompt
 text; hits are served from disk. The subtle part is that a cache hit must be
 \emph{indistinguishable} from a live call inside the agent: the budget check
@@ -615,7 +616,7 @@ collapsed into five systematic causes, summarised in \Cref{tab:rootcauses}.
       indicated.}
     \label{tab:rootcauses}
     \footnotesize
-    \begin{tabular}{|p{52mm}|p{52mm}|l|}
+    \begin{tabular}{|L{52mm}|L{52mm}|l|}
       \hline
       \textbf{Observed failure} & \textbf{Mechanism introduced} &
       \textbf{Section} \\
