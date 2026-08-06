@@ -1,20 +1,266 @@
 \chapter{Conclusion}\label{ch:conclusion}
 
 \section{Summary of Contributions}\label{sec:summary}
-% Chapter-by-chapter walkthrough, following the gold standard's conclusion.
+
+This thesis asked what an agent gains by navigating a knowledge graph rather than
+retrieving from it, and what a claim-level check against the traversed subgraph
+adds on top. The answers are not uniform, and the value of the work lies partly in
+where they diverge.
+
+\Cref{ch:intro} located the problem: hallucination in knowledge-grounded question
+answering is not merely a matter of asserting false things but of asserting things
+with no basis in the knowledge the system was given, and the standard evaluation
+convention --- Hits@1 over a multi-valued gold set --- cannot see the difference.
+\Cref{ch:prelim} fixed the vocabulary the technical chapters assume, including the
+operational definition of ungroundedness this thesis measures against, and withdrew
+the proposal's characterisation of the navigation strategy as MCTS-inspired: what
+the method is, is guided best-first search with a bounded beam and backtracking, and
+it is described that way throughout.
+
+\Cref{ch:related} positioned the work against the agentic KGQA literature and
+identified the attribution gap it addresses: published systems bundle decomposition,
+search, and verification into single reported numbers, so the field has no evidence
+about which component earns its cost.
+
+\Cref{ch:environment} built the knowledge environment and, more importantly,
+\emph{certified} it: $2.59$ million entities and $8.31$ million triples with a
+measured answer-reachability ceiling of $97.3\%$ and $99.7\%$ over the full test
+splits; a three-stage entity resolver; and an explicit inventory of what it
+cannot express --- no date literals, no numeric literals, no ordinals --- which
+\Cref{ch:erroranalysis} later shows accounts for the third-largest failure category
+in the census. Certifying the environment before measuring on it is what allows a
+failure to be attributed to the system rather than to the substrate.
+
+\Cref{ch:framework} specified the framework: a state machine over a constrained,
+deterministic graph tool API in which the program orchestrates and the language
+model only decides, with a hybrid scoring function blending embedding similarity
+against a batched language-model judgement, a signal-maximum backtracking trigger
+that fires only when every available signal is weak, and an explicit budget meter
+that makes cost a first-class, logged quantity.
+
+\Cref{ch:verification} specified the Structural Verification Layer, and reported
+its behaviour honestly enough to bound its own claims: a draft is decomposed into
+atomic claims, each checked first against traversed adjacency and then, if
+necessary, by batched entailment, with unsupported claims triggering targeted
+re-exploration or deterministic removal from the answer. The chapter also records
+that the repair path never executed on the development set, that ten of eighty
+answers were certified with no claims at all, and that entities appearing in no
+claim are never checked --- the layer's guarantees stated as they are rather than as
+designed.
+
+\Cref{ch:setup} fixed the experimental design in advance and reports the decisions
+that went the other way: a backbone selected, reversed, and reselected under a
+pre-registered tiebreaker after the first determinism estimate proved to be noise; a
+test-set build that read the wrong split and was caught by a contamination guard
+before any system ran; and a judge-validation threshold missed by $0.0005$ and
+reported as missed.
+
+\Cref{ch:results} reported the measurements. AGR leads every cell of the main matrix
+and every one of the eight paired comparisons rejects, including both against a
+reimplementation of the agentic baseline running on the same graph with the same
+model under the same budget. On ComplexWebQuestions its accuracy \emph{rises} with
+hop count while every other system decays --- the strongest available form of the
+multi-hop claim. It runs at half the language-model calls of the agentic baseline
+and never exhausts a budget that clips that baseline on $44\%$ of multi-hop
+questions. Structural hallucination is eliminated: zero ungrounded assertions across
+$1{,}709$ asserted entities, against $27.1\%$ for parametric answering. And three
+of four ablations detect nothing, which is reported at the same length as the one
+that does.
+
+\Cref{ch:erroranalysis} read all $259$ remaining failures and named each mechanism.
+The findings that generalise beyond this system are three. \emph{Context-stripping}:
+decomposing a question can discard a qualifier that appears only in a later clause,
+so an early sub-objective resolves the wrong sense of an ambiguous term before the
+disambiguating information arrives --- and in the strongest specimen, decomposition
+actively suppressed the one anchor that could have discriminated, driving its score
+into the junk tier. \emph{The echo attractor}: the most common failure of a
+graph-navigating system is not to invent an entity but to surface a real,
+well-grounded, verifiably-true entity that sits one node away from the answer, which
+the verifier passes because it genuinely is grounded. And \emph{shared attractors
+break consensus-based evaluation}: five independent systems converge on the same
+wrong answer often enough that a policy of rescoring on majority agreement would
+have converted this failure mode into apparent correctness.
+
+Four contributions follow from that body of work.
+
+\textbf{The framework and its verification layer.} An agentic KGQA system that
+returns its answer paired with the triples supporting it, built so that the
+supporting evidence is a byproduct of the control flow rather than a post-hoc
+reconstruction.
+
+\textbf{A component-level ablation.} Four single-deviation conditions with paired
+significance testing, closing the attribution gap of \Cref{ch:related} for this
+architecture --- and finding that only one of the four components has a detectable
+accuracy effect.
+
+\textbf{Stratum-dependent decomposition.} The literature treats question
+decomposition as straightforwardly beneficial. It is not: removing the planner
+\emph{improves} WebQSP accuracy by $0.083$ F1 at $p = 0.006$ while cutting tokens by
+$30\%$, and trends toward harming CWQ. The asymmetry, not the pooled average, is the
+result, and it says that decomposition should be gated on question structure rather
+than applied unconditionally.
+
+\textbf{Quantified benchmark defect rates.} Fifty-nine questions across the two
+test samples where the benchmark, not the system, needed correcting --- with the
+two evidence signatures that distinguish a world-fact error from an
+annotation-pipeline error, and the provenance argument that explains where one class
+of them comes from.
 
 \section{Limitations}\label{sec:limitations-final}
 
+The limitations that most constrain what may be concluded are, in order of severity:
+
+\textbf{Wrongful acceptance is unmeasured.} The verifier persists only the claims it
+rejects. One polarity of its error is therefore reported at census scale and the
+other from a single specimen that surfaced by manual trace reconstruction, and no
+rate exists for the polarity that matters most to a hallucination claim. This is an
+instrumentation decision constraining a scientific conclusion, and it is the first
+item in \Cref{sec:future}.
+
+\textbf{Three of four ablations are underpowered.} At $n \approx 200$, a component
+that changes five questions in a hundred cannot be resolved. ``No detectable effect
+at this sample size'' is what the data supports, and it is not the same statement as
+``no effect''.
+
+\textbf{Structural grounding is not answer adequacy.} Both navigating systems reach
+zero structural hallucination, so that property belongs to the navigation paradigm
+rather than to this thesis's verification layer, and the semantic-support metric
+that would separate them is validated at $\kappa = 0.6995$ on samples of $60$ ---
+underpowered for the $5$-point gap it measures. The strongest evidence for the layer
+is therefore the precision column of the main matrix and the case-level analyses,
+not a groundedness differential against the agentic baseline.
+
+\textbf{The evaluation is single-environment, single-backbone, and
+single-annotator.} One knowledge graph built from one distribution, one frozen
+backbone at $\approx 75\%$ trajectory stability, two benchmarks sharing a lineage,
+and a failure census and benchmark-defect adjudication performed by the author. Each
+of those is a defensible scoping decision and each bounds generality.
+
+\textbf{Entity linking is assumed.} Topic entities are given by the datasets, so the
+reported accuracies presume a linking step a deployed system would have to perform.
+
+\textbf{One measured defect depresses the reported accuracy.} The entity-extraction
+bug of \Cref{sec:decomposition-errors} converts complete, verifier-certified
+reasoning into an empty or wrong entity list on a specific question shape. The
+headline numbers are a floor for that shape.
+
 \section{Future Work}\label{sec:future}
+
+The census makes it possible to separate proposals that are backed by a counted,
+repeated pattern from proposals that are backed by an argument. Both are listed;
+they are not the same kind of claim.
+
+\subsection{Repairs the Census Earned}
+
+Three defects each recur with a uniform mechanism across unrelated questions, and
+each is small.
+
+\emph{Entity extraction} (nine instances): the step converting drafted answer text
+into the scored entity list defaults to the sentence's grammatical subject rather
+than its predicate values. Fixing it requires the claim decomposer to be told which
+argument of the drafted sentence is the answer --- an instruction, not an
+architecture.
+
+\emph{Evaluator abandonment} (five instances): relations scoring as high as $0.73$
+are explored and then backtracked away from, never revisited, across four unrelated
+domains. This reads as a threshold or backtracking-policy defect and would be
+diagnosed by logging the evaluator's decision against the score of the relation it
+discards.
+
+\emph{Drafting commitment} (six instances, all six of the \textsf{other} category):
+when the evaluator has resolved the exact gold value and the verifier has returned
+\textsf{grounded}, the drafter should commit to it rather than stating the fact and
+declaring it undeterminable in the same sentence.
+
+\subsection{Logging Accepted Claims to Make Wrongful Acceptance
+  Measurable}\label{sec:future-logging}
+
+Persist each accepted claim together with the triples that matched it. This converts
+the wrongly-accepted class from an anecdote into a rate with a denominator, makes
+grounded-but-wrong answers self-diagnosing from the logs rather than by manual trace
+reconstruction, and would let the entity-level and claim-level guarantees of
+\Cref{ch:verification} be audited rather than argued. It is the highest-value change
+in this list relative to its cost, and it is a logging change.
+
+\subsection{Adaptive Decomposition Gating}
+
+The planner ablation and the context-stripping cases together specify the fix rather
+than merely motivating it. A decomposition step should be gated on two checks: does
+the rewritten sub-objective preserve the question's actual interrogative --- the
+Phoenician case lost the word ``where'' entirely --- and does the step resolve an
+entity that was already unambiguous, which is what over-decomposition does. A third
+check falls out of the strongest specimen: sub-objectives that carry no reference to
+each other are descriptors of one entity rather than a chain, and should not be
+sequenced as one.
+
+\subsection{Semantic-Level Verification}
+
+All five wrongly-rejected cases share one mechanism: the structural check requires a
+single edge asserting the drafted claim, and a transitively-true multi-hop fact does
+not present one. A check that accepts a bounded relation chain expressing the claim
+--- rather than requiring one literal triple --- would recover those answers. The
+Tier-2 judge of \Cref{sec:groundedness-metric} is a prototype of exactly this
+judgement, which suggests folding a bounded form of it into the loop; the $\kappa$
+of $0.6995$ is also a caution about how reliable such a check would be.
+
+\subsection{A Set-Intersection Operator for Compound Questions}
+
+\textsf{composite\_claim} is $47$ cases and CWQ's largest category. Its
+\textsf{no\_set\_intersection} subtype names the gap precisely: the architecture has
+no AND-join primitive, so a ``find the overlap'' sub-objective degrades into another
+single relation-scoring pass over an incomplete first-hop set. An explicit operator
+that resolves each clause of a compound question into a candidate set and intersects
+them is a well-specified addition to the tool API rather than a change to the agent.
+
+\subsection{Ordinal and Literal-Value Support}
+
+\textsf{kg\_gap} is $44$ cases and CWQ's single largest hedge category. Two of its
+subtypes need an operator rather than a bigger graph: a minimum-or-maximum-by-value
+operation for superlatives, and a literal-extraction path for numeric identifiers,
+ISO codes, and dates that the environment exposes as event or entity nodes rather
+than as plain values. Neither exists in the current tool API, and every instance in
+the census fails for that reason alone.
+
 \subsection{Path Fidelity Against Gold SPARQL Relation
   Chains}\label{sec:future-path-fidelity}
-\subsection{Logging Accepted Claims to Make Wrongful Acceptance Measurable}
-% The fix for the instrumentation gap in Section~\ref{sec:threats}: persist each
-% accepted claim with the triples that matched it, converting the
-% wrongful-acceptance class from anecdote to rate.
-\subsection{LLM-Constructed Knowledge Graphs as a Controlled Comparison}
-\subsection{Rollout-Based Value Estimation}
-\subsection{Temporal and Multi-Source Knowledge Environments}
-\subsection{Transfer to High-Stakes Domains}
+
+The third evaluation criterion of the approved proposal, deferred for the reason
+given in \Cref{sec:metrics-not-run}: it needs the benchmarks' gold SPARQL relation
+chains, which the distribution used here does not carry. Reconstructing them from
+the upstream releases and aligning them to this environment's relation vocabulary
+would measure whether the system reaches the right answer \emph{by the right path}
+--- a question this thesis's groundedness metrics can only approximate, and one that
+bears directly on the echo attractor, where a right-looking answer is reached by a
+path one hop short of the correct one.
+
+\subsection{Beyond This Environment}
+
+Four directions extend the work rather than repairing it.
+\emph{LLM-constructed knowledge graphs} as a controlled comparison would separate
+what the framework contributes from what a curated environment contributes, by
+holding the agent fixed while varying the substrate's provenance and noise profile.
+\emph{Rollout-based value estimation} would supply what \Cref{sec:mcts-clarification}
+explicitly disclaims: the current scorer evaluates each candidate once and never
+revises it in light of what is found later, and genuine tree search over this same
+tool API is a well-defined next system rather than a rebranding of this one.
+\emph{Temporal and multi-source environments} address the failure family that
+recurs throughout \Cref{ch:erroranalysis} --- questions with a time qualifier the
+graph cannot express --- and raise the question of what a claim check means when
+sources disagree. And \emph{transfer to high-stakes domains} is where the
+auditability property, rather than the accuracy, is the point: an answer paired with
+the triples supporting it is worth more in a setting where a reader must be able to
+check it than in one where the reader only wants the answer.
+
+\section{Closing Remark}
+
+The result this work would most want carried forward is not the accuracy margin.
+It is the shape of the gap that remains. A system that traverses a real graph and
+copies its answers out of real triples can be made to assert nothing ungrounded ---
+that problem is solved, and it is solved by the navigation paradigm rather than by
+any checking layer built on top of it. What remains, and what this thesis's census
+found more often than any other mechanism, is an answer that is grounded, connected,
+and true, and is not the answer to the question that was asked. Fact verification
+against a knowledge graph turns out to be the easier half of the problem;
+\emph{relevance} verification is the half still open.
 
 \endinput

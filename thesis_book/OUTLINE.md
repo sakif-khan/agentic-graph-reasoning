@@ -306,11 +306,44 @@ reason, no defensiveness.)*
 &nbsp;&nbsp;&nbsp;&nbsp;7.2.4 Hop-Count Stratification
 
 7.3 Backbone Model Selection and Qualification
+&nbsp;&nbsp;&nbsp;&nbsp;**The frozen backbone is `gpt-5.4-mini-2026-03-17`, temperature 0.0,
+`reasoning_effort="none"`, response cache on** — stamped on all 4,000 test-matrix records and
+on every ablation record. The selection story is a *reversal* and must be told as one, because
+it is the strongest methodology anecdote the project has. Round one of `qualify_backbone.py`
+(20 smoke questions × 2 candidates, 3 repeat probes) reported determinism 3/3 for
+`gpt-4.1-mini-2025-04-14` against 1/3 for `gpt-5.4-mini-2026-03-17`, and 4.1-mini was chosen
+on that basis. A rerun with the cache disabled reversed it: 2/3 against 3/3. Diagnosis, and
+this is §7.3.1's content: temperature-0 decoding on a hosted API is *greedy*, not
+deterministic, and a sequential agent is a divergence amplifier — one flipped token in a
+planner or evaluator call changes a sub-objective's wording, hence the embedding, hence the
+beam. With n=3 the estimator was pure noise. A tiebreaker was pre-registered before rounds 3
+and 4 (*within 3 matches → take 5.4-mini on longevity*); pooled over all four runs the score
+is **9/12 vs 8/12** — a tie — so the rule fired and 5.4-mini was frozen on 2026-07-12.
+&nbsp;&nbsp;&nbsp;&nbsp;*Provenance to state honestly: only round one survives as per-question
+artifacts (`results/phase2/qualify_*_full.jsonl`, 20 records each, written in `"w"` mode and
+therefore overwritten by later rounds) plus `qualify-backbone-log.txt`, which holds round
+one's table only. The tool logs did accumulate across all four rounds (append mode; 649 and
+858 records over 20 distinct qids). Rounds 2–4 exist as console tables in the project record,
+not as artifacts. Report the pooled 9/12 vs 8/12 with that limitation named.*
 &nbsp;&nbsp;&nbsp;&nbsp;7.3.1 Trajectory Stability Under Temperature-Zero Decoding
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(hosted APIs are only approximately
-deterministic at temperature 0; sequential agents amplify per-call divergence; measured
-trajectory stability across the qualification runs)*
+deterministic at temperature 0; sequential agents amplify per-call divergence; the measured
+rate is ≈75% — both candidates in the 70–80% band — and that number, not a claim of
+determinism, is what the thesis reports.)*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**The load-bearing observation, and it belongs
+in §1.1 as well as here:** across four runs, *both* candidates produced ungrounded answers
+stochastically, each with one sticky failure — 4.1-mini's Salcedo→"United States Dollar" in
+2 of 4 runs and Barroso in 1 of 4; 5.4-mini's Beckham→"Harper Seven Beckham" in 4 of 4 and
+Van Rompuy in 1 of 4. Same question, same graph, same budget, and the answer moves between
+grounded-correct and ungrounded-wrong with the sampling weather. That is a *measured*
+statement of the thesis's premise: **hallucination mitigation cannot be delegated to backbone
+selection; it requires an architectural mechanism.**
 &nbsp;&nbsp;&nbsp;&nbsp;7.3.2 Response Caching as the Reproducibility Backstop
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Reproducibility rests on the cache, not on
+model determinism: one recorded run per condition, replayed byte-identically because the cache
+also replays the original token counts into the meter, so a cached rerun reproduces the budget
+snapshot exactly. Fresh-run variance is handled the standard way — bootstrap CIs over
+questions and paired McNemar. Cross-reference §7.10's cache-identity verification technique.)*
 
 7.4 Baseline Systems
 &nbsp;&nbsp;&nbsp;&nbsp;7.4.1 No-Retrieval LLM (Parametric-Memory Control)
@@ -358,6 +391,26 @@ item (`WebQTest-634…`, `mixed_evidence: true`, four systems converging on Bexa
 against a Comal County gold) is the worked mixed-evidence specimen — and see §9.8 for
 where that particular label came from.)*
 &nbsp;&nbsp;&nbsp;&nbsp;7.7.4 Census-Based Exclusions and the Dual-Reporting Policy
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Verified numbers, from
+`logs/make_goldnoise_exclusions_log.txt`, `goldnoise_summary.json` and
+`logs/census_exclusions_agr_log.txt` — quote these, not the intermediate figures that appear
+in the project record. The pass emits one row per (qid, consensus answer) pair, so rows and
+questions must be reported as separate units:* **WebQSP 89 rows over 58 distinct questions**
+*→ 36 `gold_ok`, 12 `gold_wrong`, 10 `ambiguous_question` → **22 excluded (5.5%)**;*
+**CWQ 59 rows over 47 questions** *→ 28 / 17 / 2 → **19 excluded (4.8%)**. Auto-triage cleared
+15/89 and 2/59; the rest were adjudicated by hand. Of the excluded questions, **12 of 22
+(WebQSP) and 15 of 19 (CWQ) were AGR failures** — those are the numbers that shrink the census
+pool; the remainder were questions AGR "got right" against a label now judged broken, which is
+the honest symmetry the footnote needs:* label errors cut both ways, *and a small number of
+scored hits rest on the same defective labels. No rescoring — Table 1 stands as reported, with
+the footnote.)*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Two scope statements belong here because they
+are limits on the method, not on the finding: the auto rule that assigned `gold_wrong` on
+gold-list length is a heuristic, not proof; and the adjudication covered all mixed-evidence
+flags plus every graph-only flag that was not a topic echo — a scope that had to be widened
+mid-pass when the Michael Bublé case (`WebQTest-55_54e856…`, `mixed_evidence: false`) turned
+out to be a genuine label error. That widening is §7.7.3's two-signature argument in action
+and should be narrated as such.*
 
 7.8 Ablation Conditions
 
@@ -414,22 +467,37 @@ measurable Hits@1 effect in ablation)*
 
 9.1 Annotation Protocol and the Failure Taxonomy
 &nbsp;&nbsp;&nbsp;&nbsp;9.1.1 Category and Subtype Schema
-&nbsp;&nbsp;&nbsp;&nbsp;9.1.2 Sampling Asymmetry: Census versus Stratified Sample
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(WebQSP is a full census of remaining
-failures; CWQ is a stratified sample of wrongs and hedges — so wrong-answer and hedge
-histograms are reported separately and never pooled)*
+&nbsp;&nbsp;&nbsp;&nbsp;9.1.2 Population, Not Sample: Both Datasets Read to Completion
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Corrected against
+`results/phase4/sampling_manifest.json`, which records `mode: "full_census"` for *both*
+datasets** (WebQSP 43 wrong + 22 hedge = 65; CWQ 70 + 87 = 157). An earlier plan drew a
+stratified 40W+20H sample from CWQ; the census was subsequently read to completion instead,
+and `synthesis.md` §1 states it explicitly. So there is **no sampling asymmetry to caveat** —
+say so plainly, since it is a strictly stronger claim than a sample. Wrong and hedge are still
+reported separately and never pooled, but for a *semantic* reason, not a sampling one: a wrong
+answer is a reasoning error, a hedge is usually a coverage gap that never produced a committal
+answer. The three populations merged into the histogram are Stage D (65 / 157), the one Stage D
+row later promoted to a formal Stage C exclusion (0 / 1), and Stage A's ablation-discordance
+census (21 / 15) — 86 and 173, 259 failures in total.
 
 9.2 Distribution of Failure Categories Across Datasets
 &nbsp;&nbsp;&nbsp;&nbsp;*(Source: the Stage E merged histogram,
-`logs/synthesize_census_log.txt` — Stage D + Stage A, 86 WebQSP and 173 CWQ rows, wrong
-and hedge kept separate throughout. The headline is the* shape flip *between datasets:
-WebQSP is dominated by `relation_selection` and `decomposition_error`, while CWQ is
-dominated by `composite_claim` and `kg_gap` — both of which are nearly absent from WebQSP.
-That is not noise; it follows from CWQ's questions being multi-constraint by construction,
-with `composite_claim` catching dropped constraints and `kg_gap` catching the internal
-numeric IDs and superlatives its templates keep producing. The log is current as of the
-three label corrections recorded in §9.3.1 and §9.5 — regenerate it if any further
-relabelling happens, since totals are unaffected but three CWQ hedge rows move.*
+`logs/synthesize_census_log.txt` and `results/phase4/synthesis.md` §2 — Stage D + Stage A,
+86 WebQSP and 173 CWQ rows, wrong and hedge kept separate throughout. The headline is the*
+shape flip *between datasets — but state it the way `synthesis.md` does, because the obvious
+phrasing is wrong.* `relation_selection` *is the largest category in* **both** *datasets (26
+WebQSP, 39 CWQ), so it is not what distinguishes them. What distinguishes them is*
+`composite_claim` *and* `kg_gap`: *1 and 12 of WebQSP's 86, against 46 and 32 of CWQ's 173.
+WebQSP's other top category is* `decomposition_error` *(26, tied with relation_selection —
+together nearly 60% of its total). That is not noise; it follows from CWQ's questions being
+multi-constraint by construction, with* `composite_claim` *catching dropped constraints and*
+`kg_gap` *catching the internal numeric IDs and superlatives its templates keep producing.
+Second observation worth its own sentence:* `kg_gap` *skews three-to-one toward* hedges *on
+CWQ (24 hedge vs 8 wrong) and the other way on WebQSP (4 vs 8) — when CWQ's literals are
+unreachable AGR much more often abstains than asserts, which is a* good *property and should
+be reported as one rather than only as a deficiency. The log is current as of the three label
+corrections recorded in §9.3.1 and §9.5 — regenerate it if any further relabelling happens,
+since totals are unaffected but three CWQ hedge rows move.*
 &nbsp;&nbsp;&nbsp;&nbsp;*Do not leave the structural explanation asserted — it is
 demonstrable from data already in hand, and two citations in the same paragraph turn it
 into a shown result. First, the stratum distribution: WebQSP is 64% one-hop (256/400) with
@@ -441,9 +509,28 @@ constantly and WebQSP's rarely.)*
 9.3 Decomposition, Drafting, and Answer-Selection Errors
 &nbsp;&nbsp;&nbsp;&nbsp;*(including the context-stripping mechanism. This section now
 carries three families in the space originally budgeted for one, so give context-stripping
-the full worked treatment — it is the strongest mechanism finding here — and let the Stage A
-extraction-bug trio share a single worked example with the De Niro case below. They are the
+the full worked treatment — it is the strongest mechanism finding here — and let the
+extraction-bug cases share a single worked example with the De Niro case below. They are the
 same family: the drafter or extractor selecting the wrong entity out of correct prose.)*
+&nbsp;&nbsp;&nbsp;&nbsp;*Corrected counts from `synthesis.md`:* `context_stripping` *has*
+**three** *instances, not two — `WebQTest-1367` (Glastonbury England → the Connecticut town,
+from Stage D) joins `WebQTrn-2615` (Fela!) and `WebQTrn-2570_d63877a…` (33rd president /
+WW2) from Stage A.* `extraction_bug` *has* **nine**, *not three, and is the single most
+actionable finding in the census: on profession- and "what did X do"-shaped questions the
+evaluator resolves every correct gold value and states them verbatim in the answer text,
+and then* `answer_entities` *collapses to the sentence's grammatical subject. Use the
+three-row table from `synthesis.md` §2 verbatim (`WebQTest-1215` Stephen R. Covey,
+`WebQTest-704` Thor Heyerdahl, `WebQTrn-124_0782789f…` Angelina Jolie) — correct prose,
+subject-only entity list. Because scoring reads* `answer_entities`, *this bug depresses
+measured accuracy on a whole question shape independently of any reasoning defect, and that
+has to be said as a limitation on the headline numbers, not just as a bug.*
+&nbsp;&nbsp;&nbsp;&nbsp;*One further drafting bug the earlier outline missed, filed under*
+`other` *(6 cases): the evaluator resolves the exact gold value,* `verifier_outcome` *is*
+`grounded`, *and the drafted text hedges anyway — no rejection is involved, so it is not a
+verifier error. `WebQTest-689` (Spanish/Spain), `WebQTest-989_4b6636a0…` (Dunkirk) and
+`WebQTrn-1392_d372995c…` (Eleanor Roosevelt's two schools) are the clean instances. Contrast
+it explicitly with the extraction bug: there the text is right and the entities wrong; here
+the text contradicts a fact it has just stated.*
 &nbsp;&nbsp;&nbsp;&nbsp;9.3.1 Right Candidate Retrieved, Wrong One Drafted
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(The De Niro case,
 `WebQTrn-1294_a4b2006a…`, relabelled. The census filed it as `verifier_fn` on the theory
@@ -455,6 +542,23 @@ answerer — the taxonomy's own `answer_selection` category, to which the label 
 corrected.)*
 
 9.4 Relation-Selection and Navigation Errors
+&nbsp;&nbsp;&nbsp;&nbsp;*(`relation_selection` is the largest category in both datasets — 65
+combined, and no subtypes, because the mechanism is uniform. Two exhibits carry it. First,
+the* **Beyoncé triplet** *(`WebQTrn-1770_540abec8…`, `…_6325ee89…`, `…_6a7c160a…`): three
+differently-phrased CWQ questions all resolve Beyoncé correctly and all three never once try*
+`people.person.children`, *the one relation that answers them; all three hedge. Three
+independent entry points hitting the identical dead end is the cleanest evidence in the corpus
+that a relation gap is systemic rather than an artefact of phrasing. Second, the* **government
+triplet** *(`WebQTrn-1758_477d7040…`, `WebQTest-1226`, `WebQTest-314`) all reach for*
+`government.governmental_jurisdiction.government` *— the organisation — instead of*
+`government.form_of_government.countries` *— the type labels the question asks for.)*
+&nbsp;&nbsp;&nbsp;&nbsp;*Give `premature_termination` its own paragraph here rather than
+scattering it: all 8 instances carry the* `evaluator` *subtype and all 8 are the* same
+*pattern — the correct relation is explored with a solid score and the evaluator backtracks
+away from it and never returns.* `WebQTest-1226` *(0.451),* `WebQTest-314` *(0.731),*
+`WebQTrn-710_e3d40457…` *(0.702). Eight identical shapes across unrelated domains reads as an
+evaluator-threshold or backtracking-policy defect, not as eight reasoning failures, and it is
+one of the most directly fixable findings in the census (see §10.3).*
 
 9.5 Verifier Rejection and Acceptance Errors
 &nbsp;&nbsp;&nbsp;&nbsp;**Stands as a section, but the two polarities are very unevenly
@@ -518,6 +622,29 @@ share of questions the consensus pass* flagged, *and the much smaller share adju
 confirmed as genuine label defects. Most flagged items were not label errors — they were
 all five systems converging on the same wrong answer. That phenomenon is §9.7's; point
 there for it and keep this section to the defects proper.)*
+&nbsp;&nbsp;&nbsp;&nbsp;*The headline total, from `synthesis.md` §4:* **59 questions across
+both datasets where the benchmark, not AGR, was the thing that needed correcting** — 41
+excluded by Stage C before the census read anything (22 + 19), 17 more still sitting in the
+active census as `gold_noise`/`ambiguous_question` rows (3 WebQSP + 14 CWQ), and 1 that began
+as a Stage D finding and was promoted to a formal Stage C exclusion mid-project. Three
+disjoint counts; nothing double-counted. *Two exhibits earn their space:* `WebQTest-958`
+*("what are some famous people from el salvador") with* **116 gold entities** *and raw
+Freebase MIDs leaked into the answer strings — a "list some famous X" template ballooning gold
+past any reachable match; and the* **Vicksburg pair**, *two sibling questions with the same
+gold string and opposite diagnoses —* `WebQTest-1797_5a1c66f…` *("who was president during the
+battle of Vicksburg", gold `Ulysses S. Grant`, who took office six years later) where the full
+pipeline's verifier* correctly *rejected the claim and hedged while the no-planner ablation
+asserted it and scored a "hit"; and* `WebQTest-1797_dece4dd…` *("what Government position
+holder fought in the battle of Vicksburg"), coherent as asked, where AGR genuinely dropped the
+qualifier and answered with the Confederate commander. Same battle, same gold, one question
+unanswerable and one a real AGR failure. That pair is the argument for reading each case
+individually instead of trusting question similarity, and it is also a second exhibit for
+§9.9.2's over-hedging discussion.*
+&nbsp;&nbsp;&nbsp;&nbsp;*One process finding worth a sentence:* `WebQTrn-64_d8e43a…` *was
+adjudicated `gold_ok`/echo by Stage C and the opposite way by Stage D's independent read of
+the same evidence; the second reading held, and the row was promoted to a formal exclusion.
+Two adjudication passes can legitimately disagree, and the taxonomy keeping a `gold_noise`
+category open is what let that be resolved rather than settled by whichever ran first.*
 &nbsp;&nbsp;&nbsp;&nbsp;9.8.1 Where Bad Gold Comes From: Flattened Multi-Valued Relations
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(A short, concrete provenance argument
 built on the San Antonio case. The graph does carry
@@ -528,9 +655,17 @@ in Bexar. The defect is therefore neither a pure label error nor a pure graph er
 multi-valued containment relation flattened to a single value, *with the annotation
 pipeline then selecting the marginal value. Framing it this way is both more accurate and
 more useful than calling it a data error, and it explains why the consensus diagnostic
-caught it. Note also that the adjudication note in `prepass_goldnoise_cwq.json` calls Comal
-"a neighbouring county," which understates the overlap — worth correcting there before it
-is quoted in the thesis.)*
+caught it.)*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Provenance discipline for this subsection.**
+*What the artifacts actually record is: Stage C's verdict* `gold_wrong` / `wrong_gold` *with
+the note "san antonio and its city council are in bexar county; gold gives comal county, a
+neighbouring county" (`prepass_goldnoise_cwq.json` — still uncorrected, and the "neighbouring"
+wording understates the overlap), and Stage A's census label* `kg_gap` *with the note
+"containment ambiguity in the source data (annexed territory, or Freebase simply having
+imprecise/multiple containment edges)". Write the flattened-multi-valued-relation argument on*
+that *evidence. Do* not *state a specific edge inventory (e.g. "the graph carries exactly these
+three containment edges") unless the Cypher is re-run and its output archived — it is not in
+any committed artifact.*
 
 9.9 Discussion
 &nbsp;&nbsp;&nbsp;&nbsp;9.9.1 What Agency Buys, and What It Costs
@@ -552,6 +687,18 @@ and the asymmetry must be stated rather than left for a reader to infer.)*
 10.2 Limitations
 
 10.3 Future Work
+&nbsp;&nbsp;&nbsp;&nbsp;**Structure this in two tiers, as `synthesis.md` §5 does, because the
+census supports different confidence levels.** *Tier one —* **defects with a clean repeated
+pattern behind them, not a hypothesis**: *(a) the entity-extraction bug (9 instances; stop
+defaulting to the sentence's grammatical subject); (b) the evaluator abandoning a
+solidly-scored relation and never returning (8 instances, scores up to 0.73); (c) the drafter
+hedging on a fact it has just stated with* `verifier_outcome: grounded` *(6 instances). Each is
+a named, counted failure mass, and each is small enough to fix. Tier two — architectural, each
+now* earned *by a labelled mass rather than asserted: adaptive decomposition gating,
+semantic-level verification, an explicit set-intersection operator for compound questions, and
+ordinal/literal support. The last of these was not in the original plan and belongs there on
+the numbers alone —* `kg_gap` *is the third-largest category overall at 44 and CWQ's single
+largest hedge category at 24.*
 &nbsp;&nbsp;&nbsp;&nbsp;10.3.1 Path Fidelity Against Gold SPARQL Relation Chains
 &nbsp;&nbsp;&nbsp;&nbsp;10.3.2 Logging Accepted Claims to Make Wrongful Acceptance Measurable
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(the fix for the §9.9.3 instrumentation
@@ -593,20 +740,31 @@ wrongful-acceptance class from anecdote to rate)*
 | 4 The Knowledge Environment | 10 | 9 |
 | 5 The AGR Framework | 11 | 13 |
 | 6 The Structural Verification Layer | 8 | 13 |
-| 7 Experimental Setup | 11 | — |
-| 8 Results | 12 | — |
-| 9 Error Analysis and Discussion | 10 | — |
-| 10 Conclusion | 5 | — |
-| **Body total** | **87** | **55 of 6 written** |
+| 7 Experimental Setup | 11 | 15 |
+| 8 Results | 12 | 12 |
+| 9 Error Analysis and Discussion | 10 | 15 |
+| 10 Conclusion | 5 | 6 |
+| **Body total** | **87** | **104 — all 10 written** |
 | References + Index + Appendices | ~12 | 6 + appendices |
 
-**Drift, as of Chapter 6.** Chapters 1–6 were budgeted at 49 pages and came in at
-56. Chapter 6 carries five of the seven: it holds an algorithm, the attribution-census
-table, a worked example, and the by-construction failure analysis, and none of those
-sections is padded (each is 1–2 pages). Chapter 5's two extra pages are the τ
-signal-maximum derivation and the design-validation table. If Chapters 7–10 land at
-budget the body reaches ~94, over the 90-page ceiling; the compression targets in that
-case are §2.6, §3.1, and §3.4 as noted below — **not** Chapters 6 or 9.
+**Final: the body is 104 pages, and the 90-page ceiling was crossed deliberately.**
+The author's decision, recorded so it is not revisited by accident: *cross the ceiling
+if needed.* Body runs pages 1–104; References begin on 105.
+
+Where the 17 pages over budget went, and why each is defensible if questioned:
+
+| Chapter | Over | Reason |
+|---|---:|---|
+| 6 Verification | +5 | Algorithm, attribution-census table, worked example, by-construction failure analysis. Each section is 1–2 pages. |
+| 7 Setup | +4 | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Compressed once (16 → 15) by tightening prose only. |
+| 9 Error Analysis | +5 | The census is a population of 259, not a sample; it carries three named mechanism findings, three counted defect families, and the benchmark-defect provenance argument. |
+| 5 Framework | +2 | τ signal-maximum derivation and the design-validation table. |
+| 10 Conclusion | +1 | Future work is two-tiered (earned repairs vs. architectural), which the census made possible. |
+
+**If a page cut is ever forced**, the order is unchanged: §2.6, §3.1, §3.4 first
+(background the committee already has), then Chapter 7's §7.4 and §7.6 enumerations
+into the appendices. **Chapters 6 and 9 stay off the table** — the verification
+specification and the error census are what distinguish this from a system report.
 
 **Chapter 9 is not a compression target** — decided deliberately, not under page
 pressure. It now carries three families in §9.3, four subsections in §9.5, and a
