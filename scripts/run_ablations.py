@@ -59,8 +59,8 @@ def main():
                                 final, time.time() - t0)
                     print(f'  [{q["qid"]}] ok')
                 except Exception as e:
-                    failures.append((q["qid"], repr(e)))     # log and continue;
-                    print(f'  [{q["qid"]}] FAILED: {e!r}')   # never lose a sweep to one question
+                    failures.append((q["qid"], repr(e)))     # record and continue, so one
+                    print(f'  [{q["qid"]}] FAILED: {e!r}')   # bad question cannot end the sweep
 
             print(f"=== {name}: {len(questions) - len(done) - len(failures)} ok, "
                 f"{len(failures)} failed ===")

@@ -1,13 +1,14 @@
 """Propagate manual gold-noise verdicts across all rows of
 results/phase4/prepass_goldnoise_{ds}.json that share a qid.
 
-Verdict is per-qid, not per-row (it describes the gold, and a qid can have
-several flagged rows -- one per disagreeing system). VERDICTS is populated
-below by reading whatever verdict/subtype/note is already set for each qid,
-then applied to any other row of that qid still marked "".
+A verdict is recorded per question ID rather than per row, because it
+describes the gold answer and one question can have several flagged rows, one
+for each disagreeing system. VERDICTS below is filled from whatever verdict,
+subtype and note is already set for a question ID, then applied to any
+remaining row of that question that is still blank.
 
-Idempotent: rows that already have a verdict are left untouched. CWQ qids
-are the full "<qid>_<32-char hash>" strings as they appear in the JSON."""
+Re-runnable: rows that already carry a verdict are left untouched. CWQ question
+IDs are the full "<qid>_<32-char hash>" strings as they appear in the JSON."""
 import json
 
 VERDICTS = {}

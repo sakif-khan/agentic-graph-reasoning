@@ -1,5 +1,6 @@
-"""
-Step 1.2: Union graph construction + answer coverage gate + CSV export.
+"""Build the union graph over the WebQSP and CWQ subgraphs, apply the answer
+coverage gate, and export nodes and relationships as CSV for neo4j-admin
+import.
 """
 
 import csv, gzip, json, re

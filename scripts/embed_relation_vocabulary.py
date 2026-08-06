@@ -12,7 +12,8 @@ def verbalize(rel: str) -> str:
 
 
 def main():
-    # 1. Collect distinct relation names from the CSV generated in Step 1.2
+    # 1. Collect distinct relation names from the CSV written by
+#    union_graph_construction.py
     rel_names = set()
     with gzip.open("data/rels.csv.gz", "rt", encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -26,7 +27,8 @@ def main():
     for rel_name, phrase in list(zip(rel_names, phrases))[:5]:
         print(f"{rel_name}  ->  {phrase}")
 
-    # 3. Embed with the SAME model used for entities (critical for comparability)
+    # 3. Embed with the same model used for entities, so the two vector spaces
+#    remain comparable
     model = get_embedder()
     vecs = model.encode(phrases, batch_size=256,
                         normalize_embeddings=True, show_progress_bar=True)

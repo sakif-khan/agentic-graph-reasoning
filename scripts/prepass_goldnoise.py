@@ -1,7 +1,8 @@
 """Flag questions where multiple independent systems converge on the
-same non-gold answer (candidate gold errors). Consensus across BOTH
-parametric and graph-based systems is stronger evidence than agreement
-among graph systems alone (which share a knowledge source)."""
+same non-gold answer, which makes the gold itself a candidate error.
+Agreement between a parametric system and a graph-based one is stronger
+evidence than agreement among graph systems alone, since those share a
+knowledge source and can be wrong together."""
 import json, re, unicodedata
 from collections import defaultdict
 from pathlib import Path

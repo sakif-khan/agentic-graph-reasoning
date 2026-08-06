@@ -2,9 +2,9 @@
 
 This is the synthesis layer on top of `annotation_taxonomy.md` (which defines the categories
 and subtypes) and the three label sources it merges (Stage D's main census, the rows Stage D
-found and later dropped, and Stage A's ablation-discordance census). Every qid, quote, and count
-below is pulled directly from the label files — nothing here is reconstructed from memory. Where
-a note says "eval correctly resolved X," that's quoting the actual trace, not a paraphrase.
+found and later dropped, and Stage A's ablation-discordance census). Every question ID, quotation
+and count below is taken directly from the label files, and quoted trace fragments such as "eval
+correctly resolved X" are verbatim rather than paraphrased.
 
 ## §1 — Method, in one paragraph
 
@@ -149,7 +149,7 @@ Five subtypes, and they cluster by mechanism, not just by dataset:
 ### decomposition_error (38 combined) — the planner/draft pipeline caused it
 
 The standout finding here is `extraction_bug` (9 of the 38 `decomposition_error` cases carry this
-exact subtype), and it's worth stating plainly: **on profession/"what did X do" questions, the
+exact subtype): **on profession/"what did X do" questions, the
 evaluator repeatedly resolves every correct gold value, states them verbatim in the answer text,
 and then `answer_entities` collapses to the subject entity alone.** Three near-identical
 instances, verified from the raw trace:
@@ -273,7 +273,7 @@ county), gets rejected, retries, resolves it *again*, and gets rejected again. `
 entities in one shot and the verifier still rejects it, forcing a retry that recovers only two
 names.
 
-**`other`** — a genuinely new, recurring mechanism that doesn't fit any existing subtype: the
+**`other`** — a recurring mechanism that fits none of the existing subtypes: the
 evaluator resolves the exact gold value, the verifier says `grounded`, and the *drafted text
 still hedges anyway* — no verifier rejection is involved at all, so it isn't `verifier_fn`.
 `WebQTest-689` (*"Spanish Language was spoken in Spain. The first language spoken in Spain could
@@ -306,7 +306,8 @@ Three distinct shapes:
   actual target. (webqsp and cwq both have clean cases of this; see `annotation_taxonomy.md`'s
   subtype table for the Stage-C-derived examples, since Stage D's own reading filed most of its
   intermediate-stop cases under `granularity` instead — the boundary between the two isn't always
-  crisp, and it's worth treating them as one family in any future retrospective pass.)
+  crisp, and a future retrospective pass would likely be better served treating them as one
+  family.)
 
 The throughline: none of these are cases where AGR "didn't know" anything — every one resolves a
 real, verifiably-true fact. The failure is entirely in *which* true fact gets surfaced. This is
@@ -368,8 +369,8 @@ Combined, that's 59 qids across both datasets where the benchmark itself, not AG
 that needed correcting — 41 excluded outright by Stage C before Stage D ever read them, 17 more
 still visible in the active census as `gold_noise`/`ambiguous_question` rows, and 1 that started
 as a Stage D finding and was later promoted to a formal Stage C exclusion (three disjoint counts;
-nothing here is double-counted). That's a real number, not a rounding error, and it's worth a real
-footnote — or its own paragraph — in whatever write-up cites AGR's headline accuracy numbers.
+nothing here is double-counted). At that scale it is not a rounding error, and it warrants an
+explicit note wherever AGR's headline accuracy numbers are reported.
 
 ## §5 — Implications
 

@@ -1,9 +1,10 @@
-"""Restore cold-run records into the canonical AGR WebQSP file,
-with strict verification. Run ONCE, then archive inputs.
+"""Restore cold-run records into the AGR WebQSP result file, with strict
+verification that the two runs agree on everything except timing.
 
-SPENT: already run; the .bak input was consumed and removed, and the merged
-output was promoted to results/phase4/test_webqsp_agr.jsonl. Kept for the
-record -- the absent paths below are expected, not breakage.
+This script has already been run. Its .bak input was consumed and removed and
+the merged output became results/phase4/test_webqsp_agr.jsonl, so the input
+paths below no longer exist. It is retained to document how that file was
+assembled.
 """
 import copy, json, sys
 
@@ -34,10 +35,10 @@ def main():
 
     for qid in sorted(overlap):
         for k in ("git", "budget_hash", "backbone", "run_config"):
-            assert cold[qid][k] == warm[qid][k], f"{qid}: {k} differs -- ABORT"
+            assert cold[qid][k] == warm[qid][k], f"{qid}: {k} differs"
         if normalized(cold[qid]) != normalized(warm[qid]):
-            sys.exit(f"{qid}: records differ beyond timing fields -- ABORT, "
-                     "keep the sidecar-filter approach instead")
+            sys.exit(f"{qid}: records differ beyond the timing fields; "
+                     "stopping rather than merging")
 
     order = [json.loads(l)["qid"] for l in open(WARM, encoding="utf-8")]
     with open(OUT, "w", encoding="utf-8") as f:

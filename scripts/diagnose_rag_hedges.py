@@ -1,5 +1,9 @@
-"""Among hedged questions, was gold in the retrieved sample?
-High rate => implementation problem; low => paradigm limit."""
+"""For the questions each retrieval baseline hedged on, check whether the gold
+answer was present in the text it retrieved.
+
+A high rate points to an implementation problem in the baseline; a low rate
+points to a limit of the retrieval paradigm itself.
+"""
 import json, unicodedata
 
 def norm(s): return unicodedata.normalize("NFKC", s).strip().lower()

@@ -1,9 +1,10 @@
-"""extract rater-vs-judge disagreement rows.
+"""Extract the rows where the human rater and the LLM judge disagree.
 
-Joins kappa_sheet.csv (your blind labels) with kappa_key.json (the judged
-sample, in sheet order), verifies alignment, enriches from judge_support.json,
-and writes results/phase4/tier2_judge/kappa_disagreements.json with a manual
-annotation placeholder.
+Joins kappa_sheet.csv (the blind hand labels) with kappa_key.json (the judged
+sample, in sheet order), checks that the two are aligned, enriches each row
+from judge_support.json, and writes
+results/phase4/tier2_judge/kappa_disagreements.json with an empty field for the
+adjudication note.
 """
 import csv, json, sys
 
@@ -14,7 +15,7 @@ def main():
     FULL = f"{T2}/judge_support.json"
     OUT = f"{T2}/kappa_disagreements.json"
 
-    # ---- load your labels, keyed by sheet idx ----
+    # ---- load the hand labels, keyed by sheet idx ----
     your = {}
     with open(SHEET, encoding="utf-8") as f:
         for row in csv.DictReader(f):
@@ -53,7 +54,7 @@ def main():
             "judge_label": judge_label,
             "direction": ("you-1/judge-0" if your[idx]["label"] == 1
                         else "you-0/judge-1"),
-            "disagreement_note": "",          # <- fill in manually
+            "disagreement_note": "",          # filled in by hand during adjudication
         })
         disagreements.append(enriched)
 

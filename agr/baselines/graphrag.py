@@ -2,7 +2,7 @@ import numpy as np
 
 from agr.budget import BudgetMeter
 from agr.baselines.common import BASELINE_SCHEMA, make_final, parse_entities
-from agr.baselines.vectorrag import PROMPT   # same answering prompt, deliberately
+from agr.baselines.vectorrag import PROMPT   # same answering prompt as the agent, so the comparison isolates retrieval
 
 
 def _words(rel: str) -> str:
@@ -10,9 +10,10 @@ def _words(rel: str) -> str:
 
 
 class StaticGraphRAG:
-    """One-shot 2-logical-hop neighborhood retrieval, no agency.
-    CVT contract mirrors KGTools.get_neighbors: mediator nodes are hopped
-    THROUGH (their two relations concatenated), never emitted as text."""
+    """One-shot two-logical-hop neighbourhood retrieval, with no agency.
+
+    The CVT contract mirrors KGTools.get_neighbors: mediator nodes are hopped
+    through, concatenating their two relations, and are never emitted as text."""
 
     BLOCK_PREFIXES = ["common.", "freebase.", "type.", "kg.",
                       "user.", "dataworld.", "rdf-schema#", "owl#"]

@@ -1,11 +1,11 @@
-"""Stage F: single source of truth for every number the thesis states.
+"""Stage F: collect every number the thesis reports into a single file.
 
-Parses the scoring/groundedness/census artifacts and emits
-`results/phase4/thesis_numbers.json`. Each block records its own source path so
-a claim in the prose can be traced back to the file that produced it, and so a
-rerun that moves a number tells you exactly which sentences to revisit.
+Parses the scoring, groundedness and census artifacts and writes
+results/phase4/thesis_numbers.json. Each block records the path it was parsed
+from, so a figure quoted in the prose can be traced back to the artifact that
+produced it, and a rerun that changes a value identifies the claims affected.
 
-Cite this file from the thesis; never re-transcribe a number by hand.
+The thesis quotes this file rather than transcribing numbers from the logs.
 
 Usage: python scripts/build_thesis_numbers.py
 """
@@ -104,16 +104,16 @@ def parse_tier2(path):
 
 
 def compute_kappa(sheet, key):
-    your = [int(r["your_label(1/0)"].strip())
-            for r in csv.DictReader(open(sheet, encoding="utf-8"))]
+    human = [int(r["your_label(1/0)"].strip())
+             for r in csv.DictReader(open(sheet, encoding="utf-8"))]
     judge = [int(bool(r["supported"]))
              for r in json.load(open(key, encoding="utf-8"))]
-    assert len(your) == len(judge), "row count mismatch"
-    n = len(your)
-    a = sum(1 for y, j in zip(your, judge) if y == 1 and j == 1)
-    b = sum(1 for y, j in zip(your, judge) if y == 1 and j == 0)
-    c = sum(1 for y, j in zip(your, judge) if y == 0 and j == 1)
-    d = sum(1 for y, j in zip(your, judge) if y == 0 and j == 0)
+    assert len(human) == len(judge), "row count mismatch"
+    n = len(human)
+    a = sum(1 for y, j in zip(human, judge) if y == 1 and j == 1)
+    b = sum(1 for y, j in zip(human, judge) if y == 1 and j == 0)
+    c = sum(1 for y, j in zip(human, judge) if y == 0 and j == 1)
+    d = sum(1 for y, j in zip(human, judge) if y == 0 and j == 0)
     po = (a + d) / n
     pe = (a + b) / n * (a + c) / n + (c + d) / n * (b + d) / n
     return {"n": n, "observed_agreement": round(po, 4),

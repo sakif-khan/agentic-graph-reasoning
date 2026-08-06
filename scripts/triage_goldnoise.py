@@ -1,6 +1,8 @@
-"""Auto-verdict the mechanical gold-noise cases,
-leaving only genuinely ambiguous ones for manual review.
-Idempotent: rows that already have a verdict are left untouched."""
+"""Assign verdicts to the mechanically decidable gold-noise cases, leaving
+only the genuinely ambiguous ones for manual review.
+
+Re-runnable: rows that already carry a verdict are left untouched.
+"""
 import json, re, unicodedata
 
 

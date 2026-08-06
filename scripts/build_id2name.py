@@ -1,4 +1,4 @@
-"""One-time: build data/id2name.json ({id: name}) from data/nodes.csv.gz."""
+"""Build data/id2name.json, an {id: name} mapping, from data/nodes.csv.gz."""
 import csv, gzip, json
 
 

@@ -28,7 +28,7 @@ def explorer_node(state, tools, scorer):
 
     banned = {tuple(b) for b in state["banned"]}
 
-    # ---- gather candidates from ALL anchors ----
+    # ---- gather candidates from every anchor ----
     all_rows = []
     for anchor in state["anchors"]:
         for row in tools.get_relations(anchor["id"]):
@@ -112,7 +112,7 @@ def evaluator_node(state, llm, scorer):
     objective = (render_objective(state["plan"], idx)
                  if idx is not None else state["question"])
 
-    facts = scorer.top_facts(objective, state["traversed"], k=30)   # Fix 3
+    facts = scorer.top_facts(objective, state["traversed"], k=30)
     facts_str = "\n".join(
         f'- {t["h_name"]} --{"/".join(t["r"])}--> {t["t_name"]}'
         for t in facts) or "(none)"
@@ -135,7 +135,7 @@ def evaluator_node(state, llm, scorer):
     resolved = [{"id": name_to_id[n], "name": n}
                 for n in out.get("resolved", []) if n in name_to_id]
 
-    # Fix 4: accumulate EVERY resolution, done or not
+    # accumulate every resolution, whether or not the objective is done
     cand = {c["id"]: c for c in state["candidate_answers"]}
     for r in resolved:
         cand.setdefault(r["id"], r)
@@ -216,10 +216,11 @@ def backtracker_node(state, run_config):
 
 # ------------------------------ verifier ------------------
 
-# CACHE INVARIANT: this prompt must NOT contain alpha, tau, or any RunConfig
-# value. Alpha blends AFTER the LLM call, so scorer responses are shared
-# across all sweep conditions via the cache. Adding config-dependent wording
-# here silently multiplies sweep cost by the number of conditions.
+# Cache invariant: this prompt must not contain alpha, tau or any other
+# RunConfig value. Alpha is blended in after the LLM call, so scorer
+# responses are shared across every sweep condition through the cache.
+# Config-dependent wording here would multiply the cost of a sweep by the
+# number of conditions.
 DRAFT_PROMPT = """Question: {question}
 Facts retrieved from the knowledge graph:
 {facts}
@@ -365,11 +366,13 @@ def verifier_node(state, tools, llm, scorer, run_config):
 # ------------------------------ answerer ------------------------------
 def filter_answer_entities(draft_entities, supported, unsupported):
     """Deterministic entity selection for the give_up path.
-    Keep a draft entity iff it appears in >=1 supported claim, OR appears in
-    no unsupported claim (conservative: entities the decomposer never
-    claimed are retained -- we punish unsupported assertions, not
-    decomposition recall). Strings are copied verbatim; nothing is ever
-    added that was not in the draft's own list."""
+
+    A draft entity is kept if it appears in at least one supported claim, or if
+    it appears in no unsupported claim. The second condition is deliberately
+    conservative: entities the decomposer never turned into a claim are
+    retained, because the penalty is meant to fall on unsupported assertions
+    rather than on incomplete decomposition. Strings are copied verbatim, and
+    nothing is added that was not already in the draft's own list."""
     sup = {c["h"] for c in supported} | {c["t"] for c in supported}
     unsup = {c["h"] for c in unsupported} | {c["t"] for c in unsupported}
     return [e for e in draft_entities if e in sup or e not in unsup]

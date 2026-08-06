@@ -1,7 +1,9 @@
-"""Build certified, stratified test samples from the RoG TEST splits.
-Outputs: results/phase4/test_webqsp.json, results/phase4/test_cwq.json
-(+ certification).
-Run ONCE. Never edit the outputs. Seed and sample IDs are the record.
+"""Build certified, stratified test samples from the RoG test splits.
+
+Writes results/phase4/test_webqsp.json and results/phase4/test_cwq.json along
+with their coverage certification. The sample is fixed by the seed set below,
+and the outputs are treated as read-only once generated: the question IDs they
+contain define the evaluation set that every later phase reports against.
 """
 import json, random
 from collections import Counter, defaultdict
@@ -77,7 +79,7 @@ def main():
         if SAMPLE_SIZE is None or SAMPLE_SIZE >= len(pool):
             sample = pool
         else:
-            # proportional allocation, unreachable stratum included deliberately
+            # proportional allocation; the unreachable stratum is kept, not filtered
             by = defaultdict(list)
             for r in pool:
                 by[r["stratum"]].append(r)

@@ -12,7 +12,7 @@ from agr.runlog import RunLogger
 
 
 def main():
-    # ---- experimental condition: the ONLY thing you edit between sweep runs ----
+    # ---- experimental condition: the only setting varied between sweep runs ----
     budget_cfg = BudgetConfig()          # max_llm_calls now defaults to 25
     RUN_NAME = f"smoke20_a{run_cfg.alpha}_t{run_cfg.tau}"
 
@@ -30,8 +30,8 @@ def main():
                        budget_cfg=budget_cfg,
                        run_config=run_cfg.as_dict())
 
-    # hand-pick from your dev splits: 6x 1-hop, 8x 2-hop composition,
-    # 3x conjunction, 2x CVT-heavy, 1x unanswerable(fake entity)
+    # Hand-picked from the dev splits: 6 one-hop, 8 two-hop composition,
+    # 3 conjunction, 2 CVT-heavy, 1 unanswerable (fake entity).
     QUESTIONS = json.load(open("results/phase3/smoke20.json", encoding="utf-8"))
     # each: {"qid":..., "question":..., "gold_q_entities":[...], "answers":[...]}
 

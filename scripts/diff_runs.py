@@ -1,4 +1,5 @@
-# paired per-question comparison of two RunLogger files.
+# Paired per-question comparison of two RunLogger files: prints every question
+# where the two runs asserted different answer entities.
 import json, sys
 
 def load(p):

@@ -1,5 +1,6 @@
-"""surface-form near-miss + gold-noise flags over AGR's
-main-matrix wrong answers, to focus manual reading."""
+"""Flag surface-form near-misses and candidate gold-noise cases among AGR's
+wrong answers on the main matrix, to narrow down what needs manual reading.
+"""
 import json, re, unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path

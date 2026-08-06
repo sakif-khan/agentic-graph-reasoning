@@ -7,9 +7,8 @@ and a one-sentence `note` pinpointing where the trajectory *first* left the corr
 
 Convention for the verifier categories: the verifier's *positive* class is "claim is
 supported". A **false negative** is therefore a claim wrongly **rejected** (hedged a right
-one); a **false positive** is a claim wrongly **accepted** (passed a wrong one). The gloss
-below previously paired these in the opposite order; it has been corrected to match both
-the standard convention and how the Stage D labels actually use the names.
+one); a **false positive** is a claim wrongly **accepted** (passed a wrong one). This is
+the standard convention, and it is the one the Stage D labels use.
 
 | category | subtypes | meaning |
 |---|---|---|
@@ -21,8 +20,8 @@ the standard convention and how the Stage D labels actually use the names.
 | `kg_gap` | `date_literal`, `numeric_literal`, `temporal_qualifier`, `ordinal`, `data_error` | environment can't express it |
 | `answer_selection` | — | correct candidate retrieved, drafter chose another |
 | `echo` | `topic`, `intermediate`, `granularity` | the shared-attractor pattern |
-| `gold_noise` / `ambiguous_question` | see [below](#gold_noise--ambiguous_question-subtypes-from-stage-c) | escaped Stage C's net (should be rare now) |
-| `other` | — | genuinely new — flag for discussion |
+| `gold_noise` / `ambiguous_question` | see [below](#gold_noise--ambiguous_question-subtypes-from-stage-c) | a defect in the gold or the question that Stage C did not catch |
+| `other` | — | fits none of the categories above |
 
 ## `gold_noise` / `ambiguous_question` subtypes (from Stage C)
 
@@ -53,9 +52,8 @@ Normalizing `family` also surfaced a handful of rows where the original label di
 row's own note/verdict (e.g. `type_mismatch` cases filed under a generic relation-mismatch
 family when the note said the *gold* had the wrong type, not the system; a two-part
 "malformed_question" case filed under a gold-defect family when the defect was in the question).
-These were re-filed by content, not by blind string substitution — `verdict` (which is what
-`census_exclusions.json` is actually derived from) was untouched and re-verified to still match
-exactly.
+Each of these was re-filed against the content of its own note. The `verdict` field, from which
+`census_exclusions.json` is derived, was left unchanged.
 
 One row, `WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27` (cwq), was adjudicated during this
 cleanup rather than left as originally filed: Stage C had called it `gold_ok`/`echo` (multiple
@@ -66,9 +64,9 @@ plays in the same film — a `type_mismatch` gold defect, and AGR's answer is co
 `verdict: gold_wrong` / `family: gold_noise` / `subtype: type_mismatch` in
 `prepass_goldnoise_cwq.json`, added to `census_exclusions.json`, and the matching row in
 `labels_cwq.csv` (found independently during the Stage D reading, also as `gold_noise`) had its
-subtype and note tightened to match. This is the `gold_noise`/`ambiguous_question`-"escaped
-Stage C's net" case the taxonomy table already anticipated — not a new problem, the intended
-safety net catching a real one.
+subtype and note tightened to match. This is the case the `gold_noise`/`ambiguous_question` row
+of the taxonomy table exists to catch: a gold defect that survived Stage C and was picked up in
+the Stage D reading.
 
 ## Notes from this reading pass
 

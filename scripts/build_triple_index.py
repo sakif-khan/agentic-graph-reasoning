@@ -1,4 +1,5 @@
-"""One-time: embed every verbalized triple to a memmapped fp16 matrix."""
+"""Embed every verbalized triple into a memmapped fp16 matrix and build the
+FAISS index that the VectorRAG baseline searches at run time."""
 import csv, gzip, json, re, faiss
 import numpy as np
 from agr.runtime import get_embedder
@@ -13,7 +14,7 @@ def main():
     with gzip.open("data/rels.csv.gz", "rt", encoding="utf-8") as f:
         r = csv.DictReader(f)
         id2name = json.load(open("data/id2name.json", encoding="utf-8"))  # build
-        # from nodes.csv.gz once if you don't have it: {id: name}
+        # {id: name}; build it from nodes.csv.gz with scripts/build_id2name.py
         for row in r:
             h, t = id2name.get(row[":START_ID"]), id2name.get(row[":END_ID"])
             if not h or not t:

@@ -1,4 +1,5 @@
-"""One-shot backbone sanity check: params accepted? hidden tokens zero?"""
+"""Check that the backbone accepts the configured parameters and reports zero
+hidden reasoning tokens."""
 from openai import OpenAI
 from agr.env import OPENAI_API_KEY
 

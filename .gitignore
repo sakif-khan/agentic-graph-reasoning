@@ -1,5 +1,5 @@
 # ==========================================
-# Environments & Secrets (CRITICAL)
+# Environments & Secrets
 # ==========================================
 .env
 .venv
@@ -25,10 +25,10 @@ __pycache__/
 .idea/
 
 # ==========================================
-# Data & Datasets (Prevent Repo Bloat)
+# Data & Datasets
 # ==========================================
-# It is usually best to ignore the entire data folder, 
-# or specific large file formats common in training/graphs
+# The knowledge environment is rebuilt from the source datasets rather than
+# committed: see scripts/union_graph_construction.py and the Phase 1 scripts.
 cache/
 datasets/
 data/triple_index/
@@ -51,8 +51,9 @@ checkpoints/
 # ==========================================
 # Logs, Profiling & Experiment Tracking
 # ==========================================
-# Experiment artifacts live in results/phase{1..4}/, never here. `scratch/` is
-# throwaway output from the ad-hoc probes (run_one.py, verify_planner_noop.py).
+# Experiment artifacts are committed under results/phase{1..4}/. scratch/ holds
+# the incidental output of the single-question probes run_one.py and
+# verify_planner_noop.py, which is not part of the experimental record.
 scratch/
 temp/
 *.log

@@ -1,4 +1,4 @@
-"""qids excluded from the census."""
+"""Collect the question IDs excluded from the failure census."""
 
 def main():
     import json
@@ -17,7 +17,7 @@ def main():
         unfilled = [f["qid"] for f in flags if not f.get("verdict")]
         assert not unfilled, f"{ds}: {len(unfilled)} rows still unadjudicated"
 
-        # a verdict describes the GOLD, so every row of a qid must agree
+        # a verdict describes the gold answer, so every row of a question must agree
         by_qid = defaultdict(set)
         for flag in flags:
             by_qid[flag["qid"]].add(flag["verdict"])

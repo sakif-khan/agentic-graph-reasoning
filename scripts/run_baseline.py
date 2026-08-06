@@ -1,6 +1,10 @@
-"""Run one baseline system over one test file.
-Usage: python scripts\run_baseline.py <system> <test_file.json>
-  system in {noretrieval, vectorrag, graphrag, tog}
+"""Run the baseline systems over the Phase 4 test files.
+
+Usage: python scripts/run_baseline.py
+
+Runs each of noretrieval, vectorrag, graphrag and tog over both test sets and
+writes results/phase4/{test_set}_{system}.jsonl. Completed questions are read
+back from an existing log and skipped, so the script can be resumed.
 """
 import json, sys, time
 from pathlib import Path

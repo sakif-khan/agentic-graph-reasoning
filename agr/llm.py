@@ -18,8 +18,8 @@ class LLMClient:
                  temperature: float | None = 0.0,
                  reasoning_effort: str | None = None,
                  cache_dir: str | None = "cache"):
-        """cache_dir=None disables caching (e.g. for the qualification
-        script, where you want genuinely live calls)."""
+        """cache_dir=None disables caching, as required by the qualification
+        script, which must issue genuinely live calls."""
         self.client = OpenAI(api_key=api_key)
         self.model = model
         self.temperature = temperature

@@ -49,10 +49,11 @@ print(sc('where was the person born', [{'rel':'people.person.place_of_birth','di
 The birth relation must outscore the genre relation.
 """
 
-# CACHE INVARIANT: this prompt must NOT contain alpha, tau, or any RunConfig
-# value. Alpha blends AFTER the LLM call, so scorer responses are shared
-# across all sweep conditions via the cache. Adding config-dependent wording
-# here silently multiplies sweep cost by the number of conditions.
+# Cache invariant: this prompt must not contain alpha, tau or any other
+# RunConfig value. Alpha is blended in after the LLM call, so scorer
+# responses are shared across every sweep condition through the cache.
+# Config-dependent wording here would multiply the cost of a sweep by the
+# number of conditions.
 SCORE_PROMPT = """Sub-objective: {objective}
 
 Candidate knowledge-graph edges (anchor entity --relation-->):

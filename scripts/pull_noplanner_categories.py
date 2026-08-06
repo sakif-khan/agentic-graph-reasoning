@@ -3,14 +3,14 @@
 Transcribes Stage A's inline **category:**/**subtype:**/**note:** fields
 (already normalized to the project's closed category vocabulary) out of
 results/phase4/ablations/noplanner_discordant_{webqsp,cwq}.md into a
-machine-readable CSV with the same qid,kind,category,subtype,note schema
-as labels_{ds}.csv -- so synthesize_census.py can merge Stage A into the
-histogram without hand transcription.
+machine-readable CSV using the same qid,kind,category,subtype,note schema as
+labels_{ds}.csv, so that synthesize_census.py can merge Stage A into the
+histogram without further hand transcription.
 
-`kind` (wrong/hedge) is derived from the full-pipeline (with-planner)
-column's own entities cell: empty -> hedge, non-empty -> wrong. Stage A's
-own framing is "noplanner succeeded, full pipeline did not" -- the full
-pipeline's failure is what we're categorizing, same as Stage D.
+`kind` (wrong or hedge) is derived from the entities cell of the full
+pipeline column: empty means hedge, non-empty means wrong. Stage A selects the
+cases where the no-planner ablation succeeded and the full pipeline did not, so
+it is the full pipeline's failure that is categorized here, as in Stage D.
 
 Writes: results/phase4/ablations/noplanner_categories_{webqsp,cwq}.csv
 """
@@ -27,8 +27,8 @@ VALID_CATEGORIES = {
 
 
 def kind_of(block):
-    """wrong vs hedge, from the full (with-planner) column's entities cell
-    -- the first data column in the comparison table, not noplanner's."""
+    """Wrong vs hedge, read from the entities cell of the full pipeline column,
+    which is the first data column of the comparison table."""
     m = re.search(r"\|\s*entities\s*\|\s*(.*?)\s*\|", block)
     if not m:
         return ""

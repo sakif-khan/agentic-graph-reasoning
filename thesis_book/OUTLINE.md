@@ -16,9 +16,9 @@ the thesis chapter by chapter before opening the future-work discussion.
 
 Every figure the thesis states comes from `results/phase4/thesis_numbers.json`, generated
 by `scripts/build_thesis_numbers.py` from the scoring, groundedness, judge, and census
-artifacts. Do not transcribe a number from a log by hand, and do not hand-edit that file —
-rerun the script. Each block records the artifact it was parsed from, so if a rerun moves a
-value you can find the sentences that depend on it.
+artifacts. Numbers are not transcribed from the logs by hand, and that file is regenerated
+rather than edited. Each block records the artifact it was parsed from, so a rerun that
+changes a value identifies the sentences depending on it.
 
 ### Terminology discipline
 
@@ -41,14 +41,13 @@ rejected one**. Define this once in §9.5.1 and use plain English thereafter, be
 `supported`/`unsupported` outputs a reader has no reliable way to infer which class is
 "positive".
 
-*Resolved — the three source corrections below are already applied; recorded here so the
-provenance survives into Appendix D.* The gloss at `annotation_taxonomy.md:14` originally
-paired the names in the reverse order and has been corrected, with the convention now
-stated above the table. Stage D's labels always followed the standard convention and were
-left untouched. Two rows did not and were relabelled: the De Niro case (§9.3.1, → 
-`answer_selection`) and the MacFarlane case (§9.5.3, → `verifier_fp`, Stage A having used
-the reversed convention). `results/phase4/synthesize_census_log.txt` was regenerated
-afterwards.
+Three source corrections underlie that convention, recorded here so the provenance carries
+into Appendix D. The gloss in `annotation_taxonomy.md` originally paired the names in the
+reverse order and has been corrected, with the convention now stated above the table.
+Stage D's labels followed the standard convention throughout and were left untouched. Two
+rows did not and were relabelled: the De Niro case (§9.3.1, → `answer_selection`) and the
+MacFarlane case (§9.5.3, → `verifier_fp`, Stage A having used the reversed convention).
+`results/phase4/synthesize_census_log.txt` was regenerated afterwards.
 
 ---
 

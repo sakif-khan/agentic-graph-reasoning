@@ -102,8 +102,8 @@ certified nothing, and \Cref{sec:verify-failure-modes} returns to what that
 means for the outcome label they received.
 
 \section{Two-Stage Claim Checking}\label{sec:two-stage}
-% Call these the STRUCTURAL CHECK and the ENTAILMENT CHECK. Never "Tier 1 /
-% Tier 2" --- "tier" is reserved for the groundedness metric in
+% Terminology: these are the structural check and the entailment check, not
+% "Tier 1 / Tier 2". The word "tier" is reserved for the groundedness metric in
 % Chapter~\ref{ch:setup}.
 
 Each claim is routed through at most three tests: two structural, one
@@ -538,10 +538,10 @@ prevent.
 
 \section{Failure Modes by Construction: Wrongful Rejection and Wrongful
   Acceptance}\label{sec:verify-failure-modes}
-% Analytical, derived from the design rather than the data ---
-% Section~\ref{sec:verifier-errors} has empirical specimens for both polarities,
-% so name the mechanism each one instantiates and forward-reference them. Use
-% the polarity vocabulary fixed in Section~\ref{sec:polarities}; no fn/fp here.
+% Analytical section, derived from the design rather than from the data.
+% Section~\ref{sec:verifier-errors} carries empirical specimens of both
+% polarities; each mechanism named here forward-references them. Uses the
+% polarity vocabulary fixed in Section~\ref{sec:polarities} rather than fn/fp.
 
 This section is analytical. It enumerates the ways the layer can be wrong that
 follow from its design, independently of how often they occur. Which of these

@@ -1,20 +1,21 @@
 """Stage D input generator.
 
-Builds the manual-census reading packets for AGR's genuine failures
-(wrongs + hedges), excluding: Stage-C gold-noise/ambiguous qids,
-Stage-B surface-form near-misses, and Stage-A (noplanner census) qids
-already categorized.
+Builds the manual-census reading packets for AGR's genuine failures, both
+wrong answers and hedges. Excluded are the Stage C gold-noise and ambiguous
+question IDs, the Stage B surface-form near-misses, and the Stage A no-planner
+question IDs that have already been categorized.
 
-Full census for BOTH datasets (no sampling; supersedes the earlier CWQ
-stratified sample). Wrongs and hedges remain separate strata -- never
-pool them into one histogram.
+Both datasets are read in full rather than sampled. Wrong answers and hedges
+are kept as separate strata throughout, because they describe different failure
+classes and pooling them into one histogram would conflate the two.
 
-Idempotent: filled labels in an existing labels_{ds}.csv are carried
-forward by qid. New qids get blank rows to read; labels whose qid left
-the population (e.g. newly adjudicated gold noise) are saved to
-labels_{ds}_dropped.csv, never silently discarded.
+Re-runnable: labels already filled in an existing labels_{ds}.csv are carried
+forward by question ID, so hand edits survive. New question IDs are added as
+blank rows. Labels whose question ID has left the population, for example after
+a case is adjudicated as gold noise, are written to labels_{ds}_dropped.csv
+rather than dropped.
 
-Outputs failures_{ds}.md + labels_{ds}.csv + sampling_manifest.json.
+Outputs failures_{ds}.md, labels_{ds}.csv and sampling_manifest.json.
 """
 import csv, json, unicodedata
 from pathlib import Path

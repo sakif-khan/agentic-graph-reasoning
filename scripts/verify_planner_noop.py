@@ -1,15 +1,21 @@
-"""One-off: prove the planner.py edit didn't change frozen (use_planner=True)
-behavior. Run once after any edit to planner_node; not part of the pipeline."""
+"""Confirm that an edit to planner_node left the frozen configuration
+(use_planner=True) untouched.
+
+Replays one question that was run many times during the Phase 3 sweep at the
+frozen settings, so every prompt it issues should already be in the cache. If
+the run is served entirely from cache, the edit did not perturb the prompt path.
+Run after editing agr/planner.py; not part of the pipeline.
+"""
 import json
 from pathlib import Path
 
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.state import make_init_state
-from agr.config import RunConfig       # NOT FROZEN's package-level singleton --
-                                       # construct explicitly so this check
-                                       # doesn't accidentally exercise a
-                                       # different object than build_graph gets
+from agr.config import RunConfig       # constructed explicitly rather than
+                                       # reusing the package-level singleton, so
+                                       # this check exercises the same object
+                                       # build_graph receives
 from agr.budget import BudgetConfig
 from agr.graph_build import build_graph
 from agr.runtime import get_driver, get_embedder, get_llm, get_scorer
@@ -19,18 +25,19 @@ def main():
     embed = get_embedder()
     llm = get_llm()
 
-    rc = RunConfig()            # defaults ARE the frozen values: a=0.7, t=0.2,
-                                # verify_claims=True, use_planner=True
+    rc = RunConfig()            # defaults are the frozen values: alpha=0.7,
+                                # tau=0.2, verify_claims and use_planner both on
     budget_cfg = BudgetConfig()
-    # the certificate is the printed assertion, not this tool log -- throwaway
+    # the result of this check is the printed assertion; the tool log is
+    # incidental and goes to the untracked scratch directory
     Path("scratch").mkdir(exist_ok=True)
     tools = KGTools(driver, EntityResolver(driver, embed),
                     "scratch/_verify_planner_tools.jsonl")
     scorer = get_scorer(rc.alpha)
     agr = build_graph(llm, tools, scorer, rc)
 
-    # any dev80 qid -- it was run many times across the Phase 3 sweep at exactly
-    # this config, so its prompts are guaranteed to be cache-resident
+    # Any dev80 question works; this one was run repeatedly during the Phase 3
+    # sweep at this configuration, so its prompts are certain to be cached.
     q = next(q for q in json.load(open("results/phase3/dev80.json",
                                     encoding="utf-8"))
             if q["qid"] == "WebQTrn-3525")   # "where did mendeleev died"
@@ -45,8 +52,8 @@ def main():
     print("answer:", final["answer"])
     print("llm_calls:", snap["llm_calls"], " cache_hits:", snap["cache_hits"])
     assert snap["cache_hits"] == snap["llm_calls"] > 0, \
-        "NOT fully cached -- planner.py edit changed the frozen prompt path!"
-    print("PASS: fully cache-replayed, frozen path unaffected by planner.py edit.")
+        "not fully cached: the planner edit changed the frozen prompt path"
+    print("pass: fully cache-replayed, frozen path unaffected by the edit.")
 
     driver.close()
 

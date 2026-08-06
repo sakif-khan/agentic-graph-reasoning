@@ -2,8 +2,10 @@ from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.runtime import get_driver, get_embedder
 
-NAME = "Justin Bieber"          # <- an entity that exists in YOUR graph
-REL = "people.person.parents"   # <- a relation it really has
+# Smoke-check the five KG tools against a live Neo4j instance. Set these to an
+# entity present in the loaded graph and a relation that entity actually has.
+NAME = "Justin Bieber"
+REL = "people.person.parents"
 
 
 def main():

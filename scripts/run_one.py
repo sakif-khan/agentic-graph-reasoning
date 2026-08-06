@@ -14,8 +14,8 @@ def main():
     embed = get_embedder()
     llm = get_llm()
 
-    # ad-hoc single-question probe: its tool log is throwaway, so it goes to
-    # the untracked scratch dir, never into results/
+    # Single-question probe for manual inspection. Its tool log is not an
+    # experiment artifact, so it is written to the untracked scratch directory.
     Path("scratch").mkdir(exist_ok=True)
     tools = KGTools(driver, EntityResolver(driver, embed), "scratch/tools.jsonl")
     scorer = EmbeddingScorer("data/relation_embeddings.npy", "data/relation_names.json")

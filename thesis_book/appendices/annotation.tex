@@ -1,48 +1,52 @@
 \chapter{Annotation Instructions and Label Schema}\label{app:annotation}
 
-% Reproduce the category/subtype table from
-% results/phase4/annotation_taxonomy.md, whose fn/fp gloss has been corrected and
-% which now states the convention explicitly above the table.
+% Reproduces the category and subtype table from
+% results/phase4/annotation_taxonomy.md, which states the false
+% positive / false negative convention above the table.
 %
-% WHICH LABEL FILES ARE AUTHORITATIVE (they are not all the same):
-%   - labels_{ds}.csv           -- authoritative. dump_failure_packets.py
-%                                  rewrites it but CARRIES existing labels
-%                                  forward, so hand edits survive a re-run.
-%   - noplanner_categories_{ds}.csv -- GENERATED, no carry-forward. Edit
-%                                  noplanner_discordant_{ds}.md instead (the
-%                                  **category:**/**subtype:**/**note:** fields);
-%                                  pull_noplanner_categories.py transcribes it.
-%                                  Editing the CSV directly is silently undone
-%                                  on the next run.
-%   - labels_{ds}_dropped.csv   -- LIVE INPUT to the histogram, not an archive:
-%                                  synthesize_census.py merges its rows and
-%                                  counts them in the total (cwq: 157 + 1 + 15
-%                                  = 173). It is also the one artifact nothing
-%                                  regenerates -- dump_failure_packets.py writes
-%                                  it only when a row leaves the population, so
-%                                  once the census is fully labelled a re-run
-%                                  will NOT recreate it. Never delete it;
-%                                  recover from git history if lost.
-%   - sampling_manifest.json    -- write-only; nothing reads it back. Its
-%                                  labels_carried/to_read/dropped fields are
-%                                  progress counters that go to 157/0/0 once
-%                                  annotation completes. The thesis cites only
-%                                  population_wrong/hedge, n_skipped, and mode,
-%                                  which are stable across re-runs.
-%   - synthesize_census_log.txt, thesis_numbers.json -- pure outputs. Never edit.
+% How the label files relate to one another:
+%
+%   labels_{ds}.csv
+%       The hand-labelled census. dump_failure_packets.py rewrites the file but
+%       carries existing labels forward by question ID, so hand edits survive a
+%       re-run.
+%
+%   noplanner_categories_{ds}.csv
+%       Generated, with no carry-forward. Labels belong in the category,
+%       subtype and note fields of noplanner_discordant_{ds}.md, which
+%       pull_noplanner_categories.py transcribes into this CSV. An edit made
+%       directly to the CSV is overwritten on the next run.
+%
+%   labels_{ds}_dropped.csv
+%       An input to the histogram rather than an archive: synthesize_census.py
+%       merges its rows into the totals (cwq: 157 + 1 + 15 = 173). Nothing
+%       regenerates it, because dump_failure_packets.py writes it only at the
+%       moment a row leaves the population; once the census is fully labelled a
+%       re-run will not recreate it. If it is lost, recover it from git history.
+%
+%   sampling_manifest.json
+%       Written but never read back. Its labels_carried, to_read and dropped
+%       fields are progress counters that reach 157/0/0 when annotation
+%       completes. The thesis cites only population_wrong, population_hedge,
+%       n_skipped and mode, which are stable across re-runs.
+%
+%   synthesize_census_log.txt, thesis_numbers.json
+%       Outputs; regenerated rather than edited.
 %
 % Regeneration order after any relabelling:
 %   pull_noplanner_categories.py -> synthesize_census.py -> build_thesis_numbers.py
 %
-% Record the label-correction provenance here so it survives into the thesis:
-%   - annotation_taxonomy.md:14 -- gloss had the fn/fp pair reversed relative to
-%     both the standard convention and Stage D's own usage; corrected.
-%   - Stage D's labels always followed the standard convention; untouched.
-%   - WebQTrn-1294 (De Niro) -- verifier_fn -> answer_selection; the verifier was
-%     correct and the error was upstream in the answerer.
-%   - WebQTrn-1597 (MacFarlane) -- verifier_fn -> verifier_fp; Stage A had used
-%     the reversed convention.
-%   - results/phase4/synthesize_census_log.txt regenerated afterwards; totals
-%     unchanged, three CWQ hedge rows moved.
+% Provenance of the label corrections, to be carried into this appendix:
+%   - The gloss in annotation_taxonomy.md paired the false positive and false
+%     negative names in the reverse of the standard convention and of Stage D's
+%     own usage. It was corrected and the convention is now stated explicitly.
+%   - Stage D's labels followed the standard convention throughout and were not
+%     changed.
+%   - WebQTrn-1294 (De Niro): verifier_fn -> answer_selection. The verifier was
+%     correct; the error was upstream, in the answerer.
+%   - WebQTrn-1597 (MacFarlane): verifier_fn -> verifier_fp, Stage A having
+%     used the reversed convention.
+%   - results/phase4/synthesize_census_log.txt was regenerated afterwards. The
+%     totals are unchanged; three CWQ hedge rows moved between categories.
 
 \endinput

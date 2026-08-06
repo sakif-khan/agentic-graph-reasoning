@@ -36,7 +36,7 @@ def classify_path(session, q_names, a_names):
 
 def bucket_of(question: str, n_topics: int, hops: int, via_cvt: bool):
     """Priority-ordered, mutually exclusive assignment. Returns None if the
-    record fits no bucket we sample (e.g. 3+ hop plain paths)."""
+    record fits none of the sampled buckets, e.g. plain paths of 3+ hops."""
     if DATE_CONSTRAINT.search(question):
         return "unanswerable_env"
     if n_topics >= 2:

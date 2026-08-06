@@ -1,21 +1,22 @@
-"""Stage E1: merged failure histogram (Stage A + Stage D), per dataset,
-wrong and hedge always kept separate.
+"""Stage E1: merge the Stage A and Stage D failure censuses into one
+histogram per dataset, keeping wrong answers and hedges separate.
 
-Sources merged, none double-counted (each qid lives in exactly one):
-  - labels_{ds}.csv            Stage D's main census
-  - labels_{ds}_dropped.csv    Stage-D-discovered gold_noise/ambiguous_question
-                                cases later promoted to formal Stage-C
-                                exclusions -- kept here so a case like
-                                WebQTrn-64_d8e43a... (found during Stage D
-                                reading, then excluded from re-generated
-                                census) doesn't silently vanish from the count
-  - ablations/noplanner_categories_{ds}.csv   Stage A (run
-      pull_noplanner_categories.py first; skipped with a note if missing)
+Three label sources are merged. Each question ID appears in exactly one of
+them, so nothing is double-counted:
 
-Prints wrong and hedge as separate histograms per dataset -- never pooled
-into one, per this project's own sampling guideline (wrong = reasoning
-error, hedge = usually a retrieval/coverage gap; pooling them conflates
-two different failure classes).
+  - labels_{ds}.csv
+        Stage D's main census.
+  - labels_{ds}_dropped.csv
+        Cases found during Stage D reading that were later promoted to formal
+        Stage C exclusions. They are counted here so that a case removed from
+        the regenerated census still appears in the totals.
+  - ablations/noplanner_categories_{ds}.csv
+        Stage A. Run pull_noplanner_categories.py first; if the file is absent
+        this source is skipped and the omission is noted in the output.
+
+Wrong answers and hedges are printed as separate histograms and are never
+pooled: a wrong answer is a reasoning error, whereas a hedge is usually a
+retrieval or coverage gap, and combining them would hide that distinction.
 """
 import csv
 from collections import Counter

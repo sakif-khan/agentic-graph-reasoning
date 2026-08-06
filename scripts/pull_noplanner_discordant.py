@@ -1,7 +1,9 @@
-"""scripts/pull_noplanner_discordant.py — extract WebQSP/CWQ questions where
-noplanner got the hit and full-AGR (with planner) did not, with full trace
-comparison for manual reading.
-Writes results/phase4/ablations/noplanner_discordant_{webqsp,cwq}.md
+"""Extract the WebQSP and CWQ questions the no-planner ablation answered
+correctly and the full pipeline did not, with a side-by-side trace comparison
+for manual reading.
+
+Writes results/phase4/ablations/noplanner_discordant_{webqsp,cwq}.md, whose
+category and note fields are then filled in by hand.
 """
 import json
 import unicodedata
