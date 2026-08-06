@@ -23,7 +23,7 @@ needs a **2.6-million-node Neo4j graph** that you have to build yourself, and
 every question costs real OpenAI API calls. Budget accordingly:
 
 | | |
-|---|---|
+| --- | --- |
 | **Clone size** | ~290 MB (233 MB working tree + ~56 MB history) |
 | **Extra disk** | ~3 GB for Neo4j, plus **~10.4 GB** if you want the VectorRAG baseline |
 | **Setup time** | Hours, dominated by embedding 2.6 M entities on CPU |
@@ -36,7 +36,7 @@ anything.
 ### Prerequisites
 
 | Requirement | Version | Notes |
-|---|---|---|
+| --- | --- | --- |
 | Python | 3.10 or newer | Developed on 3.14 |
 | Neo4j Community | 5.26.x | The results were produced on 5.26.28 |
 | Java | Bundled with Neo4j | Only if you install Neo4j without its bundled JRE |
@@ -63,7 +63,7 @@ them from elsewhere will fail.
 
 ### Create and activate a virtual environment
 
-**Windows (PowerShell)**
+**Windows (PowerShell)** — from the repository root:
 
 ```powershell
 py -3 -m venv .venv
@@ -73,7 +73,7 @@ py -3 -m venv .venv
 If activation is blocked, allow it for the current session:
 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
 
-**macOS / Linux**
+**macOS / Linux** — from the repository root:
 
 ```bash
 python3 -m venv .venv
@@ -85,7 +85,7 @@ source .venv/bin/activate
 There are two install paths. They are not alternatives to pick at random:
 
 | Command | What you get | Use when |
-|---|---|---|
+| --- | --- | --- |
 | `pip install -e .` | Direct dependencies from `pyproject.toml`, unpinned | You are developing, or want current library versions |
 | `pip install -r requirements.txt` | The exact resolved environment the reported results came from, including transitive pins | You are reproducing the thesis numbers |
 
@@ -106,22 +106,22 @@ editable mode as well. Both paths make `import agr` work from anywhere.
 
 ## 3. Environment variables
 
-Copy the template and fill it in:
+Copy the template and fill it in.
 
-**Windows (PowerShell)**
+**Windows (PowerShell)** — from the repository root:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-**macOS / Linux**
+**macOS / Linux** — from the repository root:
 
 ```bash
 cp .env.example .env
 ```
 
 | Variable | Example | Purpose |
-|---|---|---|
+| --- | --- | --- |
 | `NEO4J_URI` | `bolt://localhost:7687` | Bolt endpoint of your Neo4j instance |
 | `NEO4J_USERNAME` | `neo4j` | Set when the database was initialised |
 | `NEO4J_PASSWORD` | — | Set when the database was initialised |
@@ -151,7 +151,7 @@ package manager.
 `neo4j-console.bat` in the repository root is a shortcut for exactly this and
 assumes that layout.
 
-**macOS**
+**macOS** — with Homebrew:
 
 ```bash
 brew install neo4j
@@ -188,7 +188,7 @@ The graph is built from the RoG releases of WebQSP and CWQ, which ship the
 per-question subgraphs. The scripts expect them as **siblings of this
 repository**, not inside it:
 
-```
+```text
 parent-directory/
 ├── agentic-graph-reasoning/     <- this repo
 ├── RoG-webqsp/data/             <- train-*.parquet, validation-*.parquet, test-*.parquet
@@ -325,7 +325,7 @@ python -m pytest
 18 tests, all of which should pass on a complete install:
 
 | Selection | Command | Needs |
-|---|---|---|
+| --- | --- | --- |
 | Everything | `python -m pytest` | Neo4j running, `.env` complete |
 | Offline only | `python -m pytest -m "not integration"` | `.env` complete |
 | Integration only | `python -m pytest -m integration` | Neo4j running |
@@ -407,7 +407,7 @@ cost nothing.
 ## Repository layout
 
 | Path | Contents |
-|---|---|
+| --- | --- |
 | [agr/](agr/) | The agent: planner, explorer, scorer, verifier, graph tools, budget meter |
 | [agr/baselines/](agr/baselines/) | No-retrieval, VectorRAG, GraphRAG and ToG comparison systems |
 | [scripts/](scripts/) | 43 pipeline, experiment, scoring and analysis entry points |
@@ -429,7 +429,7 @@ environment, `phase2` backbone qualification, `phase3` the development sweep,
 Defaults live in `agr/config.py` and `agr/budget.py`.
 
 | Setting | Default | Meaning |
-|---|---|---|
+| --- | --- | --- |
 | `alpha` | 0.7 | Blend weight between embedding and LLM relation scores |
 | `tau` | 0.20 | Low-signal threshold that triggers backtracking |
 | `use_planner` | `True` | Decompose the question into sub-objectives |
@@ -450,7 +450,7 @@ frozen from the development sweep and not revisited.
 ## Troubleshooting
 
 | Symptom | Cause and fix |
-|---|---|
+| --- | --- |
 | `RuntimeError: NEO4J_URI is not set` | No `.env`, or you are not in the repository root. All four variables are required. |
 | `neo4j.exceptions.ServiceUnavailable` | Neo4j is not running, or `NEO4J_URI` points somewhere else. |
 | `ConnectionRefusedError [WinError 10061]` | Same as above, on Windows. |

@@ -11,7 +11,7 @@ one); a **false positive** is a claim wrongly **accepted** (passed a wrong one).
 the standard convention, and it is the one the Stage D labels use.
 
 | category | subtypes | meaning |
-|---|---|---|
+| --- | --- | --- |
 | `decomposition_error` | `over_decomposition`, `paraphrase_drift`, `context_stripping`, `extraction_bug` | planner/draft pipeline caused it |
 | `relation_selection` | — | scorer picked the wrong edge |
 | `composite_claim` | `conjunction_uncovered`, `no_set_intersection` | multi-constraint handled partially |
@@ -34,7 +34,7 @@ its `family`/`subtype` fields have since been normalized to this table's categor
 produced for these two categories are real and worth keeping as the reference subtype list:
 
 | category | subtype | meaning | n (webqsp+cwq) |
-|---|---|---|---:|
+| --- | --- | --- | ---: |
 | `gold_noise` | `wrong_gold` | gold answer is factually incorrect | 16 |
 | `gold_noise` | `incomplete_gold` | gold is missing valid answer(s) that systems correctly found | 16 |
 | `gold_noise` | `type_mismatch` | gold answers at the wrong entity type/granularity for what was asked (e.g. gives a city when a country was asked), even though the right type is in the graph | 6 |
@@ -95,7 +95,7 @@ excluded). The cwq column below reflects the complete 157-row read, not the earl
 stratified sample.
 
 | category | webqsp | cwq |
-|---|---:|---:|
+| --- | ---: | ---: |
 | composite_claim | 1 | 40 |
 | relation_selection | 24 | 39 |
 | kg_gap | 9 | 30 |

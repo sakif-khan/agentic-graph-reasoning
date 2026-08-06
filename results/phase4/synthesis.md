@@ -22,7 +22,7 @@ reasoning error; a hedge is usually a retrieval/coverage gap that never produced
 answer at all).
 
 | source | webqsp | cwq |
-|---|---:|---:|
+| --- | ---: | ---: |
 | Stage D (main census) | 65 | 157 |
 | Stage D → dropped (promoted to a formal Stage C exclusion) | 0 | 1 |
 | Stage A (ablation discordance) | 21 | 15 |
@@ -35,7 +35,7 @@ separate count to add on top.
 ## §2 — The histogram
 
 | category | webqsp wrong | webqsp hedge | cwq wrong | cwq hedge | **combined** |
-|---|---:|---:|---:|---:|---:|
+| --- | ---: | ---: | ---: | ---: | ---: |
 | relation_selection | 20 | 6 | 20 | 19 | **65** |
 | composite_claim | 1 | — | 23 | 23 | **47** |
 | kg_gap | 8 | 4 | 8 | 24 | **44** |
@@ -155,7 +155,7 @@ and then `answer_entities` collapses to the subject entity alone.** Three near-i
 instances, verified from the raw trace:
 
 | qid | question | gold | answer *text* (correct) | `answer_entities` (wrong) |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | `WebQTest-1215` | who was stephen r covey | Author, Manager, Writer, Consultant, Professor, Motivational speaker | *"Stephen Covey was a Writer, Motivational speaker, Author, Consultant, Professor, and Manager."* | `['Stephen Covey']` |
 | `WebQTest-704` | who is thor heyerdahl | Ethnographer, Film director, Scientist, Film Producer, Cinematographer, Adventurer | *"Thor Heyerdahl was a Film director, Cinematographer, Scientist, Ethnographer, Film Producer, and Adventurer."* | `['Thor Heyerdahl']` |
 | `WebQTrn-124_0782789f...` | What was directed by the actor who played Corneila Wallace? | By the Sea, In the Land of Blood and Honey, A Place in Time, Unbroken | *"Angelina Jolie directed Unbroken, In the Land of Blood and Honey, A Place in Time, and By the Sea."* | `['Angelina Jolie']` |

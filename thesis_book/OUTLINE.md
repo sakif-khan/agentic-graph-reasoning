@@ -12,7 +12,7 @@ UNN thesis): a heavily sub-sectioned Introduction that ends with *Our Contributi
 have before the technical chapters, and a Conclusion that walks the reader back through
 the thesis chapter by chapter before opening the future-work discussion.
 
-### Numbers
+## Numbers
 
 Every figure the thesis states comes from `results/phase4/thesis_numbers.json`, generated
 by `scripts/build_thesis_numbers.py` from the scoring, groundedness, judge, and census
@@ -20,7 +20,7 @@ artifacts. Numbers are not transcribed from the logs by hand, and that file is r
 rather than edited. Each block records the artifact it was parsed from, so a rerun that
 changes a value identifies the sentences depending on it.
 
-### Terminology discipline
+## Terminology discipline
 
 The word **"tier"** is reserved for **one** concept in this thesis: the two-tier
 groundedness *metric* (§7.5.3, §8.5). Two other cascades in the system must therefore be
@@ -733,7 +733,7 @@ wrongful-acceptance class from anecdote to rate)*
 ## Page Budget
 
 | Chapter | Budget | Actual |
-|---|---:|---:|
+| --- | ---: | ---: |
 | 1 Introduction | 8 | 7 |
 | 2 Background and Preliminaries | 5 | 6 |
 | 3 Related Work | 7 | 8 |
@@ -754,7 +754,7 @@ if needed.* Body runs pages 1–104; References begin on 105.
 Where the 17 pages over budget went, and why each is defensible if questioned:
 
 | Chapter | Over | Reason |
-|---|---:|---|
+| --- | ---: | --- |
 | 6 Verification | +5 | Algorithm, attribution-census table, worked example, by-construction failure analysis. Each section is 1–2 pages. |
 | 7 Setup | +4 | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Compressed once (16 → 15) by tightening prose only. |
 | 9 Error Analysis | +5 | The census is a population of 259, not a sample; it carries three named mechanism findings, three counted defect families, and the benchmark-defect provenance argument. |
@@ -779,7 +779,7 @@ further before touching Chapter 9.
 ## Proposed Source-File Mapping
 
 | Chapter | File |
-|---|---|
+| --- | --- |
 | 1 | `chapters/introduction.tex` |
 | 2 | `chapters/preliminaries.tex` |
 | 3 | `chapters/relatedwork.tex` |
