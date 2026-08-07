@@ -249,8 +249,23 @@ $86$ questions Think-on-Graph misses against $51$ the other way.
   \end{center}
 \end{table}
 
+\begin{figure}[!tb]
+  \begin{center}
+    \input{figures/fig_hop_strata}
+  \end{center}
+  \caption[Hits@1 across hop strata]{Hits@1 across hop strata. The shape is the finding: on
+    ComplexWebQuestions AGR is the only system whose accuracy rises with hop
+    count, while every other profile decays. WebQSP is drawn dashed because its
+    \textsf{h3plus} stratum holds four questions and cannot carry a trend; the
+    stratum sizes are printed on the axis for that reason. The
+    \textsf{unreachable} stratum is omitted here and discussed below, since by
+    construction it measures assertion rather than accuracy. Generated from
+    \textsf{results/phase4/thesis\_numbers.json}.}
+  \label{fig:hop-strata}
+\end{figure}
+
 \Cref{tab:strata} is the direct answer to RQ1, and it answers it with a shape
-rather than with a difference of means.
+rather than with a difference of means --- \Cref{fig:hop-strata} is that shape.
 
 \textbf{On CWQ, AGR's accuracy rises with hop count.} Hits@1 goes $0.46 \to 0.55
 \to 0.57$ across \textsf{h1}, \textsf{h2}, \textsf{h3plus}, and F1 goes $0.42 \to
@@ -433,7 +448,22 @@ answers at roughly twice the rate.
 
 \subsection{The Accuracy--Cost Frontier}
 
-Reading \Cref{tab:main} against \Cref{tab:efficiency}, the frontier has three
+\begin{figure}[!tb]
+  \begin{center}
+    \input{figures/fig_accuracy_cost}
+  \end{center}
+  \caption[Accuracy against token cost]{Accuracy against token cost, one point per system. The horizontal
+    axis is logarithmic: the agentic systems cost roughly an order of magnitude
+    more than the one-shot ones, and a linear axis would compress every
+    non-agentic system into a single column. Think-on-Graph is dominated on both
+    datasets --- lower Hits@1 at comparable cost --- which is the frontier
+    statement made visually. Generated from
+    \textsf{results/phase4/thesis\_numbers.json}.}
+  \label{fig:accuracy-cost}
+\end{figure}
+
+Reading \Cref{tab:main} against \Cref{tab:efficiency}, and plotted as
+\Cref{fig:accuracy-cost}, the frontier has three
 points and no interior ones. Vector-RAG on WebQSP is the cheap corner: $0.568$
 Hits@1 for $527$ tokens, and $0.82$ on the one-hop stratum, which makes it the
 right choice for shallow questions and useless for deep ones. AGR is the accurate

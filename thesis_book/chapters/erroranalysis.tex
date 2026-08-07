@@ -119,10 +119,24 @@ describe neither.
   \end{center}
 \end{table}
 
+\begin{figure}[!tb]
+  \begin{center}
+    \input{figures/fig_failure_histogram}
+  \end{center}
+  \caption[Failure categories by dataset and polarity]{The failure histogram of \Cref{tab:histogram} drawn as stacked bars,
+    ordered by total. Wrong and hedge are shown as separate segments and are
+    never pooled, because they describe different failure semantics. The
+    asymmetry the section below analyses is visible as the length of the CWQ
+    segments on \textsf{composite\_claim} and \textsf{kg\_gap} against their
+    near-absence on WebQSP. Generated from
+    \textsf{results/phase4/thesis\_numbers.json}.}
+  \label{fig:histogram}
+\end{figure}
+
 \subsection{The Shape Flip, and What It Is Not}
 
 The two datasets fail differently, but not in the way a first reading of
-\Cref{tab:histogram} suggests. \textsf{relation\_selection} is the largest category
+\Cref{tab:histogram} and \Cref{fig:histogram} suggests. \textsf{relation\_selection} is the largest category
 on \emph{both} --- $26$ of WebQSP's $86$ and $39$ of CWQ's $173$ --- so it is not
 what distinguishes them. Picking the wrong edge is the base rate of graph
 navigation, and it is dataset-independent.

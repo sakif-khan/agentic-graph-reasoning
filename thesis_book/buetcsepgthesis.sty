@@ -55,6 +55,32 @@
   belowskip=2mm}
 % Multi-column lists for the question-identifier manifests of Appendix C.
 \RequirePackage{multicol}
+
+% Diagrams and plots. The state machine of Chapter 5 is drawn by hand; the three
+% data figures are generated from results/phase4/thesis_numbers.json by
+% scripts/build_figures.py, so that no plotted value is transcribed.
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds,
+  patterns}
+% One plot style for all data figures, so they read as one set. Greyscale-safe:
+% every series is separated by mark shape as well as by colour, because the
+% thesis is likely to be examined on paper.
+\pgfplotsset{
+  agrplot/.style={
+    width=0.46\textwidth,
+    height=52mm,
+    tick label style={font=\scriptsize},
+    label style={font=\small},
+    title style={font=\small\bfseries},
+    legend style={font=\scriptsize, draw=none, fill=none},
+    grid=major,
+    grid style={gray!25, very thin},
+    axis line style={gray!60},
+    tick align=outside,
+    tick style={gray!60},
+  }}
 \RequirePackage[final, colorlinks, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
 % Prevent math from being upcased

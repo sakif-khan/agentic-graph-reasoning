@@ -49,36 +49,62 @@ with LangGraph. \Cref{fig:statemachine} gives the topology.
 
 \begin{figure}[!tb]
   \begin{center}
-    \fbox{\begin{minipage}{0.92\textwidth}
-    \vspace{2mm}
-    \small
-    \textsf{START} $\rightarrow$ \textbf{Planner} $\rightarrow$
-    \textbf{Explorer} $\rightarrow$ \textbf{Evaluator}
-    \vspace{2mm}
+    \begin{tikzpicture}[
+        node distance=9mm,
+        box/.style={draw, rounded corners=2pt, minimum height=7.5mm,
+                    minimum width=24mm, align=center, font=\small},
+        term/.style={draw, rounded corners=6pt, minimum height=6mm,
+                     minimum width=16mm, font=\scriptsize\sffamily,
+                     fill=black!8},
+        flow/.style={-{Stealth[length=2mm]}, semithick},
+        lbl/.style={font=\scriptsize\ttfamily, inner sep=1.5pt,
+                    fill=white, anchor=center}]
 
-    \textbf{Evaluator} routes on \textsf{route\_after\_eval}:
-    \begin{itemize}\itemsep0pt
-      \item \textsf{continue} $\rightarrow$ \textbf{Explorer}
-      \item \textsf{backtrack} $\rightarrow$ \textbf{Backtracker}
-        $\rightarrow$ \textbf{Explorer}
-      \item \textsf{answer} $\rightarrow$ \textbf{Verifier}
-    \end{itemize}
+      \node[term]              (start) {START};
+      \node[box, below=of start] (plan) {Planner};
+      \node[box, below=of plan]  (expl) {Explorer};
+      \node[box, below=of expl]  (eval) {Evaluator};
+      \node[box, below=of eval]  (ver)  {Verifier};
+      \node[box, below=of ver]   (ans)  {Answerer};
+      \node[term, below=of ans]  (end)  {END};
+      \node[box, right=22mm of eval] (back) {Backtracker};
 
-    \textbf{Verifier} routes on \textsf{route\_after\_verify}:
-    \begin{itemize}\itemsep0pt
-      \item \textsf{grounded} $\rightarrow$ \textbf{Answerer}
-      \item \textsf{retry} $\rightarrow$ \textbf{Explorer}
-      \item \textsf{give\_up} $\rightarrow$ \textbf{Answerer}
-    \end{itemize}
+      % main path
+      \draw[flow] (start) -- (plan);
+      \draw[flow] (plan)  -- (expl);
+      \draw[flow] (expl)  -- (eval);
+      \draw[flow] (eval)  -- node[lbl] {answer} (ver);
+      % grounded and give_up are distinct routes that share a destination, so
+      % they label one edge rather than two.
+      \draw[flow] (ver)   -- node[lbl] {grounded $\mid$ give\_up} (ans);
+      \draw[flow] (ans)   -- (end);
 
-    \textbf{Answerer} $\rightarrow$ \textsf{END}
-    \vspace{2mm}
-    \end{minipage}}
+      % search cycle: evaluator back to explorer
+      \draw[flow] (eval.west) -- ++(-11mm,0)
+        node[lbl, pos=0.55] {continue}
+        |- (expl.west);
+
+      % backtracking cycle: evaluator to backtracker to explorer
+      \draw[flow] (eval.east) -- node[lbl] {backtrack} (back.west);
+      \draw[flow] (back.north) |- (expl.east);
+
+      % verification-driven re-exploration
+      \draw[flow] (ver.west) -- ++(-24mm,0)
+        node[lbl, pos=0.62] {retry}
+        |- ([yshift=-2mm] expl.west);
+
+      \begin{scope}[on background layer]
+        \node[draw=black!35, dashed, rounded corners, inner sep=2.5mm,
+              fit=(expl)(eval)] {};
+      \end{scope}
+    \end{tikzpicture}
   \end{center}
-  \caption{The AGR state machine. Two cycles exist: Explorer\,$\leftrightarrow$
-    \,Evaluator for iterative search, and Verifier\,$\rightarrow$\,Explorer for
-    verification-driven re-exploration. Both are bounded by the budgets of
-    \Cref{sec:budgets} rather than by the graph structure.}
+  \caption[The AGR state machine]{The AGR state machine. Two cycles exist: the dashed region marks the
+    Explorer\,$\leftrightarrow$\,Evaluator search loop, and
+    Verifier\,$\rightarrow$\,Explorer is verification-driven re-exploration.
+    Both are bounded by the budgets of \Cref{sec:budgets} rather than by the
+    graph structure. Every path from Evaluator to Answerer passes through the
+    Verifier, which is the structural expression of this thesis's contribution.}
   \label{fig:statemachine}
 \end{figure}
 
