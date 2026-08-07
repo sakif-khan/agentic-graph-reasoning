@@ -217,6 +217,38 @@ def failure_table(d):
     return "\n".join(out), sum(foot)
 
 
+# ----------------------------------------------------------------- table 8.x
+def tog_split_table(d):
+    """AGR vs ToG, split on whether the shared call cap cut ToG off."""
+    s = d["tog_budget_split"]
+    out = [BANNER,
+           r"\begin{tabular}{|l|l|r|r|r|r|}",
+           r"\hline",
+           r"\textbf{Dataset} & \textbf{Subset} & \textbf{$n$} & "
+           r"\textbf{ToG} & \textbf{AGR} & \textbf{$\Delta$} \\",
+           r"\hline"]
+    for ds, label in (("webqsp", "WebQSP"), ("cwq", "CWQ")):
+        b = s[ds]
+        for key, sub in (("tog_finished", "ToG ran to completion"),
+                         ("tog_clipped", "ToG clipped by the cap")):
+            r = b[key]
+            out.append(r"%s & %s & %d & %.3f & %.3f & $%+.3f$ \\"
+                       % (label if key == "tog_finished" else "", sub,
+                          r["n"], r["tog_hits_at_1"], r["agr_hits_at_1"],
+                          r["agr_hits_at_1"] - r["tog_hits_at_1"]))
+        agg_t = (b["tog_finished"]["n"] * b["tog_finished"]["tog_hits_at_1"]
+                 + b["tog_clipped"]["n"] * b["tog_clipped"]["tog_hits_at_1"])
+        agg_a = (b["tog_finished"]["n"] * b["tog_finished"]["agr_hits_at_1"]
+                 + b["tog_clipped"]["n"] * b["tog_clipped"]["agr_hits_at_1"])
+        n = b["n_questions"]
+        out.append(r"& \emph{combined} & %d & \emph{%.3f} & \emph{%.3f} & "
+                   r"$\mathbf{%+.3f}$ \\" % (n, agg_t / n, agg_a / n,
+                                             (agg_a - agg_t) / n))
+        out.append(r"\hline")
+    out += [r"\end{tabular}", ""]
+    return "\n".join(out)
+
+
 def main():
     d = load()
     OUTDIR.mkdir(parents=True, exist_ok=True)
@@ -233,6 +265,16 @@ def main():
     path.write_text(table, encoding="utf-8", newline="\n")
     print(f"wrote {path}")
     print(f"  failure histogram totals {total} (thesis states 259)")
+
+    path = TABDIR / "tab_tog_split.tex"
+    path.write_text(tog_split_table(d), encoding="utf-8", newline="\n")
+    print(f"wrote {path}")
+    for ds in ("webqsp", "cwq"):
+        b = d["tog_budget_split"][ds]
+        print(f"  {ds}: ToG clip rate {b['tog_clip_rate']:.1%}, "
+              f"ToG leads by "
+              f"{b['tog_finished']['tog_hits_at_1'] - b['tog_finished']['agr_hits_at_1']:+.3f}"
+              f" where it finishes")
 
 
 if __name__ == "__main__":

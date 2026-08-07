@@ -123,7 +123,11 @@ roughly \$45--55, against a stated ceiling of \$15--20. The pre-registered
 fallback --- stratified samples of $400$ per dataset, giving bootstrap confidence
 intervals of roughly $\pm 5$ points on Hits@1 --- was therefore adopted, with the
 arithmetic recorded before the runs fired. The whole benchmark, including the
-ablations, ultimately cost \$11.13 in API spend.
+ablations, ultimately cost \$11.13 in API spend. That figure is read from the
+provider's billing record rather than derived from the run artifacts, and it is
+the one number in this thesis a reader cannot recompute from the repository. The
+reproducible proxy is the token and call accounting of \Cref{sec:efficiency},
+which is recorded per question in every run record.
 
 Sampling is proportional within hop strata at seed~$42$, and the resulting
 question sets are committed as immutable artifacts
@@ -311,12 +315,24 @@ reported.
 \subsection{Static GraphRAG}\label{sec:baseline-graphrag}
 
 The structure-without-navigation comparison~\cite{edge2024local}: resolve the
-question's topic entities, expand a two-hop neighbourhood under the same relation
-blocklist and the same mediator pass-through contract every other graph-touching
-system uses, rerank by embedding similarity to the question, and answer from the
-top $30$ facts in one call. It shares Vector-RAG's answering prompt and cutoff
-exactly, so the difference between the two isolates retrieval strategy and nothing
-else.
+question's topic entities, expand a \emph{one-logical-hop} neighbourhood under the
+same relation blocklist and the same mediator pass-through contract every other
+graph-touching system uses, rerank by embedding similarity to the question, and
+answer from the top $30$ facts in one call. It shares Vector-RAG's answering
+prompt and cutoff exactly, so the difference between the two isolates retrieval
+strategy and nothing else.
+
+The radius deserves a precise statement, because an earlier draft of this section
+and the implementation's own docstring both described it as two hops, and it is
+not. Expansion runs once from each topic entity. A mediator node is hopped
+through and its two relations concatenated, so a mediator path costs two graph
+edges while remaining one logical hop; an ordinary neighbour is emitted and never
+expanded again. The consequence is checkable from the run records without
+re-reading the code: every fact this baseline emits is rendered as
+\textsf{topic\ relation\ endpoint}, so a genuine second hop would produce facts
+anchored at an intermediate entity. Across all $7{,}431$ retrieved facts logged
+over both datasets, $7{,}431$ begin with a topic entity. There are no exceptions,
+which is what a one-hop radius looks like in the data.
 
 Two implementation details fixed on development data are worth naming, because
 both were comparability repairs rather than improvements: neighbourhood expansion
@@ -328,6 +344,30 @@ crowding the informative row out of the top $30$. That dedupe has a cost, stated
 rather than hidden: two distinct facts sharing both endpoints collapse to one,
 observed but rare.
 
+\textbf{What this baseline licenses, and what it does not.}\label{sec:graphrag-scope}
+A one-hop retriever cannot contain a two-hop chain, so its decay across hop
+strata (\Cref{sec:hop-results}) is partly a property of the radius and not only
+of the paradigm. That distinction has to be drawn, because the alternative is to
+read an implementation limit as a result. The evidence that it is a radius effect
+is visible in the strata themselves: this baseline scores $0.44$ on WebQSP's
+\textsf{h2}, where two-hop questions are largely mediator paths that a one-hop
+expansion \emph{does} reach, against $0.16$ on CWQ's \textsf{h2}, where the chains
+are genuine compositions it cannot reach at all. A retriever failing uniformly on
+depth would not show that gap.
+
+The claim this thesis therefore makes on the strength of this baseline is the
+narrow one: \emph{retrieval fixed before reasoning must commit to a radius in
+advance, and any fixed radius is wrong for some question in the set.} Widening it
+to two hops moves the boundary without removing it, and costs neighbourhood size
+at every step. The claim it does \emph{not} make is that a two-hop static
+retriever would score as this one does --- that experiment was not run, and the
+honest expectation is that it would recover a substantial part of the CWQ
+\textsf{h2} gap while losing precision to a larger and noisier window. Re-running
+it is the first item in \Cref{sec:future-baselines}. Where the per-stratum
+argument in \Cref{sec:hop-results} needs a static comparator that is definitely
+not radius-limited, it uses Vector-RAG, whose one-triple context cannot represent
+a chain at any radius.
+
 \subsection{Think-on-Graph (Agentic Baseline)}
 
 The credibility-critical comparison. Think-on-Graph~\cite{sun2024think} is
@@ -336,8 +376,15 @@ language-model relation pruning, language-model entity pruning, and a sufficienc
 check at each depth. It is a reimplementation, not the authors' code, and it runs
 on this graph with this backbone --- which makes it a \emph{stronger} comparison
 than citing published numbers, because the graph, the model, the budget, and the
-scoring rule are all held constant and only the algorithm differs. Its numbers are
-therefore not comparable to the published ones and are not presented as such.
+scoring rule are all held constant and the algorithm is what varies. Its numbers
+are therefore not comparable to the published ones and are not presented as such.
+
+Holding the budget constant is not the same as making it irrelevant, and the
+distinction is load-bearing rather than pedantic. A fixed cap binds harder on a
+method whose cost grows multiplicatively, so the comparison measures search
+quality and affordability together. \Cref{sec:tog-split} separates them by
+splitting the results on whether the cap actually truncated the baseline, and the
+answer changes what the aggregate margin should be taken to mean.
 
 One shared-budget consequence is reported as a finding rather than a defect. The
 cost of beam search is multiplicative in width and depth, so under the same

@@ -424,16 +424,24 @@ The import schema of \Cref{sec:graph-store} gives every node a single
 \textsf{:Entity} label. There is no typed literal node, no datatype, and no
 distinction between an entity and a value. A date or a number can therefore exist
 in the graph only incidentally, as an entity whose \emph{name} happens to be a
-numeric string. Measured over all 2{,}592{,}892 nodes:
+numeric string. Measured over all 2{,}592{,}892 nodes by
+\textsf{scripts/count\_literals.py}, which writes
+\textsf{results/phase1/literal\_census.json}:
 
 \begin{itemize}
   \item \textbf{Dates} are effectively absent. Only 77 nodes carry a full
     \textsf{YYYY-MM-DD} name and 175 a bare four-digit year --- together under
     $0.01\%$ of the graph, and untyped, so they cannot be compared, ordered, or
     filtered by range.
-  \item \textbf{Numeric values} appear on 12{,}622 nodes ($0.49\%$), but the
-    population is dominated by identifiers such as ISBNs rather than by
-    measurable quantities.
+  \item \textbf{Numeric values} appear on 12{,}799 nodes ($0.49\%$) under the
+    strict rule that the entire name is a single number, but the population is
+    dominated by identifiers such as ISBNs rather than by measurable quantities.
+    That count is sensitive to its own definition, which is why the definition is
+    committed alongside it: admitting names that merely carry no letters
+    (\textsf{``(1955)''}, \textsf{``12-4''}) raises it to 13{,}888. The argument
+    does not turn on which is used --- both are under $0.6\%$ --- but the figure
+    should not be read as a property of the graph independent of how it was
+    counted.
   \item \textbf{Ordinals and superlatives} are not expressible at all. This is a
     property of the tool layer rather than the data: \Cref{sec:tool-api} exposes
     no aggregation, sorting, or comparison operator, so ``the smallest'' or ``the

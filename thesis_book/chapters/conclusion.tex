@@ -58,7 +58,13 @@ reported as missed.
 \Cref{ch:results} reported the measurements. AGR leads every cell of the main matrix
 and every one of the eight paired comparisons rejects, including both against a
 reimplementation of the agentic baseline running on the same graph with the same
-model under the same budget. On ComplexWebQuestions its accuracy \emph{rises} with
+model under the same budget. That last margin is located rather than merely
+claimed: on the questions where the shared cap lets the baseline finish, the
+baseline is slightly ahead, and the whole margin comes from the $29\%$ and $44\%$
+of questions where the cap truncates it (\Cref{sec:tog-split}). The finding is
+therefore about affordability rather than about resolution quality --- beam
+search cannot complete under a budget a deployed system would impose, and guided
+search can. On ComplexWebQuestions AGR's accuracy \emph{rises} with
 hop count while every other system decays --- the strongest available form of the
 multi-hop claim. It runs at half the language-model calls of the agentic baseline
 and never exhausts a budget that clips that baseline on $44\%$ of multi-hop
@@ -135,6 +141,13 @@ single-annotator.} One knowledge graph built from one distribution, one frozen
 backbone at $\approx 75\%$ trajectory stability, two benchmarks sharing a lineage,
 and a failure census and benchmark-defect adjudication performed by the author. Each
 of those is a defensible scoping decision and each bounds generality.
+
+\textbf{The static graph baseline retrieves one logical hop.} Its decay across hop
+strata is therefore partly a property of its retrieval radius and not only of
+static retrieval as a paradigm, and \Cref{sec:graphrag-scope} scopes what may be
+concluded from it accordingly. The per-stratum argument does not rest on it: the
+comparator that cannot represent a chain \emph{at any radius} is Vector-RAG, whose
+context is a single verbalised triple.
 
 \textbf{Entity linking is assumed.} Topic entities are given by the datasets, so the
 reported accuracies presume a linking step a deployed system would have to perform.
@@ -233,6 +246,22 @@ would measure whether the system reaches the right answer \emph{by the right pat
 --- a question this thesis's groundedness metrics can only approximate, and one that
 bears directly on the echo attractor, where a right-looking answer is reached by a
 path one hop short of the correct one.
+
+\subsection{A Two-Hop Static Retriever}\label{sec:future-baselines}
+
+The static graph baseline expands one logical hop (\Cref{sec:graphrag-scope}), so
+the cleanest reading of its collapse on deep CWQ questions --- that a fixed radius
+cannot hold a chain --- is confounded with the particular radius chosen. The
+experiment that separates them is cheap and specified: re-run the same baseline
+with neighbours expanded a second time, everything else frozen, and report the
+same strata. Two outcomes are informative and neither is bad for this thesis. If
+CWQ \textsf{h2} recovers substantially, the honest conclusion is that the reported
+gap over static retrieval on that stratum was partly a radius artefact, and the
+paradigm claim narrows to what \Cref{sec:graphrag-scope} already states. If it
+does not recover, or recovers while precision falls as the window fills with
+hub noise, the paradigm claim is strengthened by an experiment rather than by an
+implementation detail. Running it costs one pass over $800$ questions at
+baseline rates; not running it is the reason the claim is stated narrowly here.
 
 \subsection{Beyond This Environment}
 

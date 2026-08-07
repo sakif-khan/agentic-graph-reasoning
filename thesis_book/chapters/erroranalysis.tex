@@ -48,9 +48,25 @@ reliable way to infer which class is positive.
 \subsection{Population, Not Sample}
 
 The census\index{failure census} is a \emph{population}, not a sample. Both
-datasets were read to
-completion: every wrong answer and every hedge that survived the benchmark-defect
-exclusions of \Cref{sec:gold-quality}. \Cref{tab:census-pop} gives the provenance.
+datasets were read to completion: every wrong answer and every hedge produced by
+the full system, less three exclusion sets, each removed for a stated reason and
+each named here rather than folded into one.
+
+The first is the adjudicated benchmark defects of \Cref{sec:gold-quality} --- $22$
+WebQSP and $19$ CWQ questions where the gold label, not the system, is wrong.
+The second is the Stage~B surface-form near-misses of \Cref{sec:metrics}: $1$
+WebQSP and $6$ CWQ answers that strict string matching scores as failures and
+aggressive normalisation scores as hits. They are excluded because they are
+scoring artefacts rather than reasoning failures, and because
+\Cref{sec:metrics} already reports them as a measured quantity in their own
+right. The third is not an exclusion so much as a redirection: the questions
+read under Stage~A, the planner-discordance census, are held out of the Stage~D
+reading so that no question is labelled twice, and they re-enter the histogram
+through their own row in \Cref{tab:census-pop}.
+
+Only the first set removes questions from the analysis altogether. The second is
+reported elsewhere, the third is counted elsewhere, and the arithmetic closes at
+the totals \Cref{tab:census-pop} gives.
 
 \begin{table}[!tb]
   \begin{center}
@@ -260,6 +276,15 @@ stated. Six of six instances share the mechanism, which makes it a defect rather
 than a distribution.
 
 \subsection{Context-Stripping: When Decomposition Discards the Question}
+
+Subtyping is thinner in this category than elsewhere, and the shortfall is worth
+stating before the cases are read. \textsf{decomposition\_error} holds $38$
+failures; the four named subtypes --- \textsf{extraction\_bug} ($9$),
+\textsf{paraphrase\_drift} ($9$), \textsf{context\_stripping} ($3$), and
+\textsf{over\_decomposition} ($1$) --- cover $22$ of them. The other $16$ are
+labelled at category level only. That is a real limit on how far the mechanisms
+below generalise: they are the mechanisms of the $22$, not of all $38$, and the
+subtype vocabulary was left open rather than stretched to cover the residue.
 
 \textsf{paraphrase\_drift} ($9$ cases) and \textsf{over\_decomposition} are the
 expected decomposition failures --- a rewritten sub-objective scoring worse against
@@ -488,7 +513,11 @@ convert the blank into a rate.
 
 \textsf{kg\_gap} is the third-largest category at $44$ and CWQ's single largest
 hedge category at $24$. It invokes the unanswerable-in-environment class defined in
-\Cref{sec:unanswerable}, and its five subtypes cluster by mechanism.
+\Cref{sec:unanswerable}, and its five subtypes cluster by mechanism. Those five
+account for $39$ of the $44$; the remaining $5$ carry no subtype, because the
+environment gap in each was specific enough that grouping it with anything else
+would have been an invention. They are counted in the category total throughout
+and are not silently dropped.
 
 \textsf{ordinal} ($9$ cases) --- superlatives such as ``first'', ``last'',
 ``smallest'', ``earliest''. Every instance shares one shape: the relevant relation

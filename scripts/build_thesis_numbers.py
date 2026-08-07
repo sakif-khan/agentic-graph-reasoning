@@ -9,7 +9,7 @@ The thesis quotes this file rather than transcribing numbers from the logs.
 
 Usage: python scripts/build_thesis_numbers.py
 """
-import csv, json, re, statistics
+import csv, json, re, statistics, unicodedata
 from pathlib import Path
 
 P4 = Path("results/phase4")
@@ -141,6 +141,69 @@ def gold_stats(path):
     }
 
 
+def _norm(s):
+    return unicodedata.normalize("NFKC", s).casefold().strip()
+
+
+def _read_run(path):
+    out = {}
+    for line in open(path, encoding="utf-8"):
+        r = json.loads(line)
+        pred = set(map(_norm, r.get("answer_entities", [])))
+        gold = set(map(_norm, r["gold"]))
+        out[r["qid"]] = {
+            "hit": bool(gold & pred),
+            "n_pred": len(pred),
+            "precision": (len(gold & pred) / len(pred)) if pred else None,
+            # Reaching the cap is not the same as being cut off by it: a run
+            # can spend its last allowed call on the step that finishes it.
+            # The trace flag is the authority; llm_calls == 25 is not.
+            "clipped": any(s.get("budget_exhausted")
+                           for s in r.get("trace", [])),
+        }
+    return out
+
+
+def tog_budget_split():
+    """AGR against Think-on-Graph, split by whether the shared call cap cut ToG off.
+
+    The headline AGR-over-ToG margin is not evenly distributed. On the questions
+    ToG is allowed to finish it is ahead on both datasets; the entire margin
+    comes from the questions where the shared budget truncates its beam search.
+    That is a sharper finding than the aggregate, and it is only visible split.
+    """
+    out = {}
+    for ds in ("webqsp", "cwq"):
+        tog = _read_run(P4 / f"test_{ds}_tog.jsonl")
+        agr = _read_run(P4 / f"test_{ds}_agr.jsonl")
+        qids = sorted(set(tog) & set(agr))
+        block = {}
+        for label, sel in (("tog_finished", False), ("tog_clipped", True)):
+            sub = [q for q in qids if tog[q]["clipped"] == sel]
+            block[label] = {
+                "n": len(sub),
+                "tog_hits_at_1": round(sum(tog[q]["hit"] for q in sub) / len(sub), 4),
+                "agr_hits_at_1": round(sum(agr[q]["hit"] for q in sub) / len(sub), 4),
+            }
+        block["n_questions"] = len(qids)
+        block["tog_clip_rate"] = round(
+            sum(tog[q]["clipped"] for q in qids) / len(qids), 4)
+        # Assertion breadth over answered questions only. AGR names more
+        # entities per answer, which mechanically helps an any-match metric;
+        # precision over the same questions is the check on that.
+        for name, run in (("agr", agr), ("tog", tog)):
+            ans = [v for v in run.values() if v["n_pred"]]
+            block[f"{name}_answered"] = {
+                "n": len(ans),
+                "entities_per_answer": round(
+                    sum(v["n_pred"] for v in ans) / len(ans), 2),
+                "precision": round(
+                    sum(v["precision"] for v in ans) / len(ans), 4),
+            }
+        out[ds] = block
+    return out
+
+
 def parse_census(path):
     """Stage E histogram: {dataset: {wrong|hedge: {category: count}}}."""
     out, ds, kind = {}, None, None
@@ -196,6 +259,16 @@ def main():
             "by_system": main_rows,
             "by_hop_stratum": main_strata,
             "mcnemar_vs_baselines": main_mcnemar,
+        },
+        "tog_budget_split": {
+            "_source": ("results/phase4/test_{webqsp,cwq}_{tog,agr}.jsonl"),
+            "_note": ("AGR vs Think-on-Graph split on whether the shared 25-call "
+                      "cap cut ToG off, read from the per-record trace flag "
+                      "budget_exhausted (NOT from llm_calls == 25, which "
+                      "overcounts CWQ by 3). On the questions ToG finishes it "
+                      "is ahead on both datasets; the whole aggregate margin "
+                      "comes from the clipped subset."),
+            **tog_budget_split(),
         },
         "ablations": {
             "_source": "results/phase4/ablations/score_test_ablations_log.txt",

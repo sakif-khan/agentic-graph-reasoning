@@ -512,6 +512,58 @@
    }
   ]
  },
+ "tog_budget_split": {
+  "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}.jsonl",
+  "_note": "AGR vs Think-on-Graph split on whether the shared 25-call cap cut ToG off, read from the per-record trace flag budget_exhausted (NOT from llm_calls == 25, which overcounts CWQ by 3). On the questions ToG finishes it is ahead on both datasets; the whole aggregate margin comes from the clipped subset.",
+  "webqsp": {
+   "tog_finished": {
+    "n": 283,
+    "tog_hits_at_1": 0.8516,
+    "agr_hits_at_1": 0.788
+   },
+   "tog_clipped": {
+    "n": 117,
+    "tog_hits_at_1": 0.1966,
+    "agr_hits_at_1": 0.6752
+   },
+   "n_questions": 400,
+   "tog_clip_rate": 0.2925,
+   "agr_answered": {
+    "n": 367,
+    "entities_per_answer": 3.37,
+    "precision": 0.7597
+   },
+   "tog_answered": {
+    "n": 325,
+    "entities_per_answer": 2.56,
+    "precision": 0.7034
+   }
+  },
+  "cwq": {
+   "tog_finished": {
+    "n": 224,
+    "tog_hits_at_1": 0.6295,
+    "agr_hits_at_1": 0.6071
+   },
+   "tog_clipped": {
+    "n": 176,
+    "tog_hits_at_1": 0.1875,
+    "agr_hits_at_1": 0.4148
+   },
+   "n_questions": 400,
+   "tog_clip_rate": 0.44,
+   "agr_answered": {
+    "n": 308,
+    "entities_per_answer": 1.54,
+    "precision": 0.6291
+   },
+   "tog_answered": {
+    "n": 310,
+    "entities_per_answer": 1.4,
+    "precision": 0.5203
+   }
+  }
+ },
  "ablations": {
   "_source": "results/phase4/ablations/score_test_ablations_log.txt",
   "_note": "half-split: n=200 webqsp, n=198 cwq. Only the planner condition reaches significance; the rest are 'no detectable effect at this sample size', not confirmed nulls.",

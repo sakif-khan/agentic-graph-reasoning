@@ -1,0 +1,20 @@
+{
+ "_source": "data/nodes.csv.gz",
+ "_note": "Regenerate with scripts/count_literals.py. numeric_strict is the figure the thesis quotes: the whole name is one number. numeric_loose additionally admits names that carry no letters at all, and is reported so the definitional sensitivity is visible rather than implied -- the two differ by about 9%. An earlier hand count gave 12,622 under a rule that was not recorded and could not be reproduced; the thesis now quotes this file.",
+ "_definitions": {
+  "date": "^\\d{4}-\\d{2}-\\d{2}$",
+  "year": "^\\d{4}$",
+  "numeric_strict": "^[+-]?\\d{1,3}(?:,\\d{3})*(?:\\.\\d+)?$|^[+-]?\\d+(?:\\.\\d+)?$",
+  "numeric_loose": "^[^A-Za-z]*\\d[^A-Za-z]*$"
+ },
+ "n_nodes": 2592892,
+ "n_named": 2592892,
+ "n_cvt": 1652618,
+ "cvt_pct": 63.74,
+ "dates_full": 77,
+ "years_bare": 175,
+ "date_or_year_pct": 0.0097,
+ "numeric_strict": 12799,
+ "numeric_strict_pct": 0.49,
+ "numeric_loose": 13888
+}

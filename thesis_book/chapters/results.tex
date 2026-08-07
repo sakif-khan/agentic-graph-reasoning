@@ -173,10 +173,15 @@ baselines fall below the parametric control. Vector-RAG drops from $0.568$ on
 WebQSP to $0.203$, GraphRAG from $0.340$ to $0.205$, while no-retrieval falls only
 from $0.453$ to $0.307$.
 
-The reason is structural rather than incidental. A CWQ question needs a chain, and
-one verbalised triple cannot contain a chain --- no amount of retrieval quality
-repairs that, which is the paradigm limit \Cref{sec:baselines} predicted at
-implementation time and \Cref{sec:hop-results} demonstrates per stratum.
+The reason is structural rather than incidental, and the two baselines earn that
+description to different degrees. Vector-RAG's context is a single verbalised
+triple, and one triple cannot contain a chain at any retrieval quality or any
+radius; that is a paradigm limit \Cref{sec:baselines} predicted at implementation
+time and \Cref{sec:hop-results} demonstrates per stratum. GraphRAG's context is a
+one-logical-hop neighbourhood (\Cref{sec:graphrag-scope}), so its CWQ number is
+the weaker evidence of the two: it confounds the paradigm with the radius, and
+part of the fall is attributable to a boundary chosen in advance rather than to
+static retrieval as such. The claim rests on the first baseline.
 
 The number worth leading with on this dataset is assertion precision. AGR and
 Think-on-Graph commit at effectively the same rate --- $308$ and $310$ of $400$
@@ -184,8 +189,10 @@ questions answered rather than hedged --- and out of those near-identical
 commitments AGR is right $209$ times and wrong $99$, against $174$ and $136$. That
 is $67.9\%$ assertion precision against $56.1\%$: on the harder, deeper benchmark,
 the system with an explicit plan, a guided scorer, and a claim check finds $35$
-more answers and asserts $37$ fewer falsehoods than blind beam search on the same
-graph with the same model, from the same number of commitments.
+more answers and asserts $37$ fewer falsehoods than beam search on the same
+graph with the same model, from the same number of commitments ---
+a margin \Cref{sec:tog-split} attributes to the budget rather than to
+resolution quality.
 
 \begin{table}[!tb]
   \begin{center}
@@ -214,10 +221,74 @@ graph with the same model, from the same number of commitments.
 
 \Cref{tab:mcnemar} settles the comparisons that matter. All eight reject,
 including the two against the agentic baseline --- the only comparison in the
-table where both systems navigate the same graph with the same model under the
-same budget, so that the algorithm is the only difference. The discordant counts
-make the margin concrete rather than distributional: on CWQ, AGR uniquely solves
-$86$ questions Think-on-Graph misses against $51$ the other way.
+table where both systems navigate the same graph, with the same model, under the
+same call budget. The discordant counts make the margin concrete rather than
+distributional: on CWQ, AGR uniquely solves $86$ questions Think-on-Graph misses
+against $51$ the other way. What that budget does to the comparison is the
+subject of the next section, and it changes what the margin means.
+
+\section{Where the Margin Over the Agentic Baseline Comes From}\label{sec:tog-split}
+
+The shared budget is a control, and like any control it is doing something. The
+call cap binds on Think-on-Graph far more often than on AGR --- beam search costs
+width times depth, and \Cref{sec:efficiency} records the clip rates --- so
+``same budget'' does not mean ``same freedom to search''. Splitting the $400$
+questions of each dataset on whether the cap actually cut Think-on-Graph off
+separates the two things the aggregate confounds: how good its search is, and
+whether it can afford to run that search to completion.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{The comparison against the agentic baseline, split on whether the
+      shared $25$-call cap truncated it. Clipping is read from the per-record
+      \textsf{budget\_exhausted} trace flag rather than from a call count, since
+      a run may spend its last permitted call on the step that finishes it. The
+      \emph{combined} rows reproduce the Hits@1 column of \Cref{tab:main},
+      recomputed independently from the raw records.
+      Generated from \textsf{results/phase4/thesis\_numbers.json}.}
+    \label{tab:tog-split}
+    \small
+    \input{tables/tab_tog_split}
+  \end{center}
+\end{table}
+
+\textbf{On the questions it is allowed to finish, Think-on-Graph is ahead on both
+datasets.} It scores $0.852$ against AGR's $0.788$ on WebQSP and $0.629$ against
+$0.607$ on CWQ. The entire aggregate margin comes from the $29.2\%$ and $44.0\%$
+of questions where the cap truncates it, and there its accuracy falls to $0.197$
+and $0.188$ while AGR's holds at $0.675$ and $0.415$. This is stated plainly
+because it is the first thing an unsympathetic reading of \Cref{tab:mcnemar}
+should look for, and because burying it would misrepresent what was measured.
+
+It does not weaken the result, but it does change its content. The finding is not
+that guided best-first search resolves entities better than language-model-pruned
+beam search --- on the evidence here it does not, and the unclipped subset is the
+fairest available estimate of that. The finding is that \emph{beam search cannot
+afford to finish under a budget a deployed system would actually impose, and
+guided search can}. Width times depth is multiplicative and paid on every
+question; a plan plus a scored frontier is not. A comparison run without a cap
+would measure search quality in the abstract, which is a legitimate experiment
+and a different one; this thesis fixed the budget in advance
+(\Cref{sec:baselines}) because cost is a property of the method rather than a
+nuisance to be controlled away. On that reading the clip rate is not an artefact
+of the setup, it is the result --- and \Cref{sec:efficiency} prices the same
+finding in tokens.
+
+Two qualifications keep the claim honest. The cap of $25$ calls is itself a
+choice, and a larger one would move the split; the clip rates are reported so a
+reader can see how far. And the reimplementation's beam width and depth follow
+the original paper, so its cost profile is the published algorithm's rather than
+a weakened variant --- which is what makes the cost finding meaningful instead of
+circular.
+
+\textbf{The breadth of AGR's answers is checked rather than assumed.} On answered
+WebQSP questions AGR names $3.37$ entities against Think-on-Graph's $2.56$, and a
+metric scoring a hit on any match rewards naming more. The check is precision over
+those same answered questions, where AGR leads $0.760$ to $0.703$; on CWQ the
+figures are $1.54$ against $1.40$ entities and $0.629$ against $0.520$ precision.
+Breadth bought without accuracy would show up as precision falling while the
+entity count rose, and it does not. This is the same reason F1 is reported beside
+Hits@1 throughout (\Cref{sec:metrics}).
 
 \section{Accuracy Broken Down by Hop Count}\label{sec:hop-results}
 
@@ -271,7 +342,8 @@ rather than with a difference of means --- \Cref{fig:hop-strata} is that shape.
 \to 0.57$ across \textsf{h1}, \textsf{h2}, \textsf{h3plus}, and F1 goes $0.42 \to
 0.49 \to 0.50$. Every other system on that dataset decays: Think-on-Graph falls
 from $0.53$ to $0.37$ before partially recovering at $0.45$; Vector-RAG collapses
-$0.33 \to 0.14 \to 0.10$; GraphRAG $0.34 \to 0.16 \to 0.02$. A system that gets
+$0.33 \to 0.14 \to 0.10$; GraphRAG $0.34 \to 0.16 \to 0.02$, though that last row
+is radius-limited and is read with the qualification given below. A system that gets
 \emph{better} as the required chain gets longer is not merely ahead on average ---
 it is the only one in the table whose profile is consistent with actually
 traversing the chain, and that monotonicity is a stronger form of the multi-hop
@@ -287,9 +359,19 @@ decomposition costs accuracy on questions that do not need decomposing, and CWQ'
 $0.82$ at one hop --- the best single-hop number anywhere in the table, better than
 AGR's $0.75$ --- and $0.12$ at two. When one triple suffices, dense retrieval over
 verbalised triples is excellent; when a chain is required, it has nothing to
-offer. GraphRAG's WebQSP inversion, $0.30$ at \textsf{h1} against $0.44$ at
-\textsf{h2}, is the complementary artefact: popular one-hop entities have large
-neighbourhoods, and hub noise drowns the answer in the reranked window.
+offer. This is the cell the multi-hop argument rests on, because a one-triple
+context is chain-incapable by construction rather than by configuration.
+
+\textbf{GraphRAG's WebQSP inversion has two causes, and only one of them was
+originally named.} It scores $0.30$ at \textsf{h1} against $0.44$ at \textsf{h2}.
+Part of that is hub noise: popular one-hop entities have large neighbourhoods, and
+the answer is drowned in the reranked window. But the inversion also marks the
+edge of the retrieval radius (\Cref{sec:graphrag-scope}). WebQSP's \textsf{h2}
+stratum is largely mediator paths, which a one-hop expansion reaches by hopping
+through the mediator, whereas CWQ's \textsf{h2} is genuine composition, which it
+cannot reach --- $0.44$ against $0.16$ on nominally the same stratum depth. Read
+GraphRAG's per-stratum row as measuring what its radius covers, not how far
+static retrieval can see.
 
 \textbf{The unreachable stratum is a hallucination probe, not an accuracy
 measurement.} By construction no path to gold exists within the hop bound for
@@ -655,9 +737,17 @@ Yes, and the multi-hop qualifier is doing real work. AGR leads every cell of
 the agentic baseline running on the same graph with the same model under the same
 budget. The stratum profile is the substance of the answer: on CWQ, AGR's accuracy
 \emph{rises} with hop count ($0.46 \to 0.55 \to 0.57$) while every other system
-decays, and static retrieval collapses from $0.33$ to $0.10$. Two boundaries are
-reported with it --- Think-on-Graph is better on CWQ's one-hop stratum, and
-Vector-RAG is better than everything on WebQSP's.
+decays, and Vector-RAG collapses from $0.33$ to $0.10$ on a context that cannot
+hold a chain at any radius.
+
+Three boundaries are reported with it rather than left for a reader to find.
+Think-on-Graph is better on CWQ's one-hop stratum. Vector-RAG is better than
+everything on WebQSP's. And the margin over Think-on-Graph is located in the
+budget: where the shared cap lets it finish, it is marginally ahead on both
+datasets, so the claim this thesis defends is that guided search completes under
+a realistic budget where beam search does not (\Cref{sec:tog-split}). The
+static graph baseline's per-stratum decay is not offered as evidence here,
+because its retrieval radius confounds it (\Cref{sec:graphrag-scope}).
 
 \textbf{RQ2 --- what does pre-generation verification contribute beyond
 navigation?} The answer has three parts that a yes-or-no question would have

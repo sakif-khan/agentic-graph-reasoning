@@ -10,10 +10,19 @@ def _words(rel: str) -> str:
 
 
 class StaticGraphRAG:
-    """One-shot two-logical-hop neighbourhood retrieval, with no agency.
+    """One-shot ONE-logical-hop neighbourhood retrieval, with no agency.
 
     The CVT contract mirrors KGTools.get_neighbors: mediator nodes are hopped
-    through, concatenating their two relations, and are never emitted as text."""
+    through, concatenating their two relations, and are never emitted as text.
+    A mediator path therefore costs two graph edges but is still one logical
+    hop, and it is the only case in which a retrieved fact reaches past an
+    immediate neighbour.
+
+    Ordinary (non-mediator) neighbours are never expanded again, so every fact
+    this class emits is anchored at a topic entity. That is a real limit on the
+    baseline and not a two-hop retrieval: see the scoping note in the thesis at
+    Sec. 7.4.3. This docstring previously claimed two logical hops, which the
+    code below does not do."""
 
     BLOCK_PREFIXES = ["common.", "freebase.", "type.", "kg.",
                       "user.", "dataworld.", "rdf-schema#", "owl#"]

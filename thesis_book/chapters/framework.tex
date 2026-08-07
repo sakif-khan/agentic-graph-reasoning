@@ -140,11 +140,29 @@ return names alongside them, so the model always sees human-readable text while
 the program tracks identity. Every invocation is appended to a JSONL log with
 its arguments, result, and latency.
 
-\subsection{The Five Operations}
+\subsection{The Five Operations, of Which Four Are Live}\label{sec:five-operations}
 
-\Cref{tab:tools} lists the operations. Note that there are five, not the four
-originally planned: \textsf{verify\_connection} was added when the verification
-layer of \Cref{ch:verification} required a relation-agnostic adjacency test.
+\Cref{tab:tools} lists the operations. There are five, not the four originally
+planned, and only four of the five are reachable from a node in the final
+design --- both facts are consequences of the same episode and are recorded
+rather than tidied away.
+
+\textsf{verify\_triple} was built first, as the claim checker: given a claim
+$\langle h, r, t\rangle$ it asked whether that relation held between those
+entities. It did not survive contact with generated text. Claim decomposition
+produces relations phrased in English --- ``played for'', ``is the capital of''
+--- and Freebase predicates are neither phrased that way nor reliably one edge
+long, so requiring the relation to match rejected claims that were true.
+\textsf{verify\_connection} was added in response: it drops the relation
+entirely and asks only about adjacency. It answered the question the verifier
+actually needed answered, and it superseded rather than complemented its
+predecessor. \Cref{sec:structural-check} describes the two routes the verifier
+ended up with, and \textsf{verify\_triple} is not one of them.
+
+The operation is left in the API because it is exercised by the tool integration
+tests and remains the natural primitive for a relation-aware check, which
+\Cref{sec:future} proposes. But nothing in the running loop calls it, and the
+table says so.
 
 \begin{table}[!tb]
   \begin{center}
@@ -171,12 +189,14 @@ layer of \Cref{ch:verification} required a relation-agnostic adjacency test.
       chain that reached it & frontier expansion \\
       \hline
       \textsf{verify\_triple(\textit{h}, \textit{r}, \textit{t})} &
-      \textsf{\{direct, via\_cvt, supported\}} & claim checking
-      (\Cref{sec:structural-check}) \\
+      \textsf{\{direct, via\_cvt, supported\}} & \emph{not called by any node};
+      built for claim checking and superseded by \textsf{verify\_connection}
+      (\Cref{sec:five-operations}) \\
       \hline
       \textsf{verify\_connection(\textit{a}, \textit{b})} &
       \textsf{\{direct, via\_cvt, connected\}} & relation-agnostic claim
-      checking (\Cref{sec:tool-adjacency}) \\
+      checking --- the check the verifier actually uses
+      (\Cref{sec:tool-adjacency}) \\
       \hline
     \end{tabular}
   \end{center}
@@ -222,18 +242,25 @@ and returns the entities on the far side. Each returned neighbour carries a
 mediator-mediated one. The model reasons about logical neighbours; the log
 retains the full raw chain, so hop accounting stays exact.
 
-\textsf{verify\_triple} applies the same principle to checking: it matches
-\emph{undirected} and accepts a mediator in the middle. Direction-strictness
-would generate false rejections, because the claims it checks come from
-generated text that has no notion of which way a Freebase edge points.
+\textsf{verify\_triple} applied the same principle to checking: it matched
+\emph{undirected} and accepted a mediator in the middle. Direction-strictness
+would have generated false rejections, because the claims it was given came from
+generated text that has no notion of which way a Freebase edge points. That
+relaxation was necessary but not sufficient, for the reason
+\Cref{sec:five-operations} records: relaxing direction does not help when the
+relation itself has no Freebase counterpart.
 
 \textsf{verify\_connection} goes further and drops the relation entirely,
 asking only whether two entities are adjacent directly or through one mediator.
 It exists because claim decomposition frequently produces a claim whose relation
 does not correspond to any single Freebase predicate --- ``X played for Y'' may
 be realised through a roster mediator with no edge literally named for playing.
-Requiring an exact relation match in such cases rejects true claims;
-\Cref{sec:structural-check} explains where each of the two checks is used.
+Requiring an exact relation match in such cases rejects true claims. This is the
+adjacency test the verification layer uses, and
+\Cref{sec:structural-check} gives the two routes it sits in. The cost of dropping
+the relation is stated there and not here: an adjacency test cannot tell a true
+claim from a false one that happens to join the same two entities, which is the
+boundary case \Cref{sec:verifier-errors} analyses.
 
 \section{Agent State}\label{sec:state}
 
@@ -563,9 +590,14 @@ them.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Budget configuration. The configuration is hashed and the hash
-      recorded in every run record, so results can always be attributed to the
-      configuration that produced them.}
+    \caption{Budget configuration, and the two tool-layer caps that bound
+      retrieval alongside it. The rows above the rule are the budget proper: they
+      are hashed and the hash is recorded in every run record, so results can
+      always be attributed to the configuration that produced them. The two rows
+      below the rule are constructor arguments of \textsf{KGTools} and are
+      \emph{not} in that hash --- they are listed here because they bound what
+      the agent can see, which makes them budgets in effect if not in
+      implementation.}
     \label{tab:budget}
     \begin{tabular}{|l|r|L{58mm}|}
       \hline
@@ -579,9 +611,25 @@ them.
       \textsf{max\_verify\_iters} & 2 & \textsf{route\_after\_verify} \\
       \textsf{max\_seconds} & 300 & \textsf{route\_after\_eval} \\
       \hline
+      \textsf{max\_fanout} & 200 & \textsf{get\_neighbors} --- neighbours
+      returned per expansion; sets \textsf{truncated} when it binds \\
+      \textsf{max\_relations} & 300 & \textsf{get\_relations} --- candidate
+      relations offered to the scorer \\
+      \hline
     \end{tabular}
   \end{center}
 \end{table}
+
+The two tool-layer caps deserve a sentence of their own, because they bound
+recall rather than cost and a reader could otherwise take the budget table for a
+complete account of what limits the search. \textsf{max\_fanout} caps neighbours
+returned from a single expansion at $200$. On a high-degree entity --- a country,
+a large film franchise, a prolific author --- the true neighbour set exceeds that,
+so the frontier sees a truncated view and an answer sitting outside the first
+$200$ is unreachable through that edge no matter how well the scorer ranks the
+relation. The tool sets a \textsf{truncated} flag when the cap binds, so the
+condition is visible in the tool log rather than silent, and the hub-noise
+failures of \Cref{sec:echo} are the place it would be expected to matter.
 
 Each budget has exactly one enforcement site, which is what keeps enforcement
 auditable. The model-call budget is checked inside the client before every call,
