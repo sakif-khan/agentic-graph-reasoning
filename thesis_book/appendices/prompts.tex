@@ -1,3 +1,286 @@
 \chapter{Prompt Templates}\label{app:prompts}
 
+% Every template below is reproduced verbatim from the source that sends it.
+% If a prompt changes in agr/, it must change here too: the cache keys on
+% prompt text, so a silent divergence would also invalidate every cached run.
+% scripts/check_appendix_prompts.py asserts that each block still matches.
+
+Seven prompts constitute the whole of AGR's interface to the language model. Two
+more serve the baselines. All nine are reproduced here verbatim from the source
+that sends them, in the order a question encounters them. Braces written
+\verb|{like this}| are Python format fields; doubled braces \verb|{{...}}| are
+literal braces in the emitted text.
+
+This appendix carries a checker rather than a promise.
+\textsf{scripts/\allowbreak check\_appendix\_prompts.py} extracts each constant
+from the source and asserts that it still appears here. Nothing in the LaTeX
+build could detect the divergence on its own, and the reproducibility argument
+of \Cref{sec:implementation} depends on the two not diverging: the response
+cache keys on prompt text, so a prompt edited in one place and not the other
+invalidates every cached run as well as this appendix.
+
+Two properties of this set matter more than any individual wording. First, no
+prompt contains a configuration value. Neither $\alpha$ nor $\tau$ nor any
+budget number appears in any template, which is what allows one cached response
+to be shared across every condition of the $\alpha$--$\tau$ sweep
+(\Cref{sec:dev-tuning}). Second, no prompt asks the model to respect a budget.
+Budgets are counters in code (\Cref{sec:budgets}); the model is never asked to
+stop, only prevented from continuing.
+
+\section{Planner}\label{app:prompt-planner}
+
+Sent once per question, unless the planner is ablated. \Cref{sec:planner}
+describes the four-archetype few-shot design and the topic-mention restriction;
+this is the template that implements both. The instruction to use as few
+sub-objectives as possible is the provision \Cref{sec:findings} finds to have
+been insufficient on the shallower benchmark.
+
+\begin{lstlisting}[style=verbatimblock]
+You decompose questions into a minimal ordered chain of sub-objectives for
+navigating a knowledge graph. Each sub-objective must be answerable by
+following one relation (possibly through an event node). Use #N to reference
+the result of sub-objective N. Use as FEW sub-objectives as possible.
+
+For topic_mentions, extract ONLY specific named entities that appear
+literally in the question (people, places, organizations, works, products).
+Do NOT extract generic type words such as "celebrity", "university",
+"country", "senator", "airport", or "currency" -- these describe what kind
+of answer is wanted, not where to start searching.
+
+Example 1 (single hop -- do NOT decompose):
+Question: "who is the president of France?"
+{"sub_objectives": ["find the president of France"],
+ "topic_mentions": ["France"]}
+
+Example 2 (composition):
+Question: "who directed the film that won Best Picture in 1998?"
+{"sub_objectives": ["find the film that won Best Picture in 1998",
+                    "find the director of #1"],
+ "topic_mentions": ["Best Picture"]}
+
+Example 3 (conjunction):
+Question: "which countries border France and have Spanish as official language?"
+{"sub_objectives": ["find countries that border France",
+                    "find which of #1 have Spanish as an official language"],
+ "topic_mentions": ["France", "Spanish"]}
+
+Example 4 (superlative):
+Question: "what is the largest city in the country where the Nile ends?"
+{"sub_objectives": ["find the country where the Nile ends",
+                    "find the largest city in #1"],
+ "topic_mentions": ["Nile"]}
+
+Question: "{question}"
+\end{lstlisting}
+
+The plan this returns is validated rather than trusted. Four checks run before
+it is accepted, and any failure installs the single-objective fallback described
+in \Cref{sec:planner}: the sub-objective list must be non-empty, it must hold no
+more than four entries, every \verb|#N| reference must point strictly backwards,
+and at least one topic mention must be present.
+
+\section{Relation Scorer}\label{app:prompt-scorer}
+
+Sent once per expansion step, scoring all candidate edges across all anchors in
+a single call. This is the prompt that carries the property discussed in
+\Cref{sec:scoring}: it mentions neither $\alpha$ nor the anchor ordering, so its
+response is reusable across every sweep condition.
+
+\begin{lstlisting}[style=verbatimblock]
+Sub-objective: {objective}
+
+Candidate knowledge-graph edges (anchor entity --relation-->):
+{candidates}
+
+For EACH candidate, rate from 0.0 to 1.0 how likely following that edge from
+that anchor leads toward completing the sub-objective. 1.0 = directly
+answers it, 0.0 = irrelevant. Judge the RELATION MEANING in context of the
+anchor, not surface word overlap.
+\end{lstlisting}
+
+The final instruction exists because of the failure it names. Judging surface
+word overlap is what an embedding does, and the blend of
+\Cref{sec:scoring} already supplies that signal; the model is asked for the
+part the embedding cannot give.
+
+\section{Evaluator}\label{app:prompt-evaluator}
+
+Sent once per navigation cycle. The fact window is the thirty triples ranked
+most relevant to the current sub-objective, not the thirty most recent --- the
+change forced by the failure recorded in \Cref{tab:rootcauses}.
+
+\begin{lstlisting}[style=verbatimblock]
+Current sub-objective: {objective}
+Recently retrieved facts:
+{facts}
+Remaining budget: {d_left} more expansions, {b_left} more backtracks.
+
+Decide:
+- "answer" if the facts complete the sub-objective (list satisfying entities
+in "resolved", exactly as named in the facts),
+- "continue" if this direction is promising but incomplete,
+- "backtrack" if this direction is a dead end.
+\end{lstlisting}
+
+The remaining budget is stated for context, not for enforcement. A model that
+ignores it changes nothing: the counters in \Cref{sec:budgets} terminate the run
+regardless of what the evaluator decides.
+
+\section{Drafter and Claim Decomposer}\label{app:prompt-draft}
+
+One call produces the draft answer, its asserted entity list, and the atomic
+claims the verification layer will check. \Cref{sec:claim-decomposition} explains why
+these are one call rather than three: a draft and a claim set produced
+separately can disagree about what was asserted, and the layer would then verify
+something the reader never sees.
+
+Four provisions here are load-bearing, and \Cref{sec:claim-decomposition} gives the
+case that forced each. Copying entity names exactly is what keeps the graph's
+spelling --- \textsf{University Yale} rather than \textsf{Yale University} ---
+in the answer. The distinction between entities the draft \emph{asserts} and
+entities it merely mentions is what stops a hedge from being scored as an
+assertion. The anti-vacuity instruction is what stops the model answering
+``a university'' to a \emph{which university} question. And requiring a hedge to
+carry zero claims is what makes an abstention verifiable rather than merely
+unverified.
+
+\begin{lstlisting}[style=verbatimblock]
+Question: {question}
+Facts retrieved from the knowledge graph:
+{facts}
+Entities identified as promising during exploration:
+{candidates}
+
+1. Draft an answer using ONLY the facts and candidates above. Use entity
+   names exactly as written. If insufficient, say what could not be
+   determined.
+2. List the answer entities themselves in "answer_entities", copied EXACTLY
+   as they are named in the facts above -- these are the entities your draft
+   asserts as the answer, not every entity it mentions. If your draft is a
+   hedge ("could not be determined"), "answer_entities" MUST be [].
+   IMPORTANT: "answer_entities" must be specific entities of the kind the
+   question asks for (a person for "who", a place for "where", etc.).
+   Never restate the question or name entity types/categories as the
+   answer. If you cannot name specific answer entities from the facts,
+   your draft must be a hedge and "answer_entities" must be [].
+3. Decompose your draft into atomic factual claims, each as
+   {{"h": entity name, "r": short relation phrase, "t": entity name}}.
+   Only include claims your draft actually asserts. A hedged draft has zero
+   claims.
+\end{lstlisting}
+
+\section{Entailment Check}\label{app:prompt-entail}
+
+Sent only for claims that the two structural routes of
+\Cref{sec:structural-check} could not settle. It is the semantic fallback, and
+the definition of \emph{unsupported} is given explicitly because the default
+reading of the word is too permissive: a model asked merely whether a claim is
+supported will accept anything it believes to be true.
+
+\begin{lstlisting}[style=verbatimblock]
+Retrieved knowledge-graph triples:
+{facts}
+
+For each claim below, answer whether it is directly supported by the triples
+above (true) or not (false). Unsupported includes: plausible but absent,
+contradicted, or only inferable via outside knowledge.
+Claims:
+{claims}
+\end{lstlisting}
+
+The three enumerated cases are the three ways a fluent model fails this task.
+\emph{Plausible but absent} is the hallucination the layer exists to catch.
+\emph{Contradicted} is rarer and easier. \emph{Only inferable via outside
+knowledge} is the one that matters most for the thesis's claim, because a model
+drawing on parametric memory here would certify exactly the content the graph
+was supposed to constrain.
+
+\section{Rewriter}\label{app:prompt-rewrite}
+
+Sent when verification rejects at least one claim but at least one entity
+survives. It is the mechanism by which an unsupported claim is removed rather
+than merely flagged.
+
+\begin{lstlisting}[style=verbatimblock]
+Question: {question}
+Draft answer: {draft}
+The following claims in the draft are NOT supported by the knowledge graph:
+{unsupported}
+The following entities remain verified and MUST be kept in the answer,
+named exactly as written: {kept}
+
+Rewrite the draft: keep the verified entities and their supported claims,
+and remove or explicitly hedge the unsupported claims. If the kept list is
+empty, state that the answer could not be verified against the knowledge
+graph. Respond with prose only.
+\end{lstlisting}
+
+The kept list is computed in code by the deterministic filter of
+\Cref{sec:answerer}, not proposed by the model. The rewrite call may reword the
+answer but cannot change which entities it asserts, and
+\Cref{sec:verify-example} reads the case in which that separation decided
+whether a question was scored correct.
+
+\section{Answerer}\label{app:prompt-answer}
+
+Sent on the path where verification is skipped, which is the draft-only
+ablation of \Cref{sec:ablations}, and on the give-up path where the
+budget drained before a draft existed.
+
+\begin{lstlisting}[style=verbatimblock]
+Question: {question}
+Facts retrieved from the knowledge graph:
+{facts}
+
+Entities identified as promising during exploration:
+{candidates}
+
+Answer using ONLY these facts and candidates. Give the answer entity name(s)
+exactly as they appear above. If the information is insufficient, state what
+could not be determined.
+Also list in "answer_entities" the entities your answer
+asserts (exactly as named above); [] if it asserts nothing.
+\end{lstlisting}
+
+Comparing this against the drafter of \Cref{app:prompt-draft} shows what the
+draft-only ablation removes. The anti-vacuity provision is absent here, and
+\Cref{sec:ablations} reports the hedge-rate consequence.
+
+\section{Baseline Prompts}\label{app:prompt-baselines}
+
+The baselines share the backbone, the budget, and the answer-entity contract of
+the full system, so that the comparison isolates retrieval rather than output
+format. All three emit \verb|{"answer": "...", "answer_entities": ["..."]}|.
+
+\subsection*{No-retrieval}
+
+The parametric control. It receives the question and nothing else, which is what
+makes it a measurement of memorisation rather than of retrieval
+(\Cref{sec:baselines}).
+
+\begin{lstlisting}[style=verbatimblock]
+Answer this question with the name(s) of the answer entity or
+entities. Be concise. If you do not know, say so and return [].
+
+Question: {question}
+\end{lstlisting}
+
+\subsection*{Vector-RAG and GraphRAG}
+
+Both use the template below; GraphRAG imports it from the Vector-RAG module
+precisely so that the two differ only in how \verb|{facts}| was retrieved.
+\Cref{sec:baselines} records the consequence noted in
+\Cref{sec:baseline-constants}: this prompt is more abstinent than the full system's
+drafter, and the resulting hedge rates are a property of the prompt as much as
+of the retrieval.
+
+\begin{lstlisting}[style=verbatimblock]
+Facts (retrieved from a knowledge graph):
+{facts}
+
+Question: {question}
+Answer using ONLY the facts above. Name entities exactly as written in the
+facts. If the facts are insufficient, say so and return [].
+\end{lstlisting}
+
 \endinput

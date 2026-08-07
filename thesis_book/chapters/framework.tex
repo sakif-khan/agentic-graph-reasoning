@@ -92,6 +92,9 @@ through verification.
 
 \section{The Graph Tool API}\label{sec:tool-api}
 
+The five operations are specified in full, with the Cypher each executes, in
+\Cref{app:toolapi}.
+
 \subsection{Rationale: Constrained Tools Instead of Free-Form Cypher}
 
 An obvious alternative is to let the model write Cypher directly. This was
@@ -273,7 +276,8 @@ strictly sequential; later objectives reference earlier results with a
 because a sequential chain covers the composition structure that dominates CWQ
 and a DAG planner is a research problem in its own right.
 
-The prompt is few-shot with one example per question archetype --- single hop,
+The prompt is reproduced in full as \Cref{app:prompt-planner}. It is few-shot
+with one example per question archetype --- single hop,
 composition, conjunction, superlative --- and the single-hop example exists to
 demonstrate that \emph{not} decomposing is a valid output. Over-decomposition of
 simple questions is a real failure mode, and \Cref{sec:ablations} shows it is
@@ -351,7 +355,8 @@ to drift away from the anchor that mattered.
 \subsection{The Hybrid Scoring Function}\label{sec:scoring}
 
 Each candidate edge receives a score blending semantic similarity with a
-model judgement:
+model judgement; the prompt carrying the second is
+\Cref{app:prompt-scorer}:
 \[
   \mathrm{score}(c) \;=\; \alpha \cdot \cos\!\big(\mathbf{v}_{\mathrm{rel}(c)},\,
   \mathbf{v}_{\mathrm{obj}}\big) \;+\; (1-\alpha)\cdot \mathrm{LLM}(c),

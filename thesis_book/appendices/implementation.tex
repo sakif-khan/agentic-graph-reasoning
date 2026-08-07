@@ -1,15 +1,165 @@
 \chapter{Implementation Notes}\label{app:implementation}
 
-% ~2 pages. Section~\ref{sec:implementation} points here.
-%
-%  - LangGraph's config parameter injection
-%  - The routers-read / nodes-write state discipline
-%  - The partial-edit hazard
-%  - The cache-identity verification pattern: establishing that a code change
-%    did not perturb the frozen path by confirming full cache replay. This is a
-%    reproducibility technique rather than a bug report, and is the item of most
-%    methodological interest.
-%  - The verifier logging gap from Section~\ref{sec:threats}, as a worked example
-%    of an instrumentation decision that constrained what could later be measured.
+% The four techniques Section~\ref{sec:implementation} points here for. Written
+% as reusable techniques rather than as a changelog: each one is a practice
+% another project could adopt, and the bug that motivated it is the evidence.
+
+\Cref{sec:implementation} names three practices that carry more reproducibility
+weight than the dependency list, and promises they are recorded here as
+techniques rather than as incidents. Those are the first three sections below.
+Three further techniques follow, which govern how the agent itself is built and
+which the earlier three depend on. In each case the defect that forced the
+practice is given as evidence rather than as narrative.
+
+\section{Records Self-Describe}\label{app:self-describing}
+
+Every record written by any run carries, alongside its result, the backbone
+description, a hash of the budget configuration, the full run configuration
+including the system name, and the source commit.
+
+The cost is a few hundred bytes per question. The benefit is that provenance
+never depends on where a file sits or what it is called. A record found in the
+wrong directory, or copied out of one, still states what produced it. This is
+what made the cache-replay anomaly of \Cref{sec:backbone} diagnosable: the
+question was which configuration had produced a set of records, and the records
+answered it themselves.
+
+The generalisation is that a file path is not metadata. Directory layout is
+edited, archived and reorganised over a project's life, and every reorganisation
+is an opportunity to detach a result from the conditions that produced it.
+Anything a reader must know in order to interpret a record belongs inside the
+record.
+
+\section{Frozen Artifacts Are Committed; Regenerable Ones Are Not}\label{app:frozen-vs-regenerable}
+
+The distinction is not about file size. It is about whether the artifact can be
+recreated.
+
+The certified question sets, their half-splits, and every result file embody
+spent money and runs that cannot be repeated identically. They are committed.
+The graph import, the embedding matrices and the triple index are deterministic
+products of committed scripts run over public data, and are not committed even
+though rebuilding them takes hours.
+
+Applying the rule requires honesty about the second category. An artifact is
+only regenerable if the script that generates it is committed \emph{and} its
+inputs are still obtainable. Where either fails, the artifact is frozen
+regardless of how it was made, and \Cref{sec:threats} records the one case in
+this project where that judgement had to be made after the fact.
+
+\section{Cache-Identity Verification}\label{app:cache-identity}
+
+This is the technique of most methodological interest, and the one most readily
+reusable outside this thesis.
+
+The problem it solves is stated easily and answered badly by ordinary testing.
+A refactor is made to code on the frozen experimental path. Tests pass. Have the
+reported numbers changed? Re-running the experiment answers the question, but a
+re-run that produces the same numbers is weak evidence, because it is exactly
+what a re-run would produce if the change had also altered which questions
+happened to succeed.
+
+The stronger check exploits the response cache. Every model call is keyed by a
+hash over the model identifier, the sampling parameters, and the full prompt
+text. A code change that does not perturb the frozen path therefore issues
+\emph{byte-identical prompts}, which means every call must be a cache hit. So:
+
+\begin{quote}
+Re-run the affected questions and assert that the number of cache hits equals
+the number of model calls, and that both are non-zero.
+\end{quote}
+
+A single cache miss proves that some prompt differed, and therefore that the
+change was not behaviour-preserving --- before any output is compared. The
+assertion is stronger than output comparison because it tests the input to the
+non-deterministic component rather than the output of it, and it is cheap
+because a fully cached re-run costs nothing.
+
+For this to work the cache hit must be indistinguishable from a live call inside
+the agent. The budget check still runs, the call counter still increments, and
+the original token counts are replayed into the meter from the stored record. A
+cached re-run therefore reproduces the original budget snapshots exactly rather
+than reporting zeros, which is what makes the identity assertion meaningful. A
+separate counter records hits, so live and replayed runs remain distinguishable
+in analysis.
+
+\Cref{sec:instrumentation} reports the one occasion this certificate was
+demanded and returned a clean result, for the ablation flag that must be a no-op
+when disabled.
+
+\section{Config Injection and the Partial-Edit Hazard}\label{app:config-injection}
+
+The agent is a graph of nodes whose signatures the framework, not the author,
+controls. Passing a run configuration into a node therefore means either closing
+over it at construction time or threading it through the framework's own
+injection mechanism. The first is easier and is a trap: a node that closes over
+a configuration value captures whatever was in scope when the graph was built,
+which for a sweep means the first condition's value silently serving every
+condition.
+
+The practice that follows is narrow and worth stating plainly. \emph{A
+configuration value must reach the code that uses it by exactly one route.}
+Where a value can arrive by two routes, an edit that updates one of them leaves
+the other in place, and the resulting run is neither the old condition nor the
+new one. This is the partial-edit hazard, and it is not caught by tests, because
+each route works in isolation.
+
+The defence used here is an assertion at the entry of every node that receives a
+configuration, checking the type of what actually arrived. It converts a silent
+wrong-condition run into a crash on the first question. A run that dies
+immediately costs minutes; a run that completes under the wrong condition
+contaminates a table.
+
+\section{Routers Read, Nodes Write}\label{app:state-discipline}
+
+The state object is mutated by nodes and inspected by routers. Allowing routers
+to write as well produces control flow that cannot be reconstructed from the
+trace, because the state a node observes was modified by the routing decision
+that reached it.
+
+The discipline is one sentence: \emph{routers may read state and must not write
+it; nodes may write state and must not route.} It costs a small amount of
+duplication --- a value a router needs must be written by the node before it,
+under a name the router agrees on --- and buys the property that the trace is a
+complete account of the run. Every claim in \Cref{ch:erroranalysis} about where
+a trajectory went wrong depends on that being true, because the census reads
+traces, not code.
+
+Two categories of scratch key exist in the state for this reason. Node outputs
+are the record. Router inputs, prefixed with an underscore, exist so that a
+router can decide without recomputing what a node already knew.
+
+\section{Instrumentation Decides What Can Be Concluded}\label{app:instrumentation-gap}
+
+The verifier persists the claims it rejects. It does not persist the claims it
+accepts.
+
+That decision was made early, on the reasonable ground that rejections are the
+interesting events: they are what the layer does, and they are few. Its
+consequence surfaced only at analysis time. Wrongful rejection --- a true claim
+hedged --- is recoverable from the logs at census scale, because every rejection
+is on record. Wrongful acceptance --- a false claim passed --- is not, because
+an accepted claim leaves no trace distinguishable from a claim that was never
+tested.
+
+The thesis therefore reports one polarity of verifier error as a rate and the
+other from a single specimen recovered by manual trace reconstruction. Since
+wrongful acceptance is the polarity that bears directly on a hallucination
+claim, this is the limitation named first in
+\Cref{sec:limitations-final}.
+
+The technique to extract from this is not a fix; the fix is obvious and is the
+first item of \Cref{sec:future}. It is the prior question:
+
+\begin{quote}
+Before freezing an instrument, ask which claim it will be asked to support, and
+whether the records it keeps can support the negation of that claim as well as
+its assertion.
+\end{quote}
+
+Logging the rejections was sufficient to describe what the layer does. It was
+not sufficient to bound what the layer misses, and only the second supports a
+claim about hallucination. The cost of logging both was negligible; the cost of
+not doing so was a limitation that no amount of later analysis could remove.
 
 \endinput

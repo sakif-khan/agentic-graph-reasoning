@@ -126,7 +126,7 @@ Sampling is proportional within hop strata at seed~$42$, and the resulting
 question sets are committed as immutable artifacts
 (\textsf{results/phase4/test\_webqsp.json},
 \textsf{results/phase4/test\_cwq.json}); every question identifier is listed in
-Appendix~C. They were never regenerated after any system ran.
+\Cref{app:samples}. They were never regenerated after any system ran.
 
 \paragraph{A near miss worth recording.} The first build read \textsf{train-*.parquet}
 rather than \textsf{test-*.parquet} --- a glob copied from the development-set
@@ -480,7 +480,7 @@ what makes the resulting statistic a validity check rather than a measure of
 anchoring.
 
 A written annotation guideline was fixed during calibration and is reproduced in
-full in Appendix~D. Each of its eight rules was forced by a case: judge the asked
+full in \Cref{app:judge-rules}. Each of its eight rules was forced by a case: judge the asked
 relationship \emph{under the graph's vocabulary}; treat a mediator-bridged pair of
 edges as one relation; label supported if \emph{any} single path supports; judge
 relations by \emph{role, not type}, so a normally-generic relation counts when it
@@ -709,7 +709,7 @@ the tool layer and never composed by a language model
 (\Cref{sec:tool-api}). Randomised operations use seed $42$ throughout.
 
 Three practices carry more reproducibility weight than the dependency list, and
-Appendix~E records them as techniques. \emph{Records self-describe}: each carries
+\Cref{app:implementation} records them as techniques. \emph{Records self-describe}: each carries
 the backbone description, a budget-configuration hash, the full run configuration
 including the system name, and the source commit, so any record found anywhere
 states what produced it --- which is what made the cache-replay incident of

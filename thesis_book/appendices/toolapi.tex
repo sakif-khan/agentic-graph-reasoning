@@ -1,6 +1,153 @@
 \chapter{Tool API Specification and Cypher Templates}\label{app:toolapi}
 
-% All five operations: search_entity, get_relations, get_neighbors,
-% verify_triple, verify_connection.
+% Cypher reproduced from agr/kg_tools.py. The parameterisation is the point:
+% the model supplies only $-parameters, never query text.
+
+\Cref{sec:tool-api} argues that the model must never author a query. This
+appendix gives the five operations that follow from that decision, with the
+Cypher each one executes. Every query below is a fixed template. The model
+supplies values for the \verb|$|-parameters and nothing else, so a malformed
+model output produces a failed lookup rather than a syntax error, and the
+error taxonomy of \Cref{ch:erroranalysis} never has to separate reasoning
+failures from query-authoring failures.
+
+Two limits appear throughout. \textsf{max\_relations}, set to $300$, caps the
+relation list returned for an entity; \textsf{max\_fanout}, set to $200$, caps
+the neighbours returned for one edge. \Cref{tab:rootcauses} records why the
+first was raised from its original value of $80$.
+
+Every invocation is appended to a JSONL log with its arguments, its result, and
+its wall-clock duration in milliseconds. That log is the per-call record the
+latency figures of \Cref{sec:efficiency} are computed from, and for the
+determinism probes it is the only surviving per-question artifact.
+
+\section{search\_entity}\label{app:tool-search}
+
+Resolves a surface form to graph entities. This is the only entry point from
+text to graph, and the only operation that consults an embedding. It delegates
+to the three-tier resolver of \Cref{sec:entity-resolution} and returns the tier
+that produced the hit, so that a downstream failure can be attributed to
+resolution rather than to navigation.
+
+\begin{lstlisting}[style=verbatimblock]
+search_entity(surface_form, k=5)
+  -> [{id, name, score, tier}, ...]     up to k candidates
+
+Tier 1  exact:     MATCH (e:Entity {name:$m}) RETURN e.id, e.name
+Tier 2  lexical:   CALL db.index.fulltext.queryNodes('entity_name', $q)
+                     YIELD node, score
+                   RETURN node.id, node.name, score LIMIT $k
+Tier 3  vector:    CALL db.index.vector.queryNodes('entity_embedding', $k, $v)
+                     YIELD node, score
+                   RETURN node.id, node.name, score
+\end{lstlisting}
+
+Tier 2 accepts its top hit only when the full-text score exceeds a threshold of
+$1.0$. Without that gate the index returns a ranked list for almost any input,
+including inputs with no correct answer in the graph, and tier 3 would never be
+reached.
+
+\section{get\_relations}\label{app:tool-relations}
+
+Returns the relation types incident to an entity, in \emph{both} directions,
+each with its fanout count. Direction is carried explicitly because Freebase
+edges are asserted in one direction only, and the answer to a question is as
+often reached by traversing an edge backwards as forwards.
+
+\begin{lstlisting}[style=verbatimblock]
+get_relations(entity_id)
+  -> [{rel, dir, n}, ...]     sorted by n descending, capped at max_relations
+
+MATCH (e:Entity {id:$id})-[r]->()
+RETURN r.fb_name AS rel, 'out' AS dir, count(*) AS n
+UNION ALL
+MATCH (e:Entity {id:$id})<-[r]-()
+RETURN r.fb_name AS rel, 'in' AS dir, count(*) AS n
+\end{lstlisting}
+
+Administrative predicates are filtered before the cap is applied, by prefix:
+\textsf{common.topic.}, \textsf{common.}, \textsf{freebase.}, \textsf{type.},
+\textsf{kg.}, \textsf{user.}, \textsf{dataworld.}, \textsf{rdf-schema\#} and
+\textsf{owl\#}. These are schema bookkeeping rather than facts about the world.
+They also have very high fanout, so filtering before sorting is what keeps them
+from consuming the whole list.
+
+\section{get\_neighbors}\label{app:tool-neighbors}
+
+Expands one edge from one entity. This is the operation that makes Freebase's
+mediator nodes invisible to the agent: where a neighbour is a mediator, the tool
+hops through it in the same call and returns the entity on the far side,
+carrying the \textsf{via} chain that reached it.
+
+\begin{lstlisting}[style=verbatimblock]
+get_neighbors(entity_id, relation, direction='out')
+  -> {neighbors: [{id, name, via[, cvt]}, ...], truncated: bool}
+
+MATCH (e:Entity {id:$id})
+MATCH (e)-[r {fb_name:$rel}]->(n)        -- or <-[r]- when direction='in'
+RETURN n.id, n.name, n.is_cvt LIMIT $cap
+
+-- for each neighbour with is_cvt = true, one further hop:
+MATCH (c:Entity {id:$cid})-[r2]-(m:Entity)
+WHERE m.id <> $orig AND m.is_cvt = false
+RETURN m.id, m.name, r2.fb_name AS rel2 LIMIT $cap
+\end{lstlisting}
+
+The \textsf{via} chain is what makes the traversal auditable. A two-element
+\textsf{via} means the result was reached through a mediator, and the
+\textsf{cvt} field names the mediator that was crossed.
+\Cref{sec:graph-construction} explains why a mediator counts as two edges for
+the reachability gate but as one step for the depth budget: the agent should not
+be charged twice for an artifact of the encoding.
+
+The \textsf{truncated} flag reports whether the fanout cap was hit. It is
+recorded rather than silently absorbed, because a truncated expansion is a
+plausible cause of a later failure, and \Cref{ch:erroranalysis} needs to be able
+to distinguish it from a relation that was simply never explored.
+
+\section{verify\_triple}\label{app:tool-verify-triple}
+
+Asks whether a specific relation holds between two specific entities. It is the
+relation-aware structural route of the verification layer
+(\Cref{sec:structural-check}).
+
+\begin{lstlisting}[style=verbatimblock]
+verify_triple(head_id, relation, tail_id)
+  -> {direct, via_cvt, supported}
+
+MATCH (h:Entity {id:$h}), (t:Entity {id:$t})
+RETURN
+  EXISTS { MATCH (h)-[{fb_name:$rel}]-(t) } AS direct,
+  EXISTS { MATCH (h)-[{fb_name:$rel}]-(c:Entity {is_cvt:true})-[]-(t) }
+    AS via_cvt
+\end{lstlisting}
+
+Both patterns are undirected. A claim is supported if either holds. The
+\textsf{via\_cvt} arm exists for the same reason as the mediator hop in
+\textsf{get\_neighbors}: a fact stated through a mediator is still a fact, and a
+verifier that missed it would reject true claims about exactly the compositional
+questions the thesis is about.
+
+\section{verify\_connection}\label{app:tool-verify-connection}
+
+Asks only whether two entities are adjacent, directly or through one mediator.
+The relation is not named.
+
+\begin{lstlisting}[style=verbatimblock]
+verify_connection(a_id, b_id)
+  -> {direct, via_cvt, supported}
+
+MATCH (a:Entity {id:$a}), (b:Entity {id:$b})
+RETURN EXISTS { MATCH (a)-[]-(b) } AS direct,
+       EXISTS { MATCH (a)-[]-(c:Entity {is_cvt:true})-[]-(b) } AS via_cvt
+\end{lstlisting}
+
+This is the fifth operation, and the one not in the original design.
+\Cref{sec:tool-api} records that it was added when the verification layer of
+\Cref{ch:verification} needed a relation-agnostic adjacency test. Its
+permissiveness is deliberate and is also its weakness: \Cref{sec:verify-failure-modes}
+analyses wrongful acceptance as a direct consequence of asking whether two
+entities are connected at all rather than whether they are connected in the way
+the claim asserts.
 
 \endinput

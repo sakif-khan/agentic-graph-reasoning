@@ -35,6 +35,26 @@
 \RequirePackage{cite}
 \RequirePackage{url}
 \RequirePackage{listings}
+% Verbatim style for the prompt templates and Cypher of Appendices A and B.
+% Prompts are reproduced exactly as the code sends them, so the listing must not
+% reflow or reinterpret anything: no line numbers, no keyword styling, and
+% columns=fullflexible so that spacing inside a template is preserved.
+\lstdefinestyle{verbatimblock}{
+  basicstyle=\footnotesize\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  breakindent=0pt,
+  breakautoindent=false,
+  postbreak={\mbox{$\hookrightarrow$\space}},
+  numbers=none,
+  frame=leftline,
+  framesep=3mm,
+  xleftmargin=4mm,
+  aboveskip=2mm,
+  belowskip=2mm}
+% Multi-column lists for the question-identifier manifests of Appendix C.
+\RequirePackage{multicol}
 \RequirePackage[final, colorlinks, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
 % Prevent math from being upcased
