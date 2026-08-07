@@ -20,6 +20,24 @@
    "reachable_pct": 99.66
   }
  },
+ "test_sets": {
+  "_source": "results/phase4/test_webqsp.json + results/phase4/test_cwq.json",
+  "_note": "shape of the gold answer sets in the evaluated splits. gold_median is 1.5 on WebQSP: exactly half the questions carry a single gold answer, and the mean is dragged up by a long tail.",
+  "webqsp": {
+   "n_questions": 400,
+   "gold_mean": 7.98,
+   "gold_median": 1.5,
+   "gold_max": 382,
+   "questions_with_one_gold": 200
+  },
+  "cwq": {
+   "n_questions": 400,
+   "gold_mean": 1.78,
+   "gold_median": 1.0,
+   "gold_max": 19,
+   "questions_with_one_gold": 308
+  }
+ },
  "main_results": {
   "_source": "results/phase4/score_test_log.txt",
   "_note": "secs are cold-cache records only; nan means not measured.",

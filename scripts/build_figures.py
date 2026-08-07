@@ -1,14 +1,21 @@
-"""Generate the three data figures from results/phase4/thesis_numbers.json.
+"""Generate the data figures and the failure table from thesis_numbers.json.
 
 The thesis rule is that no reported number is transcribed by hand. A plot is a
 reported number in a different notation, so the figures are generated from the
 same file the tables read from, rather than drawn against values copied out of
 them. Rerun after build_thesis_numbers.py.
 
+The failure histogram is emitted twice, as a figure and as the tabular body of
+Table 9.2, because a hand-typed copy of it had drifted: the verifier_fn row
+still carried the pre-relabelling counts and the column no longer summed to its
+own total. Both now come from the one file.
+
 Writes into thesis_book/figures/:
     fig_accuracy_cost.tex     accuracy against token cost      (Sec 8.6.2)
     fig_hop_strata.tex        Hits@1 by hop stratum            (Sec 8.4)
     fig_failure_histogram.tex failure categories by dataset    (Sec 9.3)
+Writes into thesis_book/tables/:
+    tab_failure_histogram.tex the same counts as a tabular     (Table 9.2)
 
 Usage: python scripts/build_figures.py
 """
@@ -17,6 +24,7 @@ from pathlib import Path
 
 NUMBERS = Path("results/phase4/thesis_numbers.json")
 OUTDIR = Path("thesis_book/figures")
+TABDIR = Path("thesis_book/tables")
 
 # Display names and per-series marks. Marks carry the distinction on paper.
 SYSTEMS = [
@@ -115,8 +123,9 @@ def hop_strata(d):
 
 
 # ---------------------------------------------------------------- figure 3
-def failure_histogram(d):
-    """Failure categories as stacked bars, wrong and hedge never pooled."""
+def histogram_order(d):
+    """Categories with their combined totals, largest first. Ties break on the
+    name so the figure and the table cannot end up in different orders."""
     fh = d["failure_histogram"]
     cats = {}
     for ds in ("webqsp", "cwq"):
@@ -124,7 +133,13 @@ def failure_histogram(d):
             for k, v in fh[ds][pol].items():
                 if k != "_n":
                     cats[k] = cats.get(k, 0) + v
-    order = sorted(cats, key=lambda k: -cats[k])
+    return sorted(cats, key=lambda k: (-cats[k], k)), cats
+
+
+def failure_histogram(d):
+    """Failure categories as stacked bars, wrong and hedge never pooled."""
+    fh = d["failure_histogram"]
+    order, cats = histogram_order(d)
 
     def series(ds, pol):
         return " ".join(f"({fh[ds][pol].get(c, 0)},{i})"
@@ -157,9 +172,55 @@ def failure_histogram(d):
     return "\n".join(out)
 
 
+# ----------------------------------------------------------------- table 9.2
+def failure_table(d):
+    """The tabular body of Table 9.2. A zero prints as an em dash rather than a
+    0, because these are counts of observed cases and the dash reads as 'this
+    combination did not occur' where a 0 reads as a measurement."""
+    fh = d["failure_histogram"]
+    order, cats = histogram_order(d)
+    cols = [("webqsp", "wrong"), ("webqsp", "hedge"),
+            ("cwq", "wrong"), ("cwq", "hedge")]
+
+    def cell(n):
+        return "---" if n == 0 else str(n)
+
+    width = max(len(c) for c in order) + 1  # +1 for the escaped underscore
+    out = [BANNER,
+           r"\begin{tabular}{|l|r|r|r|r|r|}",
+           r"\hline",
+           r"& \multicolumn{2}{c|}{\textbf{WebQSP}} &",
+           r"  \multicolumn{2}{c|}{\textbf{CWQ}} & \\",
+           r"\hline",
+           r"\textbf{Category} & \textbf{wrong} & \textbf{hedge} & "
+           r"\textbf{wrong} &",
+           r"\textbf{hedge} & \textbf{Total} \\",
+           r"\hline"]
+    foot = [0, 0, 0, 0]
+    for c in order:
+        vals = [fh[ds][pol].get(c, 0) for ds, pol in cols]
+        foot = [a + b for a, b in zip(foot, vals)]
+        out.append("%-*s & %s & \\textbf{%d} \\\\"
+                   % (width, c.replace("_", r"\_"),
+                      " & ".join("%3s" % cell(v) for v in vals), cats[c]))
+    out += [r"\hline",
+            r"\textbf{Total} & %s & \textbf{%d} \\"
+            % (" & ".join(r"\textbf{%d}" % v for v in foot), sum(foot)),
+            r"\hline",
+            r"\end{tabular}", ""]
+
+    # The table states its own totals, so it can check them. A column that no
+    # longer sums to its footer is exactly the drift this generator replaces.
+    for (ds, pol), v in zip(cols, foot):
+        assert v == fh[ds][pol]["_n"], (
+            f"{ds}/{pol} column sums to {v}, census says {fh[ds][pol]['_n']}")
+    return "\n".join(out), sum(foot)
+
+
 def main():
     d = load()
     OUTDIR.mkdir(parents=True, exist_ok=True)
+    TABDIR.mkdir(parents=True, exist_ok=True)
     for name, fn in (("fig_accuracy_cost", accuracy_cost),
                      ("fig_hop_strata", hop_strata),
                      ("fig_failure_histogram", failure_histogram)):
@@ -167,8 +228,10 @@ def main():
         path.write_text(fn(d), encoding="utf-8", newline="\n")
         print(f"wrote {path}")
 
-    total = sum(v for ds in ("webqsp", "cwq") for pol in ("wrong", "hedge")
-                for k, v in d["failure_histogram"][ds][pol].items() if k != "_n")
+    table, total = failure_table(d)
+    path = TABDIR / "tab_failure_histogram.tex"
+    path.write_text(table, encoding="utf-8", newline="\n")
+    print(f"wrote {path}")
     print(f"  failure histogram totals {total} (thesis states 259)")
 
 

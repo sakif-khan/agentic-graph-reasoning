@@ -13,7 +13,8 @@ produces the traversal it verifies.
 
 There are two ways to build a graph-navigating agent. The first hands the model
 a set of tools through native function-calling and lets it drive the loop
-itself, ReAct-style~\cite{yao2023react}. The second inverts control: the
+itself, ReAct-style~\cite{yao2023react}. The second inverts
+control\index{controlled-agent pattern}: the
 \emph{program} orchestrates the loop, calls the graph tools deterministically,
 and consults the model only at decision points, through constrained prompts that
 must return JSON.
@@ -44,7 +45,8 @@ objection that AGR is merely a prompt around a function-calling loop.
 
 \subsection{The State Machine}
 
-The framework is a directed graph of six nodes over a shared typed state, built
+The framework is a state machine\index{state machine}: a directed graph of six
+nodes over a shared typed state, built
 with LangGraph. \Cref{fig:statemachine} gives the topology.
 
 \begin{figure}[!tb]
@@ -295,7 +297,8 @@ overlapping state. Enforcement must not be able to drift.
 
 \subsection{Decomposition into Ordered Sub-Objectives}
 
-The planner makes one model call, converting the question into an ordered chain
+The planner\index{planner} makes one model call, converting the question into
+an ordered chain
 of sub-objectives plus the entity mentions to seed the search. The chain is
 strictly sequential; later objectives reference earlier results with a
 \textsf{\#N} back-reference. A general dependency-graph planner was not built,
@@ -346,7 +349,8 @@ one-configuration-line change rather than a separate code path.
 
 \section{The Explorer}\label{sec:explorer}
 
-The explorer performs one expansion of the frontier. It is the only node that
+The explorer\index{explorer} performs one expansion of the
+frontier\index{frontier}. It is the only node that
 touches the graph in bulk, and its structure is the heart of the navigation
 policy.
 
@@ -380,7 +384,8 @@ to drift away from the anchor that mattered.
 
 \subsection{The Hybrid Scoring Function}\label{sec:scoring}
 
-Each candidate edge receives a score blending semantic similarity with a
+Each candidate edge receives a hybrid score\index{hybrid scoring function}
+blending semantic similarity with a
 model judgement; the prompt carrying the second is
 \Cref{app:prompt-scorer}:
 \[
@@ -424,7 +429,8 @@ to embedding-only scoring rather than aborting the expansion. Setting $\alpha =
 
 \subsection{Sub-Objective Completion Judgment}
 
-The evaluator makes one model call per expansion. It is shown the active
+The evaluator\index{evaluator} makes one model call per expansion. It is shown
+the active
 sub-objective, a window of retrieved facts, and the remaining budget, and
 returns a decision (\textsf{continue}, \textsf{backtrack}, or \textsf{answer}),
 whether the objective is complete, and which entities satisfy it.
@@ -466,7 +472,8 @@ the next frontier. When the last objective completes, the decision is forced to
 \subsection{Backtracking Triggers and the Backtrack
   Stack}\label{sec:backtracking}
 
-Backtracking fires on the first of three conditions, evaluated in this order:
+Backtracking\index{backtracking} fires on the first of three conditions,
+evaluated in this order:
 
 \begin{enumerate}
   \item \textbf{Dead end} --- the last expansion produced no new triples.
@@ -525,7 +532,8 @@ construction: no adversarial model output can change what they do.
 
 \section{The Answerer}\label{sec:answerer}
 
-The answerer is a finalizer rather than a generator. Which of its three paths
+The answerer\index{answerer} is a finalizer rather than a generator. Which of
+its three paths
 runs is decided entirely by what the verification layer left in state, and two
 of the three are specified in \Cref{ch:verification}: the \emph{verified} path,
 where no claim was unsupported and the draft is emitted with no further model
@@ -548,7 +556,8 @@ behaviour --- exactly the kind of defect that inflates apparent robustness.
 
 \section{Budgets and Termination Guarantees}\label{sec:budgets}
 
-Budgets do three jobs: they bound cost, they guarantee termination, and they
+Budgets\index{budget} do three jobs: they bound cost, they guarantee
+termination, and they
 produce the efficiency data of \Cref{sec:efficiency}. \Cref{tab:budget} lists
 them.
 

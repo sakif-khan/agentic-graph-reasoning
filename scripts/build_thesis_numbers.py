@@ -9,7 +9,7 @@ The thesis quotes this file rather than transcribing numbers from the logs.
 
 Usage: python scripts/build_thesis_numbers.py
 """
-import csv, json, re
+import csv, json, re, statistics
 from pathlib import Path
 
 P4 = Path("results/phase4")
@@ -122,6 +122,25 @@ def compute_kappa(sheet, key):
             "preregistered_threshold": 0.7}
 
 
+def gold_stats(path):
+    """Shape of the gold answer sets in a test split.
+
+    These were being quoted from a one-off calculation rather than from here,
+    and the WebQSP median had drifted to 2 in the prose against an actual 1.5.
+    The median matters to the argument -- it is what makes the point that
+    Hits@1's any-match loophole is wide on WebQSP -- so it is derived.
+    """
+    rows = json.load(open(path, encoding="utf-8"))
+    n_gold = [len(r["answers"]) for r in rows]
+    return {
+        "n_questions": len(rows),
+        "gold_mean": round(statistics.mean(n_gold), 2),
+        "gold_median": statistics.median(n_gold),
+        "gold_max": max(n_gold),
+        "questions_with_one_gold": sum(1 for n in n_gold if n == 1),
+    }
+
+
 def parse_census(path):
     """Stage E histogram: {dataset: {wrong|hedge: {category: count}}}."""
     out, ds, kind = {}, None, None
@@ -160,6 +179,16 @@ def main():
             **{ds: {**v,
                     "reachable_pct": round(100 * v["any_reachable"] / v["n"], 2)}
                for ds, v in coverage.items()},
+        },
+        "test_sets": {
+            "_source": ("results/phase4/test_webqsp.json + "
+                        "results/phase4/test_cwq.json"),
+            "_note": ("shape of the gold answer sets in the evaluated splits. "
+                      "gold_median is 1.5 on WebQSP: exactly half the questions "
+                      "carry a single gold answer, and the mean is dragged up "
+                      "by a long tail."),
+            **{ds: gold_stats(P4 / f"test_{ds}.json")
+               for ds in ("webqsp", "cwq")},
         },
         "main_results": {
             "_source": "results/phase4/score_test_log.txt",

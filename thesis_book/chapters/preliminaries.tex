@@ -89,10 +89,21 @@ traversal itself.
 
 \subsection{Evaluation Conventions: Hits@1 and F1}
 
-Two metrics are conventional. \emph{Hits@1}\index{Hits@1} is the proportion of
-questions for which the system's top-ranked answer appears in the gold answer
-set; it is a per-question binary correctness measure and the headline number in
-most of this literature.
+% makeindex reads @ as the sort/actual separator, so an unquoted Hits@1 prints
+% as a bare "1" filed under H. The " quotes the next character.
+Two metrics are conventional. \emph{Hits@1}\index{Hits"@1} scores a question $1$
+if any entity the system asserts is in the gold answer set, and $0$ otherwise. It
+is a per-question binary correctness measure and the headline number in most of
+this literature.
+
+The name is historical and slightly misleading. The metric was defined for
+systems that emitted a \emph{ranked} list, where only the top entry counted;
+it has been carried over to systems that emit an unordered set, where it
+becomes the set-intersection test just stated. This thesis uses the
+set-intersection form throughout, because that is what the systems it compares
+against report, and \Cref{sec:metrics} fixes the string-matching rule exactly.
+The looseness is not incidental --- it is precisely why F1 is reported
+alongside.
 
 Because many questions admit multiple correct answers, Hits@1 alone rewards a
 system that names one correct entity and ignores the rest. \emph{F1} therefore

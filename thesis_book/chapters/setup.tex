@@ -102,11 +102,14 @@ constraints through SPARQL templates, giving deeper chains, conjunctions,
 superlatives, and comparisons --- and, as \Cref{sec:gold-quality} documents, a
 higher rate of machine-generated label defects.
 
-The distinction that matters operationally is visible in the gold answer sets:
-WebQSP averages $7.98$ gold entities per question (median $2$), CWQ averages
-$1.78$ (median $1$). Any metric that rewards naming one correct entity therefore
-behaves very differently on the two benchmarks, which is one of the reasons F1 is
-reported alongside Hits@1 (\Cref{sec:metrics}).
+The distinction that matters operationally is visible in the gold answer sets.
+WebQSP averages $7.98$ gold entities per question, but its median is $1.5$:
+exactly $200$ of its $400$ questions carry a single gold answer, and the mean is
+pulled up by a long tail whose largest question lists $382$. CWQ averages $1.78$
+with a median of $1$. So the two benchmarks differ less in the typical question
+than the means suggest, and more in the tail --- and it is the tail that decides
+how a metric rewarding one correct entity behaves. This is one of the reasons F1
+is reported alongside Hits@1 (\Cref{sec:metrics}).
 
 \subsection{Stratified Sampling, Seeds, and Published Question IDs}
 
@@ -141,7 +144,8 @@ reason a cheap overlap assertion belongs in every benchmark builder.
 
 \subsection{Hop-Count Stratification and the Accuracy Ceiling}
 
-The stratification variable is the length of the shortest path in \emph{this}
+The stratification variable\index{hop stratum} is the length of the shortest
+path in \emph{this}
 environment between any question topic entity and any gold answer entity, bounded
 at four raw hops --- the same machinery used to certify the development set, so
 that mediator nodes are counted consistently as the two edges they are
@@ -389,11 +393,13 @@ the predicted and gold sets as defined in \Cref{sec:kgqa}, and averaged over
 questions.
 
 Reporting both is not redundancy. Hits@1 rewards a system that names one correct
-entity among several wrong ones; on WebQSP, where the median question has two gold
-answers and the mean has eight, that loophole is wide. The precision component of
-F1 is what closes it, and \Cref{sec:webqsp-results} shows that the gap between the
-two metrics is exactly where the verification layer's contribution becomes
-visible.
+entity among several wrong ones. On WebQSP the loophole is wide, though not on
+the typical question: the median question has just $1.5$ gold answers, so half
+the set admits only one right entity. It is the tail that opens the loophole ---
+the mean is $7.98$ and the largest question lists $382$ --- and a system is free
+to fish in it. The precision component of F1 is what closes it, and
+\Cref{sec:webqsp-results} shows that the gap between the two metrics is exactly
+where the verification layer's contribution becomes visible.
 
 Strict matching raises an obvious worry --- that ``St.~Petersburg'' versus
 ``Saint Petersburg'' is manufacturing failures. It was measured rather than
@@ -402,9 +408,10 @@ of $99$ ($6\%$) on CWQ are surface-form near-misses under aggressive
 normalisation. Strict matching does not materially understate performance, and the
 failure census of \Cref{ch:erroranalysis} is therefore reading real errors.
 
-\subsection{Accounting for Hedges and Abstentions}
+\subsection{Accounting for Hedges and Abstentions}\label{sec:hedge-accounting}
 
-A \emph{hedge} is an empty predicted entity set: the system declined to assert.
+A \emph{hedge}\index{hedge} is an empty predicted entity set: the system
+declined to assert.
 Hedges score zero on both Hits@1 and F1 --- an abstention earns nothing on an
 accuracy metric --- and hedge rate is reported as its own column so the
 abstention--accuracy trade is visible rather than buried. A system can buy
@@ -415,9 +422,20 @@ separate from wrong answers throughout for that reason: a wrong answer is a
 reasoning error, whereas a hedge is usually a coverage gap that never produced a
 committal claim.
 
+One counting convention follows from this and is stated here once, because it
+governs every hits/hedges/wrong triple in the thesis. \emph{The three counts
+always partition the whole set.} Nothing is dropped from the denominator ---
+in particular, questions the environment provably cannot answer
+(\Cref{sec:unanswerable}) are counted as hedges rather than excluded, even
+though the system had no route to a correct answer. Excluding them would flatter
+every condition equally and make the counts incomparable with the accuracy
+figures, which do include them. Where the unanswerable questions matter to an
+argument they are named, not netted out.
+
 \subsection{Two-Tier Groundedness and Hallucination Rate}\label{sec:groundedness-metric}
 
-Groundedness is measured at two levels, and the word \emph{tier} in this thesis
+Groundedness\index{groundedness} is measured at two levels, and the word
+\emph{tier} in this thesis
 refers to this metric and nothing else.
 
 \textbf{Tier~1, structural}, is deterministic, free, applies to every asserted

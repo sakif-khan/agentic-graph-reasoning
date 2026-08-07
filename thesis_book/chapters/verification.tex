@@ -53,9 +53,10 @@ a hypothetical one.
 
 \section{Claim Decomposition of the Draft Answer}\label{sec:claim-decomposition}
 
-Verification begins with a single model call that produces three things at once:
-a prose draft, the list of entities that draft asserts as the answer, and a
-decomposition of the draft into atomic claims.
+Verification\index{verification layer} begins with a single model call that
+produces three things at once: a prose draft, the list of entities that draft
+asserts as the answer, and a decomposition of the draft into atomic
+claims\index{claim extraction}.
 
 The call sees a fact window of at most sixty traversed triples --- ranked by
 embedding similarity between the triple's verbalisation and the
@@ -170,7 +171,8 @@ reach either structural route}, regardless of whether that entity exists in the
 graph. Such claims fall directly to the entailment check.
 
 For claims whose endpoints both resolve, the first route is
-\emph{traversed adjacency}. The traversed triples are collapsed into an
+\emph{traversed adjacency}\index{traversed adjacency}. The traversed triples
+are collapsed into an
 undirected set of endpoint pairs, and a claim is supported if its endpoint pair
 is in that set. This route is exact, costs nothing beyond a set lookup, and ---
 uniquely among the three --- produces citable evidence: every traversed triple
@@ -252,9 +254,10 @@ remaining route to \textsf{retry}; otherwise \textsf{give\_up}.
 
 \subsection{Targeted Re-Exploration Under Remaining Budget}
 
-On \textsf{retry}, the verifier has already re-targeted the agent before the
-router runs. It takes the \emph{first} unsupported claim, synthesises a repair
-objective of the form \textsf{verify whether $h$ $r$ $t$}, marks every active
+On \textsf{retry}\index{retry route}, the verifier has already re-targeted the
+agent before the router runs. It takes the \emph{first} unsupported claim,
+synthesises a repair objective\index{repair objective} of the form
+\textsf{verify whether $h$ $r$ $t$}, marks every active
 plan step done, appends the repair step as the new active objective, and --- if
 the claim's head name resolves --- resets the frontier to that single entity.
 Control returns to the explorer, which now searches for the missing evidence
@@ -360,7 +363,10 @@ the two runs were diffed per question. Exactly three questions differed.
       whose answer differed between claim checking and its ablation, at
       $\alpha = 0.7$, $\tau = 0.20$. Three questions, one run per condition.
       ``Pre-fix'' is the original design in which the rewrite call regenerated
-      the entity list; ``post-fix'' is deterministic filtering.}
+      the entity list; ``post-fix'' is deterministic filtering. Per
+      \Cref{sec:hedge-accounting}, the three questions the environment cannot
+      answer hedge in every condition and are counted as hedges rather than
+      excluded, so the totals are over all $80$.}
     \label{tab:census}
     \footnotesize
     \begin{tabular}{|L{29mm}|L{35mm}|L{35mm}|L{29mm}|}
@@ -387,10 +393,10 @@ the two runs were diffed per question. Exactly three questions differed.
       \textsf{Yale University} --- \textbf{wrong} &
       \textsf{University Yale} --- hit \\
       \hline
-      \multicolumn{4}{|l|}{\textbf{Whole run} --- 80 questions, of which 3 are
-        unanswerable and abstained on in every condition} \\
+      \multicolumn{4}{|l|}{\textbf{Whole run} --- all 80 questions; the three
+        counts partition the set} \\
       \hline
-      hits / hedges / wrong & 66 / 7 / 4 & 64 / 8 / 5 & 65 / 8 / 4 \\
+      hits / hedges / wrong & 66 / 10 / 4 & 64 / 11 / 5 & 65 / 11 / 4 \\
       \hline
     \end{tabular}
   \end{center}
@@ -429,7 +435,7 @@ which the two conditions differed, which is exactly why it could be classified
 by inspection --- but three questions support a mechanism claim, not a rate.
 
 \textbf{Claim checking did not reduce wrong answers on this set.} Post-fix
-verified scores 65\,/\,8\,/\,4 against draft-only's 66\,/\,7\,/\,4. The wrong
+verified scores 65\,/\,11\,/\,4 against draft-only's 66\,/\,10\,/\,4. The wrong
 count is identical; the layer cost one correct answer and removed none. Its case
 therefore cannot be made on development-set accuracy, and this thesis does not
 attempt to make it there. The case rests on the groundedness measurements of
