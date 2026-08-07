@@ -1,68 +1,50 @@
-% You need to change the text for abstract
-Write your thesis abstract here.  
+% Every figure quoted here comes from results/phase4/thesis_numbers.json, the
+% same source the body chapters read from. If a rerun changes a value there,
+% this file is one of the places that has to change with it.
 
-These are some dummy text used as page fillers only.
+Large language models answer factual questions fluently. When they do not hold
+the fact, they get it wrong just as fluently. Retrieval-augmented
+generation grounds them in retrieved text, but it retrieves once, before
+reasoning begins. A multi-hop question must then be answered from whatever that
+single query returned.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et
-ultricies massa. Nulla a sapien lobortis, dignissim nibh in, aliquet
-mauris. Integer at dictum metus. Quisque in tortor congue ipsum
-ultricies tristique. Maecenas ut tortor dapibus, sagittis enim at,
-tincidunt massa. Ut sollicitudin sagittis ipsum, ac tincidunt quam
-gravida ac. Nullam quis faucibus purus. Aliquam vel pretium
-turpis. Aliquam a quam non ex interdum sagittis id vitae quam. Nullam
-sodales ligula malesuada maximus consequat. Proin a justo eget lacus
-vulputate maximus luctus vitae enim. Aliquam libero turpis, pharetra a
-tincidunt ac, pulvinar sit amet urna. Pellentesque eget rutrum diam,
-in faucibus sapien. Aenean sit amet est felis. Aliquam dolor eros,
-porttitor quis volutpat eget, posuere a ligula. Proin id velit ac
-lorem finibus pellentesque.
+This thesis presents Agentic Graph Reasoning (AGR), which interleaves retrieval
+with reasoning instead. An agent navigates a knowledge graph through a
+constrained, deterministic tool API. It breaks the question into sub-objectives,
+expands a scored frontier, and backtracks when a branch stops paying. Its
+distinguishing component is a Structural Verification Layer. The layer splits the
+draft answer into atomic claims and checks each one against the triples the agent
+actually traversed, before the answer is emitted. Claims that cannot be grounded
+are re-explored or withdrawn. The system therefore hedges rather than asserts,
+and every answer arrives with the triples that support it.
 
-Maecenas vitae interdum mi. Aenean commodo nisl massa, at pharetra
-libero cursus vitae. In hac habitasse platea dictumst. Suspendisse
-iaculis euismod dui, et cursus diam. Nullam euismod, est ut dapibus
-condimentum, lorem eros suscipit risus, sit amet hendrerit justo
-tortor nec lorem. Morbi et mi eget erat bibendum porta. Ut tristique
-ultricies commodo. Nullam iaculis ligula sed lacinia ornare.
+AGR is evaluated on a Freebase-derived environment of $2{,}592{,}892$ entities
+and $8{,}309{,}194$ triples, over $400$ certified questions from each of WebQSP
+and ComplexWebQuestions. Five systems are compared: parametric answering, vector
+retrieval, GraphRAG, an agentic-navigation baseline, and AGR. All five run on one
+frozen backbone under the same budget, so that architecture rather than model
+capacity accounts for the differences.
 
-Sed ultricies cursus nisi at vestibulum. Aenean laoreet viverra
-efficitur. Ut eget sapien lorem. Mauris malesuada, augue in pulvinar
-consectetur, ex tortor tristique ligula, sit amet faucibus metus
-lectus interdum nisl. Nam eget turpis vitae ligula pulvinar bibendum a
-ut ipsum. Mauris fringilla lacinia malesuada. Fusce id orci
-velit. Donec tristique rhoncus urna, a hendrerit arcu vehicula
-imperdiet. Integer tristique erat at gravida condimentum. Sed ornare
-cursus quam, eget tincidunt enim bibendum sed. Aliquam elementum
-ligula scelerisque leo sagittis, quis convallis elit dictum. Donec sit
-amet orci aliquam, ultricies sapien nec, gravida nisi. Etiam et
-pulvinar diam, et pellentesque arcu. Nulla interdum metus sed aliquet
-consequat.
+AGR reaches Hits@1 of $0.755$ and F1 of $0.642$ on WebQSP, and $0.522$ and
+$0.469$ on ComplexWebQuestions. That is ahead of every baseline, including the
+agentic one at $0.660$ and $0.435$, at half the language-model calls. AGR
+asserts no ungrounded entity across $1{,}709$ assertions, against $27.1\%$ for
+parametric answering. The thesis attributes
+that property to graph navigation itself rather than to the verification layer.
+On ComplexWebQuestions, AGR's accuracy rises with hop count while every other
+system decays.
 
-Proin in mi id nulla interdum aliquet ac quis arcu. Duis blandit
-sapien commodo turpis hendrerit pharetra. Phasellus sit amet justo
-orci. Proin mattis nisl dictum viverra fringilla. Interdum et
-malesuada fames ac ante ipsum primis in faucibus. Curabitur facilisis
-euismod augue vestibulum tincidunt. Nullam nulla quam, volutpat vitae
-efficitur eget, porta sit amet nunc. Phasellus pharetra est eget urna
-ornare volutpat. Aenean ultrices, libero eget porttitor fringilla,
-purus tortor accumsan neque, sit amet viverra felis tortor eget
-justo. Nunc id metus a purus tempus euismod condimentum non lacus. Nam
-vitae diam aliquam, facilisis diam quis, pharetra nunc. Nulla eget
-vestibulum tellus, ut cursus tellus. Vestibulum euismod pellentesque
-sodales.
-
-Maecenas at mi interdum, faucibus lorem sed, hendrerit nisi. In vitae
-augue consequat diam commodo porta sit amet eu purus. Mauris mattis
-condimentum feugiat. Nulla commodo molestie risus vitae maximus. Proin
-hendrerit neque malesuada urna laoreet convallis. Etiam a diam
-pulvinar, auctor sem ac, hendrerit risus. Ut urna urna, venenatis ac
-tellus non, scelerisque tristique ligula. Vestibulum sollicitudin vel
-leo malesuada accumsan. Donec sit amet erat diam. Vestibulum ante
-ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-Curae; Vivamus odio dui, scelerisque et lorem egestas, posuere
-ullamcorper nunc. Integer varius nunc nec velit tincidunt
-commodo. Mauris rhoncus ultrices sapien non suscipit.
-
-
-End of dummy text.
+A four-condition ablation with paired significance testing finds one component
+with a detectable accuracy effect, and its sign is not the expected one. Removing
+the planner \emph{improves} WebQSP by $0.083$ F1 at $p = 0.006$ and cuts tokens
+by $30\%$. On ComplexWebQuestions it trends the other way. Decomposition should
+therefore be gated on question structure rather than applied unconditionally. A
+census of all $259$ remaining failures names the characteristic error of a
+graph-navigating system. It is not invention but the \emph{echo attractor}: a
+real, grounded entity one hop from the answer, which any grounding check passes
+because it is true. The census also finds $59$ questions where the
+benchmark was wrong rather than the system. Consensus against gold is dominated by
+that same attractor rather than by annotation error. Rescoring on majority
+agreement would hide this failure rather than correct it.
 
 \endinput
