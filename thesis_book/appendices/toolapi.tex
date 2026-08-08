@@ -96,9 +96,11 @@ RETURN m.id, m.name, r2.fb_name AS rel2 LIMIT $cap
 The \textsf{via} chain is what makes the traversal auditable. A two-element
 \textsf{via} means the result was reached through a mediator, and the
 \textsf{cvt} field names the mediator that was crossed.
-\Cref{sec:graph-construction} explains why a mediator counts as two edges for
-the reachability gate but as one step for the depth budget: the agent should not
-be charged twice for an artifact of the encoding.
+\Cref{sec:graph-construction} states the two conventions this creates: a
+mediator counts as two edges wherever the thesis measures distance in the graph
+(the reachability gate, the hop strata), and as one step against the agent's
+depth budget, because the agent should not be charged twice for an artifact of
+the encoding.
 
 The \textsf{truncated} flag reports whether the fanout cap was hit. It is
 recorded rather than silently absorbed, because a truncated expansion is a
@@ -107,9 +109,16 @@ to distinguish it from a relation that was simply never explored.
 
 \section{verify\_triple}\label{app:tool-verify-triple}
 
-Asks whether a specific relation holds between two specific entities. It is the
-relation-aware structural route of the verification layer
-(\Cref{sec:structural-check}).
+Asks whether a specific relation holds between two specific entities. It was
+built as the relation-aware structural route of the verification layer, and it
+is \emph{not called by any node in the final design}: free-text claim relations
+do not map onto Freebase predicates, so requiring the relation to match rejected
+true claims, and \textsf{verify\_connection} replaced it.
+\Cref{sec:five-operations} gives that history and
+\Cref{sec:structural-check} gives the two routes the verifier ended up with. It
+is reproduced here because it remains part of the tool API, is exercised by the
+integration tests, and is the natural primitive for the relation-aware check
+\Cref{sec:future} proposes.
 
 \begin{lstlisting}[style=verbatimblock]
 verify_triple(head_id, relation, tail_id)
@@ -135,7 +144,7 @@ The relation is not named.
 
 \begin{lstlisting}[style=verbatimblock]
 verify_connection(a_id, b_id)
-  -> {direct, via_cvt, supported}
+  -> {direct, via_cvt, connected}
 
 MATCH (a:Entity {id:$a}), (b:Entity {id:$b})
 RETURN EXISTS { MATCH (a)-[]-(b) } AS direct,

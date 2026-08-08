@@ -259,15 +259,22 @@ with and without the affected items.
 
 \subsection{An Evaluation Protocol with Pre-Registered Thresholds}
 
-Three decision thresholds were fixed before test data was touched: the
-judge-agreement bar, the baseline-certification diagnostic, and the scoring
-hyperparameters. We report outcomes against all three, including the one that was
-narrowly missed.
+Four decisions were fixed before test data was touched: the scoring
+hyperparameters, the sample size, the baseline-certification diagnostic, and the
+judge-agreement bar. We report outcomes against all four, including the one that
+was narrowly missed.
 
 \section{Scope and Delimitations}\label{sec:scope}
 
 The knowledge environment is a static, curated subset of
-Freebase~\cite{bollacker2008freebase}. The thesis does not address graph
+Freebase~\cite{bollacker2008freebase}. It is specifically the union of
+per-question subgraphs that were pre-extracted so as to contain their own
+question's answer, which makes it a friendlier place to search than the full
+knowledge base and puts answer reachability above $97\%$ by construction
+(\Cref{sec:validation-gate}). Absolute accuracies reported here are therefore not
+comparable to evaluations over full Freebase; every system compared navigates the
+identical environment, so the comparisons are, and \Cref{sec:threats} states the
+limit in full. The thesis does not address graph
 construction from unstructured text, knowledge-base completion, or the temporal
 evolution of facts. Questions are English and factoid, drawn from
 WebQSP~\cite{yih2016value} and ComplexWebQuestions~\cite{talmor2018web}. Long-form

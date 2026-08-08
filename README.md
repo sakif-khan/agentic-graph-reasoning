@@ -410,7 +410,7 @@ cost nothing.
 | --- | --- |
 | [agr/](agr/) | The agent: planner, explorer, scorer, verifier, graph tools, budget meter |
 | [agr/baselines/](agr/baselines/) | No-retrieval, VectorRAG, GraphRAG and ToG comparison systems |
-| [scripts/](scripts/) | 43 pipeline, experiment, scoring and analysis entry points |
+| [scripts/](scripts/) | 47 pipeline, experiment, scoring and analysis entry points |
 | [tests/](tests/) | Unit and integration tests |
 | [data/](data/) | Graph exports and embeddings; large artifacts are gitignored and rebuilt |
 | [results/](results/) | The committed experimental record, by phase — see below |

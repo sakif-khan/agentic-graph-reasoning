@@ -44,8 +44,10 @@ though rebuilding them takes hours.
 Applying the rule requires honesty about the second category. An artifact is
 only regenerable if the script that generates it is committed \emph{and} its
 inputs are still obtainable. Where either fails, the artifact is frozen
-regardless of how it was made, and \Cref{sec:threats} records the one case in
-this project where that judgement had to be made after the fact.
+regardless of how it was made, and \Cref{sec:implementation} records the one case
+in this project where that judgement had to be made after the fact: a generated
+summary in the development-set archive that predates a fix applied to the runs it
+summarises.
 
 \section{Cache-Identity Verification}\label{app:cache-identity}
 
@@ -83,9 +85,10 @@ than reporting zeros, which is what makes the identity assertion meaningful. A
 separate counter records hits, so live and replayed runs remain distinguishable
 in analysis.
 
-\Cref{sec:instrumentation} reports the one occasion this certificate was
-demanded and returned a clean result, for the ablation flag that must be a no-op
-when disabled.
+\Cref{sec:pre-registration} reports the one occasion this certificate was
+demanded and returned a clean result, for the \textsf{use\_planner} flag that
+must be a no-op when disabled; \Cref{sec:instrumentation} specifies the cache
+whose behaviour makes the certificate meaningful.
 
 \section{Config Injection and the Partial-Edit Hazard}\label{app:config-injection}
 

@@ -26,6 +26,15 @@ PROMPTS = {
     "ANSWER_PROMPT":  "agr/nodes.py",
     "PROMPT@noretrieval": "agr/baselines/noretrieval.py",
     "PROMPT@vectorrag":   "agr/baselines/vectorrag.py",
+    # The agentic baseline's four. These were omitted originally, which made the
+    # checker's pass a statement about AGR's prompts only while the appendix
+    # claimed to reproduce every prompt in the system. Sec 7.4.4 rests the
+    # central comparison on this reimplementation, so these are the prompts a
+    # sceptical reader most needs to be able to audit.
+    "REL_PRUNE@tog":  "agr/baselines/tog.py",
+    "ENT_PRUNE@tog":  "agr/baselines/tog.py",
+    "SUFFICIENT@tog": "agr/baselines/tog.py",
+    "ANSWER@tog":     "agr/baselines/tog.py",
 }
 
 

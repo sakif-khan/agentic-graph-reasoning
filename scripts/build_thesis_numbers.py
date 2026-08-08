@@ -88,6 +88,21 @@ def parse_tier1(path):
                 "questions_any_ungrounded": int(m.group(6)),
                 "question_ungrounded_pct": float(m.group(7)),
             }
+    # Both-dataset totals per system. These exist because the abstract and the
+    # conclusion quoted AGR's both-dataset assertion count against the
+    # no-retrieval rate on WebQSP alone -- two different scopes in one sentence.
+    # Quoting a computed pair from here makes that mistake harder to repeat.
+    for sysname in ("noretrieval", "vectorrag", "graphrag", "tog", "agr"):
+        keys = [f"test_{ds}_{sysname}" for ds in ("webqsp", "cwq")]
+        if not all(k in out for k in keys):
+            continue
+        a = sum(out[k]["entities_asserted"] for k in keys)
+        u = sum(out[k]["entities_ungrounded"] for k in keys)
+        out[f"both_{sysname}"] = {
+            "entities_asserted": a,
+            "entities_ungrounded": u,
+            "entity_ungrounded_pct": round(100 * u / a, 1),
+        }
     return out
 
 

@@ -139,9 +139,20 @@ flagged as mediators by matching that pattern, and the flag is stored as an
 Mediators are \emph{retained}, not collapsed into hyper-edges. Retaining them
 preserves the facts they encode --- systems that skip mediators lose exactly those
 facts~\cite{xu2024generate} --- at the cost of inflating raw hop counts, since one
-logical hop through a mediator is two graph edges. Every hop budget in this thesis
-is therefore stated in \emph{raw} hops, and the conversion is roughly two raw hops
-per logical hop.
+logical hop through a mediator is two graph edges. The conversion is roughly two
+raw hops per logical hop.
+
+Two conventions follow, and they are not the same one. Every statement about
+\emph{distance in the graph} --- the reachability gate of
+\Cref{sec:validation-gate}, the hop strata of \Cref{sec:test-sets}, the
+path-length bounds quoted anywhere in this thesis --- is in \emph{raw} hops,
+because that is what the graph actually contains. The agent's depth budget is
+not: \textsf{max\_depth} counts explorer expansions, and one expansion crosses a
+mediator transparently, so it may consume two raw edges while costing one unit
+of depth. This is deliberate --- the agent should not be charged twice for an
+artifact of the encoding (\Cref{sec:tool-adjacency}) --- but it means
+\textsf{max\_depth}${}=4$ does not bound the search at four raw hops, and the
+two numbers should not be compared without the conversion.
 
 The scale of this decision is easy to understand: \textbf{1{,}652{,}618 of the
 2{,}592{,}892 nodes --- 63.7\% --- are mediator-form nodes carrying no

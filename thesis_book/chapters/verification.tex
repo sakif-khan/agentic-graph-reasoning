@@ -173,6 +173,21 @@ explain each test and the reason for their order.
   \end{algorithmic}
 \end{algorithm}
 
+\begin{figure}[!tbp]
+  \begin{center}
+    \input{figures/fig_claim_path}
+  \end{center}
+  \caption[The path of one claim through the verification layer]{The path of a
+    single atomic claim through the layer, mirroring \Cref{alg:verify}. Three
+    tests are tried in a fixed order and a claim leaves at the first one that
+    settles it. The two structural routes are boxed; only the first of them adds
+    to the supporting-triple set, which is why \Cref{sec:output-contract} can
+    report evidence for some grounded answers and not others. A claim naming an
+    entity the agent never traversed skips both structural routes entirely, since
+    the name-to-identifier map is built from traversed triples alone.}
+  \label{fig:claim-path}
+\end{figure}
+
 \subsection{The Structural Check}\label{sec:structural-check}
 
 The structural check operates on entity identifiers, so it first needs a mapping

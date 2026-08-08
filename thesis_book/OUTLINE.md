@@ -732,24 +732,32 @@ wrongful-acceptance class from anecdote to rate)*
 
 ## Page Budget
 
-| Chapter | Budget | Actual |
-| --- | ---: | ---: |
-| 1 Introduction | 8 | 7 |
-| 2 Background and Preliminaries | 5 | 6 |
-| 3 Related Work | 7 | 8 |
-| 4 The Knowledge Environment | 10 | 9 |
-| 5 The AGR Framework | 11 | 13 |
-| 6 The Structural Verification Layer | 8 | 13 |
-| 7 Experimental Setup | 11 | 15 |
-| 8 Results | 12 | 12 |
-| 9 Error Analysis and Discussion | 10 | 15 |
-| 10 Conclusion | 5 | 6 |
-| **Body total** | **87** | **104 — all 10 written** |
-| References + Index + Appendices | ~12 | 6 + appendices |
+| Chapter | Budget | Round 1 | Current |
+| --- | ---: | ---: | ---: |
+| 1 Introduction | 8 | 7 | 8 |
+| 2 Background and Preliminaries | 5 | 6 | 6 |
+| 3 Related Work | 7 | 8 | 8 |
+| 4 The Knowledge Environment | 10 | 9 | 10 |
+| 5 The AGR Framework | 11 | 13 | 16 |
+| 6 The Structural Verification Layer | 8 | 13 | 14 |
+| 7 Experimental Setup | 11 | 15 | 17 |
+| 8 Results | 12 | 12 | 16 |
+| 9 Error Analysis and Discussion | 10 | 15 | 17 |
+| 10 Conclusion | 5 | 6 | 7 |
+| **Body total** | **87** | **104** | **119** |
+| References + Index + Appendices | ~12 | 6 + appendices | 6 + 47 |
 
-**Final: the body is 104 pages, and the 90-page ceiling was crossed deliberately.**
-The author's decision, recorded so it is not revisited by accident: *cross the ceiling
-if needed.* Body runs pages 1–104; References begin on 105.
+**The body is 119 pages against a 60–90 target — 32% over.** Body runs pages 1–119;
+References begin on 120; the document is 172 pages including front matter and five
+appendices.
+
+The decision to cross the ceiling was taken at 104 pages and recorded so it would not
+be revisited by accident: *cross the ceiling if needed.* That decision was made
+against a smaller number, and the 15 pages added since are concentrated in Chapters 5,
+7 and 9 — the corrections, scoping notes and threat statements added in review, not
+new material. **Re-confirm before submission whether the department enforces a hard
+cap.** If it does, the compression targets are unchanged: Chapters 2 and 3 first,
+never Chapter 9.
 
 Where the 17 pages over budget went, and why each is defensible if questioned:
 

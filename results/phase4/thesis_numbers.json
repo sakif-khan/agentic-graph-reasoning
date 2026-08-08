@@ -1183,6 +1183,31 @@
    "questions_answered": 308,
    "questions_any_ungrounded": 0,
    "question_ungrounded_pct": 0.0
+  },
+  "both_noretrieval": {
+   "entities_asserted": 1001,
+   "entities_ungrounded": 221,
+   "entity_ungrounded_pct": 22.1
+  },
+  "both_vectorrag": {
+   "entities_asserted": 1329,
+   "entities_ungrounded": 45,
+   "entity_ungrounded_pct": 3.4
+  },
+  "both_graphrag": {
+   "entities_asserted": 1024,
+   "entities_ungrounded": 8,
+   "entity_ungrounded_pct": 0.8
+  },
+  "both_tog": {
+   "entities_asserted": 1265,
+   "entities_ungrounded": 0,
+   "entity_ungrounded_pct": 0.0
+  },
+  "both_agr": {
+   "entities_asserted": 1709,
+   "entities_ungrounded": 0,
+   "entity_ungrounded_pct": 0.0
   }
  },
  "groundedness_tier2_judge": {

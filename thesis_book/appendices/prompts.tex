@@ -5,9 +5,14 @@
 % prompt text, so a silent divergence would also invalidate every cached run.
 % scripts/check_appendix_prompts.py asserts that each block still matches.
 
-Seven prompts constitute the whole of AGR's interface to the language model. Two
-more serve the baselines. All nine are reproduced here verbatim from the source
-that sends them, in the order a question encounters them. Braces written
+Seven prompts constitute the whole of AGR's interface to the language model. Six
+more serve the baselines: two shared by the three static baselines, and four
+belonging to the reimplemented agentic baseline. All thirteen are reproduced
+here verbatim from the source that sends them, in the order a question
+encounters them. The agentic baseline's four matter more to a sceptical reader
+than any of AGR's own, because \Cref{sec:baseline-tog} rests the central
+comparison on a reimplementation rather than on the authors' code, and these
+prompts are what that reimplementation actually is. Braces written
 \verb|{like this}| are Python format fields; doubled braces \verb|{{...}}| are
 literal braces in the emitted text.
 
@@ -281,6 +286,68 @@ Facts (retrieved from a knowledge graph):
 Question: {question}
 Answer using ONLY the facts above. Name entities exactly as written in the
 facts. If the facts are insufficient, say so and return [].
+\end{lstlisting}
+
+\section{Agentic Baseline (Think-on-Graph)}\label{app:prompt-tog}
+
+Four prompts implement the reimplementation of \Cref{sec:baseline-tog}, at beam
+width $3$ and depth $3$. They are given in full because the thesis's central
+comparison is against this code rather than against published numbers
+(\Cref{sec:tog-split}), and a reader who wants to challenge that comparison
+should be able to read what was actually run. The structure follows the original:
+prune relations, expand, prune entities, ask whether what has been gathered
+suffices, and answer if it does.
+
+The contrast with AGR's scorer is worth noting while reading the first of them.
+This prompt \emph{selects} a set of relations; AGR's scores every candidate on
+$[0,1]$ and blends that with an embedding similarity
+(\Cref{sec:scoring}). Selection cannot express ``all of these are poor'', which
+is what the low-signal backtrack trigger needs to fire on.
+
+\subsection*{Relation pruning}
+
+\begin{lstlisting}[style=verbatimblock]
+Question: {question}
+Current entity: {entity}
+Available relations (relation, direction, fanout):
+{relations}
+Select up to {w} relations most likely to lead to the answer.
+Return {{"relations": [{{"rel": "...", "dir": "in|out"}}]}}.
+\end{lstlisting}
+
+\subsection*{Entity pruning}
+
+\begin{lstlisting}[style=verbatimblock]
+Question: {question}
+Candidate entities reached (via {entity} --{rel}-->):
+{entities}
+Select up to {w} entities most likely on the path to the answer.
+Return {{"entities": ["..."]}}.
+\end{lstlisting}
+
+\subsection*{Sufficiency check}
+
+This is the prompt the call budget most often interrupts. It runs once per
+depth, and a run clipped before it returns \textsf{true} answers from whatever
+the beam has gathered --- the mechanism behind the clipped-subset accuracies of
+\Cref{tab:tog-split}.
+
+\begin{lstlisting}[style=verbatimblock]
+Question: {question}
+Knowledge triples gathered so far:
+{triples}
+Can the question be answered from these triples alone?
+Return {{"sufficient": true|false}}.
+\end{lstlisting}
+
+\subsection*{Answer}
+
+\begin{lstlisting}[style=verbatimblock]
+Question: {question}
+Knowledge triples:
+{triples}
+Answer using ONLY these triples; name entities exactly as written.
+If insufficient, say so and return [].
 \end{lstlisting}
 
 \endinput

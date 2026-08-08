@@ -37,7 +37,7 @@ at a token price --- is answered by four single-deviation ablations on stratifie
 half-samples, each compared against the unmodified system restricted to the same
 questions (\Cref{sec:ablation-conditions,sec:ablations}).
 
-\subsection{Pre-Registration and the No-Tuning Policy}
+\subsection{Pre-Registration and the No-Tuning Policy}\label{sec:pre-registration}
 
 One rule governed everything from the moment the test files were built:
 \emph{nothing gets tuned}. No prompt was edited, no configuration value changed,
@@ -330,9 +330,11 @@ edges while remaining one logical hop; an ordinary neighbour is emitted and neve
 expanded again. The consequence is checkable from the run records without
 re-reading the code: every fact this baseline emits is rendered as
 \textsf{topic\ relation\ endpoint}, so a genuine second hop would produce facts
-anchored at an intermediate entity. Across all $7{,}431$ retrieved facts logged
-over both datasets, $7{,}431$ begin with a topic entity. There are no exceptions,
-which is what a one-hop radius looks like in the data.
+anchored at an intermediate entity. Across all $7{,}431$ logged facts --- the top
+ten of the thirty retrieved per question, which is what the run records keep ---
+$7{,}431$ begin with a topic entity. There are no exceptions, and the sample is
+the highest-ranked tenth of retrieval rather than an arbitrary slice, which is
+what a one-hop radius looks like in the data.
 
 Two implementation details fixed on development data are worth naming, because
 both were comparability repairs rather than improvements: neighbourhood expansion

@@ -12,36 +12,65 @@ can be read as definitions rather than as summary words.
 
 \section{Judge Instructions}\label{app:judge-rules}
 
-The semantic-support judge of \Cref{sec:judge} decides one question per claim:
-is this claim supported by these triples? Eight rules constrain that judgement.
-Each was forced by a disagreement encountered while validating the judge against
-a human annotator, and the validation outcome --- $\kappa = 0.6995$ against a
-pre-registered bar of $0.70$ --- is reported in \Cref{sec:judge} rather than
-here.
+The semantic-support judge of \Cref{sec:judge} is shown three things: the
+question, \emph{one} entity the system asserted as an answer to it, and up to
+three knowledge-graph paths connecting the question's topic entity to that
+entity. It decides one thing: \emph{do these paths express the relationship the
+question asks about, such that this entity is supported as an answer?} Mere
+connectedness is not support, and the prompt says so in those words.
+
+The unit of judgement is therefore an \emph{entity together with its paths}, not
+a claim and not a set of triples. That distinction is what the following rules
+are about, and it is why several of them have no analogue in the claim-level
+structural check of \Cref{sec:structural-check}: that check asks whether an edge
+exists, whereas this one asks whether the edges that exist mean what the question
+asked. The sampling frame is built from asserted entities, so an abstention never
+reaches this task at all.
+
+Eight rules constrain the judgement. Each was forced by a disagreement
+encountered while validating the judge against a human annotator, and the
+validation outcome --- $\kappa = 0.6995$ against a pre-registered bar of $0.70$
+--- is reported in \Cref{sec:judge} rather than here.
 
 \begin{enumerate}
-\item Judge the question that was asked, not the question the claim would have
-  answered well. A true statement about the topic entity is unsupported if the
-  question asked about something else.
-\item Support must come from the triples shown. A claim that is true in the
-  world but absent from the triples is unsupported.
-\item A claim inferable from the triples only by adding outside knowledge is
-  unsupported. This is the rule that separates the judge from the model's own
-  parametric memory, and it is the one that most often decided a disagreement.
-\item Surface form is not the test. Where the graph names an entity
-  \textsf{University Yale} and the claim says \textsf{Yale University}, the
-  claim is not unsupported for that reason alone.
-\item Direction is not the test either. A triple asserted in one direction
-  supports a claim stated in the other, unless the relation's meaning is
-  genuinely asymmetric.
-\item A composite claim is supported only if every component is supported.
-  Partial support is unsupported.
-\item A hedge asserts nothing and therefore has no claims to judge. It is
-  neither supported nor unsupported.
-\item Where the triples are ambiguous between two readings and one supports the
-  claim, judge it supported. The metric is intended to detect assertion without
-  grounding, not to penalise underspecified evidence.
+\item \textbf{Judge the asked relationship, under the graph's vocabulary.} The
+  test is whether the path relations express what the question asked, as the
+  graph is able to express it --- not whether a better-designed schema would
+  have said it more directly. A path that is merely \emph{about} the right
+  entities does not qualify.
+\item \textbf{A mediator-bridged pair of edges is one relation.} Freebase
+  routes many binary facts through an unnamed compound-value node, so the path
+  renders as two hops. It is judged as the single relationship it encodes, on
+  the same contract the tool layer uses (\Cref{sec:tool-adjacency}).
+\item \textbf{Any one supporting path is enough.} Up to three are shown. If one
+  of them expresses the asked relationship, the entity is supported; the others
+  need not, and a weak path alongside a good one is not evidence against.
+\item \textbf{Judge relations by role, not by type.} A relation that is generic
+  in most contexts counts when it is itself the thing asked about --- a
+  \textsf{nationality} edge is generic filler for a question about films and is
+  the entire answer for a question about citizenship.
+\item \textbf{For conjunctions, every asked relationship must be covered by some
+  specific path, jointly rather than in one chain.} A question imposing two
+  constraints is supported when the paths together establish both, even if no
+  single path establishes both at once.
+\item \textbf{Judge each entity independently of answer-set completeness.}
+  Whether the system found the \emph{other} correct answers is recall, and it is
+  measured by F1 elsewhere. This task asks only whether \emph{this} assertion is
+  grounded.
+\item \textbf{Ignore superlative and temporal filters the graph cannot express.}
+  Where a question asks for the first, largest, or most recent of something and
+  the environment encodes no ordinals or date literals
+  (\Cref{sec:unanswerable}), judge only the base relationship. Penalising the
+  path for a filter the environment cannot represent would measure the
+  environment, not the assertion.
+\item \textbf{A path expressing only the question's identifying descriptor,
+  rather than its actual ask, is unsupported.} ``The 33rd president who led the
+  nation during the war'' identifies its subject twice and asks for it once; a
+  path that only re-establishes the description has answered nothing.
 \end{enumerate}
+
+Rule 8 names the \emph{composition-echo} case; \Cref{sec:judge} draws out why it
+matters that the failure census arrives at the same mechanism independently.
 
 \section{Failure Census Label Schema}\label{app:census-schema}
 
@@ -115,10 +144,15 @@ corrected; \Cref{sec:census-corrections} records them individually.
 
 \subsection*{Gold-defect subtypes}
 
-The census itself met only one or two gold defects, too few to support a subtype
-vocabulary. The adjudication pass of \Cref{sec:gold-quality} met roughly $148$
-flagged rows and made exactly this judgement at volume, so its subtypes are the
-reference list. \Cref{tab:golddefect-subtypes} gives them with the counts they
+Seventeen gold defects survive into the census itself --- $3$ on WebQSP and $14$
+on CWQ, filed as \textsf{gold\_noise} ($7$) or \textsf{ambiguous\_question}
+($10$) and reported as such in \Cref{sec:benchmark-defects}. They are not
+subtyped there, because the census met each one incidentally while reading a
+failure, whereas the adjudication pass of \Cref{sec:gold-quality} met roughly
+$148$ flagged rows and made exactly this judgement at volume. Subtyping a defect
+class is only worth doing where the boundaries were drawn against many cases, so
+the adjudication pass supplies the reference list and the census rows are counted
+against its categories rather than given a vocabulary of their own. \Cref{tab:golddefect-subtypes} gives them with the counts they
 were derived from.
 
 \begin{table}[!htb]

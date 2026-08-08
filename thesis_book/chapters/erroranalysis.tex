@@ -739,7 +739,37 @@ often --- an answer that is grounded, connected, true, and not what was asked.
 
 \subsection{Threats to Validity}\label{sec:threats}
 
-\textbf{The instrumentation gap is the most serious.} The verifier logs only the
+\textbf{The environment is friendlier than the knowledge base it stands in for,
+and this bounds every absolute number.} It is the union of per-question subgraphs
+that the RoG distribution pre-extracted \emph{so as to contain their own
+question's answer} (\Cref{sec:source-data}). Taking the union restores distractor
+mass --- an agent exploring one question's topic meets edges contributed by
+thousands of unrelated questions --- but it cannot restore what was never
+extracted. That is why answer reachability is certified at $97.3\%$ on WebQSP and
+$99.7\%$ on CWQ (\Cref{sec:validation-gate}): a BFS extraction from full Freebase
+under the same hop bound would not reach those rates, and no system here is ever
+asked to search a graph that might simply not contain the answer. Accuracies
+measured on this environment are therefore \emph{not} comparable to
+evaluations over full Freebase, and the ceilings should be read as part of the
+result rather than as background. The mitigation is the one
+\Cref{sec:source-data} states and it is real but narrow: every system compared
+here navigates the identical environment, so the \emph{relative} ordering is
+sound even where the absolute level is optimistic. Every claim in
+\Cref{sec:findings} is relative for this reason.
+
+\textbf{Entities are keyed by name, so homonyms are merged.} The distribution's
+triples are keyed by human-readable name rather than by machine identifier, so
+distinct real-world entities sharing a surface form collapse into one node. Two
+consequences run in opposite directions and neither is measured here. A merged
+node can manufacture a path between things that are not actually connected,
+which inflates reachability and could let a wrong answer verify as grounded ---
+the structural check asks whether an edge exists, and a spurious edge exists.
+It can equally destroy a distinction the question depends on. This is inherent to
+name-keying rather than a defect of the construction, but it means structural
+groundedness is a claim about \emph{this} graph's node identity, not about the
+world.
+
+\textbf{The instrumentation gap is the most serious of the remaining items.} The verifier logs only the
 claims it rejects, never the ones it accepts with their matching triples. Wrongful
 acceptance is therefore not self-diagnosing: the single specimen in this census
 surfaced by manual trace reconstruction, and there is no way to know how many others
