@@ -480,14 +480,24 @@ certified by \textsf{verify\_connection}, which records no evidence. Across all
 Two instrumentation defects in this area are recorded rather than quietly fixed,
 in keeping with the standing rule adopted in \Cref{sec:design-validation}.
 
-The first was a Python falsy-empty-list trap. The answerer substituted the
-entire traversed set for the supporting triples whenever the verifier's list was
-empty --- treating ``the verifier ran and matched nothing'' identically to ``the
-verifier never ran''. A development trace consequently recorded 1{,}927
-supporting triples for an answer that asserted nothing whatsoever. The fix
-distinguishes the two states by testing for \textsf{None} rather than for
-falsity: absent means the legacy path, empty means zero support, and zero is
-reported.
+The first was a Python falsy-empty-list trap.\label{sec:supporting-triples} The
+answerer substituted the entire traversed set for the supporting triples
+whenever the verifier's list was empty --- treating ``the verifier ran and
+matched nothing'' identically to ``the verifier never ran''. A development trace
+consequently recorded 1{,}927 supporting triples for an answer that asserted
+nothing whatsoever. The fix tests for \textsf{None} rather than for falsity, so
+an empty list is reported as the zero support it is.
+
+The repair is effective but its stated rationale was wider than the code. The
+intent was a three-way distinction --- absent means the verifier never ran,
+empty means it ran and matched nothing --- and the second half is what the
+system delivers. The first half is unreachable: the state initialiser seeds
+\textsf{supporting\_triples} to an empty list, so the key is never absent and
+the fallback branch never executes. Every answer therefore reports the
+verifier's own list, which is the correct behaviour and the one the results
+depend on; what does not exist is the legacy path the description implies. The
+branch is dead code guarding a state the initialiser rules out, and saying so is
+cheaper than leaving a reader to reconcile the two files.
 
 The second is unrepaired and therefore fenced off. A counter in the verifier's
 trace named \textsf{n\_structural} counts every supported claim, including those

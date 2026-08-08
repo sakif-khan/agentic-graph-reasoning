@@ -439,6 +439,19 @@ embedding similarity and only the top twenty are shown to the model, in one
 batched call. Without the pre-filter, an expansion from five anchors with
 hundreds of relations each would be unaffordable.
 
+The equation above understates what that shortlist does, and the gap is worth
+closing here. A candidate outside the top twenty is not scored with the model
+term \emph{omitted}; it is scored with $\mathrm{LLM}(c) = 0$, which is the
+lowest rating the model could have given it. The embedding pre-filter is
+therefore a hard gate rather than a soft ranking aid: at $\alpha = 0.7$ an
+unrated candidate is penalised by up to $0.30$ against an identically-similar
+rated one, so it can only re-enter the beam if its embedding similarity exceeds
+the rated candidate's by that margin. This is defensible --- the pre-filter is
+an embedding ranking and a candidate below the cut is one the embedding already
+judged worse --- but it means the twenty-candidate cut interacts with $\alpha$
+rather than sitting orthogonally to it, and a larger $\alpha$ softens the gate
+as a side effect of weighting the model less.
+
 \textbf{The blend is applied after the call, not inside it.} The scoring prompt
 contains no configuration value --- no $\alpha$, no $\tau$. This is not
 cosmetic: because the response cache (\Cref{sec:instrumentation}) keys on prompt
@@ -486,6 +499,26 @@ no retrieved triple, and the filter rejected all nine --- costing a point on
 that question while preserving the property that every entity the system
 proposes came from the graph.
 
+\textbf{The table is built from tail names only, and the verifier's is not.}
+A traversed triple contributes its tail to this lookup and not its head, so an
+entity the search \emph{departed from} --- a topic entity, or any intermediate
+the agent has since moved past --- cannot be resolved as an answer by the
+evaluator, however the model phrases it. The structural check of
+\Cref{sec:structural-check} takes the opposite convention: it collapses
+traversed triples into undirected endpoint pairs, so heads and tails are
+interchangeable there.
+
+The asymmetry is deliberate in the evaluator and worth naming because it is not
+obviously so. A topic entity is exactly what an echoing model reaches for
+(\Cref{sec:echo}), and refusing to resolve it is a cheap structural defence
+against the most common degenerate answer. The cost is that a question whose
+gold answer genuinely \emph{is} a topic entity, or an intermediate the plan has
+passed through, cannot be answered through this path at all. Those cases exist
+--- \Cref{sec:echo} counts $13$ \textsf{echo} failures, and the filter is what
+prevents them from being far more numerous --- but the two layers disagreeing
+about what counts as a reachable entity is a design seam, not a proved optimum,
+and no experiment in this thesis isolates it.
+
 Resolutions that survive the filter are accumulated into
 \textsf{candidate\_answers} on \emph{every} evaluation, whether or not the
 objective was judged complete. An earlier design discarded resolutions when the
@@ -529,6 +562,35 @@ either underlying signal still points somewhere. This makes the trigger
 deliberately conservative: it abandons a branch only on unanimous evidence of
 hopelessness, and \Cref{sec:dev-tuning} shows the consequence, which is that
 $\tau$ barely fires at the values swept.
+
+\textbf{The implementation departs from that formula in two places, and both are
+recorded rather than repaired}, under the standing rule of
+\Cref{sec:design-validation}. Repairing them would change the frozen results
+this thesis reports, which is a larger claim than either defect warrants.
+
+\emph{First, $\sigma = 0$ is read as ``no signal recorded''.} The comparison is
+written so that a missing signal defaults to a value above any usable $\tau$,
+which is right when no expansion has run yet. But $0.0$ is falsy in Python, so a
+genuine signal maximum of exactly zero takes the same branch, and the trigger
+does not fire at the one point where the formula says it most clearly should.
+This is the same falsy-empty trap that \Cref{sec:supporting-triples} records in
+the answerer, found in a second place. Its practical reach is narrow: a signal
+maximum of exactly zero means nothing was expanded at all, and the
+\textbf{dead end} trigger --- evaluated first --- fires on that same condition.
+The order of the triggers is what masks the defect, which is a weak reason for
+the behaviour to be correct.
+
+\emph{Second, at $\alpha \geq 1$ only the first term is computed.} The scorer
+takes an early return when the model term is disabled, and the two auxiliary
+maxima are never recorded, so $\sigma$ collapses to the blended maximum over
+expanded edges. Since $\alpha = 1$ makes the blend the embedding score, the
+effect is not that $\sigma$ is measured on a different scale but that it is
+measured over a \emph{smaller set}: the beam-selected, non-banned edges rather
+than every candidate the anchors offered. After a backtrack has banned the best
+relation, $\sigma$ falls in this condition where it would have held steady in
+the reference. That is exactly the embedding-only ablation, and
+\Cref{sec:abl-embonly} reports what it does to that condition's backtrack count
+instead of attributing the difference wholly to $\tau$.
 
 The order matters. The first two are deterministic and cost nothing; checking
 them before deferring to the model's judgement means a mechanically hopeless

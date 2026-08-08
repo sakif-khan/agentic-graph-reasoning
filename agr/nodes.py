@@ -1,5 +1,3 @@
-from typer.cli import state
-
 from agr.budget import BudgetExhausted
 from agr.planner import render_objective
 

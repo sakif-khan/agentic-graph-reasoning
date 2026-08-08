@@ -665,7 +665,7 @@ the layer is \Cref{tab:groundedness}, the precision column of \Cref{tab:main}, a
 the specimen analyses of \Cref{sec:verifier-errors}; it is not this row, and this
 row is reported at full length rather than omitted.
 
-\subsection{Embedding-Only Scoring}
+\subsection{Embedding-Only Scoring}\label{sec:abl-embonly}
 
 Removing the language-model term from the hybrid scorer costs $-0.015$ and
 $-0.020$ Hits@1 and $-0.016$ and $-0.008$ F1 --- consistently negative on both
@@ -676,10 +676,43 @@ Two corroborating details make the direction credible without over-claiming from
 it. The condition is the cheapest of the four ($3{,}413$ and $4{,}925$ tokens,
 $4.4$ and $5.9$ calls), so the language-model scoring term is buying accuracy with
 tokens as designed. And it carries by far the most backtracks --- $57$ and $143$
-against the reference's $38$ and $108$ --- which is the $\tau$ mechanism of
-\Cref{sec:backtracking} visible in the logs: with the language-model term removed,
-the signal maximum clears $\tau$ less often, so the search machinery works harder
-to compensate. The primary evidence for $\alpha = 0.7$ remains the development
+against the reference's $38$ and $108$.
+
+That second detail was originally read as the $\tau$ mechanism of
+\Cref{sec:backtracking} visible in the logs: with the language-model term
+removed, the signal maximum clears $\tau$ less often and the search works harder
+to compensate. The reading survives, but only partly, and the qualification is
+recorded because the run logs contain the evidence against the stronger version.
+Every backtrack stores its trigger, so the increase can be decomposed rather
+than attributed. On WebQSP the $+19$ additional backtracks are $+14$
+\textsf{low\_score}, $+5$ \textsf{evaluator}, and no additional dead ends; on CWQ
+the $+35$ are $+16$ \textsf{low\_score}, $+13$ \textsf{evaluator}, and $+6$
+dead ends. The \textsf{low\_score} trigger --- the one $\tau$ governs --- roughly
+triples in both datasets, from $7$ to $21$ and from $8$ to $24$, and accounts for
+about three quarters of the WebQSP increase and about half of CWQ's.
+
+So the trigger the explanation names is doing much of the work. But the signal it
+thresholds is not computed identically in the two conditions, for the reason
+\Cref{sec:backtracking} records: at $\alpha = 1$ the two auxiliary maxima are
+never taken, so $\sigma$ is a maximum over beam-selected, non-banned edges rather
+than over every candidate offered. After a backtrack has banned the best
+relation, $\sigma$ falls in this condition and holds steady in the reference,
+which produces additional \textsf{low\_score} backtracks through an
+implementation asymmetry rather than through the scoring change under test. The
+two effects push the same way and cannot be separated without re-running the
+condition with the auxiliary terms restored, which would no longer be the frozen
+system.
+
+The honest statement is therefore narrower than the original one: removing the
+model term raises the backtrack count, an unknown but non-trivial share of that
+rise is an artefact of how $\sigma$ is computed when the term is disabled, and
+the backtrack count is consequently corroborating rather than load-bearing. It
+is worth noting that this cuts against the ablation's own direction --- extra
+backtracks make the embedding-only condition look busier than the scoring change
+alone would make it --- so the defect flatters the component under test rather
+than the null. Nothing in \Cref{tab:rq3} depends on it: the accuracy and F1
+deltas are computed from answers, not from backtracks, and they are unaffected.
+The primary evidence for $\alpha = 0.7$ remains the development
 sweep of \Cref{tab:sweep}, where the $\alpha = 1.0$ condition lost five hits on
 $80$ questions; this ablation corroborates it at test scale rather than
 independently establishing it.

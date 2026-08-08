@@ -204,6 +204,30 @@ def tog_budget_split():
     return out
 
 
+def ablation_backtrack_reasons():
+    """Backtrack triggers per ablation condition, from the run records.
+
+    Sec 8.7.4 attributed the embedding-only condition's extra backtracks to the
+    tau mechanism. Every backtrack stores its trigger, so the increase can be
+    decomposed instead of attributed, and the decomposition is what the section
+    now reports. low_score is the trigger tau governs.
+    """
+    out = {}
+    for cond in ("full", "noplanner", "nobacktrack", "noverifier", "embonly"):
+        for ds in ("webqsp", "cwq"):
+            path = (P4 / "ablations" / f"test_{ds}_half_abl_{cond}.jsonl")
+            if not path.exists():
+                continue
+            counts = {"dead_end": 0, "low_score": 0, "evaluator": 0}
+            for line in open(path, encoding="utf-8"):
+                for b in json.loads(line).get("backtracks", []):
+                    r = b.get("reason")
+                    if r in counts:
+                        counts[r] += 1
+            out[f"{ds}/{cond}"] = {**counts, "total": sum(counts.values())}
+    return out
+
+
 def parse_census(path):
     """Stage E histogram: {dataset: {wrong|hedge: {category: count}}}."""
     out, ds, kind = {}, None, None
@@ -279,6 +303,12 @@ def main():
             "by_condition": abl_rows,
             "by_hop_stratum": abl_strata,
             "mcnemar_vs_full": abl_mcnemar,
+            "backtrack_reasons": ablation_backtrack_reasons(),
+            "_backtrack_note": (
+                "embonly's extra backtracks are mostly low_score, the trigger "
+                "tau governs -- but sigma is computed over a smaller candidate "
+                "set when alpha=1 (scorer.py early-returns without setting "
+                "last_info), so the rise is confounded. See Sec 8.7.4."),
         },
         "groundedness_tier1_structural": {
             "_source": "results/phase4/tier1_groundedness/groundedness_log.txt",
