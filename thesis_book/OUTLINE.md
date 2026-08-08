@@ -753,21 +753,27 @@ appendices.
 
 The decision to cross the ceiling was taken at 104 pages and recorded so it would not
 be revisited by accident: *cross the ceiling if needed.* That decision was made
-against a smaller number, and the 15 pages added since are concentrated in Chapters 5,
-7 and 9 — the corrections, scoping notes and threat statements added in review, not
-new material. **Re-confirm before submission whether the department enforces a hard
-cap.** If it does, the compression targets are unchanged: Chapters 2 and 3 first,
-never Chapter 9.
+against a smaller number. The 15 pages added since fall mostly in Chapter 8 (+4) and
+Chapter 5 (+3), then Chapters 7 and 9 (+2 each), with one page each in 1, 4, 6 and 10
+— corrections, scoping notes and threat statements added in review, not new material.
+**Re-confirm before submission whether the department enforces a hard cap.** If it
+does, the compression targets are unchanged: Chapters 2 and 3 first, never Chapter 9.
 
-Where the 17 pages over budget went, and why each is defensible if questioned:
+Where the 32 pages over budget went, and why each is defensible if questioned.
+The `r1` column is the round-1 overrun measured at 104 pages; `now` is measured at
+119. The difference between the two columns is review work — corrections, scoping
+notes and threat statements — not new material.
 
-| Chapter | Over | Reason |
-| --- | ---: | --- |
-| 6 Verification | +5 | Algorithm, attribution-census table, worked example, by-construction failure analysis. Each section is 1–2 pages. |
-| 7 Setup | +4 | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Compressed once (16 → 15) by tightening prose only. |
-| 9 Error Analysis | +5 | The census is a population of 259, not a sample; it carries three named mechanism findings, three counted defect families, and the benchmark-defect provenance argument. |
-| 5 Framework | +2 | τ signal-maximum derivation and the design-validation table. |
-| 10 Conclusion | +1 | Future work is two-tiered (earned repairs vs. architectural), which the census made possible. |
+| Chapter | r1 | now | Reason |
+| --- | ---: | ---: | --- |
+| 9 Error Analysis | +5 | **+7** | The census is a population of 259, not a sample; three named mechanism findings, three counted defect families, the benchmark-defect provenance argument. Grew by the union-of-subgraphs and name-keying threats, the three-way census exclusion statement, and the Phoenician case. |
+| 6 Verification | +5 | **+6** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1 and the post-hoc-verification positioning. |
+| 7 Setup | +4 | **+6** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note and the hedge-counting convention. |
+| 5 Framework | +2 | **+5** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, and the two σ implementation deviations. |
+| 8 Results | +0 | **+4** | Grew entirely in review: §8.4, the clipped/unclipped split of the agentic-baseline margin, plus the per-stratum radius qualification. |
+| 10 Conclusion | +1 | **+2** | Future work is two-tiered (earned repairs vs. architectural), which the census made possible; plus the two-hop baseline experiment. |
+| 2, 3 | +1, +1 | **+1, +1** | Unchanged since round 1. |
+| 1, 4 | −1, −1 | **+0, +0** | Each gained a page in review — §1.7's environment scoping and §4.3.3's two hop conventions — bringing both back to budget. |
 
 **If a page cut is ever forced**, the order is unchanged: §2.6, §3.1, §3.4 first
 (background the committee already has), then Chapter 7's §7.4 and §7.6 enumerations
