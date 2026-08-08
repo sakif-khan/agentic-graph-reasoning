@@ -32,8 +32,22 @@ defect; the second by the groundedness filter on resolutions
 caught by anything examining the answer.
 
 The design response is to check the draft against the environment \emph{before}
-it is emitted rather than to fact-check an emitted answer afterwards. Three
-properties follow from placing the check inside the loop. The checker sees the
+it is emitted rather than to fact-check an emitted answer afterwards. This is
+where the layer parts company with the post-hoc verification
+literature. Chain-of-Verification~\cite{dhuliawala2024chain} improves a response
+by drafting it, planning verification questions, answering them, and revising;
+FActScore~\cite{min2023factscore} decomposes generated text into atomic facts
+and scores each against a corpus. Both are placed after generation, and both
+take the model's own answers to the verification questions as evidence. The
+layer specified here borrows their decomposition step --- \Cref{sec:claim-decomposition}
+extracts atomic claims in much the same spirit --- and rejects their placement
+and their evidence source: the check runs before emission and adjudicates
+against traversed triples rather than against further generation. That matters
+because a model asked to check its own output is a weak detector of its own
+errors~\cite{huang2024selfcorrect}, which is precisely the failure mode a
+symbolic environment can avoid.
+
+Three properties follow from placing the check inside the loop. The checker sees the
 same retrieved evidence the drafter saw, so a disagreement between them is
 informative rather than an artifact of differing context. The check happens
 while budget remains, so a rejected claim can trigger further exploration rather

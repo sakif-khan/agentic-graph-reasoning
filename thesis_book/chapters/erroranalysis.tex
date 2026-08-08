@@ -16,8 +16,16 @@ wrong relation, then hedges from being counted three times under three categorie
 
 \subsection{Category and Subtype Schema}
 
-Ten categories carry the census, each naming a distinct architectural locus rather
-than a symptom: \textsf{relation\_selection} (the scorer picked the wrong edge),
+Ten categories carry the census, each naming a distinct architectural locus
+rather than a symptom. That choice is the substantive one. Surveys of
+hallucination classify by how the output fails --- factuality against
+faithfulness, intrinsic against extrinsic~\cite{huang2025survey} --- which is
+the right cut when the generator is a black box and the output is all there is
+to read. It is the wrong cut here, because the run record exposes which
+component produced the failure, and a taxonomy that discarded that would throw
+away the only information this system has over a black box. The categories are
+therefore named for where the trajectory went wrong:
+\textsf{relation\_selection} (the scorer picked the wrong edge),
 \textsf{composite\_claim} (a multi-constraint question handled partially),
 \textsf{kg\_gap} (the environment cannot express what the question needs),
 \textsf{decomposition\_error} (the planner or draft pipeline caused it),

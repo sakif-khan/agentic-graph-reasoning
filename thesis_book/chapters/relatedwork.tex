@@ -284,9 +284,9 @@ settings and published accuracy.
       \cline{2-5}
        & GPT-4 & & 82.6 & 69.5 \\
       \hline
-      PoG & GPT-3.5 & CWQ, WebQSP, GrailQA & $\approx$82.0 & $\approx$63.2 \\
+      PoG & GPT-3.5 & CWQ, WebQSP, GrailQA & 82.0 & 63.2 \\
       \cline{2-5}
-       & GPT-4 & & $\approx$87.3 & $\approx$75.0 \\
+       & GPT-4 & & 87.3 & 75.0 \\
       \hline
       RoG & Fine-tuned LLaMA2-7B & WebQSP, CWQ & 85.7 & 62.6 \\
       \hline
@@ -309,7 +309,16 @@ settings and published accuracy.
     {\footnotesize $^{\dagger}$ KBQA-o1 reports \textbf{F1}, not Hits@1, and
     evaluates under a 100-shot low-resource protocol; these cells are therefore
     \emph{not} comparable with the rest of the column and are shown only to
-    situate the system. It does not evaluate CWQ.}
+    situate the system. It does not evaluate CWQ.
+
+    \vspace{0.7mm}
+    Every figure is the one its own authors published. That this is not the same
+    as a comparison is visible inside the table: PoG's paper reproduces
+    Think-on-Graph and measures it at $57.1$ and $67.6$ on CWQ, against the
+    $58.9$ and $69.5$ Think-on-Graph reports for itself. Two published papers
+    disagree by $1.8$ and $1.9$ points on the same system and benchmark, which
+    is the order of many claimed improvements in this literature and the reason
+    \Cref{ch:setup} reimplements its baseline rather than citing a number.}
   \end{center}
 \end{table}
 
@@ -327,10 +336,15 @@ cross-paper table cannot settle which architecture is better.
 Second, evaluation protocols differ. Some papers evaluate on sampled test
 subsets, and answer-matching conventions are not uniform across implementations.
 
-Third, the Plan-on-Graph figures are marked as approximate. They are consistent
-with values reported in follow-up work, but should be confirmed against the
-primary tables before being relied upon in any quantitative claim. No claim in
-this thesis depends on them; they appear here to situate the design space.
+Third, and most concretely, two papers disagree about a third. Plan-on-Graph's
+own comparison table measures Think-on-Graph at $57.1$ and $67.6$ on CWQ, while
+Think-on-Graph reports $58.9$ and $69.5$ for itself. Neither is wrong: one is an
+original result and the other a reimplementation, which is exactly the situation
+this thesis is in with respect to its own agentic baseline
+(\Cref{sec:baseline-tog}). The gap is $1.8$ and $1.9$ points --- the same order
+as many improvements claimed in this literature. A cross-paper table cannot
+distinguish a real advance from a reproduction difference of that size, which is
+why no claim in this thesis rests on one.
 
 \section{Positioning of This Work}\label{sec:positioning}
 

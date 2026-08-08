@@ -213,6 +213,9 @@ All five wrongly-rejected cases share one mechanism: the structural check requir
 single edge asserting the drafted claim, and a transitively-true multi-hop fact does
 not present one. A check that accepts a bounded relation chain expressing the claim
 --- rather than requiring one literal triple --- would recover those answers. The
+relation-path formulation of RoG~\cite{luo2024reasoning} is the natural source
+for what such a chain may look like, and using it as an acceptance criterion
+rather than as a retrieval plan is the change being proposed. The
 Tier-2 judge of \Cref{sec:groundedness-metric} is a prototype of exactly this
 judgement, which suggests folding a bounded form of it into the loop; the $\kappa$
 of $0.6995$ is also a caution about how reliable such a check would be.
@@ -249,7 +252,9 @@ path one hop short of the correct one.
 
 \subsection{A Two-Hop Static Retriever}\label{sec:future-baselines}
 
-The static graph baseline expands one logical hop (\Cref{sec:graphrag-scope}), so
+The static graph baseline follows GraphRAG~\cite{edge2024local} in retrieving
+structured context in one shot, and expands one logical hop
+(\Cref{sec:graphrag-scope}), so
 the cleanest reading of its collapse on deep CWQ questions --- that a fixed radius
 cannot hold a chain --- is confounded with the particular radius chosen. The
 experiment that separates them is cheap and specified: re-run the same baseline
