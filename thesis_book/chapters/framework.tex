@@ -461,9 +461,16 @@ calls instead of one per condition. Embedding a configuration value in that
 prompt would multiply sweep cost by the number of conditions without changing
 any result.
 
-If the model call fails or the budget is exhausted, the scorer degrades silently
-to embedding-only scoring rather than aborting the expansion. Setting $\alpha =
-1$ disables the model term entirely, which is the embedding-only ablation.
+If the model call fails or the budget is exhausted, the scorer treats every
+model score as zero rather than aborting the expansion, so each candidate scores
+$\alpha \cdot \mathrm{emb}$. That is the embedding ordering scaled by $\alpha$,
+not the embedding score itself, and the distinction is worth stating precisely
+because it does not matter and could be assumed to: $\alpha > 0$ is a positive
+scaling, so the ranking is identical, and the backtracking trigger compares
+$\tau$ against $\sigma$, which takes the unscaled embedding maximum as one of
+its terms (\Cref{sec:backtracking}). No reported number changes on this path.
+Setting $\alpha = 1$ disables the model term entirely, which is the
+embedding-only ablation.
 
 \section{The Evaluator and Routing Policy}\label{sec:evaluator}
 

@@ -1,5 +1,25 @@
 % You should not change anything in this file unless you really know
 % what you are doing.
+%
+% DEVIATIONS FROM THE DEPARTMENTAL TEMPLATE (thesis_templates/Thesis Template
+% PG/buetcsepgthesis.sty). Confirm these with the department before submission.
+% Diffed line by line against the template; the list below is complete.
+%
+% Two CHANGE HOW THE DOCUMENT RENDERS against an unmodified template build,
+% rather than only adding capability:
+%   1. \fancyhead[L] wraps \rightmark in \nouppercase, so running heads keep
+%      the capitalisation of the section titles instead of being upcased.
+%      This is the only template line not carried over verbatim.
+%   2. \section, \subsection and \subsubsection are redefined -- new lines in
+%      this file, but they override report.cls. The definitions are report.cls's
+%      own with \raggedright appended, so long headings break on words rather
+%      than being justified to the margin.
+%
+% Everything else is additive: package loads (microtype, listings, multicol,
+% tikz/pgfplots, cleveref, makeidx), the L{} column type, the verbatimblock
+% listing style, the agrplot axis style, and the Helvetica 92% scaling that
+% matches the sans face optically to Times.
+%
 \RequirePackage[nofancy,notoday]{rcsinfo}
 \rcsInfo $Id: buetcsepgthesis.sty,v 1.03 2019/09/29 15:44:58 masroor Exp $
 

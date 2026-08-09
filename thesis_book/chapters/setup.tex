@@ -276,7 +276,14 @@ stored keyed on model string, temperature, reasoning effort, prompt, and schema
 hint, and --- the detail that makes it work --- the original token usage is stored
 alongside and \emph{replayed into the budget meter} on a hit. The budget check
 still runs and the call counter still increments, so a fully cached rerun
-reproduces the original run's budget snapshot exactly rather than approximately.
+reproduces the original run's budget snapshot rather than approximating it ---
+with one field's worth of care. The replay restores prompt and completion tokens
+but not the \textsf{reasoning\_tokens} counter, which the cache stores and does
+not add back. The backbone runs at reasoning effort \textsf{none}, and that field
+is zero in all $6{,}060$ records this thesis reports, so the snapshots do
+reproduce exactly here; under a reasoning-effort setting they would not. The
+defect is recorded rather than repaired, for the reason
+\Cref{sec:pre-registration} gives.
 Every table in \Cref{ch:results} comes from one recorded run per condition, and
 that run replays byte-identically for as long as the cache survives, independent
 of API weather or model retirement.

@@ -338,9 +338,16 @@ Resolution was measured over every topic-entity mention in both test sets, and
   \end{center}
 \end{table}
 
-Entity linking is therefore not a bottleneck in this environment, and it can be
-excluded as an explanation for downstream failures --- a claim the error analysis
-of \Cref{ch:erroranalysis} relies on.
+Surface forms supplied by the benchmarks therefore resolve to nodes in this
+environment essentially without loss. The limits of that measurement should be
+read with it: the graph is keyed on the same name strings the benchmarks supply,
+both coming from the same RoG distribution, so this establishes that the
+\emph{resolver} does not lose entities the environment contains --- not that
+entity linking would be easy against an independently-built graph, and not that
+linking from free text would work at all. Topic entities are given rather than
+linked throughout (\Cref{sec:threats}). What follows for the error analysis of
+\Cref{ch:erroranalysis} is the narrow version: a failure in this environment
+cannot be attributed to the resolver having failed to find the question's topic.
 
 \section{Environment Validation Gate}\label{sec:validation-gate}
 

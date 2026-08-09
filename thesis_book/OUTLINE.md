@@ -6,6 +6,16 @@ Verification and Hallucination Mitigation in Large Language Models
 **Target:** 60–90 pages of body text. The per-chapter estimates below total **87 pages**
 (front matter is roman-numbered and does not count against the budget).
 
+> **Status: planning record, not a specification.** This file was the plan the book was
+> written against, and the framing directives in it are still the reason many sections are
+> shaped the way they are — which is why it is kept. It is **no longer authoritative on
+> structure**: the book has moved past it in several places (§3.3.4 on KBQA-o1 and §8.4 on
+> the clipped/unclipped split are new; §5.5, §5.6 and §7.2 were restructured; §9.3, §9.5
+> and §10.3 renumbered; `premature_termination`'s subtypes went from "all 8 evaluator" to
+> 5 + 3). **Where this file and the built PDF disagree, the PDF is correct.** The Page
+> Budget section at the end *is* maintained against each build and is the one part to
+> trust for numbers.
+
 Structural conventions follow `thesis_templates/buetcsepgthesis.pdf` (the approved
 UNN thesis): a heavily sub-sectioned Introduction that ends with *Our Contribution* and
 *Thesis Organization*, a separate *Preliminaries* chapter for concepts the reader must
@@ -747,7 +757,7 @@ wrongful-acceptance class from anecdote to rate)*
 | 9 Error Analysis and Discussion | 10 | 15 | 18 |
 | 10 Conclusion | 5 | 6 | 8 |
 | **Body total** | **87** | **104** | **123** |
-| References + Index + Appendices | ~12 | 6 + appendices | 6 + 47 |
+| References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
 
 **The body is 123 pages against a 60–90 target — 37% over the 90 ceiling.** Body runs pages 1–123;
 References begin on 124; the document is 176 pages including front matter and five
