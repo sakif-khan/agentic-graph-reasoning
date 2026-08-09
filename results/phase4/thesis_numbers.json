@@ -1289,7 +1289,23 @@
    "p90": 758,
    "max": 136742,
    "over_100": 1164,
-   "over_100_pct": 37.6
+   "over_100_pct": 37.6,
+   "topic_anchors": {
+    "n_entities": 596,
+    "median": 165.5,
+    "p90": 1762,
+    "max": 136742,
+    "over_100": 352,
+    "over_100_pct": 59.1
+   },
+   "frontier_only": {
+    "n_entities": 2501,
+    "median": 34,
+    "p90": 553,
+    "max": 122327,
+    "over_100": 812,
+    "over_100_pct": 32.5
+   }
   },
   "tog": {
    "relation_cap": 40,

@@ -276,23 +276,41 @@ def candidate_caps():
     # returns one row per relation type with its fanout, and the two
     # blocklists are equivalent, so the row sum is the degree the static
     # graph baseline's own LIMIT would have to cut into.
-    degree = {}
+    # The first get_relations call of a question lands on the anchor seeded from
+    # the dataset's topic entity, which is the population the static baseline's
+    # fanout cap acts on; everything after it is a frontier entity reached at
+    # depth. Split so the proxy's bias can be stated rather than assumed.
+    degree, first = {}, {}
     for ds in ("webqsp", "cwq"):
         path = P4 / f"test_{ds}_agr_tools.jsonl"
+        seen_q = set()
         for line in path.read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
             r = json.loads(line)
-            if r["tool"] == "get_relations":
-                degree[r["args"]["id"]] = sum(row["n"] for row in r["result"])
-    deg = sorted(degree.values())
+            if r["tool"] != "get_relations":
+                continue
+            d = sum(row["n"] for row in r["result"])
+            degree[r["args"]["id"]] = d
+            if r["qid"] not in seen_q:
+                seen_q.add(r["qid"])
+                first[r["args"]["id"]] = d
+
+    def block(d):
+        v = sorted(d.values())
+        over = sum(1 for x in v if x > 100)
+        return {"n_entities": len(v),
+                "median": statistics.median(v),
+                "p90": v[int(0.9 * len(v))],
+                "max": max(v),
+                "over_100": over,
+                "over_100_pct": round(100 * over / len(v), 1)}
+
+    later = {k: v for k, v in degree.items() if k not in first}
     out["expanded_entity_degree"] = {
-        "n_entities": len(deg),
-        "median": statistics.median(deg),
-        "p90": deg[int(0.9 * len(deg))],
-        "max": max(deg),
-        "over_100": sum(1 for d in deg if d > 100),
-        "over_100_pct": round(100 * sum(1 for d in deg if d > 100) / len(deg), 1),
+        **block(degree),
+        "topic_anchors": block(first),
+        "frontier_only": block(later),
     }
     for sysname, cap in caps.items():
         rel_n, per_entity, nbr_n = [], {}, []

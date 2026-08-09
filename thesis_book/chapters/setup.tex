@@ -21,7 +21,9 @@ That claim is about \emph{provenance}, and its limit should be stated with it.
 The numbers come from the generated file, but most of them reach the page by
 being typed into a table body from that file rather than emitted into it: of the
 twenty-eight tables in this thesis, two --- \Cref{tab:histogram} and
-\Cref{tab:tog-split} --- are generated directly, and the four figures are.
+\Cref{tab:tog-split} --- are generated directly, as are three of the five
+figures. The state machine of \Cref{fig:statemachine} and the claim path of
+\Cref{fig:claim-path} are drawn by hand, since neither carries a measurement.
 Every other table is a hand copy that agrees with the JSON but is not mechanically
 tied to it, which is a weaker guarantee than the sentence above may suggest. It is
 also not a hypothetical one: \Cref{tab:histogram} is generated because its
@@ -362,11 +364,25 @@ carries no \textsf{ORDER BY} --- so on any entity with more than $100$
 post-blocklist edges, the $100$ retrieved are an arbitrary sample of the
 neighbourhood rather than its best or its first, and the embedding rerank then
 picks the top $30$ facts out of that sample. This matters at scale rather than at
-the margin: over the $3{,}097$ entities the navigating systems expanded,
-$37.6\%$ carry more than $100$ post-blocklist edges, the ninetieth percentile is
-$758$, and the largest is $136{,}742$. For a hub topic the baseline therefore
-answers from roughly one percent of the available neighbourhood, chosen
-without a stated criterion. The consequence for \Cref{sec:hub-noise}'s diagnosis
+the margin: over the $3{,}097$ entities the full system expanded, $37.6\%$ carry
+more than $100$ post-blocklist edges, the ninetieth percentile is $758$, and the
+largest is $136{,}742$. For a hub topic the baseline therefore answers from
+roughly one percent of the available neighbourhood, chosen without a stated
+criterion.
+
+That degree distribution is a proxy, and its bias can be measured rather than
+assumed. This baseline expands topic entities only, and it queries the graph
+directly rather than through the logged tool layer, so it emits no
+\textsf{get\_relations} record and its own topic-entity degrees cannot be
+recovered from the artifacts. The full system's expanded set stands in for them,
+and it is the wrong population in a knowable direction: it holds $596$ anchors
+seeded from the dataset's topic entities together with $2{,}501$ frontier
+entities reached at depth, and the two differ sharply. The anchors have a median
+degree of $165.5$ and $59.1\%$ of them exceed the cap; the frontier entities have
+a median of $34$ and $32.5\%$ exceed it. The pooled $37.6\%$ is therefore a
+\emph{lower} bound on the share of topic entities the cap truncates --- on the
+closest available population it is nearer three in five --- so the figure
+understates the limit it is quoted for rather than inflating it. The consequence for \Cref{sec:hub-noise}'s diagnosis
 is direct and is stated there: the answer may not merely be outranked in the
 reranked window, it may never have entered the sample the reranker saw. Because
 the ordering is unspecified rather than seeded, this is also the one place in the
