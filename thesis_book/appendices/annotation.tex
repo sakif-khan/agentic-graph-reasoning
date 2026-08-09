@@ -164,7 +164,12 @@ were derived from.
 \begin{table}[!htb]
   \begin{center}
     \caption{Gold-defect and question-defect subtypes, with the counts observed
-      during adjudication across both datasets.}
+      during adjudication across both datasets. The unit is the \emph{flagged
+      row}: $63$ of the $148$ rows the consensus pass surfaced were adjudicated
+      defective, and these are their subtypes. That is not the unit of
+      \Cref{tab:goldnoise}, which counts the $41$ \emph{questions} the
+      adjudication excluded --- a defective row does not always produce an
+      exclusion, and \Cref{sec:gold-quality} keeps the two apart deliberately.}
     \label{tab:golddefect-subtypes}
     \footnotesize
     \begin{tabular}{|l|L{72mm}|r|}
@@ -179,7 +184,7 @@ were derived from.
       correctly found & $16$ \\
       \hline
       \textsf{type\_mismatch} & gold answers at the wrong entity type or
-      granularity, though the right type is in the graph & $6$ \\
+      granularity, though the right type is in the graph & $7$ \\
       \hline
       \textsf{malformed\_gold} & gold is structurally corrupted, such as absurd
       entity counts or machine identifiers leaked into answer strings & $3$ \\

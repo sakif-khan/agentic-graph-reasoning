@@ -12,6 +12,15 @@ last visible symptom; when torn, take the earliest plausible cause and record th
 alternative. That rule is what keeps a run that mis-decomposes, then explores the
 wrong relation, then hedges from being counted three times under three categories.
 
+A note on the identifiers used throughout this chapter, because they are meant to
+be looked up. A ComplexWebQuestions identifier is the WebQSP identifier it was
+derived from followed by a thirty-two character hash, and the stem alone does not
+identify a question: within these samples one stem covers up to twelve distinct
+CWQ questions, and thirteen stems are themselves complete WebQSP identifiers
+naming something else entirely.
+Cases are therefore cited as stem plus the first eight hash characters, which is
+unique within both samples; \Cref{app:samples} lists every identifier in full.
+
 \section{Annotation Protocol and the Failure Taxonomy}\label{sec:taxonomy}
 
 \subsection{Category and Subtype Schema}
@@ -40,7 +49,7 @@ and \Cref{sec:decomposition-errors} reports what fell into it.
 
 Subtypes are a second, open vocabulary that drives nothing and exists to group
 cases when writing. The full schema, with the worked examples that fixed each
-boundary, is \Cref{app:census-schema}.
+boundary, is \Cref{tab:census-schema} in \Cref{app:census-schema}.
 
 One naming decision is recorded here because it was got wrong once and corrected.
 The verifier's \emph{positive} class is ``the claim is supported'', so a false
@@ -73,8 +82,24 @@ reading so that no question is labelled twice, and they re-enter the histogram
 through their own row in \Cref{tab:census-pop}.
 
 Only the first set removes questions from the analysis altogether. The second is
-reported elsewhere, the third is counted elsewhere, and the arithmetic closes at
-the totals \Cref{tab:census-pop} gives.
+reported elsewhere and the third is counted elsewhere, so the totals of
+\Cref{tab:census-pop} are what the histogram is built over.
+
+\textbf{The three sets overlap, so their sizes are not additive.} This is worth
+stating because subtracting them in sequence gives the wrong answer, and the
+generator does not: \textsf{scripts/\allowbreak dump\_\allowbreak
+  failure\_\allowbreak packets.py} skips their \emph{union}. The full system fails on $98$ WebQSP questions and $191$ CWQ
+questions. Of the $22$ and $19$ adjudicated benchmark defects, only $12$ and $15$
+were failures at all --- the rest were questions the system answered correctly
+despite the label --- and of the near-misses, $1$ and $6$. Those subsets are not
+disjoint from the Stage~A reading: one WebQSP question is both an adjudicated
+defect and planner-discordant, and on CWQ one defect and one near-miss are.
+The union skipped is therefore $33$ questions on WebQSP and $34$ on CWQ, which
+leaves exactly the $65$ and $157$ that Stage~D read, and the two totals close
+without remainder. A question that falls in both an exclusion set and Stage~A is still
+analysed, through the Stage~A row; net of that re-entry and of the one migrated
+row, $12$ WebQSP and $18$ CWQ failures leave the analysis altogether, which is
+the difference between the failure counts above and the totals in the table.
 
 \begin{table}[!tb]
   \begin{center}
@@ -208,7 +233,7 @@ traces.
       \hline
       WebQTest-1215 & 6 professions & all 6 & \textsf{[Stephen Covey]} \\
       WebQTest-704  & 6 professions & all 6 & \textsf{[Thor Heyerdahl]} \\
-      WebQTrn-124   & 4 films       & all 4 & \textsf{[Angelina Jolie]} \\
+      WebQTrn-124\_0782789f   & 4 films       & all 4 & \textsf{[Angelina Jolie]} \\
       \hline
     \end{tabular}
   \end{center}
@@ -243,14 +268,14 @@ bug's more consequential sibling: the exact gold value demonstrably entered the
 resolved candidate set, and the drafter chose something else.
 \textsf{WebQTest-1555} asks what the parliament of Nepal is called; the evaluator
 resolves \textsf{Parliament of Nepal} itself, and the draft names its two
-component chambers instead. \textsf{WebQTrn-2784} asks which Tupac Shakur film
+component chambers instead. \textsf{WebQTrn-2784\_abedc8ac} asks which Tupac Shakur film
 Malcolm Campbell edited; the trace records \textsf{resolved=['Nothing but
 Trouble']}, the literal gold value satisfying both constraints, and the draft
 substitutes \textsf{Gang Related} and then hedges on it.
 
 One case in this family was originally filed as a verifier error and is worth the
 correction in full, because it is the kind of mistake this taxonomy exists to
-prevent. \textsf{WebQTrn-1294} was labelled \textsf{verifier\_fn} on the theory
+prevent. \textsf{WebQTrn-1294\_a4b2006a} was labelled \textsf{verifier\_fn} on the theory
 that the verifier had checked a claim about a different candidate than the one the
 evaluator resolved. The run record refutes that: the draft itself reads ``Marlon
 Brando also played in \emph{Joy}'', and the verifier rejected exactly what the
@@ -270,11 +295,11 @@ hedges anyway}. No rejection is involved, so it is not a verifier error at all.
 
 \textsf{WebQTest-689} states ``Spanish Language was spoken in Spain'' and then that
 the first language spoken in Spain could not be determined, in one answer.
-\textsf{WebQTrn-125} resolves \textsf{Memphis}, matching gold exactly, and the
-draft says the location could not be determined. \textsf{WebQTrn-1392} names both
+\textsf{WebQTrn-125\_003c6a04} resolves \textsf{Memphis}, matching gold exactly, and the
+draft says the location could not be determined. \textsf{WebQTrn-1392\_d372995c} names both
 of Eleanor Roosevelt's schools correctly and then declares the school
-undeterminable. \textsf{WebQTest-989} (Battle of Dunkirk), \textsf{WebQTest-1923}
-(\emph{The Last Song}), and \textsf{WebQTrn-2721} (\textsf{Alois Hitler}) are the
+undeterminable. \textsf{WebQTest-989\_6d0a1bf8} (Battle of Dunkirk), \textsf{WebQTest-1923\_a64ef0f5}
+(\emph{The Last Song}), and \textsf{WebQTrn-2721\_2d207ed9} (\textsf{Alois Hitler}) are the
 same shape. In every case the entity list comes back empty and the question is
 scored as a hedge.
 
@@ -315,13 +340,13 @@ anchors on \textsf{'find Glastonbury'} alone, dropping the question's own
 disambiguator, and the explorer resolves toward the identically-named Connecticut
 town.
 
-\textsf{WebQTrn-2615} asks what instruments the author of \emph{Fela!} plays. The
+\textsf{WebQTrn-2615\_48a6ac56} asks what instruments the author of \emph{Fela!} plays. The
 first sub-objective, ``find the author of \emph{Fela!}'', is scored with no mention
 of instruments, so it resolves the wrong sense of an ambiguous authorship relation
 before the constraint that would have disambiguated it appears in step two. The
 undecomposed run answers all five instruments correctly, in fewer calls.
 
-\textsf{WebQTrn-2570} is the strongest specimen in the census, and its trace shows
+\textsf{WebQTrn-2570\_d63877a4} is the strongest specimen in the census, and its trace shows
 every link of the mechanism. The question --- ``This 33rd president was the
 nation's leader during WW2'' --- is a single entity under two descriptions. The
 planner emits \textsf{['find the 33rd president', "find the nation's leader during
@@ -378,7 +403,7 @@ the rivers it flows \emph{into}, having explored \textsf{geography.river.mouth} 
 \textsf{origin}; a location-containment relation was never tried, and gold is the
 continent.
 
-Three separate questions across both datasets --- \textsf{WebQTrn-1758},
+Three separate questions across both datasets --- \textsf{WebQTrn-1758\_477d7040},
 \textsf{WebQTest-1226}, \textsf{WebQTest-314} --- all reach for
 \textsf{government.\allowbreak governmental\_jurisdiction.\allowbreak government},
 the organisation entity, when the question asks for a form of government and the
@@ -387,9 +412,11 @@ answer lives on
 relation confusion,
 reproduced three times on unrelated questions.
 
-The sharpest instance is a triplet on CWQ. \textsf{WebQTrn-1770} appears three
-times under different perturbations --- via a Beyoncé documentary, via the actor
-who played Etta James, via the composer of a Beyoncé track --- and all three
+The sharpest instance is a triplet on CWQ. All three questions sharing the stem
+\textsf{WebQTrn-1770} appear, under different perturbations ---
+\textsf{\_540abec8} via a Beyoncé documentary, \textsf{\_6325ee89} via the actor
+who played Etta James, \textsf{\_6a7c160a} via the composer of a Beyoncé track
+--- and all three
 resolve Beyoncé correctly, all three never once try
 \textsf{people.person.children}, the single relation that answers each of them, and
 all three hedge. Three independent entry points into the same resolver hitting the
@@ -406,8 +433,8 @@ that must not be merged.
 Five carry the \textsf{evaluator} subtype and are the \emph{same} systemic pattern:
 the correct relation is explored with a solid score and the evaluator backtracks
 away from it and never returns. \textsf{WebQTest-1226} ($0.451$),
-\textsf{WebQTest-517} ($0.428$), \textsf{WebQTest-1635} ($0.631$),
-\textsf{WebQTrn-710} ($0.702$), and \textsf{WebQTest-314} ($0.731$) all show the
+\textsf{WebQTest-517\_e7d8b401} ($0.428$), \textsf{WebQTest-1635} ($0.631$),
+\textsf{WebQTrn-710\_e3d40457} ($0.702$), and \textsf{WebQTest-314} ($0.731$) all show the
 identical shape across entirely unrelated domains --- government form, constructed
 languages, sports drafts, mascots. A relation scoring $0.73$ being explored and
 discarded is not a reasoning gap; it reads as a threshold or backtracking-policy
@@ -415,7 +442,7 @@ defect, and it is one of the most directly fixable findings in the census.
 
 The other three carry \textsf{budget} and are genuine exhaustion:
 \textsf{WebQTest-1170} exhausts its backtrack budget wandering person-attribute
-relations after the direct edge returns nothing usable; \textsf{WebQTest-1736}
+relations after the direct edge returns nothing usable; \textsf{WebQTest-1736\_125140bf}
 hits two real dead ends before the plan's second hop can run. The third,
 \textsf{WebQTest-1630}, is instructive because it belongs to two families at once:
 all five gold names surfaced across repeated evaluator rounds with a grounded
@@ -455,10 +482,10 @@ what is very likely the right answer. \textsf{WebQTest-38} resolves \emph{all fo
 gold campaign entities in one attempt; the rejection forces a retry that narrows to
 two names and fails anyway. \textsf{WebQTest-725} resolves both gold states,
 California and Nevada, then loses them across re-exploration and is rejected.
-\textsf{WebQTest-1348} resolves \textsf{Houston Oilers} correctly and grounded; the
+\textsf{WebQTest-1348\_b7598df9} resolves \textsf{Houston Oilers} correctly and grounded; the
 verifier rejects the phrasing ``Peyton Manning's dad played for Houston Oilers''
 because the underlying triple is stated in terms of Archie Manning, and the retry
-recovers only the person's name. \textsf{WebQTrn-568} resolves
+recovers only the person's name. \textsf{WebQTrn-568\_f4dd5e48} resolves
 \textsf{Mecklenburg County} --- the exact gold --- through a sound two-hop chain
 from newspaper to city to county, is rejected, retries, resolves it again, and is
 rejected again.
@@ -471,7 +498,7 @@ would address it.
 
 \subsection{Wrongly Accepted: One Specimen and a Boundary Case}
 
-Exactly one clean specimen exists in the whole census. \textsf{WebQTrn-1597} asserts
+Exactly one clean specimen exists in the whole census. \textsf{WebQTrn-1597\_8adc06ba} asserts
 a Seth MacFarlane connection to \emph{ThunderCats}, the verifier returns
 \textsf{grounded}, and a direct Cypher query confirms that no edge from MacFarlane
 to Lion-O or \emph{ThunderCats} exists in the environment. The claim was accepted
@@ -482,7 +509,7 @@ when President Wilson was in office; the environment exposes inauguration events
 no date literal, so the system answers with two inauguration mentions. The asserted
 entities exist, the edges are real, and the structural check passed
 \emph{correctly}. The answer is nonetheless wrong. The same holds for the
-\textsf{WebQTrn-2570} case of \Cref{sec:decomposition-errors}: Woodrow Wilson was
+\textsf{WebQTrn-2570\_d63877a4} case of \Cref{sec:decomposition-errors}: Woodrow Wilson was
 retrieved, the claim's endpoints genuinely connect in the graph, and the verifier
 was right to say so --- while the answer was wrong for the question.
 
@@ -539,7 +566,7 @@ different years each time, because nothing sorts and takes the extreme.
 identifiers such as \textsf{tvrage\_id}, \textsf{thetvdb\_id}, ISO alpha-3 codes,
 and Freebase's own located identifiers, which CWQ's templates invoke constantly and
 which no relation in the explored schema exposes. Several of these hedges are
-unusually honest: \textsf{WebQTrn-849}, asking which country bordering Germany has
+unusually honest: \textsf{WebQTrn-849\_f0ffa147}, asking which country bordering Germany has
 ISO code CHE, names Switzerland in the answer text and then states explicitly that
 the code itself could not be confirmed from the available facts --- a correct
 inference, correctly caveated, rather than a false assertion.
@@ -553,7 +580,7 @@ perform. \textsf{WebQTest-749} answers ``George H.~W.~Bush'' for 1988: the winne
 of that November's election, who took office the following January.
 
 \textsf{data\_error} ($6$) --- genuine coverage holes rather than expressiveness
-limits. \textsf{WebQTrn-261} returns four consecutive rounds of
+limits. \textsf{WebQTrn-261\_7bc18657} returns four consecutive rounds of
 \textsf{explored=[] (max\_score 0.0)} because the image reference the question names
 resolves to nothing in the graph at all.
 
@@ -581,7 +608,7 @@ cluster, with Lionel, Alexander, and Lucas Luthor variants all surfacing in the
 trace before the run gives up. \textsf{granularity} ($7$ cases) is the right entity
 family at the wrong level: \textsf{WebQTest-86} answers ``Kingdom of Denmark'' where
 gold is ``Denmark'' --- a genuinely distinct node, the formal sovereign-state entity
-rather than the common-name one. \textsf{WebQTrn-1405} asks which school founded in
+rather than the common-name one. \textsf{WebQTrn-1405\_ced20d84} asks which school founded in
 1636 President Kennedy attended, has \textsf{Harvard College} in its very first
 candidate list, and narrows to \textsf{Harvard University} instead --- whose
 founding-date claim the verifier then correctly rejects. \textsf{intermediate} ---
@@ -641,18 +668,18 @@ Two specimens carry the point. \textsf{WebQTest-958} --- ``what are some famous
 people from el salvador'' --- has $116$ gold entities, including raw Freebase
 machine identifiers leaked into the answer strings: a ``list some famous $X$''
 template ballooning gold past anything a finite answer could match under any
-metric. \textsf{WebQTest-55} --- ``Who had a concert named Crazy Love Tour?'' ---
+metric. \textsf{WebQTest-55\_54e856d3} --- ``Who had a concert named Crazy Love Tour?'' ---
 asks for a person and receives gold listing the artist's professions, the annotation
 query having traversed one relation too far past Michael Bublé.
 
 The Vicksburg pair is worth reading side by side, because two sibling questions
-share a gold string and receive opposite diagnoses. \textsf{WebQTest-1797\_5a1c66f}
+share a gold string and receive opposite diagnoses. \textsf{WebQTest-1797\_5a1c66f4}
 asks who was president during the battle of Vicksburg, with gold
 \textsf{Ulysses S.~Grant} --- who took office six years afterwards; the president in
 1863 was Lincoln. The full system answers that the claim could not be verified and
 its verifier flags it \textsf{unsupported}; the no-planner ablation asserts Grant
 confidently, with zero backtracks, and is scored a \emph{hit} purely for restating a
-gold value that answers a different question. \textsf{WebQTest-1797\_dece4dd} asks
+gold value that answers a different question. \textsf{WebQTest-1797\_dece4dda} asks
 which government-position holder fought at Vicksburg --- coherent as asked, since
 Grant was a serving general --- and the full system genuinely fails, answering with
 the Confederate commander John C.~Pemberton, a real combatant who held no government
@@ -663,7 +690,7 @@ Same battle, same gold string: one question unanswerable and one a real
 \textsf{composite\_claim} failure. The pipeline that hedged on the first was more
 epistemically correct than the one that ``succeeded''.
 
-One process observation belongs on the record. \textsf{WebQTrn-64} was adjudicated
+One process observation belongs on the record. \textsf{WebQTrn-64\_d8e43a02} was adjudicated
 \textsf{gold\_ok} by the consensus pass --- several systems converging on ``Tupac
 Shakur'' read as a topic echo --- and the opposite way by the census reading of the
 same evidence: the question literally asks for an actor's name, and gold gives a
@@ -676,7 +703,7 @@ taxonomy is what let that be resolved rather than settled by whichever ran first
   Relations}\label{sec:gold-provenance}
 
 The San Antonio case shows the provenance of one defect precisely enough to
-generalise. \textsf{WebQTest-634} asks which county contains the place where the San
+generalise. \textsf{WebQTest-634\_4f2c0d9e} asks which county contains the place where the San
 Antonio City Council sits. Four systems, spanning parametric and graph-based
 knowledge, answer Bexar County; gold says Comal. Adjudication recorded the verdict
 \textsf{gold\_wrong}: San Antonio and its city council are in Bexar. But the census

@@ -33,4 +33,8 @@ kappa = (po - pe) / (1 - pe) if pe < 1 else float("nan")
 
 print(f"n={n}  agree={a + d}/{n} ({po:.1%})  "
       f"human-1={a + b}  judge-1={a + c}")
-print(f"Cohen's kappa = {kappa:.3f}")
+# Printed to four places deliberately. The pre-registered bar is 0.70 and this
+# value misses it; rounding to three places prints "0.700", which reads as the
+# bar being met and is the one presentation the thesis argues against.
+print(f"Cohen's kappa = {kappa:.4f}  (pre-registered bar 0.70: "
+      f"{'MET' if kappa >= 0.70 else 'MISSED'})")

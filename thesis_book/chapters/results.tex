@@ -610,8 +610,9 @@ a positive $\Delta$ means removing the component \emph{improved} the metric.
   \begin{center}
     \caption{Ablation conditions on stratified halves. The reference row is the
       frozen system restricted to the same questions, at zero additional cost.
-      Latency is unmeasured for \textsf{no-verifier} because every record in that
-      condition is a full cache replay.}
+      Cost is reported in tokens and calls only: latency is omitted because every
+      record in the \textsf{no-verifier} condition is a full cache replay, so a
+      seconds column would not be comparable across conditions.}
     \label{tab:ablation}
     \small
     % Same seven-column shape as \Cref{tab:main}, and the same slight trim.

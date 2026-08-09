@@ -689,9 +689,22 @@ returned from a single expansion at $200$. On a high-degree entity --- a country
 a large film franchise, a prolific author --- the true neighbour set exceeds that,
 so the frontier sees a truncated view and an answer sitting outside the first
 $200$ is unreachable through that edge no matter how well the scorer ranks the
-relation. The tool sets a \textsf{truncated} flag when the cap binds, so the
-condition is visible in the tool log rather than silent, and the hub-noise
-failures of \Cref{sec:echo} are the place it would be expected to matter.
+relation. The hub-noise failures of \Cref{sec:echo} are the place this would be
+expected to matter.
+
+The tool returns a \textsf{truncated} flag alongside the neighbours, and two
+defects in it are recorded rather than repaired, under the rule of
+\Cref{sec:design-validation}. First, the flag does not reach the tool log: the
+logger records the returned neighbour count and not the flag, so the condition is
+in fact \emph{not} visible in the log, and the count alone cannot distinguish a
+capped expansion from one that happened to return exactly $200$. Second, the flag
+is computed before mediator traversal, on the raw row count, while the final list
+is truncated after mediators have been expanded into it. An expansion that
+returns few raw rows but many entities through those rows' mediators is therefore
+cut without the flag being set. Both mean the flag is a lower bound on
+truncation, not a record of it, and no analysis in this thesis reads it --- the
+cap's effect is measured instead from the returned counts, as in
+\Cref{sec:baseline-tog}.
 
 Each budget has exactly one enforcement site, which is what keeps enforcement
 auditable. The model-call budget is checked inside the client before every call,
@@ -756,8 +769,9 @@ evaluation.
 
 The first run produced no crashes, terminated cleanly on every question, and
 abstained rather than confabulated in almost every failure --- which was the
-actual exit criterion for the framework's mechanics. But its thirteen failures
-collapsed into five systematic causes, summarised in \Cref{tab:rootcauses}.
+actual exit criterion for the framework's mechanics. But its sixteen or seventeen
+failures collapsed into just five systematic causes, summarised in
+\Cref{tab:rootcauses}.
 
 \begin{table}[!tb]
   \begin{center}

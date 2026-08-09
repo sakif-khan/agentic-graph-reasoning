@@ -102,10 +102,13 @@ mediator counts as two edges wherever the thesis measures distance in the graph
 depth budget, because the agent should not be charged twice for an artifact of
 the encoding.
 
-The \textsf{truncated} flag reports whether the fanout cap was hit. It is
-recorded rather than silently absorbed, because a truncated expansion is a
-plausible cause of a later failure, and \Cref{ch:erroranalysis} needs to be able
-to distinguish it from a relation that was simply never explored.
+The \textsf{truncated} flag was intended to report whether the fanout cap was hit,
+so that a truncated expansion --- a plausible cause of a later failure --- could
+be distinguished from a relation that was simply never explored. It does not
+deliver that, for the two reasons \Cref{sec:budgets} records: it is returned to
+the caller but never written to the tool log, and it is computed on the row count
+before mediator expansion while the list is truncated after it. Nothing in this
+thesis reads it.
 
 \section{verify\_triple}\label{app:tool-verify-triple}
 
