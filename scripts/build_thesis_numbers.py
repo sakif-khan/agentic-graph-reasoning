@@ -260,6 +260,73 @@ def parse_census(path):
     return out
 
 
+def candidate_caps():
+    """How often each system's candidate-set caps actually truncated.
+
+    The agentic baseline re-uses AGR's tools and then cuts the result to its
+    own beam-search widths (40 relations, 20 neighbours); AGR keeps 300 and
+    200. Both cuts are invisible in the accuracy tables, so the rate at which
+    each one binds is measured here from the committed tool logs and reported
+    in the baseline description rather than left to be read off the source.
+    """
+    caps = {"tog": {"relations": 40, "neighbors": 20},
+            "agr": {"relations": 300, "neighbors": 200}}
+    out = {}
+    # Post-blocklist degree of every entity AGR expanded. get_relations
+    # returns one row per relation type with its fanout, and the two
+    # blocklists are equivalent, so the row sum is the degree the static
+    # graph baseline's own LIMIT would have to cut into.
+    degree = {}
+    for ds in ("webqsp", "cwq"):
+        path = P4 / f"test_{ds}_agr_tools.jsonl"
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            if r["tool"] == "get_relations":
+                degree[r["args"]["id"]] = sum(row["n"] for row in r["result"])
+    deg = sorted(degree.values())
+    out["expanded_entity_degree"] = {
+        "n_entities": len(deg),
+        "median": statistics.median(deg),
+        "p90": deg[int(0.9 * len(deg))],
+        "max": max(deg),
+        "over_100": sum(1 for d in deg if d > 100),
+        "over_100_pct": round(100 * sum(1 for d in deg if d > 100) / len(deg), 1),
+    }
+    for sysname, cap in caps.items():
+        rel_n, per_entity, nbr_n = [], {}, []
+        for ds in ("webqsp", "cwq"):
+            path = P4 / f"test_{ds}_{sysname}_tools.jsonl"
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                r = json.loads(line)
+                if r["tool"] == "get_relations":
+                    rel_n.append(len(r["result"]))
+                    per_entity[r["args"]["id"]] = len(r["result"])
+                elif r["tool"] == "get_neighbors":
+                    nbr_n.append(r["result"]["n"])
+        ent = list(per_entity.values())
+        out[sysname] = {
+            "relation_cap": cap["relations"],
+            "neighbor_cap": cap["neighbors"],
+            "get_relations_calls": len(rel_n),
+            "entities_expanded": len(ent),
+            "entities_at_relation_cap": sum(1 for n in ent
+                                            if n >= cap["relations"]),
+            "entities_at_relation_cap_pct": round(
+                100 * sum(1 for n in ent if n >= cap["relations"]) / len(ent), 1),
+            "get_neighbors_calls": len(nbr_n),
+            "neighbor_calls_at_cap": sum(1 for n in nbr_n
+                                         if n >= cap["neighbors"]),
+            "neighbor_calls_at_cap_pct": round(
+                100 * sum(1 for n in nbr_n if n >= cap["neighbors"])
+                / len(nbr_n), 1),
+        }
+    return out
+
+
 def main():
     main_rows, main_strata, main_mcnemar = parse_scores(P4 / "score_test_log.txt")
     abl_rows, abl_strata, abl_mcnemar = parse_scores(
@@ -349,6 +416,14 @@ def main():
             "_source": "results/phase4/census_exclusions.json",
             "_note": "adjudicated gold-defect exclusions, per dataset",
             **{ds: len(v) for ds, v in exclusions.items()},
+        },
+        "candidate_caps": {
+            "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}_tools.jsonl",
+            "_note": ("How often each system's candidate-set cap truncated, "
+                      "both datasets pooled. Relations are sorted by "
+                      "descending fanout before the cut, so a binding cut "
+                      "discards the low-fanout tail. See sec:baseline-tog."),
+            **candidate_caps(),
         },
         "failure_histogram": {
             "_source": "results/phase4/synthesize_census_log.txt",

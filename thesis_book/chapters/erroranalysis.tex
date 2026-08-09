@@ -627,12 +627,15 @@ numbers rather than one.
 
 \subsection{The Confirmed Defects}
 
-What adjudication did confirm is nonetheless substantial: $59$ questions across the
-two datasets where the benchmark, not the system, needed correcting. Three disjoint
+What adjudication did confirm is nonetheless substantial: $58$ questions across the
+two datasets where the benchmark, not the system, needed correcting. Two disjoint
 counts make that total --- $41$ excluded before the census read anything ($22$ +
-$19$), $17$ more still visible in the census as \textsf{gold\_noise} or
-\textsf{ambiguous\_question} rows ($3$ WebQSP + $14$ CWQ), and one that began as a
-census finding and was promoted to a formal exclusion mid-project.
+$19$), and $17$ more still visible in the census as \textsf{gold\_noise} or
+\textsf{ambiguous\_question} rows ($3$ WebQSP + $14$ CWQ). One question moved
+between those two sets rather than adding to them: \textsf{WebQTrn-64\_d8e43a02}
+began as a census row, was adjudicated a type mismatch between question and gold,
+and was promoted to a formal exclusion mid-project. It is counted once, inside
+the $41$, and it is why the census's own label file carries one dropped row.
 
 Two specimens carry the point. \textsf{WebQTest-958} --- ``what are some famous
 people from el salvador'' --- has $116$ gold entities, including raw Freebase

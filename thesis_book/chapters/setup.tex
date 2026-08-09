@@ -336,6 +336,24 @@ $7{,}431$ begin with a topic entity. There are no exceptions, and the sample is
 the highest-ranked tenth of retrieval rather than an arbitrary slice, which is
 what a one-hop radius looks like in the data.
 
+\textbf{The radius is not the only thing that bounds this baseline; the fanout
+is, and it binds harder.} Expansion retrieves at most $100$ edges per topic
+entity and at most $20$ per mediator hop, and the Cypher that fetches them
+carries no \textsf{ORDER BY} --- so on any entity with more than $100$
+post-blocklist edges, the $100$ retrieved are an arbitrary sample of the
+neighbourhood rather than its best or its first, and the embedding rerank then
+picks the top $30$ facts out of that sample. This matters at scale rather than at
+the margin: over the $3{,}097$ entities the navigating systems expanded,
+$37.6\%$ carry more than $100$ post-blocklist edges, the ninetieth percentile is
+$758$, and the largest is $136{,}742$. For a hub topic the baseline therefore
+answers from roughly one percent of the available neighbourhood, chosen
+without a stated criterion. The consequence for \Cref{sec:hub-noise}'s diagnosis
+is direct and is stated there: the answer may not merely be outranked in the
+reranked window, it may never have entered the sample the reranker saw. Because
+the ordering is unspecified rather than seeded, this is also the one place in the
+harness where a re-run is not guaranteed to reproduce the same retrieved set,
+even though it did across the runs recorded here.
+
 Two implementation details fixed on development data are worth naming, because
 both were comparability repairs rather than improvements: neighbourhood expansion
 initially passed \emph{through} ordinary entities and stopped at mediator nodes,
@@ -395,6 +413,32 @@ $117/400$ WebQSP questions ($29.2\%$) and $176/400$ CWQ questions ($44.0\%$). A
 clipped run still answers, from whatever it gathered, by the same graceful
 degradation the full system uses --- symmetry that fairness requires.
 
+\textbf{One asymmetry is \emph{not} symmetric, and it is disclosed here because
+it bears on how \Cref{sec:tog-split} should be read.} Both systems call the same
+tools, but they truncate the returned candidate sets at different widths.
+Think-on-Graph keeps the first $40$ relations per entity and the first $20$
+neighbours per relation, the pruning widths of the reimplemented algorithm; AGR
+keeps $300$ and $200$ (\Cref{tab:budget}). Because
+\textsf{get\_relations} returns rows sorted by \emph{descending} fanout
+(\Cref{sec:tool-api}), a binding cut discards the low-fanout tail --- which is
+precisely the material \Cref{sec:tool-api} reports raising AGR's own cap from
+$80$ to $300$ to stop discarding. Think-on-Graph therefore runs at half the cap
+this thesis found harmful for itself. Measured over the committed tool logs, the
+$40$-relation cut binds on $31.6\%$ of the $1{,}651$ entities it expanded and the
+$20$-neighbour cut on $32.8\%$ of its $7{,}992$ neighbour calls, against $1$ of
+AGR's $3{,}097$ expanded entities and $3.3\%$ of its neighbour calls. Beam width
+and depth follow the original paper at $3$ and $3$; the candidate widths behind
+them do not come from it and are a property of this reimplementation.
+
+The consequence is a bound on one specific claim. \Cref{sec:tog-split} concludes
+that the margin over Think-on-Graph is affordability rather than search quality.
+That conclusion is safe in the direction it is stated --- a narrower candidate
+set cannot explain why the baseline runs \emph{out of calls} --- but the residual
+gap on unclipped questions is measured against a baseline searching a thinner
+pool than AGR, so it is a lower bound on that baseline's attainable quality, not
+an estimate of it. Equalising the widths is the first item in
+\Cref{sec:future-baselines}.
+
 \subsection{Variables Held Constant Across All Systems}\label{sec:baseline-constants}
 
 Every system shares the backbone and its sampling parameters, the knowledge
@@ -404,10 +448,19 @@ one field for all systems, and the record schema so that any record self-describ
 with backbone, budget hash, run configuration, and source commit. Both
 graph-navigating systems seed from the dataset's annotated topic entities, which
 removes entity linking as a confound and is stated as a limitation in
-\Cref{sec:threats}. One asymmetry is deliberate: the baselines get a plain
-answering prompt while the full system's drafting prompt carries the anti-vacuity
-and grounding provisions of \Cref{sec:claim-decomposition}, which are part of the
-system under test rather than of the shared harness.
+\Cref{sec:threats}.
+
+Two things are \emph{not} held constant, and both are named rather than buried.
+The first is deliberate: the baselines get a plain answering prompt while the full
+system's drafting prompt carries the anti-vacuity and grounding provisions of
+\Cref{sec:claim-decomposition}, which are part of the system under test rather
+than of the shared harness. The second is a property of the algorithms and is
+where a reader should look first for a confound --- the width of the candidate set
+each system considers per step, $40$ relations and $20$ neighbours for
+Think-on-Graph against $300$ and $200$ for AGR, with the measured binding rates
+and the bound they place on \Cref{sec:tog-split} given in \Cref{sec:baseline-tog}.
+The static graph baseline's own fanout cap is stated in
+\Cref{sec:baseline-graphrag}.
 
 \subsection{Baseline Certification Protocol}
 

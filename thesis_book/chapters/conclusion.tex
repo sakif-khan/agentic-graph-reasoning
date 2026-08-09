@@ -107,7 +107,7 @@ $30\%$, and trends toward harming CWQ. The asymmetry, not the pooled average, is
 result, and it says that decomposition should be gated on question structure rather
 than applied unconditionally.
 
-\textbf{Quantified benchmark defect rates.} Fifty-nine questions across the two
+\textbf{Quantified benchmark defect rates.} Fifty-eight questions across the two
 test samples where the benchmark, not the system, needed correcting --- with the
 two evidence signatures that distinguish a world-fact error from an
 annotation-pipeline error, and the provenance argument that explains where one class
@@ -117,10 +117,14 @@ of them comes from.
 
 The limitations that most constrain what may be concluded are, in order of severity:
 
-\textbf{Wrongful acceptance is unmeasured.} The verifier persists only the claims it
-rejects. One polarity of its error is therefore reported at census scale and the
-other from a single specimen that surfaced by manual trace reconstruction, and no
-rate exists for the polarity that matters most to a hallucination claim. This is an
+\textbf{Wrongful acceptance is unmeasured, and the evidence is not persisted.} The
+verifier persists only the claims it rejects. One polarity of its error is therefore
+reported at census scale and the other from a single specimen that surfaced by manual
+trace reconstruction, and no rate exists for the polarity that matters most to a
+hallucination claim. The same decision costs the output contract its auditability:
+run records store the \emph{count} of supporting triples rather than the triples
+themselves (\Cref{sec:output-contract}), so an examiner can verify that the answers
+came from an evidence-tracking system but cannot inspect the evidence. This is an
 instrumentation decision constraining a scientific conclusion, and it is the first
 item in \Cref{sec:future}.
 
@@ -143,10 +147,23 @@ backbone at $\approx 75\%$ trajectory stability, two benchmarks sharing a lineag
 and a failure census and benchmark-defect adjudication performed by the author. Each
 of those is a defensible scoping decision and each bounds generality.
 
-\textbf{The static graph baseline retrieves one logical hop.} Its decay across hop
-strata is therefore partly a property of its retrieval radius and not only of
-static retrieval as a paradigm, and \Cref{sec:graphrag-scope} scopes what may be
-concluded from it accordingly. The per-stratum argument does not rest on it: the
+\textbf{The agentic baseline prunes from a narrower candidate set.} It considers
+$40$ relations and $20$ neighbours per step against AGR's $300$ and $200$, cuts
+that bind on roughly a third of its expansions and on almost none of AGR's
+(\Cref{sec:baseline-tog}). This cannot account for the budget clipping on which
+\Cref{sec:tog-split} rests, since a narrower set is cheaper rather than dearer,
+but it does mean the unclipped subset understates what that baseline could
+resolve at equal width. Equalising the widths is specified in
+\Cref{sec:future-baselines}.
+
+\textbf{The static graph baseline retrieves one logical hop, and samples it.} Its
+decay across hop strata is therefore partly a property of its retrieval radius and
+not only of static retrieval as a paradigm, and \Cref{sec:graphrag-scope} scopes
+what may be concluded from it accordingly. A second bound compounds the first: it
+takes at most $100$ edges per topic entity with no ordering imposed, and $37.6\%$
+of expanded entities exceed that degree (\Cref{sec:baseline-graphrag}), so on hub
+topics it answers from an arbitrary sample of the neighbourhood. Both bounds
+depress it, and neither is a property of static retrieval as such. The per-stratum argument does not rest on it: the
 comparator that cannot represent a chain \emph{at any radius} is Vector-RAG, whose
 context is a single verbalised triple.
 
@@ -193,7 +210,11 @@ Persist each accepted claim together with the triples that matched it. This conv
 the wrongly-accepted class from an anecdote into a rate with a denominator, makes
 grounded-but-wrong answers self-diagnosing from the logs rather than by manual trace
 reconstruction, and would let the entity-level and claim-level guarantees of
-\Cref{ch:verification} be audited rather than argued. It is the highest-value change
+\Cref{ch:verification} be audited rather than argued. The same change closes a
+second gap: the run record currently stores the \emph{number} of supporting
+triples rather than the triples (\Cref{sec:output-contract}), so the thesis's own
+output contract --- answer paired with its evidence --- holds inside the run but
+cannot be checked afterwards from any committed file. It is the highest-value change
 in this list relative to its cost, and it is a logging change.
 
 \subsection{Adaptive Decomposition Gating}
@@ -251,9 +272,27 @@ would measure whether the system reaches the right answer \emph{by the right pat
 bears directly on the echo attractor, where a right-looking answer is reached by a
 path one hop short of the correct one.
 
-\subsection{A Two-Hop Static Retriever}\label{sec:future-baselines}
+\subsection{Baselines at Equal Width and Equal Radius}\label{sec:future-baselines}
 
-The static graph baseline follows GraphRAG~\cite{edge2024local} in retrieving
+Two of the three baseline bounds named in \Cref{sec:limitations-final} are
+cheap to lift, and both are re-runs rather than redesigns.
+
+\textbf{Equalise the candidate widths.} Re-run the agentic baseline with $300$
+relations and $200$ neighbours per step --- AGR's widths --- leaving beam width,
+depth, budget, prompts, and scoring untouched. This is the experiment that decides
+whether the unclipped-subset comparison of \Cref{sec:tog-split} was measuring
+search strategy or candidate supply, and it is the more informative of the two
+because that subset is the only place the thesis compares the two agentic methods
+at parity. Both outcomes are usable: if the baseline improves on the unclipped
+subset, the honest reading is that the affordability finding is the whole finding
+and the resolution comparison was never fair; if it does not, the resolution
+comparison stands at equal width, which is a stronger statement than the thesis
+can currently make. Note that it will also raise the clip rate, because wider
+candidate sets make each pruning call dearer, so the two effects have to be read
+apart --- report the split as \Cref{sec:tog-split} does rather than the aggregate.
+
+\textbf{Widen the static retriever's radius, and order its fanout.} The static
+graph baseline follows GraphRAG~\cite{edge2024local} in retrieving
 structured context in one shot, and expands one logical hop
 (\Cref{sec:graphrag-scope}), so
 the cleanest reading of its collapse on deep CWQ questions --- that a fixed radius
@@ -266,7 +305,11 @@ gap over static retrieval on that stratum was partly a radius artefact, and the
 paradigm claim narrows to what \Cref{sec:graphrag-scope} already states. If it
 does not recover, or recovers while precision falls as the window fills with
 hub noise, the paradigm claim is strengthened by an experiment rather than by an
-implementation detail. Running it costs one pass over $800$ questions at
+implementation detail. The same pass should impose an ordering on the fanout cap
+--- descending fanout, or an embedding pre-rank --- so that the $100$ edges kept
+per topic entity are a stated selection rather than an arbitrary one
+(\Cref{sec:baseline-graphrag}); until then, the two limits are confounded and
+only their sum is measured. Running it costs one pass over $800$ questions at
 baseline rates; not running it is the reason the claim is stated narrowly here.
 
 \subsection{Beyond This Environment}

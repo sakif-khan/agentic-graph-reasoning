@@ -622,12 +622,14 @@ share of questions the consensus pass* flagged, *and the much smaller share adju
 confirmed as genuine label defects. Most flagged items were not label errors — they were
 all five systems converging on the same wrong answer. That phenomenon is §9.7's; point
 there for it and keep this section to the defects proper.)*
-&nbsp;&nbsp;&nbsp;&nbsp;*The headline total, from `synthesis.md` §4:* **59 questions across
+&nbsp;&nbsp;&nbsp;&nbsp;*The headline total:* **58 questions across
 both datasets where the benchmark, not AGR, was the thing that needed correcting** — 41
-excluded by Stage C before the census read anything (22 + 19), 17 more still sitting in the
-active census as `gold_noise`/`ambiguous_question` rows (3 WebQSP + 14 CWQ), and 1 that began
-as a Stage D finding and was promoted to a formal Stage C exclusion mid-project. Three
-disjoint counts; nothing double-counted. *Two exhibits earn their space:* `WebQTest-958`
+excluded by Stage C before the census read anything (22 + 19), plus 17 more still sitting in
+the active census as `gold_noise`/`ambiguous_question` rows (3 WebQSP + 14 CWQ). Two disjoint
+counts. `WebQTrn-64_d8e43a02…` began as a Stage D finding and was promoted to a formal Stage C
+exclusion mid-project — it *moved* between the two sets rather than forming a third, and it is
+already inside the 41 (`census_exclusions.json`, CWQ list; `labels_cwq_dropped.csv` is the row
+it vacated). Do not add it again: `synthesis.md` §4 says 59 and is wrong here. *Two exhibits earn their space:* `WebQTest-958`
 *("what are some famous people from el salvador") with* **116 gold entities** *and raw
 Freebase MIDs leaked into the answer strings — a "list some famous X" template ballooning gold
 past any reachable match; and the* **Vicksburg pair**, *two sibling questions with the same
@@ -740,38 +742,39 @@ wrongful-acceptance class from anecdote to rate)*
 | 4 The Knowledge Environment | 10 | 9 | 10 |
 | 5 The AGR Framework | 11 | 13 | 16 |
 | 6 The Structural Verification Layer | 8 | 13 | 14 |
-| 7 Experimental Setup | 11 | 15 | 17 |
-| 8 Results | 12 | 12 | 16 |
-| 9 Error Analysis and Discussion | 10 | 15 | 17 |
-| 10 Conclusion | 5 | 6 | 7 |
-| **Body total** | **87** | **104** | **119** |
+| 7 Experimental Setup | 11 | 15 | 18 |
+| 8 Results | 12 | 12 | 17 |
+| 9 Error Analysis and Discussion | 10 | 15 | 18 |
+| 10 Conclusion | 5 | 6 | 8 |
+| **Body total** | **87** | **104** | **123** |
 | References + Index + Appendices | ~12 | 6 + appendices | 6 + 47 |
 
-**The body is 119 pages against a 60–90 target — 32% over.** Body runs pages 1–119;
-References begin on 120; the document is 172 pages including front matter and five
+**The body is 123 pages against a 60–90 target — 37% over the 90 ceiling.** Body runs pages 1–123;
+References begin on 124; the document is 176 pages including front matter and five
 appendices.
 
 The decision to cross the ceiling was taken at 104 pages and recorded so it would not
 be revisited by accident: *cross the ceiling if needed.* That decision was made
-against a smaller number. The 15 pages added since fall mostly in Chapter 8 (+4) and
-Chapter 5 (+3), then Chapters 7 and 9 (+2 each), with one page each in 1, 4, 6 and 10
-— corrections, scoping notes and threat statements added in review, not new material.
-**Re-confirm before submission whether the department enforces a hard cap.** If it
-does, the compression targets are unchanged: Chapters 2 and 3 first, never Chapter 9.
+against a smaller number. The 19 pages added since fall in Chapter 8 (+5), Chapter 7
+(+3), Chapter 5 (+3), Chapters 9 and 10 (+3 and +2), and one page each in 1, 4 and 6
+— corrections, scoping notes and disclosure statements added in review, not new
+material. **Re-confirm before submission whether the department enforces a hard cap.**
+If it does, the compression targets are unchanged: Chapters 2 and 3 first, never
+Chapter 9.
 
-Where the 32 pages over budget went, and why each is defensible if questioned.
+Where the 36 pages over budget went, and why each is defensible if questioned.
 The `r1` column is the round-1 overrun measured at 104 pages; `now` is measured at
-119. The difference between the two columns is review work — corrections, scoping
-notes and threat statements — not new material.
+123. The difference between the two columns is review work — corrections, scoping
+notes, and baseline-configuration disclosures — not new material.
 
 | Chapter | r1 | now | Reason |
 | --- | ---: | ---: | --- |
-| 9 Error Analysis | +5 | **+7** | The census is a population of 259, not a sample; three named mechanism findings, three counted defect families, the benchmark-defect provenance argument. Grew by the union-of-subgraphs and name-keying threats, the three-way census exclusion statement, and the Phoenician case. |
-| 6 Verification | +5 | **+6** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1 and the post-hoc-verification positioning. |
-| 7 Setup | +4 | **+6** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note and the hedge-counting convention. |
+| 9 Error Analysis | +5 | **+8** | The census is a population of 259, not a sample; three named mechanism findings, three counted defect families, the benchmark-defect provenance argument. Grew by the union-of-subgraphs and name-keying threats, the Phoenician case, and the corrected 58-question exclusion arithmetic. |
+| 7 Setup | +4 | **+7** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note, the hedge-counting convention, and the two baseline candidate-width disclosures (§7.4.3 fanout cap, §7.4.4 relation/neighbour caps). |
+| 6 Verification | +5 | **+6** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1, the post-hoc-verification positioning, and the supporting-triples persistence gap. |
+| 8 Results | +0 | **+5** | Grew entirely in review: §8.4, the clipped/unclipped split of the agentic-baseline margin, the per-stratum radius qualification, and the token-vs-call frontier correction. |
 | 5 Framework | +2 | **+5** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, and the two σ implementation deviations. |
-| 8 Results | +0 | **+4** | Grew entirely in review: §8.4, the clipped/unclipped split of the agentic-baseline margin, plus the per-stratum radius qualification. |
-| 10 Conclusion | +1 | **+2** | Future work is two-tiered (earned repairs vs. architectural), which the census made possible; plus the two-hop baseline experiment. |
+| 10 Conclusion | +1 | **+3** | Future work is two-tiered (earned repairs vs. architectural), which the census made possible; plus the equal-width and two-hop baseline experiments and two added limitations. |
 | 2, 3 | +1, +1 | **+1, +1** | Unchanged since round 1. |
 | 1, 4 | −1, −1 | **+0, +0** | Each gained a page in review — §1.7's environment scoping and §4.3.3's two hop conventions — bringing both back to budget. |
 

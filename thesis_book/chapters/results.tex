@@ -274,12 +274,22 @@ nuisance to be controlled away. On that reading the clip rate is not an artefact
 of the setup, it is the result --- and \Cref{sec:efficiency} prices the same
 finding in tokens.
 
-Two qualifications keep the claim honest. The cap of $25$ calls is itself a
+Three qualifications keep the claim honest. The cap of $25$ calls is itself a
 choice, and a larger one would move the split; the clip rates are reported so a
-reader can see how far. And the reimplementation's beam width and depth follow
+reader can see how far. The reimplementation's beam width and depth follow
 the original paper, so its cost profile is the published algorithm's rather than
 a weakened variant --- which is what makes the cost finding meaningful instead of
-circular.
+circular. But the candidate widths \emph{beneath} the beam do not come from the
+paper, and they are narrower than AGR's by a factor of seven and ten
+(\Cref{sec:baseline-tog}): the baseline prunes from $40$ relations and $20$
+neighbours where AGR prunes from $300$ and $200$, and those cuts bind on about a
+third of its expansions against almost none of AGR's. That asymmetry cannot
+explain the clipping --- a thinner candidate set makes a step cheaper, not
+dearer --- so the affordability finding stands. It does bear on the sentence
+before it: $0.852$ and $0.629$ on the unclipped subset are a \emph{lower bound}
+on what this baseline's search could resolve given AGR's candidate widths, not an
+estimate of it, and the claim that guided search does not out-resolve beam search
+is correspondingly the weaker one.
 
 \textbf{The breadth of AGR's answers is checked rather than assumed.} On answered
 WebQSP questions AGR names $3.37$ entities against Think-on-Graph's $2.56$, and a
@@ -363,9 +373,14 @@ offer. This is the cell the multi-hop argument rests on, because a one-triple
 context is chain-incapable by construction rather than by configuration.
 
 \textbf{GraphRAG's WebQSP inversion has two causes, and only one of them was
-originally named.} It scores $0.30$ at \textsf{h1} against $0.44$ at \textsf{h2}.
-Part of that is hub noise: popular one-hop entities have large neighbourhoods, and
-the answer is drowned in the reranked window. But the inversion also marks the
+originally named.}\label{sec:hub-noise} It scores $0.30$ at \textsf{h1} against
+$0.44$ at \textsf{h2}. Part of that is hub noise: popular one-hop entities have
+large neighbourhoods, and the answer is drowned in the reranked window --- or,
+more exactly, drowned \emph{or absent}, since the retrieval step samples at most
+$100$ edges per topic entity without an ordering
+(\Cref{sec:baseline-graphrag}) and $37.6\%$ of expanded entities exceed that.
+Which of the two applies to any given question is not recoverable from the run
+records. But the inversion also marks the
 edge of the retrieval radius (\Cref{sec:graphrag-scope}). WebQSP's \textsf{h2}
 stratum is largely mediator paths, which a one-hop expansion reaches by hopping
 through the mediator, whereas CWQ's \textsf{h2} is genuine composition, which it
@@ -407,10 +422,10 @@ RQ2 is about the absence of.
       WebQSP & AGR            & 1235 & \textbf{0 (0.0\%)} & \textbf{0.0\%} & \textbf{66.7\%} \\
       \hline
       CWQ & No-retrieval   & 340 & 42 (12.4\%) & 13.7\% & 36.7\% \\
-      CWQ & Vector-RAG     & 289 & 7 (2.4\%)   & 3.4\%  & 50.0\% \\
+      CWQ & Vector-RAG     & 289 & 7 (2.4\%)   & 3.4\%  & \textbf{50.0\%} \\
       CWQ & GraphRAG       & 224 & 2 (0.9\%)   & 1.3\%  & 36.7\% \\
       CWQ & Think-on-Graph & 433 & \textbf{0 (0.0\%)} & \textbf{0.0\%} & 43.3\% \\
-      CWQ & AGR            & 474 & \textbf{0 (0.0\%)} & \textbf{0.0\%} & \textbf{48.3\%} \\
+      CWQ & AGR            & 474 & \textbf{0 (0.0\%)} & \textbf{0.0\%} & 48.3\% \\
       \hline
     \end{tabular}
   \end{center}
@@ -454,12 +469,16 @@ appears in the system's own retrieved facts.
 
 Tier~2 asks whether the asserted entity is supported \emph{as the answer}, and
 under the instruction that mere connectedness is not support, every system lands
-in a $36.7$--$66.7\%$ band. AGR is highest on both datasets, by $5.0$ points over
-Think-on-Graph on WebQSP and $5.0$ on CWQ.
+in a $36.7$--$66.7\%$ band. AGR is highest on WebQSP at $66.7\%$. On CWQ it is
+second: $5.0$ points ahead of Think-on-Graph, which is the comparison the rest of
+this chapter makes, but $1.7$ behind Vector-RAG's $50.0\%$. Its margin over the
+agentic baseline is $5.0$ points on both datasets; its lead over \emph{every}
+system is a WebQSP result only.
 
-That gap is not resolvable at this sample size. With $n = 60$ per cell the $95\%$
+Neither gap is resolvable at this sample size. With $n = 60$ per cell the $95\%$
 binomial interval has a half-width of roughly $12$--$13$ points, so a $5$-point
-difference is inside the noise, and no conclusion in this thesis rests on it. What
+difference is inside the noise --- as is Vector-RAG's $1.7$ --- and no conclusion
+in this thesis rests on either. What
 the tier does establish is the level: semantic support is \emph{hard} for every
 system, including the two that are structurally perfect. Zero structural
 hallucination coexists with roughly a third to a half of assertions failing a
@@ -537,22 +556,46 @@ answers at roughly twice the rate.
   \caption[Accuracy against token cost]{Accuracy against token cost, one point per system. The horizontal
     axis is logarithmic: the agentic systems cost roughly an order of magnitude
     more than the one-shot ones, and a linear axis would compress every
-    non-agentic system into a single column. Think-on-Graph is dominated on both
-    datasets --- lower Hits@1 at comparable cost --- which is the frontier
-    statement made visually. Generated from
+    non-agentic system into a single column. Read this figure for the token
+    frontier only. Think-on-Graph sits below \emph{and} to the left of AGR, so it
+    is a frontier point on this axis, not a dominated one; the domination claim
+    holds on calls, which are not plotted and are given in
+    \Cref{tab:efficiency}. Generated from
     \textsf{results/phase4/thesis\_numbers.json}.}
   \label{fig:accuracy-cost}
 \end{figure}
 
 Reading \Cref{tab:main} against \Cref{tab:efficiency}, and plotted as
-\Cref{fig:accuracy-cost}, the frontier has three
-points and no interior ones. Vector-RAG on WebQSP is the cheap corner: $0.568$
-Hits@1 for $527$ tokens, and $0.82$ on the one-hop stratum, which makes it the
-right choice for shallow questions and useless for deep ones. AGR is the accurate
-corner on both datasets. Think-on-Graph sits between them on accuracy and above
-AGR on calls, so it is dominated on this environment --- lower accuracy at higher
-call cost. The no-retrieval control is off the frontier entirely once precision is
-counted, though it remains the cheapest way to be right about half the time on
+\Cref{fig:accuracy-cost}, the frontier depends on which cost is charged, and the
+two costs this thesis records do not agree. Stating it on one of them alone would
+overclaim.
+
+\textbf{On tokens, the axis of \Cref{fig:accuracy-cost}, Think-on-Graph is not
+dominated.} The Pareto set on WebQSP holds four systems --- no-retrieval at $113$
+tokens, Vector-RAG at $527$, Think-on-Graph at $3{,}615$, AGR at $4{,}511$ ---
+and the interior point is static GraphRAG, which the parametric control beats on
+both axes at once. On CWQ the Pareto set holds three, no-retrieval,
+Think-on-Graph and AGR, with \emph{both} static retrievers interior for that same
+reason. Think-on-Graph buys its lower accuracy at a genuinely lower token price
+on both datasets, and any claim that it is dominated has to name an axis on which
+that is true.
+
+\textbf{On calls it is dominated, and calls are what the budget meters}
+(\Cref{sec:budgets}). Think-on-Graph spends $12.8$ and $18.2$ calls against AGR's
+$6.2$ and $8.9$ --- lower Hits@1 at roughly double the call cost, on both
+datasets, with no interior ambiguity. The two costs diverge because AGR spends
+more than twice as many tokens per call, converting fewer, larger calls into a
+comparable token total. Which cost binds is a deployment question: token billing
+separates the two systems very little, whereas a per-call rate or latency budget
+separates them by a factor of two --- and it is the call budget that clips
+Think-on-Graph on $29\%$ and $44\%$ of questions (\Cref{sec:tog-split}).
+
+Around that, the corners are unchanged. Vector-RAG on WebQSP is the cheap corner:
+$0.568$ Hits@1 for $527$ tokens, and $0.82$ on the one-hop stratum, which makes
+it the right choice for shallow questions and useless for deep ones. AGR is the
+accurate corner on both datasets. The no-retrieval control holds the cheap end of
+the token frontier while being off any accuracy-worthy frontier once precision is
+counted --- it remains the cheapest way to be right about half the time on
 WebQSP, which is the contamination point restated as an economic one.
 
 \section{Ablation Study}\label{sec:ablations}

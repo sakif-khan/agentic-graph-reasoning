@@ -1280,6 +1280,40 @@
   "webqsp": 22,
   "cwq": 19
  },
+ "candidate_caps": {
+  "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}_tools.jsonl",
+  "_note": "How often each system's candidate-set cap truncated, both datasets pooled. Relations are sorted by descending fanout before the cut, so a binding cut discards the low-fanout tail. See sec:baseline-tog.",
+  "expanded_entity_degree": {
+   "n_entities": 3097,
+   "median": 47,
+   "p90": 758,
+   "max": 136742,
+   "over_100": 1164,
+   "over_100_pct": 37.6
+  },
+  "tog": {
+   "relation_cap": 40,
+   "neighbor_cap": 20,
+   "get_relations_calls": 2851,
+   "entities_expanded": 1651,
+   "entities_at_relation_cap": 522,
+   "entities_at_relation_cap_pct": 31.6,
+   "get_neighbors_calls": 7992,
+   "neighbor_calls_at_cap": 2619,
+   "neighbor_calls_at_cap_pct": 32.8
+  },
+  "agr": {
+   "relation_cap": 300,
+   "neighbor_cap": 200,
+   "get_relations_calls": 5836,
+   "entities_expanded": 3097,
+   "entities_at_relation_cap": 1,
+   "entities_at_relation_cap_pct": 0.0,
+   "get_neighbors_calls": 16301,
+   "neighbor_calls_at_cap": 533,
+   "neighbor_calls_at_cap_pct": 3.3
+  }
+ },
  "failure_histogram": {
   "_source": "results/phase4/synthesize_census_log.txt",
   "_note": "Stage D + Stage A merged. wrong and hedge are never pooled. Regenerate via scripts/synthesize_census.py after any relabelling.",

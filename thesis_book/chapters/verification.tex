@@ -488,9 +488,11 @@ account of it.
 \section{Output Contract: Answer Paired with Supporting
   Triples}\label{sec:output-contract}
 
-Every run record pairs the answer with the triples that support it. This is the
+The system pairs each answer with the triples that support it. This is the
 explainability deliverable named in \Cref{sec:contribution}, and its actual
-coverage is narrower than the phrase suggests.
+coverage is narrower than the phrase suggests in two independent ways: one route
+of three attaches no evidence, and what the run record keeps is a count rather
+than the triples.
 
 \textbf{Only one of the three routes records evidence.} Supporting triples are
 collected in the traversed-adjacency branch alone. A claim certified by
@@ -498,6 +500,20 @@ collected in the traversed-adjacency branch alone. A claim certified by
 certified by entailment. The output contract is therefore ``answer paired with
 whatever traversed triples happened to justify it'', not ``answer paired with
 justification for every claim''.
+
+\textbf{What survives in the log is the count, not the evidence.} The pairing
+holds inside the run: the answerer receives the verifier's triple list and emits
+against it. But \textsf{RunLogger} writes \textsf{n\_supporting\_triples}, an
+integer, and drops the list, so no committed artifact in this work contains a
+single supporting triple, and every statistic in this section is computed from
+that counter. An examiner can confirm that these answers came from a system which
+tracked its evidence; they cannot inspect the evidence. This bounds the
+auditability the section claims, and it is the same defect approached from the
+other side by \Cref{sec:future-logging}, which asks for accepted claims to be
+persisted with their matching triples --- one logging change repairs both. It is
+recorded here rather than repaired late, under the standing rule of
+\Cref{sec:design-validation}, because repairing it now would separate the code
+from the results already frozen against it.
 
 The measured consequence on the development set: 13 of 80 answers carry no
 supporting triples at all. Ten of those asserted no claims --- they are hedges,
