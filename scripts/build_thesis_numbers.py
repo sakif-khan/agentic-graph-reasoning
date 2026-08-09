@@ -328,6 +328,18 @@ def candidate_caps():
     # entities on average -- so the share of truncated entities does not give the
     # share of affected questions in either direction. Both question-level shares
     # are measured here so that a sentence about questions can quote one.
+    # The tier-1 assertion above only ranges over names that exist, so it says
+    # nothing about a question that annotates none. Such a question would satisfy
+    # "every topic entity is truncated" vacuously and inflate the all-topics
+    # share, which is the one way left for this block to report a population it
+    # did not measure. Assert instead of guarding: a question the static baseline
+    # cannot seed at all is worth failing on, not silently omitting from a rate.
+    empty = [i for i, ents in enumerate(per_question) if not ents]
+    assert not empty, (
+        f"{len(empty)} test questions annotate no topic entity, so the static "
+        f"baseline seeds nothing for them and the question-level truncation "
+        f"rates below no longer describe all {len(per_question)} questions")
+
     q_any = q_all = 0
     for ents in per_question:
         degs = [degree[searches[n][0]["id"]] for n in set(ents)]

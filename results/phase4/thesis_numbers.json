@@ -1282,7 +1282,7 @@
  },
  "candidate_caps": {
   "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}_tools.jsonl",
-  "_note": "How often each system's candidate-set cap truncated, both datasets pooled. Relations are sorted by descending fanout before the cut, so a binding cut discards the low-fanout tail. expanded_entity_degree splits AGR's expansion set into the static baseline's own topic entities and the rest; the topic block is the population its fanout cap acts on. See sec:baseline-tog and sec:baseline-graphrag.",
+  "_note": "How often each system's candidate-set cap truncated, both datasets pooled. Relations are sorted by descending fanout before the cut, so a binding cut discards the low-fanout tail. expanded_entity_degree splits AGR's expansion set into the static baseline's own topic entities and the rest; the topic block is the population its fanout cap acts on. The questions_* keys give the same truncation in the question unit, which the entity shares do not imply. See sec:baseline-tog and sec:baseline-graphrag.",
   "expanded_entity_degree": {
    "n_entities": 3097,
    "median": 47,
