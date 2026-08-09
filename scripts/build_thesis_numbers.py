@@ -272,32 +272,49 @@ def candidate_caps():
     caps = {"tog": {"relations": 40, "neighbors": 20},
             "agr": {"relations": 300, "neighbors": 200}}
     out = {}
-    # Post-blocklist degree of every entity AGR expanded. get_relations
-    # returns one row per relation type with its fanout, and the two
-    # blocklists are equivalent, so the row sum is the degree the static
-    # graph baseline's own LIMIT would have to cut into.
-    # The first get_relations call of a question lands on the anchor seeded from
-    # the dataset's topic entity, which is the population the static baseline's
-    # fanout cap acts on; everything after it is a frontier entity reached at
-    # depth. Split so the proxy's bias can be stated rather than assumed.
-    degree, first = {}, {}
+    # Post-blocklist degree of every entity AGR expanded. get_relations returns
+    # one row per relation type with its fanout, and the two blocklists are
+    # equivalent, so the row sum is the degree the static graph baseline's own
+    # LIMIT has to cut into.
+    #
+    # The static baseline expands topic entities only, and it resolves them by
+    # calling resolver(name, 1) on q["gold_q_entities"]. Those same names are
+    # resolved by AGR through the logged search_entity tool, so its topic set is
+    # recoverable exactly rather than approximated: every gold name resolves at
+    # tier 1 to a single hit, which makes the resolution independent of k and
+    # free of tie-breaking. The assertion below fails if that ever stops holding,
+    # because the whole identification rests on it.
+    degree, searches = {}, {}
     for ds in ("webqsp", "cwq"):
         path = P4 / f"test_{ds}_agr_tools.jsonl"
-        seen_q = set()
         for line in path.read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
             r = json.loads(line)
-            if r["tool"] != "get_relations":
-                continue
-            d = sum(row["n"] for row in r["result"])
-            degree[r["args"]["id"]] = d
-            if r["qid"] not in seen_q:
-                seen_q.add(r["qid"])
-                first[r["args"]["id"]] = d
+            if r["tool"] == "get_relations":
+                degree[r["args"]["id"]] = sum(row["n"] for row in r["result"])
+            elif r["tool"] == "search_entity":
+                searches.setdefault(r["args"]["q"], r["result"])
 
-    def block(d):
-        v = sorted(d.values())
+    names, mentions = set(), 0
+    for ds in ("webqsp", "cwq"):
+        for q in json.load(open(P4 / f"test_{ds}.json", encoding="utf-8")):
+            names |= set(q["gold_q_entities"])
+            mentions += len(q["gold_q_entities"])
+
+    unresolved = [n for n in names
+                  if len(searches.get(n, [])) != 1
+                  or searches[n][0]["tier"] != 1]
+    assert not unresolved, (
+        f"{len(unresolved)} gold topic names do not resolve to a single tier-1 "
+        f"hit, so the static baseline's topic set is no longer identifiable "
+        f"from the log: {unresolved[:5]}")
+
+    topic_ids = {searches[n][0]["id"] for n in names}
+    assert topic_ids <= set(degree), "some topic entity was never expanded"
+
+    def block(ids):
+        v = sorted(degree[i] for i in ids)
         over = sum(1 for x in v if x > 100)
         return {"n_entities": len(v),
                 "median": statistics.median(v),
@@ -306,11 +323,11 @@ def candidate_caps():
                 "over_100": over,
                 "over_100_pct": round(100 * over / len(v), 1)}
 
-    later = {k: v for k, v in degree.items() if k not in first}
     out["expanded_entity_degree"] = {
-        **block(degree),
-        "topic_anchors": block(first),
-        "frontier_only": block(later),
+        **block(set(degree)),
+        "topic_mentions": mentions,
+        "topic_entities": block(topic_ids),
+        "frontier_entities": block(set(degree) - topic_ids),
     }
     for sysname, cap in caps.items():
         rel_n, per_entity, nbr_n = [], {}, []
@@ -440,7 +457,11 @@ def main():
             "_note": ("How often each system's candidate-set cap truncated, "
                       "both datasets pooled. Relations are sorted by "
                       "descending fanout before the cut, so a binding cut "
-                      "discards the low-fanout tail. See sec:baseline-tog."),
+                      "discards the low-fanout tail. expanded_entity_degree "
+                      "splits AGR's expansion set into the static baseline's "
+                      "own topic entities and the rest; the topic block is "
+                      "the population its fanout cap acts on. See "
+                      "sec:baseline-tog and sec:baseline-graphrag."),
             **candidate_caps(),
         },
         "failure_histogram": {

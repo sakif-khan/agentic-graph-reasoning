@@ -364,25 +364,23 @@ carries no \textsf{ORDER BY} --- so on any entity with more than $100$
 post-blocklist edges, the $100$ retrieved are an arbitrary sample of the
 neighbourhood rather than its best or its first, and the embedding rerank then
 picks the top $30$ facts out of that sample. This matters at scale rather than at
-the margin: over the $3{,}097$ entities the full system expanded, $37.6\%$ carry
-more than $100$ post-blocklist edges, the ninetieth percentile is $758$, and the
-largest is $136{,}742$. For a hub topic the baseline therefore answers from
-roughly one percent of the available neighbourhood, chosen without a stated
-criterion.
+the margin. This baseline seeds from the dataset's annotated topic entities and
+expands nothing else, so the population its cap acts on is exactly identifiable:
+the $1{,}032$ topic mentions across the $800$ test questions resolve to $711$
+distinct entities, every one of which the full system also expanded and measured.
+Their median post-blocklist degree is $131$, the ninetieth percentile is
+$1{,}623$, the largest is $136{,}742$, and $55.1\%$ of them carry more edges than
+the cap retains. For a hub topic the baseline therefore answers from a small
+fraction of the available neighbourhood --- on the largest, well under one
+percent --- chosen without a stated criterion.
 
-That degree distribution is a proxy, and its bias can be measured rather than
-assumed. This baseline expands topic entities only, and it queries the graph
-directly rather than through the logged tool layer, so it emits no
-\textsf{get\_relations} record and its own topic-entity degrees cannot be
-recovered from the artifacts. The full system's expanded set stands in for them,
-and it is the wrong population in a knowable direction: it holds $596$ anchors
-seeded from the dataset's topic entities together with $2{,}501$ frontier
-entities reached at depth, and the two differ sharply. The anchors have a median
-degree of $165.5$ and $59.1\%$ of them exceed the cap; the frontier entities have
-a median of $34$ and $32.5\%$ exceed it. The pooled $37.6\%$ is therefore a
-\emph{lower} bound on the share of topic entities the cap truncates --- on the
-closest available population it is nearer three in five --- so the figure
-understates the limit it is quoted for rather than inflating it. The consequence for \Cref{sec:hub-noise}'s diagnosis
+Identifying that set costs nothing, because the resolution is deterministic. The
+baseline resolves each topic name through the same entity resolver the full
+system uses, and every one of the $711$ names matches exactly one node at the
+resolver's exact-match tier (\Cref{sec:entity-resolution}), so the two systems necessarily
+seed the same nodes and the tool log records which. The generator asserts that
+property rather than assuming it: if any topic name ever resolved ambiguously,
+the build would fail rather than quietly substitute a different population. The consequence for \Cref{sec:hub-noise}'s diagnosis
 is direct and is stated there: the answer may not merely be outranked in the
 reranked window, it may never have entered the sample the reranker saw. Because
 the ordering is unspecified rather than seeded, this is also the one place in the

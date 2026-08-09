@@ -377,9 +377,8 @@ originally named.}\label{sec:hub-noise} It scores $0.30$ at \textsf{h1} against
 $0.44$ at \textsf{h2}. Part of that is hub noise: popular one-hop entities have
 large neighbourhoods, and the answer is drowned in the reranked window --- or,
 more exactly, drowned \emph{or absent}, since the retrieval step samples at most
-$100$ edges per topic entity without an ordering, and on the closest measurable
-population the majority of topic entities carry more edges than that
-(\Cref{sec:baseline-graphrag}). Which of the two applies to any given question is
+$100$ edges per topic entity without an ordering, and $55.1\%$ of its topic
+entities carry more edges than that (\Cref{sec:baseline-graphrag}). Which of the two applies to any given question is
 not recoverable from the run records. But the inversion also marks the
 edge of the retrieval radius (\Cref{sec:graphrag-scope}). WebQSP's \textsf{h2}
 stratum is largely mediator paths, which a one-hop expansion reaches by hopping

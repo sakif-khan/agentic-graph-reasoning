@@ -1282,7 +1282,7 @@
  },
  "candidate_caps": {
   "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}_tools.jsonl",
-  "_note": "How often each system's candidate-set cap truncated, both datasets pooled. Relations are sorted by descending fanout before the cut, so a binding cut discards the low-fanout tail. See sec:baseline-tog.",
+  "_note": "How often each system's candidate-set cap truncated, both datasets pooled. Relations are sorted by descending fanout before the cut, so a binding cut discards the low-fanout tail. expanded_entity_degree splits AGR's expansion set into the static baseline's own topic entities and the rest; the topic block is the population its fanout cap acts on. See sec:baseline-tog and sec:baseline-graphrag.",
   "expanded_entity_degree": {
    "n_entities": 3097,
    "median": 47,
@@ -1290,21 +1290,22 @@
    "max": 136742,
    "over_100": 1164,
    "over_100_pct": 37.6,
-   "topic_anchors": {
-    "n_entities": 596,
-    "median": 165.5,
-    "p90": 1762,
+   "topic_mentions": 1032,
+   "topic_entities": {
+    "n_entities": 711,
+    "median": 131,
+    "p90": 1623,
     "max": 136742,
-    "over_100": 352,
-    "over_100_pct": 59.1
+    "over_100": 392,
+    "over_100_pct": 55.1
    },
-   "frontier_only": {
-    "n_entities": 2501,
-    "median": 34,
-    "p90": 553,
-    "max": 122327,
-    "over_100": 812,
-    "over_100_pct": 32.5
+   "frontier_entities": {
+    "n_entities": 2386,
+    "median": 33.0,
+    "p90": 542,
+    "max": 29198,
+    "over_100": 772,
+    "over_100_pct": 32.4
    }
   },
   "tog": {
