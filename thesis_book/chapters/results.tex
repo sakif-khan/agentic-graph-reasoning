@@ -336,7 +336,8 @@ Hits@1 throughout (\Cref{sec:metrics}).
   \end{center}
   \caption[Hits@1 across hop strata]{Hits@1 across hop strata. The shape is the finding: on
     ComplexWebQuestions AGR is the only system whose accuracy rises with hop
-    count, while every other profile decays. WebQSP is drawn dashed because its
+    count, and every other profile ends below where it started --- three of them
+    monotonically, Think-on-Graph by falling and partly recovering. WebQSP is drawn dashed because its
     \textsf{h3plus} stratum holds four questions and cannot carry a trend; the
     stratum sizes are printed on the axis for that reason. The
     \textsf{unreachable} stratum is omitted here and discussed below, since by
@@ -350,10 +351,15 @@ rather than with a difference of means --- \Cref{fig:hop-strata} is that shape.
 
 \textbf{On CWQ, AGR's accuracy rises with hop count.} Hits@1 goes $0.46 \to 0.55
 \to 0.57$ across \textsf{h1}, \textsf{h2}, \textsf{h3plus}, and F1 goes $0.42 \to
-0.49 \to 0.50$. Every other system on that dataset decays: Think-on-Graph falls
-from $0.53$ to $0.37$ before partially recovering at $0.45$; Vector-RAG collapses
-$0.33 \to 0.14 \to 0.10$; GraphRAG $0.34 \to 0.16 \to 0.02$, though that last row
-is radius-limited and is read with the qualification given below. A system that gets
+0.49 \to 0.50$. It is the only system on that dataset that ends above where it
+started; the other four all end below. Three of them decay monotonically:
+No-retrieval $0.38 \to 0.30 \to 0.14$, Vector-RAG $0.33 \to 0.14 \to 0.10$, and
+GraphRAG $0.34 \to 0.16 \to 0.02$, though that last row is radius-limited and is
+read with the qualification given below. Think-on-Graph is the exception to the
+monotonicity but not to the direction: it falls from $0.53$ to $0.37$ and
+partially recovers to $0.45$, still $0.08$ below its own one-hop score. The
+distinction is worth keeping --- ``every other system decays'' would be the
+tidier sentence and it is not what the table says. A system that gets
 \emph{better} as the required chain gets longer is not merely ahead on average ---
 it is the only one in the table whose profile is consistent with actually
 traversing the chain, and that monotonicity is a stronger form of the multi-hop
@@ -812,9 +818,9 @@ Yes, and the multi-hop qualifier is doing real work. AGR leads every cell of
 \Cref{tab:main}, and all eight paired comparisons reject, including both against
 the agentic baseline running on the same graph with the same model under the same
 budget. The stratum profile is the substance of the answer: on CWQ, AGR's accuracy
-\emph{rises} with hop count ($0.46 \to 0.55 \to 0.57$) while every other system
-decays, and Vector-RAG collapses from $0.33$ to $0.10$ on a context that cannot
-hold a chain at any radius.
+\emph{rises} with hop count ($0.46 \to 0.55 \to 0.57$) and it is the only system
+that ends above where it started, and Vector-RAG collapses from $0.33$ to $0.10$
+on a context that cannot hold a chain at any radius.
 
 Three boundaries are reported with it rather than left for a reader to find.
 Think-on-Graph is better on CWQ's one-hop stratum. Vector-RAG is better than

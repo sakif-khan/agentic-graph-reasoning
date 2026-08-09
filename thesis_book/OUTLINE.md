@@ -752,35 +752,35 @@ wrongful-acceptance class from anecdote to rate)*
 | 4 The Knowledge Environment | 10 | 9 | 10 |
 | 5 The AGR Framework | 11 | 13 | 16 |
 | 6 The Structural Verification Layer | 8 | 13 | 14 |
-| 7 Experimental Setup | 11 | 15 | 18 |
+| 7 Experimental Setup | 11 | 15 | 19 |
 | 8 Results | 12 | 12 | 17 |
 | 9 Error Analysis and Discussion | 10 | 15 | 18 |
 | 10 Conclusion | 5 | 6 | 8 |
-| **Body total** | **87** | **104** | **123** |
+| **Body total** | **87** | **104** | **124** |
 | References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
 
-**The body is 123 pages against a 60–90 target — 37% over the 90 ceiling.** Body runs pages 1–123;
-References begin on 124; the document is 176 pages including front matter and five
+**The body is 124 pages against a 60–90 target — 38% over the 90 ceiling.** Body runs pages 1–124;
+References begin on 125; the document is 177 pages including front matter and five
 appendices.
 
 The decision to cross the ceiling was taken at 104 pages and recorded so it would not
 be revisited by accident: *cross the ceiling if needed.* That decision was made
-against a smaller number. The 19 pages added since fall in Chapter 8 (+5), Chapter 7
-(+3), Chapter 5 (+3), Chapters 9 and 10 (+3 and +2), and one page each in 1, 4 and 6
+against a smaller number. The 20 pages added since fall in Chapter 8 (+5), Chapter 7
+(+4), Chapter 5 (+3), Chapters 9 and 10 (+3 and +2), and one page each in 1, 4 and 6
 — corrections, scoping notes and disclosure statements added in review, not new
 material. **Re-confirm before submission whether the department enforces a hard cap.**
 If it does, the compression targets are unchanged: Chapters 2 and 3 first, never
 Chapter 9.
 
-Where the 36 pages over budget went, and why each is defensible if questioned.
+Where the 37 pages over budget went, and why each is defensible if questioned.
 The `r1` column is the round-1 overrun measured at 104 pages; `now` is measured at
-123. The difference between the two columns is review work — corrections, scoping
+124. The difference between the two columns is review work — corrections, scoping
 notes, and baseline-configuration disclosures — not new material.
 
 | Chapter | r1 | now | Reason |
 | --- | ---: | ---: | --- |
 | 9 Error Analysis | +5 | **+8** | The census is a population of 259, not a sample; three named mechanism findings, three counted defect families, the benchmark-defect provenance argument. Grew by the union-of-subgraphs and name-keying threats, the Phoenician case, and the corrected 58-question exclusion arithmetic. |
-| 7 Setup | +4 | **+7** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note, the hedge-counting convention, and the two baseline candidate-width disclosures (§7.4.3 fanout cap, §7.4.4 relation/neighbour caps). |
+| 7 Setup | +4 | **+8** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note, the hedge-counting convention, the two baseline candidate-width disclosures (§7.4.3 fanout cap, §7.4.4 relation/neighbour caps), and the reconciliation of the sample ceiling against the validation gate's population ceiling (§7.2.3). |
 | 6 Verification | +5 | **+6** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1, the post-hoc-verification positioning, and the supporting-triples persistence gap. |
 | 8 Results | +0 | **+5** | Grew entirely in review: §8.4, the clipped/unclipped split of the agentic-baseline margin, the per-stratum radius qualification, and the token-vs-call frontier correction. |
 | 5 Framework | +2 | **+5** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, and the two σ implementation deviations. |

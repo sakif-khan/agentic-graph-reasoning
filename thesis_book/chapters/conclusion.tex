@@ -64,9 +64,12 @@ baseline is slightly ahead, and the whole margin comes from the $29\%$ and $44\%
 of questions where the cap truncates it (\Cref{sec:tog-split}). The finding is
 therefore about affordability rather than about resolution quality --- beam
 search cannot complete under a budget a deployed system would impose, and guided
-search can. On ComplexWebQuestions AGR's accuracy \emph{rises} with
-hop count while every other system decays --- the strongest available form of the
-multi-hop claim. It runs at half the language-model calls of the agentic baseline
+search can. On ComplexWebQuestions AGR is the only system whose accuracy
+\emph{rises} with hop count, and every other system ends below where it started
+--- the strongest available form of the multi-hop claim. The agentic baseline is
+the one that does not simply decay: it falls and then partially recovers, which
+is weaker than a rise and is reported as such in \Cref{sec:hop-results}. It runs
+at half the language-model calls of the agentic baseline
 and never exhausts a budget that clips that baseline on $44\%$ of multi-hop
 questions. Structural hallucination is eliminated: over both datasets, zero
 ungrounded assertions in $1{,}709$ asserted entities, against $22.1\%$ of the

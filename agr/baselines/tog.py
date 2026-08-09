@@ -3,6 +3,12 @@ from agr.baselines.common import BASELINE_SCHEMA, make_final, parse_entities
 
 WIDTH, DEPTH = 3, 3
 
+# Beam-search candidate-set widths: how much of each tool result survives to the
+# pruning prompt. Named rather than inline because the thesis reports how often
+# each cut binds, and scripts/build_thesis_numbers.py reads them from here so a
+# change to either number cannot drift into the text unnoticed.
+MAX_RELATIONS, MAX_NEIGHBORS = 40, 20
+
 REL_PRUNE = """Question: {question}
 Current entity: {entity}
 Available relations (relation, direction, fanout):
@@ -48,7 +54,7 @@ class ToG:
                 for ent in frontier[:WIDTH]:
                     if meter.llm_calls >= budget_cfg.max_llm_calls - 1:
                         raise BudgetExhausted("llm")
-                    rels = self.tools.get_relations(ent["id"])[:40]
+                    rels = self.tools.get_relations(ent["id"])[:MAX_RELATIONS]
                     rel_out = self.llm(state, REL_PRUNE.format(
                         question=q["question"], entity=ent["name"], w=WIDTH,
                         relations="\n".join(
@@ -59,7 +65,7 @@ class ToG:
                         res = self.tools.get_neighbors(
                             ent["id"], sel.get("rel", ""),
                             sel.get("dir", "out"))
-                        nbrs = res["neighbors"][:20]
+                        nbrs = res["neighbors"][:MAX_NEIGHBORS]
                         if not nbrs:
                             continue
                         if meter.llm_calls >= budget_cfg.max_llm_calls - 1:

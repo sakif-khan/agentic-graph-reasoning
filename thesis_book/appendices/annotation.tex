@@ -267,8 +267,9 @@ quoting the previous histogram.
 
 \subsection*{Corrections made after the first labelling pass}
 
-Three changes were made to labels after the initial pass, and are recorded here
-rather than silently absorbed.
+Three corrections were made after the initial pass --- one to the working
+reference and two to labels --- and are recorded here rather than silently
+absorbed.
 
 \begin{itemize}
 \item The false-positive and false-negative gloss in the working reference
@@ -276,15 +277,16 @@ rather than silently absorbed.
   and the convention is now stated explicitly above. The census labels
   themselves had followed the standard convention throughout and were not
   changed.
-\item \textsf{WebQTrn-1294} moved from \textsf{verifier\_fn} to
-  \textsf{answer\_selection}. The verifier had been correct; the error was
-  upstream, in the answerer.
-\item \textsf{WebQTrn-1597} moved from \textsf{verifier\_fn} to
-  \textsf{verifier\_fp}, the original label having used the reversed
-  convention.
+\item \textsf{WebQTrn-1294}, in the main census, moved from
+  \textsf{verifier\_fn} to \textsf{answer\_selection}. The verifier had been
+  correct; the error was upstream, in the answerer.
+\item \textsf{WebQTrn-1597}, in the no-planner ablation census, moved from
+  \textsf{verifier\_fn} to \textsf{verifier\_fp}, the original label having used
+  the reversed convention.
 \end{itemize}
 
-The histogram was regenerated afterwards. The totals are unchanged; three CWQ
-hedge rows moved between categories.
+The histogram was regenerated afterwards. Two CWQ hedge rows moved between
+categories, one in each census; both stayed within \textsf{hedge}, so every
+total is unchanged.
 
 \endinput

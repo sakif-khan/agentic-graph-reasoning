@@ -1,8 +1,11 @@
 """Phase 4 metrics over RunLogger JSONLs.
-Usage: python scripts/score_test.py results/phase4/test_webqsp_*.jsonl results/phase4/test_cwq_*.jsonl
+Usage: python scripts/score_test.py [run.jsonl ...]
+With no arguments, scores the ten runs of the main matrix (MAIN_MATRIX below),
+which is what produced results/phase4/score_test_log.txt.
 (excludes *_tools.jsonl automatically)"""
-import json, random, unicodedata
+import json, random, sys, unicodedata
 from collections import defaultdict
+from pathlib import Path
 
 random.seed(42)
 N_BOOT = 10_000
@@ -72,19 +75,36 @@ def mcnemar(a_rows, b_rows):
     p = sum(comb(n, i) for i in range(k + 1)) / 2 ** n * 2
     return min(p, 1.0), b10, b01
 
+# The ten runs behind the main matrix. Kept as the default so that a bare
+# invocation reproduces the reported table exactly, which is what the thesis and
+# the log in results/phase4/score_test_log.txt were produced by.
+MAIN_MATRIX = [
+    "results/phase4/test_webqsp_noretrieval.jsonl",
+    "results/phase4/test_cwq_noretrieval.jsonl",
+    "results/phase4/test_webqsp_vectorrag.jsonl",
+    "results/phase4/test_cwq_vectorrag.jsonl",
+    "results/phase4/test_webqsp_graphrag.jsonl",
+    "results/phase4/test_cwq_graphrag.jsonl",
+    "results/phase4/test_webqsp_tog.jsonl",
+    "results/phase4/test_cwq_tog.jsonl",
+    "results/phase4/test_webqsp_agr.jsonl",
+    "results/phase4/test_cwq_agr.jsonl",
+]
+
+
 def main():
-    files = [
-        "results/phase4/test_webqsp_noretrieval.jsonl",
-        "results/phase4/test_cwq_noretrieval.jsonl",
-        "results/phase4/test_webqsp_vectorrag.jsonl",
-        "results/phase4/test_cwq_vectorrag.jsonl",
-        "results/phase4/test_webqsp_graphrag.jsonl",
-        "results/phase4/test_cwq_graphrag.jsonl",
-        "results/phase4/test_webqsp_tog.jsonl",
-        "results/phase4/test_cwq_tog.jsonl",
-        "results/phase4/test_webqsp_agr.jsonl",
-        "results/phase4/test_cwq_agr.jsonl",
-    ]
+    # Arguments were documented here and in the README long before they were
+    # read: the list above was used unconditionally, so passing other files
+    # silently rescored these ten and printed a table for runs the caller never
+    # named. Nothing the thesis reports was affected -- the defaults are the
+    # right files -- but a reproduction attempt on different runs would have
+    # been answered with these results and no indication of the substitution.
+    files = [p for p in sys.argv[1:] if not p.endswith("_tools.jsonl")]
+    if not files:
+        files = MAIN_MATRIX
+    missing = [p for p in files if not Path(p).exists()]
+    assert not missing, f"no such run file: {missing}"
+
     strata = {"webqsp": stratum_map("results/phase4/test_webqsp.json"),
               "cwq": stratum_map("results/phase4/test_cwq.json")}
     runs = {}                                   # (dataset, system) -> rows
@@ -117,7 +137,7 @@ def main():
     for (ds, sysname), rows in sorted(runs.items()):
         by = defaultdict(list)
         for r in rows:
-            by[strata[ds].get(r["qid"], "?")].append(r)
+            by[strata.get(ds, {}).get(r["qid"], "?")].append(r)
         cells = "  ".join(
             f"{st}:{sum(x['hit'] for x in v)/len(v):.2f}/{sum(x['f1'] for x in v)/len(v):.2f}(n={len(v)})"
             for st, v in sorted(by.items()))
@@ -125,8 +145,16 @@ def main():
 
     # McNemar: AGR vs each baseline, per dataset
     print("\nMcNemar (AGR vs baseline, per-question hit):")
-    for ds in ("webqsp", "cwq"):
+    # The two benchmarks keep their reported order; anything else the caller
+    # passed follows, so the default output is unchanged.
+    present = {d for d, _ in runs}
+    for ds in ([d for d in ("webqsp", "cwq") if d in present]
+               + sorted(present - {"webqsp", "cwq"})):
         agr = runs.get((ds, "agr"))
+        if agr is None:
+            # Only reachable now that the file list is the caller's.
+            print(f"  {ds:<8}skipped: no agr run among the files given")
+            continue
         for (d2, sysname), rows in sorted(runs.items()):
             if d2 != ds or sysname == "agr":
                 continue

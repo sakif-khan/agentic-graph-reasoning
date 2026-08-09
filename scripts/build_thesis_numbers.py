@@ -9,11 +9,35 @@ The thesis quotes this file rather than transcribing numbers from the logs.
 
 Usage: python scripts/build_thesis_numbers.py
 """
-import csv, json, re, statistics, unicodedata
+import csv, inspect, json, re, statistics, unicodedata
 from pathlib import Path
+
+from agr.baselines.tog import MAX_NEIGHBORS, MAX_RELATIONS
+from agr.baselines.graphrag import StaticGraphRAG
+from agr.kg_tools import KGTools
 
 P4 = Path("results/phase4")
 OUT = P4 / "thesis_numbers.json"
+
+
+def _default(cls, param):
+    """A constructor default, read from the class rather than restated here.
+
+    The caps below are properties of the systems, not of this script, and the
+    thesis reports how often each one binds. Restating them made a config change
+    a silent edit to the thesis: the numbers would still regenerate, still agree
+    with each other, and still be wrong. Importing costs nothing -- none of these
+    modules touches the database at import time -- and it means the caps cannot
+    disagree with the code that applied them.
+    """
+    d = inspect.signature(cls.__init__).parameters[param].default
+    assert d is not inspect.Parameter.empty, f"{cls.__name__}.{param} has no default"
+    return d
+
+
+# GraphRAG's per-topic fanout cap. The degree blocks below split entities on it,
+# so it is the same literal the baseline applied, not a number that matches today.
+GRAPHRAG_FANOUT_CAP = _default(StaticGraphRAG, "fanout_cap")
 
 # dataset system  H [lo,hi]  F1 [lo,hi]  P  R  hedge%  tok  calls  secs
 ROW = re.compile(
@@ -34,6 +58,49 @@ TIER1 = re.compile(
 TIER2 = re.compile(r"^(test_\S+)\s+(\d+)/(\d+)\s+=\s+([\d.]+)%$")
 
 HIST = re.compile(r"^\s{4}(\w+)\s+(\d+)\s+\((\d+)%\)$")
+
+
+HOPS = ("h1", "h2", "h3plus")
+
+
+def hop_trends(strata):
+    """The shape of each system's accuracy curve across the hop strata.
+
+    The abstract, the conclusion and two places in the results chapter all make
+    the same claim about these curves -- that AGR is the only system that gets
+    better as the required chain gets longer. The claim is about the shape of
+    five curves, but it was written as prose beside a table of points, and the
+    unqualified form of it ("every other system decays") is not what the points
+    say: the agentic baseline falls and then partially recovers, so it does not
+    decay monotonically even though it does end below where it started.
+
+    Both readings are derived here so a sentence can quote the one it means.
+    `monotone_rising` and `monotone_falling` are strict about the middle
+    stratum; `ends_below_h1` ignores the middle and asks only about the two
+    ends. The unreachable stratum is excluded throughout -- it has no hop count,
+    so it is not a point on this curve.
+    """
+    out = {}
+    for key, s in strata.items():
+        ds, sysname = key.split("/")
+        h = [s[k]["hits_at_1"] for k in HOPS]
+        rising = all(b >= a for a, b in zip(h, h[1:])) and h[-1] > h[0]
+        falling = all(b <= a for a, b in zip(h, h[1:])) and h[-1] < h[0]
+        out.setdefault(ds, {})[sysname] = {
+            "hits_at_1": h,
+            "f1": [s[k]["f1"] for k in HOPS],
+            "net_hits_at_1": round(h[-1] - h[0], 2),
+            "monotone_rising": rising,
+            "monotone_falling": falling,
+            "ends_below_h1": h[-1] < h[0],
+        }
+    rollups = {"_systems_monotone_rising": "monotone_rising",
+               "_systems_monotone_falling": "monotone_falling",
+               "_systems_ending_below_h1": "ends_below_h1"}
+    for systems in out.values():
+        systems.update({name: sorted(k for k, v in systems.items() if v[flag])
+                        for name, flag in rollups.items()})
+    return out
 
 
 def parse_scores(path):
@@ -119,8 +186,21 @@ def parse_tier2(path):
 
 
 def compute_kappa(sheet, key):
-    human = [int(r["your_label(1/0)"].strip())
-             for r in csv.DictReader(open(sheet, encoding="utf-8"))]
+    """Cohen's kappa between the blind human labels and the judge.
+
+    scripts/compute_kappa.py implements this a second time and the two are held
+    to agree by tests/test_kappa_agreement.py. The point of the duplication is
+    that an arithmetic slip in a chance-correction formula produces a plausible
+    number rather than an error, so a second reading of the same two files is
+    worth more than a shared helper would be. Independence is only worth
+    claiming if both readings accept the same inputs, hence the label check
+    below -- without it this one silently took labels the other rejects.
+    """
+    human = []
+    for r in csv.DictReader(open(sheet, encoding="utf-8")):
+        val = r["your_label(1/0)"].strip()
+        assert val in ("0", "1"), f"row {r['idx']} not labeled: {val!r}"
+        human.append(int(val))
     judge = [int(bool(r["supported"]))
              for r in json.load(open(key, encoding="utf-8"))]
     assert len(human) == len(judge), "row count mismatch"
@@ -156,20 +236,37 @@ def testset(ds):
 
 
 def gold_stats(ds):
-    """Shape of the gold answer sets in a test split.
+    """Shape of the gold answer sets in a test split, and its accuracy ceiling.
 
     These were being quoted from a one-off calculation rather than from here,
     and the WebQSP median had drifted to 2 in the prose against an actual 1.5.
     The median matters to the argument -- it is what makes the point that
     Hits@1's any-match loophole is wide on WebQSP -- so it is derived.
+
+    reachable_pct is the ceiling that bounds the reported results, and it is not
+    the one the validation gate reports: the gate measures the full split and
+    this measures the 400 questions actually evaluated, so the two differ by
+    sampling. Both are real and neither is a correction of the other, which is
+    exactly why each needs a home in this file rather than a figure in prose.
+    Reachability is read from n_gold_reachable, the same per-question quantity
+    the stratum assignment uses, so the ceiling and the strata cannot disagree.
     """
-    n_gold = [len(r["answers"]) for r in testset(ds)]
+    rows = testset(ds)
+    n_gold = [len(r["answers"]) for r in rows]
+    reachable = sum(1 for r in rows if r["n_gold_reachable"] > 0)
+    assert reachable == sum(1 for r in rows if r["stratum"] != "unreachable"), (
+        "the unreachable stratum and n_gold_reachable disagree, so the ceiling "
+        "and the stratum sizes in tab:testsets no longer describe one split")
     return {
         "n_questions": len(n_gold),
         "gold_mean": round(statistics.mean(n_gold), 2),
         "gold_median": statistics.median(n_gold),
         "gold_max": max(n_gold),
         "questions_with_one_gold": sum(1 for n in n_gold if n == 1),
+        "strata": {s: sum(1 for r in rows if r["stratum"] == s)
+                   for s in HOPS + ("unreachable",)},
+        "any_gold_reachable": reachable,
+        "reachable_pct": round(100 * reachable / len(rows), 1),
     }
 
 
@@ -280,14 +377,16 @@ def parse_census(path):
 def candidate_caps():
     """How often each system's candidate-set caps actually truncated.
 
-    The agentic baseline re-uses AGR's tools and then cuts the result to its
-    own beam-search widths (40 relations, 20 neighbours); AGR keeps 300 and
-    200. Both cuts are invisible in the accuracy tables, so the rate at which
-    each one binds is measured here from the committed tool logs and reported
-    in the baseline description rather than left to be read off the source.
+    The agentic baseline re-uses AGR's tools and then cuts the result to its own
+    beam-search widths, which are narrower than the ones AGR keeps. Both cuts are
+    invisible in the accuracy tables, so the rate at which each one binds is
+    measured here from the committed tool logs and reported in the baseline
+    description rather than left to be read off the source. Every width comes
+    from the class that applies it, so the widths reported are the widths run.
     """
-    caps = {"tog": {"relations": 40, "neighbors": 20},
-            "agr": {"relations": 300, "neighbors": 200}}
+    caps = {"tog": {"relations": MAX_RELATIONS, "neighbors": MAX_NEIGHBORS},
+            "agr": {"relations": _default(KGTools, "max_relations"),
+                    "neighbors": _default(KGTools, "max_fanout")}}
     out = {}
     # Post-blocklist degree of every entity AGR expanded. get_relations returns
     # one row per relation type with its fanout, and the two blocklists are
@@ -333,7 +432,7 @@ def candidate_caps():
 
     def block(ids):
         v = sorted(degree[i] for i in ids)
-        over = sum(1 for x in v if x > 100)
+        over = sum(1 for x in v if x > GRAPHRAG_FANOUT_CAP)
         return {"n_entities": len(v),
                 "median": statistics.median(v),
                 "p90": v[int(0.9 * len(v))],
@@ -357,10 +456,18 @@ def candidate_caps():
         f"baseline seeds nothing for them and the question-level truncation "
         f"rates below no longer describe all {len(per_question)} questions")
 
+    # The key names below carry the cap as a literal because the thesis quotes
+    # them by name. That is only safe while the cap is what the names say, so a
+    # change to the baseline has to come here and rename them rather than quietly
+    # relabel a different threshold with the old name.
+    assert GRAPHRAG_FANOUT_CAP == 100, (
+        f"the static baseline's fanout cap is now {GRAPHRAG_FANOUT_CAP}; the "
+        f"over_100 keys below are named for a cap of 100 and must be renamed")
+
     q_any = q_all = 0
     for ents in per_question:
         degs = [degree[searches[n][0]["id"]] for n in set(ents)]
-        over = sum(1 for d in degs if d > 100)
+        over = sum(1 for d in degs if d > GRAPHRAG_FANOUT_CAP)
         q_any += over > 0
         q_all += over == len(degs)
 
@@ -425,7 +532,11 @@ def main():
         "environment_coverage": {
             "_source": "results/phase1/coverage_report.json",
             "_note": ("any_reachable / n is the answer-reachability ceiling "
-                      "reported in the validation gate."),
+                      "reported in the validation gate. This is the ceiling "
+                      "over the FULL splits (n=1628, n=3531). The systems are "
+                      "evaluated on 400-question samples, whose ceilings differ "
+                      "by sampling and live in test_sets.*.reachable_pct; a "
+                      "sentence about the reported results wants that one."),
             **{ds: {**v,
                     "reachable_pct": round(100 * v["any_reachable"] / v["n"], 2)}
                for ds, v in coverage.items()},
@@ -436,7 +547,10 @@ def main():
             "_note": ("shape of the gold answer sets in the evaluated splits. "
                       "gold_median is 1.5 on WebQSP: exactly half the questions "
                       "carry a single gold answer, and the mean is dragged up "
-                      "by a long tail."),
+                      "by a long tail. reachable_pct is the ceiling over these "
+                      "400 questions and is the bound on every Hits@1 reported "
+                      "in Chapter 8; environment_coverage carries the full-split "
+                      "figure, which is a different population, not a revision."),
             **{ds: gold_stats(ds) for ds in ("webqsp", "cwq")},
         },
         "main_results": {
@@ -444,6 +558,15 @@ def main():
             "_note": "secs are cold-cache records only; nan means not measured.",
             "by_system": main_rows,
             "by_hop_stratum": main_strata,
+            "_hop_trend_note": (
+                "shape of each by_hop_stratum curve over h1/h2/h3plus, so the "
+                "claim that AGR is the only system improving with hop count is "
+                "quoted rather than read off the table. Note the two readings "
+                "differ: on CWQ the agentic baseline is NOT monotone_falling "
+                "(it recovers at h3plus) but IS ends_below_h1, so 'every other "
+                "system decays' is false and 'every other system ends below "
+                "where it started' is true."),
+            "hop_trends": hop_trends(main_strata),
             "mcnemar_vs_baselines": main_mcnemar,
         },
         "tog_budget_split": {
@@ -519,6 +642,21 @@ def main():
             **parse_census(P4 / "synthesize_census_log.txt"),
         },
     }
+
+    # The multi-hop claim is the one the abstract leads with, and it is the one
+    # sentence a reader is most likely to check against the stratum table. It is
+    # asserted here so that a rerun which changes the shape of a curve fails the
+    # build instead of leaving the claim standing over data that no longer
+    # supports it. Both halves are pinned, because the sentence needs both.
+    cwq = doc["main_results"]["hop_trends"]["cwq"]
+    assert cwq["_systems_monotone_rising"] == ["agr"], (
+        f"the abstract and conclusion say AGR is the only CWQ system whose "
+        f"accuracy rises with hop count; the rising systems are now "
+        f"{cwq['_systems_monotone_rising']}")
+    others = sorted(k for k in cwq if not k.startswith("_") and k != "agr")
+    assert cwq["_systems_ending_below_h1"] == others, (
+        f"the same sentence says every other CWQ system ends below its h1; "
+        f"those that do are now {cwq['_systems_ending_below_h1']}, not {others}")
 
     OUT.write_text(json.dumps(doc, indent=1), encoding="utf-8")
     print(f"wrote {OUT}")

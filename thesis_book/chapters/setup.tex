@@ -174,8 +174,9 @@ that mediator nodes are counted consistently as the two edges they are
   \begin{center}
     \caption{The two certified test samples. The unreachable stratum is retained
       deliberately; the ceiling is the share of questions with at least one gold
-      answer reachable within four hops, and is the upper bound on Hits@1 for
-      every system evaluated here.}
+      answer reachable within four hops, measured over these $400$ questions,
+      and is the upper bound on Hits@1 for every result reported in
+      \Cref{ch:results}.}
     \label{tab:testsets}
     \begin{tabular}{|l|r|r|r|r|r|r|}
       \hline
@@ -195,6 +196,18 @@ to interpret, and labelled as such wherever it appears. CWQ is majority two-hop
 with a genuine deep tail of $49$. The samples preserve the strata proportions of
 their parent pools, so per-stratum numbers describe the benchmark rather than the
 sample.
+
+These ceilings are not the ones the validation gate reported, and the difference
+is worth naming rather than leaving for a reader to reconcile.
+\Cref{tab:coverage} measured the full test splits --- $1{,}628$ and $3{,}531$
+questions --- and found $97.3\%$ and $99.7\%$ reachable. The figures above are the
+same quantity measured over the $400$ questions actually evaluated, and they come
+out at $97.0\%$ and $99.2\%$. Neither corrects the other: one bounds what the
+environment could support across the whole benchmark, the other bounds what any
+system in \Cref{ch:results} could have scored, and it is the second that every
+accuracy in this thesis is read against. The gap between them is sampling, and it
+stays under a point on both datasets because the draw preserved the strata
+proportions.
 
 The \textsf{unreachable} stratum was kept rather than dropped. Dropping it would
 raise every system's score by the same amount and misdescribe the environment;

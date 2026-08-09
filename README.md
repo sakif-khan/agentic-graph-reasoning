@@ -215,7 +215,9 @@ python scripts/union_graph_construction.py
 Unions the WebQSP and CWQ subgraphs, applies the answer-reachability gate, and
 writes `data/nodes.csv.gz` and `data/rels.csv.gz` in `neo4j-admin` import
 format. Expect **2,592,892 nodes and 8,309,194 relationships** over 7,058
-distinct relation types — if your counts differ, the datasets differ.
+distinct relation types — if your counts differ, the datasets differ. These are
+reference values for checking your own build, not thesis claims; the thesis
+quotes them from `results/phase1/` via `tab:graphstats`.
 
 ### 5.3 Bulk-import into Neo4j
 
@@ -236,8 +238,9 @@ headers already carry `:ID`, `:LABEL`, `:START_ID`, `:END_ID` and `:TYPE`, so no
 label or type arguments are needed.
 
 The reference import took **36.4 s at 1.09 GiB peak** and skipped zero rows;
-`results/phase1/import.report` is the log it produced. Start Neo4j again
-afterwards.
+`results/phase1/import.report` is the log it produced, and both figures are read
+off it (`IMPORT DONE in 36s 401ms`, `Peak memory usage: 1.093GiB`). Start Neo4j
+again afterwards.
 
 ### 5.4 Create the constraint and the full-text index
 
@@ -382,9 +385,14 @@ This is also the expensive part — roughly 6 model calls per WebQSP question an
 ### Scoring
 
 ```bash
-python scripts/score_test.py results/phase4/test_webqsp_*.jsonl results/phase4/test_cwq_*.jsonl
+python scripts/score_test.py            # the ten runs of the main matrix
 python scripts/build_thesis_numbers.py
 ```
+
+`score_test.py` takes run files as arguments and falls back to the main matrix
+when given none, so the bare call above is the one that produced
+`results/phase4/score_test_log.txt`. Passing files scores those instead
+(`*_tools.jsonl` is filtered out either way).
 
 `score_test.py` reports Hits@1, F1, precision, recall and hedge rate with
 bootstrap intervals. `build_thesis_numbers.py` regenerates
