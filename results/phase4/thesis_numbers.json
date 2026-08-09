@@ -1306,7 +1306,12 @@
     "max": 29198,
     "over_100": 772,
     "over_100_pct": 32.4
-   }
+   },
+   "questions": 800,
+   "questions_any_topic_over_100": 580,
+   "questions_any_topic_over_100_pct": 72.5,
+   "questions_all_topics_over_100": 472,
+   "questions_all_topics_over_100_pct": 59.0
   },
   "tog": {
    "relation_cap": 40,

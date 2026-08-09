@@ -296,11 +296,12 @@ def candidate_caps():
             elif r["tool"] == "search_entity":
                 searches.setdefault(r["args"]["q"], r["result"])
 
-    names, mentions = set(), 0
+    names, mentions, per_question = set(), 0, []
     for ds in ("webqsp", "cwq"):
         for q in json.load(open(P4 / f"test_{ds}.json", encoding="utf-8")):
             names |= set(q["gold_q_entities"])
             mentions += len(q["gold_q_entities"])
+            per_question.append(q["gold_q_entities"])
 
     unresolved = [n for n in names
                   if len(searches.get(n, [])) != 1
@@ -323,11 +324,27 @@ def candidate_caps():
                 "over_100": over,
                 "over_100_pct": round(100 * over / len(v), 1)}
 
+    # Entities and questions are different units -- a question carries 1.29 topic
+    # entities on average -- so the share of truncated entities does not give the
+    # share of affected questions in either direction. Both question-level shares
+    # are measured here so that a sentence about questions can quote one.
+    q_any = q_all = 0
+    for ents in per_question:
+        degs = [degree[searches[n][0]["id"]] for n in set(ents)]
+        over = sum(1 for d in degs if d > 100)
+        q_any += over > 0
+        q_all += over == len(degs)
+
     out["expanded_entity_degree"] = {
         **block(set(degree)),
         "topic_mentions": mentions,
         "topic_entities": block(topic_ids),
         "frontier_entities": block(set(degree) - topic_ids),
+        "questions": len(per_question),
+        "questions_any_topic_over_100": q_any,
+        "questions_any_topic_over_100_pct": round(100 * q_any / len(per_question), 1),
+        "questions_all_topics_over_100": q_all,
+        "questions_all_topics_over_100_pct": round(100 * q_all / len(per_question), 1),
     }
     for sysname, cap in caps.items():
         rel_n, per_entity, nbr_n = [], {}, []
@@ -460,7 +477,9 @@ def main():
                       "discards the low-fanout tail. expanded_entity_degree "
                       "splits AGR's expansion set into the static baseline's "
                       "own topic entities and the rest; the topic block is "
-                      "the population its fanout cap acts on. See "
+                      "the population its fanout cap acts on. The questions_* "
+                      "keys give the same truncation in the question unit, "
+                      "which the entity shares do not imply. See "
                       "sec:baseline-tog and sec:baseline-graphrag."),
             **candidate_caps(),
         },
