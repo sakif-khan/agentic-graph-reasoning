@@ -137,7 +137,25 @@ def compute_kappa(sheet, key):
             "preregistered_threshold": 0.7}
 
 
-def gold_stats(path):
+_TESTSETS = {}
+
+
+def testset(ds):
+    """The questions in a test split, read once per run.
+
+    Two blocks below need these files. Opening them per call made the number of
+    reads a property of who calls what, which matters more than the redundant
+    I/O: the assertions in this module are only as good as a test that can
+    patch every read, and a test that patches one of four reads passes without
+    exercising anything. One cache, one point to patch. Callers only read.
+    """
+    if ds not in _TESTSETS:
+        _TESTSETS[ds] = json.load(
+            open(P4 / f"test_{ds}.json", encoding="utf-8"))
+    return _TESTSETS[ds]
+
+
+def gold_stats(ds):
     """Shape of the gold answer sets in a test split.
 
     These were being quoted from a one-off calculation rather than from here,
@@ -145,10 +163,9 @@ def gold_stats(path):
     The median matters to the argument -- it is what makes the point that
     Hits@1's any-match loophole is wide on WebQSP -- so it is derived.
     """
-    rows = json.load(open(path, encoding="utf-8"))
-    n_gold = [len(r["answers"]) for r in rows]
+    n_gold = [len(r["answers"]) for r in testset(ds)]
     return {
-        "n_questions": len(rows),
+        "n_questions": len(n_gold),
         "gold_mean": round(statistics.mean(n_gold), 2),
         "gold_median": statistics.median(n_gold),
         "gold_max": max(n_gold),
@@ -298,7 +315,7 @@ def candidate_caps():
 
     names, mentions, per_question = set(), 0, []
     for ds in ("webqsp", "cwq"):
-        for q in json.load(open(P4 / f"test_{ds}.json", encoding="utf-8")):
+        for q in testset(ds):
             names |= set(q["gold_q_entities"])
             mentions += len(q["gold_q_entities"])
             per_question.append(q["gold_q_entities"])
@@ -420,8 +437,7 @@ def main():
                       "gold_median is 1.5 on WebQSP: exactly half the questions "
                       "carry a single gold answer, and the mean is dragged up "
                       "by a long tail."),
-            **{ds: gold_stats(P4 / f"test_{ds}.json")
-               for ds in ("webqsp", "cwq")},
+            **{ds: gold_stats(ds) for ds in ("webqsp", "cwq")},
         },
         "main_results": {
             "_source": "results/phase4/score_test_log.txt",
