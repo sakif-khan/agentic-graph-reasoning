@@ -93,9 +93,11 @@ The verifier's positive class is \emph{claim is supported}. A false negative is
 therefore a claim wrongly \emph{rejected}, and a false positive is a claim
 wrongly \emph{accepted}. This is the standard convention and the one the census
 labels use throughout. It is stated explicitly because the gloss in the working
-reference originally paired the two names in reverse, and two Stage~A labels
-were filed against the reversed reading before the error was found. Both were
-corrected; \Cref{sec:census-corrections} records them individually.
+reference originally paired the two names in reverse, and one Stage~A label was
+filed against the reversed reading before the error was found. Stage~D's labels
+followed the standard convention throughout. That one label was corrected;
+\Cref{sec:census-corrections} records it alongside the one other relabelling,
+which was made for an unrelated reason.
 
 \begin{table}[!htb]
   \begin{center}
@@ -274,15 +276,16 @@ absorbed.
 \begin{itemize}
 \item The false-positive and false-negative gloss in the working reference
   paired the two names in reverse of the standard convention. It was corrected,
-  and the convention is now stated explicitly above. The census labels
-  themselves had followed the standard convention throughout and were not
-  changed.
-\item \textsf{WebQTrn-1294}, in the main census, moved from
-  \textsf{verifier\_fn} to \textsf{answer\_selection}. The verifier had been
-  correct; the error was upstream, in the answerer.
-\item \textsf{WebQTrn-1597}, in the no-planner ablation census, moved from
-  \textsf{verifier\_fn} to \textsf{verifier\_fp}, the original label having used
-  the reversed convention.
+  and the convention is now stated explicitly above. Stage~D's labels had
+  followed the standard convention throughout and none was changed on this
+  account; one Stage~A label had not, and is the second item below.
+\item \textsf{WebQTrn-1294}, in the Stage~D census, moved from
+  \textsf{verifier\_fn} to \textsf{answer\_selection}. This one is unrelated to
+  the convention: the verifier had been correct, and the error was upstream, in
+  the answerer.
+\item \textsf{WebQTrn-1597}, in the Stage~A planner-discordance census, moved
+  from \textsf{verifier\_fn} to \textsf{verifier\_fp}, the original label having
+  used the reversed convention. This is the only label the gloss error reached.
 \end{itemize}
 
 The histogram was regenerated afterwards. Two CWQ hedge rows moved between

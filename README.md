@@ -131,7 +131,7 @@ cp .env.example .env
 
 > **All four are mandatory, even for the offline tests.** `agr/env.py` validates
 > them at *import* time, and `tests/conftest.py` imports the runtime module, so
-> without a complete `.env` pytest fails during collection — including the five
+> without a complete `.env` pytest fails during collection — including the seven
 > tests that need neither Neo4j nor the API.
 
 ---
@@ -252,10 +252,19 @@ FOR (e:Entity) REQUIRE e.id IS UNIQUE;
 
 CREATE FULLTEXT INDEX entity_name IF NOT EXISTS
 FOR (e:Entity) ON EACH [e.name];
+
+CREATE INDEX entity_name_exact IF NOT EXISTS
+FOR (e:Entity) ON (e.name);
 ```
 
-The index **name matters**: `agr/resolver.py` calls
+The fulltext index's **name matters**: `agr/resolver.py` calls
 `db.index.fulltext.queryNodes('entity_name', ...)` by that literal name.
+
+The third is a plain range index and is about running time, not results. A
+fulltext index does not serve exact `MATCH (e:Entity {name: $n})` lookups, so
+without it every such lookup is a label scan over 2.6 M nodes. The resolver's
+exact stage, `scripts/groundedness.py` and `scripts/check_coverage.py` all do
+that lookup in a loop; the analysis scripts go from hours to minutes with it.
 
 ### 5.5 Embed entities and create the vector index
 
@@ -325,7 +334,7 @@ top of the file if you built a different graph.
 python -m pytest
 ```
 
-18 tests, all of which should pass on a complete install:
+20 tests, all of which should pass on a complete install:
 
 | Selection | Command | Needs |
 | --- | --- | --- |
@@ -334,8 +343,10 @@ python -m pytest
 | Integration only | `python -m pytest -m integration` | Neo4j running |
 
 The `integration` marker is declared in `pytest.ini` and covers the 13 tests
-that talk to Neo4j. The other 5 are pure unit tests over plan validation, budget
-accounting and Lucene escaping.
+that talk to Neo4j. The other 7 need no services: five pure unit tests over plan
+validation, budget accounting and Lucene escaping, plus two that read committed
+artifacts to check the two Cohen's kappa implementations against each other and
+against the pre-registered bar.
 
 Two things worth knowing about the suite:
 

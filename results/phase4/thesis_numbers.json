@@ -58,95 +58,23 @@
   "_source": "results/phase4/score_test_log.txt",
   "_note": "secs are cold-cache records only; nan means not measured.",
   "by_system": {
-   "webqsp/noretrieval": {
-    "hits_at_1": 0.453,
+   "cwq/agr": {
+    "hits_at_1": 0.522,
     "hits_at_1_ci95": [
-     0.403,
-     0.5
+     0.475,
+     0.57
     ],
-    "f1": 0.305,
+    "f1": 0.469,
     "f1_ci95": [
-     0.266,
-     0.345
+     0.423,
+     0.514
     ],
-    "precision": 0.38,
-    "recall": 0.303,
-    "hedge_pct": 12.2,
-    "mean_tokens": 113,
-    "mean_calls": 1.0,
-    "mean_seconds_cold_cache": 1.2
-   },
-   "cwq/noretrieval": {
-    "hits_at_1": 0.307,
-    "hits_at_1_ci95": [
-     0.263,
-     0.352
-    ],
-    "f1": 0.279,
-    "f1_ci95": [
-     0.236,
-     0.323
-    ],
-    "precision": 0.285,
-    "recall": 0.282,
-    "hedge_pct": 38.0,
-    "mean_tokens": 118,
-    "mean_calls": 1.0,
-    "mean_seconds_cold_cache": 1.0
-   },
-   "webqsp/vectorrag": {
-    "hits_at_1": 0.568,
-    "hits_at_1_ci95": [
-     0.517,
-     0.618
-    ],
-    "f1": 0.432,
-    "f1_ci95": [
-     0.389,
-     0.475
-    ],
-    "precision": 0.469,
-    "recall": 0.46,
-    "hedge_pct": 27.0,
-    "mean_tokens": 527,
-    "mean_calls": 1.0,
-    "mean_seconds_cold_cache": 1.4
-   },
-   "cwq/vectorrag": {
-    "hits_at_1": 0.203,
-    "hits_at_1_ci95": [
-     0.163,
-     0.242
-    ],
-    "f1": 0.168,
-    "f1_ci95": [
-     0.133,
-     0.204
-    ],
-    "precision": 0.171,
-    "recall": 0.189,
-    "hedge_pct": 48.2,
-    "mean_tokens": 535,
-    "mean_calls": 1.0,
-    "mean_seconds_cold_cache": 1.4
-   },
-   "webqsp/graphrag": {
-    "hits_at_1": 0.34,
-    "hits_at_1_ci95": [
-     0.292,
-     0.388
-    ],
-    "f1": 0.262,
-    "f1_ci95": [
-     0.224,
-     0.302
-    ],
-    "precision": 0.279,
-    "recall": 0.284,
-    "hedge_pct": 55.8,
-    "mean_tokens": 531,
-    "mean_calls": 1.0,
-    "mean_seconds_cold_cache": 2.1
+    "precision": 0.484,
+    "recall": 0.481,
+    "hedge_pct": 23.0,
+    "mean_tokens": 6818,
+    "mean_calls": 8.9,
+    "mean_seconds_cold_cache": 17.2
    },
    "cwq/graphrag": {
     "hits_at_1": 0.205,
@@ -166,23 +94,23 @@
     "mean_calls": 1.0,
     "mean_seconds_cold_cache": 2.2
    },
-   "webqsp/tog": {
-    "hits_at_1": 0.66,
+   "cwq/noretrieval": {
+    "hits_at_1": 0.307,
     "hits_at_1_ci95": [
-     0.613,
-     0.705
+     0.263,
+     0.352
     ],
-    "f1": 0.477,
+    "f1": 0.279,
     "f1_ci95": [
-     0.436,
-     0.518
+     0.236,
+     0.323
     ],
-    "precision": 0.571,
-    "recall": 0.48,
-    "hedge_pct": 18.8,
-    "mean_tokens": 3615,
-    "mean_calls": 12.8,
-    "mean_seconds_cold_cache": 12.9
+    "precision": 0.285,
+    "recall": 0.282,
+    "hedge_pct": 38.0,
+    "mean_tokens": 118,
+    "mean_calls": 1.0,
+    "mean_seconds_cold_cache": 1.0
    },
    "cwq/tog": {
     "hits_at_1": 0.435,
@@ -202,6 +130,24 @@
     "mean_calls": 18.2,
     "mean_seconds_cold_cache": 15.2
    },
+   "cwq/vectorrag": {
+    "hits_at_1": 0.203,
+    "hits_at_1_ci95": [
+     0.163,
+     0.242
+    ],
+    "f1": 0.168,
+    "f1_ci95": [
+     0.133,
+     0.204
+    ],
+    "precision": 0.171,
+    "recall": 0.189,
+    "hedge_pct": 48.2,
+    "mean_tokens": 535,
+    "mean_calls": 1.0,
+    "mean_seconds_cold_cache": 1.4
+   },
    "webqsp/agr": {
     "hits_at_1": 0.755,
     "hits_at_1_ci95": [
@@ -220,134 +166,100 @@
     "mean_calls": 6.2,
     "mean_seconds_cold_cache": 11.2
    },
-   "cwq/agr": {
-    "hits_at_1": 0.522,
+   "webqsp/graphrag": {
+    "hits_at_1": 0.34,
     "hits_at_1_ci95": [
-     0.475,
-     0.57
+     0.292,
+     0.388
     ],
-    "f1": 0.469,
+    "f1": 0.262,
     "f1_ci95": [
-     0.423,
-     0.514
+     0.224,
+     0.302
     ],
-    "precision": 0.484,
-    "recall": 0.481,
-    "hedge_pct": 23.0,
-    "mean_tokens": 6818,
-    "mean_calls": 8.9,
-    "mean_seconds_cold_cache": 17.2
+    "precision": 0.279,
+    "recall": 0.284,
+    "hedge_pct": 55.8,
+    "mean_tokens": 531,
+    "mean_calls": 1.0,
+    "mean_seconds_cold_cache": 2.1
+   },
+   "webqsp/noretrieval": {
+    "hits_at_1": 0.453,
+    "hits_at_1_ci95": [
+     0.403,
+     0.5
+    ],
+    "f1": 0.305,
+    "f1_ci95": [
+     0.266,
+     0.345
+    ],
+    "precision": 0.38,
+    "recall": 0.303,
+    "hedge_pct": 12.2,
+    "mean_tokens": 113,
+    "mean_calls": 1.0,
+    "mean_seconds_cold_cache": 1.2
+   },
+   "webqsp/tog": {
+    "hits_at_1": 0.66,
+    "hits_at_1_ci95": [
+     0.613,
+     0.705
+    ],
+    "f1": 0.477,
+    "f1_ci95": [
+     0.436,
+     0.518
+    ],
+    "precision": 0.571,
+    "recall": 0.48,
+    "hedge_pct": 18.8,
+    "mean_tokens": 3615,
+    "mean_calls": 12.8,
+    "mean_seconds_cold_cache": 12.9
+   },
+   "webqsp/vectorrag": {
+    "hits_at_1": 0.568,
+    "hits_at_1_ci95": [
+     0.517,
+     0.618
+    ],
+    "f1": 0.432,
+    "f1_ci95": [
+     0.389,
+     0.475
+    ],
+    "precision": 0.469,
+    "recall": 0.46,
+    "hedge_pct": 27.0,
+    "mean_tokens": 527,
+    "mean_calls": 1.0,
+    "mean_seconds_cold_cache": 1.4
    }
   },
   "by_hop_stratum": {
-   "webqsp/noretrieval": {
+   "cwq/agr": {
     "h1": {
-     "hits_at_1": 0.43,
-     "f1": 0.29,
-     "n": 256
-    },
-    "h2": {
-     "hits_at_1": 0.52,
-     "f1": 0.36,
-     "n": 128
-    },
-    "h3plus": {
-     "hits_at_1": 0.25,
-     "f1": 0.0,
-     "n": 4
-    },
-    "unreachable": {
-     "hits_at_1": 0.17,
-     "f1": 0.17,
-     "n": 12
-    }
-   },
-   "cwq/noretrieval": {
-    "h1": {
-     "hits_at_1": 0.38,
-     "f1": 0.35,
+     "hits_at_1": 0.46,
+     "f1": 0.42,
      "n": 137
     },
     "h2": {
-     "hits_at_1": 0.3,
-     "f1": 0.27,
+     "hits_at_1": 0.55,
+     "f1": 0.49,
      "n": 211
     },
     "h3plus": {
-     "hits_at_1": 0.14,
-     "f1": 0.14,
+     "hits_at_1": 0.57,
+     "f1": 0.5,
      "n": 49
     },
     "unreachable": {
-     "hits_at_1": 0.0,
-     "f1": 0.0,
-     "n": 3
-    }
-   },
-   "webqsp/vectorrag": {
-    "h1": {
-     "hits_at_1": 0.82,
-     "f1": 0.63,
-     "n": 256
-    },
-    "h2": {
-     "hits_at_1": 0.12,
-     "f1": 0.07,
-     "n": 128
-    },
-    "h3plus": {
-     "hits_at_1": 0.0,
-     "f1": 0.0,
-     "n": 4
-    },
-    "unreachable": {
-     "hits_at_1": 0.08,
-     "f1": 0.08,
-     "n": 12
-    }
-   },
-   "cwq/vectorrag": {
-    "h1": {
      "hits_at_1": 0.33,
-     "f1": 0.27,
-     "n": 137
-    },
-    "h2": {
-     "hits_at_1": 0.14,
-     "f1": 0.11,
-     "n": 211
-    },
-    "h3plus": {
-     "hits_at_1": 0.1,
-     "f1": 0.09,
-     "n": 49
-    },
-    "unreachable": {
-     "hits_at_1": 0.67,
-     "f1": 0.67,
+     "f1": 0.33,
      "n": 3
-    }
-   },
-   "webqsp/graphrag": {
-    "h1": {
-     "hits_at_1": 0.3,
-     "f1": 0.23,
-     "n": 256
-    },
-    "h2": {
-     "hits_at_1": 0.44,
-     "f1": 0.35,
-     "n": 128
-    },
-    "h3plus": {
-     "hits_at_1": 0.25,
-     "f1": 0.07,
-     "n": 4
-    },
-    "unreachable": {
-     "hits_at_1": 0.08,
-     "f1": 0.08,
-     "n": 12
     }
    },
    "cwq/graphrag": {
@@ -372,26 +284,26 @@
      "n": 3
     }
    },
-   "webqsp/tog": {
+   "cwq/noretrieval": {
     "h1": {
-     "hits_at_1": 0.63,
-     "f1": 0.45,
-     "n": 256
+     "hits_at_1": 0.38,
+     "f1": 0.35,
+     "n": 137
     },
     "h2": {
-     "hits_at_1": 0.78,
-     "f1": 0.58,
-     "n": 128
+     "hits_at_1": 0.3,
+     "f1": 0.27,
+     "n": 211
     },
     "h3plus": {
-     "hits_at_1": 0.25,
-     "f1": 0.07,
-     "n": 4
+     "hits_at_1": 0.14,
+     "f1": 0.14,
+     "n": 49
     },
     "unreachable": {
-     "hits_at_1": 0.17,
-     "f1": 0.17,
-     "n": 12
+     "hits_at_1": 0.0,
+     "f1": 0.0,
+     "n": 3
     }
    },
    "cwq/tog": {
@@ -413,6 +325,28 @@
     "unreachable": {
      "hits_at_1": 0.33,
      "f1": 0.33,
+     "n": 3
+    }
+   },
+   "cwq/vectorrag": {
+    "h1": {
+     "hits_at_1": 0.33,
+     "f1": 0.27,
+     "n": 137
+    },
+    "h2": {
+     "hits_at_1": 0.14,
+     "f1": 0.11,
+     "n": 211
+    },
+    "h3plus": {
+     "hits_at_1": 0.1,
+     "f1": 0.09,
+     "n": 49
+    },
+    "unreachable": {
+     "hits_at_1": 0.67,
+     "f1": 0.67,
      "n": 3
     }
    },
@@ -438,156 +372,113 @@
      "n": 12
     }
    },
-   "cwq/agr": {
+   "webqsp/graphrag": {
     "h1": {
-     "hits_at_1": 0.46,
-     "f1": 0.42,
-     "n": 137
+     "hits_at_1": 0.3,
+     "f1": 0.23,
+     "n": 256
     },
     "h2": {
-     "hits_at_1": 0.55,
-     "f1": 0.49,
-     "n": 211
+     "hits_at_1": 0.44,
+     "f1": 0.35,
+     "n": 128
     },
     "h3plus": {
-     "hits_at_1": 0.57,
-     "f1": 0.5,
-     "n": 49
+     "hits_at_1": 0.25,
+     "f1": 0.07,
+     "n": 4
     },
     "unreachable": {
-     "hits_at_1": 0.33,
-     "f1": 0.33,
-     "n": 3
+     "hits_at_1": 0.08,
+     "f1": 0.08,
+     "n": 12
+    }
+   },
+   "webqsp/noretrieval": {
+    "h1": {
+     "hits_at_1": 0.43,
+     "f1": 0.29,
+     "n": 256
+    },
+    "h2": {
+     "hits_at_1": 0.52,
+     "f1": 0.36,
+     "n": 128
+    },
+    "h3plus": {
+     "hits_at_1": 0.25,
+     "f1": 0.0,
+     "n": 4
+    },
+    "unreachable": {
+     "hits_at_1": 0.17,
+     "f1": 0.17,
+     "n": 12
+    }
+   },
+   "webqsp/tog": {
+    "h1": {
+     "hits_at_1": 0.63,
+     "f1": 0.45,
+     "n": 256
+    },
+    "h2": {
+     "hits_at_1": 0.78,
+     "f1": 0.58,
+     "n": 128
+    },
+    "h3plus": {
+     "hits_at_1": 0.25,
+     "f1": 0.07,
+     "n": 4
+    },
+    "unreachable": {
+     "hits_at_1": 0.17,
+     "f1": 0.17,
+     "n": 12
+    }
+   },
+   "webqsp/vectorrag": {
+    "h1": {
+     "hits_at_1": 0.82,
+     "f1": 0.63,
+     "n": 256
+    },
+    "h2": {
+     "hits_at_1": 0.12,
+     "f1": 0.07,
+     "n": 128
+    },
+    "h3plus": {
+     "hits_at_1": 0.0,
+     "f1": 0.0,
+     "n": 4
+    },
+    "unreachable": {
+     "hits_at_1": 0.08,
+     "f1": 0.08,
+     "n": 12
     }
    }
   },
   "_hop_trend_note": "shape of each by_hop_stratum curve over h1/h2/h3plus, so the claim that AGR is the only system improving with hop count is quoted rather than read off the table. Note the two readings differ: on CWQ the agentic baseline is NOT monotone_falling (it recovers at h3plus) but IS ends_below_h1, so 'every other system decays' is false and 'every other system ends below where it started' is true.",
   "hop_trends": {
-   "webqsp": {
-    "noretrieval": {
-     "hits_at_1": [
-      0.43,
-      0.52,
-      0.25
-     ],
-     "f1": [
-      0.29,
-      0.36,
-      0.0
-     ],
-     "net_hits_at_1": -0.18,
-     "monotone_rising": false,
-     "monotone_falling": false,
-     "ends_below_h1": true
-    },
-    "vectorrag": {
-     "hits_at_1": [
-      0.82,
-      0.12,
-      0.0
-     ],
-     "f1": [
-      0.63,
-      0.07,
-      0.0
-     ],
-     "net_hits_at_1": -0.82,
-     "monotone_rising": false,
-     "monotone_falling": true,
-     "ends_below_h1": true
-    },
-    "graphrag": {
-     "hits_at_1": [
-      0.3,
-      0.44,
-      0.25
-     ],
-     "f1": [
-      0.23,
-      0.35,
-      0.07
-     ],
-     "net_hits_at_1": -0.05,
-     "monotone_rising": false,
-     "monotone_falling": false,
-     "ends_below_h1": true
-    },
-    "tog": {
-     "hits_at_1": [
-      0.63,
-      0.78,
-      0.25
-     ],
-     "f1": [
-      0.45,
-      0.58,
-      0.07
-     ],
-     "net_hits_at_1": -0.38,
-     "monotone_rising": false,
-     "monotone_falling": false,
-     "ends_below_h1": true
-    },
+   "cwq": {
     "agr": {
      "hits_at_1": [
-      0.75,
-      0.84,
-      0.0
+      0.46,
+      0.55,
+      0.57
      ],
      "f1": [
-      0.64,
-      0.73,
-      0.0
+      0.42,
+      0.49,
+      0.5
      ],
-     "net_hits_at_1": -0.75,
-     "monotone_rising": false,
+     "net_hits_at_1": 0.11,
+     "monotone_rising": true,
      "monotone_falling": false,
-     "ends_below_h1": true
-    },
-    "_systems_monotone_rising": [],
-    "_systems_monotone_falling": [
-     "vectorrag"
-    ],
-    "_systems_ending_below_h1": [
-     "agr",
-     "graphrag",
-     "noretrieval",
-     "tog",
-     "vectorrag"
-    ]
-   },
-   "cwq": {
-    "noretrieval": {
-     "hits_at_1": [
-      0.38,
-      0.3,
-      0.14
-     ],
-     "f1": [
-      0.35,
-      0.27,
-      0.14
-     ],
-     "net_hits_at_1": -0.24,
-     "monotone_rising": false,
-     "monotone_falling": true,
-     "ends_below_h1": true
-    },
-    "vectorrag": {
-     "hits_at_1": [
-      0.33,
-      0.14,
-      0.1
-     ],
-     "f1": [
-      0.27,
-      0.11,
-      0.09
-     ],
-     "net_hits_at_1": -0.23,
-     "monotone_rising": false,
-     "monotone_falling": true,
-     "ends_below_h1": true
+     "ends_below_h1": false
     },
     "graphrag": {
      "hits_at_1": [
@@ -601,6 +492,22 @@
       0.02
      ],
      "net_hits_at_1": -0.32,
+     "monotone_rising": false,
+     "monotone_falling": true,
+     "ends_below_h1": true
+    },
+    "noretrieval": {
+     "hits_at_1": [
+      0.38,
+      0.3,
+      0.14
+     ],
+     "f1": [
+      0.35,
+      0.27,
+      0.14
+     ],
+     "net_hits_at_1": -0.24,
      "monotone_rising": false,
      "monotone_falling": true,
      "ends_below_h1": true
@@ -621,21 +528,21 @@
      "monotone_falling": false,
      "ends_below_h1": true
     },
-    "agr": {
+    "vectorrag": {
      "hits_at_1": [
-      0.46,
-      0.55,
-      0.57
+      0.33,
+      0.14,
+      0.1
      ],
      "f1": [
-      0.42,
-      0.49,
-      0.5
+      0.27,
+      0.11,
+      0.09
      ],
-     "net_hits_at_1": 0.11,
-     "monotone_rising": true,
-     "monotone_falling": false,
-     "ends_below_h1": false
+     "net_hits_at_1": -0.23,
+     "monotone_rising": false,
+     "monotone_falling": true,
+     "ends_below_h1": true
     },
     "_systems_monotone_rising": [
      "agr"
@@ -651,9 +558,110 @@
      "tog",
      "vectorrag"
     ]
+   },
+   "webqsp": {
+    "agr": {
+     "hits_at_1": [
+      0.75,
+      0.84,
+      0.0
+     ],
+     "f1": [
+      0.64,
+      0.73,
+      0.0
+     ],
+     "net_hits_at_1": -0.75,
+     "monotone_rising": false,
+     "monotone_falling": false,
+     "ends_below_h1": true
+    },
+    "graphrag": {
+     "hits_at_1": [
+      0.3,
+      0.44,
+      0.25
+     ],
+     "f1": [
+      0.23,
+      0.35,
+      0.07
+     ],
+     "net_hits_at_1": -0.05,
+     "monotone_rising": false,
+     "monotone_falling": false,
+     "ends_below_h1": true
+    },
+    "noretrieval": {
+     "hits_at_1": [
+      0.43,
+      0.52,
+      0.25
+     ],
+     "f1": [
+      0.29,
+      0.36,
+      0.0
+     ],
+     "net_hits_at_1": -0.18,
+     "monotone_rising": false,
+     "monotone_falling": false,
+     "ends_below_h1": true
+    },
+    "tog": {
+     "hits_at_1": [
+      0.63,
+      0.78,
+      0.25
+     ],
+     "f1": [
+      0.45,
+      0.58,
+      0.07
+     ],
+     "net_hits_at_1": -0.38,
+     "monotone_rising": false,
+     "monotone_falling": false,
+     "ends_below_h1": true
+    },
+    "vectorrag": {
+     "hits_at_1": [
+      0.82,
+      0.12,
+      0.0
+     ],
+     "f1": [
+      0.63,
+      0.07,
+      0.0
+     ],
+     "net_hits_at_1": -0.82,
+     "monotone_rising": false,
+     "monotone_falling": true,
+     "ends_below_h1": true
+    },
+    "_systems_monotone_rising": [],
+    "_systems_monotone_falling": [
+     "vectorrag"
+    ],
+    "_systems_ending_below_h1": [
+     "agr",
+     "graphrag",
+     "noretrieval",
+     "tog",
+     "vectorrag"
+    ]
    }
   },
   "mcnemar_vs_baselines": [
+   {
+    "dataset": "webqsp",
+    "system_a": "agr",
+    "system_b": "graphrag",
+    "a_only_correct": 186,
+    "b_only_correct": 20,
+    "p": 6.53e-35
+   },
    {
     "dataset": "webqsp",
     "system_a": "agr",
@@ -663,12 +671,12 @@
     "p": 2.29e-20
    },
    {
-    "dataset": "cwq",
+    "dataset": "webqsp",
     "system_a": "agr",
-    "system_b": "noretrieval",
-    "a_only_correct": 121,
-    "b_only_correct": 35,
-    "p": 2.73e-12
+    "system_b": "tog",
+    "a_only_correct": 76,
+    "b_only_correct": 38,
+    "p": 0.000475
    },
    {
     "dataset": "webqsp",
@@ -681,34 +689,18 @@
    {
     "dataset": "cwq",
     "system_a": "agr",
-    "system_b": "vectorrag",
-    "a_only_correct": 151,
-    "b_only_correct": 23,
-    "p": 2.83e-24
-   },
-   {
-    "dataset": "webqsp",
-    "system_a": "agr",
-    "system_b": "graphrag",
-    "a_only_correct": 186,
-    "b_only_correct": 20,
-    "p": 6.53e-35
-   },
-   {
-    "dataset": "cwq",
-    "system_a": "agr",
     "system_b": "graphrag",
     "a_only_correct": 148,
     "b_only_correct": 21,
     "p": 1.02e-24
    },
    {
-    "dataset": "webqsp",
+    "dataset": "cwq",
     "system_a": "agr",
-    "system_b": "tog",
-    "a_only_correct": 76,
-    "b_only_correct": 38,
-    "p": 0.000475
+    "system_b": "noretrieval",
+    "a_only_correct": 121,
+    "b_only_correct": 35,
+    "p": 2.73e-12
    },
    {
     "dataset": "cwq",
@@ -717,6 +709,14 @@
     "a_only_correct": 86,
     "b_only_correct": 51,
     "p": 0.00352
+   },
+   {
+    "dataset": "cwq",
+    "system_a": "agr",
+    "system_b": "vectorrag",
+    "a_only_correct": 151,
+    "b_only_correct": 23,
+    "p": 2.83e-24
    }
   ]
  },
@@ -1189,28 +1189,12 @@
     "p": 0.00592
    },
    {
-    "dataset": "cwq",
-    "system_a": "half_abl_full",
-    "system_b": "half_abl_noplanner",
-    "a_only_correct": 27,
-    "b_only_correct": 15,
-    "p": 0.0884
-   },
-   {
     "dataset": "webqsp",
     "system_a": "half_abl_full",
     "system_b": "half_abl_nobacktrack",
     "a_only_correct": 5,
     "b_only_correct": 3,
     "p": 0.727
-   },
-   {
-    "dataset": "cwq",
-    "system_a": "half_abl_full",
-    "system_b": "half_abl_nobacktrack",
-    "a_only_correct": 6,
-    "b_only_correct": 5,
-    "p": 1.0
    },
    {
     "dataset": "webqsp",
@@ -1221,20 +1205,36 @@
     "p": 1.0
    },
    {
-    "dataset": "cwq",
-    "system_a": "half_abl_full",
-    "system_b": "half_abl_noverifier",
-    "a_only_correct": 1,
-    "b_only_correct": 0,
-    "p": 1.0
-   },
-   {
     "dataset": "webqsp",
     "system_a": "half_abl_full",
     "system_b": "half_abl_embonly",
     "a_only_correct": 12,
     "b_only_correct": 9,
     "p": 0.664
+   },
+   {
+    "dataset": "cwq",
+    "system_a": "half_abl_full",
+    "system_b": "half_abl_noplanner",
+    "a_only_correct": 27,
+    "b_only_correct": 15,
+    "p": 0.0884
+   },
+   {
+    "dataset": "cwq",
+    "system_a": "half_abl_full",
+    "system_b": "half_abl_nobacktrack",
+    "a_only_correct": 6,
+    "b_only_correct": 5,
+    "p": 1.0
+   },
+   {
+    "dataset": "cwq",
+    "system_a": "half_abl_full",
+    "system_b": "half_abl_noverifier",
+    "a_only_correct": 1,
+    "b_only_correct": 0,
+    "p": 1.0
    },
    {
     "dataset": "cwq",
@@ -1554,22 +1554,22 @@
     "decomposition_error": 15,
     "kg_gap": 8,
     "echo": 5,
-    "composite_claim": 1,
-    "premature_termination": 1,
-    "answer_selection": 1,
     "ambiguous_question": 1,
-    "gold_noise": 1
+    "answer_selection": 1,
+    "composite_claim": 1,
+    "gold_noise": 1,
+    "premature_termination": 1
    },
    "hedge": {
     "_n": 33,
     "decomposition_error": 11,
     "relation_selection": 6,
-    "premature_termination": 4,
     "kg_gap": 4,
+    "premature_termination": 4,
     "verifier_fn": 3,
     "echo": 2,
-    "answer_selection": 1,
     "ambiguous_question": 1,
+    "answer_selection": 1,
     "other": 1
    }
   },
@@ -1579,13 +1579,13 @@
     "composite_claim": 23,
     "relation_selection": 20,
     "decomposition_error": 10,
-    "kg_gap": 8,
     "answer_selection": 8,
+    "kg_gap": 8,
     "echo": 4,
     "ambiguous_question": 3,
     "gold_noise": 3,
-    "verifier_fn": 1,
-    "premature_termination": 1
+    "premature_termination": 1,
+    "verifier_fn": 1
    },
    "hedge": {
     "_n": 92,
@@ -1593,12 +1593,12 @@
     "composite_claim": 23,
     "relation_selection": 19,
     "ambiguous_question": 5,
-    "other": 5,
     "answer_selection": 5,
+    "other": 5,
     "gold_noise": 3,
-    "premature_termination": 2,
-    "echo": 2,
     "decomposition_error": 2,
+    "echo": 2,
+    "premature_termination": 2,
     "verifier_fn": 1,
     "verifier_fp": 1
    }

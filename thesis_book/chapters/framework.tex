@@ -748,7 +748,13 @@ text; hits are served from disk. The subtle part is that a cache hit must be
 still runs, the call counter still increments, and the original token counts are
 replayed into the meter from the stored record. A fully cached rerun therefore
 reproduces the original run's budget snapshots exactly, rather than reporting
-zero tokens. A separate counter records cache hits so that live and replayed
+zero tokens --- with one exception, stated here because it is a property of the
+technique and not of this run: the replay restores prompt and completion tokens
+but not \textsf{reasoning\_tokens}, which the cache stores and does not add back.
+That field is zero throughout this thesis, since the backbone runs at reasoning
+effort \textsf{none} (\Cref{sec:backbone}), so the snapshots do reproduce exactly
+here; anyone reusing the design under a reasoning-effort setting would find they
+do not. A separate counter records cache hits so that live and replayed
 runs can still be told apart in analysis.
 
 This has three consequences. Repeated experiments cost nothing. A code change
@@ -757,16 +763,23 @@ rerun is served entirely from cache. And because the key includes the dated
 model snapshot, a silent server-side change to a model alias cannot poison
 previously cached results.
 
-\section{Design Validation on the Development Set}\label{sec:design-validation}
+\section{Design Validation on the Smoke Set}\label{sec:design-validation}
 
-The first end-to-end run of the assembled framework, over a twenty-question
-development set drawn from the training splits, answered roughly three to four
-questions correctly. The final configuration answers thirteen to fourteen. The
+Two tuning sets appear in this thesis and they are not the same set. This
+section uses the \emph{smoke set}: twenty questions, drawn from the training
+splits, used once to validate the assembled framework's mechanics. The
+$80$-question \emph{development set} of \Cref{sec:dev-construction}, on which the
+hyperparameters were swept, is a separate and larger construction. Both are
+disjoint from test; only the second carries any reported number.
+
+The first end-to-end run of the assembled framework over the smoke set answered
+roughly three to four questions correctly. The final configuration answers
+thirteen to fourteen. The
 interval between those numbers is not incidental tuning; it is where several of
 the mechanisms described above were shown to be necessary, and it is documented
 here because each fix is evidence that a component earns its place.
 
-The development set was constructed to exercise specific machinery rather than
+The smoke set was constructed to exercise specific machinery rather than
 to sample the benchmark distribution: six single-hop questions, eight two-hop
 compositions, three conjunctions, two whose shortest path traverses a mediator,
 and one question about a deliberately non-existent entity whose correct answer

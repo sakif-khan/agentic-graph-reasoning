@@ -54,7 +54,12 @@ def main():
             c = hist[kind]
             total = sum(c.values())
             print(f"  -- {kind} (n={total}) --")
-            for cat, n in c.most_common():
+            # most_common() breaks ties by insertion order, which is the order
+            # the label files happened to be read in. Equal-count categories
+            # then swap places between runs that changed nothing, and the log
+            # is a committed artifact that build_thesis_numbers.py parses. Sort
+            # ties by name so a diff of this file means a number moved.
+            for cat, n in sorted(c.items(), key=lambda kv: (-kv[1], kv[0])):
                 print(f"    {cat:<24} {n:>3}  ({n / max(total, 1):.0%})")
 
 

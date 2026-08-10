@@ -394,9 +394,12 @@ the two runs were diffed per question. Exactly three questions differed.
       $\alpha = 0.7$, $\tau = 0.20$. Three questions, one run per condition.
       ``Pre-fix'' is the original design in which the rewrite call regenerated
       the entity list; ``post-fix'' is deterministic filtering. Per
-      \Cref{sec:hedge-accounting}, the three questions the environment cannot
-      answer hedge in every condition and are counted as hedges rather than
-      excluded, so the totals are over all $80$.}
+      \Cref{sec:hedge-accounting}, the three fabricated-entity questions ---
+      the \textsf{unanswerable\_fake} bucket, whose correct answer is a refusal
+      --- hedge in every condition and are counted as hedges rather than
+      excluded, so the totals are over all $80$. These are not the
+      unanswerable-in-environment class of \Cref{sec:unanswerable}, which is a
+      separate bucket of four whose questions do have true answers.}
     \label{tab:census}
     \footnotesize
     \begin{tabular}{|L{29mm}|L{35mm}|L{35mm}|L{29mm}|}

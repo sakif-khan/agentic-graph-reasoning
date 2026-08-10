@@ -303,9 +303,19 @@ Every table in \Cref{ch:results} comes from one recorded run per condition, and
 that run replays byte-identically for as long as the cache survives, independent
 of API weather or model retirement.
 
-Fresh-run variance is a different problem and is handled the standard way:
-bootstrap confidence intervals over questions and paired significance testing, both
-specified in \Cref{sec:metrics}.
+Fresh-run variance is a different problem and it is \emph{not} measured here. The
+bootstrap intervals and paired tests specified in \Cref{sec:metrics} resample
+\emph{questions}, so they bound how far a number would move on a different draw
+of questions from the same pool. They say nothing about how far it would move on
+a rerun of the \emph{same} questions, which is a property of decoding rather than
+of sampling, and they cannot: both treat each system's answer set as fixed.
+That second quantity is not negligible --- \Cref{sec:backbone} puts trajectory
+stability at $\approx 75\%$, so roughly one trajectory in four diverges on a
+rerun --- and every table in \Cref{ch:results} rests on a single run per
+condition. Repeating even the two agentic conditions would have bounded it, and
+at \$11.13 against a \$15--20 ceiling it was affordable. It was not done.
+\Cref{sec:threats} carries this as a limitation rather than this section
+carrying it as a solution.
 
 The cache leaves one artifact in the record. The WebQSP run of the full system was
 started, interrupted after seventeen questions, and restarted; the restart replayed
@@ -393,7 +403,7 @@ percent --- chosen without a stated criterion.
 Identifying that set costs nothing, because the resolution is deterministic. The
 baseline resolves each topic name through the same entity resolver the full
 system uses, and every one of the $711$ names matches exactly one node at the
-resolver's exact-match tier (\Cref{sec:entity-resolution}), so the two systems necessarily
+resolver's exact-match stage (\Cref{sec:entity-resolution}), so the two systems necessarily
 seed the same nodes and the tool log records which. The generator asserts that
 property rather than assuming it: if any topic name ever resolved ambiguously,
 the build would fail rather than quietly substitute a different population. The consequence for \Cref{sec:hub-noise}'s diagnosis
@@ -403,6 +413,17 @@ the ordering is unspecified rather than seeded, this is also the one place in th
 harness where a re-run is not guaranteed to reproduce the same retrieved set,
 even though it did across the runs recorded here.
 
+In fairness the same property holds of the full system's own
+\textsf{get\_neighbors}, whose Cypher also carries \textsf{LIMIT} without
+\textsf{ORDER BY} (\Cref{app:tool-neighbors}). It is disclosed here for the
+baseline and stated here for the agent because the two are not comparably
+exposed, not because only one has the property: the agent's cap is $200$ rather
+than $100$ and it is applied per relation rather than per entity, so it binds on
+$3.3\%$ of its $16{,}301$ neighbour calls against the baseline's $55.1\%$ of
+topic entities. \Cref{sec:tool-api}'s description of the tools as parameterised
+Cypher templates should be read with that qualification: the parameters are
+fixed, the row order under a binding cap is not.
+
 Two implementation details fixed on development data are worth naming, because
 both were comparability repairs rather than improvements: neighbourhood expansion
 initially passed \emph{through} ordinary entities and stopped at mediator nodes,
@@ -411,7 +432,11 @@ answers; and retrieved facts are deduplicated by endpoint pair before reranking,
 because cosine similarity favours redundant phrasings of one connection and was
 crowding the informative row out of the top $30$. That dedupe has a cost, stated
 rather than hidden: two distinct facts sharing both endpoints collapse to one,
-observed but rare.
+observed but rare. Which one survives is not arbitrary --- the rule keeps the
+shortest rendering --- and that resolves systematically towards the direct edge
+over the mediator-expanded path whenever both connect the same pair. The bias is
+against this baseline on exactly the questions mediator expansion was added to
+serve, so it is disclosed here rather than left in the code.
 
 \textbf{What this baseline licenses, and what it does not.}\label{sec:graphrag-scope}
 A one-hop retriever cannot contain a two-hop chain, so its decay across hop
@@ -460,7 +485,15 @@ cost of beam search is multiplicative in width and depth, so under the same
 $25$-call cap the full system operates under, Think-on-Graph is clipped on
 $117/400$ WebQSP questions ($29.2\%$) and $176/400$ CWQ questions ($44.0\%$). A
 clipped run still answers, from whatever it gathered, by the same graceful
-degradation the full system uses --- symmetry that fairness requires.
+degradation the full system uses --- symmetry that fairness requires. The
+mechanism is worth naming, since it is the one place the two systems differ in
+their treatment of the cap: the baseline stops its search one call \emph{before}
+the shared limit, reserving that call for the answer it then has to compose. AGR
+makes no such reservation. The asymmetry favours the baseline --- it guarantees a
+clipped run can still answer where the agent would simply run out --- so it
+strengthens rather than weakens \Cref{sec:tog-split}'s reading, and it is stated
+so that the clip rates above are not mistaken for a count of runs that returned
+nothing.
 
 \textbf{One asymmetry is \emph{not} symmetric, and it is disclosed here because
 it bears on how \Cref{sec:tog-split} should be read.} Both systems call the same
@@ -745,7 +778,7 @@ An \textbf{annotation-pipeline error} --- gold contradicts the very graph the
 labels were generated from --- has the opposite signature: \emph{graph-only}
 consensus, where every graph-reading system finds the same right answer while the
 parametric baseline misses it for unrelated reasons. The specimen is
-\textsf{WebQTest-55}: ``Who had a concert named Crazy Love Tour?'' asks for a
+\textsf{WebQTest-55\_54e856d3}: ``Who had a concert named Crazy Love Tour?'' asks for a
 person, the graph-reading systems all return Michael Bublé, and gold lists his
 professions --- the annotation query having traversed one relation too far.
 
@@ -842,7 +875,7 @@ power --- is confronted directly in \Cref{sec:ablations} rather than left implic
 
 \section{Hyperparameter Selection on the Development Set}\label{sec:hyperparams}
 
-\subsection{Development Set Construction and Coverage}
+\subsection{Development Set Construction and Coverage}\label{sec:dev-construction}
 
 The development set is $80$ questions mined from the train and validation splits
 of both benchmarks, selected to span hop counts and to include mediator-heavy and

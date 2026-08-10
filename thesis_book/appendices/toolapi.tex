@@ -25,27 +25,36 @@ determinism probes it is the only surviving per-question artifact.
 
 Resolves a surface form to graph entities. This is the only entry point from
 text to graph, and the only operation that consults an embedding. It delegates
-to the three-tier resolver of \Cref{sec:entity-resolution} and returns the tier
-that produced the hit, so that a downstream failure can be attributed to
-resolution rather than to navigation.
+to the three-stage resolver of \Cref{sec:entity-resolution} --- exact, lexical,
+vector --- and returns which stage produced the hit, so that a downstream
+failure can be attributed to resolution rather than to navigation.
+
+One naming collision has to be declared rather than tidied away. The returned
+JSON key is literally \textsf{tier}, and it takes the values $1$, $2$ and $3$
+for the three stages. \Cref{sec:groundedness-metric} reserves that word for the
+groundedness metric, and this is the sole exception: the key appears verbatim in
+every committed tool log and in the scripts that read them, so renaming it in
+this appendix would misdocument the artifacts. The two senses are unrelated ---
+a resolver stage is not a groundedness tier --- and the stage names are used
+everywhere the prose has a choice.
 
 \begin{lstlisting}[style=verbatimblock]
 search_entity(surface_form, k=5)
   -> [{id, name, score, tier}, ...]     up to k candidates
 
-Tier 1  exact:     MATCH (e:Entity {name:$m}) RETURN e.id, e.name
-Tier 2  lexical:   CALL db.index.fulltext.queryNodes('entity_name', $q)
+tier=1  exact:     MATCH (e:Entity {name:$m}) RETURN e.id, e.name
+tier=2  lexical:   CALL db.index.fulltext.queryNodes('entity_name', $q)
                      YIELD node, score
                    RETURN node.id, node.name, score LIMIT $k
-Tier 3  vector:    CALL db.index.vector.queryNodes('entity_embedding', $k, $v)
+tier=3  vector:    CALL db.index.vector.queryNodes('entity_embedding', $k, $v)
                      YIELD node, score
                    RETURN node.id, node.name, score
 \end{lstlisting}
 
-Tier 2 accepts its top hit only when the full-text score exceeds a threshold of
-$1.0$. Without that gate the index returns a ranked list for almost any input,
-including inputs with no correct answer in the graph, and tier 3 would never be
-reached.
+The lexical stage accepts its top hit only when the full-text score exceeds a
+threshold of $1.0$. Without that gate the index returns a ranked list for almost
+any input, including inputs with no correct answer in the graph, and the vector
+stage would never be reached.
 
 \section{get\_relations}\label{app:tool-relations}
 

@@ -9,6 +9,9 @@ from agr.runtime import get_driver
 
 HOP_CAP = 4
 
+# Written into the log so a consumer can tell which reading produced the rates.
+SEMANTICS = "tier1-semantics: any-topic-entity"
+
 exists_cache, reach_cache = {}, {}
 
 def entity_exists(s, name):
@@ -19,12 +22,34 @@ def entity_exists(s, name):
     return exists_cache[name]
 
 def reachable(s, name, topic_names):
+    """Is `name` within HOP_CAP hops of ANY of the question's topic entities?
+
+    Sec. 7.5.3 defines tier-1 grounding as connection to at least one topic
+    entity, and this used to test something stricter: a `WITH t, b LIMIT 1`
+    sat between the two MATCHes and cut the cartesian product to a single
+    arbitrary row, so both the topic set and the asserted entity's own name
+    matches collapsed to one node before the path search ever ran. On a
+    single-topic question the two readings coincide, which is why it survived;
+    204 of the 800 questions carry two or three topic entities, and on those
+    the test asked whether one arbitrary topic reached the answer.
+
+    The bias was one-directional -- a stricter test can only manufacture
+    ungrounded verdicts, never hide them -- so the 0.0% results were never at
+    risk, and 26 of the 274 ungrounded verdicts were exposed, 19 of them in CWQ
+    no-retrieval's 42. Rerunning under the corrected reading flipped none of
+    them: all 4,526 verdicts are unchanged, so every rate the thesis reports is
+    confirmed rather than corrected. The arbitrary topic node happened to reach
+    whatever the answer was reachable from. That is luck, not equivalence, and
+    it is why this reads the way Sec. 7.5.3 says it does.
+
+    Existence is all the caller needs, so this returns the first path found
+    rather than the shortest and lets Cypher stop there.
+    """
     key = (name, tuple(sorted(topic_names)))
     if key not in reach_cache:
         rec = s.run("""
             MATCH (b:Entity {name:$n})
             MATCH (t:Entity) WHERE t.name IN $ts AND t <> b
-            WITH t, b LIMIT 1
             MATCH p = shortestPath((t)-[*..""" + str(HOP_CAP) + """]-(b))
             RETURN length(p) AS h LIMIT 1""",
             n=name, ts=topic_names).single()
@@ -54,6 +79,11 @@ def main():
         "results/phase4/test_cwq_agr.jsonl",
     ]
 
+    # Stamped so the artifact records which reading of Sec. 7.5.3 produced it.
+    # A log without this line was written by the pre-fix query, which collapsed
+    # the topic set to one node; build_thesis_numbers.py flags that rather than
+    # quoting the rates as though the definitions matched.
+    print(f"# {SEMANTICS}")
     print(f"{'file':<38}{'asserted':<10}{'ungrounded':<12}{'ent-rate':<10}"
           f"{'q-answered':<11}{'q-any-ungr':<11}{'q-rate':<8}")
     

@@ -143,8 +143,28 @@ def parse_scores(path):
 
 
 def parse_tier1(path):
+    """Tier-1 rates, plus whether the log was written by the corrected query.
+
+    scripts/groundedness.py stamps its semantics into the log. A log without the
+    stamp came from the version whose `WITH t, b LIMIT 1` collapsed a question's
+    topic set to one arbitrary node, testing something stricter than Sec. 7.5.3
+    defines. That inflates baseline ungroundedness and cannot deflate it, so the
+    0.0% results stand either way -- but the baseline rates would be quoted from
+    a measurement the text does not describe, so the artifact says so instead of
+    letting the number pass as though it matched.
+    """
+    text = Path(path).read_text(encoding="utf-8")
     out = {}
-    for line in Path(path).read_text(encoding="utf-8").splitlines():
+    if "tier1-semantics: any-topic-entity" not in text:
+        out["_STALE"] = (
+            "This log predates the fix to scripts/groundedness.py and was "
+            "produced by a query that collapsed each question's topic set to "
+            "one arbitrary node, a stricter test than Sec. 7.5.3 defines. When "
+            "that fix was first applied the rerun flipped none of the 4,526 "
+            "verdicts, so an unstamped log most likely still holds the right "
+            "numbers -- but 'most likely' is not the standard this file exists "
+            "to meet. Rerun scripts/groundedness.py against a live database.")
+    for line in text.splitlines():
         m = TIER1.match(line.strip())
         if m:
             out[m.group(1)] = {
@@ -660,6 +680,10 @@ def main():
 
     OUT.write_text(json.dumps(doc, indent=1), encoding="utf-8")
     print(f"wrote {OUT}")
+    if "_STALE" in doc["groundedness_tier1_structural"]:
+        print("\n  *** tier-1 groundedness is STALE ***")
+        print("  " + doc["groundedness_tier1_structural"]["_STALE"])
+        print()
     print(f"  systems scored      : {len(main_rows)}")
     print(f"  ablation conditions : {len(abl_rows)}")
     print(f"  mcnemar comparisons : {len(main_mcnemar) + len(abl_mcnemar)}")
