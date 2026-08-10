@@ -654,19 +654,19 @@ numbers rather than one.
 
 \subsection{The Confirmed Defects}
 
-What adjudication did confirm is nonetheless substantial: $58$ questions across the
-two datasets where the benchmark, not the system, needed correcting. This is a
-different $58$ from the one above, which counted WebQSP flags alone; the
-collision is a coincidence, and it is named here because a section arguing that
-two numbers must be kept apart is the worst place to leave a numerical homograph
-unremarked. Two disjoint
-counts make that total --- $41$ excluded before the census read anything ($22$ +
-$19$), and $17$ more still visible in the census as \textsf{gold\_noise} or
-\textsf{ambiguous\_question} rows ($3$ WebQSP + $14$ CWQ). One question moved
-between those two sets rather than adding to them: \textsf{WebQTrn-64\_d8e43a02}
-began as a census row, was adjudicated a type mismatch between question and gold,
-and was promoted to a formal exclusion mid-project. It is counted once, inside
-the $41$, and it is why the census's own label file carries one dropped row.
+What adjudication did confirm is nonetheless substantial: $57$ questions across the
+two datasets where the benchmark, not the system, needed correcting. Two sets
+make that total, and they are \emph{not} disjoint, which is the whole reason the
+figure is $57$ rather than the $58$ an addition would give. There are $41$
+excluded before the census read anything ($22$ + $19$), and $17$ still visible in
+the merged census as \textsf{gold\_noise} or \textsf{ambiguous\_question} rows
+($3$ WebQSP + $14$ CWQ). \textsf{WebQTrn-64\_d8e43a02} is in both: it began as a
+census row, was adjudicated a type mismatch between question and gold, and was
+promoted to a formal exclusion mid-project, which is why the census's own label
+file carries one dropped row. Counting it once gives $41 + 17 - 1 = 57$ distinct
+questions. The number is a set union rather than a sum, and it is taken as one in
+\textsf{thesis\_numbers.json} so that the two component counts can move without
+the total drifting.
 
 Two specimens carry the point. \textsf{WebQTest-958} --- ``what are some famous
 people from el salvador'' --- has $116$ gold entities, one of them a raw Freebase
@@ -799,7 +799,14 @@ The backbone is not deterministic at the trajectory level even at temperature
 $0.0$ --- \Cref{sec:backbone} measures trajectory stability at $\approx 75\%$,
 so about one trajectory in four diverges on a rerun --- and a divergent
 trajectory can change an answer, a hedge, a token count and a call count at
-once. The margins this thesis defends are large relative to their intervals, and
+once. That $\approx 75\%$ is itself only partly auditable, and the limit is
+recorded rather than hidden: the qualification script wrote its per-question
+detail file in truncating mode, so only the first of the four rounds survives as
+a committed artifact and the remaining three exist as console tables in the
+project record. The pooled $9/12$ against $8/12$ therefore cannot be recomputed
+from this repository. A reader who declines to take those three rounds on trust
+should read the stability figure as unquantified rather than as $75\%$, which
+makes this threat larger, not smaller. The margins this thesis defends are large relative to their intervals, and
 the paired tests are computed per question rather than per aggregate, both of
 which make a rank reversal from decoding noise alone unlikely; but unlikely is
 the strongest available statement, because the experiment that would bound it

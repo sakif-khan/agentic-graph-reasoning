@@ -131,7 +131,7 @@ cp .env.example .env
 
 > **All four are mandatory, even for the offline tests.** `agr/env.py` validates
 > them at *import* time, and `tests/conftest.py` imports the runtime module, so
-> without a complete `.env` pytest fails during collection — including the seven
+> without a complete `.env` pytest fails during collection — including the eleven
 > tests that need neither Neo4j nor the API.
 
 ---
@@ -334,7 +334,7 @@ top of the file if you built a different graph.
 python -m pytest
 ```
 
-20 tests, all of which should pass on a complete install:
+24 tests, all of which should pass on a complete install:
 
 | Selection | Command | Needs |
 | --- | --- | --- |
@@ -343,10 +343,11 @@ python -m pytest
 | Integration only | `python -m pytest -m integration` | Neo4j running |
 
 The `integration` marker is declared in `pytest.ini` and covers the 13 tests
-that talk to Neo4j. The other 7 need no services: five pure unit tests over plan
-validation, budget accounting and Lucene escaping, plus two that read committed
+that talk to Neo4j. The other 11 need no services: five pure unit tests over plan
+validation, budget accounting and Lucene escaping; two that read committed
 artifacts to check the two Cohen's kappa implementations against each other and
-against the pre-registered bar.
+against the pre-registered bar; and four that check the question-identifier
+convention Chapter 9 states to the reader against the `.tex` sources.
 
 Two things worth knowing about the suite:
 

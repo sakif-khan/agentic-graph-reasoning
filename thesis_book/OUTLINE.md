@@ -632,14 +632,17 @@ share of questions the consensus pass* flagged, *and the much smaller share adju
 confirmed as genuine label defects. Most flagged items were not label errors — they were
 all five systems converging on the same wrong answer. That phenomenon is §9.7's; point
 there for it and keep this section to the defects proper.)*
-&nbsp;&nbsp;&nbsp;&nbsp;*The headline total:* **58 questions across
+&nbsp;&nbsp;&nbsp;&nbsp;*The headline total:* **57 questions across
 both datasets where the benchmark, not AGR, was the thing that needed correcting** — 41
-excluded by Stage C before the census read anything (22 + 19), plus 17 more still sitting in
-the active census as `gold_noise`/`ambiguous_question` rows (3 WebQSP + 14 CWQ). Two disjoint
-counts. `WebQTrn-64_d8e43a02…` began as a Stage D finding and was promoted to a formal Stage C
-exclusion mid-project — it *moved* between the two sets rather than forming a third, and it is
-already inside the 41 (`census_exclusions.json`, CWQ list; `labels_cwq_dropped.csv` is the row
-it vacated). Do not add it again: `synthesis.md` §4 says 59 and is wrong here. *Two exhibits earn their space:* `WebQTest-958`
+excluded by Stage C before the census read anything (22 + 19), plus 17 still sitting in
+the merged census as `gold_noise`/`ambiguous_question` rows (3 WebQSP + 14 CWQ). The two
+counts are **not** disjoint, which is why the total is 57 and not the 58 an addition gives.
+`WebQTrn-64_d8e43a02…` began as a Stage D finding and was promoted to a formal Stage C
+exclusion mid-project; it is inside the 41 (`census_exclusions.json`, CWQ list) *and* inside
+the 17, because `labels_cwq_dropped.csv` is merged into the census histogram — that is what
+keeps the histogram totals whole, and it is exactly what makes the sum wrong. Count identifiers,
+not totals: `thesis_numbers.json → benchmark_defects.distinct_questions` takes the union and the
+generator asserts it closes. (`synthesis.md` §4 says 59 and is wrong here.) *Two exhibits earn their space:* `WebQTest-958`
 *("what are some famous people from el salvador") with* **116 gold entities** *and raw
 Freebase MIDs leaked into the answer strings — a "list some famous X" template ballooning gold
 past any reachable match; and the* **Vicksburg pair**, *two sibling questions with the same

@@ -831,6 +831,18 @@ a realistic budget where beam search does not (\Cref{sec:tog-split}). The
 static graph baseline's per-stratum decay is not offered as evidence here,
 because its retrieval radius confounds it (\Cref{sec:graphrag-scope}).
 
+One further bound belongs with the headline rather than only with the baseline
+description. Think-on-Graph prunes to the widths of the algorithm as published,
+$40$ relations and $20$ neighbours against AGR's $300$ and $200$, which binds on
+roughly a third of its expansions and on almost none of AGR's
+(\Cref{sec:baseline-tog}). The agentic comparison is therefore against a
+systematically narrower baseline, and the margin should be read as a lower bound
+on what an equal-width reimplementation would show ---
+\Cref{sec:future-baselines} names the equal-width re-run as the way to close it.
+Nor is the baseline certified on the retrieval-echo diagnostic: its $0\%$ there
+is a null rather than a pass, because it logs no retrieved-fact sample for the
+diagnostic to read (\Cref{sec:baseline-constants}).
+
 \textbf{RQ2 --- what does pre-generation verification contribute beyond
 navigation?} The answer has three parts that a yes-or-no question would have
 merged, which is why it was not asked as one.

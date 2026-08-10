@@ -3,9 +3,12 @@
 This chapter specifies the Agentic Graph Reasoning framework: how the agent is
 structured, what operations it may perform on the graph, how it decides where to
 look next, how it recovers from wrong turns, and what guarantees bound its cost.
-The verification layer, which is the thesis's principal contribution, is
-separated into \Cref{ch:verification}; everything here is the machinery that
-produces the traversal it verifies.
+The verification layer is separated into \Cref{ch:verification}; everything here
+is the machinery that produces the traversal it verifies. That layer is the
+component this thesis set out to contribute, and \Cref{ch:results} measures its
+contribution as narrower than intended --- precision and auditability rather than
+accuracy --- so it is introduced here as one part of the architecture rather than
+as the part the rest exists to serve.
 
 \section{Architectural Overview}\label{sec:architecture}
 

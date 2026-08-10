@@ -358,15 +358,36 @@ because anything examined them. The slot is open.
 
 AGR's contribution is therefore positioned as follows.
 
-The \textbf{primary} contribution is the Structural Verification Layer: a
-claim-level check against traversed triples, executed before the answer is
-emitted, with repair policies that either resume exploration or remove
-unsupported content. \Cref{ch:verification} specifies it.
+The \textbf{first} contribution is the Structural Verification Layer together
+with a measurement of what it buys: a claim-level check against traversed
+triples, executed before the answer is emitted, with repair policies that either
+resume exploration or remove unsupported content. \Cref{ch:verification}
+specifies it. The measurement is part of the contribution rather than a caveat
+on it, because the answer is not the expected one. Removing the layer changes
+the correctness of two questions in $398$ (\Cref{sec:ablations}), and the zero
+structural-hallucination result is reached by the agentic baseline as well, which
+attributes it to graph navigation rather than to this layer
+(\Cref{sec:groundedness-results}). What the layer demonstrably provides is
+precision and an auditable answer contract, not accuracy. A component filling an
+open slot in the literature, specified, implemented, and then measured to be
+narrower than its designers expected, is a more useful result than the same
+component asserted to work.
 
-The \textbf{secondary} contribution is a systematic component ablation
+The \textbf{second} contribution is a systematic component ablation
 quantifying what each agentic mechanism actually contributes, in accuracy and in
 tokens. As \Cref{tab:mechanisms} shows, these mechanisms are typically reported
 as bundles; which of them earns its cost is not established in this literature.
+This is where the negative result above comes from, and it is also where the
+planner's stratum dependence appears.
+
+The \textbf{third} contribution is the controlled agentic comparison itself:
+guided search completing under a budget that clips beam search on $29\%$ and
+$44\%$ of questions (\Cref{sec:tog-split}), an accuracy profile that rises with
+hop count where every other system ends below where it started
+(\Cref{sec:hop-results}), and a full-population error census naming the
+characteristic failure of a graph-navigating system (\Cref{sec:echo}). On the
+evidence assembled here this is the most strongly supported of the three, and
+\Cref{sec:findings} reports it as such.
 
 A deliberate consequence of this positioning is that the thesis does not depend
 on beating prior systems on raw Hits@1. The comparison that matters is against

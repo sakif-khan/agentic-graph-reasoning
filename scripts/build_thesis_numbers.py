@@ -378,6 +378,43 @@ def ablation_backtrack_reasons():
     return out
 
 
+DEFECT_CATEGORIES = ("gold_noise", "ambiguous_question")
+
+
+def benchmark_defects(exclusions):
+    """Distinct questions where the benchmark, not the system, needed correcting.
+
+    Two sets carry this: the formal exclusions adjudicated before the census read
+    anything, and the rows still sitting in the merged census under a defect
+    category. They are nearly disjoint, and the thesis quoted their sum -- but
+    one question was promoted from a census row to a formal exclusion mid-project
+    and appears in both, so the sum double-counted exactly the question the
+    surrounding paragraph singles out as needing care. Counting identifiers
+    instead of adding two totals is the only way that stays right, so the union
+    is taken here and the overlap is reported rather than assumed to be empty.
+    """
+    ex = {q if isinstance(q, str) else q["qid"]
+          for v in exclusions.values() for q in v}
+    rows = {}
+    for name in ("labels_webqsp.csv", "labels_cwq.csv", "labels_cwq_dropped.csv",
+                 "ablations/noplanner_categories_webqsp.csv",
+                 "ablations/noplanner_categories_cwq.csv"):
+        path = P4 / name
+        if not path.exists():
+            continue
+        for r in csv.DictReader(open(path, encoding="utf-8")):
+            if r["category"] in DEFECT_CATEGORIES:
+                rows[r["qid"]] = r["category"]
+
+    both = ex & set(rows)
+    return {
+        "excluded_before_census": len(ex),
+        "census_rows_in_defect_categories": len(rows),
+        "counted_in_both": sorted(both),
+        "distinct_questions": len(ex | set(rows)),
+    }
+
+
 def parse_census(path):
     """Stage E histogram: {dataset: {wrong|hedge: {category: count}}}."""
     out, ds, kind = {}, None, None
@@ -641,6 +678,17 @@ def main():
             "_note": "adjudicated gold-defect exclusions, per dataset",
             **{ds: len(v) for ds, v in exclusions.items()},
         },
+        "benchmark_defects": {
+            "_source": ("results/phase4/census_exclusions.json + "
+                        "labels_{webqsp,cwq}.csv + labels_cwq_dropped.csv + "
+                        "ablations/noplanner_categories_{webqsp,cwq}.csv"),
+            "_note": ("Distinct questions where the benchmark needed "
+                      "correcting, which is what the abstract and conclusion "
+                      "quote. Take distinct_questions, NOT the sum of the two "
+                      "component counts: one question sits in both and adding "
+                      "them counts it twice. See sec:benchmark-defects."),
+            **benchmark_defects(exclusions),
+        },
         "candidate_caps": {
             "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}_tools.jsonl",
             "_note": ("How often each system's candidate-set cap truncated, "
@@ -678,6 +726,15 @@ def main():
     assert cwq["_systems_ending_below_h1"] == others, (
         f"the same sentence says every other CWQ system ends below its h1; "
         f"those that do are now {cwq['_systems_ending_below_h1']}, not {others}")
+
+    # The abstract quotes the benchmark-defect total, and it was quoted as the
+    # sum of the two component counts, which double-counts the one question that
+    # appears in both. Fail here rather than let the sum look like the answer.
+    bd = doc["benchmark_defects"]
+    assert (bd["distinct_questions"]
+            == bd["excluded_before_census"]
+            + bd["census_rows_in_defect_categories"]
+            - len(bd["counted_in_both"])), "benchmark-defect union does not close"
 
     OUT.write_text(json.dumps(doc, indent=1), encoding="utf-8")
     print(f"wrote {OUT}")

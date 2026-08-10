@@ -225,9 +225,18 @@ We present Agentic Graph Reasoning (AGR), a knowledge-graph question-answering
 framework built as an explicit state machine over a constrained, deterministic
 graph tool API. It carries a \emph{Structural Verification Layer} that decomposes
 the draft answer into atomic claims and checks each one against the traversed
-subgraph before the system emits anything. Unsupported claims trigger targeted
-re-exploration, or drop out of the answer, and AGR returns what survives paired
-with its supporting triples.
+subgraph before the system emits anything. Where a claim is unsupported the
+design routes to targeted re-exploration or drops the claim from the answer, and
+AGR returns what survives paired with its supporting triples.
+
+Both repair routes are specified, implemented and reported at their measured
+frequency rather than their intended one, which is low: the re-exploration route
+never fired on the development set, because the depth budget is exhausted by the
+time the verifier is reached, and the entity filter ran on three of eighty
+questions (\Cref{ch:verification}). On the vast majority of questions the layer
+is a pass-through that certifies a draft at no extra model call. That is a
+finding about when verification can act rather than a defect in it, and
+\Cref{sec:findings} treats it as one.
 
 \subsection{A Component-Level Ablation of Agentic Mechanisms}
 
@@ -305,8 +314,9 @@ environment, including the answer-reachability gate that bounds the accuracy
 attainable in it. \Cref{ch:framework} specifies the AGR framework: the tool API,
 the state machine, the planner, the scoring function, the backtracking policy,
 and the budgets that guarantee termination. \Cref{ch:verification} treats the
-Structural Verification Layer in detail, as the thesis's principal architectural
-contribution.
+Structural Verification Layer in detail: the component this work set out to
+contribute, and the one whose measured effect turns out to be the narrowest of
+the three reported in \Cref{sec:findings}.
 
 \Cref{ch:setup} sets out the experimental design: test sets, baselines, metrics,
 judge validation, gold-answer quality control, and the pre-registration policy.

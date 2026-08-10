@@ -151,7 +151,7 @@ follow explain each test and the reason for their order.
         \STATE $S \gets S \cup \{c\}$;\quad
           $E \gets E \cup \{\,\theta \in T : \{\theta_h,\theta_t\} =
           \{\mu[h],\mu[t]\}\,\}$
-      \ELSIF{$\textsc{VerifyConnection}(\mu[h], \mu[t])$}
+      \ELSIF{$\textsf{verify\_connection}(\mu[h], \mu[t])$}
         \STATE $S \gets S \cup \{c\}$ \COMMENT{no evidence recorded}
       \ELSE
         \STATE $P \gets P \cup \{c\}$
@@ -227,10 +227,11 @@ On the development set the second route was consulted five times, across five
 distinct questions --- four per cent of the 121 claims. All five returned
 connected, and all five had a mediator path; in three of them there was no
 direct edge at all, so a mediator-blind adjacency test would have rejected them.
-Two were direct edges the traversal had simply never walked. Query latency ranged
-from 1.9 to 75.7\,ms. The route is therefore cheap and, on this evidence,
-correct --- but it is also rare, and the structural check is in practice
-overwhelmingly the traversed-adjacency test.
+Two were direct edges the traversal had simply never walked. Query latency across
+those same five calls ranged from 1.9 to 75.7\,ms, which with $n = 5$ is a record
+of what happened rather than a latency distribution. The route is therefore
+cheap and, on this evidence, correct --- but it is also rare, and the structural
+check is in practice overwhelmingly the traversed-adjacency test.
 
 \subsection{The Entailment Check}\label{sec:entailment-check}
 
@@ -524,7 +525,9 @@ supporting triples at all. Ten of those asserted no claims --- they are hedges,
 and zero is the honest number. Of the remaining three, one had every claim
 rejected, so there was nothing to record; the other two had their single claim
 certified by \textsf{verify\_connection}, which records no evidence. Across all
-80 records the median count is 3 and the mean 4.1, with a maximum of 16.
+80 records the median is 3 and the mean 4.1, with a maximum of 16 --- read from
+the persisted \textsf{n\_supporting\_triples} counter, since the triples
+themselves are exactly what the log does not keep.
 
 Two instrumentation defects in this area are recorded rather than quietly fixed,
 in keeping with the standing rule adopted in \Cref{sec:design-validation}.
