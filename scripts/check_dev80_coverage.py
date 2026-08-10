@@ -14,13 +14,18 @@ def main():
                 continue
             per_gold = {}
             for answer in question["answers"]:
+                # Reachability is from ANY topic entity, per Sec. 7.5.3. This
+                # had the same `WITH b, t LIMIT 1` collapse as gold_coverage in
+                # build_testsets.py; the report was 77/77 fully reachable under
+                # the stricter reading, and a stricter test cannot hide
+                # reachability, so nothing here moves either way.
                 rec = session.run("""
                     MATCH (b:Entity {name: $a})
-                    OPTIONAL MATCH (t:Entity) WHERE t.name IN $qs AND t <> b
-                    WITH b, t LIMIT 1
                     RETURN b IS NOT NULL AS exists,
-                           t IS NOT NULL AND
-                           EXISTS { MATCH shortestPath((t)-[*..4]-(b)) } AS reachable
+                           EXISTS {
+                               MATCH (t:Entity) WHERE t.name IN $qs AND t <> b
+                               MATCH shortestPath((t)-[*..4]-(b))
+                           } AS reachable
                     """, a=answer, qs=question["gold_q_entities"]).single()
                 per_gold[answer] = {"exists": rec["exists"],
                                "reachable": rec["reachable"]}

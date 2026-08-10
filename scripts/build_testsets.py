@@ -28,16 +28,31 @@ def classify(session, q_names, a_names):
 
 
 def gold_coverage(session, q_names, a_names):
+    """Per-gold-answer existence and reachability from ANY topic entity.
+
+    This carried a `WITH b, t LIMIT 1` that cut the topic set to one arbitrary
+    node before the path search, the same defect fixed in scripts/groundedness.py
+    and for the same reason: it tested something stricter than Sec. 7.5.3
+    defines. It never changed a committed number -- half the CWQ sample is
+    multi-topic, but only a question already below full coverage could move, and
+    re-running both readings on the two candidates left them at 2/3 and 0/1. The
+    ceilings this feeds, 97.0% and 99.2%, were independently corroborated anyway,
+    because classify() below never had the collapse and build_thesis_numbers.py
+    asserts the two agree question by question.
+
+    It is corrected because this is the one place a legitimate regeneration
+    would quietly reinstate the stricter reading, and because the definition
+    should live in one form rather than two.
+    """
     per = {}
     for a in a_names:
         rec = session.run("""
             OPTIONAL MATCH (b:Entity {name:$a})
-            OPTIONAL MATCH (t:Entity) WHERE t.name IN $qs AND (b IS NULL OR t <> b)
-            WITH b, t LIMIT 1
             RETURN b IS NOT NULL AS ex,
-                   b IS NOT NULL AND t IS NOT NULL AND
-                   EXISTS { MATCH shortestPath((t)-[*..""" + str(HOP_CAP) + """]-(b)) }
-                   AS reach""", a=a, qs=q_names).single()
+                   b IS NOT NULL AND EXISTS {
+                       MATCH (t:Entity) WHERE t.name IN $qs AND t <> b
+                       MATCH shortestPath((t)-[*..""" + str(HOP_CAP) + """]-(b))
+                   } AS reach""", a=a, qs=q_names).single()
         per[a] = {"exists": rec["ex"], "reachable": rec["reach"]}
     return per
 
