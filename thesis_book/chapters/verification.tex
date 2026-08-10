@@ -4,11 +4,15 @@
 traversed triples and a set of accumulated candidate entities. Nothing in that
 loop constrains what the final answer text \emph{asserts}. This chapter
 specifies the layer that does, together with the repair, filtering, and
-evidence-reporting policies built on it. Every quantity reported here is
-recomputed from the archived development-set run at the frozen configuration
-($\alpha = 0.7$, $\tau = 0.20$, \textsf{verify\_claims} = true, $n = 80$), and
-where a behaviour is established on a handful of questions rather than a
-distribution, the count is given in the sentence that makes the claim.
+evidence-reporting policies built on it. Except where a sentence names the test
+sets explicitly, every quantity reported here is recomputed from the archived
+development-set run at the frozen configuration ($\alpha = 0.7$, $\tau = 0.20$,
+\textsf{verify\_claims} = true, $n = 80$), and where a behaviour is established
+on a handful of questions rather than a distribution, the count is given in the
+sentence that makes the claim. The exceptions are in \Cref{sec:repair}, where
+what the development set showed and what the $800$ test questions show are not
+the same thing, and reporting only the first would leave this chapter
+contradicting \Cref{ch:erroranalysis}.
 
 \section{Motivation: Verifying Before Emitting, Not
   After}\label{sec:verify-motivation}
@@ -307,18 +311,30 @@ lives, so each retry silently granted one expansion beyond budget. Since
 \Cref{sec:budgets} claims budgets are hard guarantees, the hole was closed in the
 router rather than documented as an exception.
 
-That condition turns out to be decisive, and the honest statement of what this
-route contributed is that \textbf{it never executed}. On all three development
-questions that produced an unsupported claim, the depth budget was already
-exhausted when the verifier ran, so the router took \textsf{give\_up} in every
-case and no repair exploration occurred. This is not a coincidence of small
-numbers so much as a structural correlation --- the verifier is reached either
-because the plan completed or because a budget ran out, and all three firings
-came from the fourteen questions that exhausted depth, none from the
-sixty-six that finished with search budget in hand. With $n = 3$ that is an
-observation and not a finding, but it means the targeted re-exploration
-described above is specified and unit-tested rather than empirically
-characterised, and no claim in this thesis depends on it.
+That condition turns out to be decisive on the development set, where
+\textbf{the route never executed}. On all three development questions that
+produced an unsupported claim, the depth budget was already exhausted when the
+verifier ran, so the router took \textsf{give\_up} in every case and no repair
+exploration occurred. This is not a coincidence of small numbers so much as a
+structural correlation --- the verifier is reached either because the plan
+completed or because a budget ran out, and all three firings came from the
+fourteen questions that exhausted depth, none from the sixty-six that finished
+with search budget in hand.
+
+\textbf{That correlation does not survive the move to test, and the route
+executes there.} Across the $800$ test questions the verifier asks for a repair
+on $52$ --- $16$ on WebQSP and $36$ on CWQ --- and exploration actually resumes
+on $28$ of them, $10$ and $18$ respectively. So the development observation was
+about a sample of three, and generalising it would have been wrong: the depth
+condition blocks the retry about half the time rather than always. What this
+chapter cannot answer is whether the route \emph{helps}, and the census answers
+that in the direction the design did not intend ---
+\Cref{sec:verifier-errors} reads four of the five wrongly-rejected specimens as
+retries that ran and lost the answer, which is where the recall cost
+\Cref{sec:verification-tradeoff} attributes to this layer is actually paid. What
+the development set establishes is therefore narrower than it looked: that the
+route contributed nothing \emph{there}, not that nothing in this thesis depends
+on it.
 
 One instrumentation consequence follows, and matters when reading run records.
 The verifier increments \textsf{verify\_iters} and appends the repair objective
@@ -343,6 +359,9 @@ the layer.
 Repair is capped at two iterations, which together with the depth and time
 conditions guarantees the verify--explore cycle terminates. On the development
 set the cap was never reached, for the reason just given: the cycle never began.
+On test it binds on $15$ questions --- $4$ on WebQSP and $11$ on CWQ --- which
+is the cap doing the job it was specified for rather than sitting unused, and it
+is the second place where the development set understated this route.
 
 The grounded path costs nothing. When no claim is unsupported the answerer emits
 the draft verbatim with no further model call --- 77 of 80 development questions
@@ -390,7 +409,7 @@ the two runs were diffed per question. Exactly three questions differed.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{The complete attribution census: every development-set question
+    \caption[The complete attribution census]{The complete attribution census: every development-set question
       whose answer differed between claim checking and its ablation, at
       $\alpha = 0.7$, $\tau = 0.20$. Three questions, one run per condition.
       ``Pre-fix'' is the original design in which the rewrite call regenerated

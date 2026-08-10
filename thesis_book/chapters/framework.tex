@@ -34,7 +34,13 @@ consequences follow:
     prompt asking the model to stop after four hops is a suggestion. A counter
     checked in a router is a guarantee (\Cref{sec:budgets}).
   \item \textbf{Failures are reproducible.} A malformed model response degrades
-    a decision; it cannot corrupt the control flow.
+    a decision; it cannot corrupt the control flow. Every call goes through one
+    wrapper that parses the response as JSON and, if that fails, spends a second
+    metered call asking the model to repair its own output. Each per-node
+    statement below of the form ``makes one model call'' is therefore the normal
+    case rather than a bound, and the second call is charged to the budget like
+    any other, so the call counts of \Cref{sec:efficiency} already contain
+    whatever repairs occurred.
   \item \textbf{Each model call is small, single-purpose, and cacheable}, which
     is what makes the response cache of \Cref{sec:instrumentation} viable.
 \end{itemize}
@@ -169,7 +175,7 @@ table says so.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{The graph tool API. All operations are deterministic
+    \caption[The graph tool API]{The graph tool API. All operations are deterministic
       parameterised Cypher; none consults an embedding except
       \textsf{search\_entity}, which delegates to the resolver of
       \Cref{sec:entity-resolution}.}
@@ -272,7 +278,7 @@ The state is a typed dictionary threaded through every node.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{The agent state. Fields marked \emph{append-only} accumulate across
+    \caption[The agent state]{The agent state. Fields marked \emph{append-only} accumulate across
       node executions through reducers; all others are overwritten by whichever
       node returns them.}
     \label{tab:state}
@@ -573,10 +579,13 @@ deliberately conservative: it abandons a branch only on unanimous evidence of
 hopelessness, and \Cref{sec:dev-tuning} shows the consequence, which is that
 $\tau$ barely fires at the values swept.
 
-\textbf{The implementation departs from that formula in two places, and both are
-recorded rather than repaired}, under the standing rule of
-\Cref{sec:design-validation}. Repairing them would change the frozen results
-this thesis reports, which is a larger claim than either defect warrants.
+\textbf{The implementation departs from what this section specifies in three
+places, and all three are recorded rather than repaired}, under the standing
+rule of \Cref{sec:design-validation}. Repairing them would change the frozen
+results this thesis reports, which is a larger claim than any of the three
+warrants. The first two concern the $\sigma$ formula above; the third, which
+comes with the backtracker below, concerns the ban list and is the only one of
+the three whose effect is visible in the run records.
 
 \emph{First, $\sigma = 0$ is read as ``no signal recorded''.} The comparison is
 written so that a missing signal defaults to a value above any usable $\tau$,
@@ -593,7 +602,13 @@ the behaviour to be correct.
 \emph{Second, at $\alpha \geq 1$ only the first term is computed.} The scorer
 takes an early return when the model term is disabled, and the two auxiliary
 maxima are never recorded, so $\sigma$ collapses to the blended maximum over
-expanded edges. Since $\alpha = 1$ makes the blend the embedding score, the
+expanded edges. The same early return is taken whenever the candidate list is
+empty, and there the consequence is worse than a collapse: the maxima are not
+merely unrecorded but \emph{stale}, left holding the previous pass's values,
+because they are stored on a scorer instance shared across the question. The
+practical reach is again narrow --- an empty candidate list trips the dead-end
+trigger, which is evaluated first --- and the masking is again the order of the
+triggers rather than anything about the values. Since $\alpha = 1$ makes the blend the embedding score, the
 effect is not that $\sigma$ is measured on a different scale but that it is
 measured over a \emph{smaller set}: the beam-selected, non-banned edges rather
 than every candidate the anchors offered. After a backtrack has banned the best
@@ -609,8 +624,8 @@ frontier is abandoned without an argument about it.
 The backtracker does three things. It pops the \emph{highest-scoring} snapshot
 from the stack --- not the most recent one, which would make backtracking a
 simple undo. It restores that snapshot's anchors and depth. And, critically, it
-adds every \textsf{(anchor, relation, direction)} triple expanded since that
-snapshot to a \textbf{ban list} that the explorer consults on its next pass.
+adds \textsf{(anchor, relation, direction)} triples to a \textbf{ban list} that
+the explorer consults on its next pass.
 
 The ban list is what makes backtracking a search operation rather than a loop.
 Without it, restoring a frontier is pointless: a deterministic scorer facing an
@@ -619,6 +634,33 @@ identical decision to backtrack, until the backtrack budget is exhausted. With
 it, a backtrack forces the scorer to its next-best alternatives, which is what
 ``exploring an alternative branch'' actually requires.
 \Cref{sec:design-validation} shows both behaviours in the logs.
+
+\emph{Third, the ban list is narrower than the jump it has to cover, and this is
+the deviation with a measurable consequence.} What the backtracker bans is the
+\emph{most recent} explorer pass. What it restores is the \emph{highest-scoring}
+snapshot, which is frequently older than that pass. Everything expanded between
+the restored snapshot and the current one therefore stays unbanned, and on
+exactly those backtracks the argument of the preceding paragraph does not hold:
+the explorer can be handed back a frontier with all of its previously selected
+edges still available. It then re-selects them, because the scorer is
+deterministic. Over the main matrix, $53$ explorer passes --- $15$ on WebQSP and
+$38$ on CWQ --- expanded an \textsf{(anchor, relation)} set identical to one the
+same question had already expanded, which is the repetition the ban list exists
+to prevent, occurring anyway. The misalignment that produces it is visible in at
+least $65$ of the $262$ backtracks, where the restored depth is not the depth
+the most recent snapshot carried, so the popped snapshot provably was not the
+most recent one.\footnote{A lower bound rather than a count. Identifying the
+popped snapshot exactly would need the scores, which the trace does not carry;
+depth it does carry, and the depth series reconstructs exactly against the
+budget snapshot on all $800$ records. A pop that restores an older snapshot
+sitting at the same depth is indistinguishable from a most-recent pop and is
+counted as one here.}
+
+The unit test that should have caught this compares the first expansion set
+against the second, so it is structurally incapable of observing a gap that
+opens only when the stack is popped out of order. Naming that is part of
+recording the deviation: the test passes, and what it establishes is narrower
+than its name suggests.
 
 \subsection{Routing}
 
@@ -651,7 +693,14 @@ is an explicit failure string.
 
 That last distinction is deliberate. An earlier version caught all exceptions as
 budget exhaustion, which silently misreported genuine errors as expected
-behaviour --- exactly the kind of defect that inflates apparent robustness.
+behaviour --- exactly the kind of defect that inflates apparent robustness. What
+now carries the distinction is the recorded exception rather than the handler:
+the handler catches \textsf{(BudgetExhausted, Exception)}, whose first arm is
+unreachable, since the former subclasses the latter. It is the trace entry, which
+stores the exception itself, that tells the two apart. Whether it does so
+correctly is untested by anything in this work: across all $6{,}960$ committed
+runs no handler of this kind fired even once, so every degraded path described in
+this section is specified and never exercised.
 
 \section{Budgets and Termination Guarantees}\label{sec:budgets}
 
@@ -662,7 +711,7 @@ them.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Budget configuration, and the two tool-layer caps that bound
+    \caption[Budget configuration and the two tool-layer caps]{Budget configuration, and the two tool-layer caps that bound
       retrieval alongside it. The rows above the rule are the budget proper: they
       are hashed and the hash is recorded in every run record, so results can
       always be attributed to the configuration that produced them. The two rows
@@ -782,6 +831,20 @@ interval between those numbers is not incidental tuning; it is where several of
 the mechanisms described above were shown to be necessary, and it is documented
 here because each fix is evidence that a component earns its place.
 
+\textbf{This section is the one place in the thesis whose evidence is not fully
+archived, and the reader should treat it accordingly.} What survives is one
+smoke-set record file, \textsf{results/phase3/smoke20\_a0.5\_t0.2.jsonl}, which
+scores thirteen correct, six hedged and one wrong --- the lower end of the
+after-state quoted above, at $\alpha = 0.5$ rather than the frozen $0.7$, since
+it was written during the sweep. What does not survive is the before-state: the
+first run was read from a console log and never committed, so the three-to-four
+figure and the root causes of \Cref{tab:rootcauses} rest on that reading
+alone and cannot be recomputed. Neither number enters any result, which is why
+the omission was tolerable, and the ranges are given as ranges for the same
+reason. It is stated here rather than left to be discovered because every other
+provenance gap in this thesis is flagged where it occurs, and an unflagged one
+reads as an oversight rather than a limit.
+
 The smoke set was constructed to exercise specific machinery rather than
 to sample the benchmark distribution: six single-hop questions, eight two-hop
 compositions, three conjunctions, two whose shortest path traverses a mediator,
@@ -798,7 +861,7 @@ failures collapsed into just five systematic causes, summarised in
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Root causes of failure in the first end-to-end run, and the
+    \caption[Root causes of failure in the first end-to-end run]{Root causes of failure in the first end-to-end run, and the
       mechanism each one motivated. Every fix is described in the section
       indicated.}
     \label{tab:rootcauses}

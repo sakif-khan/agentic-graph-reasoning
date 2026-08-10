@@ -25,10 +25,14 @@
   "_note": "shape of the gold answer sets in the evaluated splits. gold_median is 1.5 on WebQSP: exactly half the questions carry a single gold answer, and the mean is dragged up by a long tail. reachable_pct is the ceiling over these 400 questions and is the bound on every Hits@1 reported in Chapter 8; environment_coverage carries the full-split figure, which is a different population, not a revision.",
   "webqsp": {
    "n_questions": 400,
-   "gold_mean": 7.98,
+   "gold_mean": 7.15,
    "gold_median": 1.5,
-   "gold_max": 382,
+   "gold_max": 237,
    "questions_with_one_gold": 200,
+   "gold_mean_raw_with_repeats": 7.98,
+   "gold_mean_scored": 7.01,
+   "gold_max_scored": 210,
+   "questions_with_repeated_gold": 4,
    "strata": {
     "h1": 256,
     "h2": 128,
@@ -40,10 +44,14 @@
   },
   "cwq": {
    "n_questions": 400,
-   "gold_mean": 1.78,
+   "gold_mean": 1.75,
    "gold_median": 1.0,
    "gold_max": 19,
-   "questions_with_one_gold": 308,
+   "questions_with_one_gold": 313,
+   "gold_mean_raw_with_repeats": 1.78,
+   "gold_mean_scored": 1.75,
+   "gold_max_scored": 19,
+   "questions_with_repeated_gold": 6,
    "strata": {
     "h1": 137,
     "h2": 211,
@@ -1497,6 +1505,72 @@
    "WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27"
   ],
   "distinct_questions": 57
+ },
+ "verifier_route": {
+  "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
+  "_note": "The verify--repair cycle on test. Four different units live here and none implies another: firings (verifier_invocations), questions asking for a repair (verify_iters_ge_1), questions where exploration actually resumed (explorer_reentered), and questions by verdict. Chapter 6 characterises this route on the development set only. See sec:repair, sec:verifier-errors.",
+  "webqsp": {
+   "n_questions": 400,
+   "verifier_invocations": 410,
+   "verify_iters_ge_1": 16,
+   "explorer_reentered": 10,
+   "cap_reached": 4,
+   "first_verdict_unsupported": 16,
+   "first_verdict_grounded": 384,
+   "final_verdict_unsupported": 10,
+   "final_verdict_grounded": 390,
+   "repaired_to_grounded": 6
+  },
+  "cwq": {
+   "n_questions": 400,
+   "verifier_invocations": 418,
+   "verify_iters_ge_1": 36,
+   "explorer_reentered": 18,
+   "cap_reached": 11,
+   "first_verdict_unsupported": 36,
+   "first_verdict_grounded": 364,
+   "final_verdict_unsupported": 29,
+   "final_verdict_grounded": 371,
+   "repaired_to_grounded": 7
+  },
+  "total": {
+   "n_questions": 800,
+   "verifier_invocations": 828,
+   "verify_iters_ge_1": 52,
+   "explorer_reentered": 28,
+   "cap_reached": 15,
+   "first_verdict_unsupported": 52,
+   "first_verdict_grounded": 748,
+   "final_verdict_unsupported": 39,
+   "final_verdict_grounded": 761,
+   "repaired_to_grounded": 13
+  }
+ },
+ "backtrack_ban_scope": {
+  "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
+  "_note": "The third recorded deviation of sec:backtracking: the ban list covers the most recent expansion, the backtracker pops the highest-scoring snapshot. repeat_expansion_passes is exact; pops_below_stack_top is a lower bound (see the docstring). Both are read from the trace, neither from a rerun.",
+  "webqsp": {
+   "backtracks": 63,
+   "pops_below_stack_top": 15,
+   "repeat_expansion_passes": 15
+  },
+  "cwq": {
+   "backtracks": 199,
+   "pops_below_stack_top": 50,
+   "repeat_expansion_passes": 38
+  },
+  "total": {
+   "backtracks": 262,
+   "pops_below_stack_top": 65,
+   "repeat_expansion_passes": 53
+  }
+ },
+ "run_records": {
+  "_source": "results/phase3/*.jsonl + results/phase4/**/*.jsonl",
+  "_note": "Every committed agent run in the two phases the thesis reports, tool sidecars excluded. Backs the reasoning_tokens claim in sec:instrumentation and app:implementation, which was quoted over the phase-4 subset while reading as if it covered all of them.",
+  "n_files": 36,
+  "n_records": 6960,
+  "records_with_nonzero_reasoning_tokens": 0
  },
  "candidate_caps": {
   "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}_tools.jsonl",

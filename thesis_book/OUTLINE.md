@@ -24,11 +24,18 @@ the thesis chapter by chapter before opening the future-work discussion.
 
 ## Numbers
 
-Every figure the thesis states comes from `results/phase4/thesis_numbers.json`, generated
+Every figure Chapters 7–9 state comes from `results/phase4/thesis_numbers.json`, generated
 by `scripts/build_thesis_numbers.py` from the scoring, groundedness, judge, and census
 artifacts. Numbers are not transcribed from the logs by hand, and that file is regenerated
 rather than edited. Each block records the artifact it was parsed from, so a rerun that
 changes a value identifies the sentences depending on it.
+
+Chapters 5 and 6 are development-set chapters and sit outside that scope: they quote the
+archived dev-set run and the smoke run directly, and §5.10 is the one section in the book
+with no committed artifact behind its before-state — which the section now says in the
+text rather than leaving to be found. Where those two chapters state a **test-set** figure
+they go through `thesis_numbers.json` like everything else: §5.6.3 reads
+`backtrack_ban_scope` and §6.4 reads `verifier_route`.
 
 ## Terminology discipline
 
@@ -39,8 +46,10 @@ named differently wherever they appear:
 - The verification layer's two checks (§6.3) are the **structural check** and the
   **entailment check** — never "Tier 1 / Tier 2".
 - The entity resolver's three-stage cascade (§4.6) is **exact / lexical / vector**
-  matching — never "Tier 1 / Tier 2 / Tier 3", despite the identifiers used in
-  `scripts/entity_resolver.py`.
+  matching — never "Tier 1 / Tier 2 / Tier 3", despite the `tier` identifier used in
+  `agr/resolver.py` and surfaced to the agent through `agr/kg_tools.py`
+  (`scripts/entity_resolver.py` carries the same name in the analysis script).
+  Appendix B declares the collision; this note is about the prose.
 
 Verifier errors are described as **wrongly rejected** / **wrongly accepted** throughout
 (§6.8, §9.5), never as `verifier_fn` / `verifier_fp`.
@@ -613,13 +622,16 @@ structural grounding is a claim about edge existence, not about answer adequacy.
 &nbsp;&nbsp;&nbsp;&nbsp;9.5.4 Rate for One Polarity, and a Blank for the Other
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(Aggregate counts are the
 `verifier.grounded` / `verifier.unsupported` columns of `score_run_phase4.csv`; per-record
-outcomes are the `verifier_outcome` field of `results/phase4/test_{ds}_agr.jsonl`. AGR
-fires* unsupported *on 16/400 WebQSP and 36/400 CWQ, against 384 and 364 grounded. The
-wrongly-rejected specimens are drawn from those 52 firings, so that polarity has a
-denominator. Wrongly-accepted cases have* no logged population at all *— they sit
-undifferentiated inside the 748 grounded outcomes, because accepted claims are never
-persisted (§9.9.3). Report a rate for rejection and an explicit blank for acceptance;
-do not average them into a single "verifier error rate".)*
+outcomes are the `verifier_outcome` field of `results/phase4/test_{ds}_agr.jsonl` — which
+holds the* first *verdict, not the final one, so a repaired question reads* unsupported
+*there. Take the units from `thesis_numbers.json → verifier_route`, which separates all
+four: 828 firings, 52 questions whose first verdict was* unsupported *(16/400 WebQSP,
+36/400 CWQ), 13 of those repaired to* grounded*, and 761 questions answered under a
+grounded verdict. The wrongly-rejected specimens are drawn from the 52 questions, so that
+polarity has a denominator in the question unit. Wrongly-accepted cases have* no logged
+population at all *— they sit undifferentiated inside the 761, because accepted claims are
+never persisted (§9.9.3). Report a rate for rejection and an explicit blank for
+acceptance; do not average them into a single "verifier error rate".)*
 
 9.6 Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and Ordinals
 &nbsp;&nbsp;&nbsp;&nbsp;*(invokes the unanswerable-in-environment class defined in §4.7.4)*
@@ -753,40 +765,40 @@ wrongful-acceptance class from anecdote to rate)*
 | 2 Background and Preliminaries | 5 | 6 | 6 |
 | 3 Related Work | 7 | 8 | 8 |
 | 4 The Knowledge Environment | 10 | 9 | 10 |
-| 5 The AGR Framework | 11 | 13 | 16 |
-| 6 The Structural Verification Layer | 8 | 13 | 14 |
-| 7 Experimental Setup | 11 | 15 | 19 |
+| 5 The AGR Framework | 11 | 13 | 17 |
+| 6 The Structural Verification Layer | 8 | 13 | 15 |
+| 7 Experimental Setup | 11 | 15 | 20 |
 | 8 Results | 12 | 12 | 17 |
-| 9 Error Analysis and Discussion | 10 | 15 | 18 |
+| 9 Error Analysis and Discussion | 10 | 15 | 19 |
 | 10 Conclusion | 5 | 6 | 8 |
-| **Body total** | **87** | **104** | **124** |
+| **Body total** | **87** | **104** | **128** |
 | References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
 
-**The body is 124 pages against a 60–90 target — 38% over the 90 ceiling.** Body runs pages 1–124;
-References begin on 125; the document is 177 pages including front matter and five
+**The body is 128 pages against a 60–90 target — 42% over the 90 ceiling.** Body runs pages 1–128;
+References begin on 129; the document is 180 pages including front matter and five
 appendices.
 
 The decision to cross the ceiling was taken at 104 pages and recorded so it would not
 be revisited by accident: *cross the ceiling if needed.* That decision was made
-against a smaller number. The 20 pages added since fall in Chapter 8 (+5), Chapter 7
-(+4), Chapter 5 (+3), Chapters 9 and 10 (+3 and +2), and one page each in 1, 4 and 6
-— corrections, scoping notes and disclosure statements added in review, not new
-material. **Re-confirm before submission whether the department enforces a hard cap.**
-If it does, the compression targets are unchanged: Chapters 2 and 3 first, never
-Chapter 9.
+against a smaller number. The 24 pages added since fall in Chapter 7 (+5), Chapter 5
+(+4), Chapters 8 and 9 (+5 and +4), Chapters 6 and 10 (+2 each), and one page each in
+1 and 4 — corrections, scoping notes and disclosure statements added in review, not
+new material. **Re-confirm before submission whether the department enforces a hard
+cap.** If it does, the compression targets are unchanged: Chapters 2 and 3 first,
+never Chapter 9.
 
-Where the 37 pages over budget went, and why each is defensible if questioned.
+Where the 41 pages over budget went, and why each is defensible if questioned.
 The `r1` column is the round-1 overrun measured at 104 pages; `now` is measured at
-124. The difference between the two columns is review work — corrections, scoping
+128. The difference between the two columns is review work — corrections, scoping
 notes, and baseline-configuration disclosures — not new material.
 
 | Chapter | r1 | now | Reason |
 | --- | ---: | ---: | --- |
-| 9 Error Analysis | +5 | **+8** | The census is a population of 259, not a sample; three named mechanism findings, three counted defect families, the benchmark-defect provenance argument. Grew by the union-of-subgraphs and name-keying threats, the Phoenician case, and the corrected 58-question exclusion arithmetic. |
-| 7 Setup | +4 | **+8** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note, the hedge-counting convention, the two baseline candidate-width disclosures (§7.4.3 fanout cap, §7.4.4 relation/neighbour caps), and the reconciliation of the sample ceiling against the validation gate's population ceiling (§7.2.3). |
-| 6 Verification | +5 | **+6** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1, the post-hoc-verification positioning, and the supporting-triples persistence gap. |
+| 9 Error Analysis | +5 | **+9** | The census is a population of 259, not a sample; three named mechanism findings, three counted defect families, the benchmark-defect provenance argument. Grew by the union-of-subgraphs and name-keying threats, the Phoenician case, the corrected 57-question exclusion arithmetic, and the verifier-unit restatement in §9.5.4. |
+| 7 Setup | +4 | **+9** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note, the hedge-counting convention, the two baseline candidate-width disclosures (§7.4.3 fanout cap, §7.4.4 relation/neighbour caps), and the reconciliation of the sample ceiling against the validation gate's population ceiling (§7.2.3). |
+| 6 Verification | +5 | **+7** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1, the post-hoc-verification positioning, the supporting-triples persistence gap, and the test-set correction to the repair-route claim. |
 | 8 Results | +0 | **+5** | Grew entirely in review: §8.4, the clipped/unclipped split of the agentic-baseline margin, the per-stratum radius qualification, and the token-vs-call frontier correction. |
-| 5 Framework | +2 | **+5** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, and the two σ implementation deviations. |
+| 5 Framework | +2 | **+6** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, the three implementation deviations (two σ, one ban-list), and §5.10's provenance disclosure. |
 | 10 Conclusion | +1 | **+3** | Future work is two-tiered (earned repairs vs. architectural), which the census made possible; plus the equal-width and two-hop baseline experiments and two added limitations. |
 | 2, 3 | +1, +1 | **+1, +1** | Unchanged since round 1. |
 | 1, 4 | −1, −1 | **+0, +0** | Each gained a page in review — §1.7's environment scoping and §4.3.3's two hop conventions — bringing both back to budget. |

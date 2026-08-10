@@ -442,6 +442,14 @@ environment, `phase2` backbone qualification, `phase3` the development sweep,
 `phase4` the test matrix with its `ablations/`, `tier1_groundedness/` and
 `tier2_judge/` sub-studies.
 
+Two things in there are not what they look like. `smoke20_tog.jsonl` holds 10
+records where its three sibling baselines hold 20 — an interrupted run, kept
+because deleting a committed record is worse than explaining one. No reported
+number reads it; the smoke baselines are a sanity check, and the ToG comparison
+in the thesis is computed from the 400-question `test_*_tog.jsonl` files.
+`results/phase3/smoke20.json` is a subset of `dev80.json` by construction, not a
+contamination of it (§7.9.1).
+
 ---
 
 ## Configuration reference

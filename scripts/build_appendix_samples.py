@@ -71,9 +71,10 @@ def main():
     ]
 
     summary = [r"\begin{table}[!htb]", r"  \begin{center}",
-               r"    \caption{The three question sets. The test samples are "
-               r"stratified by hop count, the development set by question "
-               r"shape.}", r"    \label{tab:samples}",
+               r"    \caption[The three question sets]{The three question "
+               r"sets. The test samples are stratified by hop count, the "
+               r"development set by question shape.}",
+               r"    \label{tab:samples}",
                r"    \small", r"    \begin{tabular}{|l|r|L{83mm}|}",
                r"      \hline",
                r"      \textbf{Set} & \textbf{n} & \textbf{Strata} \\",

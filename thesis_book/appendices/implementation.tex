@@ -88,8 +88,9 @@ in analysis.
 Anyone lifting this design should carry one defect with it. The replay restores
 prompt and completion tokens but not \textsf{reasoning\_tokens}: the cache
 stores that field and never adds it back to the meter. The backbone here runs at
-reasoning effort \textsf{none} and the field is zero in all $6{,}060$ records
-this thesis reports, so ``exactly'' is literally true of these runs; under any
+reasoning effort \textsf{none} and the field is zero in every one of the
+$6{,}960$ agent runs committed for this work, so ``exactly'' is literally true of
+these runs; under any
 reasoning-effort setting the replayed snapshot would understate the budget and
 the identity assertion would be checking a weaker claim than it appears to.
 \Cref{sec:pre-registration} gives the reason the defect is recorded rather than

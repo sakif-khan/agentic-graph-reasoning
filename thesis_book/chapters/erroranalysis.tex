@@ -103,7 +103,7 @@ the difference between the failure counts above and the totals in the table.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Census provenance. Stage D is the main reading over the full-matrix
+    \caption[Census provenance]{Census provenance. Stage D is the main reading over the full-matrix
       failures; Stage A is the separate reading of the questions where removing
       the planner flipped a failure into a success (\Cref{sec:ablations}); the
       single migrated row is a Stage D finding later promoted to a formal
@@ -139,7 +139,7 @@ describe neither.
 % than being split across two text pages.
 \begin{table}[!tbp]
   \begin{center}
-    \caption{The merged failure histogram, $n = 259$. Wrong and hedge are kept
+    \caption[The merged failure histogram]{The merged failure histogram, $n = 259$. Wrong and hedge are kept
       separate. Counts come from \textsf{scripts/synthesize\_census.py} over the
       three label sources of \Cref{tab:census-pop}; the table body is generated
       from \textsf{results/phase4/thesis\_numbers.json}, so it cannot drift out
@@ -221,7 +221,7 @@ traces.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{The entity-extraction bug. In each case the drafted answer text names
+    \caption[The entity-extraction bug]{The entity-extraction bug. In each case the drafted answer text names
       every gold value correctly and the scored entity list holds only the
       sentence's grammatical subject.}
     \label{tab:extraction}
@@ -481,7 +481,9 @@ round; the verifier flags the claim unsupported both times and the run hedges on
 what is very likely the right answer. \textsf{WebQTest-38} resolves \emph{all four}
 gold campaign entities in one attempt; the rejection forces a retry that narrows to
 two names and fails anyway. \textsf{WebQTest-725} resolves both gold states,
-California and Nevada, then loses them across re-exploration and is rejected.
+California and Nevada, then loses them over the four exploration rounds that
+follow and is rejected; it is the one case of the five where the depth budget
+blocked the retry, so no repair exploration ran.
 \textsf{WebQTest-1348\_b7598df9} resolves \textsf{Houston Oilers} correctly and grounded; the
 verifier rejects the phrasing ``Peyton Manning's dad played for Houston Oilers''
 because the underlying triple is stated in terms of Archie Manning, and the retry
@@ -523,19 +525,32 @@ trajectory.
 
 \subsection{A Rate for One Polarity, and a Blank for the Other}
 
-The verifier fires \textsf{unsupported} on $16$ of $400$ WebQSP questions and $36$
-of $400$ CWQ questions --- $52$ firings against $748$ \textsf{grounded} outcomes.
-The five wrongly-rejected cases are drawn from those $52$, so that polarity has a
-denominator: roughly one firing in ten cost a correct answer. Even that is a lower
-bound, since a wrongful rejection that did not change the final answer never
-entered the census, which reads only failures.
+Three quantities are easy to conflate here and only one of them is the
+denominator this polarity needs. The verifier is invoked $828$ times over the
+$800$ questions, since a question that repairs is verified again afterwards. Its
+\emph{first} verdict is \textsf{unsupported} on $52$ questions --- $16$ of $400$
+on WebQSP and $36$ of $400$ on CWQ --- and $13$ of those $52$ end
+\textsf{grounded} after a repair, leaving $761$ questions answered under a
+grounded verdict and $39$ under an unsupported one. The five wrongly-rejected
+cases are drawn from the $52$, so that polarity has a denominator in the question
+unit: roughly one rejected question in ten cost a correct answer. Even that is a
+lower bound, since a wrongful rejection that did not change the final answer
+never entered the census, which reads only failures.
+
+The distinction is not pedantry about units. The run record stores the
+\emph{first} verifier entry, so a question repaired into groundedness is filed
+under \textsf{unsupported} in the committed \textsf{verifier\_outcome} field;
+reading that field as the outcome would put $13$ questions on the wrong side of
+the ledger and, in the other direction, treating the $52$ as firings would credit
+the verifier with $52$ of $828$ rather than the $52$ of $800$ the wrongly-rejected
+rate is computed against.
 
 Wrongful acceptance has \emph{no logged population at all}. Accepted claims are
 never persisted --- \Cref{sec:instrumentation} records that the verifier logs only
 the claims it rejects --- so the wrongly-accepted cases sit undifferentiated inside
-the $748$ grounded outcomes with nothing marking them. The single specimen surfaced
-only because the ablation-discordance reading happened to walk that trajectory by
-hand.
+the $761$ questions answered under a grounded verdict, with nothing marking them.
+The single specimen surfaced only because the ablation-discordance reading
+happened to walk that trajectory by hand.
 
 The two polarities are therefore reported asymmetrically and deliberately: a rate
 for rejection, an explicit blank for acceptance, and no average of the two. A
@@ -832,7 +847,7 @@ world.
 claims it rejects, never the ones it accepts with their matching triples. Wrongful
 acceptance is therefore not self-diagnosing: the single specimen in this census
 surfaced by manual trace reconstruction, and there is no way to know how many others
-sit inside the $748$ grounded outcomes. One polarity is reported at census scale and
+sit inside the $761$ grounded questions. One polarity is reported at census scale and
 the other anecdotally, and that asymmetry is a property of the logging decision
 rather than of the verifier. \Cref{sec:future} gives the fix.
 

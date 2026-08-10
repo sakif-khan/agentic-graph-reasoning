@@ -271,9 +271,24 @@ def gold_stats(ds):
     exactly why each needs a home in this file rather than a figure in prose.
     Reachability is read from n_gold_reachable, the same per-question quantity
     the stratum assignment uses, so the ceiling and the strata cannot disagree.
+
+    Set sizes are counted over DISTINCT answer strings, because that is the
+    population every metric acts on: Sec 2.2.2 defines precision and recall over
+    sets and scripts/score_test.py scores against set(map(norm, gold)). The raw
+    answers list repeats a string on 4 WebQSP and 6 CWQ questions, and those
+    repeats sit in the tail: counting them takes the WebQSP mean from 7.15 to
+    7.98 and its largest question from 237 to 382, which is the gap that had the
+    thesis quoting one quantity in two units. gold_max_scored applies the
+    scorer's own NFKC + case folding on top, and is recorded so the residual
+    difference between exact-string and matched-form deduplication is visible
+    rather than discovered later.
     """
     rows = testset(ds)
-    n_gold = [len(r["answers"]) for r in rows]
+    n_gold = [len(dict.fromkeys(r["answers"])) for r in rows]
+    scored = [len(set(map(_norm, r["answers"]))) for r in rows]
+    assert n_gold == [r["n_gold"] for r in rows], (
+        "n_gold in the committed split no longer equals the distinct answer "
+        "count, so the split's own metadata and these figures disagree")
     reachable = sum(1 for r in rows if r["n_gold_reachable"] > 0)
     assert reachable == sum(1 for r in rows if r["stratum"] != "unreachable"), (
         "the unreachable stratum and n_gold_reachable disagree, so the ceiling "
@@ -284,6 +299,12 @@ def gold_stats(ds):
         "gold_median": statistics.median(n_gold),
         "gold_max": max(n_gold),
         "questions_with_one_gold": sum(1 for n in n_gold if n == 1),
+        "gold_mean_raw_with_repeats": round(
+            statistics.mean(len(r["answers"]) for r in rows), 2),
+        "gold_mean_scored": round(statistics.mean(scored), 2),
+        "gold_max_scored": max(scored),
+        "questions_with_repeated_gold": sum(
+            1 for r, n in zip(rows, n_gold) if len(r["answers"]) != n),
         "strata": {s: sum(1 for r in rows if r["stratum"] == s)
                    for s in HOPS + ("unreachable",)},
         "any_gold_reachable": reachable,
@@ -376,6 +397,177 @@ def ablation_backtrack_reasons():
                         counts[r] += 1
             out[f"{ds}/{cond}"] = {**counts, "total": sum(counts.values())}
     return out
+
+
+def _agr_runs():
+    """The two main-matrix AGR records, read once, as (dataset, rows) pairs."""
+    for ds in ("webqsp", "cwq"):
+        yield ds, [json.loads(l) for l in
+                   open(P4 / f"test_{ds}_agr.jsonl", encoding="utf-8")]
+
+
+def verifier_route():
+    """What the verify--repair cycle did on test, in the unit each claim needs.
+
+    Chapter 6 characterises this route on the 80-question development set, where
+    it never fired, and generalised that to the thesis. It does fire on test, and
+    sec:verifier-errors narrates three of its five wrongly-rejected specimens as
+    retries that ran -- so the two chapters contradicted each other and the
+    frozen records settle it against Chapter 6.
+
+    Three populations get confused here and each is counted separately:
+
+      verify_iters_ge_1    the verifier ASKED for a repair. It increments the
+                           counter before the router decides, so this counts
+                           intent, not execution.
+      explorer_reentered   exploration actually resumed after the first verdict,
+                           read from the node sequence. This is the executed
+                           repair, and it is what sec:repair's claim is about.
+      cap_reached          two repair iterations, the cap sec:repair says was
+                           never reached.
+
+    verifier_invocations is the firing count and exceeds the question count,
+    because a repaired question is verified twice. first_verdict_* is the
+    per-question unit that runlog.py persists (it stores the FIRST verifier trace
+    entry, so verifier_outcome is not the final verdict); final_verdict_* is the
+    outcome the answer was actually produced under. sec:verifier-errors quoted
+    the firing count against the first-verdict grounded count, which are
+    different units over different populations.
+    """
+    out = {}
+    for ds, rows in _agr_runs():
+        nodes = [[t.get("node") for t in r["trace"]] for r in rows]
+        last = [next((t["outcome"] for t in reversed(r["trace"])
+                      if t.get("node") == "verifier"), None) for r in rows]
+        first = [r["verifier_outcome"] for r in rows]
+        assert all(r["verifier_outcome"] == next(
+            (t["outcome"] for t in r["trace"] if t.get("node") == "verifier"),
+            None) for r in rows), "verifier_outcome is not the first verdict"
+        out[ds] = {
+            "n_questions": len(rows),
+            "verifier_invocations": sum(n.count("verifier") for n in nodes),
+            "verify_iters_ge_1": sum(
+                1 for r in rows if r["budget"]["verify_iters"] >= 1),
+            "explorer_reentered": sum(
+                1 for n in nodes
+                if "verifier" in n and "explorer" in n[n.index("verifier") + 1:]),
+            "cap_reached": sum(
+                1 for r in rows if r["budget"]["verify_iters"] >= 2),
+            "first_verdict_unsupported": first.count("unsupported"),
+            "first_verdict_grounded": first.count("grounded"),
+            "final_verdict_unsupported": last.count("unsupported"),
+            "final_verdict_grounded": last.count("grounded"),
+            "repaired_to_grounded": sum(
+                1 for f, l in zip(first, last)
+                if f == "unsupported" and l == "grounded"),
+        }
+    keys = list(next(iter(out.values())))
+    out["total"] = {k: sum(v[k] for v in out.values()) for k in keys}
+    t = out["total"]
+    assert t["explorer_reentered"] > 0, (
+        "Sec 6.6 says the repair route never executed and scopes that to the "
+        "development set; if it never executes on test either, that scoping "
+        "sentence is now the wrong correction")
+    assert (t["final_verdict_grounded"]
+            == t["first_verdict_grounded"] + t["repaired_to_grounded"]), (
+        "grounded questions do not decompose into first-verdict grounded plus "
+        "repaired, so one of the two counts is not the unit it claims to be")
+    return out
+
+
+def backtrack_ban_scope():
+    """How far the ban list reaches, against how far the backtracker jumps.
+
+    sec:backtracking describes the backtracker as banning every triple expanded
+    since the restored snapshot. It bans state["last_expanded"] -- the single most
+    recent explorer pass -- while popping the highest-scoring snapshot, which
+    need not be the most recent. Everything expanded in between stays unbanned,
+    and the section's own argument for why the ban list exists (a deterministic
+    scorer facing an identical frontier repeats itself) is what then fails.
+
+    Two quantities, and they are not equally strong:
+
+      repeat_expansion_passes is EXACT. It counts explorer passes whose
+      (anchor, relation) set is identical to a set the same question expanded
+      earlier -- the repetition the ban list is supposed to make impossible,
+      observed directly, with no reconstruction involved.
+
+      pops_below_stack_top is a LOWER BOUND. Identifying the popped snapshot
+      needs the scores, which the trace does not carry; depth it does carry, and
+      the depth series reconstructs exactly (verified against budget.depth on
+      every record). So a pop whose restored depth differs from the top
+      snapshot's depth is provably not the most recent one, while a pop that
+      restores the same depth from an older snapshot cannot be distinguished and
+      is counted as most-recent here. The true figure is at least this.
+    """
+    out = {}
+    for ds, rows in _agr_runs():
+        pops = below = repeats = 0
+        for r in rows:
+            stack, depth, seen = [], 0, []
+            for t in r["trace"]:
+                if t.get("node") == "explorer":
+                    stack.append(depth)
+                    depth += 1
+                    key = frozenset((e["anchor"], e["rel"])
+                                    for e in t["expanded"])
+                    if key and key in seen:
+                        repeats += 1
+                    seen.append(key)
+                elif t.get("node") == "backtracker":
+                    rd = t["restored_depth"]
+                    pops += 1
+                    if stack:
+                        if stack[-1] != rd:
+                            below += 1
+                        match = [i for i, d in enumerate(stack) if d == rd]
+                        stack.pop(match[-1] if match else -1)
+                    depth = rd
+            assert depth == r["budget"]["depth"], (
+                f"the depth series does not reconstruct on {r['qid']}, so the "
+                f"stack simulation below it is not trustworthy either")
+        out[ds] = {
+            "backtracks": sum(r["budget"]["backtracks"] for r in rows),
+            "pops_below_stack_top": below,
+            "repeat_expansion_passes": repeats,
+        }
+        assert out[ds]["backtracks"] == pops, (
+            "the backtrack counter and the backtracker trace entries disagree")
+    keys = list(next(iter(out.values())))
+    out["total"] = {k: sum(v[k] for v in out.values()) for k in keys}
+    return out
+
+
+# Every agent run in the two phases the thesis reports records into. Phase 2 is
+# excluded deliberately: backbone qualification uses its own logger and carries
+# no budget snapshot at all, so it is not a population this claim ranges over.
+RECORD_GLOBS = ("results/phase3/*.jsonl", "results/phase4/*.jsonl",
+                "results/phase4/ablations/*.jsonl")
+
+
+def run_record_census():
+    """Every committed agent run, and the reasoning-token field's value in it.
+
+    The appendix says the cache's failure to replay reasoning_tokens is harmless
+    because the field is zero in every record. That was quoted as 6,060, which is
+    the phase-4 count and silently drops the development runs Table 8.1 reports
+    -- a claim of the form "all N records" cannot be scoped to some of them. The
+    population is counted here instead, over both phases, and the zero is checked
+    rather than asserted in prose.
+    """
+    files = sorted(p for g in RECORD_GLOBS for p in Path().glob(g)
+                   if not p.name.endswith("_tools.jsonl"))
+    n = nonzero = 0
+    for p in files:
+        for line in open(p, encoding="utf-8"):
+            n += 1
+            if json.loads(line)["budget"].get("reasoning_tokens"):
+                nonzero += 1
+    assert nonzero == 0, (
+        f"{nonzero} records carry a non-zero reasoning_tokens, so the cache's "
+        f"replay gap is no longer harmless and sec:instrumentation is wrong")
+    return {"n_files": len(files), "n_records": n,
+            "records_with_nonzero_reasoning_tokens": nonzero}
 
 
 DEFECT_CATEGORIES = ("gold_noise", "ambiguous_question")
@@ -688,6 +880,37 @@ def main():
                       "component counts: one question sits in both and adding "
                       "them counts it twice. See sec:benchmark-defects."),
             **benchmark_defects(exclusions),
+        },
+        "verifier_route": {
+            "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
+            "_note": ("The verify--repair cycle on test. Four different units "
+                      "live here and none implies another: firings "
+                      "(verifier_invocations), questions asking for a repair "
+                      "(verify_iters_ge_1), questions where exploration "
+                      "actually resumed (explorer_reentered), and questions by "
+                      "verdict. Chapter 6 characterises this route on the "
+                      "development set only. See sec:repair, "
+                      "sec:verifier-errors."),
+            **verifier_route(),
+        },
+        "backtrack_ban_scope": {
+            "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
+            "_note": ("The third recorded deviation of sec:backtracking: the ban "
+                      "list covers the most recent expansion, the backtracker "
+                      "pops the highest-scoring snapshot. "
+                      "repeat_expansion_passes is exact; pops_below_stack_top "
+                      "is a lower bound (see the docstring). Both are read from "
+                      "the trace, neither from a rerun."),
+            **backtrack_ban_scope(),
+        },
+        "run_records": {
+            "_source": "results/phase3/*.jsonl + results/phase4/**/*.jsonl",
+            "_note": ("Every committed agent run in the two phases the thesis "
+                      "reports, tool sidecars excluded. Backs the "
+                      "reasoning_tokens claim in sec:instrumentation and "
+                      "app:implementation, which was quoted over the phase-4 "
+                      "subset while reading as if it covered all of them."),
+            **run_record_census(),
         },
         "candidate_caps": {
             "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}_tools.jsonl",

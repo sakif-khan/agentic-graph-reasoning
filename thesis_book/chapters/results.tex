@@ -21,7 +21,7 @@ two draft-only conditions that price the verification layer.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{The development-set sweep, $n = 80$. Hits, hedges, and wrong answers
+    \caption[The development-set sweep]{The development-set sweep, $n = 80$. Hits, hedges, and wrong answers
       partition the set. \textsf{Verify} indicates claim verification enabled;
       the two draft-only rows disable it. All rows are from the sweep as run,
       before the answer-entity filter of \Cref{sec:entity-filtering} was
@@ -102,7 +102,7 @@ are authoritative.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Main results, $n = 400$ per dataset. Brackets are $95\%$ bootstrap
+    \caption[Main results on both test sets]{Main results, $n = 400$ per dataset. Brackets are $95\%$ bootstrap
       intervals. \textbf{P} and \textbf{R} are mean per-question precision and
       recall; \textbf{Hedge} is the share of questions on which the system
       asserted nothing. The Hits@1 ceilings are $97.0\%$ and $99.2\%$
@@ -143,7 +143,7 @@ retrieval contributes has to be read against $0.453$, not against zero.
 \textbf{F1 widens the margin that Hits@1 understates.} Against Think-on-Graph the
 Hits@1 gap is $+9.5$ points; the F1 gap is $+16.5$ ($0.642$ against $0.477$), and
 the precision column shows where it comes from ($0.697$ against $0.571$). WebQSP's
-questions have a mean of eight gold answers, so a system that asserts a long list
+questions have a mean of seven gold answers, so a system that asserts a long list
 collects Hits@1 credit for the one entity that matches and pays nothing for the
 rest. Precision is what charges for it. The two columns together support the
 sentence this thesis leads with: AGR answers more questions and asserts fewer
@@ -196,7 +196,7 @@ resolution quality.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Paired McNemar tests, AGR against each baseline, on per-question
+    \caption[Paired McNemar tests against each baseline]{Paired McNemar tests, AGR against each baseline, on per-question
       correctness over the same $400$ questions. Every comparison rejects.}
     \label{tab:mcnemar}
     \small
@@ -239,7 +239,7 @@ whether it can afford to run that search to completion.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{The comparison against the agentic baseline, split on whether the
+    \caption[The agentic-baseline comparison, split on budget clipping]{The comparison against the agentic baseline, split on whether the
       shared $25$-call cap truncated it. Clipping is read from the per-record
       \textsf{budget\_exhausted} trace flag rather than from a call count, since
       a run may spend its last permitted call on the step that finishes it. The
@@ -304,7 +304,7 @@ Hits@1 throughout (\Cref{sec:metrics}).
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Hits@1 and F1 per hop stratum. Stratum sizes are those of
+    \caption[Hits@1 and F1 per hop stratum]{Hits@1 and F1 per hop stratum. Stratum sizes are those of
       \Cref{tab:testsets}. WebQSP's \textsf{h3plus} has $n = 4$ and is not
       interpreted.}
     \label{tab:strata}
@@ -406,7 +406,7 @@ RQ2 is about the absence of.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Two-tier groundedness. Tier~1 is deterministic over every asserted
+    \caption[Two-tier groundedness]{Two-tier groundedness. Tier~1 is deterministic over every asserted
       entity in all $4{,}000$ records; Tier~2 is a language-model entailment
       judgement over a stratified sample of $60$ assertions per system per
       dataset, validated at $\kappa = 0.6995$ (\Cref{sec:judge}).}
@@ -505,7 +505,7 @@ and a further reason to treat this tier as corroborating rather than decisive.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Cost per question. Latency is computed over cold-cache records only.
+    \caption[Cost per question]{Cost per question. Latency is computed over cold-cache records only.
       Clip rate is the share of questions on which the shared $25$-call budget was
       exhausted mid-search.}
     \label{tab:efficiency}
@@ -613,7 +613,7 @@ a positive $\Delta$ means removing the component \emph{improved} the metric.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Ablation conditions on stratified halves. The reference row is the
+    \caption[Ablation conditions on stratified halves]{Ablation conditions on stratified halves. The reference row is the
       frozen system restricted to the same questions, at zero additional cost.
       Cost is reported in tokens and calls only: latency is omitted because every
       record in the \textsf{no-verifier} condition is a full cache replay, so a
@@ -770,7 +770,7 @@ independently establishing it.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Component attribution, RQ3. $\Delta$F1 is \emph{ablated minus
+    \caption[Component attribution]{Component attribution, RQ3. $\Delta$F1 is \emph{ablated minus
       reference}, so positive means removing the component improved F1. Only the
       planner condition reaches significance.}
     \label{tab:rq3}
