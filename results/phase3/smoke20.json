@@ -288,10 +288,15 @@
    "via_cvt": true
   },
   {
-    "qid": "smoke-20",
-    "question": "who directed the film Chronicles of Zxqvorn?",
-    "gold_q_entities": ["Chronicles of Zxqvorn"],
-    "answers": [],
-    "bucket": "unanswerable_env"
+   "qid": "smoke-20",
+   "dataset": "handwritten",
+   "question": "who directed the film Chronicles of Zxqvorn?",
+   "gold_q_entities": [
+    "Chronicles of Zxqvorn"
+   ],
+   "answers": [],
+   "bucket": "unanswerable_fake",
+   "raw_hops": null,
+   "via_cvt": false
   }
 ]

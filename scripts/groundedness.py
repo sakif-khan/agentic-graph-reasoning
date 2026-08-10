@@ -27,20 +27,27 @@ def reachable(s, name, topic_names):
     Sec. 7.5.3 defines tier-1 grounding as connection to at least one topic
     entity, and this used to test something stricter: a `WITH t, b LIMIT 1`
     sat between the two MATCHes and cut the cartesian product to a single
-    arbitrary row, so both the topic set and the asserted entity's own name
-    matches collapsed to one node before the path search ever ran. On a
-    single-topic question the two readings coincide, which is why it survived;
-    204 of the 800 questions carry two or three topic entities, and on those
-    the test asked whether one arbitrary topic reached the answer.
+    arbitrary row, so the topic set collapsed to one node before the path
+    search ever ran. Only the topic set -- entity names are unique in this
+    graph, so `b` matched exactly one node either way. On a single-topic
+    question the two readings therefore coincide, which is why it survived; 204
+    of the 800 questions carry two or three topic entities, and on those the
+    test asked whether one arbitrary topic reached the answer.
 
     The bias was one-directional -- a stricter test can only manufacture
     ungrounded verdicts, never hide them -- so the 0.0% results were never at
     risk, and 26 of the 274 ungrounded verdicts were exposed, 19 of them in CWQ
     no-retrieval's 42. Rerunning under the corrected reading flipped none of
-    them: all 4,526 verdicts are unchanged, so every rate the thesis reports is
-    confirmed rather than corrected. The arbitrary topic node happened to reach
-    whatever the answer was reachable from. That is luck, not equivalence, and
-    it is why this reads the way Sec. 7.5.3 says it does.
+    them: every verdict in the sidecars is unchanged, so each rate the thesis
+    reports is confirmed rather than corrected. The arbitrary topic node
+    happened to reach whatever the answer was reachable from. That is luck, not
+    equivalence, and it is why this now reads as Sec. 7.5.3 says it does.
+
+    Both counts are over one population and are recomputable from the committed
+    sidecars: 6,327 verdicts, being sum(len(r["entities"])) over the ten
+    grounded_test_*.jsonl, of which 274 are false. The log's `asserted` column
+    totals one higher, because it counts an entity twice where an answer list
+    repeats one and the verdict dict keeps a single key.
 
     Existence is all the caller needs, so this returns the first path found
     rather than the shortest and lets Cypher stop there.

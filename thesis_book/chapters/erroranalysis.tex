@@ -352,8 +352,8 @@ nation's leader during WW2'' --- is a single entity under two descriptions. The
 planner emits \textsf{['find the 33rd president', "find the nation's leader during
 WW2"]}, with no \textsf{\#1} reference between them, modelling two descriptors of
 one entity as though they were a chain. Because sub-objective one is the active
-scoring context, the anchor \textsf{World War II} scores $0.128$--$0.133$ --- junk
-tier --- while presidency-hub relations score $0.46$--$0.54$. Decomposition
+scoring context, the anchor \textsf{World War II} scores $0.128$--$0.133$ --- the
+noise floor --- while presidency-hub relations score $0.46$--$0.54$. Decomposition
 actively \emph{suppressed} the one anchor that could have discriminated. Objective
 one then never completes (\textsf{objective\_done: false} at every round), so
 objective two never activates and the WW2 constraint is never used at any point in

@@ -160,10 +160,11 @@ def parse_tier1(path):
             "This log predates the fix to scripts/groundedness.py and was "
             "produced by a query that collapsed each question's topic set to "
             "one arbitrary node, a stricter test than Sec. 7.5.3 defines. When "
-            "that fix was first applied the rerun flipped none of the 4,526 "
-            "verdicts, so an unstamped log most likely still holds the right "
-            "numbers -- but 'most likely' is not the standard this file exists "
-            "to meet. Rerun scripts/groundedness.py against a live database.")
+            "that fix was first applied the rerun flipped none of the 6,327 "
+            "verdicts in the sidecars, so an unstamped log most likely still "
+            "holds the right numbers -- but 'most likely' is not the standard "
+            "this file exists to meet. Rerun scripts/groundedness.py against a "
+            "live database.")
     for line in text.splitlines():
         m = TIER1.match(line.strip())
         if m:
