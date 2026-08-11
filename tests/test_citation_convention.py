@@ -128,3 +128,29 @@ def test_preamble_counts_still_describe_the_samples(qids):
     assert shared == 13, (
         f"prose says thirteen stems are themselves WebQSP identifiers; "
         f"there are now {shared}")
+
+
+# The reference list is maintained in two files: buetcsepgthesis.bib is what
+# \bibliography builds against, and agr.bib is the annotated copy carrying the
+# provenance comments. The bibliography preamble documents the arrangement and
+# invites switching between them, which is exactly the condition under which a
+# second copy drifts: the build reads one, a reader edits the other, and nothing
+# complains until a citation resolves in one file and not the other.
+KEY = re.compile(r"^@\w+\{([^,]+),", re.M)
+
+
+def _keys(name):
+    return KEY.findall((BOOK / name).read_text(encoding="utf-8"))
+
+
+def test_the_two_bibliographies_have_not_drifted():
+    built, annotated = _keys("buetcsepgthesis.bib"), _keys("agr.bib")
+    assert built, "no entries parsed out of the built bibliography"
+    missing = set(built) - set(annotated)
+    extra = set(annotated) - set(built)
+    assert not missing and not extra, (
+        f"agr.bib and buetcsepgthesis.bib have diverged; only in the built "
+        f"file: {sorted(missing)}; only in the annotated copy: {sorted(extra)}")
+    assert built == annotated, (
+        "the two bibliographies hold the same keys in a different order, so a "
+        "diff between them is no longer readable")

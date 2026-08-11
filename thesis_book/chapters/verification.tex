@@ -578,11 +578,19 @@ The second is unrepaired and therefore fenced off. A counter in the verifier's
 trace named \textsf{n\_structural} counts every supported claim, including those
 certified by the entailment call, so its name misdescribes it. Under the
 standing rule --- a metric that has never been checked against a case whose
-correct value is known independently should not be analysed --- it is not used
-anywhere in this thesis, and no table or figure derives from it. The
-route-by-route counts reported in \Cref{sec:structural-check} come from the tool
-invocation log, which records each \textsf{verify\_connection} call with its
-arguments and result.
+correct value is known independently should not be analysed --- no table, figure
+or reported result derives from it. The route-by-route counts of
+\Cref{sec:structural-check} come from the tool invocation log, which records each
+\textsf{verify\_connection} call with its arguments and result.
+
+The fence has exactly one exception and it is worth naming, because a rule
+applied silently is indistinguishable from a rule applied selectively. The third
+defect below reads this counter once, to bound how often a duplicate could arise
+--- and it can only be read there because the direction of its error is known:
+counting too many supported claims can only over-state that bound, never
+under-state it. That is the whole of what a fenced metric may be used for, an
+inequality in the safe direction, and it is why the figure appears there as an
+upper bound rather than as a measurement.
 
 The third is a mismatch between \Cref{alg:verify} and the code it describes, and
 it is the counter above that carries the consequence. The algorithm accumulated
@@ -601,13 +609,13 @@ which is the only route that appends anything --- \textsf{verify\_connection}
 records no evidence and the entailment call appends nothing. Over the $80$
 development records this section reports and the $800$ test questions of
 \Cref{ch:results} --- $908$ verifier firings between them --- $378$ report two or
-more supported claims. That $378$ is an over-count of the exposure rather than a
-measure of it, because the counter it is read from includes claims certified by
-the other two routes.
-So the honest statement is that \textsf{n\_supporting\_triples} is an
-\emph{upper} bound on distinct supporting triples, that the median of $3$ and
-mean of $4.1$ above inherit that, and that nothing else in this thesis reads
-the counter.
+more supported claims --- read, under the exception stated above, from the
+fenced \textsf{n\_structural} counter. That $378$ is an over-count of the
+exposure rather than a measure of it, and knowably so in that direction: the
+counter includes claims certified by the other two routes, neither of which
+appends anything. So the honest statement is that
+\textsf{n\_supporting\_triples} is an \emph{upper} bound on distinct supporting
+triples, and that the median of $3$ and mean of $4.1$ above inherit that.
 
 \section{A Worked Example}\label{sec:verify-example}
 

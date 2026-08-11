@@ -6,7 +6,7 @@
 % Diffed line by line against the template; the list below is complete.
 %
 % Two CHANGE HOW THE DOCUMENT RENDERS against an unmodified template build,
-% rather than only adding capability:
+% rather than only adding capability, and a third changes PDF navigation:
 %   1. \fancyhead[L] wraps \rightmark in \nouppercase, so running heads keep
 %      the capitalisation of the section titles instead of being upcased.
 %      This is the only template line not carried over verbatim.
@@ -14,6 +14,15 @@
 %      this file, but they override report.cls. The definitions are report.cls's
 %      own with \raggedright appended, so long headings break on words rather
 %      than being justified to the margin.
+%
+% One is a BUG FIX to an inherited defect rather than a style choice:
+%   3. \RequirePackage{setspace} moves from after hyperref to before it. Both
+%      redefine \@footnotetext and the later load discards the earlier one, so
+%      in the template's order hyperref's footnote anchors are never written and
+%      every footnote hyperlink lands on page 1. \onehalfspacing still fires at
+%      its original position, and the build is identical page for page, so this
+%      changes navigation only. The template has the same defect; a build with
+%      no footnotes would not show it.
 %
 % Everything else is additive: package loads (microtype, listings, multicol,
 % tikz/pgfplots, cleveref, makeidx), the L{} column type, the verbatimblock
@@ -101,6 +110,14 @@
     tick align=outside,
     tick style={gray!60},
   }}
+% setspace must load BEFORE hyperref. Both redefine \@footnotetext, and the
+% loser silently discards the other's version: with setspace second, hyperref's
+% footnote anchor is dropped, every \footnotemark points at a destination that
+% was never written, and pdfTeX substitutes page 1. The reader clicking a
+% footnote lands on the Candidate's Declaration. The template ships this order
+% and therefore ships the defect; \onehalfspacing still fires at its original
+% position below, so only the load order moves and the spacing is unchanged.
+\RequirePackage{setspace}
 \RequirePackage[final, colorlinks, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
 
 % Prevent math from being upcased
@@ -149,8 +166,7 @@
                                        {1.5ex \@plus .2ex}%
                                        {\normalfont\normalsize\bfseries\raggedright}}
 
-% 1.5 spacing
-\RequirePackage{setspace}
+% 1.5 spacing (setspace itself is loaded before hyperref, above)
 \onehalfspacing
 \RequirePackage{xspace}
 

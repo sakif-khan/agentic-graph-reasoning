@@ -334,7 +334,7 @@ top of the file if you built a different graph.
 python -m pytest
 ```
 
-24 tests, all of which should pass on a complete install:
+25 tests, all of which should pass on a complete install:
 
 | Selection | Command | Needs |
 | --- | --- | --- |
@@ -343,11 +343,12 @@ python -m pytest
 | Integration only | `python -m pytest -m integration` | Neo4j running |
 
 The `integration` marker is declared in `pytest.ini` and covers the 13 tests
-that talk to Neo4j. The other 11 need no services: five pure unit tests over plan
+that talk to Neo4j. The other 12 need no services: five pure unit tests over plan
 validation, budget accounting and Lucene escaping; two that read committed
 artifacts to check the two Cohen's kappa implementations against each other and
-against the pre-registered bar; and four that check the question-identifier
-convention Chapter 9 states to the reader against the `.tex` sources.
+against the pre-registered bar; four that check the question-identifier
+convention Chapter 9 states to the reader against the `.tex` sources; and one
+that fails if the annotated and the built bibliography drift apart.
 
 Two things worth knowing about the suite:
 
@@ -435,7 +436,7 @@ cost nothing.
 | [data/](data/) | Graph exports and embeddings; large artifacts are gitignored and rebuilt |
 | [results/](results/) | The committed experimental record, by phase — see below |
 | [thesis_book/](thesis_book/) | LaTeX sources and the compiled thesis PDF |
-| [thesis_templates/](thesis_templates/) | The BUET template this thesis is built on, unmodified |
+| [thesis_templates/](thesis_templates/) | Departmental material, none of it built: the BUET template (`Thesis Template PG/`, unmodified), the approved proposal and CASR presentation, reference PDFs, and review notes |
 
 `results/` is organised by experimental phase: `phase1` the knowledge
 environment, `phase2` backbone qualification, `phase3` the development sweep,

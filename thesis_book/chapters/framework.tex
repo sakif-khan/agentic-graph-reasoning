@@ -558,6 +558,10 @@ evaluated in this order:
   \item \textbf{Evaluator veto} --- the model judged the direction a dead end.
 \end{enumerate}
 
+The order matters. The first two are deterministic and cost nothing; checking
+them before deferring to the model's judgement means a mechanically hopeless
+frontier is abandoned without an argument about it.
+
 The second trigger deserves a precise statement, because it is easy to assume it
 tests the blended score and it does not. The quantity compared against $\tau$ is
 \[
@@ -604,8 +608,10 @@ takes an early return when the model term is disabled, and the two auxiliary
 maxima are never recorded, so $\sigma$ collapses to the blended maximum over
 expanded edges. The same early return is taken whenever the candidate list is
 empty, and there the consequence is worse than a collapse: the maxima are not
-merely unrecorded but \emph{stale}, left holding the previous pass's values,
-because they are stored on a scorer instance shared across the question. The
+merely unrecorded but \emph{stale}, left holding whatever the last pass to set
+them wrote. They live on the scorer instance, and the runtime memoises one
+instance per $\alpha$ for the process, so the values persist not just across a
+question's passes but across every question in the run. The
 practical reach is again narrow --- an empty candidate list trips the dead-end
 trigger, which is evaluated first --- and the masking is again the order of the
 triggers rather than anything about the values. Since $\alpha = 1$ makes the blend the embedding score, the
@@ -616,10 +622,6 @@ relation, $\sigma$ falls in this condition where it would have held steady in
 the reference. That is exactly the embedding-only ablation, and
 \Cref{sec:abl-embonly} reports what it does to that condition's backtrack count
 instead of attributing the difference wholly to $\tau$.
-
-The order matters. The first two are deterministic and cost nothing; checking
-them before deferring to the model's judgement means a mechanically hopeless
-frontier is abandoned without an argument about it.
 
 The backtracker does three things. It pops the \emph{highest-scoring} snapshot
 from the stack --- not the most recent one, which would make backtracking a
