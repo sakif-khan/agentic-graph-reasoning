@@ -301,6 +301,7 @@ def gold_stats(ds):
         "questions_with_one_gold": sum(1 for n in n_gold if n == 1),
         "gold_mean_raw_with_repeats": round(
             statistics.mean(len(r["answers"]) for r in rows), 2),
+        "gold_max_raw_with_repeats": max(len(r["answers"]) for r in rows),
         "gold_mean_scored": round(statistics.mean(scored), 2),
         "gold_max_scored": max(scored),
         "questions_with_repeated_gold": sum(
@@ -568,6 +569,40 @@ def run_record_census():
         f"replay gap is no longer harmless and sec:instrumentation is wrong")
     return {"n_files": len(files), "n_records": n,
             "records_with_nonzero_reasoning_tokens": nonzero}
+
+
+def gold_adjudication(exclusions):
+    """Every cell of tab:goldnoise, and the closure the table depends on.
+
+    The table separates two units the surrounding prose says must not be
+    conflated -- rows flagged by the consensus pass, questions flagged, and
+    questions adjudicated defective -- and every one of its six cells was typed
+    from goldnoise_summary.json rather than read from here. The counts were
+    right, but a table whose whole point is that two numbers are different units
+    is the last place to leave the units unchecked, so they are read from the
+    artifact and the exclusion arithmetic is asserted: gold_wrong plus ambiguous
+    must equal excluded, and excluded must equal what census_exclusions.json
+    actually holds, which is the file the census reads.
+    """
+    s = json.load(open(P4 / "goldnoise_summary.json", encoding="utf-8"))
+    out = {}
+    for ds, v in s.items():
+        out[ds] = {k: v[k] for k in ("flag_rows", "flagged_questions",
+                                     "gold_wrong_questions",
+                                     "ambiguous_questions",
+                                     "excluded_questions")}
+        out[ds]["excluded_pct"] = round(
+            100 * v["excluded_questions"] / len(testset(ds)), 1)
+        assert (v["gold_wrong_questions"] + v["ambiguous_questions"]
+                == v["excluded_questions"]), (
+            f"{ds}: exclusions are the union of gold_wrong and ambiguous, and "
+            f"that union no longer closes, so tab:goldnoise adds up to a total "
+            f"it does not contain")
+        assert v["excluded_questions"] == len(exclusions[ds]), (
+            f"{ds}: tab:goldnoise reports {v['excluded_questions']} exclusions "
+            f"but census_exclusions.json holds {len(exclusions[ds])}, so the "
+            f"table and the file the census actually reads disagree")
+    return out
 
 
 DEFECT_CATEGORIES = ("gold_noise", "ambiguous_question")
@@ -869,6 +904,17 @@ def main():
             "_source": "results/phase4/census_exclusions.json",
             "_note": "adjudicated gold-defect exclusions, per dataset",
             **{ds: len(v) for ds, v in exclusions.items()},
+        },
+        "gold_adjudication": {
+            "_source": "results/phase4/goldnoise_summary.json",
+            "_note": ("Every cell of tab:goldnoise. flag_rows, "
+                      "flagged_questions and excluded_questions are three "
+                      "different units over the same pass and none implies "
+                      "another -- the pass emits one row per consensus answer, "
+                      "and most flagged questions are five systems agreeing on "
+                      "one wrong answer rather than a bad label. See "
+                      "sec:gold-quality, sec:echo."),
+            **gold_adjudication(exclusions),
         },
         "benchmark_defects": {
             "_source": ("results/phase4/census_exclusions.json + "

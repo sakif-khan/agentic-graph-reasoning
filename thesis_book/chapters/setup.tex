@@ -145,7 +145,7 @@ the two pools.
 Sampling was a budget decision. The full test splits hold $1{,}628$ and $3{,}531$
 questions; five systems over both, at the measured token rates, projected to
 roughly \$45--55, against a stated ceiling of \$15--20. The pre-registered
-fallback --- stratified samples of $400$ per dataset (\Cref{tab:samples}), giving bootstrap confidence
+fallback --- stratified samples of $400$ per dataset (\Cref{tab:testsets}), giving bootstrap confidence
 intervals of roughly $\pm 5$ points on Hits@1 --- was therefore adopted, with the
 arithmetic recorded before the runs fired. The whole benchmark, including the
 ablations, ultimately cost \$11.13 in API spend. That figure is read from the
@@ -272,16 +272,26 @@ was therefore pre-registered before rounds three and four --- \emph{if the two
 candidates finish within three matches of each other, take
 \textsf{gpt-5.4-mini} on longevity grounds, the 4.1 line being
 deprecation-adjacent} --- and both rounds returned $2/3$ for each candidate.
-Pooled over all four rounds the score is $9/12$ against $8/12$: a tie, the rule
-fired, and the backbone was frozen.
+Pooled over all four rounds the score is $9/12$ for 4.1-mini against $8/12$ for
+5.4-mini. That is one match apart, not a tie; it is inside the three-match band
+the tiebreaker names, so the rule fired and the backbone was frozen on longevity.
 
-The reported measure of trajectory stability is therefore $\approx 75\%$, and the
-thesis makes no claim of determinism. One provenance limit belongs with that
-number: only the first round survives as per-question artifacts, because the
-qualification script writes its detail file in truncating mode and later rounds
-overwrote it; the tool logs accumulated across all four rounds, and the console
-tables for rounds two through four exist in the project record rather than as
-committed artifacts.
+\textbf{The stability figure that belongs to this thesis is the frozen model's,
+which is the lower of the two.} \textsf{gpt-5.4-mini} repeated its decision
+signature on $8$ of $12$ probes, or $\approx 67\%$ --- roughly one trajectory in
+three diverging on a rerun, not one in four. The $9/12$ that would read as
+$\approx 75\%$ is 4.1-mini's rate, and quoting it for the frozen backbone would
+report the runner-up's stability as though it were the system's. Pooled across
+both candidates the rate is $17/24$, or $\approx 71\%$, which is the number the
+$70$--$90\%$ band above is compared against; none of the three is measured
+tightly enough to separate from the others at $n = 12$, and the thesis makes no
+claim of determinism at any of them.
+
+One provenance limit belongs with those numbers: only the first round survives as
+per-question artifacts, because the qualification script writes its detail file
+in truncating mode and later rounds overwrote it; the tool logs accumulated
+across all four rounds, and the console tables for rounds two through four exist
+in the project record rather than as committed artifacts.
 
 Two observations from those four runs matter more to this thesis than the choice
 they settled. First, each candidate carried a \emph{persistent} ungrounded answer:
@@ -323,9 +333,9 @@ of questions from the same pool. They say nothing about how far it would move on
 a rerun of the \emph{same} questions, which is a property of decoding rather than
 of sampling, and they cannot: both treat each system's answer set as fixed.
 That second quantity is not negligible --- \Cref{sec:backbone} puts trajectory
-stability at $\approx 75\%$, so roughly one trajectory in four diverges on a
-rerun --- and every table in \Cref{ch:results} rests on a single run per
-condition. Repeating even the two agentic conditions would have bounded it, and
+stability at $\approx 67\%$ for the frozen backbone, so roughly one trajectory in
+three diverges on a rerun --- and every table in \Cref{ch:results} rests on a
+single run per condition. Repeating even the two agentic conditions would have bounded it, and
 at \$11.13 against a \$15--20 ceiling it was affordable. It was not done.
 \Cref{sec:threats} carries this as a limitation rather than this section
 carrying it as a solution.
@@ -517,8 +527,8 @@ keeps $300$ and $200$ (\Cref{tab:budget}). Because
 \textsf{get\_relations} returns rows sorted by \emph{descending} fanout
 (\Cref{sec:tool-api}), a binding cut discards the low-fanout tail --- which is
 precisely the material \Cref{sec:tool-api} reports raising AGR's own cap from
-$80$ to $300$ to stop discarding. Think-on-Graph therefore runs at half the cap
-this thesis found harmful for itself. Measured over the committed tool logs, the
+$80$ to $300$ to stop discarding. Think-on-Graph therefore runs at half of that
+$80$ --- half the cap this thesis found harmful for itself, not half its own. Measured over the committed tool logs, the
 $40$-relation cut binds on $31.6\%$ of the $1{,}651$ entities it expanded and the
 $20$-neighbour cut on $32.8\%$ of its $7{,}992$ neighbour calls, against $1$ of
 AGR's $3{,}097$ expanded entities and $3.3\%$ of its neighbour calls. Beam width

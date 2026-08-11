@@ -346,8 +346,10 @@ one's table only. The tool logs did accumulate across all four rounds (append mo
 not as artifacts. Report the pooled 9/12 vs 8/12 with that limitation named.*
 &nbsp;&nbsp;&nbsp;&nbsp;7.3.1 Trajectory Stability Under Temperature-Zero Decoding
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(hosted APIs are only approximately
-deterministic at temperature 0; sequential agents amplify per-call divergence; the measured
-rate is ≈75% — both candidates in the 70–80% band — and that number, not a claim of
+deterministic at temperature 0; sequential agents amplify per-call divergence; report the
+**frozen model's** rate, which is 8/12 ≈ 67% — the 9/12 ≈ 75% is 4.1-mini's, the candidate
+that was *not* frozen, and quoting it here reports the runner-up's stability as the
+system's. Pooled across both candidates it is 17/24 ≈ 71%. That number, not a claim of
 determinism, is what the thesis reports.)*
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**The load-bearing observation, and it belongs
 in §1.1 as well as here:** across four runs, *both* candidates produced ungrounded answers
@@ -765,31 +767,31 @@ wrongful-acceptance class from anecdote to rate)*
 | 2 Background and Preliminaries | 5 | 6 | 6 |
 | 3 Related Work | 7 | 8 | 8 |
 | 4 The Knowledge Environment | 10 | 9 | 10 |
-| 5 The AGR Framework | 11 | 13 | 17 |
+| 5 The AGR Framework | 11 | 13 | 18 |
 | 6 The Structural Verification Layer | 8 | 13 | 15 |
 | 7 Experimental Setup | 11 | 15 | 20 |
 | 8 Results | 12 | 12 | 17 |
 | 9 Error Analysis and Discussion | 10 | 15 | 19 |
 | 10 Conclusion | 5 | 6 | 8 |
-| **Body total** | **87** | **104** | **128** |
+| **Body total** | **87** | **104** | **129** |
 | References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
 
-**The body is 128 pages against a 60–90 target — 42% over the 90 ceiling.** Body runs pages 1–128;
-References begin on 129; the document is 180 pages including front matter and five
+**The body is 129 pages against a 60–90 target — 43% over the 90 ceiling.** Body runs pages 1–129;
+References begin on 130; the document is 181 pages including front matter and five
 appendices.
 
 The decision to cross the ceiling was taken at 104 pages and recorded so it would not
 be revisited by accident: *cross the ceiling if needed.* That decision was made
-against a smaller number. The 24 pages added since fall in Chapter 7 (+5), Chapter 5
-(+4), Chapters 8 and 9 (+5 and +4), Chapters 6 and 10 (+2 each), and one page each in
+against a smaller number. The 25 pages added since fall in Chapter 5 (+5), Chapter 7
+(+5), Chapters 8 and 9 (+5 and +4), Chapters 6 and 10 (+2 each), and one page each in
 1 and 4 — corrections, scoping notes and disclosure statements added in review, not
 new material. **Re-confirm before submission whether the department enforces a hard
 cap.** If it does, the compression targets are unchanged: Chapters 2 and 3 first,
 never Chapter 9.
 
-Where the 41 pages over budget went, and why each is defensible if questioned.
+Where the 42 pages over budget went, and why each is defensible if questioned.
 The `r1` column is the round-1 overrun measured at 104 pages; `now` is measured at
-128. The difference between the two columns is review work — corrections, scoping
+129. The difference between the two columns is review work — corrections, scoping
 notes, and baseline-configuration disclosures — not new material.
 
 | Chapter | r1 | now | Reason |
@@ -798,7 +800,7 @@ notes, and baseline-configuration disclosures — not new material.
 | 7 Setup | +4 | **+9** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note, the hedge-counting convention, the two baseline candidate-width disclosures (§7.4.3 fanout cap, §7.4.4 relation/neighbour caps), and the reconciliation of the sample ceiling against the validation gate's population ceiling (§7.2.3). |
 | 6 Verification | +5 | **+7** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1, the post-hoc-verification positioning, the supporting-triples persistence gap, and the test-set correction to the repair-route claim. |
 | 8 Results | +0 | **+5** | Grew entirely in review: §8.4, the clipped/unclipped split of the agentic-baseline margin, the per-stratum radius qualification, and the token-vs-call frontier correction. |
-| 5 Framework | +2 | **+6** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, the three implementation deviations (two σ, one ban-list), and §5.10's provenance disclosure. |
+| 5 Framework | +2 | **+7** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, the three implementation deviations (two σ, one ban-list), §5.10's provenance disclosure, and the corrected account of which budgets are enforced where. |
 | 10 Conclusion | +1 | **+3** | Future work is two-tiered (earned repairs vs. architectural), which the census made possible; plus the equal-width and two-hop baseline experiments and two added limitations. |
 | 2, 3 | +1, +1 | **+1, +1** | Unchanged since round 1. |
 | 1, 4 | −1, −1 | **+0, +0** | Each gained a page in review — §1.7's environment scoping and §4.3.3's two hop conventions — bringing both back to budget. |

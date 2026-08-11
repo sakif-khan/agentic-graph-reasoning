@@ -806,22 +806,33 @@ here navigates the identical environment, so the \emph{relative} ordering is
 sound even where the absolute level is optimistic. Every claim in
 \Cref{sec:findings} is relative for this reason.
 
+\textbf{An identical environment is not identical access to it, and one baseline
+sees less of it.} The agentic baseline truncates the tool layer's returned
+candidate sets at $40$ relations and $20$ neighbours, against this system's $300$
+and $200$; those are the reimplemented algorithm's own pruning widths, but they
+are narrower, and \Cref{sec:baseline-tog} measures the narrower cut binding on
+about a third of that baseline's expansions against effectively none of this
+system's. So the comparison holds the graph constant and does not hold the view
+of it constant. \Cref{sec:findings} states the bound this places on the one claim
+that depends on it; it is recorded here because the mitigation in the paragraph
+above is otherwise easy to read as covering more than it does.
+
 \textbf{Every reported number comes from one run per condition, and run-to-run
 variance is unmeasured.} The confidence intervals and paired tests throughout
 \Cref{ch:results} resample questions, so they bound the sampling variance of the
 question draw and nothing else; each system's answer set enters them as fixed.
 The backbone is not deterministic at the trajectory level even at temperature
-$0.0$ --- \Cref{sec:backbone} measures trajectory stability at $\approx 75\%$,
-so about one trajectory in four diverges on a rerun --- and a divergent
-trajectory can change an answer, a hedge, a token count and a call count at
-once. That $\approx 75\%$ is itself only partly auditable, and the limit is
-recorded rather than hidden: the qualification script wrote its per-question
-detail file in truncating mode, so only the first of the four rounds survives as
-a committed artifact and the remaining three exist as console tables in the
-project record. The pooled $9/12$ against $8/12$ therefore cannot be recomputed
-from this repository. A reader who declines to take those three rounds on trust
-should read the stability figure as unquantified rather than as $75\%$, which
-makes this threat larger, not smaller. The margins this thesis defends are large relative to their intervals, and
+$0.0$ --- \Cref{sec:backbone} measures the frozen model's trajectory stability at
+$8$ of $12$ probes, or $\approx 67\%$, so about one trajectory in three diverges
+on a rerun --- and a divergent trajectory can change an answer, a hedge, a token
+count and a call count at once. That figure is itself only partly auditable, and
+the limit is recorded rather than hidden: the qualification script wrote its
+per-question detail file in truncating mode, so only the first of the four rounds
+survives as a committed artifact and the remaining three exist as console tables
+in the project record. The pooled $9/12$ against $8/12$ therefore cannot be
+recomputed from this repository. A reader who declines to take those three rounds
+on trust should read the stability figure as unquantified rather than as
+$67\%$, which makes this threat larger, not smaller. The margins this thesis defends are large relative to their intervals, and
 the paired tests are computed per question rather than per aggregate, both of
 which make a rank reversal from decoding noise alone unlikely; but unlikely is
 the strongest available statement, because the experiment that would bound it

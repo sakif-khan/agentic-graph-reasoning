@@ -30,6 +30,7 @@
    "gold_max": 237,
    "questions_with_one_gold": 200,
    "gold_mean_raw_with_repeats": 7.98,
+   "gold_max_raw_with_repeats": 382,
    "gold_mean_scored": 7.01,
    "gold_max_scored": 210,
    "questions_with_repeated_gold": 4,
@@ -49,6 +50,7 @@
    "gold_max": 19,
    "questions_with_one_gold": 313,
    "gold_mean_raw_with_repeats": 1.78,
+   "gold_max_raw_with_repeats": 19,
    "gold_mean_scored": 1.75,
    "gold_max_scored": 19,
    "questions_with_repeated_gold": 6,
@@ -1495,6 +1497,26 @@
   "_note": "adjudicated gold-defect exclusions, per dataset",
   "webqsp": 22,
   "cwq": 19
+ },
+ "gold_adjudication": {
+  "_source": "results/phase4/goldnoise_summary.json",
+  "_note": "Every cell of tab:goldnoise. flag_rows, flagged_questions and excluded_questions are three different units over the same pass and none implies another -- the pass emits one row per consensus answer, and most flagged questions are five systems agreeing on one wrong answer rather than a bad label. See sec:gold-quality, sec:echo.",
+  "webqsp": {
+   "flag_rows": 89,
+   "flagged_questions": 58,
+   "gold_wrong_questions": 12,
+   "ambiguous_questions": 10,
+   "excluded_questions": 22,
+   "excluded_pct": 5.5
+  },
+  "cwq": {
+   "flag_rows": 59,
+   "flagged_questions": 47,
+   "gold_wrong_questions": 17,
+   "ambiguous_questions": 2,
+   "excluded_questions": 19,
+   "excluded_pct": 4.8
+  }
  },
  "benchmark_defects": {
   "_source": "results/phase4/census_exclusions.json + labels_{webqsp,cwq}.csv + labels_cwq_dropped.csv + ablations/noplanner_categories_{webqsp,cwq}.csv",

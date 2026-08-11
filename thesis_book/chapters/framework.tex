@@ -765,13 +765,27 @@ truncation, not a record of it, and no analysis in this thesis reads it --- the
 cap's effect is measured instead from the returned counts, as in
 \Cref{sec:baseline-tog}.
 
-Each budget has exactly one enforcement site, which is what keeps enforcement
-auditable. The model-call budget is checked inside the client before every call,
-so no node can bypass it; exceeding it raises an exception that each node
-catches into a degraded path rather than a crash. Depth, backtracks, and
-wall-clock are checked only in the post-evaluation router. Verification
-iterations are checked only in the post-verification router. Beam width and
-anchor cap are not checks at all but slices inside the explorer.
+Enforcement is confined to routers and the client, which is what keeps it
+auditable, but the mapping is not one site per budget and the exceptions are the
+interesting part. The model-call budget is checked inside the client before every
+call, so no node can bypass it; exceeding it raises an exception that each node
+catches into a degraded path rather than a crash. The backtrack budget is checked
+in the post-evaluation router alone. Beam width and anchor cap are not checks at
+all but slices inside the explorer.
+
+The remaining three are each checked in two places, and in every case the second
+site exists because the first does not cover the verify--explore cycle.
+\emph{Depth} and \emph{wall-clock} are checked in the post-evaluation router and
+again in the post-verification router: the retry edge re-enters the explorer
+without passing through the first, so without the second a repair would silently
+buy an expansion past the depth budget. \Cref{sec:repair} records the development
+trace that exposed exactly that, and closing it there rather than documenting it
+as an exception is why \Cref{sec:budgets} can call budgets guarantees at all.
+\emph{Verification iterations} are checked in the post-verification router and
+again inside the verifier, which will not append a repair objective it has no
+budget to pursue. The duplication is deliberate and the two sites read the same
+counter through the same predicate, so neither can drift from the other; what it
+costs is the simpler sentence, and the simpler sentence would be false.
 
 Together these give a termination guarantee that does not depend on model
 behaviour: every cycle in \Cref{fig:statemachine} passes through a router that

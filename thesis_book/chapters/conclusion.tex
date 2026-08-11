@@ -139,14 +139,17 @@ at this sample size'' is what the data supports, and it is not the same statemen
 \textbf{Structural grounding is not answer adequacy.} Both navigating systems reach
 zero structural hallucination, so that property belongs to the navigation paradigm
 rather than to this thesis's verification layer, and the semantic-support metric
-that would separate them is validated at $\kappa = 0.6995$ on samples of $60$ ---
-underpowered for the $5$-point gap it measures. The strongest evidence for the layer
+that would separate them runs on samples of $60$ claims per system per dataset,
+which is underpowered for the $5$-point gap it measures. Its agreement with the
+author was validated separately, at $\kappa = 0.6995$ over $100$ paired
+annotations; the two are different quantities over different populations, and
+neither rescues the other. The strongest evidence for the layer
 is therefore the precision column of the main matrix and the case-level analyses,
 not a groundedness differential against the agentic baseline.
 
 \textbf{The evaluation is single-environment, single-backbone, and
 single-annotator.} One knowledge graph built from one distribution, one frozen
-backbone at $\approx 75\%$ trajectory stability, two benchmarks sharing a lineage,
+backbone at $\approx 67\%$ trajectory stability, two benchmarks sharing a lineage,
 and a failure census and benchmark-defect adjudication performed by the author. Each
 of those is a defensible scoping decision and each bounds generality.
 
@@ -248,7 +251,8 @@ of $0.6995$ is also a caution about how reliable such a check would be.
 
 \subsection{A Set-Intersection Operator for Compound Questions}
 
-\textsf{composite\_claim} is $47$ cases and CWQ's largest category. Its
+\textsf{composite\_claim} is $47$ cases across the census and CWQ's largest
+category at $46$ of them. Its
 \textsf{no\_set\_intersection} subtype names the gap precisely: the architecture has
 no AND-join primitive, so a ``find the overlap'' sub-objective degrades into another
 single relation-scoring pass over an incomplete first-hop set. An explicit operator
@@ -257,7 +261,8 @@ them is a well-specified addition to the tool API rather than a change to the ag
 
 \subsection{Ordinal and Literal-Value Support}
 
-\textsf{kg\_gap} is $44$ cases and CWQ's single largest hedge category. Two of its
+\textsf{kg\_gap} is $44$ cases across the census, and CWQ's single largest hedge
+category at $24$ of them. Two of its
 subtypes need an operator rather than a bigger graph: a minimum-or-maximum-by-value
 operation for superlatives, and a literal-extraction path for numeric identifiers,
 ISO codes, and dates that the environment exposes as event or entity nodes rather

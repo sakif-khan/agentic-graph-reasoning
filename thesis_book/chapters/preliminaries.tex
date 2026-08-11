@@ -240,7 +240,10 @@ Three tools recur, each chosen for a specific property of the data.
 \emph{Bootstrap confidence intervals}~\cite{efron1979bootstrap} quantify sampling
 uncertainty by resampling the evaluated questions with replacement and
 recomputing the metric; the $2.5$th and $97.5$th percentiles of the resulting
-distribution give a 95\% interval. They are used because the test sets are
+distribution give a 95\% interval. This is the \emph{percentile} method, used
+here in preference to bias-corrected variants because the intervals are read as
+a scale on the reported difference rather than as a hypothesis test --- the
+paired comparisons are made by the second tool below. They are used because the test sets are
 samples, and because they require no distributional assumption about metrics
 such as per-question F1.
 

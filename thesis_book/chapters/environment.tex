@@ -400,21 +400,28 @@ no navigating system can find it, however well designed.
 Three observations follow. Every question in both datasets has at least one topic
 entity present in the graph, so no question is lost at the entry point.
 
-More strikingly, \emph{existence and reachability are identical} --- 1{,}584 of
-1{,}628 for WebQSP and 3{,}519 of 3{,}531 for CWQ. Every gold answer that exists
-in this environment is reachable within four hops. Reachability is therefore never
-the binding constraint; when an answer is unavailable it is because the entity is
-absent altogether. This is a direct consequence of the construction in
+More strikingly, \emph{existence and reachability are identical} in the
+$\geq 1$ column --- 1{,}584 of 1{,}628 for WebQSP and 3{,}519 of 3{,}531 for CWQ.
+Every question with at least one gold answer present in this environment has at
+least one reachable within four hops; the two columns agree question for
+question, not merely in total. The claim is deliberately the weaker of the two
+available: the \emph{all answers exist} column is lower --- $94.7\%$ against
+$97.3\%$ on WebQSP --- so on $42$ WebQSP questions some individual gold entity is
+missing, and this measurement says nothing about whether the ones present are all
+reachable. What it does say is that reachability is never the
+binding constraint on \emph{answerability}; when a question is unanswerable here
+it is because entities are absent altogether. This is a direct consequence of the construction in
 \Cref{sec:graph-construction}: the subgraphs were extracted around topic entities
 precisely to guarantee reachability, and the measurement confirms that the
 property survived unioning.
 
 Finally, CWQ's coverage exceeds WebQSP's, which inverts the expected ordering ---
-the deeper benchmark has the better-covered answers. The explanation is again
-constructional rather than semantic: CWQ contributes far more questions and
-therefore far more subgraphs to the union, so its own answers are better
-represented. The residual WebQSP shortfall is dominated by answers that are not
-entities at all, which \Cref{sec:unanswerable} takes up.
+the deeper benchmark has the better-covered answers. Two things account for it
+and they are not competing. The larger is constructional: CWQ contributes far
+more questions and therefore far more subgraphs to the union, so its own answers
+are better represented. What that leaves --- the residual WebQSP shortfall --- is
+semantic, and dominated by answers that are not entities at all, which
+\Cref{sec:unanswerable} takes up.
 
 \subsection{Analysis of Linking Misses and Gate Failures}
 

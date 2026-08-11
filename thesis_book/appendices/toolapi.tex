@@ -78,6 +78,9 @@ Administrative predicates are filtered before the cap is applied, by prefix:
 \textsf{common.topic.}, \textsf{common.}, \textsf{freebase.}, \textsf{type.},
 \textsf{kg.}, \textsf{user.}, \textsf{dataworld.}, \textsf{rdf-schema\#} and
 \textsf{owl\#}. These are schema bookkeeping rather than facts about the world.
+The list is quoted as the code writes it, which is why it holds nine entries
+where \Cref{sec:tool-api} names eight: \textsf{common.topic.} is subsumed by
+\textsf{common.} and filters nothing the shorter prefix does not already filter.
 They also have very high fanout, so filtering before sorting is what keeps them
 from consuming the whole list.
 

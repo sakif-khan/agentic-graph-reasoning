@@ -251,7 +251,9 @@ identify in \Cref{sec:limitations}.
 The literature treats question decomposition as straightforwardly beneficial. We
 find that it is not: removing the planner \emph{improves} accuracy on the
 shallower benchmark while trending toward harming it on the deeper one. The
-asymmetry, rather than the pooled average, is the result.
+asymmetry, rather than the pooled average, is the result. Only the improving arm
+is significant ($p = 0.006$); the harming arm is not ($p = 0.088$), and is
+reported as a direction rather than an effect.
 
 \subsection{The Echo Attractor as a Named Failure Mode}
 
@@ -259,7 +261,10 @@ We identify and characterise a recurring failure in which several independent
 systems converge on the same wrong answer --- typically the question's own topic
 entity, an intermediate node from the reasoning chain, or a coarser-granularity
 container. Because the systems share it, no evaluation that treats them as
-independent can see it.
+independent can see it. It accounts for $13$ of the $259$ failures read in
+\Cref{sec:echo}, which is where the evidence for it lives; the contribution is
+the named mechanism and its consequence for consensus-based evaluation, not the
+frequency.
 
 \subsection{Quantified Benchmark Defect Rates for WebQSP and CWQ}
 
