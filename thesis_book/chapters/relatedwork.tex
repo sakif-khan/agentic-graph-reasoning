@@ -11,7 +11,7 @@ of baselines in \Cref{sec:baselines}.
 
 \subsection{GraphRAG and Query-Focused Summarization}
 
-GraphRAG~\cite{edge2024local} constructs a knowledge graph from a text corpus
+GraphRAG~\cite{edge2024local} constructs a knowledge graph from a text corpus\index{GraphRAG}
 using a language model, partitions it into communities, and pre-computes
 summaries at each level, so a query can be answered from structured context
 rather than retrieved passages. Its strength is global questions --- those whose
@@ -44,7 +44,7 @@ than compared against.
 
 \subsection{Reasoning-on-Graphs}
 
-Reasoning-on-Graphs (RoG)~\cite{luo2024reasoning} adopts a
+Reasoning-on-Graphs (RoG)~\cite{luo2024reasoning} adopts a\index{KGQA}
 planning--retrieval--reasoning pipeline: a fine-tuned model generates relation
 paths grounded in the graph schema, those paths are used to retrieve matching
 instantiations, and the model reasons over the retrieved paths. Because answers
@@ -78,7 +78,7 @@ backtracking mechanism, and performs no verification of the final answer.
 
 \subsection{Think-on-Graph}
 
-Think-on-Graph (ToG)~\cite{sun2024think} established the template for
+Think-on-Graph (ToG)~\cite{sun2024think} established the template for\index{Think-on-Graph}
 training-free agentic KGQA. The model performs iterative beam search over the
 graph: at each step it is shown candidate relations and entities and prunes them
 itself, with beam width and maximum depth both set to three. Exploration
@@ -192,7 +192,7 @@ of which it is a graph-specific instance.
 
 \subsection{Claim-Decomposition Metrics}
 
-FActScore~\cite{min2023factscore} evaluates long-form generation by decomposing
+FActScore~\cite{min2023factscore} evaluates long-form generation by decomposing\index{claim extraction}
 text into atomic facts and verifying each against a reference source, reporting
 the supported proportion. This decomposition-then-verify protocol is the basis
 for the groundedness metric in \Cref{sec:groundedness-metric}, with the knowledge
@@ -366,8 +366,10 @@ on it, because the answer is not the expected one. Removing the layer changes
 the correctness of two questions in $398$ (\Cref{sec:ablations}), and the zero
 structural-hallucination result is reached by the agentic baseline as well, which
 attributes it to graph navigation rather than to this layer
-(\Cref{sec:groundedness-results}). What the layer demonstrably provides is
-precision and an auditable answer contract, not accuracy. A component filling an
+(\Cref{sec:groundedness-results}). The system's precision advantage over that
+baseline survives, but the ablation does not attribute it to this layer either
+(\Cref{sec:findings}). What the layer demonstrably provides is an auditable answer
+contract, not accuracy. A component filling an
 open slot in the literature, specified, implemented, and then measured to be
 narrower than its designers expected, is a more useful result than the same
 component asserted to work.

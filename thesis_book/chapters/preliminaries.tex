@@ -8,7 +8,7 @@ included, and standard results are stated rather than derived.
 
 \subsection{Triples, Entities, and Relations}
 
-A \emph{knowledge graph} $G = (E, R, T)$ consists of a set of entities $E$, a set
+A \emph{knowledge graph} $G = (E, R, T)$ consists of a set of entities $E$, a set\index{triple}\index{knowledge graph}
 of relation types $R$, and a set of triples $T \subseteq E \times R \times E$. A
 triple\index{triple} $(h, r, t)$ asserts that relation $r$ holds from head entity
 $h$ to tail entity $t$ --- for example, \textsf{(Ada Lovelace, place\_of\_birth,
@@ -24,7 +24,7 @@ substrate for multi-hop questions.
 
 \subsection{Freebase: MIDs, Schema, and Mediator Nodes}
 
-Freebase~\cite{bollacker2008freebase} is a large collaboratively-built knowledge
+Freebase~\cite{bollacker2008freebase} is a large collaboratively-built knowledge\index{Freebase}
 base, frozen since 2016, and the substrate for the standard knowledge graph
 question answering benchmarks. Three of its characteristics affect any system
 built on it.
@@ -65,7 +65,7 @@ path patterns, which is the practical reason for choosing a graph store here.
 
 \subsection{Multi-Hop Questions and Constraint Satisfaction}
 
-Knowledge graph question answering (KGQA)\index{KGQA} takes a natural-language
+Knowledge graph question answering (KGQA)\index{KGQA} takes a natural-language\index{multi-hop question}
 question and a graph, and returns the entity or entities that answer it. A
 question is \emph{$k$-hop} if answering it requires traversing $k$ edges from the
 entities named in the question --- its \emph{topic entities} --- to the answer.
@@ -91,7 +91,7 @@ traversal itself.
 
 % makeindex reads @ as the sort/actual separator, so an unquoted Hits@1 prints
 % as a bare "1" filed under H. The " quotes the next character.
-Two metrics are conventional. \emph{Hits@1}\index{Hits"@1} scores a question $1$
+Two metrics are conventional. \emph{Hits@1}\index{Hits"@1} scores a question $1$\index{F1}
 if any entity the system asserts is in the gold answer set, and $0$ otherwise. It
 is a per-question binary correctness measure and the headline number in most of
 this literature.
@@ -148,7 +148,7 @@ was reached.
 \subsection{A Working Definition of Hallucination for This
   Thesis}\label{sec:hallucination-def}
 
-``Hallucination'' is used loosely in the literature. This thesis adopts a narrow,
+``Hallucination'' is used loosely in the literature. This thesis adopts a narrow,\index{hallucination}
 operational definition tied to the knowledge environment: an asserted entity is
 \emph{ungrounded} if it does not exist in the graph, or exists but is not
 reachable from the question's topic entities within the traversal budget. A claim
@@ -197,7 +197,7 @@ also the principal cost control.
 
 \subsection{Backtracking and Dead-End Detection}
 
-Bounded search commits to choices that may prove wrong. \emph{Backtracking}
+Bounded search commits to choices that may prove wrong. \emph{Backtracking}\index{backtracking}
 recovers by abandoning the current branch and resuming from a previously
 unexplored alternative, which requires maintaining a stack of such alternatives
 and a trigger condition for when to pop it. Trigger conditions and the stack
@@ -206,7 +206,7 @@ discipline used here are specified in \Cref{sec:evaluator}.
 \subsection{Relation to Monte Carlo Tree Search: A Terminological
   Clarification}\label{sec:mcts-clarification}
 
-The original proposal for this work described its navigation strategy as
+The original proposal for this work described its navigation strategy as\index{best-first search}
 ``inspired by Monte Carlo Tree Search''. That description is withdrawn here, and
 the reason is worth stating explicitly.
 
@@ -235,7 +235,7 @@ machinery this framework does not implement.
 
 \section{Statistical Tools Used in This Thesis}\label{sec:stats}
 
-Three tools recur, each chosen for a specific property of the data.
+Three tools recur, each chosen for a specific property of the data.\index{McNemar}\index{bootstrap}\index{Cohen's kappa}
 
 \emph{Bootstrap confidence intervals}~\cite{efron1979bootstrap} quantify sampling
 uncertainty by resampling the evaluated questions with replacement and

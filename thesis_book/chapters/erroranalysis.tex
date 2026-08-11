@@ -25,7 +25,7 @@ unique within both samples; \Cref{app:samples} lists every identifier in full.
 
 \subsection{Category and Subtype Schema}
 
-Ten categories carry the census, each naming a distinct architectural locus
+Ten categories carry the census, each naming a distinct architectural locus\index{failure census}
 rather than a symptom. That choice is the substantive one. Surveys of
 hallucination classify by how the output fails --- factuality against
 faithfulness, intrinsic against extrinsic~\cite{huang2025survey} --- which is
@@ -193,7 +193,7 @@ dataset is, to this extent, a property of the dataset's construction.
 
 \subsection{Hedging Where It Should}
 
-A second reading of \Cref{tab:histogram} is worth stating as a positive result
+A second reading of \Cref{tab:histogram} is worth stating as a positive result\index{hedge}
 rather than only as a deficit. On CWQ, \textsf{kg\_gap} skews three-to-one toward
 hedges --- $24$ against $8$ --- while on WebQSP it leans the other way, $4$ against
 $8$. When CWQ's numeric identifiers, date literals, and ordinal constraints are
@@ -287,7 +287,7 @@ doing its job, and \Cref{sec:verifier-errors} opens by pointing back to it.
 
 \subsection{Failing to Commit: Six Cases of Hedging on a Verified Fact}
 
-The \textsf{other} category was kept open for mechanisms the schema did not
+The \textsf{other} category was kept open for mechanisms the schema did not\index{hedge}
 anticipate. All six of its cases turned out to be the same one, and it is not in
 the schema because nothing predicted it: \emph{the evaluator resolves the exact
 gold value, the verifier returns} \textsf{grounded}, \emph{and the drafted text
@@ -310,7 +310,7 @@ than a distribution.
 
 \subsection{Context-Stripping: When Decomposition Discards the Question}
 
-Subtyping is thinner in this category than elsewhere, and the shortfall is worth
+Subtyping is thinner in this category than elsewhere, and the shortfall is worth\index{planner}
 stating before the cases are read. \textsf{decomposition\_error} holds $38$
 failures; the four named subtypes --- \textsf{extraction\_bug} ($9$),
 \textsf{paraphrase\_drift} ($9$), \textsf{context\_stripping} ($3$), and
@@ -428,7 +428,7 @@ question.
 \subsection{The Evaluator Abandons a Good Relation}
 
 \textsf{premature\_termination} is small ($8$ cases) and splits into two mechanisms
-that must not be merged.
+that must not be merged.\index{evaluator}
 
 Five carry the \textsf{evaluator} subtype and are the \emph{same} systemic pattern:
 the correct relation is explored with a solid score and the evaluator backtracks
@@ -611,7 +611,7 @@ items rather than among the repairs.
   Entity}\label{sec:echo}
 
 \textsf{echo} names a mechanism that recurs independently of the two mechanical
-categories above: the system resolves a real, well-grounded entity that sits
+categories above: the system resolves a real, well-grounded entity that sits\index{echo attractor}
 \emph{near} the correct answer in the graph's structure, and the verifier passes it
 because it genuinely is grounded. The fact is true. It is not what was asked.
 
@@ -644,7 +644,7 @@ matrix falling into it together, on the same questions.
 
 \section{Benchmark Defects: Gold Noise and Ambiguous Questions}\label{sec:benchmark-defects}
 
-Two numbers must be kept apart. The consensus pass of \Cref{sec:gold-quality}
+Two numbers must be kept apart. The consensus pass of \Cref{sec:gold-quality}\index{benchmark defect}\index{gold noise}
 \emph{flagged} $58$ WebQSP and $47$ CWQ questions where at least three of the five
 systems agreed on the same non-gold answer. Adjudication confirmed $22$ and $19$ as
 genuine defects. The gap between those figures is not measurement noise --- it is
@@ -721,7 +721,7 @@ taxonomy is what let that be resolved rather than settled by whichever ran first
 \subsection{Where Bad Gold Comes From: Flattened Multi-Valued
   Relations}\label{sec:gold-provenance}
 
-The San Antonio case shows the provenance of one defect precisely enough to
+The San Antonio case shows the provenance of one defect precisely enough to\index{gold noise}
 generalise. \textsf{WebQTest-634\_4f2c0d9e} asks which county contains the place where the San
 Antonio City Council sits. Four systems, spanning parametric and graph-based
 knowledge, answer Bexar County; gold says Comal. Adjudication recorded the verdict
@@ -763,8 +763,11 @@ problem, and control problems fail in more ways.
 
 \subsection{When Verification Helps and When It Over-Hedges}\label{sec:verification-tradeoff}
 
-The verification layer's contribution is precision and auditability, and its cost is
-recall. Both directions are visible in this census at case level.
+The verification layer's contribution is auditability, its cost is recall, and
+where it fires it removes false assertions one at a time. Both directions are
+visible in this census at case level --- which is the level at which they are
+established, the aggregate precision effect of removing the layer being
+indistinguishable from zero (\Cref{sec:findings}).
 
 It helps when a draft asserts something the traversal never supported: the De Niro
 case of \Cref{sec:answer-selection}, where a fabricated actor was rejected before it

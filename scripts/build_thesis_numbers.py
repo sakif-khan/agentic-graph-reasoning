@@ -379,7 +379,7 @@ def tog_budget_split():
 def ablation_backtrack_reasons():
     """Backtrack triggers per ablation condition, from the run records.
 
-    Sec 8.7.4 attributed the embedding-only condition's extra backtracks to the
+    Sec 8.8.4 attributed the embedding-only condition's extra backtracks to the
     tau mechanism. Every backtrack stores its trigger, so the increase can be
     decomposed instead of attributed, and the decomposition is what the section
     now reports. low_score is the trigger tau governs.
@@ -466,7 +466,7 @@ def verifier_route():
     out["total"] = {k: sum(v[k] for v in out.values()) for k in keys}
     t = out["total"]
     assert t["explorer_reentered"] > 0, (
-        "Sec 6.6 says the repair route never executed and scopes that to the "
+        "Sec 6.4 says the repair route never executed and scopes that to the "
         "development set; if it never executes on test either, that scoping "
         "sentence is now the wrong correction")
     assert (t["final_verdict_grounded"]
@@ -571,20 +571,35 @@ def run_record_census():
     -- a claim of the form "all N records" cannot be scoped to some of them. The
     population is counted here instead, over both phases, and the zero is checked
     rather than asserted in prose.
+
+    smoke_runs_short reports any phase-4 smoke file holding fewer than the twenty
+    questions of the smoke set. One does: the Think-on-Graph run stopped at ten
+    where its three baseline siblings hold twenty. It is a partial run, it is left
+    partial rather than re-run, and it is surfaced here so that a reader who
+    notices the short file in results/ finds it accounted for rather than
+    unexplained. Nothing reads those records but this census -- the smoke-set
+    discussion of sec:design-validation reads the phase-3 file -- so the count it
+    touches is n_records and no other figure in the thesis.
     """
     files = sorted(p for g in RECORD_GLOBS for p in Path().glob(g)
                    if not p.name.endswith("_tools.jsonl"))
     n = nonzero = 0
+    per_file = {}
     for p in files:
+        rows = 0
         for line in open(p, encoding="utf-8"):
             n += 1
+            rows += 1
             if json.loads(line)["budget"].get("reasoning_tokens"):
                 nonzero += 1
+        per_file[p] = rows
     assert nonzero == 0, (
         f"{nonzero} records carry a non-zero reasoning_tokens, so the cache's "
         f"replay gap is no longer harmless and sec:instrumentation is wrong")
     return {"n_files": len(files), "n_records": n,
-            "records_with_nonzero_reasoning_tokens": nonzero}
+            "records_with_nonzero_reasoning_tokens": nonzero,
+            "smoke_runs_short": {p.name: c for p, c in sorted(per_file.items())
+                                 if p.name.startswith("smoke20_") and c < 20}}
 
 
 def gold_adjudication(exclusions):
@@ -894,7 +909,7 @@ def main():
                 "embonly's extra backtracks are mostly low_score, the trigger "
                 "tau governs -- but sigma is computed over a smaller candidate "
                 "set when alpha=1 (scorer.py early-returns without setting "
-                "last_info), so the rise is confounded. See Sec 8.7.4."),
+                "last_info), so the rise is confounded. See Sec 8.8.4."),
         },
         "groundedness_tier1_structural": {
             "_source": "results/phase4/tier1_groundedness/groundedness_log.txt",

@@ -18,7 +18,7 @@ contradicting \Cref{ch:erroranalysis}.
   After}\label{sec:verify-motivation}
 
 \Cref{sec:limitations} argued that agentic KGQA systems are typically evaluated
-on whether the correct answer is \emph{among} what they assert, leaving the
+on whether the correct answer is \emph{among} what they assert, leaving the\index{verification layer}
 precision of the assertion unmeasured and unconstrained. The navigation loop
 makes that concrete: its final act is a language-model call over a fact window
 and a candidate list, the model is free to name an entity that appeared in
@@ -197,7 +197,7 @@ follow explain each test and the reason for their order.
 
 \subsection{The Structural Check}\label{sec:structural-check}
 
-The structural check operates on entity identifiers, so it first needs a mapping
+The structural check operates on entity identifiers, so it first needs a mapping\index{traversed adjacency}
 from the names the model produced back to graph nodes. That mapping, $\mu$, is
 built from the traversed triples alone: every head and tail name encountered
 during navigation is registered against its identifier, first occurrence
@@ -215,7 +215,7 @@ uniquely among the three --- produces citable evidence: every traversed triple
 joining the pair is appended to the supporting-triple list. Appended, not
 unioned: \Cref{sec:output-contract} records what that costs.
 
-The second route is the \textsf{verify\_connection} tool
+The second route is the \textsf{verify\_connection}\index{verify connection@\textsf{verify\_connection}} tool
 (\Cref{sec:tool-adjacency}), a single Cypher query asking whether the two
 entities are adjacent in the \emph{full} graph, either directly or through one
 mediator node. It exists because the first route tests the \emph{traversal},
@@ -292,7 +292,7 @@ remaining route to \textsf{retry}; otherwise \textsf{give\_up}.
 
 \subsection{Targeted Re-Exploration Under Remaining Budget}
 
-On \textsf{retry}\index{retry route}, the verifier has already re-targeted the
+On \textsf{retry}\index{retry route}, the verifier has already re-targeted the\index{repair objective}
 agent before the router runs. It takes the \emph{first} unsupported claim,
 synthesises a repair objective\index{repair objective} of the form
 \textsf{verify whether $h$ $r$ $t$}, marks every active
@@ -359,7 +359,7 @@ the layer.
 
 \subsection{Iteration Cap and the Draft-Only Fallback}
 
-Repair is capped at two iterations, which together with the depth and time
+Repair is capped at two iterations, which together with the depth and time\index{retry route}
 conditions guarantees the verify--explore cycle terminates. On the development
 set the cap was never reached, for the reason just given: the cycle never began.
 On test it binds on $15$ questions --- $4$ on WebQSP and $11$ on CWQ --- which
@@ -383,7 +383,7 @@ draft at all.
 
 \section{Entity Filtering of the Final Answer}\label{sec:entity-filtering}
 
-The rule is one line and its justification is the most instructive result in
+The rule is one line and its justification is the most instructive result in\index{answerer}
 this chapter.
 
 \textbf{The rule.} On the give-up path the final entity list is computed
@@ -555,7 +555,7 @@ Three instrumentation defects in this area are recorded rather than quietly
 fixed, in keeping with the standing rule adopted in
 \Cref{sec:design-validation}.
 
-The first was a Python falsy-empty-list trap.\label{sec:supporting-triples} The
+The first was a Python falsy-empty-list trap. The
 answerer substituted the entire traversed set for the supporting triples
 whenever the verifier's list was empty --- treating ``the verifier ran and
 matched nothing'' identically to ``the verifier never ran''. A development trace

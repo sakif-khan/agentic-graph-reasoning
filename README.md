@@ -131,7 +131,7 @@ cp .env.example .env
 
 > **All four are mandatory, even for the offline tests.** `agr/env.py` validates
 > them at *import* time, and `tests/conftest.py` imports the runtime module, so
-> without a complete `.env` pytest fails during collection — including the eleven
+> without a complete `.env` pytest fails during collection — including the twelve
 > tests that need neither Neo4j nor the API.
 
 ---

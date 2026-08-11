@@ -11,9 +11,9 @@ still carried the pre-relabelling counts and the column no longer summed to its
 own total. Both now come from the one file.
 
 Writes into thesis_book/figures/:
-    fig_accuracy_cost.tex     accuracy against token cost      (Sec 8.6.2)
-    fig_hop_strata.tex        Hits@1 by hop stratum            (Sec 8.4)
-    fig_failure_histogram.tex failure categories by dataset    (Sec 9.3)
+    fig_accuracy_cost.tex     accuracy against token cost      (Sec 8.7.2)
+    fig_hop_strata.tex        Hits@1 by hop stratum            (Sec 8.5)
+    fig_failure_histogram.tex failure categories by dataset    (Sec 9.2)
 Writes into thesis_book/tables/:
     tab_failure_histogram.tex the same counts as a tabular     (Table 9.2)
 

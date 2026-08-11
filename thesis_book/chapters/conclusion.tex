@@ -144,8 +144,10 @@ which is underpowered for the $5$-point gap it measures. Its agreement with the
 author was validated separately, at $\kappa = 0.6995$ over $100$ paired
 annotations; the two are different quantities over different populations, and
 neither rescues the other. The strongest evidence for the layer
-is therefore the precision column of the main matrix and the case-level analyses,
-not a groundedness differential against the agentic baseline.
+is therefore the case-level analyses --- not a groundedness differential against
+the agentic baseline, and not the precision column of the main matrix either,
+since removing the layer does not move that column
+(\Cref{sec:findings}).
 
 \textbf{The evaluation is single-environment, single-backbone, and
 single-annotator.} One knowledge graph built from one distribution, one frozen
@@ -213,7 +215,7 @@ declaring it undeterminable in the same sentence.
 \subsection{Logging Accepted Claims to Make Wrongful Acceptance
   Measurable}\label{sec:future-logging}
 
-Persist each accepted claim together with the triples that matched it. This converts
+Persist each accepted claim together with the triples that matched it. This converts\index{verification layer}
 the wrongly-accepted class from an anecdote into a rate with a denominator, makes
 grounded-but-wrong answers self-diagnosing from the logs rather than by manual trace
 reconstruction, and would let the entity-level and claim-level guarantees of

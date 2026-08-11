@@ -51,7 +51,7 @@ assemble that context, and in \emph{what we check} before the answer is emitted.
 
 \subsection{Why Multi-Hop Questions Are the Hard Case}
 
-Single-fact questions are comparatively benign: ``Where was Ada Lovelace born?''
+Single-fact questions are comparatively benign: ``Where was Ada Lovelace born?''\index{multi-hop question}
 takes one lookup, and the model either knows it or it does not.
 
 \emph{Multi-hop}\index{multi-hop question} questions --- ``Who directed the film
@@ -91,7 +91,7 @@ retrieval~\cite{li2023survey}.
 
 \subsection{Knowledge Graphs and Static GraphRAG}
 
-A \emph{knowledge graph}\index{knowledge graph} makes those relationships
+A \emph{knowledge graph}\index{knowledge graph} makes those relationships\index{GraphRAG}
 explicit. It stores facts as typed edges between identified entities, so
 composing two facts becomes a traversal rather than an inference over prose.
 GraphRAG~\cite{edge2024local} exploits this by building a graph over a corpus and
@@ -257,7 +257,7 @@ reported as a direction rather than an effect.
 
 \subsection{The Echo Attractor as a Named Failure Mode}
 
-We identify and characterise a recurring failure in which several independent
+We identify and characterise a recurring failure in which several independent\index{echo attractor}
 systems converge on the same wrong answer --- typically the question's own topic
 entity, an intermediate node from the reasoning chain, or a coarser-granularity
 container. Because the systems share it, no evaluation that treats them as
@@ -268,7 +268,7 @@ frequency.
 
 \subsection{Quantified Benchmark Defect Rates for WebQSP and CWQ}
 
-We quantify label defects in the two standard benchmarks through a consensus
+We quantify label defects in the two standard benchmarks through a consensus\index{benchmark defect}
 pre-pass followed by per-item adjudication, separating two kinds of label error
 because they carry opposite evidence signatures, and we report results both with
 and without the affected items.

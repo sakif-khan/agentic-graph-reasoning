@@ -162,7 +162,7 @@ entities. It did not survive contact with generated text. Claim decomposition
 produces relations phrased in English --- ``played for'', ``is the capital of''
 --- and Freebase predicates are neither phrased that way nor reliably one edge
 long, so requiring the relation to match rejected claims that were true.
-\textsf{verify\_connection} was added in response: it drops the relation
+\textsf{verify\_connection}\index{verify connection@\textsf{verify\_connection}} was added in response: it drops the relation
 entirely and asks only about adjacency. It answered the question the verifier
 actually needed answered, and it superseded rather than complemented its
 predecessor. \Cref{sec:structural-check} describes the two routes the verifier
@@ -239,7 +239,7 @@ low-fanout, high-precision relations that answer specific questions --- again,
   Adjacency}\label{sec:tool-adjacency}
 
 \Cref{sec:graph-construction} established that 63.7\% of the environment's nodes
-are unnamed mediators. If the agent saw these as candidate entities, most of its
+are unnamed mediators. If the agent saw these as candidate entities, most of its\index{mediator node}\index{mediator traversal}
 frontier would consist of nodes with no surface form and no meaning to a
 language model.
 
@@ -392,7 +392,7 @@ policy.
 
 \subsection{Frontier Construction and the Single Scoring Pass}
 
-The node proceeds in five steps:
+The node proceeds in five steps:\index{explorer}\index{frontier}
 
 \begin{enumerate}
   \item \textbf{Checkpoint.} The current frontier, the current depth, and the
@@ -502,7 +502,7 @@ change.
 \subsection{The Groundedness Filter on
   Resolutions}\label{sec:groundedness-filter}
 
-The evaluator's \textsf{resolved} entity names are not accepted as given. Each
+The evaluator's \textsf{resolved} entity names are not accepted as given. Each\index{groundedness}
 is looked up against a table built from the tail entities of the
 \emph{traversed} triples, and any name that does not appear there is discarded.
 
@@ -596,7 +596,7 @@ written so that a missing signal defaults to a value above any usable $\tau$,
 which is right when no expansion has run yet. But $0.0$ is falsy in Python, so a
 genuine signal maximum of exactly zero takes the same branch, and the trigger
 does not fire at the one point where the formula says it most clearly should.
-This is the same falsy-empty trap that \Cref{sec:supporting-triples} records in
+This is the same falsy-empty trap that \Cref{sec:output-contract} records in
 the answerer, found in a second place. Its practical reach is narrow: a signal
 maximum of exactly zero means nothing was expanded at all, and the
 \textbf{dead end} trigger --- evaluated first --- fires on that same condition.
@@ -959,7 +959,7 @@ independently should not be trusted, and should not be analysed.
 \Cref{alg:agr} states the loop.
 
 \begin{algorithm}[!tb]
-  \caption{AGR navigation (verification layer abstracted; see
+  \caption[AGR navigation]{AGR navigation (verification layer abstracted; see
     \Cref{ch:verification})}
   \label{alg:agr}
   \begin{algorithmic}[1]

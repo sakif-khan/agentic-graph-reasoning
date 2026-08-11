@@ -46,7 +46,7 @@ answers, never to populate it.
 
 \subsection{The Freebase Snapshot}
 
-Freebase has been frozen since 2016, which makes it stable and reproducible while
+Freebase has been frozen since 2016, which makes it stable and reproducible while\index{MID}\index{Freebase}
 also dating it --- a property that cuts both ways and motivates the
 no-retrieval control in \Cref{sec:baselines}. Two routes to a working Freebase
 environment were considered.
@@ -69,7 +69,7 @@ what that costs.
 
 \subsection{WebQSP and ComplexWebQuestions as Question Sets}
 
-WebQSP~\cite{yih2016value} contains questions whose answers lie predominantly one
+WebQSP~\cite{yih2016value} contains questions whose answers lie predominantly one\index{WebQSP}\index{ComplexWebQuestions}
 or two hops from the topic entity; it descends from
 WebQuestions~\cite{berant2013semantic}. ComplexWebQuestions~\cite{talmor2018web}
 is constructed by composing WebQSP queries into deeper chains with conjunctions,
@@ -81,7 +81,7 @@ and CWQ is where the multi-hop claim is actually tested.
 
 \subsection{Union of Per-Question Subgraphs from the RoG Distribution}
 
-The environment is the \emph{union} of every per-question subgraph in the RoG
+The environment is the \emph{union} of every per-question subgraph in the RoG\index{knowledge graph}
 distribution, across both datasets and all three splits. Each record's triple list
 is read, whitespace-normalised, and inserted into a global deduplicated set;
 entity and relation strings are interned to integers so that the union and its
@@ -129,7 +129,7 @@ faces at every exploration step.
 
 \subsection{Treatment of Mediator Nodes and Its Effect on Hop Counts}
 
-Freebase reifies $n$-ary facts through mediator nodes, as described in
+Freebase reifies $n$-ary facts through mediator nodes, as described in\index{mediator node}\index{mediator traversal}
 \Cref{sec:kgs}. In the name-keyed distribution these surface distinctively: named
 entities appear as their names, while unnamed mediators survive as raw machine
 identifiers of the form \textsf{m.0d05w3} or \textsf{g.11b62t84jq}. Nodes are

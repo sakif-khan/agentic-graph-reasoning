@@ -133,7 +133,7 @@ are authoritative.
   \end{center}
 \end{table}
 
-On WebQSP, AGR answers $302$ of $400$ questions correctly: $75.5\%$ against a
+On WebQSP, AGR answers $302$ of $400$ questions correctly: $75.5\%$ against a\index{Hits"@1}\index{WebQSP}
 reachability ceiling of $97.0\%$, $+9.5$ points over Think-on-Graph and $+30.2$
 over the parametric floor. The floor matters. WebQSP is a decade old and plausibly
 in the backbone's pretraining data, and the no-retrieval control confirms it:
@@ -166,7 +166,7 @@ result rather than as an anomaly.
 
 \section{Main Results on ComplexWebQuestions}\label{sec:cwq-results}
 
-On CWQ, AGR answers $209$ of $400$: $52.2\%$ against a $99.2\%$ ceiling, $+8.7$
+On CWQ, AGR answers $209$ of $400$: $52.2\%$ against a $99.2\%$ ceiling, $+8.7$\index{ComplexWebQuestions}\index{precision}
 over Think-on-Graph and $+21.5$ over the floor. Every system scores lower here,
 and the ordering changes in one important way: \emph{both} static retrieval
 baselines fall below the parametric control. Vector-RAG drops from $0.568$ on
@@ -229,7 +229,7 @@ subject of the next section, and it changes what the margin means.
 
 \section{Where the Margin Over the Agentic Baseline Comes From}\label{sec:tog-split}
 
-The shared budget is a control, and like any control it is doing something. The
+The shared budget is a control, and like any control it is doing something. The\index{Think-on-Graph}
 call cap binds on Think-on-Graph far more often than on AGR --- beam search costs
 width times depth, and \Cref{sec:efficiency} records the clip rates --- so
 ``same budget'' does not mean ``same freedom to search''. Splitting the $400$
@@ -347,7 +347,7 @@ Hits@1 throughout (\Cref{sec:metrics}).
 \end{figure}
 
 \Cref{tab:strata} is the direct answer to RQ1, and it answers it with a shape
-rather than with a difference of means --- \Cref{fig:hop-strata} is that shape.
+rather than with a difference of means --- \Cref{fig:hop-strata} is that shape.\index{hop stratum}
 
 \textbf{On CWQ, AGR's accuracy rises with hop count.} Hits@1 goes $0.46 \to 0.55
 \to 0.57$ across \textsf{h1}, \textsf{h2}, \textsf{h3plus}, and F1 goes $0.42 \to
@@ -439,7 +439,7 @@ RQ2 is about the absence of.
 
 \subsection{Tier 1: Structural Hallucination Is a Property of the Paradigm}
 
-The differential is emphatic. The parametric control asserts $661$ entities on
+The differential is emphatic. The parametric control asserts $661$ entities on\index{hallucination}\index{groundedness}
 WebQSP of which $179$ --- $27.1\%$ --- have no basis in the knowledge environment,
 and $37.6\%$ of the questions it answers contain at least one such entity. Both
 navigating systems sit at exactly zero, over $1{,}235$ and $832$ asserted
@@ -473,7 +473,7 @@ appears in the system's own retrieved facts.
 
 \subsection{Tier 2: A Narrow Band and an Underpowered Comparison}
 
-Tier~2 asks whether the asserted entity is supported \emph{as the answer}, and
+Tier~2 asks whether the asserted entity is supported \emph{as the answer}, and\index{Cohen's kappa}
 under the instruction that mere connectedness is not support, every system lands
 in a $36.7$--$66.7\%$ band. AGR is highest on WebQSP at $66.7\%$. On CWQ it is
 second: $5.0$ points ahead of Think-on-Graph, which is the comparison the rest of
@@ -532,7 +532,7 @@ and a further reason to treat this tier as corroborating rather than decisive.
   \end{center}
 \end{table}
 
-Agency costs roughly an order of magnitude over one-shot retrieval: $4{,}511$ and
+Agency costs roughly an order of magnitude over one-shot retrieval: $4{,}511$ and\index{budget}
 $6{,}818$ tokens per question against $\sim 500$, and $11$--$17$ seconds against
 one to two. That is the price of RQ1's accuracy, and it is stated as a price.
 
@@ -571,7 +571,7 @@ answers at roughly twice the rate.
   \label{fig:accuracy-cost}
 \end{figure}
 
-Reading \Cref{tab:main} against \Cref{tab:efficiency}, and plotted as
+Reading \Cref{tab:main} against \Cref{tab:efficiency}, and plotted as\index{budget}
 \Cref{fig:accuracy-cost}, the frontier depends on which cost is charged, and the
 two costs this thesis records do not agree. Stating it on one of them alone would
 overclaim.
@@ -616,29 +616,35 @@ a positive $\Delta$ means removing the component \emph{improved} the metric.
   \begin{center}
     \caption[Ablation conditions on stratified halves]{Ablation conditions on stratified halves. The reference row is the
       frozen system restricted to the same questions, at zero additional cost.
+      P and R are the per-question means defined in \Cref{sec:metrics} and
+      reported for the full systems in \Cref{tab:main}; they are carried here so
+      that the precision effect of each condition can be read off directly
+      rather than taken on trust from the surrounding prose.
       Cost is reported in tokens and calls only: latency is omitted because every
       record in the \textsf{no-verifier} condition is a full cache replay, so a
       seconds column would not be comparable across conditions.}
     \label{tab:ablation}
-    \small
-    % Same seven-column shape as \Cref{tab:main}, and the same slight trim.
-    \setlength{\tabcolsep}{5pt}
-    \begin{tabular}{|l|l|l|l|r|r|r|}
+    % Nine columns: the seven of \Cref{tab:main} plus the two cost columns. Two
+    % extra columns of bracketed intervals will not seat at \small however far
+    % the padding is trimmed, so this table alone drops a size.
+    \footnotesize
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{|l|l|l|l|r|r|r|r|r|}
       \hline
       \textbf{Data} & \textbf{Condition} & \textbf{Hits@1} & \textbf{F1} &
-      \textbf{Hedge} & \textbf{Tok.} & \textbf{Calls} \\
+      \textbf{P} & \textbf{R} & \textbf{Hedge} & \textbf{Tok.} & \textbf{Calls} \\
       \hline
-      WebQSP & reference       & 0.755 [0.695, 0.810] & 0.659 [0.599, 0.717] & 8.5\%  & 4{,}562 & 6.2 \\
-      WebQSP & no-planner      & \textbf{0.830} [0.775, 0.880] & \textbf{0.742} [0.687, 0.794] & 5.5\%  & 3{,}159 & 4.0 \\
-      WebQSP & no-backtrack    & 0.745 [0.685, 0.805] & 0.646 [0.586, 0.705] & 9.5\%  & 4{,}261 & 5.8 \\
-      WebQSP & no-verifier     & 0.760 [0.700, 0.820] & 0.663 [0.604, 0.721] & 8.0\%  & 4{,}460 & 6.1 \\
-      WebQSP & embedding-only  & 0.740 [0.680, 0.800] & 0.643 [0.583, 0.702] & 13.5\% & 3{,}413 & 4.4 \\
+      WebQSP & reference       & 0.755 [0.695, 0.810] & 0.659 [0.599, 0.717] & 0.710 & 0.664 & 8.5\%  & 4{,}562 & 6.2 \\
+      WebQSP & no-planner      & \textbf{0.830} [0.775, 0.880] & \textbf{0.742} [0.687, 0.794] & 0.788 & 0.749 & 5.5\%  & 3{,}159 & 4.0 \\
+      WebQSP & no-backtrack    & 0.745 [0.685, 0.805] & 0.646 [0.586, 0.705] & 0.704 & 0.649 & 9.5\%  & 4{,}261 & 5.8 \\
+      WebQSP & no-verifier     & 0.760 [0.700, 0.820] & 0.663 [0.604, 0.721] & 0.711 & 0.673 & 8.0\%  & 4{,}460 & 6.1 \\
+      WebQSP & embedding-only  & 0.740 [0.680, 0.800] & 0.643 [0.583, 0.702] & 0.701 & 0.644 & 13.5\% & 3{,}413 & 4.4 \\
       \hline
-      CWQ & reference       & 0.495 [0.424, 0.566] & 0.445 [0.379, 0.511] & 23.2\% & 7{,}105 & 9.1 \\
-      CWQ & no-planner      & 0.434 [0.369, 0.505] & 0.398 [0.333, 0.464] & 26.8\% & 5{,}617 & 6.7 \\
-      CWQ & no-backtrack    & 0.490 [0.419, 0.561] & 0.445 [0.379, 0.511] & 28.3\% & 5{,}792 & 7.4 \\
-      CWQ & no-verifier     & 0.490 [0.419, 0.561] & 0.436 [0.371, 0.503] & 20.2\% & 6{,}704 & 8.7 \\
-      CWQ & embedding-only  & 0.475 [0.409, 0.545] & 0.437 [0.370, 0.502] & 28.3\% & 4{,}925 & 5.9 \\
+      CWQ & reference       & 0.495 [0.424, 0.566] & 0.445 [0.379, 0.511] & 0.461 & 0.451 & 23.2\% & 7{,}105 & 9.1 \\
+      CWQ & no-planner      & 0.434 [0.369, 0.505] & 0.398 [0.333, 0.464] & 0.407 & 0.405 & 26.8\% & 5{,}617 & 6.7 \\
+      CWQ & no-backtrack    & 0.490 [0.419, 0.561] & 0.445 [0.379, 0.511] & 0.456 & 0.453 & 28.3\% & 5{,}792 & 7.4 \\
+      CWQ & no-verifier     & 0.490 [0.419, 0.561] & 0.436 [0.371, 0.503] & 0.451 & 0.446 & 20.2\% & 6{,}704 & 8.7 \\
+      CWQ & embedding-only  & 0.475 [0.409, 0.545] & 0.437 [0.370, 0.502] & 0.452 & 0.444 & 28.3\% & 4{,}925 & 5.9 \\
       \hline
     \end{tabular}
   \end{center}
@@ -646,7 +652,7 @@ a positive $\Delta$ means removing the component \emph{improved} the metric.
 
 \subsection{Without the Planner: A Stratum-Dependent Effect}
 
-This is the one condition that reaches significance, and it points the opposite
+This is the one condition that reaches significance, and it points the opposite\index{planner}
 way to the design intent.
 
 On WebQSP, \emph{removing} the planner improves every axis at once: Hits@1
@@ -679,7 +685,7 @@ gating proposal that this ablation earned rather than motivated.
 
 \subsection{Without Backtracking}
 
-Hits@1 moves $-0.010$ on WebQSP and $-0.005$ on CWQ; F1 $-0.013$ and $0.000$.
+Hits@1 moves $-0.010$ on WebQSP and $-0.005$ on CWQ; F1 $-0.013$ and $0.000$.\index{backtracking}
 Discordant pairs are $5$ against $3$ and $6$ against $5$, giving $p = 0.73$ and
 $p = 1.00$. There is no detectable effect at this sample size.
 
@@ -694,7 +700,7 @@ activity whose accuracy consequence this experiment cannot measure.
 
 \subsection{Without the Verification Layer}
 
-The cleanest null in the table, and the most informative one. Discordant pairs are
+The cleanest null in the table, and the most informative one. Discordant pairs are\index{verification layer}
 $0$ against $1$ on WebQSP and $1$ against $0$ on CWQ: across $398$ paired
 questions, removing claim verification changed the correctness of exactly two.
 Hits@1 moves $+0.005$ and $-0.005$; F1 $+0.004$ and $-0.009$. Both $p = 1.00$.
@@ -717,7 +723,7 @@ row is reported at full length rather than omitted.
 
 \subsection{Embedding-Only Scoring}\label{sec:abl-embonly}
 
-Removing the language-model term from the hybrid scorer costs $-0.015$ and
+Removing the language-model term from the hybrid scorer costs $-0.015$ and\index{hybrid scoring function}
 $-0.020$ Hits@1 and $-0.016$ and $-0.008$ F1 --- consistently negative on both
 datasets and both metrics, and consistently short of significance ($p = 0.66$ and
 $p = 0.48$).
@@ -790,9 +796,22 @@ independently establishing it.
   \end{center}
 \end{table}
 
-One of four conditions reaches significance. That is the correct outcome to report
+One of four conditions reaches significance. That is the correct outcome to report\index{McNemar}
 for four components tested on half-samples, and it is reported as such rather than
 rewritten into four confident claims.
+
+A correction for multiple comparisons was not among the decisions fixed in advance
+in \Cref{sec:pre-registration}, so it is applied here after the fact and labelled
+as such. Sixteen paired tests are reported in this chapter: the eight against the
+baselines in \Cref{sec:findings} and the eight ablation comparisons above. Within
+the ablation family the one significant result survives correction --- the planner
+effect on WebQSP is $p = 0.00592$ against a Bonferroni threshold of
+$0.05/8 = 0.00625$, and being the smallest of the eight it clears the first step
+of Holm's procedure at that same threshold. Nothing else in the family is near the
+bar under any correction; the next smallest is $p = 0.088$. The eight baseline
+comparisons clear $0.05/8$ as well, the largest of them at $p = 0.0035$.
+Correction therefore changes no claim made here, which is the only circumstance in
+which reporting it after the fact is worth anything.
 
 The power limitation is arithmetic, not rhetorical. McNemar's test reads only
 discordant pairs, and at $n \approx 200$ with a system near $0.5$--$0.75$
@@ -856,13 +875,35 @@ system that copies its answer entities out of triples it traversed inherits this
 attributing it to the verification layer would be wrong, and \Cref{tab:groundedness}
 is the evidence that it would be wrong.
 
-\emph{Second, the verifier's measurable contribution is precision, not accuracy.}
-AGR's assertion precision exceeds Think-on-Graph's by $12$ points on CWQ
-($67.9\%$ against $56.1\%$) and its per-question precision by $0.13$ and $0.08$,
-at a lower hedge rate on WebQSP --- so it is not bought with abstention. The
-mechanism is visible in \Cref{ch:verification}: entity-level filtering of the
-final answer removes assertions the traversal cannot support, which costs recall
-almost nothing and costs a false assertion every time it fires.
+\emph{Second, the precision advantage belongs to the architecture, and this
+experiment cannot award any of it to the layer.} AGR's assertion precision
+exceeds Think-on-Graph's by $12$ points on CWQ ($67.9\%$ against $56.1\%$) and
+its per-question precision by $0.13$ and $0.08$, at a lower hedge rate on
+WebQSP --- so it is not bought with abstention. That margin is real. What it is
+not is evidence for the verification layer, because the one condition that
+isolates the layer does not reproduce it: removing the verifier moves
+per-question precision by $+0.001$ on WebQSP and $-0.010$ on CWQ
+(\Cref{tab:ablation}), a sign flip an order of magnitude below the gap it would
+have to account for. The mechanism cannot carry the attribution either. Entity
+filtering runs only on the give-up path (\Cref{sec:entity-filtering}), which $10$
+of $400$ WebQSP and $29$ of $400$ CWQ questions entered; a filter that touches
+$2.5\%$ of a test set cannot produce a $0.13$ precision margin on it. Where it
+does fire it removes a false assertion at almost no cost in recall, and
+\Cref{sec:verification-tradeoff} shows that happening case by case --- but a
+case-level effect on ten questions and an aggregate margin over a different
+system are different claims, and only the first of them is established here.
+
+Two differences that the ablation holds fixed remain live as explanations of that
+margin, and neither is the claim check. The groundedness filter on evaluator
+resolutions (\Cref{sec:groundedness-filter}) discards resolutions no retrieved
+triple supports; it is navigation rather than verification, and it runs in every
+ablation condition. And the drafting prompt carries the anti-vacuity and
+grounding provisions that the baselines' plain answering prompt does not
+(\Cref{sec:baseline-constants}) --- a difference between AGR and
+Think-on-Graph, but not between the reference and no-verifier conditions, so
+nothing reported here separates it from the architecture it is bundled with.
+Some share of the precision margin over the agentic baseline may be prompt rather
+than structure, and this work cannot say how large that share is.
 
 \emph{Third, verification shows no measurable Hits@1 effect.} Two questions out of
 $398$ change when it is removed. This is not a failure of the layer but a
@@ -887,7 +928,9 @@ exhausts a budget that clips the baseline on $44\%$ of CWQ questions.
 
 The three answers do not point the same way, and the chapter does not force them
 to. Navigation is where the accuracy comes from; verification is where the
-precision and the auditability come from; and decomposition, the component the
+auditability comes from, the precision margin belonging to the architecture as a
+whole rather than to any one component this ablation could isolate; and
+decomposition, the component the
 literature treats as straightforwardly beneficial, is the one component this work
 can prove is sometimes harmful.
 
