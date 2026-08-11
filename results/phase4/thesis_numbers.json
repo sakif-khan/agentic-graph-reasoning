@@ -1570,21 +1570,36 @@
  },
  "backtrack_ban_scope": {
   "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
-  "_note": "The third recorded deviation of sec:backtracking: the ban list covers the most recent expansion, the backtracker pops the highest-scoring snapshot. repeat_expansion_passes is exact; pops_below_stack_top is a lower bound (see the docstring). Both are read from the trace, neither from a rerun.",
+  "_note": "The third recorded deviation of sec:backtracking: the ban list covers the most recent expansion, the backtracker pops the highest-scoring snapshot. repeat_expansion_passes and by_reason are exact; pops_below_stack_top is a lower bound (see the docstring). All three are read from the trace, none from a rerun.",
   "webqsp": {
    "backtracks": 63,
    "pops_below_stack_top": 15,
-   "repeat_expansion_passes": 15
+   "repeat_expansion_passes": 15,
+   "by_reason": {
+    "dead_end": 4,
+    "evaluator": 47,
+    "low_score": 12
+   }
   },
   "cwq": {
    "backtracks": 199,
    "pops_below_stack_top": 50,
-   "repeat_expansion_passes": 38
+   "repeat_expansion_passes": 38,
+   "by_reason": {
+    "dead_end": 16,
+    "evaluator": 170,
+    "low_score": 13
+   }
   },
   "total": {
    "backtracks": 262,
    "pops_below_stack_top": 65,
-   "repeat_expansion_passes": 53
+   "repeat_expansion_passes": 53,
+   "by_reason": {
+    "dead_end": 20,
+    "evaluator": 217,
+    "low_score": 25
+   }
   }
  },
  "run_records": {

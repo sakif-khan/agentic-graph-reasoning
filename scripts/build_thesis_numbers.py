@@ -493,6 +493,12 @@ def backtrack_ban_scope():
       earlier -- the repetition the ban list is supposed to make impossible,
       observed directly, with no reconstruction involved.
 
+      by_reason is EXACT. It decomposes the pops by the trigger the backtracker
+      recorded against each one. sec:abl-backtracking quotes the evaluator
+      sub-counts, and the provenance rule at the head of ch:setup requires every
+      number in Chapters 7 to 9 to be derived by this script rather than
+      hand-counted out of the trace, which is why they are computed here.
+
       pops_below_stack_top is a LOWER BOUND. Identifying the popped snapshot
       needs the scores, which the trace does not carry; depth it does carry, and
       the depth series reconstructs exactly (verified against budget.depth on
@@ -504,6 +510,7 @@ def backtrack_ban_scope():
     out = {}
     for ds, rows in _agr_runs():
         pops = below = repeats = 0
+        reasons = {}
         for r in rows:
             stack, depth, seen = [], 0, []
             for t in r["trace"]:
@@ -518,6 +525,7 @@ def backtrack_ban_scope():
                 elif t.get("node") == "backtracker":
                     rd = t["restored_depth"]
                     pops += 1
+                    reasons[t["reason"]] = reasons.get(t["reason"], 0) + 1
                     if stack:
                         if stack[-1] != rd:
                             below += 1
@@ -531,11 +539,19 @@ def backtrack_ban_scope():
             "backtracks": sum(r["budget"]["backtracks"] for r in rows),
             "pops_below_stack_top": below,
             "repeat_expansion_passes": repeats,
+            "by_reason": dict(sorted(reasons.items())),
         }
         assert out[ds]["backtracks"] == pops, (
             "the backtrack counter and the backtracker trace entries disagree")
-    keys = list(next(iter(out.values())))
-    out["total"] = {k: sum(v[k] for v in out.values()) for k in keys}
+        assert sum(reasons.values()) == pops, (
+            "the recorded trigger reasons do not account for every pop, so the "
+            "decomposition is not of the same population as the total")
+    per_ds = list(out.values())
+    keys = [k for k, v in per_ds[0].items() if not isinstance(v, dict)]
+    out["total"] = {k: sum(v[k] for v in per_ds) for k in keys}
+    out["total"]["by_reason"] = {
+        reason: sum(v["by_reason"].get(reason, 0) for v in per_ds)
+        for reason in sorted({r for v in per_ds for r in v["by_reason"]})}
     return out
 
 
@@ -944,9 +960,10 @@ def main():
             "_note": ("The third recorded deviation of sec:backtracking: the ban "
                       "list covers the most recent expansion, the backtracker "
                       "pops the highest-scoring snapshot. "
-                      "repeat_expansion_passes is exact; pops_below_stack_top "
-                      "is a lower bound (see the docstring). Both are read from "
-                      "the trace, neither from a rerun."),
+                      "repeat_expansion_passes and by_reason are exact; "
+                      "pops_below_stack_top is a lower bound (see the "
+                      "docstring). All three are read from the trace, none "
+                      "from a rerun."),
             **backtrack_ban_scope(),
         },
         "run_records": {

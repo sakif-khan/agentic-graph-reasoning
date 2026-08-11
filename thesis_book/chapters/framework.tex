@@ -835,9 +835,11 @@ runs can still be told apart in analysis.
 
 This has three consequences. Repeated experiments cost nothing. A code change
 that is not supposed to alter behaviour can be verified by confirming that a
-rerun is served entirely from cache. And because the key includes the dated
-model snapshot, a silent server-side change to a model alias cannot poison
-previously cached results.
+rerun is served entirely from cache. And because the key includes the model
+string, and the backbone configured here is a dated snapshot rather than an
+alias, a silent server-side change cannot poison previously cached results ---
+a property of the configuration and not of the cache, since an alias would hash
+identically across the substitution it hides.
 
 \section{Design Validation on the Smoke Set}\label{sec:design-validation}
 

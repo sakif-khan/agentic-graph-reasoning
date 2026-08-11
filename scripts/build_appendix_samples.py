@@ -60,9 +60,10 @@ def main():
         "",
         "Every number this thesis reports is computed over the question sets "
         "listed here. \\Cref{sec:test-sets} describes how the two test samples "
-        "were drawn and certified; this appendix records their contents, so "
-        "that a reader can reproduce a reported figure over exactly the "
-        "questions it was computed from.",
+        "were drawn and certified; \\Cref{tab:samples} gives their sizes and "
+        "strata, and the lists below record their contents, so that a reader "
+        "can reproduce a reported figure over exactly the questions it was "
+        "computed from.",
         "",
         "The identifiers are the dataset's own. A CWQ identifier carries the "
         "WebQSP identifier it was derived from as its prefix, which is why "
