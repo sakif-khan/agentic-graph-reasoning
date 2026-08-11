@@ -147,14 +147,16 @@ follow explain each test and the reason for their order.
         \COMMENT{ablation condition}
     \ENDIF
     \STATE $\mathit{adj} \gets \{(h,t),(t,h) : (h,r,t) \in T\}$;\quad
-      $S \gets \emptyset$;\; $P \gets \emptyset$;\; $E \gets \emptyset$
+      $S \gets \emptyset$;\; $P \gets \emptyset$;\;
+      $E \gets \langle\;\rangle$ \COMMENT{$E$ is a sequence}
     \FORALL{$c = \langle h, r, t \rangle \in K$}
       \IF{$h \notin \mu$ \OR $t \notin \mu$}
         \STATE $P \gets P \cup \{c\}$ \COMMENT{endpoint never traversed}
       \ELSIF{$(\mu[h], \mu[t]) \in \mathit{adj}$}
         \STATE $S \gets S \cup \{c\}$;\quad
-          $E \gets E \cup \{\,\theta \in T : \{\theta_h,\theta_t\} =
-          \{\mu[h],\mu[t]\}\,\}$
+          $E \gets E \mathbin{+\mkern-6mu+} \langle\,\theta \in T :
+          \{\theta_h,\theta_t\} = \{\mu[h],\mu[t]\}\,\rangle$
+          \COMMENT{appended, not unioned}
       \ELSIF{$\textsf{verify\_connection}(\mu[h], \mu[t])$}
         \STATE $S \gets S \cup \{c\}$ \COMMENT{no evidence recorded}
       \ELSE
@@ -186,7 +188,7 @@ follow explain each test and the reason for their order.
     single atomic claim through the layer, mirroring \Cref{alg:verify}. Three
     tests are tried in a fixed order and a claim leaves at the first one that
     settles it. The two structural routes are boxed; only the first of them adds
-    to the supporting-triple set, which is why \Cref{sec:output-contract} can
+    to the supporting-triple list, which is why \Cref{sec:output-contract} can
     report evidence for some grounded answers and not others. A claim naming an
     entity the agent never traversed skips both structural routes entirely, since
     the name-to-identifier map is built from traversed triples alone.}
@@ -210,7 +212,8 @@ are collapsed into an
 undirected set of endpoint pairs, and a claim is supported if its endpoint pair
 is in that set. This route is exact, costs nothing beyond a set lookup, and ---
 uniquely among the three --- produces citable evidence: every traversed triple
-joining the pair is added to the supporting-triple set.
+joining the pair is appended to the supporting-triple list. Appended, not
+unioned: \Cref{sec:output-contract} records what that costs.
 
 The second route is the \textsf{verify\_connection} tool
 (\Cref{sec:tool-adjacency}), a single Cypher query asking whether the two
@@ -548,8 +551,9 @@ certified by \textsf{verify\_connection}, which records no evidence. Across all
 the persisted \textsf{n\_supporting\_triples} counter, since the triples
 themselves are exactly what the log does not keep.
 
-Two instrumentation defects in this area are recorded rather than quietly fixed,
-in keeping with the standing rule adopted in \Cref{sec:design-validation}.
+Three instrumentation defects in this area are recorded rather than quietly
+fixed, in keeping with the standing rule adopted in
+\Cref{sec:design-validation}.
 
 The first was a Python falsy-empty-list trap.\label{sec:supporting-triples} The
 answerer substituted the entire traversed set for the supporting triples
@@ -579,6 +583,31 @@ anywhere in this thesis, and no table or figure derives from it. The
 route-by-route counts reported in \Cref{sec:structural-check} come from the tool
 invocation log, which records each \textsf{verify\_connection} call with its
 arguments and result.
+
+The third is a mismatch between \Cref{alg:verify} and the code it describes, and
+it is the counter above that carries the consequence. The algorithm accumulated
+$E$ by set union; the implementation appends. Two claims in one draft that share
+an endpoint pair --- ``X was born in Y'' and ``X died in Y'', decomposed
+separately but resolving to the same two identifiers --- therefore each append
+the same matching triples, and \textsf{n\_supporting\_triples} counts matches
+rather than distinct triples. The algorithm is corrected here to say what the
+code does, since the code is what produced the results.
+
+How often this bites cannot be recovered, and the reason is the defect two
+paragraphs above: the claim endpoints are not persisted either, so there is no
+committed artifact against which to pair them. What can be bounded is the
+opportunity. A duplicate needs two claims matched by the \emph{adjacency} route,
+which is the only route that appends anything --- \textsf{verify\_connection}
+records no evidence and the entailment call appends nothing. Over the $80$
+development records this section reports and the $800$ test questions of
+\Cref{ch:results} --- $908$ verifier firings between them --- $378$ report two or
+more supported claims. That $378$ is an over-count of the exposure rather than a
+measure of it, because the counter it is read from includes claims certified by
+the other two routes.
+So the honest statement is that \textsf{n\_supporting\_triples} is an
+\emph{upper} bound on distinct supporting triples, that the median of $3$ and
+mean of $4.1$ above inherit that, and that nothing else in this thesis reads
+the counter.
 
 \section{A Worked Example}\label{sec:verify-example}
 

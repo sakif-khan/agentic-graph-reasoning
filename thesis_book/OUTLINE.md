@@ -337,7 +337,8 @@ deterministic, and a sequential agent is a divergence amplifier — one flipped 
 planner or evaluator call changes a sub-objective's wording, hence the embedding, hence the
 beam. With n=3 the estimator was pure noise. A tiebreaker was pre-registered before rounds 3
 and 4 (*within 3 matches → take 5.4-mini on longevity*); pooled over all four runs the score
-is **9/12 vs 8/12** — a tie — so the rule fired and 5.4-mini was frozen on 2026-07-12.
+is **9/12 vs 8/12** — one match apart, **not** a tie, but inside the pre-registered
+three-match band — so the rule fired and 5.4-mini was frozen on 2026-07-12.
 &nbsp;&nbsp;&nbsp;&nbsp;*Provenance to state honestly: only round one survives as per-question
 artifacts (`results/phase2/qualify_*_full.jsonl`, 20 records each, written in `"w"` mode and
 therefore overwritten by later rounds) plus `qualify-backbone-log.txt`, which holds round

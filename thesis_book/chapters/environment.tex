@@ -303,7 +303,12 @@ handling paraphrases and misspellings that survive the first two stages.
 
 The cascade is referred to by these names throughout, never as ``tiers'', which
 this thesis reserves for the two-tier groundedness metric of
-\Cref{sec:groundedness-metric}.
+\Cref{sec:groundedness-metric}. That is a rule about this prose and not about the
+code, which does call them tiers: the resolver returns a \textsf{tier} field
+taking the values $1$, $2$ and $3$, and a reader moving between the two will meet
+the collision. \Cref{app:toolapi} declares it where the field is specified,
+rather than leaving the disclaimer above to look like a claim about the
+implementation.
 
 \subsection{Threshold Selection on Development Data}
 

@@ -699,8 +699,12 @@ the handler catches \textsf{(BudgetExhausted, Exception)}, whose first arm is
 unreachable, since the former subclasses the latter. It is the trace entry, which
 stores the exception itself, that tells the two apart. Whether it does so
 correctly is untested by anything in this work: across all $6{,}960$ committed
-runs no handler of this kind fired even once, so every degraded path described in
-this section is specified and never exercised.
+runs no handler of this kind fired even once. The third path is entered on a
+missing draft rather than on an exception, so it needs its own check, and it
+gets the same answer --- every one of the $3{,}690$ committed records that ran
+this graph carries a non-empty draft. Every degraded path described in this
+section is therefore specified and never exercised, which is also why its fact
+window is described here and nowhere in \Cref{ch:results}.
 
 \section{Budgets and Termination Guarantees}\label{sec:budgets}
 
@@ -718,19 +722,23 @@ them.
       below the rule are constructor arguments of \textsf{KGTools} and are
       \emph{not} in that hash --- they are listed here because they bound what
       the agent can see, which makes them budgets in effect if not in
-      implementation.}
+      implementation. Three budgets carry two enforcement sites rather than one;
+      the paragraph after this table says which and why.}
     \label{tab:budget}
     \begin{tabular}{|l|r|L{58mm}|}
       \hline
       \textbf{Parameter} & \textbf{Value} & \textbf{Enforced in} \\
       \hline
-      \textsf{max\_depth} & 4 & \textsf{route\_after\_eval} \\
+      \textsf{max\_depth} & 4 & \textsf{route\_after\_eval} \emph{and}
+      \textsf{route\_after\_verify} \\
       \textsf{beam\_width} & 3 & explorer (slice) \\
       \textsf{max\_anchors} & 5 & explorer (slice) \\
       \textsf{max\_backtracks} & 3 & \textsf{route\_after\_eval} \\
       \textsf{max\_llm\_calls} & 25 & LLM client \\
-      \textsf{max\_verify\_iters} & 2 & \textsf{route\_after\_verify} \\
-      \textsf{max\_seconds} & 300 & \textsf{route\_after\_eval} \\
+      \textsf{max\_verify\_iters} & 2 & \textsf{route\_after\_verify} \emph{and}
+      the verifier \\
+      \textsf{max\_seconds} & 300 & \textsf{route\_after\_eval} \emph{and}
+      \textsf{route\_after\_verify} \\
       \hline
       \textsf{max\_fanout} & 200 & \textsf{get\_neighbors} --- neighbours
       returned per expansion; sets \textsf{truncated} when it binds \\
@@ -968,7 +976,9 @@ independently should not be trusted, and should not be analysed.
       \STATE $E \gets$ top-$\beta$ of $\mathit{scored}$ per anchor, excluding
         $\mathit{ban}$
       \STATE $T \gets T \cup \textsc{GetNeighbors}(E)$;\quad
-        $F \gets$ top-$m$ new entities by score
+        $F \gets$ top-$m$ new entities by score, \textbf{or} $F$ unchanged if
+        that set is empty \COMMENT{the dead-end trigger fires on the same
+        condition and routes away before $F$ is reused}
       \STATE $\sigma \gets \max(\max_{c \in E}\mathit{scored}(c),\;
         \max_{c \in R}\cos(\cdot),\; \max_{c \in R_K}\mathrm{LLM}(\cdot))$
         \COMMENT{signal maximum}
