@@ -36,7 +36,11 @@ completion.
 
 \vspace*{20.0mm}
 
-\begin{minipage}[t]{0.2\textwidth}
+% The date box is sized for the longest month name rather than the current
+% value: at 0.2\textwidth "September 30, 2026" broke after the comma and left an
+% underfull line, so changing the date silently changed the typography.
+\begin{minipage}[t]{0.3\textwidth}
+  \raggedright
   Dhaka\par
   \thesislongdate
 \end{minipage}%

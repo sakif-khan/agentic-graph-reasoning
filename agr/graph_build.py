@@ -6,8 +6,6 @@ from agr.state import AGRState
 from agr.planner import planner_node
 from agr import nodes
 
-from functools import partial
-
 
 def build_graph(llm, tools, scorer, run_config):
     g = StateGraph(AGRState)
