@@ -495,9 +495,10 @@ frozen from the development sweep and not revisited.
 ## Thesis
 
 [thesis_book/buetcsepgthesis.pdf](thesis_book/buetcsepgthesis.pdf) — *Agentic
-Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact Verification and
-Hallucination Mitigation in Large Language Models*, M.Sc. Engg. (CSE),
-Bangladesh University of Engineering and Technology.
+Graph Reasoning: Structural Claim Verification and Component Attribution for
+Multi-Hop Knowledge Graph Question Answering*, M.Sc. Engg. (CSE),
+Bangladesh University of Engineering and Technology. The CASR-registered title
+differs; §1.7 records why, and the change is not yet approved by the department.
 
 To rebuild it you need a TeX distribution with `latexmk`:
 

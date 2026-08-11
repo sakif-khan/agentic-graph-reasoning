@@ -1,4 +1,7 @@
-% Title as registered with CASR (proposal). Revisit before final
-% submission since the implementation deviated from the proposal.
-Agentic Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact
-Verification and Hallucination Mitigation in Large Language Models
+% Title as submitted. The CASR-registered (proposal) title was "Agentic Graph
+% Reasoning: Autonomous Knowledge Graph Navigation for Fact Verification and
+% Hallucination Mitigation in Large Language Models". Sec 1.7 records which of
+% its terms the measurements do not support and why this one replaces it.
+% Departmental approval of the change is still to be obtained.
+Agentic Graph Reasoning: Structural Claim Verification and Component
+Attribution for Multi-Hop Knowledge Graph Question Answering

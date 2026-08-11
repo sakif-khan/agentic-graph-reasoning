@@ -1,7 +1,12 @@
 # Thesis Outline — Table of Contents
 
-**Title:** Agentic Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact
-Verification and Hallucination Mitigation in Large Language Models
+**Title:** Agentic Graph Reasoning: Structural Claim Verification and Component
+Attribution for Multi-Hop Knowledge Graph Question Answering
+
+*(Registered with CASR as "Agentic Graph Reasoning: Autonomous Knowledge Graph
+Navigation for Fact Verification and Hallucination Mitigation in Large Language
+Models". §1.7 records which terms the measurements do not support. Departmental
+approval of the change is still outstanding.)*
 
 **Target:** 60–90 pages of body text. The per-chapter estimates below total **87 pages**
 (front matter is roman-numbered and does not count against the budget).
@@ -769,37 +774,37 @@ wrongful-acceptance class from anecdote to rate)*
 | 3 Related Work | 7 | 8 | 8 |
 | 4 The Knowledge Environment | 10 | 9 | 10 |
 | 5 The AGR Framework | 11 | 13 | 18 |
-| 6 The Structural Verification Layer | 8 | 13 | 15 |
+| 6 The Structural Verification Layer | 8 | 13 | 16 |
 | 7 Experimental Setup | 11 | 15 | 20 |
 | 8 Results | 12 | 12 | 18 |
 | 9 Error Analysis and Discussion | 10 | 15 | 19 |
 | 10 Conclusion | 5 | 6 | 8 |
-| **Body total** | **87** | **104** | **130** |
-| References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
+| **Body total** | **87** | **104** | **131** |
+| References + Index + Appendices | ~12 | 6 + appendices | 6 + 30 |
 
-**The body is 130 pages against a 60–90 target — 44% over the 90 ceiling.** Body runs pages 1–130;
-References begin on 131, the index on 136; the document is 182 pages including front
+**The body is 131 pages against a 60–90 target — 46% over the 90 ceiling.** Body runs pages 1–131;
+References begin on 132, the index on 137; the document is 183 pages including front
 matter and five appendices.
 
 The decision to cross the ceiling was taken at 104 pages and recorded so it would not
 be revisited by accident: *cross the ceiling if needed.* That decision was made
-against a smaller number. The 26 pages added since fall in Chapter 5 (+5), Chapter 7
-(+5), Chapters 8 and 9 (+6 and +4), Chapters 6 and 10 (+2 each), and one page each in
+against a smaller number. The 27 pages added since fall in Chapter 5 (+5), Chapters 7
+and 8 (+5 and +6), Chapters 6 and 9 (+3 and +4), Chapter 10 (+2), and one page each in
 1 and 4 — corrections, scoping notes and disclosure statements added in review, not
 new material. **Re-confirm before submission whether the department enforces a hard
 cap.** If it does, the compression targets are unchanged: Chapters 2 and 3 first,
 never Chapter 9.
 
-Where the 43 pages over budget went, and why each is defensible if questioned.
+Where the 44 pages over budget went, and why each is defensible if questioned.
 The `r1` column is the round-1 overrun measured at 104 pages; `now` is measured at
-130. The difference between the two columns is review work — corrections, scoping
+131. The difference between the two columns is review work — corrections, scoping
 notes, and baseline-configuration disclosures — not new material.
 
 | Chapter | r1 | now | Reason |
 | --- | ---: | ---: | --- |
 | 9 Error Analysis | +5 | **+9** | The census is a population of 259, not a sample; three named mechanism findings, three counted defect families, the benchmark-defect provenance argument. Grew by the union-of-subgraphs and name-keying threats, the Phoenician case, the corrected 57-question exclusion arithmetic, and the verifier-unit restatement in §9.5.4. |
 | 7 Setup | +4 | **+9** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note, the hedge-counting convention, the two baseline candidate-width disclosures (§7.4.3 fanout cap, §7.4.4 relation/neighbour caps), and the reconciliation of the sample ceiling against the validation gate's population ceiling (§7.2.3). |
-| 6 Verification | +5 | **+7** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1, the post-hoc-verification positioning, the supporting-triples persistence gap, and the test-set correction to the repair-route claim. |
+| 6 Verification | +5 | **+8** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1, the post-hoc-verification positioning, the supporting-triples persistence gap, the test-set correction to the repair-route claim, and §6.5's restatement of what the layer's case can rest on once Chapter 8 declines to award it groundedness or precision. |
 | 8 Results | +0 | **+6** | Grew entirely in review: §8.4, the clipped/unclipped split of the agentic-baseline margin, the per-stratum radius qualification, the token-vs-call frontier correction, and the withdrawal of the verifier's precision attribution — precision and recall columns in Table 8.8 plus the multiple-comparison policy in §8.8.5. |
 | 5 Framework | +2 | **+7** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, the three implementation deviations (two σ, one ban-list), §5.10's provenance disclosure, and the corrected account of which budgets are enforced where. |
 | 10 Conclusion | +1 | **+3** | Future work is two-tiered (earned repairs vs. architectural), which the census made possible; plus the equal-width and two-hop baseline experiments and two added limitations. |
