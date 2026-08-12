@@ -166,11 +166,11 @@ resolve at equal width. Equalising the widths is specified in
 
 \textbf{The static graph baseline retrieves one logical hop, and samples it.} Its
 decay across hop strata is therefore partly a property of its retrieval radius and
-not only of static retrieval as a paradigm, and \Cref{sec:graphrag-scope} scopes
+not only of static retrieval as a paradigm, and \Cref{sec:baseline-graphrag} scopes
 what may be concluded from it accordingly. A second bound compounds the first: it
 takes at most $100$ edges per topic entity with no ordering imposed, and on
-$72.5\%$ of the questions at least one topic entity exceeds that degree
-(\Cref{sec:baseline-graphrag}), so on those it answers from an arbitrary sample
+$72.5\%$ of the questions at least one topic entity exceeds that degree, so on
+those it answers from an arbitrary sample
 of the neighbourhood. Both bounds
 depress it, and neither is a property of static retrieval as such. The per-stratum argument does not rest on it: the
 comparator that cannot represent a chain \emph{at any radius} is Vector-RAG, whose
@@ -305,7 +305,7 @@ apart --- report the split as \Cref{sec:tog-split} does rather than the aggregat
 \textbf{Widen the static retriever's radius, and order its fanout.} The static
 graph baseline follows GraphRAG~\cite{edge2024local} in retrieving
 structured context in one shot, and expands one logical hop
-(\Cref{sec:graphrag-scope}), so
+(\Cref{sec:baseline-graphrag}), so
 the cleanest reading of its collapse on deep CWQ questions --- that a fixed radius
 cannot hold a chain --- is confounded with the particular radius chosen. The
 experiment that separates them is cheap and specified: re-run the same baseline
@@ -313,7 +313,7 @@ with neighbours expanded a second time, everything else frozen, and report the
 same strata. Two outcomes are informative and neither is bad for this thesis. If
 CWQ \textsf{h2} recovers substantially, the honest conclusion is that the reported
 gap over static retrieval on that stratum was partly a radius artefact, and the
-paradigm claim narrows to what \Cref{sec:graphrag-scope} already states. If it
+paradigm claim narrows to what that section already states. If it
 does not recover, or recovers while precision falls as the window fills with
 hub noise, the paradigm claim is strengthened by an experiment rather than by an
 implementation detail. The same pass should impose an ordering on the fanout cap

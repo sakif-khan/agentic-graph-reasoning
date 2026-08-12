@@ -334,13 +334,15 @@ top of the file if you built a different graph.
 python -m pytest
 ```
 
-25 tests, all of which should pass on a complete install:
+25 tests, all of which should pass on a complete install. `pytest.ini` sets
+`addopts = -m "not integration"`, so a bare run is the offline selection and a
+green result does not mean the whole suite ran — ask for the rest explicitly:
 
-| Selection | Command | Needs |
-| --- | --- | --- |
-| Everything | `python -m pytest` | Neo4j running, `.env` complete |
-| Offline only | `python -m pytest -m "not integration"` | `.env` complete |
-| Integration only | `python -m pytest -m integration` | Neo4j running |
+| Selection | Command | Runs | Needs |
+| --- | --- | ---: | --- |
+| Offline only (the default) | `python -m pytest` | 12 | `.env` complete |
+| Everything | `python -m pytest -m ""` | 25 | Neo4j running, `.env` complete |
+| Integration only | `python -m pytest -m integration` | 13 | Neo4j running |
 
 The `integration` marker is declared in `pytest.ini` and covers the 13 tests
 that talk to Neo4j. The other 12 need no services: five pure unit tests over plan

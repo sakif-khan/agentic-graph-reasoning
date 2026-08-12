@@ -182,7 +182,7 @@ description to different degrees. Vector-RAG's context is a single verbalised
 triple, and one triple cannot contain a chain at any retrieval quality or any
 radius; that is a paradigm limit \Cref{sec:baselines} predicted at implementation
 time and \Cref{sec:hop-results} demonstrates per stratum. GraphRAG's context is a
-one-logical-hop neighbourhood (\Cref{sec:graphrag-scope}), so its CWQ number is
+one-logical-hop neighbourhood (\Cref{sec:baseline-graphrag}), so its CWQ number is
 the weaker evidence of the two: it confounds the paradigm with the radius, and
 part of the fall is attributable to a boundary chosen in advance rather than to
 static retrieval as such. The claim rests on the first baseline.
@@ -385,14 +385,15 @@ offer. This is the cell the multi-hop argument rests on, because a one-triple
 context is chain-incapable by construction rather than by configuration.
 
 \textbf{GraphRAG's WebQSP inversion has two causes, and only one of them was
-originally named.}\label{sec:hub-noise} It scores $0.30$ at \textsf{h1} against
+originally named.} It scores $0.30$ at \textsf{h1} against
 $0.44$ at \textsf{h2}. Part of that is hub noise: popular one-hop entities have
 large neighbourhoods, and the answer is drowned in the reranked window --- or,
 more exactly, drowned \emph{or absent}, since the retrieval step samples at most
 $100$ edges per topic entity without an ordering, and $55.1\%$ of its topic
 entities carry more edges than that (\Cref{sec:baseline-graphrag}). Which of the two applies to any given question is
 not recoverable from the run records. But the inversion also marks the
-edge of the retrieval radius (\Cref{sec:graphrag-scope}). WebQSP's \textsf{h2}
+edge of the retrieval radius, which the same section scopes as a bound on this
+implementation rather than on static retrieval as such. WebQSP's \textsf{h2}
 stratum is largely mediator paths, which a one-hop expansion reaches by hopping
 through the mediator, whereas CWQ's \textsf{h2} is genuine composition, which it
 cannot reach --- $0.44$ against $0.16$ on nominally the same stratum depth. Read
@@ -859,7 +860,7 @@ budget: where the shared cap lets it finish, it is marginally ahead on both
 datasets, so the claim this thesis defends is that guided search completes under
 a realistic budget where beam search does not (\Cref{sec:tog-split}). The
 static graph baseline's per-stratum decay is not offered as evidence here,
-because its retrieval radius confounds it (\Cref{sec:graphrag-scope}).
+because its retrieval radius confounds it (\Cref{sec:baseline-graphrag}).
 
 One further bound belongs with the headline rather than only with the baseline
 description. Think-on-Graph prunes to the widths of the algorithm as published,
@@ -887,7 +888,7 @@ is the evidence that it would be wrong.
 
 \emph{Second, the precision advantage belongs to the architecture, and this
 experiment cannot award any of it to the layer.} AGR's assertion precision
-exceeds Think-on-Graph's by $12$ points on CWQ ($67.9\%$ against $56.1\%$) and
+exceeds Think-on-Graph's by $11.8$ points on CWQ ($67.9\%$ against $56.1\%$) and
 its per-question precision by $0.13$ and $0.08$, at a lower hedge rate on
 WebQSP --- so it is not bought with abstention. That margin is real. What it is
 not is evidence for the verification layer, because the one condition that

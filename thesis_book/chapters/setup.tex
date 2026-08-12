@@ -429,8 +429,8 @@ system uses, and every one of the $711$ names matches exactly one node at the
 resolver's exact-match stage (\Cref{sec:entity-resolution}), so the two systems necessarily
 seed the same nodes and the tool log records which. The generator asserts that
 property rather than assuming it: if any topic name ever resolved ambiguously,
-the build would fail rather than quietly substitute a different population. The consequence for \Cref{sec:hub-noise}'s diagnosis
-is direct and is stated there: the answer may not merely be outranked in the
+the build would fail rather than quietly substitute a different population. The consequence for the hub-noise diagnosis
+in \Cref{sec:hop-results} is direct and is stated there: the answer may not merely be outranked in the
 reranked window, it may never have entered the sample the reranker saw. Because
 the ordering is unspecified rather than seeded, this is also the one place in the
 harness where a re-run is not guaranteed to reproduce the same retrieved set,
@@ -461,7 +461,7 @@ over the mediator-expanded path whenever both connect the same pair. The bias is
 against this baseline on exactly the questions mediator expansion was added to
 serve, so it is disclosed here rather than left in the code.
 
-\textbf{What this baseline licenses, and what it does not.}\label{sec:graphrag-scope}
+\textbf{What this baseline licenses, and what it does not.}
 A one-hop retriever cannot contain a two-hop chain, so its decay across hop
 strata (\Cref{sec:hop-results}) is partly a property of the radius and not only
 of the paradigm. That distinction has to be drawn, because the alternative is to

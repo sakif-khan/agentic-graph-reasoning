@@ -104,7 +104,7 @@ a groundedness one. Prior agentic systems emit whatever the final LLM call produ
 the traversed context, with no check that each asserted entity is supported* as an answer
 *— which surfaces as over-assertion on multi-answer questions and as grounded-but-wrong
 answers. Point forward to the precision gap in §8.2. Do not claim prior systems
-hallucinate structurally: §8.5 shows they do not.)*
+hallucinate structurally: §8.6 shows they do not.)*
 &nbsp;&nbsp;&nbsp;&nbsp;1.3.2 Unquantified Contribution of Individual Agentic Mechanisms
 &nbsp;&nbsp;&nbsp;&nbsp;1.3.3 Accuracy Reported Without Cost
 

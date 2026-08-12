@@ -5,24 +5,33 @@
 % PG/buetcsepgthesis.sty). Confirm these with the department before submission.
 % Diffed line by line against the template; the list below is complete.
 %
-% Two CHANGE HOW THE DOCUMENT RENDERS against an unmodified template build,
-% rather than only adding capability, and a third changes PDF navigation:
-%   1. \fancyhead[L] wraps \rightmark in \nouppercase, so running heads keep
-%      the capitalisation of the section titles instead of being upcased.
-%      This is the only template line not carried over verbatim.
-%   2. \section, \subsection and \subsubsection are redefined -- new lines in
-%      this file, but they override report.cls. The definitions are report.cls's
-%      own with \raggedright appended, so long headings break on words rather
-%      than being justified to the margin.
+% Three deviations were reviewed; one was withdrawn and two are kept, each for a
+% reason that was measured rather than assumed.
 %
-% One is a BUG FIX to an inherited defect rather than a style choice:
-%   3. \RequirePackage{setspace} moves from after hyperref to before it. Both
-%      redefine \@footnotetext and the later load discards the earlier one, so
-%      in the template's order hyperref's footnote anchors are never written and
-%      every footnote hyperlink lands on page 1. \onehalfspacing still fires at
-%      its original position, and the build is identical page for page, so this
-%      changes navigation only. The template has the same defect; a build with
-%      no footnotes would not show it.
+% WITHDRAWN. \fancyhead[L] no longer wraps \rightmark in \nouppercase, so
+%   running heads are upcased exactly as the template sets them. Every template
+%   line is now carried over verbatim.
+%
+% KEPT, a BUG FIX to an inherited defect rather than a style choice:
+%   \RequirePackage{setspace} moves from after hyperref to before it. Both
+%   redefine \@footnotetext and the later load discards the earlier one, so in
+%   the template's order hyperref's footnote anchors are never written. Measured
+%   both ways on this document: in the template's order the footnote
+%   destinations resolve to the cover page, and in this order they resolve to
+%   the pages the footnotes are on. Neither build reports an error or a warning,
+%   which is why the defect survives in the template -- and a build with no
+%   footnotes would not show it at all. \onehalfspacing still fires at its
+%   original position below, so only the load order moves; the spacing and the
+%   pagination are unchanged.
+%
+% KEPT, and the one remaining change to how the document renders:
+%   \section, \subsection and \subsubsection are redefined -- new lines in this
+%   file, but they override report.cls. The definitions are report.cls's own
+%   with \raggedright appended, so long headings break on words rather than
+%   being justified to the margin. No heading text, spacing or numbering
+%   differs. Removing them was tried and reverted: it costs three underfull
+%   hboxes, at badness 2173, 2080 and 3724, on the Sec 1.2, 1.5.1 and 9.8
+%   titles, which is a visibly stretched first line on each of the three.
 %
 % Everything else is additive: package loads (microtype, listings, multicol,
 % tikz/pgfplots, cleveref, makeidx), the L{} column type, the verbatimblock
@@ -147,12 +156,14 @@
 \RequirePackage{array}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
-% Section headings, likewise. The standard classes typeset headings justified,
-% so a title long enough to wrap stretches its first line. These definitions
-% are report.cls's own, with \raggedright appended to the style argument; the
-% spacing above and below each heading is unchanged. \paragraph and
-% \subparagraph are deliberately left alone: they run in with the text that
-% follows, and \raggedright there would unjustify that whole paragraph.
+% Section headings. The standard classes typeset headings justified, so a title
+% long enough to wrap stretches its first line; see the deviation note at the
+% top of this file for what removing these was measured to cost. These
+% definitions are report.cls's own with \raggedright appended to the style
+% argument; the spacing above and below each heading is unchanged, and no
+% heading text differs. \paragraph and \subparagraph are deliberately left
+% alone: they run in with the text that follows, and \raggedright there would
+% unjustify that whole paragraph.
 \renewcommand\section{\@startsection {section}{1}{\z@}%
                                      {-3.5ex \@plus -1ex \@minus -.2ex}%
                                      {2.3ex \@plus.2ex}%
@@ -432,7 +443,7 @@
 \renewcommand{\footrulewidth}{0.0mm}
 \setlength{\headheight}{15.0pt}
 \fancyheadoffset[R]{0.075\textwidth}
-\fancyhead[L]{\slshape \nouppercase{\rightmark}}
+\fancyhead[L]{\slshape \rightmark}
 \fancyhead[R]{\textbf{\thepage}}
 
 % Starting materials

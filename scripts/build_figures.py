@@ -227,23 +227,29 @@ def tog_split_table(d):
            r"\textbf{Dataset} & \textbf{Subset} & \textbf{$n$} & "
            r"\textbf{ToG} & \textbf{AGR} & \textbf{$\Delta$} \\",
            r"\hline"]
+    # The delta is taken between the *rounded* columns, not between the full
+    # precision values, so that a reader subtracting the two printed numbers
+    # gets the printed difference. Differencing first puts WebQSP's clipped row
+    # at +0.479 beside columns that read 0.675 and 0.197.
     for ds, label in (("webqsp", "WebQSP"), ("cwq", "CWQ")):
         b = s[ds]
         for key, sub in (("tog_finished", "ToG ran to completion"),
                          ("tog_clipped", "ToG clipped by the cap")):
             r = b[key]
+            tog = round(r["tog_hits_at_1"], 3)
+            agr = round(r["agr_hits_at_1"], 3)
             out.append(r"%s & %s & %d & %.3f & %.3f & $%+.3f$ \\"
                        % (label if key == "tog_finished" else "", sub,
-                          r["n"], r["tog_hits_at_1"], r["agr_hits_at_1"],
-                          r["agr_hits_at_1"] - r["tog_hits_at_1"]))
+                          r["n"], tog, agr, agr - tog))
         agg_t = (b["tog_finished"]["n"] * b["tog_finished"]["tog_hits_at_1"]
                  + b["tog_clipped"]["n"] * b["tog_clipped"]["tog_hits_at_1"])
         agg_a = (b["tog_finished"]["n"] * b["tog_finished"]["agr_hits_at_1"]
                  + b["tog_clipped"]["n"] * b["tog_clipped"]["agr_hits_at_1"])
         n = b["n_questions"]
+        tog_c = round(agg_t / n, 3)
+        agr_c = round(agg_a / n, 3)
         out.append(r"& \emph{combined} & %d & \emph{%.3f} & \emph{%.3f} & "
-                   r"$\mathbf{%+.3f}$ \\" % (n, agg_t / n, agg_a / n,
-                                             (agg_a - agg_t) / n))
+                   r"$\mathbf{%+.3f}$ \\" % (n, tog_c, agr_c, agr_c - tog_c))
         out.append(r"\hline")
     out += [r"\end{tabular}", ""]
     return "\n".join(out)

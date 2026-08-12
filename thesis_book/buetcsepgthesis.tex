@@ -32,19 +32,19 @@
 
 \usepackage{buetcsepgthesis}
 
-% Uncomment the following line if you need to write in Bangla
-% \usepackage{usebangla}
-
 % Uncomment any of the following lines should you need to
 % suppress the LOF, or LOT or LOA
 
-% \suppresslistoffigures 
+% \suppresslistoffigures
 % \suppresslistoftables
 % \suppresslistofalgorithms
 
-% Uncomment the following if you want to insert a dedication page. Put
-% the appropraite material in inputs/buetcsepgthesisdedication.tex.
-% \insertdedicationpage
+% The template's optional scaffolding is not carried here: this thesis has no
+% dedication page and no Bangla, so usebangla.sty and
+% inputs/buetcsepgthesisdedication.tex were removed along with the template's
+% demo chapters. All of them survive unmodified under thesis_templates/Thesis
+% Template PG/; restoring one means copying it back and uncommenting its call.
+% The \insertdedicationpage macro itself still lives in the .sty, untouched.
 
 % For index creation, comment this out if you do not want to create an
 % index
@@ -86,13 +86,5 @@
 \input{appendices/samples.tex}
 \input{appendices/annotation.tex}
 \input{appendices/implementation.tex}
-
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Template demo files, kept for reference but no longer input:
-%   buetcsepgthesisintroduction.tex, buetcsepgthesisciteexamples.tex,
-%   buetcsepgthesisanotherchapter.tex, buetcsepgthesisindexcreation.tex,
-%   buetcsepgthesischapterwithmathintitle.tex, buetcsepgthesisalgorithms.tex,
-%   buetcsepgthesiscodes.tex, banglaexample.tex
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}

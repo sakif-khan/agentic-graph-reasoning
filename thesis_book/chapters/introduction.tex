@@ -145,8 +145,10 @@ chain, a container where the question asked for a member, or one of several
 plausible neighbours chosen arbitrarily. A system may equally assert many
 entities where the question admits few, which inflates recall at the cost of
 precision. A system that verifies retrieval but never verifies assertion cannot
-see either failure, and both surface as a measurable precision gap against a
-system that does check (\Cref{sec:webqsp-results}).
+see either failure, and both surface as a measurable precision gap between
+systems (\Cref{sec:webqsp-results}). That gap is what motivates a check; it is
+not by itself evidence for one, and \Cref{sec:ablations} is where this thesis
+asks whether the check proposed here is what produces it.
 
 Chain-of-Verification~\cite{dhuliawala2024chain} and multi-agent
 debate~\cite{du2024improving} establish that post-hoc self-checking reduces
