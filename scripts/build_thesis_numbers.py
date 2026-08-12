@@ -14,6 +14,7 @@ from pathlib import Path
 
 from agr.baselines.tog import MAX_NEIGHBORS, MAX_RELATIONS
 from agr.baselines.graphrag import StaticGraphRAG
+from agr.budget import BudgetConfig
 from agr.kg_tools import KGTools
 
 P4 = Path("results/phase4")
@@ -476,6 +477,66 @@ def verifier_route():
     return out
 
 
+def budget_binding():
+    """Which of AGR's own budgets bind on test, and which one never does.
+
+    sec:tog-split reports that the shared call cap clips the agentic baseline
+    and never clips AGR. That is true, and it is the comparison the efficiency
+    finding rests on -- but the call cap is one of seven budgets in tab:budget,
+    and the unqualified form of the sentence ("never exhausts a budget") is
+    false: the depth cap terminates a quarter of test runs. sec:repair and
+    sec:verify-example already describe runs ending that way, so the unqualified
+    form contradicted two earlier sections as well as these records.
+
+    Two units, and they differ:
+
+      refused   the meter DENIED a request -- budget.exhausted, which is what
+                BudgetMeter.can() appends to. This is the unit tab:tog-split's
+                caption calls the authority for clipping, and it is the one to
+                quote.
+      at_cap    the counter merely REACHED the ceiling. A run can spend its last
+                permitted backtrack on the step that finishes it, so at_cap
+                exceeds refused for backtracks. The two agree exactly for depth
+                and verify_iters.
+
+    The caps come from BudgetConfig rather than being restated, for the reason
+    given at _default above.
+    """
+    caps = {"depth": _default(BudgetConfig, "max_depth"),
+            "backtracks": _default(BudgetConfig, "max_backtracks"),
+            "verify_iters": _default(BudgetConfig, "max_verify_iters"),
+            "llm_calls": _default(BudgetConfig, "max_llm_calls")}
+    # meter.can() names the resource, the snapshot names the counter
+    resource = {"depth": "depth", "backtracks": "backtrack",
+                "verify_iters": "verify", "llm_calls": "llm"}
+    out = {"_caps": caps}
+    pooled = {k: {"refused": 0, "at_cap": 0} for k in caps}
+    n_pooled = 0
+    for ds, rows in _agr_runs():
+        block = {"n_questions": len(rows)}
+        for k, cap in caps.items():
+            refused = sum(1 for r in rows
+                          if resource[k] in (r["budget"].get("exhausted") or []))
+            at_cap = sum(1 for r in rows if r["budget"].get(k, 0) >= cap)
+            block[k] = {"refused": refused, "at_cap": at_cap,
+                        "refused_pct": round(100 * refused / len(rows), 1)}
+            pooled[k]["refused"] += refused
+            pooled[k]["at_cap"] += at_cap
+        n_pooled += len(rows)
+        out[ds] = block
+    out["both"] = {"n_questions": n_pooled, **{
+        k: {**v, "refused_pct": round(100 * v["refused"] / n_pooled, 1)}
+        for k, v in pooled.items()}}
+    assert out["both"]["llm_calls"]["refused"] == 0, \
+        "AGR refused a model call on test: sec:tog-split's claim no longer holds"
+    assert out["both"]["llm_calls"]["at_cap"] == 0, \
+        "AGR reached the call cap on test: sec:tog-split's claim no longer holds"
+    for k in ("depth", "verify_iters"):
+        assert out["both"][k]["refused"] == out["both"][k]["at_cap"], \
+            f"{k}: refused and at_cap diverged; the docstring's claim is stale"
+    return out
+
+
 def backtrack_ban_scope():
     """How far the ban list reaches, against how far the backtracker jumps.
 
@@ -585,19 +646,45 @@ def run_record_census():
                    if not p.name.endswith("_tools.jsonl"))
     n = nonzero = 0
     per_file = {}
+    # app:self-describing claims four stamps on every record RunLogger writes,
+    # and the system name on the reported runs only. Counted, not asserted:
+    # RunConfig does not carry the system name -- the phase-4 runners add the key
+    # and the phase-3 sweep does not -- so the two phases differ and the appendix
+    # says which is which.
+    STAMPS = ("backbone", "budget_hash", "run_config", "git")
+    desc = {"phase3": {"n": 0, "all_four_stamps": 0, "run_config_names_system": 0},
+            "phase4": {"n": 0, "all_four_stamps": 0, "run_config_names_system": 0}}
     for p in files:
         rows = 0
+        phase = "phase4" if "phase4" in p.as_posix() else "phase3"
         for line in open(p, encoding="utf-8"):
             n += 1
             rows += 1
-            if json.loads(line)["budget"].get("reasoning_tokens"):
+            r = json.loads(line)
+            if r["budget"].get("reasoning_tokens"):
                 nonzero += 1
+            desc[phase]["n"] += 1
+            if all(s in r for s in STAMPS):
+                desc[phase]["all_four_stamps"] += 1
+            if "system" in (r.get("run_config") or {}):
+                desc[phase]["run_config_names_system"] += 1
         per_file[p] = rows
     assert nonzero == 0, (
         f"{nonzero} records carry a non-zero reasoning_tokens, so the cache's "
         f"replay gap is no longer harmless and sec:instrumentation is wrong")
+    for ph, v in desc.items():
+        assert v["all_four_stamps"] == v["n"], (
+            f"{ph}: {v['n'] - v['all_four_stamps']} records lack one of "
+            f"{STAMPS}, so app:self-describing's first sentence is wrong")
+    assert desc["phase4"]["run_config_names_system"] == desc["phase4"]["n"], (
+        "a phase-4 record does not name its system; app:self-describing scopes "
+        "that claim to exactly these runs")
+    assert desc["phase3"]["run_config_names_system"] == 0, (
+        "a phase-3 record now names its system; app:self-describing says none "
+        "of them do and the sweep would no longer need naming as the exception")
     return {"n_files": len(files), "n_records": n,
             "records_with_nonzero_reasoning_tokens": nonzero,
+            "self_describing": desc,
             "smoke_runs_short": {p.name: c for p, c in sorted(per_file.items())
                                  if p.name.startswith("smoke20_") and c < 20}}
 
@@ -970,6 +1057,19 @@ def main():
                       "sec:verifier-errors."),
             **verifier_route(),
         },
+        "budget_binding": {
+            "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
+            "_note": ("Which of AGR's seven budgets actually bind on test. The "
+                      "call cap never does, which is what sec:tog-split and its "
+                      "restatements in sec:findings, sec:discussion and "
+                      "sec:summary compare against the baseline; the depth cap "
+                      "binds on a quarter of questions, which is why those "
+                      "sentences name the call budget rather than 'a budget'. "
+                      "Quote refused, not at_cap -- the two differ for "
+                      "backtracks, for the reason tab:tog-split's caption "
+                      "gives."),
+            **budget_binding(),
+        },
         "backtrack_ban_scope": {
             "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
             "_note": ("The third recorded deviation of sec:backtracking: the ban "
@@ -983,7 +1083,13 @@ def main():
         },
         "run_records": {
             "_source": "results/phase3/*.jsonl + results/phase4/**/*.jsonl",
-            "_note": ("Every committed agent run in the two phases the thesis "
+            "_note": ("self_describing backs app:self-describing: all four "
+                      "stamps on every record of both phases, the system name "
+                      "on phase 4 only, because the runner adds that key and "
+                      "the phase-3 sweep does not. The phase-2 qualification "
+                      "runs are outside these globs entirely -- they predate "
+                      "RunLogger and the appendix names them as the exception. "
+                      "Every committed agent run in the two phases the thesis "
                       "reports, tool sidecars excluded. Backs the "
                       "reasoning_tokens claim in sec:instrumentation and "
                       "app:implementation, which was quoted over the phase-4 "

@@ -55,15 +55,50 @@ def normalise(text):
     return " ".join(text.split())
 
 
+# The appendix opens by asserting two properties of the whole set, and a new
+# template can falsify either one without changing any template this checker
+# already compares -- so verbatim reproduction is not enough to keep that
+# paragraph true. Both are checked over every template above.
+#
+#   1. No template carries a configuration constant. This is what lets one
+#      cached response be shared across every condition of the alpha--tau sweep.
+#   2. Exactly one template carries a budget figure, and it is EVAL_PROMPT,
+#      whose remaining depth and backtracks are substituted at send time. The
+#      appendix names it as the sole exception and says why a model that ignores
+#      the figures changes nothing.
+CONFIG_CONSTANT = re.compile(r"\balpha\b|\btau\b|\{alpha\}|\{tau\}", re.I)
+BUDGET_FIGURE = re.compile(
+    r"budget|d_left|b_left|max_depth|max_backtracks|max_llm_calls", re.I)
+BUDGET_EXCEPTION = "EVAL_PROMPT"
+
+
+def check_set_properties(bodies):
+    """The two set-level claims Appendix A's opening paragraph makes."""
+    problems = []
+    named = sorted(n for n, b in bodies.items() if CONFIG_CONSTANT.search(b))
+    if named:
+        problems.append(
+            f"a template names a configuration constant: {', '.join(named)}. "
+            f"Appendix A's first property, and the cache argument resting on "
+            f"it, no longer hold.")
+    carriers = sorted(n for n, b in bodies.items() if BUDGET_FIGURE.search(b))
+    if carriers != [BUDGET_EXCEPTION]:
+        problems.append(
+            f"templates carrying a budget figure: {carriers or 'none'}; "
+            f"Appendix A says exactly one does and names {BUDGET_EXCEPTION}.")
+    return problems
+
+
 def main():
     tex = normalise(APPENDIX.read_text(encoding="utf-8"))
-    missing, ok = [], 0
+    missing, ok, bodies = [], 0, {}
 
     for name, module in PROMPTS.items():
         body = extract(module, name)
         if body is None:
             missing.append(f"{name}: not found in {module}")
             continue
+        bodies[name.split("@")[0]] = body
         if normalise(body) in tex:
             ok += 1
         else:
@@ -71,14 +106,20 @@ def main():
             missing.append(f"{name} ({module}) is not reproduced in the "
                            f"appendix\n      starts: {head}...")
 
+    problems = check_set_properties(bodies)
+
     print(f"prompt templates checked : {len(PROMPTS)}")
     print(f"reproduced verbatim      : {ok}")
+    print(f"set properties checked   : 2 (no config constant; one budget "
+          f"carrier, {BUDGET_EXCEPTION})")
     for m in missing:
         print(f"  MISMATCH {m}")
-    if missing:
+    for p in problems:
+        print(f"  PROPERTY {p}")
+    if missing or problems:
         print("\nAppendix A is out of date with agr/. Update it before building.")
         return 1
-    print("Appendix A matches the source.")
+    print("Appendix A matches the source, and its two set properties hold.")
     return 0
 
 

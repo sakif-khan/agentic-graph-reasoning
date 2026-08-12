@@ -565,6 +565,15 @@ same graceful degradation --- and it is the efficiency finding rather than a
 caveat on it: under an identical budget, AGR converts its calls into correct
 answers at roughly twice the rate.
 
+Never reaching the call cap is not the same as running unbounded, and the
+distinction matters because the rest of this thesis restates this result. AGR's
+own budgets bind, the depth cap of \Cref{tab:budget} hardest: the meter refuses a
+deeper expansion on $25.6\%$ of test questions, against $6.2\%$ for backtracks
+and $1.9\%$ for repair iterations. \Cref{sec:repair} and \Cref{sec:verify-example}
+each narrate a run that ends that way. What the clip column establishes is the
+narrower and more useful thing --- that of the two systems run under one shared
+call budget, that budget truncates only one of them.
+
 \subsection{The Accuracy--Cost Frontier}
 
 \begin{figure}[!tb]
@@ -943,7 +952,7 @@ should be \emph{applied} rather than about whether it works. Backtracking,
 verification, and the $\alpha$-blend show no detectable effect at $n \approx 200$,
 for the different reasons \Cref{sec:ablations} separates. On cost, the whole
 apparatus runs at half the language-model calls of the agentic baseline and never
-exhausts a budget that clips the baseline on $44\%$ of CWQ questions.
+exhausts the call budget that clips the baseline on $44\%$ of CWQ questions.
 
 The three answers do not point the same way, and the chapter does not force them
 to. Navigation is where the accuracy comes from; verification is where the

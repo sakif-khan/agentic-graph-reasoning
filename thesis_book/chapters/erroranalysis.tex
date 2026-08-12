@@ -751,8 +751,10 @@ Agency buys the deep tail. On CWQ the accuracy of the agentic system \emph{rises
 across hop strata while every static system decays, and it buys that at roughly an
 order of magnitude in tokens over one-shot retrieval. Against the other agentic
 system it buys the same accuracy for half the language-model calls, and never
-exhausts a budget that clips the baseline on $44\%$ of multi-hop questions --- the
-difference between a guided search and a blind one, priced.
+exhausts the call budget that clips the baseline on $44\%$ of multi-hop questions
+--- the difference between a guided search and a blind one, priced. Its own
+budgets do bind, the depth cap hardest (\Cref{sec:efficiency}); the claim is
+about the shared cap both systems were run under.
 
 What it costs, beyond tokens, is a longer failure surface. Every mechanism in this
 chapter except \textsf{kg\_gap} and the benchmark defects is a failure the static

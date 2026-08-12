@@ -1568,6 +1568,85 @@
    "repaired_to_grounded": 13
   }
  },
+ "budget_binding": {
+  "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
+  "_note": "Which of AGR's seven budgets actually bind on test. The call cap never does, which is what sec:tog-split and its restatements in sec:findings, sec:discussion and sec:summary compare against the baseline; the depth cap binds on a quarter of questions, which is why those sentences name the call budget rather than 'a budget'. Quote refused, not at_cap -- the two differ for backtracks, for the reason tab:tog-split's caption gives.",
+  "_caps": {
+   "depth": 4,
+   "backtracks": 3,
+   "verify_iters": 2,
+   "llm_calls": 25
+  },
+  "webqsp": {
+   "n_questions": 400,
+   "depth": {
+    "refused": 66,
+    "at_cap": 66,
+    "refused_pct": 16.5
+   },
+   "backtracks": {
+    "refused": 13,
+    "at_cap": 15,
+    "refused_pct": 3.2
+   },
+   "verify_iters": {
+    "refused": 4,
+    "at_cap": 4,
+    "refused_pct": 1.0
+   },
+   "llm_calls": {
+    "refused": 0,
+    "at_cap": 0,
+    "refused_pct": 0.0
+   }
+  },
+  "cwq": {
+   "n_questions": 400,
+   "depth": {
+    "refused": 139,
+    "at_cap": 139,
+    "refused_pct": 34.8
+   },
+   "backtracks": {
+    "refused": 37,
+    "at_cap": 52,
+    "refused_pct": 9.2
+   },
+   "verify_iters": {
+    "refused": 11,
+    "at_cap": 11,
+    "refused_pct": 2.8
+   },
+   "llm_calls": {
+    "refused": 0,
+    "at_cap": 0,
+    "refused_pct": 0.0
+   }
+  },
+  "both": {
+   "n_questions": 800,
+   "depth": {
+    "refused": 205,
+    "at_cap": 205,
+    "refused_pct": 25.6
+   },
+   "backtracks": {
+    "refused": 50,
+    "at_cap": 67,
+    "refused_pct": 6.2
+   },
+   "verify_iters": {
+    "refused": 15,
+    "at_cap": 15,
+    "refused_pct": 1.9
+   },
+   "llm_calls": {
+    "refused": 0,
+    "at_cap": 0,
+    "refused_pct": 0.0
+   }
+  }
+ },
  "backtrack_ban_scope": {
   "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
   "_note": "The third recorded deviation of sec:backtracking: the ban list covers the most recent expansion, the backtracker pops the highest-scoring snapshot. repeat_expansion_passes and by_reason are exact; pops_below_stack_top is a lower bound (see the docstring). All three are read from the trace, none from a rerun.",
@@ -1604,10 +1683,22 @@
  },
  "run_records": {
   "_source": "results/phase3/*.jsonl + results/phase4/**/*.jsonl",
-  "_note": "Every committed agent run in the two phases the thesis reports, tool sidecars excluded. Backs the reasoning_tokens claim in sec:instrumentation and app:implementation, which was quoted over the phase-4 subset while reading as if it covered all of them.",
+  "_note": "self_describing backs app:self-describing: all four stamps on every record of both phases, the system name on phase 4 only, because the runner adds that key and the phase-3 sweep does not. The phase-2 qualification runs are outside these globs entirely -- they predate RunLogger and the appendix names them as the exception. Every committed agent run in the two phases the thesis reports, tool sidecars excluded. Backs the reasoning_tokens claim in sec:instrumentation and app:implementation, which was quoted over the phase-4 subset while reading as if it covered all of them.",
   "n_files": 36,
   "n_records": 6960,
   "records_with_nonzero_reasoning_tokens": 0,
+  "self_describing": {
+   "phase3": {
+    "n": 900,
+    "all_four_stamps": 900,
+    "run_config_names_system": 0
+   },
+   "phase4": {
+    "n": 6060,
+    "all_four_stamps": 6060,
+    "run_config_names_system": 6060
+   }
+  },
   "smoke_runs_short": {
    "smoke20_tog.jsonl": 10
   }

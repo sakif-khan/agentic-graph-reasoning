@@ -13,16 +13,25 @@ practice is given as evidence rather than as narrative.
 
 \section{Records Self-Describe}\label{app:self-describing}
 
-Every record written by any run carries, alongside its result, the backbone
-description, a hash of the budget configuration, the full run configuration
-including the system name, and the source commit.
+Every record \textsf{RunLogger} writes carries, alongside its result, the
+backbone description, a hash of the budget configuration, the run configuration,
+and the source commit. On the runs this thesis reports --- the main matrix and
+the ablations, $6{,}060$ records --- the run configuration also names the system,
+because the runner adds that key to it rather than \textsf{RunConfig} carrying
+it. The development sweep of \Cref{sec:dev-tuning} goes through the same logger
+and carries the same four stamps, but nothing there adds that key, so those $900$
+records identify their system by file name alone. The backbone qualification of
+\Cref{sec:backbone} predates the logger and writes its own records, which carry
+the backbone description and none of the rest.
 
 The cost is a few hundred bytes per question. The benefit is that provenance
-never depends on where a file sits or what it is called. A record found in the
-wrong directory, or copied out of one, still states what produced it. This is
-what made the cache-replay anomaly of \Cref{sec:backbone} diagnosable: the
-question was which configuration had produced a set of records, and the records
-answered it themselves.
+stops depending on where a file sits or what it is called: a record found in the
+wrong directory, or copied out of one, still states what produced it. The
+cache-replay anomaly of \Cref{sec:backbone} is both what forced the practice and
+what shows its limit --- the question was which model had produced a set of
+records, and the backbone stamp answered it, but those same records carry neither
+the configuration nor the commit, which is the gap the logger was written to
+close.
 
 The generalisation is that a file path is not metadata. Directory layout is
 edited, archived and reorganised over a project's life, and every reorganisation

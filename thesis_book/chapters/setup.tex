@@ -971,11 +971,13 @@ the tool layer and never composed by a language model
 (\Cref{sec:tool-api}). Randomised operations use seed $42$ throughout.
 
 Three practices carry more reproducibility weight than the dependency list, and
-\Cref{app:implementation} records them as techniques. \emph{Records self-describe}: each carries
-the backbone description, a budget-configuration hash, the full run configuration
-including the system name, and the source commit, so any record found anywhere
-states what produced it --- which is what made the cache-replay incident of
-\Cref{sec:backbone} diagnosable. \emph{Frozen artifacts are committed and
+\Cref{app:implementation} records them as techniques. \emph{Records self-describe}: every
+record of the runs reported here carries the backbone description, a
+budget-configuration hash, the full run configuration including the system name,
+and the source commit, so such a record found anywhere states what produced it
+--- which is what made the cache-replay incident of \Cref{sec:backbone}
+diagnosable. \Cref{app:self-describing} says how far back the practice reaches
+and where it stops. \emph{Frozen artifacts are committed and
 regenerable ones are not}: the certified question sets, their half-splits, and
 every result file embody spent money and non-repeatable runs, while the graph
 import, embedding matrices, and triple index are deterministic products of
