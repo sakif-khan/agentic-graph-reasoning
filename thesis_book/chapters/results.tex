@@ -154,7 +154,11 @@ precision is not bought with abstention.
 finding.} GraphRAG scores $0.340$, below the no-retrieval control's $0.453$, which
 invites the conclusion that the implementation is broken. Put the wrong-answer
 counts beside the hits and the picture inverts. No-retrieval asserts on $351$ of
-$400$ questions and is wrong on $170$ of them --- $51.6\%$ assertion precision.
+$400$ questions and is wrong on $170$ of them --- $51.6\%$ \emph{assertion
+precision}\index{assertion precision}, the share of the questions a system
+commits on that it answers correctly. It is a per-question measure, and distinct
+from the per-entity precision of \Cref{tab:main}, which is averaged over all
+$400$ questions whether the system committed on them or not.
 GraphRAG asserts on $177$ and is wrong on $41$ --- $76.8\%$. The mechanism is the
 prompt: the retrieval baselines are instructed to answer only from the facts
 given and to return nothing otherwise, so when retrieval misses they abstain,
@@ -293,8 +297,10 @@ is correspondingly the weaker one.
 
 \textbf{The breadth of AGR's answers is checked rather than assumed.} On answered
 WebQSP questions AGR names $3.37$ entities against Think-on-Graph's $2.56$, and a
-metric scoring a hit on any match rewards naming more. The check is precision over
-those same answered questions, where AGR leads $0.760$ to $0.703$; on CWQ the
+metric scoring a hit on any match rewards naming more. The check is entity
+precision over those same answered questions --- \Cref{tab:main}'s measure
+restricted to the answered subset, not the per-question assertion precision of
+\Cref{sec:cwq-results} --- where AGR leads $0.760$ to $0.703$; on CWQ the
 figures are $1.54$ against $1.40$ entities and $0.629$ against $0.520$ precision.
 Breadth bought without accuracy would show up as precision falling while the
 entity count rose, and it does not. This is the same reason F1 is reported beside

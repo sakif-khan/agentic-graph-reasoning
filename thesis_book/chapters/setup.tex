@@ -605,8 +605,11 @@ the typical question: the median question has just $1.5$ gold answers, so half
 the set admits only one right entity. It is the tail that opens the loophole ---
 the mean is $7.15$ and the largest question lists $237$ --- and a system is free
 to fish in it. The precision component of F1 is what closes it, and
-\Cref{sec:webqsp-results} shows that the gap between the two metrics is exactly
-where the verification layer's contribution becomes visible.
+\Cref{sec:webqsp-results} shows how far apart the two metrics can sit for a
+single system. That gap is a property of the answer sets a system emits, not a
+measurement of any one component inside it: removing the verification layer moves
+F1 by $+0.004$ on WebQSP and $-0.009$ on CWQ, neither distinguishable from zero
+(\Cref{sec:ablations}).
 
 Strict matching raises an obvious worry --- that ``St.~Petersburg'' versus
 ``Saint Petersburg'' is manufacturing failures. It was measured rather than

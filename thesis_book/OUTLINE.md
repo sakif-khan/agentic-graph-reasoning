@@ -45,7 +45,7 @@ they go through `thesis_numbers.json` like everything else: §5.6.3 reads
 ## Terminology discipline
 
 The word **"tier"** is reserved for **one** concept in this thesis: the two-tier
-groundedness *metric* (§7.5.3, §8.5). Two other cascades in the system must therefore be
+groundedness *metric* (§7.5.3, §8.6). Two other cascades in the system must therefore be
 named differently wherever they appear:
 
 - The verification layer's two checks (§6.3) are the **structural check** and the
