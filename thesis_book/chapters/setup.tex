@@ -25,10 +25,12 @@ this repository, and both say so where they appear: the API spend of
 \Cref{sec:test-sets}, which is a billing record, and the determinism rounds of
 \Cref{sec:backbone}, whose second through fourth rounds were read from console
 tables that were never committed --- only the first round survives as an
-artifact. They are the only two in the thesis. One further figure is
-unreproducible and is not a reported one: \Cref{sec:design-validation}'s account
+artifact. They are the only two in the thesis. Two further figures are
+unreproducible and are not reported ones: \Cref{sec:design-validation}'s account
 of the first smoke-set run, whose before-state was read from a console and never
-archived. It is flagged there and enters no result.
+archived, and the pre-fix support count of \Cref{sec:output-contract}, read from
+a development trace that was not kept. Each is flagged where it appears and
+neither enters a result.
 
 That claim is about \emph{provenance}, and its limit should be stated with it.
 The numbers come from the generated file, but most of them reach the page by
@@ -161,10 +163,12 @@ ablations, ultimately cost \$11.13 in API spend. That figure is read from the
 provider's billing record rather than derived from the run artifacts, and it is
 one of the two \emph{reported} numbers in this thesis a reader cannot recompute
 from the repository. The other is the determinism count of \Cref{sec:backbone},
-whose later rounds were read from console tables that were never committed. A
-third figure is unreproducible and is not a reported one:
+whose later rounds were read from console tables that were never committed. Two
+further figures are unreproducible and are not reported ones:
 \Cref{sec:design-validation} read the first smoke run from a console log that
-was never committed, and says so where it quotes it. The reproducible proxy is
+was never committed, and \Cref{sec:output-contract} quotes a pre-fix support
+count from a development trace that was not kept; each says so where it quotes
+it. The reproducible proxy is
 the token and call accounting of \Cref{sec:efficiency},
 which is recorded per question in every run record.
 
@@ -413,11 +417,12 @@ edges while remaining one logical hop; an ordinary neighbour is emitted and neve
 expanded again. The consequence is checkable from the run records without
 re-reading the code: every fact this baseline emits is rendered as
 \textsf{topic\ relation\ endpoint}, so a genuine second hop would produce facts
-anchored at an intermediate entity. Across all $7{,}431$ logged facts --- the top
-ten of the thirty retrieved per question, which is what the run records keep ---
-$7{,}431$ begin with a topic entity. There are no exceptions, and the sample is
-the highest-ranked tenth of retrieval rather than an arbitrary slice, which is
-what a one-hop radius looks like in the data.
+anchored at an intermediate entity. Across all $7{,}431$ logged facts --- the ten
+highest-ranked of the thirty retrieved per question, which is what the run
+records keep, both figures being caps that most questions reach and some fall
+short of --- $7{,}431$ begin with a topic entity. There are no exceptions, and
+the sample is the highest-ranked third of retrieval rather than an arbitrary
+slice, which is what a one-hop radius looks like in the data.
 
 \textbf{The radius is not the only thing that bounds this baseline; the fanout
 is, and it binds harder.} Expansion retrieves at most $100$ edges per topic

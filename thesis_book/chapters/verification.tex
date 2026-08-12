@@ -568,7 +568,10 @@ answerer substituted the entire traversed set for the supporting triples
 whenever the verifier's list was empty --- treating ``the verifier ran and
 matched nothing'' identically to ``the verifier never ran''. A development trace
 consequently recorded 1{,}927 supporting triples for an answer that asserted
-nothing whatsoever. The fix tests for \textsf{None} rather than for falsity, so
+nothing whatsoever. That trace was read before the fix and never committed, so
+the figure cannot be recomputed from this repository; the largest support count
+in any committed record is $133$. It illustrates the defect and enters no
+result. The fix tests for \textsf{None} rather than for falsity, so
 an empty list is reported as the zero support it is.
 
 The repair is effective but its stated rationale was wider than the code. The
