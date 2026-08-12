@@ -379,12 +379,15 @@ Stage C's net missed:
   the first was more epistemically correct than the one that "succeeded"; the pipeline that
   asserted on the second was simply wrong.
 
-Combined, that's 59 qids across both datasets where the benchmark itself, not AGR, is the thing
-that needed correcting — 41 excluded outright by Stage C before Stage D ever read them, 17 more
-still visible in the active census as `gold_noise`/`ambiguous_question` rows, and 1 that started
-as a Stage D finding and was later promoted to a formal Stage C exclusion (three disjoint counts;
-nothing here is double-counted). At that scale it is not a rounding error, and it warrants an
-explicit note wherever AGR's headline accuracy numbers are reported.
+Combined, that's 57 qids across both datasets where the benchmark itself, not AGR, is the thing
+that needed correcting — 41 excluded outright by Stage C before Stage D ever read them, and 17
+still visible in the active census as `gold_noise`/`ambiguous_question` rows. Those two counts
+are **not** disjoint, so 41 + 17 is one too many: `WebQTrn-64_d8e43a02...` began as a Stage D
+finding and was later promoted to a formal Stage C exclusion, which puts it inside the 41 and,
+because `labels_cwq_dropped.csv` is merged into the census histogram, inside the 17 as well.
+Count identifiers rather than totals; `thesis_numbers.json → benchmark_defects.distinct_questions`
+takes the union and the generator asserts it closes. At that scale it is not a rounding error, and
+it warrants an explicit note wherever AGR's headline accuracy numbers are reported.
 
 ## §5 — Implications
 

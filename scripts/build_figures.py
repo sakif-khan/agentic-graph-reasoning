@@ -90,8 +90,9 @@ def accuracy_cost(d):
 
 # ---------------------------------------------------------------- figure 2
 def hop_strata(d):
-    """Hits@1 across hop strata. The h3plus point for WebQSP has n=4 and is
-    plotted dashed, so the figure cannot be read as if it were interpretable."""
+    """Hits@1 across hop strata. WebQSP's h3plus stratum holds n=4, so every
+    series in that panel is drawn dashed and no WebQSP trend should be read as
+    interpretable. CWQ, whose smallest stratum is n=49, is drawn solid."""
     by = d["main_results"]["by_hop_stratum"]
     out = [BANNER, r"\begin{tikzpicture}"]
     for i, (ds, ds_label) in enumerate(DATASETS):

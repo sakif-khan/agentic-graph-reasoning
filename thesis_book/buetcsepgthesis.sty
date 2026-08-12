@@ -42,10 +42,13 @@
 %   hboxes, at badness 2173, 2080 and 3724, on the Sec 1.2, 1.5.1 and 9.8
 %   titles, which is a visibly stretched first line on each of the three.
 %
-% Everything else is additive: package loads (microtype, listings, multicol,
-% tikz/pgfplots, cleveref, makeidx), the L{} column type, the verbatimblock
-% listing style, the agrplot axis style, and the Helvetica 92% scaling that
-% matches the sans face optically to Times.
+% Everything else is additive. Five package loads the template does not carry --
+% helvet, array, multicol, tikz and pgfplots -- together with the L{} column type
+% that array provides, the verbatimblock listing style, the agrplot axis style,
+% the Helvetica 92% scaling that matches the sans face optically to Times, and
+% one microtype option, nopatch=footnote, documented where it is set. microtype,
+% listings, cleveref and imakeidx are the template's own loads, carried forward
+% unchanged rather than added here.
 %
 \RequirePackage[nofancy,notoday]{rcsinfo}
 \rcsInfo $Id: buetcsepgthesis.sty,v 1.03 2019/09/29 15:44:58 masroor Exp $

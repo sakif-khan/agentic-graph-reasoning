@@ -660,7 +660,7 @@ exclusion mid-project; it is inside the 41 (`census_exclusions.json`, CWQ list) 
 the 17, because `labels_cwq_dropped.csv` is merged into the census histogram — that is what
 keeps the histogram totals whole, and it is exactly what makes the sum wrong. Count identifiers,
 not totals: `thesis_numbers.json → benchmark_defects.distinct_questions` takes the union and the
-generator asserts it closes. (`synthesis.md` §4 says 59 and is wrong here.) *Two exhibits earn their space:* `WebQTest-958`
+generator asserts it closes. (`synthesis.md` §4 read 59 by treating the promoted question as a third disjoint count; it has been corrected to 57.) *Two exhibits earn their space:* `WebQTest-958`
 *("what are some famous people from el salvador") with* **116 gold entities** *and raw
 Freebase MIDs leaked into the answer strings — a "list some famous X" template ballooning gold
 past any reachable match; and the* **Vicksburg pair**, *two sibling questions with the same
