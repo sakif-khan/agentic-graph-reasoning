@@ -1,12 +1,10 @@
 # Thesis Outline — Table of Contents
 
-**Title:** Agentic Graph Reasoning: Structural Claim Verification and Component
-Attribution for Multi-Hop Knowledge Graph Question Answering
+**Title:** Agentic Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact
+Verification and Hallucination Mitigation in Large Language Models
 
-*(Registered with CASR as "Agentic Graph Reasoning: Autonomous Knowledge Graph
-Navigation for Fact Verification and Hallucination Mitigation in Large Language
-Models". §1.7 records which terms the measurements do not support. Departmental
-approval of the change is still outstanding.)*
+*(As registered with CASR. A narrower title was drafted in review and not approved,
+so the registered one stands; §1.7 reads its terms against the findings.)*
 
 **Target:** 60–90 pages of body text. The per-chapter estimates below total **87 pages**
 (front matter is roman-numbered and does not count against the budget).

@@ -1,7 +1,6 @@
-% Title as submitted. The CASR-registered (proposal) title was "Agentic Graph
-% Reasoning: Autonomous Knowledge Graph Navigation for Fact Verification and
-% Hallucination Mitigation in Large Language Models". Sec 1.7 records which of
-% its terms the measurements do not support and why this one replaces it.
-% Departmental approval of the change is still to be obtained.
-Agentic Graph Reasoning: Structural Claim Verification and Component
-Attribution for Multi-Hop Knowledge Graph Question Answering
+% Title as registered with CASR. A narrower title was drafted during review --
+% Sec 1.7 records which of these terms the measurements do not support -- and was
+% not approved. The registered title stands and is what the thesis is submitted
+% under; do not change it here.
+Agentic Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact
+Verification and Hallucination Mitigation in Large Language Models

@@ -303,20 +303,21 @@ backbone, not how they scale across backbones. Finally, AGR is a research
 prototype that we evaluate offline, and we report latency as a cost measure
 rather than as evidence of production readiness.
 
-\textbf{A note on the title.} This work is registered with CASR under the title
-\emph{Agentic Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact
-Verification and Hallucination Mitigation in Large Language Models}. It is
-submitted under a narrower one, because three terms of the registered title claim
-more than what follows establishes. \emph{Hallucination mitigation} is attributed
-in \Cref{sec:groundedness-results} to graph navigation rather than to the
-component contributed here, the agentic baseline reaching the same zero without
-any verification layer at all. \emph{Autonomous} names the opposite of the
-control pattern argued for in \Cref{sec:architecture}, in which the program
-orchestrates the loop and the model is consulted only at constrained decision
-points. And \emph{fact verification} overstates a check that establishes
-structural adjacency rather than the relation a claim asserts, and that cannot
-reach answer relevance at all (\Cref{sec:verify-failure-modes}). The submitted
-title names what the work does demonstrate: a claim-level structural check placed
+\textbf{How to read the title.} This thesis is submitted under the title
+registered with CASR at the proposal stage, which is fixed at registration and is
+not revised here. Three of its terms are broader than what the chapters below
+establish, and are better read against the findings than as claims in their own
+right. \emph{Hallucination mitigation} does occur, but it is not this work's
+contribution: \Cref{sec:groundedness-results} attributes the elimination of
+structural hallucination to graph navigation, the agentic baseline reaching the
+same zero without any verification layer at all. \emph{Autonomous} names a design
+this thesis argues against --- under the control pattern of
+\Cref{sec:architecture} the program orchestrates the loop and the model is
+consulted only at constrained decision points. And \emph{fact verification} is
+narrower here than the phrase suggests, the check establishing structural
+adjacency rather than the relation a claim asserts, and not reaching answer
+relevance at all (\Cref{sec:verify-failure-modes}). Stated in the terms the
+measurements support, what follows is a claim-level structural check placed
 before emission, and a component-level attribution of the mechanisms around it.
 
 \section{Thesis Organization}\label{sec:organization}
