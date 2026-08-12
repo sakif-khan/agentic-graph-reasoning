@@ -780,7 +780,7 @@ wrongful-acceptance class from anecdote to rate)*
 | 9 Error Analysis and Discussion | 10 | 15 | 19 |
 | 10 Conclusion | 5 | 6 | 8 |
 | **Body total** | **87** | **104** | **131** |
-| References + Index + Appendices | ~12 | 6 + appendices | 6 + 30 |
+| References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
 
 **The body is 131 pages against a 60–90 target — 46% over the 90 ceiling.** Body runs pages 1–131;
 References begin on 132, the index on 137; the document is 183 pages including front

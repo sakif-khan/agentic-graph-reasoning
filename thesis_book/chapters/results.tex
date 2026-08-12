@@ -714,12 +714,16 @@ metric.
 The conclusion this licenses is narrower and sharper than ``the verifier helps'',
 and it is the one \Cref{sec:findings} adopts: \emph{claim verification does not
 measurably change how often AGR is right; it changes how often AGR is right for a
-reason it can exhibit}. Hits@1 cannot see that distinction --- it is what the
-groundedness metrics were built to see, and what the supporting-triple output
-contract of \Cref{sec:output-contract} exists to make checkable. The evidence for
-the layer is \Cref{tab:groundedness}, the precision column of \Cref{tab:main}, and
-the specimen analyses of \Cref{sec:verifier-errors}; it is not this row, and this
-row is reported at full length rather than omitted.
+reason it can exhibit}. Hits@1 cannot see that distinction; what makes it
+checkable is the supporting-triple output contract of
+\Cref{sec:output-contract}. The evidence for the layer is that contract and the
+specimen analyses of \Cref{sec:verifier-errors} --- and it is neither of the two
+aggregate results it would be natural to reach for instead. \Cref{tab:groundedness}
+is reached by the agentic baseline as well, which is why \Cref{sec:findings}
+attributes it to graph navigation; and the precision column of \Cref{tab:main}
+does not move when the layer is removed, as the P column of the table above shows
+directly. It is not this row either, and this row is reported at full length
+rather than omitted.
 
 \subsection{Embedding-Only Scoring}\label{sec:abl-embonly}
 
