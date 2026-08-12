@@ -86,8 +86,11 @@ presented as a tuned choice.
 the draft-only row scores $66$ hits to $64$ and F1 $0.797$ to $0.769$. After the
 answer-entity filter of \Cref{sec:entity-filtering} was corrected --- a change
 made on development data before any test question ran --- the frozen condition
-scores $65$ hits, $11$ hedges, $4$ wrong, F1 $0.785$. So on the final code the
-layer costs one correct answer and removes no wrong ones on this set of $80$.
+scores $65$ hits, $11$ hedges, $4$ wrong, F1 $0.785$. Across those two rows the
+layer costs one correct answer and removes no wrong ones on this set of $80$ ---
+a comparison that spans the correction, since the draft-only condition was never
+re-run after it, and is therefore the closest available reading rather than a
+matched pair.
 \Cref{sec:ablations} finds the same thing at $n \approx 200$ on test data, and
 \Cref{sec:findings} explains why that is the expected result rather than a
 disappointing one.

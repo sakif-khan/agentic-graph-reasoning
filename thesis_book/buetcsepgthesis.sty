@@ -15,11 +15,12 @@
 %   the template's order hyperref's footnote anchors are never written. Measured
 %   both ways on this document: in the template's order this document's two
 %   footnote destinations both resolve to the cover page, and in this order they
-%   resolve to pages 60 and 85, where the footnotes are. Neither build reports
-%   an error or a warning, which is why the defect survives in the template --
-%   and a build with no footnotes would not show it at all. \onehalfspacing
-%   still fires at its original position below, so only the load order moves;
-%   the spacing and the pagination are unchanged.
+%   resolve to printed pages 44 and 69, where the footnotes are -- PDF sheets 61
+%   and 86, the seventeen pages of front matter being the offset. Neither build
+%   reports an error or a warning, which is why the defect survives in the
+%   template -- and a build with no footnotes would not show it at all.
+%   \onehalfspacing still fires at its original position below, so only the load
+%   order moves; the spacing and the pagination are unchanged.
 %
 % KEPT, because the template's own \headheight cannot hold the alternative:
 %   \fancyhead[L] wraps \rightmark in \nouppercase, so running heads are set in
