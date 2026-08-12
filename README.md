@@ -415,8 +415,10 @@ when given none, so the bare call above is the one that produced
 
 `score_test.py` reports Hits@1, F1, precision, recall and hedge rate with
 bootstrap intervals. `build_thesis_numbers.py` regenerates
-`results/phase4/thesis_numbers.json`, the single file every figure quoted in
-the thesis is read from.
+`results/phase4/thesis_numbers.json`, the file the thesis reads its test-set
+figures from. Chapter 4's environment figures come from `results/phase1/`,
+Chapters 5 and 6 quote the development and smoke runs directly, and four figures
+in Chapters 7–9 have their own sources, each named where it is stated.
 
 ### About the cache
 

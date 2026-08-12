@@ -745,10 +745,13 @@ datasets and both metrics, and consistently short of significance ($p = 0.66$ an
 $p = 0.48$).
 
 Two corroborating details make the direction credible without over-claiming from
-it. The condition is the cheapest of the four ($3{,}413$ and $4{,}925$ tokens,
-$4.4$ and $5.9$ calls), so the language-model scoring term is buying accuracy with
-tokens as designed. And it carries by far the most backtracks --- $57$ and $143$
-against the reference's $38$ and $108$.
+it. The condition is cheaper than the reference on both datasets --- $3{,}413$
+against $4{,}562$ and $4{,}925$ against $7{,}105$ tokens, $4.4$ against $6.2$ and
+$5.9$ against $9.1$ calls --- so the language-model scoring term is buying
+accuracy with tokens as designed. Among the four conditions it is the cheapest on
+CWQ and the second cheapest on WebQSP, where no-planner is cheaper on both axes.
+And it carries by far the most backtracks --- $57$ and $143$ against the
+reference's $38$ and $108$.
 
 That second detail was originally read as the $\tau$ mechanism of
 \Cref{sec:backtracking} visible in the logs: with the language-model term

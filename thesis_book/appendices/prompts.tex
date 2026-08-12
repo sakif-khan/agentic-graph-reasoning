@@ -25,12 +25,16 @@ cache keys on prompt text, so a prompt edited in one place and not the other
 invalidates every cached run as well as this appendix.
 
 Two properties of this set matter more than any individual wording. First, no
-prompt contains a configuration value. Neither $\alpha$ nor $\tau$ nor any
-budget number appears in any template, which is what allows one cached response
-to be shared across every condition of the $\alpha$--$\tau$ sweep
-(\Cref{sec:dev-tuning}). Second, no prompt asks the model to respect a budget.
-Budgets are counters in code (\Cref{sec:budgets}); the model is never asked to
-stop, only prevented from continuing.
+template carries a configuration constant: neither $\alpha$ nor $\tau$ reaches
+the model in any prompt, which is what allows one cached response to be shared
+across every condition of the $\alpha$--$\tau$ sweep (\Cref{sec:dev-tuning}).
+Second, budgets are counters in code (\Cref{sec:budgets}) rather than
+instructions: no prompt tells the model to stop, and stopping does not depend on
+its cooperation. One template qualifies that second property without breaking
+it --- the evaluator of \Cref{app:prompt-evaluator} is passed the remaining
+depth and backtracks as decision context, the only budget figures any prompt
+carries, substituted at send time rather than written into the template, and the
+note there records why a model that ignores them changes nothing.
 
 \section{Planner}\label{app:prompt-planner}
 

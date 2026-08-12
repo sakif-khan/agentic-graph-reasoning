@@ -215,10 +215,10 @@ def backtracker_node(state, run_config):
 # ------------------------------ verifier ------------------
 
 # Cache invariant: this prompt must not contain alpha, tau or any other
-# RunConfig value. Alpha is blended in after the LLM call, so scorer
-# responses are shared across every sweep condition through the cache.
-# Config-dependent wording here would multiply the cost of a sweep by the
-# number of conditions.
+# RunConfig value. Unlike the scorer's prompt this one is not shared across a
+# whole sweep -- its fact block depends on where the traversal went, which alpha
+# changes -- but wherever two conditions reach the same state the draft must
+# still be one cache entry. Config-dependent wording would split even those.
 DRAFT_PROMPT = """Question: {question}
 Facts retrieved from the knowledge graph:
 {facts}
