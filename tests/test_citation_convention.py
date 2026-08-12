@@ -28,10 +28,12 @@ SPLITS = [ROOT / "results" / "phase4" / f"test_{ds}.json"
 # In LaTeX the underscore is escaped: WebQTest-989\_4b6636a0
 CITE = re.compile(r"WebQ(?:Test|Trn)-\d+(?:\\_[0-9a-f]{6,32})?")
 
-# Appendix C is generated from the splits; the template files ship with the
-# BUET class and are not \input by the build.
-SKIP = {"samples.tex", "buetcsepgthesisciteexamples.tex",
-        "buetcsepgthesischapterwithmathintitle.tex"}
+# Appendix C is generated from the splits, so it lists every sampled identifier
+# by construction rather than citing any of them in prose. The two template demo
+# files that used to be skipped here were deleted from thesis_book/ once the
+# build stopped inputting them; their copies live under thesis_templates/, which
+# this walk never enters.
+SKIP = {"samples.tex"}
 
 pytestmark = pytest.mark.skipif(
     not all(p.exists() for p in SPLITS), reason="test splits absent")

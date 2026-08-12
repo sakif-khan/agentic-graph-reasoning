@@ -43,8 +43,11 @@
 % dedication page and no Bangla, so usebangla.sty and
 % inputs/buetcsepgthesisdedication.tex were removed along with the template's
 % demo chapters. All of them survive unmodified under thesis_templates/Thesis
-% Template PG/; restoring one means copying it back and uncommenting its call.
-% The \insertdedicationpage macro itself still lives in the .sty, untouched.
+% Template PG/. No commented-out call is left here to re-enable. The .sty still
+% defines \insertdedicationpage untouched, and unused it is inert, since
+% \dedic@tionp@ge defaults to \relax -- but the macro inputs the dedication file
+% by name, so adding a dedication page means copying that file back into
+% inputs/ first. Calling the macro without it would fail the build.
 
 % For index creation, comment this out if you do not want to create an
 % index

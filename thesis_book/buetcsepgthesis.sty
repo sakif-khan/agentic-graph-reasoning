@@ -5,24 +5,32 @@
 % PG/buetcsepgthesis.sty). Confirm these with the department before submission.
 % Diffed line by line against the template; the list below is complete.
 %
-% Three deviations were reviewed; one was withdrawn and two are kept, each for a
-% reason that was measured rather than assumed.
-%
-% WITHDRAWN. \fancyhead[L] no longer wraps \rightmark in \nouppercase, so
-%   running heads are upcased exactly as the template sets them. Every template
-%   line is now carried over verbatim.
+% Three deviations are kept, each for a reason that was measured rather than
+% assumed. Removing each one was tried, built, and inspected; the cost recorded
+% below is what that build showed.
 %
 % KEPT, a BUG FIX to an inherited defect rather than a style choice:
 %   \RequirePackage{setspace} moves from after hyperref to before it. Both
 %   redefine \@footnotetext and the later load discards the earlier one, so in
 %   the template's order hyperref's footnote anchors are never written. Measured
-%   both ways on this document: in the template's order the footnote
-%   destinations resolve to the cover page, and in this order they resolve to
-%   the pages the footnotes are on. Neither build reports an error or a warning,
-%   which is why the defect survives in the template -- and a build with no
-%   footnotes would not show it at all. \onehalfspacing still fires at its
-%   original position below, so only the load order moves; the spacing and the
-%   pagination are unchanged.
+%   both ways on this document: in the template's order this document's two
+%   footnote destinations both resolve to the cover page, and in this order they
+%   resolve to pages 60 and 85, where the footnotes are. Neither build reports
+%   an error or a warning, which is why the defect survives in the template --
+%   and a build with no footnotes would not show it at all. \onehalfspacing
+%   still fires at its original position below, so only the load order moves;
+%   the spacing and the pagination are unchanged.
+%
+% KEPT, because the template's own \headheight cannot hold the alternative:
+%   \fancyhead[L] wraps \rightmark in \nouppercase, so running heads are set in
+%   mixed case rather than upcased. Removing it was tried and reverted. Upcased
+%   heads are wider, and two section titles then wrap to two lines -- Sec 6.8
+%   and Sec 9.7, on pages 64, 65, 66 and 117. A two-line head needs 27.03pt of
+%   \headheight against the 15.0pt set below, so fancyhdr warns four times and
+%   the head grows upward into the top margin, sitting about a line and a half
+%   higher on those four pages than on every other page. Raising \headheight
+%   would trade this deviation for a second one in the page geometry. Pagination
+%   is identical either way, so this is the cheaper of the two.
 %
 % KEPT, and the one remaining change to how the document renders:
 %   \section, \subsection and \subsubsection are redefined -- new lines in this
@@ -443,7 +451,7 @@
 \renewcommand{\footrulewidth}{0.0mm}
 \setlength{\headheight}{15.0pt}
 \fancyheadoffset[R]{0.075\textwidth}
-\fancyhead[L]{\slshape \rightmark}
+\fancyhead[L]{\slshape \nouppercase{\rightmark}}
 \fancyhead[R]{\textbf{\thepage}}
 
 % Starting materials

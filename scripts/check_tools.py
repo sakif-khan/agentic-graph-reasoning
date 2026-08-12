@@ -23,7 +23,12 @@ def main():
     nbrs = tools.get_neighbors(eid, REL)
     print("neighbors:", nbrs["neighbors"][:3])
     if nbrs["neighbors"]:
-        print("verify:", tools.verify_triple(eid, REL, nbrs["neighbors"][0]["id"]))
+        tail = nbrs["neighbors"][0]["id"]
+        print("verify_triple:", tools.verify_triple(eid, REL, tail))
+        # verify_connection is the route the final design actually calls
+        # (nodes.py); verify_triple is kept in the API but reached by no node,
+        # so checking only the latter would leave the live one uncovered.
+        print("verify_connection:", tools.verify_connection(eid, tail))
     driver.close()
 
 
