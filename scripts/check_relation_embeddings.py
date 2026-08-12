@@ -1,5 +1,18 @@
 """Spot-check the relation embeddings by ranking the vocabulary against a
 free-text query. Prints the five closest relation names.
+
+This is the functional check Sec 4.5 reports: if the verbaliser were degenerate,
+the top five would come back unordered. Its output is archived as
+results/phase1/check_relation_embeddings_log.txt, and
+tests/test_relation_embeddings.py holds the prose to that archive, so the
+numbers in the text cannot drift from the run they came from.
+
+The file used to live in tests/ under a test_ name. It defines no test, so
+pytest collected it, ran this module body at collection time, and a bare run
+both loaded the sentence encoder and broke on a checkout where the two data
+files below had not been built yet.
+
+Usage: python scripts/check_relation_embeddings.py
 """
 import json
 import numpy as np

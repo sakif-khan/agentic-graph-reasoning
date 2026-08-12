@@ -301,7 +301,15 @@ relation names, verbalised and embedded) are committed, as is
 ```bash
 python scripts/build_id2name.py               # data/id2name.json
 python scripts/embed_relation_vocabulary.py   # relation_embeddings.npy + names
+python scripts/check_relation_embeddings.py   # spot-check the result
 ```
+
+The last one is the functional check Sec 4.5 reports: it ranks the vocabulary
+against `where was the person born` and prints the top five. Its archived output
+is `results/phase1/check_relation_embeddings_log.txt`, and
+`tests/test_relation_embeddings.py` holds the thesis prose to that archive, so
+rebuilding the vocabulary without re-running the probe will surface as a test
+failure rather than as a stale number in the text.
 
 ### 5.7 Triple index — optional, for the VectorRAG baseline only
 
@@ -334,32 +342,28 @@ top of the file if you built a different graph.
 python -m pytest
 ```
 
-25 tests, all of which should pass on a complete install. `pytest.ini` sets
+28 tests, all of which should pass on a complete install. `pytest.ini` sets
 `addopts = -m "not integration"`, so a bare run is the offline selection and a
 green result does not mean the whole suite ran — ask for the rest explicitly:
 
 | Selection | Command | Runs | Needs |
 | --- | --- | ---: | --- |
-| Offline only (the default) | `python -m pytest` | 12 | `.env` complete |
-| Everything | `python -m pytest -m ""` | 25 | Neo4j running, `.env` complete |
+| Offline only (the default) | `python -m pytest` | 15 | `.env` complete |
+| Everything | `python -m pytest -m ""` | 28 | Neo4j running, `.env` complete |
 | Integration only | `python -m pytest -m integration` | 13 | Neo4j running |
 
 The `integration` marker is declared in `pytest.ini` and covers the 13 tests
-that talk to Neo4j. The other 12 need no services: five pure unit tests over plan
-validation, budget accounting and Lucene escaping; two that read committed
-artifacts to check the two Cohen's kappa implementations against each other and
-against the pre-registered bar; four that check the question-identifier
-convention Chapter 9 states to the reader against the `.tex` sources; and one
-that fails if the annotated and the built bibliography drift apart.
+that talk to Neo4j. The other 15 need no services and read only committed files:
+five pure unit tests over plan validation, budget accounting and Lucene
+escaping; two that check the two Cohen's kappa implementations against each
+other and against the pre-registered bar; four that check the question-identifier
+convention Chapter 9 states to the reader against the `.tex` sources; one that
+fails if the annotated and the built bibliography drift apart; and three that
+hold Sec 4.5's relation-embedding probe to the run it was written from.
 
-Two things worth knowing about the suite:
-
-- `tests/test_embeddings.py` contains **no test functions**. It is a manual
-  probe that ranks the relation vocabulary against a free-text query, and its
-  code runs at collection time — which is why collection loads the sentence
-  encoder and takes a few seconds.
-- The integration tests do not skip when Neo4j is unreachable; they fail with
-  `neo4j.exceptions.ServiceUnavailable`. If you see that, start Neo4j.
+One thing worth knowing about the suite: the integration tests do not skip when
+Neo4j is unreachable; they fail with `neo4j.exceptions.ServiceUnavailable`. If
+you see that, start Neo4j.
 
 ---
 
@@ -433,7 +437,7 @@ cost nothing.
 | --- | --- |
 | [agr/](agr/) | The agent: planner, explorer, scorer, verifier, graph tools, budget meter |
 | [agr/baselines/](agr/baselines/) | No-retrieval, VectorRAG, GraphRAG and ToG comparison systems |
-| [scripts/](scripts/) | 47 pipeline, experiment, scoring and analysis entry points |
+| [scripts/](scripts/) | 48 pipeline, experiment, scoring and analysis entry points |
 | [tests/](tests/) | Unit and integration tests |
 | [data/](data/) | Graph exports and embeddings; large artifacts are gitignored and rebuilt |
 | [results/](results/) | The committed experimental record, by phase — see below |

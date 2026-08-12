@@ -150,8 +150,11 @@ intervals of roughly $\pm 5$ points on Hits@1 --- was therefore adopted, with th
 arithmetic recorded before the runs fired. The whole benchmark, including the
 ablations, ultimately cost \$11.13 in API spend. That figure is read from the
 provider's billing record rather than derived from the run artifacts, and it is
-the one number in this thesis a reader cannot recompute from the repository. The
-reproducible proxy is the token and call accounting of \Cref{sec:efficiency},
+the only \emph{reported} number in this thesis a reader cannot recompute from
+the repository. One other figure is unreproducible and is not a reported one:
+\Cref{sec:design-validation} read the first smoke run from a console log that
+was never committed, and says so where it quotes it. The reproducible proxy is
+the token and call accounting of \Cref{sec:efficiency},
 which is recorded per question in every run record.
 
 Sampling is proportional within hop strata at seed~$42$, and the resulting

@@ -7,8 +7,10 @@ structural groundedness result is emphatic but attributes to a different cause
 than expected, the semantic groundedness result is underpowered, and three of the
 four ablations detect nothing. All four outcomes are reported at the same volume.
 
-Every number comes from \textsf{results/phase4/thesis\_numbers.json}. Confidence
-intervals are $95\%$ bootstrap intervals over questions with $10{,}000$ resamples
+Every test-set number comes from \textsf{results/phase4/thesis\_numbers.json};
+\Cref{sec:dev-tuning} reports the development sweep and reads the archived
+phase-3 runs directly, as \Cref{ch:framework} and \Cref{ch:verification} do.
+Confidence intervals are $95\%$ bootstrap intervals over questions with $10{,}000$ resamples
 at seed~$42$~\cite{efron1979bootstrap}; paired comparisons use the exact-binomial
 form of McNemar's test~\cite{mcnemar1947note} on per-question correctness.
 
