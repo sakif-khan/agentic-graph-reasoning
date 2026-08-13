@@ -473,9 +473,11 @@ Defaults live in `agr/config.py` and `agr/budget.py`.
 | `verify_claims` | `True` | Check the draft's claims before answering |
 | `use_gold_entities` | `True` | Seed anchors from the dataset's topic entities |
 | `max_depth` | 4 | Traversal depth budget |
-| `beam_width` | 3 | Frontier width |
+| `beam_width` | 3 | Relations expanded per anchor |
+| `max_anchors` | 5 | Anchors carried into the next expansion |
 | `max_backtracks` | 3 | Backtracks allowed per question |
 | `max_llm_calls` | 25 | Model calls per question |
+| `max_verify_iters` | 2 | Verify–repair cycles per question |
 | `max_seconds` | 300 | Wall-clock budget per question |
 
 The backbone is pinned in `agr/config.py` as `gpt-5.4-mini-2026-03-17` at

@@ -924,10 +924,13 @@ power --- is confronted directly in \Cref{sec:ablations} rather than left implic
 
 \subsection{Development Set Construction and Coverage}\label{sec:dev-construction}
 
-The development set is $80$ questions mined from the train and validation splits
-of both benchmarks, selected to span hop counts and to include mediator-heavy and
-constraint-bearing questions, and certified for answer reachability by the same
-procedure applied to the test samples. It is disjoint from both test samples by
+The development set is $80$ questions. Seventy-seven were mined from the train
+and validation splits of both benchmarks, selected to span hop counts and to
+include mediator-heavy and constraint-bearing questions, and certified for answer
+reachability by the same procedure applied to the test samples. The other three
+are hand-written and, having no gold answer to reach, fall outside both the
+mining and that certification; they are named below, and the coverage report
+accordingly carries $77$ rows. The set is disjoint from both test samples by
 construction, and the disjointness is asserted by the test-set builder rather than
 assumed.
 
