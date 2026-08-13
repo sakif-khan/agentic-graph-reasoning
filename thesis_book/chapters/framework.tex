@@ -85,7 +85,7 @@ with LangGraph. \Cref{fig:statemachine} gives the topology.
       \node[vbox, below=of eval] (ver)  {Verifier};
       \node[box, below=of ver]   (ans)  {Answerer};
       \node[term, below=of ans]  (end)  {END};
-      \node[box, right=22mm of eval] (back) {Backtracker};
+      \node[box, right=26mm of eval] (back) {Backtracker};
 
       % main path
       \draw[flow] (start) -- (plan);
@@ -97,18 +97,21 @@ with LangGraph. \Cref{fig:statemachine} gives the topology.
       \draw[flow] (ver)   -- node[lbl] {grounded $\mid$ give\_up} (ans);
       \draw[flow] (ans)   -- (end);
 
-      % search cycle: evaluator back to explorer
-      \draw[flow] (eval.west) -- ++(-11mm,0)
-        node[lbl, pos=0.55] {continue}
+      % search cycle: evaluator back to explorer. The label carries fill=white,
+      % so it must clear both the Evaluator's border and the vertical this run
+      % turns into; riding above its own run is what keeps it off them.
+      \draw[flow] (eval.west) -- ++(-22mm,0)
+        node[lbl, above, pos=0.5] {continue}
         |- (expl.west);
 
-      % backtracking cycle: evaluator to backtracker to explorer
+      % backtracking cycle: evaluator to backtracker to explorer. The gap is
+      % set from the width of the word, not the other way round.
       \draw[flow] (eval.east) -- node[lbl] {backtrack} (back.west);
       \draw[flow] (back.north) |- (expl.east);
 
       % verification-driven re-exploration
-      \draw[flow] (ver.west) -- ++(-24mm,0)
-        node[lbl, pos=0.62] {retry}
+      \draw[flow] (ver.west) -- ++(-30mm,0)
+        node[lbl, below, pos=0.5] {retry}
         |- ([yshift=-2mm] expl.west);
 
       \begin{scope}[on background layer]

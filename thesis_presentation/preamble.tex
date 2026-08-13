@@ -17,6 +17,7 @@
 \usepackage{lmodern}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{ragged2e}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -43,7 +44,60 @@
   \insertframenumber\hspace{4mm}\vspace{2mm}}
 \setlength{\parskip}{4pt}
 \renewcommand{\arraystretch}{1.20}
-\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% --- justified body text ---------------------------------------------------
+% Beamer sets body text ragged right, which leaves every wrapped paragraph
+% with a visibly uneven right edge beside the flush edge of a neighbouring
+% block. This deck justifies instead.
+%
+% It takes two hooks, because beamer goes ragged by two different routes.
+% Prose, columns and list bodies get there through \raggedright -- beamer.cls
+% issues it once at class load as the document default and the column and list
+% code re-issues it on entry -- so repointing the command catches all of them,
+% and the bare \justifying replaces the one beamer already executed. A block
+% body does NOT: it is a beamercolorbox, and beamercolorbox assigns \rightskip
+% from its own rightskip key (beamerbasecolor.sty), never touching
+% \raggedright, so the block template needs its own hook.
+%
+% Patching \frame is the recipe found in the wild and it is wrong here: the
+% patch lands inside the argument scan for \begin{frame}{...} and the frame
+% title comes out as body text.
+%
+% Table cells are NOT justified. On a 40mm measure justification spaces worse
+% than ragged does, so the L column type is bound to the original command
+% before \raggedright is repointed.
+\let\agrraggedright\raggedright
+\let\raggedright\justifying
+\justifying
+\addtobeamertemplate{block begin}{}{\justifying}
+
+% Justification needs somewhere to put the slack, and a 65mm column at 11pt
+% runs about 38 characters -- short enough that TeX must either hyphenate or
+% set a loose line. The settings below buy back some of each: hyphenation is
+% allowed but priced, breaking an existing hyphen (Think-on-Graph, one-hop) is
+% priced higher still because that break reads as a new word, and
+% \emergencystretch gives the third pass room to loosen instead.
+\hyphenpenalty=400
+\exhyphenpenalty=4000
+\emergencystretch=3em
+
+% The cost of justifying a narrow measure is bounded rather than pretended
+% away. Four paragraphs in this deck still set one line loose, all between
+% badness 1100 and 2000 -- visible as slightly wide word spaces, not as a
+% defect. \hbadness names that as the accepted ceiling, so anything looser
+% still reports and still has to be fixed. Overfull boxes remain a hard zero:
+% on a slide an overfull \vbox is content running off the bottom edge.
+\hbadness=2000
+
+% No name gets broken across a line. Left to itself TeX splits WebQSP after
+% the "We", which a reader has to re-parse. Listing a word here with no
+% discretionary in it forbids hyphenating it anywhere in the deck. Every
+% entry must be letters only -- a digit is a "Not a letter" error, which is
+% why Neo4j is not in the list and does not need to be: it never wraps.
+\hyphenation{WebQSP CWQ ComplexWebQuestions GraphRAG Freebase LangGraph
+  McNemar Cypher AGR}
+
+\newcolumntype{L}[1]{>{\agrraggedright\arraybackslash}p{#1}}
 
 % Semantic figure palette, matching buetcsepgthesis.sty. The generated figures
 % repeat their own \definecolor at the head of each file, so these are only
@@ -74,8 +128,13 @@
 % must subtract twice `sep', which beamercolorbox adds OUTSIDE `wd' -- passing
 % \textwidth directly overruns the text block by exactly 2*sep.
 \setbeamercolor{takeawaybar}{bg=agrNode!12,fg=agrdark}
+% The leading \par is not cosmetic. Without it the box is appended to the
+% paragraph above rather than starting its own, and the preceding line is
+% asked to hold both. Ragged right hid that -- an infinitely stretchable
+% \rightskip absorbs any measure -- and justifying the deck made it three
+% overfull \hbox warnings.
 \newcommand{\takeaway}[1]{%
-  \vspace{1mm}%
+  \par\vspace{1mm}%
   \begin{beamercolorbox}[wd=\dimexpr\textwidth-3.6mm\relax,sep=1.8mm,
     rounded=true]{takeawaybar}%
     \small\raggedright\textbf{#1}%

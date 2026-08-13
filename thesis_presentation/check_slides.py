@@ -169,6 +169,24 @@ ck("no body text smaller than \\small",
     or [""])[0])
 ck("aspect ratio is 16:9", "aspectratio=169" in TEX)
 ck("base font is 12pt", "12pt]{beamer}" in TEX)
+
+# Body text is justified, and it takes both hooks: \raggedright covers prose,
+# columns and lists, while a block body is a beamercolorbox that sets
+# \rightskip from its own key and needs the template hook. Losing either one
+# silently un-justifies part of the deck, which is exactly the defect this
+# deck was corrected for.
+PRE = open(os.path.join(HERE, "preamble.tex"), encoding="utf-8").read()
+ck("prose, columns and lists are justified",
+   r"\let\raggedright\justifying" in PRE)
+ck("block bodies are justified too (beamercolorbox needs its own hook)",
+   r"\addtobeamertemplate{block begin}{}{\justifying}" in PRE)
+ck("table cells kept ragged: L is bound before \\raggedright is repointed",
+   PRE.index(r"\let\agrraggedright\raggedright") < PRE.index(r"\newcolumntype{L}")
+   and r"{>{\agrraggedright\arraybackslash}p{#1}}" in PRE)
+ck("the accepted looseness is stated, not left open",
+   re.search(r"\\hbadness=(\d+)", PRE) is not None
+   and int(re.search(r"\\hbadness=(\d+)", PRE).group(1)) <= 2000,
+   (re.search(r"\\hbadness=\d+", PRE) or [""])[0])
 for drv in DRIVERS:
     ck(f"{drv} exists and shares the preamble",
        os.path.exists(os.path.join(HERE, drv))

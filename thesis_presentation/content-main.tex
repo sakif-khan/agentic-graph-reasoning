@@ -35,9 +35,15 @@
 
 % ===================== 2 =====================
 \begin{frame}{Where existing approaches stop}
+  % Widths measured from the cells, not guessed. The last column cannot be
+  % made single-line -- "Emits whatever the last generation call produces" is
+  % 78mm on its own -- but at 45mm no row orphans one word onto a second line,
+  % which was the actual defect. 56mm takes every "What it does" cell onto one
+  % line. The tighter \tabcolsep is what pays for those widths inside 140mm.
   \begin{table}
     \small
-    \begin{tabular}{@{}L{31mm}L{40mm}L{40mm}@{}}
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{@{}L{31mm}L{56mm}L{45mm}@{}}
       \toprule
       \textbf{Approach} & \textbf{What it does} & \textbf{Where it stops} \\
       \midrule
@@ -92,36 +98,45 @@
     \end{column}
     \begin{column}{0.52\textwidth}
       \centering
+      % Every gap here is load-bearing. An edge label carries fill=white, so a
+      % gap shorter than the label hides the arrow it sits on and punches a
+      % hole in whatever box or dashed border it overlaps. node distance is
+      % therefore set from the label heights, the backtrack run from the width
+      % of the word "backtrack", and the two left-hand loops sit at different
+      % depths with their labels riding above and below their own runs.
       \begin{tikzpicture}[
-        node distance=3.4mm, scale=0.68, transform shape,
+        node distance=9mm, scale=0.60, transform shape,
         box/.style={draw=agrNode, thick, rounded corners=2pt,
-          minimum height=5mm, fill=agrNode!10,
-          text width=24mm, align=center, font=\small},
-        vbox/.style={box, draw=agrSup, fill=agrSup!16},
-        term/.style={draw=black!45, circle, inner sep=1.2pt,
+          minimum height=6mm, fill=agrNode!10,
+          text width=27mm, align=center, font=\small},
+        vbox/.style={box, draw=agrSup, fill=agrSup!18},
+        term/.style={draw=black!45, circle, inner sep=1.5pt,
           font=\scriptsize, fill=black!6},
-        flow/.style={-{Stealth[length=1.8mm]}, semithick, draw=black!68},
+        flow/.style={-{Stealth[length=2mm]}, semithick, draw=black!68},
         lbl/.style={font=\scriptsize, inner sep=1.2pt, fill=white}]
-        \node[term]                 (start) {START};
-        \node[box, below=of start]  (plan)  {Planner};
-        \node[box, below=of plan]   (expl)  {Explorer};
-        \node[box, below=of expl]   (eval)  {Evaluator};
-        \node[vbox, below=of eval]  (ver)   {Verifier};
-        \node[box, below=of ver]    (ans)   {Answerer};
-        \node[box, right=16mm of eval] (back) {Backtracker};
+        \node[term]                    (start) {START};
+        \node[box, below=6mm of start] (plan)  {Planner};
+        \node[box, below=of plan]      (expl)  {Explorer};
+        \node[box, below=of expl]      (eval)  {Evaluator};
+        \node[vbox, below=of eval]     (ver)   {Verifier};
+        \node[box, below=of ver]       (ans)   {Answerer};
+        \node[box, right=26mm of eval] (back)  {Backtracker};
         \draw[flow] (start) -- (plan);
         \draw[flow] (plan)  -- (expl);
         \draw[flow] (expl)  -- (eval);
         \draw[flow] (eval)  -- node[lbl] {answer} (ver);
         \draw[flow] (ver)   -- node[lbl] {grounded $\mid$ give\_up} (ans);
-        \draw[flow] (eval.west) -- ++(-8mm,0)
-          node[lbl, pos=0.6] {continue} |- (expl.west);
         \draw[flow] (eval.east) -- node[lbl] {backtrack} (back.west);
         \draw[flow] (back.north) |- (expl.east);
-        \draw[flow] (ver.west) -- ++(-16mm,0)
-          node[lbl, pos=0.65] {retry} |- ([yshift=-1.5mm] expl.west);
+        % search loop: label rides above its own run, clear of both the
+        % Evaluator and the vertical it turns into.
+        \draw[flow] (eval.west) -- ++(-18mm,0)
+          node[lbl, above, pos=0.5] {continue} |- (expl.west);
+        % re-exploration loop: deeper, label below, so the two never meet.
+        \draw[flow] (ver.west) -- ++(-28mm,0)
+          node[lbl, below, pos=0.5] {retry} |- ([yshift=-1.8mm] expl.west);
         \begin{scope}[on background layer]
-          \node[draw=black!35, dashed, rounded corners, inner sep=1.8mm,
+          \node[draw=black!35, dashed, rounded corners, inner sep=1.2mm,
                 fit=(expl)(eval)] {};
         \end{scope}
       \end{tikzpicture}
@@ -131,9 +146,15 @@
 
 % ===================== 5 =====================
 \begin{frame}{Constrained tools, not free-form queries}
+  % Natural column widths, not fixed ones: every cell here is a short phrase,
+  % and a fixed measure wrapped four of them onto a second line for the sake
+  % of a single word. Three l columns cannot wrap at all, so the rows are
+  % single-line by construction. The whole table comes to ~130mm of the 140mm
+  % text block; an overfull \hbox in the log is the signal that a reworded
+  % cell has outgrown it.
   \begin{table}
     \small
-    \begin{tabular}{@{}L{37mm}L{33mm}L{38mm}@{}}
+    \begin{tabular}{@{}lll@{}}
       \toprule
       \textbf{Operation} & \textbf{Returns} & \textbf{Why it is capped} \\
       \midrule
@@ -191,24 +212,34 @@
 % ===================== 7 =====================
 \begin{frame}{One claim, three routes}
   \centering
-  \resizebox{!}{0.68\textheight}{\input{../thesis_book/figures/fig_claim_path.tex}}
+  % Height-constrained, so the caption below it decides how big the diagram
+  % gets. One line of caption buys the figure another 6mm of height.
+  \resizebox{!}{0.74\textheight}{\input{../thesis_book/figures/fig_claim_path.tex}}
 
   \vspace{1mm}
-  {\small Only the third route costs a model call. The first two are pure graph
-  lookups against the traversal record.}
+  {\small Only the third route costs a model call. The first two are pure
+  graph lookups.}
 \end{frame}
 
 % ===================== 8 =====================
 \begin{frame}{The environment and the question sets}
   \begin{columns}[T]
     \begin{column}{0.45\textwidth}
+      % Ruled and headed like the table beside it. Without the rules the block
+      % title sits bare above two widely separated columns and reads as a
+      % header row -- "Freebase-derived" over the labels, "graph" over the
+      % numbers -- which is not what it says.
       \begin{block}{Freebase-derived graph}
         \small
         \begin{tabular}{@{}lr@{}}
-          Entities        & $2{,}592{,}892$ \\
-          Triples         & $8{,}309{,}194$ \\
+          \toprule
+          \textbf{Property}  & \textbf{Value} \\
+          \midrule
+          Entities           & $2{,}592{,}892$ \\
+          Triples            & $8{,}309{,}194$ \\
           Distinct relations & $7{,}058$ \\
-          Import time     & $36.4$\,s \\
+          Import time        & $36.4$\,s \\
+          \bottomrule
         \end{tabular}
       \end{block}
     \end{column}
@@ -291,8 +322,10 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  {\small Cost is WebQSP. On CWQ: AGR $6{,}818$ tokens and $8.9$ calls,
-  Think-on-Graph $5{,}572$ and $18.2$.}
+  % Kept to one line: the longer phrasing measured 151mm against a 140mm text
+  % block and left "18.2." alone on a second line.
+  {\small Cost is WebQSP. CWQ: AGR $6{,}818$ tokens, $8.9$ calls;
+  Think-on-Graph $5{,}572$, $18.2$.}
   \takeaway{Ahead of every baseline on both datasets, at half the model calls
     of the other agentic system.}
 \end{frame}
@@ -435,7 +468,11 @@
 \begin{frame}{The result I did not expect}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \textbf{Removing the planner \emph{improves} WebQSP:}
+      % A display line introducing the list below it, not a paragraph of
+      % prose. Justifying a two-line heading stretches the first line to the
+      % measure and leaves one word alone on the second; headings are set
+      % ragged for the same reason the frame titles are.
+      {\agrraggedright\textbf{Removing the planner \emph{improves} WebQSP:}\par}
       \begin{itemize}
         \item $+0.083$ F1, at $p = 0.006$
         \item $-31\%$ tokens
@@ -467,9 +504,13 @@
 % ===================== 18 =====================
 \begin{frame}{Every failure, read: the echo attractor}
   \begin{columns}[T]
-    \begin{column}{0.46\textwidth}
+    % 0.50/0.48 rather than 0.46/0.52: the census table needs only 48mm, but
+    % the sentence above it is two lines of prose and could not be justified
+    % on a 64mm measure without gaping word spaces.
+    \begin{column}{0.50\textwidth}
       \small
-      All $259$ remaining failures read and labelled, both datasets pooled:
+      All $259$ remaining failures were read and labelled by hand, both
+      datasets pooled:
       \vspace{1mm}
       \begin{tabular}{@{}lr@{}}
         \toprule
@@ -484,7 +525,7 @@
         \bottomrule
       \end{tabular}
     \end{column}
-    \begin{column}{0.52\textwidth}
+    \begin{column}{0.48\textwidth}
       \small
       The characteristic error of a graph navigator is \alert{not invention}.
       It is the \textbf{echo attractor}: a real, grounded entity one hop from
