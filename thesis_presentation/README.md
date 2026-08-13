@@ -29,7 +29,10 @@ applies to both — edit the preamble and you must rebuild **both** decks.
 stop with `Emergency stop ... no legal \end found` if you build them directly.
 Each carries a `% !TEX root` line so an editor's build button compiles the
 right driver instead; `preamble.tex` points at the main deck, which leaves the
-backup deck to rebuild by hand.
+backup deck to rebuild by hand. The figures under `figures/` are generated, so
+their directive comes from `scripts/build_figures.py` — editing it into the
+files themselves would last until the next regeneration.
+`python scripts/check_tex_roots.py` checks both this module and the book.
 
 ## Why two documents
 

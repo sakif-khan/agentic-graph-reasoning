@@ -522,6 +522,29 @@ cd thesis_book
 latexmk -pdf buetcsepgthesis.tex
 ```
 
+The slide decks are in [thesis_presentation/](thesis_presentation/) and build the
+same way; see that directory's README.
+
+**Three files here are documents and thirty are not.**
+`thesis_book/buetcsepgthesis.tex` and the two `thesis_presentation/pre-defense-*.tex`
+carry `\begin{document}`. Everything else — every chapter, appendix, figure,
+table and preamble — is a fragment that stops with *Missing `\begin{document}`*
+if you build it on its own. Each fragment names its document in a `% !TEX root`
+line on its first line, so an editor's build button compiles the right thing
+from any file. The repository holds three roots, so nothing else could resolve
+that. Fragments under `figures/` and `tables/` are generated, and their
+directive is emitted by `scripts/build_figures.py` rather than typed into them.
+
+```bash
+python scripts/check_tex_roots.py   # every fragment names a document that exists
+```
+
+All three documents build with **zero errors, zero warnings of any class, and
+zero over- or underfull boxes**. Keep it that way: a `Package hyperref Warning`
+once survived two rounds of builds described as clean, because the check
+grepped for the string `LaTeX Warning` and that is one warning class out of
+several.
+
 ---
 
 ## License
