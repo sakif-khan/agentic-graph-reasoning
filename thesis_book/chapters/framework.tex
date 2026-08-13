@@ -543,8 +543,8 @@ objective was incomplete, which threw away correct answers found mid-run.
 
 When an objective completes and further objectives remain, the plan advances,
 the decision is forced to \textsf{continue}, and the resolved entities become
-the next frontier. When the last objective completes, the decision is forced to
-\textsf{answer}.
+the next frontier, truncated to the anchor cap of \Cref{sec:budgets}. When the
+last objective completes, the decision is forced to \textsf{answer}.
 
 \subsection{Backtracking Triggers and the Backtrack
   Stack}\label{sec:backtracking}
@@ -725,7 +725,7 @@ them.
       below the rule are constructor arguments of \textsf{KGTools} and are
       \emph{not} in that hash --- they are listed here because they bound what
       the agent can see, which makes them budgets in effect if not in
-      implementation. Three budgets carry two enforcement sites rather than one;
+      implementation. Four budgets carry two enforcement sites rather than one;
       the paragraph after this table says which and why.}
     \label{tab:budget}
     \begin{tabular}{|l|r|L{58mm}|}
@@ -735,7 +735,7 @@ them.
       \textsf{max\_depth} & 4 & \textsf{route\_after\_eval} \emph{and}
       \textsf{route\_after\_verify} \\
       \textsf{beam\_width} & 3 & explorer (slice) \\
-      \textsf{max\_anchors} & 5 & explorer (slice) \\
+      \textsf{max\_anchors} & 5 & explorer \emph{and} evaluator (slices) \\
       \textsf{max\_backtracks} & 3 & \textsf{route\_after\_eval} \\
       \textsf{max\_llm\_calls} & 25 & LLM client \\
       \textsf{max\_verify\_iters} & 2 & \textsf{route\_after\_verify} \emph{and}
@@ -782,7 +782,8 @@ interesting part. The model-call budget is checked inside the client before ever
 call, so no node can bypass it; exceeding it raises an exception that each node
 catches into a degraded path rather than a crash. The backtrack budget is checked
 in the post-evaluation router alone. Beam width and anchor cap are not checks at
-all but slices inside the explorer.
+all but slices: beam width in the explorer, the anchor cap in the explorer and
+again in the evaluator, where resolved entities become the next frontier.
 
 The remaining three are each checked in two places, and in every case the second
 site exists because the first does not cover the verify--explore cycle.
