@@ -1,4 +1,4 @@
-"""Generate the data figures and the failure table from thesis_numbers.json.
+"""Generate the data figures and the generated tables from thesis_numbers.json.
 
 The thesis rule is that no reported number is transcribed by hand. A plot is a
 reported number in a different notation, so the figures are generated from the
@@ -16,6 +16,8 @@ Writes into thesis_book/figures/:
     fig_failure_histogram.tex failure categories by dataset    (Sec 9.2)
 Writes into thesis_book/tables/:
     tab_failure_histogram.tex the same counts as a tabular     (Table 9.2)
+    tab_tog_split.tex         the agentic baseline's clipped
+                              and unclipped halves             (Table 8.4)
 
 Usage: python scripts/build_figures.py
 """
