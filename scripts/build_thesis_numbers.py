@@ -1007,7 +1007,9 @@ def main():
         },
         "groundedness_tier2_judge": {
             "_source": "results/phase4/tier2_judge/judge_support_log.txt",
-            "_note": "LLM entailment judgement on a 60-claim sample per run.",
+            "_note": "LLM entailment judgement on a sample of 60 asserted "
+                     "answers per run. The unit is an asserted entity with its "
+                     "paths, not a claim: see app:judge-rules.",
             **parse_tier2(P4 / "tier2_judge" / "judge_support_log.txt"),
         },
         "judge_validation": {

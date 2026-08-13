@@ -15,8 +15,8 @@ practice is given as evidence rather than as narrative.
 
 Every record \textsf{RunLogger} writes carries, alongside its result, the
 backbone description, a hash of the budget configuration, the run configuration,
-and the source commit. On the runs this thesis reports --- the main matrix and
-the ablations, $6{,}060$ records --- the run configuration also names the system,
+and the source commit. On the main matrix, the ablations and the smoke
+baselines --- $6{,}060$ records --- the run configuration also names the system,
 because the runner adds that key to it rather than \textsf{RunConfig} carrying
 it. The development sweep of \Cref{sec:dev-tuning} goes through the same logger
 and carries the same four stamps, but nothing there adds that key, so those $900$
