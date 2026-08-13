@@ -1,8 +1,12 @@
 # Pre-defense transcript
 
-Rehearsal script for `presentation.pdf`. Twenty body slides, a title, a closing
-slide, and four backup slides that you do **not** present — they exist so you can
-jump to them during questions.
+Rehearsal script for **`pre-defense-0421052099.pdf`** — 22 pages: a title,
+twenty body slides, a closing slide.
+
+The four backup slides are a **separate file**,
+`pre-defense-0421052099-backup.pdf`. You do not present them. Open it alongside
+the main deck and jump to a slide when a question calls for one; the table near
+the end of this file maps each to its question.
 
 **Budget: 22 min 30 s of speaking against a 25-minute limit.** The 2.5-minute
 margin is deliberate. Nobody has ever finished a defense talk faster than they
@@ -12,7 +16,7 @@ Times below are *cumulative at the end of that slide*. If you are more than
 40 seconds past a marker, use the recovery notes at the bottom.
 
 | # | Slide | Slide time | Cumulative |
-|---|---|---:|---:|
+| --- | --- | ---: | ---: |
 | 1 | Title | 0:15 | 0:15 |
 | 2 | The problem | 1:00 | 1:15 |
 | 3 | Where existing approaches stop | 1:00 | 2:15 |
@@ -430,20 +434,22 @@ you can't.**
 
 ---
 
-## Backup slides
+## Backup slides — `pre-defense-0421052099-backup.pdf`
 
-Jump to these only if asked. Know the number.
+A separate document. Open it before you start, minimised or on a second screen.
+Page numbers below are that file's own.
 
-| Backup | Contents | Use when asked |
-|---|---|---|
-| B1 | Budget configuration and enforcement sites | "How do you guarantee termination?" |
-| B2 | Which budgets actually bind | "Is the 25-call cap fair to Think-on-Graph?" |
-| B3 | Hedging rates, all five systems | "Doesn't it just refuse more often?" |
-| B4 | Full 12-category failure histogram | "What were the other failure modes?" |
+| Page | Contents | Use when asked |
+| --- | --- | --- |
+| 2 | Budget configuration and enforcement sites | "How do you guarantee termination?" |
+| 3 | Which budgets actually bind | "Is the 25-call cap fair to Think-on-Graph?" |
+| 4 | Full 12-category failure histogram | "What were the other failure modes?" |
+| 5 | Hedging rates, all five systems | "Doesn't it just refuse more often?" |
 
-**B2 is the important one.** It shows AGR never reaches the call cap — 0.0 percent
-on both datasets — which is precisely what makes the comparison against a clipped
-Think-on-Graph legitimate rather than an artefact of a cap chosen to suit AGR.
+**Page 3 is the important one.** It shows AGR never reaches the call cap —
+0.0 percent on both datasets — which is precisely what makes the comparison
+against a clipped Think-on-Graph legitimate rather than an artefact of a cap
+chosen to suit AGR.
 
 ---
 

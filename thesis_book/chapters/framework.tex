@@ -62,13 +62,19 @@ with LangGraph. \Cref{fig:statemachine} gives the topology.
 \begin{figure}[!tb]
   \begin{center}
     \begin{tikzpicture}[
+        % Colour is semantic: blue for the six agent nodes, green for the
+        % verifier, which is the contribution. Same colour-blind-safe palette
+        % as the generated figures; shape and position still carry every
+        % distinction, so a greyscale print loses nothing.
         node distance=9mm,
-        box/.style={draw, rounded corners=2pt, minimum height=7.5mm,
+        box/.style={draw=agrNode, thick, rounded corners=2pt,
+                    minimum height=7.5mm, fill=agrNode!8,
                     minimum width=24mm, align=center, font=\small},
-        term/.style={draw, rounded corners=6pt, minimum height=6mm,
+        vbox/.style={box, draw=agrSup, fill=agrSup!12},
+        term/.style={draw=black!45, rounded corners=6pt, minimum height=6mm,
                      minimum width=16mm, font=\scriptsize\sffamily,
-                     fill=black!8},
-        flow/.style={-{Stealth[length=2mm]}, semithick},
+                     fill=black!6},
+        flow/.style={-{Stealth[length=2mm]}, semithick, draw=black!68},
         lbl/.style={font=\scriptsize\ttfamily, inner sep=1.5pt,
                     fill=white, anchor=center}]
 
@@ -76,7 +82,7 @@ with LangGraph. \Cref{fig:statemachine} gives the topology.
       \node[box, below=of start] (plan) {Planner};
       \node[box, below=of plan]  (expl) {Explorer};
       \node[box, below=of expl]  (eval) {Evaluator};
-      \node[box, below=of eval]  (ver)  {Verifier};
+      \node[vbox, below=of eval] (ver)  {Verifier};
       \node[box, below=of ver]   (ans)  {Answerer};
       \node[term, below=of ans]  (end)  {END};
       \node[box, right=22mm of eval] (back) {Backtracker};

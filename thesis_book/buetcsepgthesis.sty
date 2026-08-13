@@ -42,8 +42,9 @@
 %   hboxes, at badness 2173, 2080 and 3724, on the Sec 1.2, 1.5.1 and 9.8
 %   titles, which is a visibly stretched first line on each of the three.
 %
-% Everything else is additive. Five package loads the template does not carry --
-% helvet, array, multicol, tikz and pgfplots -- together with the L{} column type
+% Everything else is additive: five package loads the template does not carry --
+% helvet, array, multicol, tikz and pgfplots -- the three-colour figure palette
+% defined beside them, together with the L{} column type
 % that array provides, the verbatimblock listing style, the agrplot axis style,
 % the Helvetica 92% scaling that matches the sans face optically to Times, and
 % one microtype option, nopatch=footnote, documented where it is set. microtype,
@@ -114,6 +115,14 @@
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,backgrounds,
   patterns}
+% Figure palette. Okabe-Ito, which is colour-blind safe and whose members also
+% differ in luminance, so a greyscale print keeps the series apart before the
+% mark shapes do. The generated figures repeat these definitions at their own
+% head so they stay self-contained and can be \input by the slide deck, which
+% does not load this file; the hand-drawn diagrams read them from here.
+\definecolor{agrNode}{HTML}{0072B2}   % a step that does work
+\definecolor{agrSup}{HTML}{009E73}    % supported / the verification layer
+\definecolor{agrUns}{HTML}{D55E00}    % unsupported
 % One plot style for all data figures, so they read as one set. Greyscale-safe:
 % every series is separated by mark shape as well as by colour, because the
 % thesis is likely to be examined on paper.

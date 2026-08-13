@@ -1,0 +1,92 @@
+% =====================================================================
+% Pre-defense presentation for the M.Sc. Engg. thesis.
+%
+% 16:9, 12pt base. The font size is uniform: nothing in this deck is set
+% smaller than \small, so every slide is legible from the back of a room.
+%
+% The three data figures are \input directly from thesis_book/figures/,
+% which scripts/build_figures.py generates from
+% results/phase4/thesis_numbers.json. No plotted value is transcribed.
+% The numbers that DO appear as table text are checked against that same
+% JSON by check_slides.py -- run it after editing any table.
+% =====================================================================
+\documentclass[aspectratio=169,12pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,
+  backgrounds,patterns}
+
+% --- look: minimal, greyscale-safe, no chrome competing with the data ---
+\usetheme{default}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\definecolor{agrdark}{RGB}{28,54,78}
+\definecolor{agraccent}{RGB}{176,58,46}
+\definecolor{agrgrey}{RGB}{110,110,110}
+\setbeamercolor{frametitle}{fg=agrdark}
+\setbeamercolor{title}{fg=agrdark}
+\setbeamercolor{structure}{fg=agrdark}
+\setbeamercolor{alerted text}{fg=agraccent}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{title}{size=\Large,series=\bfseries}
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{footline}{%
+  \hfill\usebeamerfont{structure}\color{agrgrey}\small
+  \insertframenumber\hspace{4mm}\vspace{2mm}}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Semantic figure palette, matching buetcsepgthesis.sty. The generated figures
+% repeat their own \definecolor at the head of each file, so these are only
+% needed by the hand-drawn diagrams on the slides.
+\definecolor{agrNode}{HTML}{0072B2}
+\definecolor{agrSup}{HTML}{009E73}
+\definecolor{agrUns}{HTML}{D55E00}
+
+% The plot style the generated figures expect. Same as buetcsepgthesis.sty.
+% Width and height are deliberately NOT set here: the slide variants under
+% figures/ carry their own, sized for a 16:9 panel by scripts/build_figures.py
+% --target presentation. Setting them here would silently override nothing and
+% mislead the next reader.
+\pgfplotsset{
+  agrplot/.style={
+    tick label style={font=\scriptsize},
+    label style={font=\small},
+    title style={font=\small\bfseries},
+    legend style={font=\scriptsize, draw=none, fill=none},
+    grid=major,
+    grid style={gray!25, very thin},
+    axis line style={gray!60},
+    tick align=outside,
+    tick style={gray!60},
+  }}
+
+% One-line takeaway bar, used at the foot of the data slides. The box width
+% must subtract twice `sep', which beamercolorbox adds OUTSIDE `wd' -- passing
+% \textwidth directly overruns the text block by exactly 2*sep.
+\setbeamercolor{takeawaybar}{bg=agrNode!12,fg=agrdark}
+\newcommand{\takeaway}[1]{%
+  \vspace{1mm}%
+  \begin{beamercolorbox}[wd=\dimexpr\textwidth-3.6mm\relax,sep=1.8mm,
+    rounded=true]{takeawaybar}%
+    \small\raggedright\textbf{#1}%
+  \end{beamercolorbox}}
+
+\title{Agentic Graph Reasoning}
+\subtitle{Autonomous Knowledge Graph Navigation for Fact Verification\\
+  and Hallucination Mitigation in Large Language Models}
+\author{Md.\ Sakif Khan \quad\textnormal{\small 0421052099}}
+\institute{\small Department of Computer Science and Engineering\\
+  Bangladesh University of Engineering and Technology\\[2mm]
+  \textnormal{Supervisor: Dr.\ Sadia Sharmin, Associate Professor}}
+\date{\small Pre-defense}
+

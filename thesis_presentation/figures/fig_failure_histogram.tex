@@ -10,12 +10,12 @@
 \definecolor{agrCWQ}{HTML}{D55E00}
 \begin{tikzpicture}
 \begin{axis}[agrplot,
-  width=0.80\textwidth, height=95mm,
-  xbar stacked, bar width=4.2mm,
+  width=112mm, height=62mm,
+  xbar stacked, bar width=3.0mm,
   xlabel={Questions}, xmin=0, xmax=70,
   ytick={0,1,2,3,4,5,6,7,8,9,10,11},
   yticklabels={relation\_selection, composite\_claim, kg\_gap, decomposition\_error, answer\_selection, echo, ambiguous\_question, premature\_termination, gold\_noise, other, verifier\_fn, verifier\_fp},
-  yticklabel style={font=\scriptsize\ttfamily},
+  yticklabel style={font=\small\ttfamily},
   y dir=reverse, ymin=-0.7, ymax=11.7,
   legend style={at={(0.98,0.05)}, anchor=south east},
   legend cell align=left, reverse legend=false,

@@ -1,90 +1,3 @@
-% =====================================================================
-% Pre-defense presentation for the M.Sc. Engg. thesis.
-%
-% 16:9, 12pt base. The font size is uniform: nothing in this deck is set
-% smaller than \small, so every slide is legible from the back of a room.
-%
-% The three data figures are \input directly from thesis_book/figures/,
-% which scripts/build_figures.py generates from
-% results/phase4/thesis_numbers.json. No plotted value is transcribed.
-% The numbers that DO appear as table text are checked against that same
-% JSON by check_slides.py -- run it after editing any table.
-% =====================================================================
-\documentclass[aspectratio=169,12pt]{beamer}
-
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{lmodern}
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,
-  backgrounds,patterns}
-
-% --- look: minimal, greyscale-safe, no chrome competing with the data ---
-\usetheme{default}
-\usecolortheme{default}
-\setbeamertemplate{navigation symbols}{}
-\definecolor{agrdark}{RGB}{28,54,78}
-\definecolor{agraccent}{RGB}{176,58,46}
-\definecolor{agrgrey}{RGB}{110,110,110}
-\setbeamercolor{frametitle}{fg=agrdark}
-\setbeamercolor{title}{fg=agrdark}
-\setbeamercolor{structure}{fg=agrdark}
-\setbeamercolor{alerted text}{fg=agraccent}
-\setbeamerfont{frametitle}{size=\large,series=\bfseries}
-\setbeamerfont{title}{size=\Large,series=\bfseries}
-\setbeamertemplate{itemize item}{\textbullet}
-\setbeamertemplate{itemize subitem}{--}
-\setbeamertemplate{footline}{%
-  \hfill\usebeamerfont{structure}\color{agrgrey}\small
-  \insertframenumber\hspace{4mm}\vspace{2mm}}
-\setlength{\parskip}{4pt}
-\renewcommand{\arraystretch}{1.20}
-\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
-
-% The plot style the generated figures expect. Same as buetcsepgthesis.sty
-% except for width/height: the thesis sizes these for a text column, and on a
-% 16:9 slide the two-panel figures overflow. Sizing them natively here beats
-% wrapping in \resizebox, which would scale the tick and label fonts down.
-\pgfplotsset{
-  agrplot/.style={
-    width=0.42\textwidth,
-    height=40mm,
-    tick label style={font=\scriptsize},
-    label style={font=\small},
-    title style={font=\small\bfseries},
-    legend style={font=\scriptsize, draw=none, fill=none},
-    grid=major,
-    grid style={gray!25, very thin},
-    axis line style={gray!60},
-    tick align=outside,
-    tick style={gray!60},
-  }}
-
-% One-line takeaway bar, used at the foot of the data slides. The box width
-% must subtract twice `sep', which beamercolorbox adds OUTSIDE `wd' -- passing
-% \textwidth directly overruns the text block by exactly 2*sep.
-\newcommand{\takeaway}[1]{%
-  \vspace{1.5mm}%
-  \begin{beamercolorbox}[wd=\dimexpr\textwidth-4.4mm\relax,sep=2.2mm,
-    rounded=true]{palette primary}%
-    \color{agrdark}\small\raggedright\textbf{#1}%
-  \end{beamercolorbox}}
-
-\title{Agentic Graph Reasoning}
-\subtitle{Autonomous Knowledge Graph Navigation for Fact Verification\\
-  and Hallucination Mitigation in Large Language Models}
-\author{Md.\ Sakif Khan \quad\textnormal{\small 0421052099}}
-\institute{\small Department of Computer Science and Engineering\\
-  Bangladesh University of Engineering and Technology\\[2mm]
-  \textnormal{Supervisor: Dr.\ Sadia Sharmin, Associate Professor}}
-\date{\small Pre-defense}
-
-\begin{document}
-
 % ===================== TITLE =====================
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
@@ -181,16 +94,19 @@
       \centering
       \begin{tikzpicture}[
         node distance=3.4mm, scale=0.68, transform shape,
-        box/.style={draw, rounded corners=2pt, minimum height=5mm,
+        box/.style={draw=agrNode, thick, rounded corners=2pt,
+          minimum height=5mm, fill=agrNode!10,
           text width=24mm, align=center, font=\small},
-        term/.style={draw, circle, inner sep=1.2pt, font=\scriptsize},
-        flow/.style={-{Stealth[length=1.8mm]}, semithick},
+        vbox/.style={box, draw=agrSup, fill=agrSup!16},
+        term/.style={draw=black!45, circle, inner sep=1.2pt,
+          font=\scriptsize, fill=black!6},
+        flow/.style={-{Stealth[length=1.8mm]}, semithick, draw=black!68},
         lbl/.style={font=\scriptsize, inner sep=1.2pt, fill=white}]
         \node[term]                 (start) {START};
         \node[box, below=of start]  (plan)  {Planner};
         \node[box, below=of plan]   (expl)  {Explorer};
         \node[box, below=of expl]   (eval)  {Evaluator};
-        \node[box, below=of eval]   (ver)   {Verifier};
+        \node[vbox, below=of eval]  (ver)   {Verifier};
         \node[box, below=of ver]    (ans)   {Answerer};
         \node[box, right=16mm of eval] (back) {Backtracker};
         \draw[flow] (start) -- (plan);
@@ -232,8 +148,7 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  {\small The agent never writes Cypher, and every graph operation is logged
-  with its arguments and result.}
+  {\small The agent never writes Cypher; every operation is logged.}
   \takeaway{Determinism in the tools is what makes the verification layer
     possible.}
 \end{frame}
@@ -376,8 +291,8 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  {\small Cost columns are WebQSP. On CWQ, AGR spends $6{,}818$ tokens and
-  $8.9$ calls against Think-on-Graph's $5{,}572$ and $18.2$.}
+  {\small Cost is WebQSP. On CWQ: AGR $6{,}818$ tokens and $8.9$ calls,
+  Think-on-Graph $5{,}572$ and $18.2$.}
   \takeaway{Ahead of every baseline on both datasets, at half the model calls
     of the other agentic system.}
 \end{frame}
@@ -385,24 +300,24 @@
 % ===================== 11 =====================
 \begin{frame}{Accuracy against cost}
   \centering
-  \input{../thesis_book/figures/fig_accuracy_cost.tex}
+  \input{figures/fig_accuracy_cost.tex}
 
   \vspace{1mm}
-  {\small On \emph{tokens}, Think-on-Graph is \textbf{not} dominated --- it buys
-  lower accuracy at a genuinely lower token price. On \emph{calls}, which is
-  what the budget meters, it is dominated on both datasets.}
+  {\small On \emph{tokens} Think-on-Graph is \textbf{not} dominated --- it buys
+  lower accuracy at a lower token price. On \emph{calls}, which the budget
+  meters, it is.}
   \takeaway{The frontier depends on which cost you charge.}
 \end{frame}
 
 % ===================== 12 =====================
 \begin{frame}{RQ1: accuracy against hop count}
   \centering
-  \input{../thesis_book/figures/fig_hop_strata.tex}
+  \input{figures/fig_hop_strata.tex}
 
   \vspace{1mm}
-  {\small On ComplexWebQuestions AGR goes $0.46 \to 0.55 \to 0.57$ across one,
-  two, and three-or-more hops --- the \textbf{only} system that ends above where
-  it started. Three of the other four decay monotonically.}
+  {\small On CWQ, AGR goes $0.46 \to 0.55 \to 0.57$ --- the \textbf{only} system
+  that ends above where it started. Three of the other four decay
+  monotonically.}
   \takeaway{RQ1 is answered by a shape, not a difference of means.}
 \end{frame}
 
@@ -651,73 +566,3 @@
   {\large Questions}
   \vfill
 \end{frame}}
-
-% ===================== BACKUP =====================
-\appendix
-\begin{frame}{Backup: budget configuration}
-  \begin{table}
-    \small
-    \begin{tabular}{@{}lrL{52mm}@{}}
-      \toprule
-      \textbf{Parameter} & \textbf{Value} & \textbf{Enforced in} \\
-      \midrule
-      \texttt{max\_depth}        & 4 & both routers \\
-      \texttt{beam\_width}       & 3 & explorer (slice) \\
-      \texttt{max\_anchors}      & 5 & explorer \emph{and} evaluator \\
-      \texttt{max\_backtracks}   & 3 & post-evaluation router \\
-      \texttt{max\_llm\_calls}   & 25 & LLM client \\
-      \texttt{max\_verify\_iters}& 2 & post-verification router, verifier \\
-      \texttt{max\_seconds}      & 300 & both routers \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  {\small Termination does not depend on model behaviour: every cycle passes
-  through a router that checks a monotone counter.}
-\end{frame}
-
-\begin{frame}{Backup: which budgets actually bind}
-  \begin{table}
-    \small
-    \begin{tabular}{@{}lrrr@{}}
-      \toprule
-      \textbf{Budget} & \textbf{WebQSP} & \textbf{CWQ} & \textbf{Pooled} \\
-      \midrule
-      Depth cap        & $16.5\%$ & $34.8\%$ & $25.6\%$ \\
-      Backtrack cap    & $3.2\%$  & $9.2\%$  & $6.2\%$ \\
-      Verify-iteration cap & $1.0\%$ & $2.8\%$ & $1.9\%$ \\
-      \textbf{Call cap} & $\mathbf{0.0\%}$ & $\mathbf{0.0\%}$
-                        & $\mathbf{0.0\%}$ \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  {\small Percentage of questions on which each budget refused a request.
-  AGR never reaches the $25$-call cap --- which is what makes the comparison
-  against a clipped Think-on-Graph meaningful.}
-\end{frame}
-
-\begin{frame}{Backup: the full failure census}
-  \centering
-  \resizebox{!}{0.80\textheight}{%
-    \input{../thesis_book/figures/fig_failure_histogram.tex}}
-\end{frame}
-
-\begin{frame}{Backup: hedging behaviour}
-  \begin{table}
-    \small
-    \begin{tabular}{@{}lrr@{}}
-      \toprule
-      \textbf{System} & \textbf{WebQSP hedge \%} & \textbf{CWQ hedge \%} \\
-      \midrule
-      No-retrieval    & 12.2 & 38.0 \\
-      Vector RAG      & 27.0 & 48.2 \\
-      Static GraphRAG & 55.8 & 60.8 \\
-      Think-on-Graph  & 18.8 & 22.5 \\
-      \textbf{AGR}    & \textbf{8.2} & 23.0 \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  {\small A hedge is a refusal to assert, not a wrong answer. AGR hedges least
-  on WebQSP while also being most accurate there.}
-\end{frame}
-
-\end{document}

@@ -1,17 +1,30 @@
 % Hand-drawn (not generated): the path one atomic claim takes through the
 % verification layer. Mirrors Algorithm 6.1 line for line, including which of
 % the three routes records citable evidence.
+%
+% Colour is semantic, not decorative: blue marks a step that does work, green
+% the supported bucket, vermillion the unsupported one. The palette is the same
+% colour-blind-safe set the generated figures use, and every distinction is
+% still carried by shape and position, so a greyscale print loses nothing.
+% Defined here because this figure is hand-drawn and has no generator.
+\definecolor{agrNode}{HTML}{0072B2}
+\definecolor{agrSup}{HTML}{009E73}
+\definecolor{agrUns}{HTML}{D55E00}
 \begin{tikzpicture}[
     node distance=6mm,
-    box/.style={draw, rounded corners=2pt, minimum height=7mm, text width=33mm,
-                align=center, font=\small},
-    dec/.style={draw, rounded corners=2pt, minimum height=8mm, text width=35mm,
-                align=center, font=\scriptsize, fill=black!4},
-    bucket/.style={draw, rounded corners=6pt, minimum height=6mm, text width=21mm,
-                align=center, font=\scriptsize\sffamily, fill=black!8},
-    flow/.style={-{Stealth[length=2mm]}, semithick},
+    box/.style={draw=agrNode, thick, rounded corners=2pt, minimum height=7mm,
+                text width=33mm, align=center, font=\small,
+                fill=agrNode!8},
+    dec/.style={draw=agrNode!55, rounded corners=2pt, minimum height=8mm,
+                text width=35mm, align=center, font=\scriptsize,
+                fill=agrNode!4},
+    bucket/.style={draw, rounded corners=6pt, minimum height=6mm,
+                text width=21mm, align=center, font=\scriptsize\sffamily},
+    sup/.style={bucket, draw=agrSup, thick, fill=agrSup!14},
+    uns/.style={bucket, draw=agrUns, thick, fill=agrUns!14},
+    flow/.style={-{Stealth[length=2mm]}, semithick, draw=black!68},
     lbl/.style={font=\scriptsize, inner sep=1.5pt, fill=white},
-    ev/.style={font=\scriptsize\itshape, inner sep=1.5pt}]
+    ev/.style={font=\scriptsize\itshape, inner sep=1.5pt, text=agrSup}]
 
   \node[box]                  (draft) {Draft and decompose
                                        \\[-2pt]{\scriptsize one model call}};
@@ -24,8 +37,8 @@
   \node[box, below=9mm of d3] (ent)   {entailment check
                                        \\[-2pt]{\scriptsize one batched call}};
 
-  \node[bucket, right=30mm of d2] (sup)  {supported $S$};
-  \node[bucket, right=30mm of ent] (uns) {unsupported $U$};
+  \node[sup, right=30mm of d2] (sup)  {supported $S$};
+  \node[uns, right=30mm of ent] (uns) {unsupported $U$};
 
   \draw[flow] (draft) -- node[lbl, pos=0.5] {claims $K$} (d1);
   \draw[flow] (d1) -- node[lbl] {yes} (d2);
@@ -43,7 +56,8 @@
               |- node[lbl, pos=0.75] {entailed} (sup.south west);
   \draw[flow] (e) -- (uns.west);
 
-  \node[bucket, below=11mm of uns.south, anchor=north, text width=52mm]
+  \node[bucket, draw=black!45, fill=black!5, below=11mm of uns.south,
+        anchor=north, text width=52mm]
         (route) {$U = \emptyset \Rightarrow$ \textsf{grounded}\quad$\mid$\quad
                  budget $\Rightarrow$ \textsf{retry}\quad$\mid$\quad
                  \textsf{give\_up}};

@@ -84,16 +84,19 @@ thesis_book/*.toc
 thesis_book/*~
 
 # LaTeX build artifacts (thesis_presentation). Same rule as thesis_book: the
-# built PDF is tracked, everything latexmk regenerates is not. .nav/.snm/.toc
-# are beamer's navigation files.
+# built PDFs are tracked, everything latexmk regenerates is not. .nav/.snm/.toc
+# are beamer's navigation files. figures/ IS tracked -- it is generated, but by
+# scripts/build_figures.py rather than by latexmk, exactly as thesis_book's is.
 thesis_presentation/*.aux
 thesis_presentation/*.fdb_latexmk
 thesis_presentation/*.fls
+thesis_presentation/*.log
 thesis_presentation/*.nav
 thesis_presentation/*.out
 thesis_presentation/*.snm
 thesis_presentation/*.toc
 thesis_presentation/*.synctex.gz
+thesis_presentation/*.png
 thesis_presentation/*~
 
 thesis_templates/brainstorming/
