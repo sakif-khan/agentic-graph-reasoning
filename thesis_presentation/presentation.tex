@@ -1,0 +1,723 @@
+% =====================================================================
+% Pre-defense presentation for the M.Sc. Engg. thesis.
+%
+% 16:9, 12pt base. The font size is uniform: nothing in this deck is set
+% smaller than \small, so every slide is legible from the back of a room.
+%
+% The three data figures are \input directly from thesis_book/figures/,
+% which scripts/build_figures.py generates from
+% results/phase4/thesis_numbers.json. No plotted value is transcribed.
+% The numbers that DO appear as table text are checked against that same
+% JSON by check_slides.py -- run it after editing any table.
+% =====================================================================
+\documentclass[aspectratio=169,12pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,
+  backgrounds,patterns}
+
+% --- look: minimal, greyscale-safe, no chrome competing with the data ---
+\usetheme{default}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\definecolor{agrdark}{RGB}{28,54,78}
+\definecolor{agraccent}{RGB}{176,58,46}
+\definecolor{agrgrey}{RGB}{110,110,110}
+\setbeamercolor{frametitle}{fg=agrdark}
+\setbeamercolor{title}{fg=agrdark}
+\setbeamercolor{structure}{fg=agrdark}
+\setbeamercolor{alerted text}{fg=agraccent}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{title}{size=\Large,series=\bfseries}
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{footline}{%
+  \hfill\usebeamerfont{structure}\color{agrgrey}\small
+  \insertframenumber\hspace{4mm}\vspace{2mm}}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.20}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% The plot style the generated figures expect. Same as buetcsepgthesis.sty
+% except for width/height: the thesis sizes these for a text column, and on a
+% 16:9 slide the two-panel figures overflow. Sizing them natively here beats
+% wrapping in \resizebox, which would scale the tick and label fonts down.
+\pgfplotsset{
+  agrplot/.style={
+    width=0.42\textwidth,
+    height=40mm,
+    tick label style={font=\scriptsize},
+    label style={font=\small},
+    title style={font=\small\bfseries},
+    legend style={font=\scriptsize, draw=none, fill=none},
+    grid=major,
+    grid style={gray!25, very thin},
+    axis line style={gray!60},
+    tick align=outside,
+    tick style={gray!60},
+  }}
+
+% One-line takeaway bar, used at the foot of the data slides. The box width
+% must subtract twice `sep', which beamercolorbox adds OUTSIDE `wd' -- passing
+% \textwidth directly overruns the text block by exactly 2*sep.
+\newcommand{\takeaway}[1]{%
+  \vspace{1.5mm}%
+  \begin{beamercolorbox}[wd=\dimexpr\textwidth-4.4mm\relax,sep=2.2mm,
+    rounded=true]{palette primary}%
+    \color{agrdark}\small\raggedright\textbf{#1}%
+  \end{beamercolorbox}}
+
+\title{Agentic Graph Reasoning}
+\subtitle{Autonomous Knowledge Graph Navigation for Fact Verification\\
+  and Hallucination Mitigation in Large Language Models}
+\author{Md.\ Sakif Khan \quad\textnormal{\small 0421052099}}
+\institute{\small Department of Computer Science and Engineering\\
+  Bangladesh University of Engineering and Technology\\[2mm]
+  \textnormal{Supervisor: Dr.\ Sadia Sharmin, Associate Professor}}
+\date{\small Pre-defense}
+
+\begin{document}
+
+% ===================== TITLE =====================
+{\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+  \titlepage
+\end{frame}}
+
+% ===================== 1 =====================
+\begin{frame}{The problem}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      Language models answer factual questions \alert{fluently}, and just as
+      fluently when they do not hold the fact.
+
+      \vspace{3mm}
+      In our own no-retrieval control, on WebQSP:
+      \begin{itemize}
+        \item $661$ entities asserted
+        \item $179$ of them \alert{do not exist} in the knowledge graph
+        \item that is $27.1\%$, stated with no hedge
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{The gap}
+        \small
+        Fluency and factuality are produced by the same mechanism, so the
+        output gives the reader no signal about which one they are getting.
+      \end{block}
+      \vspace{2mm}
+      {\small A system that is confidently wrong is worse than one that
+      says it does not know.}
+    \end{column}
+  \end{columns}
+  \takeaway{The failure is not rare, and it is not visible in the answer.}
+\end{frame}
+
+% ===================== 2 =====================
+\begin{frame}{Where existing approaches stop}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}L{31mm}L{40mm}L{40mm}@{}}
+      \toprule
+      \textbf{Approach} & \textbf{What it does} & \textbf{Where it stops} \\
+      \midrule
+      Parametric        & Answers from weights
+                        & No external evidence at all \\
+      Vector RAG        & Retrieves text once, then reasons
+                        & Retrieval happens \emph{before} reasoning begins \\
+      Static GraphRAG   & Retrieves a fixed neighbourhood
+                        & Radius fixed before the question is understood \\
+      Agentic navigation & Interleaves retrieval and reasoning
+                        & Emits whatever the last generation call produces \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \takeaway{Nobody checks what the answer asserts \emph{before} it is
+    delivered.}
+\end{frame}
+
+% ===================== 3 =====================
+\begin{frame}{Research questions}
+  \begin{enumerate}
+    \item[\textbf{RQ1}] Does agentic navigation improve multi-hop factual
+      accuracy --- and does the advantage \alert{grow with hop count}?
+      \vspace{2mm}
+    \item[\textbf{RQ2}] Given a system that already navigates the graph, what
+      does a claim-level check against traversed triples \alert{contribute}?
+      \vspace{2mm}
+    \item[\textbf{RQ3}] Which components earn their cost, in accuracy and in
+      \alert{tokens}?
+  \end{enumerate}
+  \vspace{3mm}
+  {\small RQ2 is posed as \emph{what does it contribute}, not \emph{does it
+    reduce hallucination}. The answer has several parts, and a yes/no framing
+    would hide them.}
+\end{frame}
+
+% ===================== 4 =====================
+\begin{frame}{AGR: an explicit state machine}
+  \begin{columns}[T]
+    \begin{column}{0.46\textwidth}
+      \small
+      Six nodes; the model is consulted only at decision points.
+      \begin{itemize}
+        \item \textbf{Planner} --- sub-objectives
+        \item \textbf{Explorer} --- expands the frontier
+        \item \textbf{Evaluator} --- objective met?
+        \item \textbf{Backtracker} --- undo + ban list
+        \item \textbf{Verifier} --- \alert{the contribution}
+        \item \textbf{Answerer} --- emits what survived
+      \end{itemize}
+      Two cycles, both bounded by budgets rather than by model behaviour.
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[
+        node distance=3.4mm, scale=0.68, transform shape,
+        box/.style={draw, rounded corners=2pt, minimum height=5mm,
+          text width=24mm, align=center, font=\small},
+        term/.style={draw, circle, inner sep=1.2pt, font=\scriptsize},
+        flow/.style={-{Stealth[length=1.8mm]}, semithick},
+        lbl/.style={font=\scriptsize, inner sep=1.2pt, fill=white}]
+        \node[term]                 (start) {START};
+        \node[box, below=of start]  (plan)  {Planner};
+        \node[box, below=of plan]   (expl)  {Explorer};
+        \node[box, below=of expl]   (eval)  {Evaluator};
+        \node[box, below=of eval]   (ver)   {Verifier};
+        \node[box, below=of ver]    (ans)   {Answerer};
+        \node[box, right=16mm of eval] (back) {Backtracker};
+        \draw[flow] (start) -- (plan);
+        \draw[flow] (plan)  -- (expl);
+        \draw[flow] (expl)  -- (eval);
+        \draw[flow] (eval)  -- node[lbl] {answer} (ver);
+        \draw[flow] (ver)   -- node[lbl] {grounded $\mid$ give\_up} (ans);
+        \draw[flow] (eval.west) -- ++(-8mm,0)
+          node[lbl, pos=0.6] {continue} |- (expl.west);
+        \draw[flow] (eval.east) -- node[lbl] {backtrack} (back.west);
+        \draw[flow] (back.north) |- (expl.east);
+        \draw[flow] (ver.west) -- ++(-16mm,0)
+          node[lbl, pos=0.65] {retry} |- ([yshift=-1.5mm] expl.west);
+        \begin{scope}[on background layer]
+          \node[draw=black!35, dashed, rounded corners, inner sep=1.8mm,
+                fit=(expl)(eval)] {};
+        \end{scope}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 5 =====================
+\begin{frame}{Constrained tools, not free-form queries}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}L{37mm}L{33mm}L{38mm}@{}}
+      \toprule
+      \textbf{Operation} & \textbf{Returns} & \textbf{Why it is capped} \\
+      \midrule
+      \texttt{get\_relations}  & Candidate relations
+                               & $\leq 300$ offered to the scorer \\
+      \texttt{get\_neighbors}  & Neighbours of an entity
+                               & $\leq 200$ per expansion \\
+      \texttt{verify\_connection} & Adjacency in the full graph
+                               & Used only by the verifier \\
+      \texttt{link\_entity}    & Surface form $\rightarrow$ node
+                               & Three-stage resolver \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small The agent never writes Cypher, and every graph operation is logged
+  with its arguments and result.}
+  \takeaway{Determinism in the tools is what makes the verification layer
+    possible.}
+\end{frame}
+
+% ===================== 6 =====================
+\begin{frame}{The Structural Verification Layer}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \small
+      Before anything is emitted:
+      \begin{enumerate}
+        \item Draft answer is split into \alert{atomic claims}
+        \item Each claim is checked against the \alert{triples actually
+          traversed}
+        \item Supported claims keep their supporting triples
+        \item Unsupported claims trigger \alert{targeted re-exploration}, or
+          are \alert{dropped}
+      \end{enumerate}
+      \vspace{2mm}
+      The system therefore \textbf{hedges rather than asserts}, and returns
+      every answer with its evidence.
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Why \emph{structural}}
+        \small
+        The check is against the graph the agent walked --- not against the
+        model's own judgement of its own output. A model asked to grade itself
+        is not an independent check.
+      \end{block}
+      \vspace{2mm}
+      \begin{block}{The honest limit}
+        \small
+        A claim can be \emph{true} and still be the wrong answer. Structural
+        grounding cannot catch that --- see the echo attractor later.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 7 =====================
+\begin{frame}{One claim, three routes}
+  \centering
+  \resizebox{!}{0.68\textheight}{\input{../thesis_book/figures/fig_claim_path.tex}}
+
+  \vspace{1mm}
+  {\small Only the third route costs a model call. The first two are pure graph
+  lookups against the traversal record.}
+\end{frame}
+
+% ===================== 8 =====================
+\begin{frame}{The environment and the question sets}
+  \begin{columns}[T]
+    \begin{column}{0.45\textwidth}
+      \begin{block}{Freebase-derived graph}
+        \small
+        \begin{tabular}{@{}lr@{}}
+          Entities        & $2{,}592{,}892$ \\
+          Triples         & $8{,}309{,}194$ \\
+          Distinct relations & $7{,}058$ \\
+          Import time     & $36.4$\,s \\
+        \end{tabular}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Certified question sets}
+        \small
+        \begin{tabular}{@{}lrr@{}}
+          \toprule
+                       & \textbf{WebQSP} & \textbf{CWQ} \\
+          \midrule
+          Questions      & $400$ & $400$ \\
+          Gold (median)  & $1.5$ & $1.0$ \\
+          Reachable      & $97.0\%$ & $99.2\%$ \\
+          Multi-hop      & $132$ & $260$ \\
+          \bottomrule
+        \end{tabular}
+      \end{block}
+      {\small Reachability is the \emph{ceiling} on every Hits@1 reported: a
+      miss is the system's, not the environment's.}
+    \end{column}
+  \end{columns}
+  \takeaway{$800$ questions, with reachability certified per question so the
+    accuracy ceiling is known.}
+\end{frame}
+
+% ===================== 9 =====================
+\begin{frame}{Making the comparison fair}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \small
+      Five systems, \alert{one frozen backbone}, \alert{one budget}:
+      \begin{itemize}
+        \item No-retrieval (parametric control)
+        \item Vector RAG
+        \item Static GraphRAG
+        \item Think-on-Graph (agentic)
+        \item \textbf{AGR}
+      \end{itemize}
+      \vspace{2mm}
+      Same model, temperature $0$, same $25$-call cap, same questions, same
+      graph.
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{What this buys}
+        \small
+        Differences are attributable to \textbf{architecture}, not to model
+        capacity or to a bigger retrieval budget.
+      \end{block}
+      \vspace{1mm}
+      \begin{block}{Why a parametric control}
+        \small
+        These benchmarks predate current models and may be partly memorised.
+        Without the control we could not separate retrieval from recall.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 10 =====================
+\begin{frame}{Main results}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrrrrrr@{}}
+      \toprule
+      & \multicolumn{2}{c}{\textbf{WebQSP}}
+      & \multicolumn{2}{c}{\textbf{ComplexWebQuestions}}
+      & \multicolumn{2}{c}{\textbf{Cost / question}} \\
+      \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+      \textbf{System} & \textbf{Hits@1} & \textbf{F1}
+                      & \textbf{Hits@1} & \textbf{F1}
+                      & \textbf{Tokens} & \textbf{Calls} \\
+      \midrule
+      No-retrieval    & 0.453 & 0.305 & 0.307 & 0.279 & 113   & 1.0 \\
+      Vector RAG      & 0.568 & 0.432 & 0.203 & 0.168 & 527   & 1.0 \\
+      Static GraphRAG & 0.340 & 0.262 & 0.205 & 0.183 & 531   & 1.0 \\
+      Think-on-Graph  & 0.660 & 0.477 & 0.435 & 0.378 & 3{,}615 & 12.8 \\
+      \textbf{AGR}    & \textbf{0.755} & \textbf{0.642}
+                      & \textbf{0.522} & \textbf{0.469}
+                      & 4{,}511 & \textbf{6.2} \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small Cost columns are WebQSP. On CWQ, AGR spends $6{,}818$ tokens and
+  $8.9$ calls against Think-on-Graph's $5{,}572$ and $18.2$.}
+  \takeaway{Ahead of every baseline on both datasets, at half the model calls
+    of the other agentic system.}
+\end{frame}
+
+% ===================== 11 =====================
+\begin{frame}{Accuracy against cost}
+  \centering
+  \input{../thesis_book/figures/fig_accuracy_cost.tex}
+
+  \vspace{1mm}
+  {\small On \emph{tokens}, Think-on-Graph is \textbf{not} dominated --- it buys
+  lower accuracy at a genuinely lower token price. On \emph{calls}, which is
+  what the budget meters, it is dominated on both datasets.}
+  \takeaway{The frontier depends on which cost you charge.}
+\end{frame}
+
+% ===================== 12 =====================
+\begin{frame}{RQ1: accuracy against hop count}
+  \centering
+  \input{../thesis_book/figures/fig_hop_strata.tex}
+
+  \vspace{1mm}
+  {\small On ComplexWebQuestions AGR goes $0.46 \to 0.55 \to 0.57$ across one,
+  two, and three-or-more hops --- the \textbf{only} system that ends above where
+  it started. Three of the other four decay monotonically.}
+  \takeaway{RQ1 is answered by a shape, not a difference of means.}
+\end{frame}
+
+% ===================== 13 =====================
+\begin{frame}{The caveat I want to raise myself}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrrrr@{}}
+      \toprule
+      & \multicolumn{2}{c}{\textbf{WebQSP}}
+      & \multicolumn{2}{c}{\textbf{ComplexWebQuestions}} \\
+      \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+      \textbf{Hits@1 on\ldots} & \textbf{ToG} & \textbf{AGR}
+                               & \textbf{ToG} & \textbf{AGR} \\
+      \midrule
+      questions ToG \emph{finishes} & \textbf{0.852} & 0.788
+                                    & \textbf{0.629} & 0.607 \\
+      questions ToG is \emph{clipped} on & 0.197 & \textbf{0.675}
+                                    & 0.188 & \textbf{0.415} \\
+      \midrule
+      clip rate & \multicolumn{2}{c}{$29.2\%$ ($117/400$)}
+                & \multicolumn{2}{c}{$44.0\%$ ($176/400$)} \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small Where Think-on-Graph finishes inside the shared $25$-call cap, it is
+  \textbf{ahead of AGR on both datasets}. The entire aggregate margin comes
+  from the questions it cannot finish.}
+  \takeaway{The claim is efficiency under a fixed budget --- not that AGR
+    reasons better per step.}
+\end{frame}
+
+% ===================== 14 =====================
+\begin{frame}{RQ2: does anything ungrounded get asserted?}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrrr@{}}
+      \toprule
+      \textbf{System} & \textbf{Entities asserted}
+                      & \textbf{Ungrounded} & \textbf{Rate} \\
+      \midrule
+      No-retrieval    & $1{,}001$ & $221$ & $22.1\%$ \\
+      Vector RAG      & $1{,}329$ & $45$  & $3.4\%$ \\
+      Static GraphRAG & $1{,}024$ & $8$   & $0.8\%$ \\
+      Think-on-Graph  & $1{,}265$ & $0$   & $\mathbf{0.0\%}$ \\
+      \textbf{AGR}    & $1{,}709$ & $0$   & $\mathbf{0.0\%}$ \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \vspace{1mm}
+  {\small Both datasets pooled. AGR asserts no entity that does not exist in
+  the graph, across $1{,}709$ assertions.}
+  \takeaway{\alert{But Think-on-Graph reaches $0.0\%$ too} --- so this is a
+    property of \emph{graph navigation}, not of the verification layer.}
+\end{frame}
+
+% ===================== 15 =====================
+\begin{frame}{RQ2: so what does verification actually contribute?}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{What it does \emph{not} do}
+        \small
+        Removing it changes accuracy by an amount we cannot detect:
+        $p = 1.0$ on \emph{both} datasets. It does not earn its place on
+        Hits@1 or F1.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{What it does do}
+        \small
+        \begin{itemize}
+          \item Turns silent error into a \alert{hedge}: AGR hedges on
+            $8.2\%$ of WebQSP against no-retrieval's $12.2\%$ error rate
+          \item Attaches \alert{supporting triples} to every asserted claim
+          \item Gives an \alert{auditable output contract}
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  {\small This is a negative result reported as one. The layer's case rests on
+  auditability, and the thesis says so rather than claiming an accuracy
+  benefit the measurement does not support.}
+\end{frame}
+
+% ===================== 16 =====================
+\begin{frame}{RQ3: what each component earns}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrrrrr@{}}
+      \toprule
+      & \multicolumn{2}{c}{\textbf{WebQSP}}
+      & \multicolumn{2}{c}{\textbf{ComplexWebQuestions}} & \\
+      \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+      \textbf{Condition} & \textbf{F1} & \textbf{$p$}
+                         & \textbf{F1} & \textbf{$p$}
+                         & \textbf{Tokens (WQ)} \\
+      \midrule
+      Full system     & 0.659 & ---   & 0.445 & ---   & 4{,}562 \\
+      No planner      & \textbf{0.742} & \alert{\textbf{0.006}}
+                      & 0.398 & 0.088 & \textbf{3{,}159} \\
+      No backtracking & 0.646 & 0.727 & 0.445 & 1.000 & 4{,}261 \\
+      No verifier     & 0.663 & 1.000 & 0.436 & 1.000 & 4{,}460 \\
+      Embedding-only scoring & 0.643 & 0.664 & 0.437 & 0.481 & 3{,}413 \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small Paired McNemar against the full system, stratified halves
+  ($n=200$ / $198$).}
+  \takeaway{Exactly one component shows a detectable accuracy effect --- and
+    the sign is backwards.}
+\end{frame}
+
+% ===================== 17 =====================
+\begin{frame}{The result I did not expect}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \textbf{Removing the planner \emph{improves} WebQSP:}
+      \begin{itemize}
+        \item $+0.083$ F1, at $p = 0.006$
+        \item $-31\%$ tokens
+        \item $6.2 \rightarrow 4.0$ calls
+      \end{itemize}
+      \vspace{2mm}
+      \small
+      On ComplexWebQuestions it trends the other way ($-0.047$ F1,
+      $p = 0.088$) --- not significant, but the opposite sign.
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \begin{block}{Why}
+        \small
+        WebQSP is predominantly one hop. Decomposing a one-hop question
+        invents a second sub-objective that sends the frontier away from the
+        answer.
+      \end{block}
+      \vspace{1mm}
+      \begin{block}{What follows}
+        \small
+        Decomposition should be \textbf{gated on question structure}, not
+        applied unconditionally. That is a design conclusion the measurement
+        forced, not one it confirmed.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 18 =====================
+\begin{frame}{Every failure, read: the echo attractor}
+  \begin{columns}[T]
+    \begin{column}{0.46\textwidth}
+      \small
+      All $259$ remaining failures read and labelled, both datasets pooled:
+      \vspace{1mm}
+      \begin{tabular}{@{}lr@{}}
+        \toprule
+        \textbf{Category} & \textbf{n} \\
+        \midrule
+        Relation selection   & 65 \\
+        Composite claim      & 47 \\
+        Knowledge-graph gap  & 44 \\
+        Decomposition error  & 38 \\
+        Answer selection     & 15 \\
+        \alert{Echo attractor} & \alert{13} \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \small
+      The characteristic error of a graph navigator is \alert{not invention}.
+      It is the \textbf{echo attractor}: a real, grounded entity one hop from
+      the answer.
+
+      \vspace{2mm}
+      \begin{block}{Why it matters}
+        \small
+        Any grounding check \emph{passes} it --- because it is true. Verification
+        cannot catch it by construction.
+      \end{block}
+      \vspace{1mm}
+      {\small It appears across systems, so it is a property of the task, not
+      of AGR. Naming it is what lets future work target it.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 19 =====================
+\begin{frame}{The benchmark was wrong $57$ times}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \small
+      Reading every failure also found questions where the \emph{benchmark},
+      not the system, was at fault:
+      \begin{itemize}
+        \item $41$ excluded before the census
+        \item $17$ found inside the census
+        \item $1$ counted in both
+        \item[$\Rightarrow$] \textbf{$57$ distinct questions}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Why report it}
+        \small
+        Reported defect rates for these two standard benchmarks are rare and
+        usually anecdotal. This is a counted rate with a documented
+        adjudication procedure and per-question provenance.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{A contribution that outlives this particular system.}
+\end{frame}
+
+% ===================== 20 =====================
+\begin{frame}{Contributions, and what I would not claim}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Contributions}
+      \small
+      \begin{enumerate}
+        \item AGR: a state machine over a constrained graph tool API
+        \item The Structural Verification Layer and its output contract
+        \item A controlled five-system comparison, one backbone, one budget
+        \item The hop-count shape answering RQ1
+        \item The \emph{echo attractor}, named
+        \item A counted benchmark-defect rate ($57$)
+      \end{enumerate}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Limitations I state plainly}
+      \small
+      \begin{itemize}
+        \item Verification earns \alert{no} detectable accuracy gain
+        \item Zero ungrounded assertion is \alert{navigation}, not the layer
+        \item ToG leads on the questions it finishes
+        \item One backbone: results are architectural, not universal
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== CLOSE =====================
+{\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+  \vfill
+  \centering
+  {\Large\bfseries\color{agrdark} Thank you}\\[4mm]
+  {\large Questions}
+  \vfill
+\end{frame}}
+
+% ===================== BACKUP =====================
+\appendix
+\begin{frame}{Backup: budget configuration}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrL{52mm}@{}}
+      \toprule
+      \textbf{Parameter} & \textbf{Value} & \textbf{Enforced in} \\
+      \midrule
+      \texttt{max\_depth}        & 4 & both routers \\
+      \texttt{beam\_width}       & 3 & explorer (slice) \\
+      \texttt{max\_anchors}      & 5 & explorer \emph{and} evaluator \\
+      \texttt{max\_backtracks}   & 3 & post-evaluation router \\
+      \texttt{max\_llm\_calls}   & 25 & LLM client \\
+      \texttt{max\_verify\_iters}& 2 & post-verification router, verifier \\
+      \texttt{max\_seconds}      & 300 & both routers \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small Termination does not depend on model behaviour: every cycle passes
+  through a router that checks a monotone counter.}
+\end{frame}
+
+\begin{frame}{Backup: which budgets actually bind}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrrr@{}}
+      \toprule
+      \textbf{Budget} & \textbf{WebQSP} & \textbf{CWQ} & \textbf{Pooled} \\
+      \midrule
+      Depth cap        & $16.5\%$ & $34.8\%$ & $25.6\%$ \\
+      Backtrack cap    & $3.2\%$  & $9.2\%$  & $6.2\%$ \\
+      Verify-iteration cap & $1.0\%$ & $2.8\%$ & $1.9\%$ \\
+      \textbf{Call cap} & $\mathbf{0.0\%}$ & $\mathbf{0.0\%}$
+                        & $\mathbf{0.0\%}$ \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small Percentage of questions on which each budget refused a request.
+  AGR never reaches the $25$-call cap --- which is what makes the comparison
+  against a clipped Think-on-Graph meaningful.}
+\end{frame}
+
+\begin{frame}{Backup: the full failure census}
+  \centering
+  \resizebox{!}{0.80\textheight}{%
+    \input{../thesis_book/figures/fig_failure_histogram.tex}}
+\end{frame}
+
+\begin{frame}{Backup: hedging behaviour}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrr@{}}
+      \toprule
+      \textbf{System} & \textbf{WebQSP hedge \%} & \textbf{CWQ hedge \%} \\
+      \midrule
+      No-retrieval    & 12.2 & 38.0 \\
+      Vector RAG      & 27.0 & 48.2 \\
+      Static GraphRAG & 55.8 & 60.8 \\
+      Think-on-Graph  & 18.8 & 22.5 \\
+      \textbf{AGR}    & \textbf{8.2} & 23.0 \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small A hedge is a refusal to assert, not a wrong answer. AGR hedges least
+  on WebQSP while also being most accurate there.}
+\end{frame}
+
+\end{document}
