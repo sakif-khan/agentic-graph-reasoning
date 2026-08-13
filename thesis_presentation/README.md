@@ -22,7 +22,14 @@ latexmk -pdf pre-defense-0421052099-backup.tex
 ```
 
 `latexmk -C` cleans. Both drivers `\input{preamble}`, so a change to the look
-applies to both.
+applies to both — edit the preamble and you must rebuild **both** decks.
+
+**Only the two `pre-defense-*.tex` files are documents.** `preamble.tex`,
+`content-main.tex` and `content-backup.tex` have no `\begin{document}` and
+stop with `Emergency stop ... no legal \end found` if you build them directly.
+Each carries a `% !TEX root` line so an editor's build button compiles the
+right driver instead; `preamble.tex` points at the main deck, which leaves the
+backup deck to rebuild by hand.
 
 ## Why two documents
 
@@ -65,8 +72,14 @@ python thesis_presentation/check_slides.py
 
 This binds every result, cost, p-value, rate, and count in **both** decks back
 to `thesis_numbers.json`, and asserts the decks' formatting invariants — 16:9,
-12 pt base, nothing in body text below `\small`, figures generated rather than
-hand-edited. Run it after editing any table. It exits non-zero on a mismatch.
+12 pt base, nothing in body text below `\small`, both justification hooks,
+figures generated rather than hand-edited. Run it after editing any table. It
+exits non-zero on a mismatch.
+
+It also reads the build logs, if they are there, and requires **zero warnings
+of any class** — not just `LaTeX Warning`. Grepping for that one string is how
+a `Package hyperref Warning` about `\quad` reaching the PDF metadata survived
+two rounds of builds described as clean.
 
 ## Editing notes
 

@@ -1,4 +1,12 @@
+% !TEX root = pre-defense-0421052099.tex
 % =====================================================================
+% NOT A DOCUMENT. This file carries the \documentclass and the preamble,
+% but no \begin{document}; building it directly stops with "Emergency
+% stop ... no legal \end found". It is \input by both drivers, and the
+% root directive above sends an editor's build button to the main deck.
+% A change here affects the backup deck too, so build that one as well:
+%   latexmk -pdf pre-defense-0421052099-backup.tex
+%
 % Pre-defense presentation for the M.Sc. Engg. thesis.
 %
 % 16:9, 12pt base. The font size is uniform: nothing in this deck is set
@@ -140,10 +148,17 @@
     \small\raggedright\textbf{#1}%
   \end{beamercolorbox}}
 
+% hyperref copies \title and \author into the PDF's own metadata, where a
+% spacing command is not a legal token. \quad reached it as a raw
+% "\hskip 11.74713pt" and drew a warning; the \\ in the subtitle arrived
+% beside the newline after it and left a double space in /Title. Both now
+% give hyperref a string to use instead of the typesetting instruction.
 \title{Agentic Graph Reasoning}
-\subtitle{Autonomous Knowledge Graph Navigation for Fact Verification\\
-  and Hallucination Mitigation in Large Language Models}
-\author{Md.\ Sakif Khan \quad\textnormal{\small 0421052099}}
+\subtitle{Autonomous Knowledge Graph Navigation for Fact
+  Verification\texorpdfstring{\\}{} and Hallucination Mitigation in Large
+  Language Models}
+\author{Md.\ Sakif Khan
+  \texorpdfstring{\quad\textnormal{\small 0421052099}}{(0421052099)}}
 \institute{\small Department of Computer Science and Engineering\\
   Bangladesh University of Engineering and Technology\\[2mm]
   \textnormal{Supervisor: Dr.\ Sadia Sharmin, Associate Professor}}

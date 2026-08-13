@@ -218,6 +218,36 @@ ck("slide figures are colourised, not greyscale",
    all("black!55" not in open(os.path.join(HERE, "figures", f),
                               encoding="utf-8").read() for f in slide_figs))
 
+print("\n== build logs ==")
+# Warnings were being counted by grepping for the literal "LaTeX Warning",
+# which is one class out of several: a "Package hyperref Warning" about \quad
+# reaching the PDF metadata sat in a build reported as clean for two rounds.
+# Match every class instead.
+#
+# Underfull needs no threshold here -- the preamble sets \hbadness, so a line
+# only reaches the log if it is looser than the ceiling declared there.
+# Three details, each learned from a false result:
+#   [Ww]arning  - pdfTeX spells its own lowercase.
+#   (?!:)       - "Package: infwarerr ... Providing info/warning" is a package
+#                 identification line, not a warning. A real one has no colon
+#                 after the leading keyword.
+#   trailing :  - every genuine warning reads "Warning:" or "warning (ext4):",
+#                 which keeps the word from matching inside running prose.
+WARNING = re.compile(
+    r"^(?:Package|Class|LaTeX|pdfTeX)(?!:)[^\n]*?\b[Ww]arning\b[^:\n]*:", re.M)
+for drv in DRIVERS:
+    log = os.path.join(HERE, os.path.splitext(drv)[0] + ".log")
+    if not os.path.exists(log):
+        print(f"  [   ] {drv}: no build log to read -- run latexmk first")
+        continue
+    t = open(log, encoding="utf-8", errors="replace").read()
+    ck(f"{drv}: no overfull boxes", "Overfull" not in t)
+    ck(f"{drv}: nothing looser than the badness ceiling",
+       "Underfull" not in t)
+    hits = WARNING.findall(t)
+    ck(f"{drv}: no warnings, of any class", not hits,
+       "; ".join(sorted(set(hits))))
+
 print("\n" + ("ALL SLIDE NUMBERS MATCH THEIR SOURCE"
               if ok else "SOMETHING DOES NOT MATCH"))
 sys.exit(0 if ok else 1)
