@@ -6,8 +6,9 @@ Verification and Hallucination Mitigation in Large Language Models
 *(As registered with CASR. A narrower title was drafted in review and not approved,
 so the registered one stands; §1.7 reads its terms against the findings.)*
 
-**Target:** 60–90 pages of body text. The per-chapter estimates below total **87 pages**
-(front matter is roman-numbered and does not count against the budget).
+**Target:** 60–90 pages of body text — self-imposed here at planning time, not a
+departmental rule; see the Page Budget section. The per-chapter estimates below total
+**87 pages** (front matter is roman-numbered and does not count against the budget).
 
 > **Status: planning record, not a specification.** This file was the plan the book was
 > written against, and the framing directives in it are still the reason many sections are
@@ -789,18 +790,25 @@ wrongful-acceptance class from anecdote to rate)*
 | **Body total** | **87** | **104** | **131** |
 | References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
 
-**The body is 131 pages against a 60–90 target — 46% over the 90 ceiling.** Body runs pages 1–131;
-References begin on 132, the index on 137; the document is 183 pages including front
-matter and five appendices.
+**The body is 131 pages, against the 60–90 target this file set for itself.** Body runs
+pages 1–131; References begin on 132, the index on 137; the document is 183 pages
+including front matter and five appendices.
 
-The decision to cross the ceiling was taken at 104 pages and recorded so it would not
-be revisited by accident: *cross the ceiling if needed.* That decision was made
-against a smaller number. The 27 pages added since fall in Chapter 5 (+5), Chapters 7
-and 8 (+5 and +6), Chapters 6 and 9 (+3 and +4), Chapter 10 (+2), and one page each in
-1 and 4 — corrections, scoping notes and disclosure statements added in review, not
-new material. **Re-confirm before submission whether the department enforces a hard
-cap.** If it does, the compression targets are unchanged: Chapters 2 and 3 first,
-never Chapter 9.
+**There is no departmental page limit, and this question is closed.** The supervisor
+confirmed it verbally on 13 August 2026. The 60–90 range was this outline's own
+planning estimate and was never a requirement: no page rule appears anywhere in the
+departmental template package, its README, the CASR presentation or the proposal. The
+overrun is against a self-set number. Earlier revisions of this section read as though
+a departmental cap existed and instructed that it be re-confirmed before submission;
+that instruction was self-authored and is withdrawn.
+
+The decision to cross the self-set ceiling was taken at 104 pages and recorded so it
+would not be revisited by accident: *cross the ceiling if needed.* The 27 pages added
+since fall in Chapter 5 (+5), Chapters 7 and 8 (+5 and +6), Chapters 6 and 9 (+3 and
++4), Chapter 10 (+2), and one page each in 1 and 4 — corrections, scoping notes and
+disclosure statements added in review, not new material. The per-chapter reasoning
+below is kept as a record of where the length went and why each chapter earns it, not
+as compression work to be done.
 
 Where the 44 pages over budget went, and why each is defensible if questioned.
 The `r1` column is the round-1 overrun measured at 104 pages; `now` is measured at
