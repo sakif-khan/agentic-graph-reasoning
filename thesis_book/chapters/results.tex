@@ -862,16 +862,19 @@ lose the distinction.
 \section{Findings Against RQ1, RQ2, and RQ3}\label{sec:findings}
 
 \textbf{RQ1 --- does agentic navigation improve multi-hop factual accuracy?}
-Yes, and the multi-hop qualifier is doing real work. AGR leads every cell of
-\Cref{tab:main}, and all eight paired comparisons reject, including both against
-the agentic baseline running on the same graph with the same model under the same
-budget. The stratum profile is the substance of the answer: on CWQ, AGR's accuracy
+Yes, and the multi-hop qualifier is doing real work. AGR leads every accuracy
+cell of \Cref{tab:main}, and all eight paired comparisons reject, including both
+against the agentic baseline running on the same graph with the same model under
+the same budget. The stratum profile is the substance of the answer: on CWQ, AGR's accuracy
 \emph{rises} with hop count ($0.46 \to 0.55 \to 0.57$) and it is the only system
 that ends above where it started, and Vector-RAG collapses from $0.33$ to $0.10$
 on a context that cannot hold a chain at any radius.
 
-Three boundaries are reported with it rather than left for a reader to find.
-Think-on-Graph is better on CWQ's one-hop stratum. Vector-RAG is better than
+Four boundaries are reported with it rather than left for a reader to find.
+Think-on-Graph hedges marginally less on CWQ --- $22.5\%$ against $23.0\%$ ---
+which is the one cell of \Cref{tab:main} AGR does not lead, and the reason the
+claim above is about the accuracy columns rather than the whole table.
+Think-on-Graph is also better on CWQ's one-hop stratum. Vector-RAG is better than
 everything on WebQSP's. And the margin over Think-on-Graph is located in the
 budget: where the shared cap lets it finish, it is marginally ahead on both
 datasets, so the claim this thesis defends is that guided search completes under

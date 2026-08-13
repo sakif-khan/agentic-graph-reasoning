@@ -102,6 +102,13 @@
 \printindex
 
 \appendix
+% After \appendix the chapter counter still calls itself a chapter, so cleveref
+% renders \Cref{app:...} as "Chapter B" in a document whose own title pages and
+% contents say "Appendix B". Six cross-references in Chapters 4, 5, 7 and 9 read
+% that way. cleveref binds a label's type when the label is DEFINED, so this has
+% to sit above the \input lines below, not in the preamble. Section-level labels
+% inside the appendices are unaffected and still render as "Section E.1".
+\crefalias{chapter}{appendix}
 \input{appendices/prompts.tex}
 \input{appendices/toolapi.tex}
 \input{appendices/samples.tex}
