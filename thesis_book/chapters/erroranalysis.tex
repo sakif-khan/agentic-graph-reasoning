@@ -167,16 +167,18 @@ describe neither.
 \subsection{The Shape Flip, and What It Is Not}
 
 The two datasets fail differently, but not in the way a first reading of
-\Cref{tab:histogram} and \Cref{fig:histogram} suggests. \textsf{relation\_selection} is the largest category
-on \emph{both} --- $26$ of WebQSP's $86$ and $39$ of CWQ's $173$ --- so it is not
+\Cref{tab:histogram} and \Cref{fig:histogram} suggests. \textsf{relation\_selection} sits at the top
+on \emph{both} --- $26$ of WebQSP's $86$, level there with
+\textsf{decomposition\_error}, and $39$ of CWQ's $173$, behind
+\textsf{composite\_claim} alone --- so it is not
 what distinguishes them. Picking the wrong edge is the base rate of graph
 navigation, and it is dataset-independent.
 
 What distinguishes them is a pair of categories that are nearly absent from one and
 dominant in the other. \textsf{composite\_claim} is $1$ of $86$ on WebQSP and $46$
 of $173$ on CWQ; \textsf{kg\_gap} is $12$ and $32$. In the other direction,
-\textsf{decomposition\_error} is $26$ on WebQSP --- tied with
-\textsf{relation\_selection}, the two together accounting for nearly $60\%$ of its
+\textsf{decomposition\_error} is $26$ on WebQSP --- the tie noted above, the two
+together accounting for just over $60\%$ of its
 failures --- against $12$ on CWQ.
 
 That asymmetry is demonstrable rather than assertable, from two facts already

@@ -52,8 +52,8 @@ checkpoints/
 # Logs, Profiling & Experiment Tracking
 # ==========================================
 # Experiment artifacts are committed under results/phase{1..4}/. scratch/ holds
-# the incidental output of the single-question probes run_one.py and
-# verify_planner_noop.py, which is not part of the experimental record.
+# the incidental output of the probes run_one.py, verify_planner_noop.py and
+# check_tools.py, which is not part of the experimental record.
 scratch/
 temp/
 *.log

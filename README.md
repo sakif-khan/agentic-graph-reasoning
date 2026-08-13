@@ -334,7 +334,10 @@ python scripts/check_tools.py
 
 Exercises all five graph operations against the live database. It probes
 `Justin Bieber` / `people.person.parents` by default — edit the constants at the
-top of the file if you built a different graph.
+top of the file if you built a different graph. Its tool log goes to the
+untracked `scratch/` directory; the committed
+`results/phase2/check_tools.jsonl` is the archived certification run and is left
+alone.
 
 ### Run the test suite
 

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from agr.resolver import EntityResolver
 from agr.kg_tools import KGTools
 from agr.runtime import get_driver, get_embedder
@@ -11,8 +13,13 @@ REL = "people.person.parents"
 def main():
     driver = get_driver()
     model = get_embedder()
+    # KGTools opens its log in append mode, so pointing this at the committed
+    # results/phase2/check_tools.jsonl grew that record on every re-run. That
+    # file is the archived Phase 2 certification; this is an install check, so
+    # its output is incidental and goes to the untracked scratch directory.
+    Path("scratch").mkdir(exist_ok=True)
     tools = KGTools(driver, EntityResolver(driver, model),
-                    "results/phase2/check_tools.jsonl")
+                    "scratch/check_tools.jsonl")
     tools.qid = "manual-check"
 
     hits = tools.search_entity(NAME)
