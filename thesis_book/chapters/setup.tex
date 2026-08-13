@@ -704,9 +704,9 @@ Tokens and calls are counted by the shared budget meter, identically for every\i
 system, and are exact --- the cache replays original usage, so they are unaffected
 by which runs were warm. Wall-clock latency is not: it is computed over
 \textbf{cold-cache records only}, and that restriction is repeated wherever
-latency appears. Where a condition's records are entirely cache replays the
-latency cell is reported as unmeasured rather than as a number, which happens for
-one ablation condition in \Cref{sec:ablations}.
+latency appears. Where a condition's records are entirely cache replays there is
+no cold-cache mean at all, which is why \Cref{tab:ablation} drops its seconds
+column rather than carry one measured on four conditions of five.
 
 \section{The Groundedness Judge and Its Validation}\label{sec:judge}
 

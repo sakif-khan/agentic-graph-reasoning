@@ -401,8 +401,10 @@ python scripts/run_baseline.py      # no-retrieval, VectorRAG, GraphRAG, ToG
 
 Both are **resumable**: they read back the questions already present in their
 output log and skip them, so an interrupted run continues where it stopped.
-This is also the expensive part — roughly 6 model calls per WebQSP question and
-9 per CWQ question, across 800 questions per system.
+This is also the expensive part — 800 questions per system. AGR averages roughly
+6 model calls per WebQSP question and 9 per CWQ question; Think-on-Graph, which
+runs under the same call budget, averages about double that. The three static
+baselines answer in one call each.
 
 ### Scoring
 
