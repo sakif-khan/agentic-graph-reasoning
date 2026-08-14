@@ -11,7 +11,7 @@ First, we give the model a symbolic knowledge graph to walk through. Then,
 before it asserts anything, we check what it is about to say.
 
 The rest of this chapter motivates the problem and explains why the obvious
-remedies still leave something on the table. From there it states the problem
+remedies still fall short. From there it states the problem
 and the research questions, summarises our contributions, and sets out how the
 rest of the document is organised.
 
@@ -23,7 +23,7 @@ to; very often it is simply false. Huang et al.~\cite{huang2025survey} survey th
 phenomenon at length and argue that it is an intrinsic consequence of how these
 models are built, not an incidental defect to be patched away. That framing
 matters here, because it determines what kind of remedy is on the table at all.
-If hallucination were a bug, you would fix it. Because it is structural, the
+If hallucination were a bug, we would fix it. Because it is structural, the
 response has to be architectural.
 
 \subsection{Where Hallucination Originates: Training Data, Model, and Prompt}
@@ -53,7 +53,7 @@ context is assembled, and in \emph{what gets checked} before the answer goes out
 
 \subsection{Why Multi-Hop Questions Are the Hard Case}
 
-Single-fact questions are comparatively benign. ``Where was Ada Lovelace born?''\index{multi-hop question}
+Single-fact questions are comparatively benign. ``Where was Ada Lovelace born?''
 takes one lookup, and the model either knows it or it does not.
 
 \emph{Multi-hop}\index{multi-hop question} questions, such as ``Who directed the
@@ -152,7 +152,7 @@ but never verifies assertion cannot catch either failure, and both show up as a
 measurable precision gap between systems (\Cref{sec:webqsp-results}). That gap is
 what motivates a check in the first place. It is not, on its own, evidence that
 the check works, and \Cref{sec:ablations} is where this thesis asks whether the
-check proposed here is actually what closes it.
+check proposed here is actually what produces it.
 
 Chain-of-Verification~\cite{dhuliawala2024chain} and multi-agent
 debate~\cite{du2024improving} show that post-hoc self-checking reduces factual
@@ -236,10 +236,10 @@ design either routes to targeted re-exploration or drops the claim from the
 answer, and AGR returns what survives paired with the triples that support it.
 
 Both repair routes are specified, implemented, and reported at the frequency we
-actually measured rather than the one we intended, which is low. The
-re-exploration route never fired on the development set, because the depth
-budget is already exhausted by the time the verifier is reached, and the entity
-filter ran on only three of eighty questions (\Cref{ch:verification}). On the
+actually measured rather than the one we intended. That measured frequency is
+low: the re-exploration route never fired on the development set, because the
+depth budget is already exhausted by the time the verifier is reached, and the
+entity filter ran on only three of eighty questions (\Cref{ch:verification}). On the
 vast majority of questions the layer simply passes through and certifies a draft
 at no extra model call. That is a finding about when verification can act, not a
 defect in it, and \Cref{sec:findings} treats it as one.

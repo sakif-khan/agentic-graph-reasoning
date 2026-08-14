@@ -35,7 +35,7 @@ AGR reaches Hits@1 of $0.755$ and F1 of $0.642$ on WebQSP, and $0.522$ and $0.46
 on ComplexWebQuestions, ahead of every baseline. That includes the agentic
 navigator, which scores $0.660$ and $0.435$ Hits@1 and actually leads on the
 questions where its call budget lets it finish, but which gets clipped on $29\%$
-and $44\%$ of them. AGR does all of this at half the language-model calls.
+and $44\%$ of all questions. AGR does all of this at half the language-model calls.
 Across both datasets it asserts no ungrounded entity in $1{,}709$ assertions,
 against $22.1\%$ of the $1{,}001$ made by the parametric control, a property we
 attribute to graph navigation itself rather than to the verification layer. On
@@ -49,9 +49,9 @@ token use by $31\%$, while trending the other way on ComplexWebQuestions.
 Decomposition, in other words, should be gated on question structure rather than
 applied unconditionally. We read all $259$ remaining failures by hand, and the
 characteristic error of a graph navigator turns out not to be invention but the
-\emph{echo attractor}: a real, grounded entity one hop short of the answer,
-which any grounding check will pass because it is genuinely true, and which
-turns up across unrelated systems. The same pass confirms $57$ questions where
-the benchmark, not the system, was wrong.
+\emph{echo attractor}: a real, grounded entity one hop from the answer, which
+any grounding check will pass because it is genuinely true, and which different
+systems fall into together. The same pass confirms $57$ questions where the
+benchmark, not the system, was wrong.
 
 \endinput
