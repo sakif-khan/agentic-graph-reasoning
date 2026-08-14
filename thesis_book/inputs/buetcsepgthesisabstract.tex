@@ -5,49 +5,53 @@
 % way of tab:graphstats. If a rerun changes a value in either source, this file
 % is one of the places that has to change with it.
 
-Large language models answer factual questions fluently, and just as fluently
-when they do not hold the fact. Retrieval-augmented generation grounds them in
-retrieved text, but it retrieves once, before reasoning begins, so a multi-hop
-question must be answered from whatever that query returned. Agentic systems that
-navigate a knowledge graph interleave the two, but they still emit whatever their
-final generation call produces, with nothing checking what the answer asserts
-before it is delivered.
+Large language models answer factual questions with real confidence, and they
+tend to sound just as confident when the fact is not actually there.
+Retrieval-augmented generation helps by grounding the model in retrieved text,
+but the retrieval happens once and up front, before any reasoning starts, so a
+question that spans several facts has to be answered from whatever that first
+query brought back. Systems that navigate a knowledge graph do better by
+interleaving retrieval with reasoning. Even they, however, send out whatever
+their final generation call produces, and nothing checks the answer's claims
+before it reaches the user.
 
-To address this, we propose Agentic Graph Reasoning (AGR), a knowledge-graph
-question-answering framework in which an agent plans sub-objectives and navigates
+To close that gap we propose Agentic Graph Reasoning (AGR), a knowledge-graph
+question-answering framework in which an agent plans sub-objectives and walks
 the graph through a constrained, deterministic tool API. Its distinguishing
-component is a Structural Verification Layer, which splits the draft answer into
-atomic claims and checks each against the triples the agent traversed,
-before the answer is emitted. Claims it cannot ground are re-explored or
-withdrawn, so AGR hedges rather than asserts and returns every answer with its
-supporting triples.
+component is a Structural Verification Layer: before the answer is emitted, it
+splits the draft into atomic claims and checks each one against the triples the
+agent actually traversed. Claims it cannot ground are re-explored or withdrawn,
+so AGR is more inclined to hedge than to assert, and it returns every answer
+paired with the triples that support it.
 
 We evaluate AGR on a Freebase-derived environment of $2{,}592{,}892$ entities and
 $8{,}309{,}194$ triples, over $400$ certified questions from each of WebQSP and
 ComplexWebQuestions, against four baselines: parametric answering, vector
-retrieval, GraphRAG, and an agentic navigator. All five run on one frozen
-backbone under the same budget, so architecture rather than model capacity
-accounts for the differences.
+retrieval, GraphRAG, and an agentic navigator. All five systems share one frozen
+backbone and the same call budget, so the differences between them come down to
+architecture rather than model capacity.
 
-AGR reaches Hits@1 of $0.755$ and F1 of $0.642$ on WebQSP and $0.522$ and $0.469$
-on ComplexWebQuestions, ahead of every baseline --- including the agentic one at
-$0.660$ and $0.435$ Hits@1, which leads where the call budget lets it finish and is
-clipped on $29\%$ and $44\%$ of questions --- at half the language-model
-calls. Across both datasets it
-asserts no ungrounded entity in $1{,}709$ assertions, against $22.1\%$ of the
-parametric control's $1{,}001$ --- a property we attribute to graph navigation,
-not to the verification layer. On ComplexWebQuestions it is the only system whose
-accuracy rises with hop count; every other system ends below where it started.
+AGR reaches Hits@1 of $0.755$ and F1 of $0.642$ on WebQSP, and $0.522$ and $0.469$
+on ComplexWebQuestions, ahead of every baseline. That includes the agentic
+navigator, which scores $0.660$ and $0.435$ Hits@1 and actually leads on the
+questions where its call budget lets it finish, but which gets clipped on $29\%$
+and $44\%$ of them. AGR does all of this at half the language-model calls.
+Across both datasets it asserts no ungrounded entity in $1{,}709$ assertions,
+against $22.1\%$ of the $1{,}001$ made by the parametric control, a property we
+attribute to graph navigation itself rather than to the verification layer. On
+ComplexWebQuestions it is the only system whose accuracy rises with hop count;
+every other system ends below where it started.
 
-A four-condition ablation with paired significance testing detects an accuracy
-effect in only one component, and its sign is not the expected one: removing the
-planner \emph{improves} WebQSP by $0.083$ F1 at $p = 0.006$ and cuts tokens by
-$31\%$, while trending the other way on ComplexWebQuestions. Decomposition should
-therefore be gated on question structure, not applied unconditionally. We read
-all $259$ remaining failures and name the characteristic error of a graph
-navigator: not invention, but the \emph{echo attractor} --- a real,
-grounded entity one hop from the answer, which any grounding check passes because
-it is true, and shared across systems. It also confirms $57$ questions where the
-benchmark, not the system, was wrong.
+A four-condition ablation with paired significance testing finds an accuracy
+effect in only one component, and the sign is the opposite of what we expected:
+removing the planner \emph{improves} WebQSP by $0.083$ F1 at $p = 0.006$ and cuts
+token use by $31\%$, while trending the other way on ComplexWebQuestions.
+Decomposition, in other words, should be gated on question structure rather than
+applied unconditionally. We read all $259$ remaining failures by hand, and the
+characteristic error of a graph navigator turns out not to be invention but the
+\emph{echo attractor}: a real, grounded entity one hop short of the answer,
+which any grounding check will pass because it is genuinely true, and which
+turns up across unrelated systems. The same pass confirms $57$ questions where
+the benchmark, not the system, was wrong.
 
 \endinput
