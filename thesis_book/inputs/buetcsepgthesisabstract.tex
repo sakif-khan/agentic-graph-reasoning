@@ -5,24 +5,26 @@
 % way of tab:graphstats. If a rerun changes a value in either source, this file
 % is one of the places that has to change with it.
 
-Large language models answer factual questions with real confidence, and they
-tend to sound just as confident when the fact is not actually there.
-Retrieval-augmented generation helps by grounding the model in retrieved text,
-but the retrieval happens once and up front, before any reasoning starts, so a
+Large language models answer factual questions fluently. But, they tend to
+sound just as fluent when they don't hold the facts. To fix this, researchers
+introduced Retrieval-Augmented Generation (RAG), which connects the LLM to an
+external data source. This allows the model to verify facts before answering.
+But, the retrieval happens once and up front, before any reasoning starts. So, a
 question that spans several facts has to be answered from whatever that first
 query brought back. Systems that navigate a knowledge graph do better by
 interleaving retrieval with reasoning. Even they, however, send out whatever
 their final generation call produces, and nothing checks the answer's claims
 before it reaches the user.
 
-To close that gap we propose Agentic Graph Reasoning (AGR), a knowledge-graph
-question-answering framework in which an agent plans sub-objectives and walks
-the graph through a constrained, deterministic tool API. Its distinguishing
-component is a Structural Verification Layer: before the answer is emitted, it
-splits the draft into atomic claims and checks each one against the triples the
-agent actually traversed. Claims it cannot ground are re-explored or withdrawn,
-so AGR is more inclined to hedge than to assert, and it returns every answer
-paired with the triples that support it.
+To close that gap we propose Agentic Graph Reasoning (AGR): a knowledge-graph
+question-answering framework. Here, an agent plans sub-objectives and walks the
+graph through a constrained, deterministic tool API. Its distinguishing
+component is a Structural Verification Layer. Before the answer is emitted, it
+splits the draft into atomic claims and checks each one against the triplets
+(head, relation, tail) the agent actually traversed. Claims it cannot verify are
+re-explored or withdrawn. So, AGR is more likely to hedge (unable to find an
+answer) rather than to give a wrong answer. And it returns every answer paired
+with the triples that support it.
 
 We evaluate AGR on a Freebase-derived environment of $2{,}592{,}892$ entities and
 $8{,}309{,}194$ triples, over $400$ certified questions from each of WebQSP and
