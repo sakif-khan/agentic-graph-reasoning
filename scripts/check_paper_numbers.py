@@ -61,7 +61,10 @@ def prose():
 def literals(text):
     seen = set()
     for m in LITERAL.findall(text):
-        v = m.replace("{,}", "").replace(",", "").rstrip(".")
+        # 1{,}709 -> 1709; then drop any brace the match dragged in from
+        # surrounding LaTeX, which was reporting "1}" as a distinct literal.
+        v = m.replace("{,}", "").replace(",", "")
+        v = v.replace("{", "").replace("}", "").rstrip(".")
         if v:
             seen.add(v)
     return seen

@@ -40,14 +40,12 @@ shot cannot know what the next reasoning step will need, and is either
 too small to contain the answer or so large that the relevant edges are
 buried.
 
-Agentic systems close that gap by interleaving the two.
-Think-on-Graph~\cite{sun2024think} established the pattern with
-model-guided beam search over the graph, Plan-on-Graph~\cite{chen2024plan}
-added sub-objective decomposition and reflection-driven backtracking, and
-Reasoning-on-Graphs~\cite{luo2024reasoning} generates grounded relation
-paths as explicit plans. Retrieval becomes navigation, and the system
-becomes an agent operating on the graph rather than a pipeline reading
-from it.
+Agentic systems close that gap by interleaving the two: the model takes
+one step, observes what it found, and decides where to look
+next~\cite{sun2024think,chen2024plan,luo2024reasoning}. Retrieval becomes
+navigation, and the system becomes an agent operating on the graph rather
+than a pipeline reading from it. \Cref{sec:related} traces that line of
+work in detail.
 
 One property survives this progression unchanged. Every system named
 above emits whatever its final generation call produces from the

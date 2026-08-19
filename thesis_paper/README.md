@@ -7,7 +7,7 @@ Journal manuscript drawn from `thesis_book/`. Target: Elsevier —
 | --- | --- |
 | `agr-paper.tex` | **The document.** `elsarticle`, `preprint,review,12pt` |
 | `preamble.tex` | Fonts, figure toolchain, palette, system-name macros |
-| `sections/*.tex` | Nine section stubs, each carrying its source chapter and word budget |
+| `sections/*.tex` | Nine sections. Undrafted ones carry their source chapter and word budget as comments |
 | `figures/` | Generated. Do not edit |
 | `highlights.txt` | Elsevier highlights, submitted as a separate file |
 
@@ -18,8 +18,10 @@ cd thesis_paper
 latexmk -pdf agr-paper.tex
 ```
 
-`review` gives the double-spaced, line-numbered single column Elsevier
-wants for peer review. **One column is correct for submission** — the
+`review` gives the 1.5-spaced single column Elsevier wants for peer
+review. **It does not number the lines** — all the option does is set the
+baseline stretch; `lineno` in `preamble.tex` is what puts numbers in the
+margin, and Elsevier asks for them at submission. **One column is correct for submission** — the
 two-column look is the publisher's typesetting at proof stage, not
 yours. Swap the class options for other purposes:
 
@@ -45,9 +47,9 @@ python scripts/build_figures.py --target paper
 from `results/phase4/thesis_numbers.json` — the same file the thesis and
 the slides read. `paper` is a third target beside `thesis` and
 `presentation`, so a re-run of the experiments propagates to all three
-documents at once. This matters more here than anywhere else: the plan
-is to re-run on the **full test splits** before submission, and the
-figures must move with the JSON rather than being re-drawn by hand.
+documents at once. Nothing here is re-drawn by hand, so if the numbers
+ever are regenerated, the figures follow without anyone remembering to
+update them.
 
 The bibliography is shared, not forked:
 `\bibliography{../thesis_book/buetcsepgthesis}`. That is the file the
@@ -90,12 +92,12 @@ that removes the objection is roughly fifty dollars.
 
 ## Editing notes
 
-- **Lead with attribution, not with the verification layer.** The
-  thesis's headline component produces a null: the precision column does
-  not move when it is removed. A paper that opens by proposing a verifier
-  invites the reviewer to check it and find nothing. The finding that
-  carries the paper is that removing the *planner* improves WebQSP by
-  $0.083$ F1 at $p = 0.006$ while cutting tokens 31%.
+- **AGR-led framing, but the verification layer sells auditability, not
+  accuracy.** The precision column does not move when the layer is
+  removed, so the paper must never promise that it does. What it delivers
+  is the output contract: every answer arrives with the traversed triples
+  supporting it. Claiming that, and only that, is what keeps
+  §6 from reading as a retraction.
 - **Report the nulls at the same length as the positive result.** That is
   the methodological argument, not an apology.
 - **A near-empty draft reports one overfull `\vbox`.** It is the
@@ -112,8 +114,9 @@ that removes the objection is roughly fifty dollars.
 - **`\affiliation` needs a scalable font family.** Under `review`,
   elsarticle asks for a font at an empty size while typesetting the
   address block, and CM has no shape to give it — nine `Font shape …
-  size <>` warnings. `T1` + `lmodern` in the preamble clears all nine;
-  do not remove them.
+  size <>` warnings. The class already sets T1 for text — the warnings
+  are OT1/cmr, where maths lives — so `lmodern` alone clears all nine.
+  Do not remove it.
 - **Figure geometry targets the single-column review measure.** Widths
   are `\textwidth`-relative and adapt, but the fixed heights in
   `build_figures.py` assume roughly a 6in measure. A two-column proof is

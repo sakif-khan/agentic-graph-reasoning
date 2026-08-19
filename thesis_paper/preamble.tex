@@ -67,11 +67,21 @@
 % Room for the third pass to loosen a line rather than overrun it. The
 % names in this literature are long and several are already hyphenated
 % ("Think-on-Graph~\cite{...}" set 5.15pt overfull on its own), and a
-% double-spaced measure gives TeX fewer break points than the thesis's.
+% 1.5-spaced measure gives TeX fewer break points than the thesis's.
 % The class ships no emergencystretch at all. 1em, not more: at 2em the
 % third pass starts loosening lines it could have left alone, and the
 % run trades its last overfull box for an underfull one.
 \emergencystretch=1em
+
+% A preference, not a repair. Breaking at a hyphen this literature
+% already contains -- "Reasoning-" / "on-Graphs" -- reads as the start of
+% a new word and costs the reader a re-parse, so it is priced high while
+% ordinary hyphenation stays cheap. Do not expect it to clear an overfull
+% box: swept from 0 to 4000 against the related-work paragraph, the box
+% count did not move at any value. Lines that will not fit are fixed by
+% rewriting the sentence, which is what happened there.
+\hyphenpenalty=400
+\exhyphenpenalty=4000
 
 % Short names never break: left to itself TeX splits WebQSP after the
 % "We", which a reader has to re-parse. Every entry must be letters only
@@ -80,7 +90,7 @@
 \hyphenation{WebQSP CWQ GraphRAG Freebase LangGraph McNemar Cypher AGR}
 
 % ComplexWebQuestions is the exception and must NOT join the list above.
-% At twenty letters it is longer than the slack in a double-spaced
+% At twenty letters it is longer than the slack in a 1.5-spaced
 % measure, and forbidding every break in it is what set the sentence
 % naming both benchmarks 46pt overfull. Hyphens here mark the breaks that
 % ARE allowed, so it may split at its own word boundaries and nowhere
@@ -95,6 +105,16 @@
 \newcommand{\tog}{Think-on-Graph}
 \newcommand{\agr}{AGR}
 
+% Numbered lines, so a reviewer can write "line 214" instead of
+% "paragraph 3 on page 6". The `review' class option does NOT provide
+% these -- all it does is \gdef\@blstr{1.5}, which is 1.5 line spacing
+% and nothing else; lineno appeared nowhere in the log until this line
+% was added. Elsevier's own guidance asks for numbered lines at
+% submission, so the option's name is a trap worth knowing about.
+% Loaded before hyperref, which patches some of the same internals.
+\usepackage{lineno}
+\linenumbers
+
 % Loaded last, which is hyperref's requirement: it redefines a great many
 % internals and wants everything else already in place. `hidelinks' keeps
 % the coloured boxes out of a manuscript that will be read on paper as
@@ -105,7 +125,7 @@
 
 % \url breaks only at punctuation, and the repository URL in the
 % data-availability statement has none in the right place: it set 0.68pt
-% overfull in the double-spaced measure, which survives however much
+% overfull in the 1.5-spaced measure, which survives however much
 % prose surrounds it. xurl lets a URL break anywhere, which is the only
 % thing that helps when the unbreakable run is "agentic-graph-reasoning".
 % Load it after hyperref -- it patches hyperref's \url.
