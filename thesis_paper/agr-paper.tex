@@ -27,9 +27,14 @@
 
 % The thesis title registered with CASR is deliberately broader than what
 % the measurements establish -- see "How to read the title" in the thesis
-% introduction. This one is scoped to what the paper actually shows.
-\title{What Actually Works in Agentic Knowledge Graph Question
-  Answering: A Component-Level Attribution Study}
+% introduction. This one names the system, as a KBS systems paper should,
+% but scopes the mechanism to what is actually verified: adjacency in the
+% traversed subgraph, at claim level. Not "fact verification", which
+% overpromises the relation check, and not "hallucination mitigation",
+% which Section 5.4 attributes to graph navigation rather than to the
+% layer this paper contributes.
+\title{Agentic Graph Reasoning: Claim-Level Structural Verification for
+  Multi-Hop Knowledge Graph Question Answering}
 
 \author[buet]{Md. Sakif Khan}
 \ead{sakifkhanopu@gmail.com}
@@ -72,10 +77,9 @@ The authors declare no competing financial interests or personal
 relationships that could have influenced the work reported here.
 
 \section*{Data availability}
-% CHECK BEFORE SUBMITTING that the repository is actually public and that
-% the URL resolves for a logged-out visitor. A data-availability
-% statement pointing at a private repository is the kind of thing an
-% editor checks and a reviewer resents.
+% Verified public: the URL returns HTTP 200 to an unauthenticated
+% request. Re-check if the repository is ever made private, because an
+% editor does check this and a reviewer resents finding a 404.
 Code, prompts, per-question run records, and the analysis scripts that
 produce every figure and table in this paper are available at
 \url{https://github.com/sakif-khan/agentic-graph-reasoning} under the MIT

@@ -1,31 +1,128 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
-% Compresses thesis ch:intro (2,978 words) to ~900.
+% AGR-led framing: the system is the contribution, the ablation is
+% validation. ~950 words, compressed from thesis ch:intro (2,978).
 %
-% FRAME IT AS ATTRIBUTION, NOT AS A NEW METHOD. The thesis leads with the
-% Structural Verification Layer as its contribution; the measurements say
-% the precision column does not move when that layer is removed
-% (results.tex, sec:abl-noverify). A paper that opens by proposing a
-% verifier invites the reviewer to check whether it works and find that
-% it does not. Open instead on what the field cannot currently answer:
-% agentic KGQA systems bundle decomposition, search and verification into
-% one reported number, so nobody knows which part earns its cost.
-%
-% Contributions, in the order they should be claimed:
-%   1. component-level attribution, with the planner result as the lead
-%      finding (removing it IMPROVES WebQSP, p = 0.006, -31% tokens)
-%   2. efficiency located rather than asserted: the margin over the
-%      agentic baseline comes entirely from where its budget truncates it
-%   3. the echo attractor, a cross-system failure consensus evaluation
-%      cannot see
-%   4. measured label-defect rates for WebQSP and CWQ
-%   5. the answer + supporting-triples output contract as the auditable
-%      artifact the verification layer actually delivers
-%
-% CUT: the three loci of hallucination (training data / model / prompt),
-% the single-fact vs multi-hop tutorial, and "How to read the title".
-% Those are thesis scaffolding for an examiner, not argument for a
-% reviewer who already knows the field.
+% The one thing this section must not do is promise that the
+% verification layer raises accuracy. It does not -- the precision column
+% does not move when the layer is removed (Sec 6). What it delivers is
+% the output contract: every answer arrives with the traversed triples
+% that support it. Claiming that here, and only that, is what keeps
+% Section 6 from reading as a retraction.
 % ---------------------------------------------------------------------
 
 \section{Introduction}\label{sec:intro}
+
+Large language models answer factual questions fluently, and often enough
+they answer them wrongly. The errors are systematic rather than random,
+and they are hard to catch from the output alone, because a fabricated
+answer reads in the same register as a correct one; Huang et
+al.~\cite{huang2025survey} treat this as an intrinsic consequence of how
+the models are built rather than an incidental defect to be patched away.
+The problem sharpens once an answer requires composing several facts
+rather than recalling one. Errors compound, since a wrong resolution at
+the first hop rarely announces itself downstream, and a question-level
+correctness check never sees the intermediate steps at all --- which
+leaves a system that answers correctly by accident indistinguishable from
+one that answers correctly by sound reasoning.
+
+Retrieval-augmented generation~\cite{lewis2020retrieval} addresses the
+first half of this by grounding the model in retrieved text. It does not
+address the second. Retrieval runs once, before reasoning begins, so a
+multi-hop question must be answered from whatever that single query
+returned, and the passage holding the \emph{intermediate} entity need not
+resemble the original question --- which is the only signal the retriever
+has to rank on. Representing the corpus as a knowledge
+graph~\cite{bollacker2008freebase} makes composition a traversal rather
+than an inference over prose, and GraphRAG~\cite{edge2024local} exploits
+this, but it still retrieves statically: a neighbourhood fetched in one
+shot cannot know what the next reasoning step will need, and is either
+too small to contain the answer or so large that the relevant edges are
+buried.
+
+Agentic systems close that gap by interleaving the two.
+Think-on-Graph~\cite{sun2024think} established the pattern with
+model-guided beam search over the graph, Plan-on-Graph~\cite{chen2024plan}
+added sub-objective decomposition and reflection-driven backtracking, and
+Reasoning-on-Graphs~\cite{luo2024reasoning} generates grounded relation
+paths as explicit plans. Retrieval becomes navigation, and the system
+becomes an agent operating on the graph rather than a pipeline reading
+from it.
+
+One property survives this progression unchanged. Every system named
+above emits whatever its final generation call produces from the
+traversed context, and nothing checks that what the answer \emph{asserts}
+is supported by what the agent actually retrieved. The gap is not
+fabrication --- our measurements confirm that graph-navigating systems
+assert entities that exist in the graph and are reachable along the paths
+they walked (\Cref{sec:groundedness}). It is that an entity can sit in
+the retrieved subgraph, have been retrieved correctly, and still be the
+wrong answer: an intermediate node from the reasoning chain, a container
+where the question asked for a member, or one of several plausible
+neighbours chosen arbitrarily. A system that verifies retrieval but never
+verifies assertion cannot catch either case.
+
+This paper presents \textbf{Agentic Graph Reasoning} (AGR), a
+knowledge-graph question-answering framework built as an explicit state
+machine over a constrained, deterministic graph tool API, in which the
+program orchestrates the loop and the language model is consulted only at
+bounded decision points. Its distinguishing component is a
+\emph{Structural Verification Layer}: before an answer is emitted, the
+draft is decomposed into atomic claims and each is checked against the
+triples the agent actually traversed. Claims that cannot be grounded
+trigger targeted re-exploration or are removed, and every answer AGR
+returns is paired with the supporting triples that justify it.
+
+We are precise about what that layer buys, because the ablation of
+\Cref{sec:attribution} is precise about what it does not. Claim
+verification does not measurably change how often AGR is right; it
+changes how often AGR is right \emph{for a reason it can exhibit}. The
+contribution is the output contract --- an answer together with the
+traversed evidence for it --- rather than an accuracy gain, and
+\Cref{sec:attribution} reports the null that establishes this at the same
+length as the effects it does detect.
+
+On $400$ certified questions from each of WebQSP~\cite{yih2016value} and
+ComplexWebQuestions~\cite{talmor2018web}, over a Freebase-derived
+environment of $2.59$ million entities and $8.31$ million triples, AGR
+reaches Hits@1 of $0.755$ and $0.522$ against four baselines sharing one
+frozen backbone and one call budget, and it does so at roughly half the
+language-model calls of the strongest of them. On ComplexWebQuestions it
+is the only system whose accuracy rises with hop count. Its advantage
+over the agentic baseline is located rather than asserted: on the
+questions where the shared cap lets that baseline finish it is slightly
+ahead, and the entire aggregate margin comes from the $29\%$ and $44\%$
+of questions on which the cap truncates it.
+
+\paragraph{Contributions.} This paper contributes:
+
+\begin{enumerate}
+  \item \textbf{AGR}, a state-machine agent over a constrained graph tool
+    API whose answers carry the traversed triples that support them, so
+    the reasoning is auditable rather than merely asserted
+    (\Cref{sec:framework}).
+  \item A \textbf{Structural Verification Layer} that checks atomic
+    claims against traversed adjacency before emission, with its repair
+    routes and their measured firing rates reported as they behave rather
+    than as designed (\Cref{sec:verification}).
+  \item A \textbf{controlled comparison} against four baselines on one
+    frozen backbone under one call budget, so that differences are
+    attributable to architecture rather than to model capacity
+    (\Cref{sec:results}).
+  \item A \textbf{component-level ablation} with paired significance
+    testing, which finds that removing the planner \emph{improves}
+    accuracy on the shallower benchmark while reducing token use, and
+    that three of four components show no detectable effect
+    (\Cref{sec:attribution}).
+  \item A \textbf{hand-read census} of all $259$ remaining failures,
+    naming the \emph{echo attractor} --- a true, grounded entity one hop
+    from the answer that every grounding check passes --- and quantifying
+    label defects in both benchmarks (\Cref{sec:erroranalysis}).
+\end{enumerate}
+
+\Cref{sec:related} positions AGR against prior work.
+\Cref{sec:framework} specifies the framework and the verification layer,
+\Cref{sec:setup} the environment and experimental protocol, and
+\Cref{sec:results} the measurements. \Cref{sec:attribution} attributes
+them to components, \Cref{sec:erroranalysis} reads what remains, and
+\Cref{sec:discussion} states the limits.

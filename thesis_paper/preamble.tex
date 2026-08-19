@@ -64,6 +64,29 @@
 % and a paper column is narrower than the thesis's.
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
+% Room for the third pass to loosen a line rather than overrun it. The
+% names in this literature are long and several are already hyphenated
+% ("Think-on-Graph~\cite{...}" set 5.15pt overfull on its own), and a
+% double-spaced measure gives TeX fewer break points than the thesis's.
+% The class ships no emergencystretch at all. 1em, not more: at 2em the
+% third pass starts loosening lines it could have left alone, and the
+% run trades its last overfull box for an underfull one.
+\emergencystretch=1em
+
+% Short names never break: left to itself TeX splits WebQSP after the
+% "We", which a reader has to re-parse. Every entry must be letters only
+% -- a digit raises "Not a letter", which is why Neo4j is absent and does
+% not need to be here.
+\hyphenation{WebQSP CWQ GraphRAG Freebase LangGraph McNemar Cypher AGR}
+
+% ComplexWebQuestions is the exception and must NOT join the list above.
+% At twenty letters it is longer than the slack in a double-spaced
+% measure, and forbidding every break in it is what set the sentence
+% naming both benchmarks 46pt overfull. Hyphens here mark the breaks that
+% ARE allowed, so it may split at its own word boundaries and nowhere
+% else.
+\hyphenation{Complex-Web-Questions}
+
 % Consistent names for the systems, so a rename touches one line rather
 % than forty. The thesis writes these out longhand in every table.
 \newcommand{\noret}{no-retrieval}
@@ -87,3 +110,9 @@
 % thing that helps when the unbreakable run is "agentic-graph-reasoning".
 % Load it after hyperref -- it patches hyperref's \url.
 \usepackage{xurl}
+
+% \Cref throughout, matching the thesis, which gets cleveref from
+% buetcsepgthesis.sty. elsarticle does not load it either. cleveref must
+% come after hyperref, and last of all, because it redefines the
+% referencing commands every other package may have touched.
+\usepackage{cleveref}
