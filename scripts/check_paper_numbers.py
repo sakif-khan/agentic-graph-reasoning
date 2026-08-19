@@ -29,6 +29,7 @@ import json
 import pathlib
 import re
 import sys
+from decimal import Decimal, ROUND_HALF_UP
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -70,6 +71,41 @@ def literals(text):
     return seen
 
 
+def numbers(strings):
+    """The same literals as floats.
+
+    String matching made 0.66 and 0.660 different values, so the table cell
+    quoting ToG's WebQSP Hits@1 correctly was reported "not quoted yet".
+    Comparing numerically is what the check actually meant to do, and it
+    also lets a value be written 8.20 or 8.2 as the sentence prefers.
+    """
+    out = set()
+    for s in strings:
+        try:
+            out.add(float(s))
+        except ValueError:
+            pass
+    return out
+
+
+def quoted(nums, val, tol=1e-9):
+    return any(abs(n - float(val)) <= tol for n in nums)
+
+
+def rnd(val, places=3):
+    """Round the way a person writing the number would.
+
+    Not round(): the IEEE double nearest 0.6295 is 0.62949999999999994849,
+    which is below the tie, so round(0.6295, 3) gives 0.629 while both
+    half-up and half-even on the true decimal give 0.630. That discrepancy
+    reported the budget-split table as mistranscribed when the table was
+    right and this check was wrong. Going through Decimal(str(...)) rounds
+    the decimal the JSON actually carries.
+    """
+    q = Decimal(1).scaleb(-places)
+    return float(Decimal(str(val)).quantize(q, rounding=ROUND_HALF_UP))
+
+
 def main():
     d = json.load(open(NUMBERS, encoding="utf-8"))
     by = d["main_results"]["by_system"]
@@ -78,26 +114,54 @@ def main():
     abl = d["ablations"]["by_condition"]
     text = prose()
     present = literals(text)
+    nums = numbers(present)
 
-    print("== values bound to thesis_numbers.json ==")
+    print("== main results table, every cell bound ==")
+    # The whole of tab:main is transcribed by hand into the .tex, which is
+    # exactly what the paper's header says does not happen anywhere. Binding
+    # every cell is what makes that promise true of the table too. A cell
+    # mistyped to a value appearing nowhere else in the paper fails here.
+    SYSTEMS = ("noretrieval", "vectorrag", "graphrag", "tog", "agr")
+    for ds in ("webqsp", "cwq"):
+        for sysname in SYSTEMS:
+            row = by[f"{ds}/{sysname}"]
+            for field in ("hits_at_1", "f1", "hedge_pct", "mean_calls"):
+                val = row[field]
+                ck(f"{ds}/{sysname} {field} = {val}", quoted(nums, val))
+
+    print("\n== budget-split table bound ==")
+    for ds in ("webqsp", "cwq"):
+        for subset in ("tog_finished", "tog_clipped"):
+            blk = tog[ds][subset]
+            ck(f"{ds} {subset} n = {blk['n']}", quoted(nums, blk["n"]))
+            for who in ("tog_hits_at_1", "agr_hits_at_1"):
+                v = rnd(blk[who])
+                ck(f"{ds} {subset} {who} = {v}", quoted(nums, v))
+
+    print("\n== ablation table bound ==")
+    for ds in ("webqsp", "cwq"):
+        ref = abl[f"{ds}/half_abl_full"]
+        for cond in ("noplanner", "nobacktrack", "noverifier", "embonly"):
+            cur = abl[f"{ds}/half_abl_{cond}"]
+            delta = rnd(cur["f1"] - ref["f1"])
+            ck(f"{ds} {cond} dF1 = {delta:+.3f}", quoted(nums, abs(delta)))
+            pct = rnd(100 * (cur["mean_tokens"] - ref["mean_tokens"])
+                      / ref["mean_tokens"], 0)
+            ck(f"{ds} {cond} token change = {pct}%", quoted(nums, abs(pct)))
+    for row in d["ablations"]["mcnemar_vs_full"]:
+        p = rnd(row["p"])
+        cond = row["system_b"].replace("half_abl_", "")
+        ck(f"{row['dataset']} {cond} p = {p}", quoted(nums, p))
+
+    print("\n== groundedness bound ==")
     bound = {
-        "AGR Hits@1, WebQSP":        by["webqsp/agr"]["hits_at_1"],
-        "AGR Hits@1, CWQ":           by["cwq/agr"]["hits_at_1"],
-        "AGR F1, WebQSP":            by["webqsp/agr"]["f1"],
-        "AGR F1, CWQ":               by["cwq/agr"]["f1"],
-        "ToG Hits@1, WebQSP":        by["webqsp/tog"]["hits_at_1"],
-        "ToG Hits@1, CWQ":           by["cwq/tog"]["hits_at_1"],
         "AGR entities asserted":     gnd["both_agr"]["entities_asserted"],
         "control entities asserted": gnd["both_noretrieval"]["entities_asserted"],
         "control ungrounded pct":    gnd["both_noretrieval"]["entity_ungrounded_pct"],
+        "ToG entities asserted":     gnd["both_tog"]["entities_asserted"],
     }
     for label, val in bound.items():
-        s = str(val)
-        # a value the paper has not reached yet is not a failure
-        if s in present:
-            ck(f"{label} = {s}", True)
-        else:
-            print(f"  [   ] {label} = {s}   not quoted yet")
+        ck(f"{label} = {val}", quoted(nums, val))
 
     print("\n== derived claims ==")
     wq = by["webqsp/agr"]["mean_calls"] / by["webqsp/tog"]["mean_calls"]

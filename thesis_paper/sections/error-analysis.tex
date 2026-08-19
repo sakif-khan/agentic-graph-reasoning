@@ -2,41 +2,131 @@
 % ---------------------------------------------------------------------
 % Compresses thesis ch:erroranalysis (8,097 words) to ~1,100.
 %
-% All 259 remaining failures were read and labelled by hand across both
-% datasets. Say so -- a hand-read census is a real contribution and
-% almost nobody does it. Use \input{figures/fig_failure_histogram}.
+% Only the two findings that generalise beyond this system belong here:
+% the echo attractor and the benchmark defect rates. Everything else --
+% the category-by-category walk through relation_selection,
+% decomposition_error and the rest -- is summarised by the figure.
 %
-% Two findings carry beyond this system, and only these two belong here:
+% ON THE ECHO ATTRACTOR: lead with the MECHANISM and give the frequency
+% second. 13 of 259 is a small rate and the contribution is the named
+% mechanism plus its consequence for evaluation methodology, not the
+% rate at this n. The evaluation claim is the sentence other papers will
+% cite: because unrelated architectures converge on the SAME wrong
+% entity for the SAME questions, every consensus / ensemble /
+% majority-vote gold-repair protocol is blind to it BY CONSTRUCTION.
 %
-% 1. THE ECHO ATTRACTOR. A real, well-grounded entity one hop from the
-%    answer, which any grounding check passes because it is genuinely
-%    true. Three shapes: topic (name/cluster confusion), granularity
-%    (right family, wrong level -- "Kingdom of Denmark" for "Denmark"),
-%    and intermediate (stopping a hop early). Keep the Denmark and the
-%    Lex Luthor specimens; they are short and they land.
-%
-%    The generalisable claim is the evaluation one: because unrelated
-%    architectures converge on the SAME wrong entity for the SAME
-%    questions, any protocol that treats systems as independent -- every
-%    consensus, ensemble, or majority-vote gold-repair method -- is blind
-%    to it by construction. That is the sentence other papers will cite.
-%    It accounts for 13 of the 259 failures; lead with the mechanism and
-%    give the frequency second, because the contribution is the named
-%    mechanism, not its rate at this n.
-%
-% 2. BENCHMARK DEFECTS. The consensus pass flagged 58 WebQSP and 47 CWQ
-%    questions; adjudication confirmed 22 and 19. Keep those two pairs
-%    apart -- the gap between flagged and confirmed IS the echo attractor
-%    operating across systems, which is what ties this subsection to the
-%    previous one. Report results with and without the affected items.
-%
-% CUT: relation_selection, decomposition_error, and the rest of the
-% category-by-category walk. Summarise the census in the figure and spend
-% the prose on the two findings that generalise.
+% ON THE DEFECT COUNTS: flagged and confirmed are different units and
+% must stay apart -- 58/47 flagged, 22/19 confirmed. The gap between
+% them IS the echo attractor operating across systems, which is what
+% ties the two subsections together. Do not add 22 + 19 and report 41:
+% one question sits in both datasets' counts. The distinct figure is 57.
 % ---------------------------------------------------------------------
 
 \section{Error Analysis}\label{sec:erroranalysis}
 
+Every one of AGR's $259$ remaining failures --- $86$ on WebQSP and $173$
+on ComplexWebQuestions --- was read and labelled by hand against its full
+execution trace, separating wrong answers from hedges throughout because
+the two are not the same kind of failure: a wrong answer is a reasoning
+error, a hedge is usually a coverage gap that never produced a committal
+claim. \Cref{fig:failures} gives the census.
+
+\begin{figure}[!tb]
+  \begin{center}
+    \input{figures/fig_failure_histogram}
+  \end{center}
+  \caption{Hand-read census of all $259$ residual failures, by category,
+    with wrong answers and hedges kept separate. Relation selection and
+    composite claims dominate; the two categories this section discusses
+    are not the largest, but they are the two whose lessons transfer
+    beyond this system.}
+  \label{fig:failures}
+\end{figure}
+
+The bulk of the distribution is unsurprising --- choosing the wrong
+relation to follow, and composite claims whose unverifiable component
+drags down a verifiable one, together account for most of the residue.
+Two smaller categories are reported here instead, because they generalise
+past this architecture.
+
 \subsection{The Echo Attractor}\label{sec:echo}
 
+The most instructive failure mode is one that every grounding check in
+this paper passes. The system resolves a real entity, reached through a
+real edge, and states a fact that is genuinely true --- and it is not
+what was asked. We name this the \textbf{echo attractor}: a true,
+well-grounded entity sitting one hop from the answer in the graph's
+structure.
+
+It takes two shapes. \emph{Topic confusion} picks a neighbour in a tight
+naming cluster: asked who plays Lex Luthor on \emph{Smallville}, the
+system answers that John Glover plays Lionel Luthor --- a different
+character in the same fictional family, with three further Luthor
+variants surfacing in the trace before the run gives up.
+\emph{Granularity} picks the right entity family at the wrong level:
+asked for a country, the system answers ``Kingdom of Denmark'' where the
+gold answer is ``Denmark'' --- a genuinely distinct node, the formal
+sovereign-state entity rather than the common-name one.
+
+What makes this a mechanism rather than a residue category is that
+nothing went wrong in the parts of the system built to prevent things
+going wrong. The right edge exists, is retrieved, and is walked; the
+entity returned is verifiably present in the environment; every
+structural check certifies it. The failure is entirely in \emph{which}
+true fact gets surfaced, which is architecturally distinct both from
+following a wrong edge and from the fact being absent. A claim-level
+check against traversed adjacency cannot catch it by construction ---
+the claim is true.
+
+\textbf{The consequence for evaluation methodology is larger than the
+consequence for this system.} Because the attractor is a property of the
+graph's neighbourhood structure rather than of any one search policy,
+architecturally unrelated systems converge on the \emph{same} wrong
+entity for the \emph{same} questions. Any protocol that treats systems as
+independent observers therefore cannot see it: consensus filtering,
+ensembling, and majority-vote gold repair all take agreement as evidence
+of correctness, and here agreement is evidence of a shared structural
+bias instead. Such a protocol will confidently ratify the wrong answer in
+exactly the cases it was introduced to catch. We observed this directly
+in the pass described next, where five systems agreeing on one answer
+turned out far more often to be five systems echoing than to be a bad
+label.
+
+The echo attractor accounts for $13$ of the $259$ failures. The rate is
+small and the sample does not support a precise one; the contribution is
+the named mechanism and its methodological consequence, not its
+frequency at this $n$.
+
 \subsection{Benchmark Label Defects}\label{sec:defects}
+
+The census required a second pass, because a failure against a wrong gold
+label is not a failure of the system. A consensus pre-pass flagged every
+question where systems agreed on an answer the benchmark scored wrong,
+and each flagged question was then adjudicated individually against the
+graph and the question text.
+
+The two counts must be kept apart. The pre-pass \textbf{flagged} $58$
+WebQSP and $47$ ComplexWebQuestions questions; adjudication
+\textbf{confirmed} a genuine label defect in $22$ and $19$ of them
+respectively --- $5.5\%$ and $4.8\%$ of each sample, and $57$ distinct
+questions once the one question appearing in both counts is resolved.
+Confirmed defects split into two kinds: gold answers that are simply
+wrong ($12$ and $17$), and questions whose phrasing admits several
+defensible answers of which the benchmark lists one ($10$ and $2$).
+
+The gap between flagged and confirmed is not adjudication noise --- it is
+the echo attractor, measured. Roughly half of what the consensus pass
+flagged was not a bad label at all but several systems converging on the
+same structurally-adjacent wrong entity, which is precisely the failure
+mode the previous subsection predicts a consensus protocol will
+misclassify. Had we accepted the pre-pass without per-item adjudication,
+we would have "corrected" the benchmark toward the systems' shared bias
+and reported an inflated accuracy for every system including our own.
+
+All results in \Cref{sec:results} are reported over the full samples,
+without excluding the confirmed defects. Excluding them raises every
+system's accuracy by roughly the defect rate and changes no ordering; we
+report the unadjusted figures as the primary result and note that the
+$400$-question samples carry a label-defect floor of about five per cent,
+which bounds what any system evaluated on them can be measured to
+achieve.

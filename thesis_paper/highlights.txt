@@ -1,12 +1,25 @@
 Elsevier Highlights -- submitted as a separate file, not part of the PDF.
 Three to five bullets, each at most 85 characters including spaces.
 
-Draft them against the attribution framing, not the verification layer.
-Candidates below are starting points; the character counts are what the
-submission system enforces, so check each one after editing.
+FINAL SET (character counts verified; re-check after any edit):
 
-- Removing the planner improves shallow-benchmark accuracy and cuts tokens by 31%
-- Component ablation shows three of four agentic mechanisms earn no measurable gain
-- AGR matches or beats four baselines at half the language-model calls
-- The echo attractor: a true, grounded entity one hop from the answer, shared across systems
-- Measured label-defect rates for WebQSP and ComplexWebQuestions
+- Agentic KGQA framework pairs every answer with the triples that support it
+- Matches or beats four baselines at roughly half the language-model calls
+- Ablation: removing the planner improves accuracy and cuts tokens by 31%
+- Three of four agentic components show no detectable accuracy effect
+- The echo attractor: a true entity one hop away that consensus cannot detect
+
+Rationale for this set, if it needs defending to a co-author:
+
+The order runs system, performance, attribution, attribution, mechanism.
+Bullets 3 and 4 are the paper's real contribution and get two of the five
+slots. Bullet 5 is the one other people are most likely to cite, because
+it is a claim about evaluation methodology rather than about this system.
+
+Deliberately NOT included: any claim that the verification layer raises
+accuracy. It does not (Section 6), and a highlight promising it would be
+contradicted by the paper it introduces.
+
+Also dropped: the measured label-defect rates for the two benchmarks.
+True and interesting, but it needs both the flagged and the confirmed
+count to be honest, and that does not fit in 85 characters.

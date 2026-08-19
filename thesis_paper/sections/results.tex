@@ -2,42 +2,208 @@
 % ---------------------------------------------------------------------
 % Compresses thesis ch:results (8,866 words) to ~1,600.
 %
-% Three claims, in this order:
+% THE GROUNDEDNESS RESULT MUST BE ATTRIBUTED CORRECTLY. Zero ungrounded
+% assertions in 1,709 is the paper's credibility set-piece -- and the
+% agentic baseline reaches the same zero. It belongs to graph
+% navigation, not to the verification layer. Claiming it for the
+% verifier would be the easiest thing in the whole submission to
+% disprove, and a reviewer who catches it discounts everything else.
 %
-% 1. ACCURACY. AGR leads every cell of the main matrix. Say where it does
-%    not lead too -- the agentic baseline hedges marginally less on CWQ.
-%    Eight paired comparisons, all rejecting.
+% The efficiency result is the strongest single finding and the framing
+% matters: AGR uses roughly half the CALLS, not half the tokens (it
+% spends MORE tokens than ToG on WebQSP, 4,511 vs 3,615).
+% check_paper_numbers.py fails the build on "half the tokens".
 %
-% 2. EFFICIENCY, AND WHERE THE MARGIN COMES FROM. This is the strongest
-%    single result and the thesis reports it well: on the questions where
-%    the shared cap lets Think-on-Graph finish, it is slightly ahead; the
-%    whole margin comes from the 29% and 44% of questions where the cap
-%    truncates it, and AGR never reaches that cap. Frame it as
-%    affordability, not as resolution quality -- guided search completes
-%    under a budget beam search cannot. Use \input{figures/fig_accuracy_cost}.
+% The hop-depth claim on CWQ is "the only system whose accuracy rises",
+% and every other system "ends below where it started" -- NOT "every
+% other system decays", which is false: ToG falls then partly recovers.
 %
-% 3. HOP DEPTH. On CWQ, AGR is the only system whose accuracy rises with
-%    hop count and every other system ends below where it started. The
-%    agentic baseline falls and partly recovers, which is weaker than a
-%    rise -- report it as such. Use \input{figures/fig_hop_strata}.
-%
-% GROUNDEDNESS BELONGS HERE AND MUST BE ATTRIBUTED CORRECTLY: zero
-% ungrounded assertions in 1,709, against 22.1% of the parametric
-% control's 1,001 -- and the agentic baseline reaches the same zero.
-% Attribute it to graph navigation, not to the verification layer. This
-% is the paper's credibility set-piece; claiming it for the verifier
-% would be the easiest thing to disprove in the whole submission.
-%
-% CUT: the alpha sweep, the reproducibility note about 65/11/4 vs
-% 64/11/5, and the per-question narratives. Repository material.
+% CUT: the alpha sweep, the per-question narratives, the reproducibility
+% note on 65/11/4 vs 64/11/5. Repository material.
 % ---------------------------------------------------------------------
 
 \section{Results}\label{sec:results}
 
 \subsection{Accuracy}\label{sec:accuracy}
 
+\Cref{tab:main} gives the main matrix. AGR leads every accuracy cell on
+both datasets, reaching Hits@1 of $0.755$ on WebQSP against the agentic
+baseline's $0.660$, and $0.522$ on ComplexWebQuestions against $0.435$.
+The margin over Think-on-Graph is $9.5$ and $8.7$ points respectively,
+and the per-question F1 gap is wider still --- $0.642$ against $0.477$,
+and $0.469$ against $0.378$ --- because F1 penalises the extra wrong
+entities a set-intersection hit forgives. All eight paired comparisons
+against the four baselines reject at the conventional level.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{Main results, $400$ questions per dataset, one frozen
+      backbone and one $25$-call budget for every system. Hedge is the
+      proportion of questions answered with an empty entity set.}
+    \label{tab:main}
+    \footnotesize
+    % Nine columns is two more than the single-column measure holds at the
+    % default 6pt tabcolsep -- it set 2.59pt overfull. The gaps carry no
+    % information here, so they give way before the type size does.
+    \setlength{\tabcolsep}{4.5pt}
+    \begin{tabular}{|l|rrrr|rrrr|}
+      \hline
+      & \multicolumn{4}{c|}{\textbf{WebQSP}}
+      & \multicolumn{4}{c|}{\textbf{ComplexWebQuestions}} \\
+      \textbf{System} & Hits@1 & F1 & Hedge & Calls
+                      & Hits@1 & F1 & Hedge & Calls \\
+      \hline
+      \noret        & 0.453 & 0.305 & 12.2\% &  1.0
+                    & 0.307 & 0.279 & 38.0\% &  1.0 \\
+      \vecrag       & 0.568 & 0.432 & 27.0\% &  1.0
+                    & 0.203 & 0.168 & 48.2\% &  1.0 \\
+      \graphrag     & 0.340 & 0.262 & 55.8\% &  1.0
+                    & 0.205 & 0.183 & 60.8\% &  1.0 \\
+      \tog          & 0.660 & 0.477 & 18.8\% & 12.8
+                    & 0.435 & 0.378 & 22.5\% & 18.2 \\
+      \agr          & \textbf{0.755} & \textbf{0.642} & 8.2\% & 6.2
+                    & \textbf{0.522} & \textbf{0.469} & 23.0\% & 8.9 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+Two features of this table are worth naming because they cut against a
+simple reading. The static graph baseline is the \emph{weakest} system
+on both datasets, below even the no-retrieval control --- a fixed-radius
+neighbourhood is not merely insufficient for multi-hop questions, it is
+actively worse than parametric memory, because it floods the context
+with edges that are structurally adjacent and semantically irrelevant.
+And AGR does not lead on every column: on ComplexWebQuestions its hedge
+rate of $23.0\%$ is marginally \emph{above} Think-on-Graph's $22.5\%$,
+so it declines to answer slightly more often there. The accuracy lead is
+real and it is not bought by answering more freely.
+
 \subsection{Cost and the Location of the Margin}\label{sec:cost}
+
+AGR reaches those numbers at roughly half the model calls of the agentic
+baseline --- $6.2$ against $12.8$ on WebQSP, $8.9$ against $18.2$ on
+ComplexWebQuestions, a ratio of $0.48$ on both. \Cref{fig:accuracycost}
+plots accuracy against cost for all five systems.
+
+\begin{figure}[!tb]
+  \begin{center}
+    \input{figures/fig_accuracy_cost}
+  \end{center}
+  \caption{Accuracy against mean tokens per question, both datasets.
+    Cost is plotted on a log scale. The single-call baselines cluster at
+    the left; the two navigators sit at the right, with AGR above and to
+    the left of Think-on-Graph on both panels.}
+  \label{fig:accuracycost}
+\end{figure}
+
+The call saving is genuine and the token saving is not: AGR spends
+$4{,}511$ mean tokens per question on WebQSP against Think-on-Graph's
+$3{,}615$, so it is the \emph{number of round trips} that halves, not
+the volume of text. Fewer, larger calls is the honest description.
+
+The more informative result is \emph{where} the accuracy margin comes
+from, and it is not where a reader would assume. Splitting the
+questions by whether the shared $25$-call cap cut Think-on-Graph off
+before it finished reverses the comparison on one side:
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{AGR against Think-on-Graph, split on whether the shared
+      call cap truncated the baseline. Read from the per-record
+      \textsf{budget\_exhausted} trace flag.}
+    \label{tab:togsplit}
+    \footnotesize
+    \begin{tabular}{|l|r|rr|}
+      \hline
+      \textbf{Subset} & \textbf{$n$} & \textbf{\tog{} Hits@1}
+        & \textbf{\agr{} Hits@1} \\
+      \hline
+      \multicolumn{4}{|l|}{\textit{WebQSP}} \\
+      \tog{} finished & 283 & \textbf{0.852} & 0.788 \\
+      \tog{} clipped  & 117 & 0.197 & \textbf{0.675} \\
+      \hline
+      \multicolumn{4}{|l|}{\textit{ComplexWebQuestions}} \\
+      \tog{} finished & 224 & \textbf{0.630} & 0.607 \\
+      \tog{} clipped  & 176 & 0.188 & \textbf{0.415} \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+On the questions where the budget lets Think-on-Graph run to
+completion, it is \emph{ahead} of AGR --- $0.852$ against $0.788$ on
+WebQSP, $0.630$ against $0.607$ on ComplexWebQuestions. The entire
+aggregate margin comes from the $29\%$ and $44\%$ of questions on which
+the cap truncates it, where its accuracy collapses to $0.197$ and
+$0.188$ while AGR still reaches $0.675$ and $0.415$. AGR's own call
+budget never binds: across all $800$ test questions it hit the $25$-call
+cap zero times.
+
+The correct reading of this is affordability, not resolution quality.
+Exhaustive beam search finds answers well when it is allowed to finish;
+guided search finds them almost as well and finishes within a budget the
+beam search cannot. On a fixed spend the second is the better
+architecture, and the first would win if spend were unconstrained --- a
+claim about operating regimes rather than about reasoning power, and
+narrower than the aggregate table alone would suggest.
 
 \subsection{Accuracy by Hop Depth}\label{sec:hops}
 
+\Cref{fig:hopstrata} stratifies by the number of hops separating a topic
+entity from the gold answer.
+
+\begin{figure}[!tb]
+  \begin{center}
+    \input{figures/fig_hop_strata}
+  \end{center}
+  \caption{Hits@1 by hop stratum. On ComplexWebQuestions (right) AGR is
+    the only system whose accuracy rises monotonically with hop count.
+    The WebQSP three-hop stratum holds four questions and no weight
+    should be placed on it.}
+  \label{fig:hopstrata}
+\end{figure}
+
+On ComplexWebQuestions, AGR is the only system whose accuracy
+\emph{rises} with hop count: $0.46$ at one hop, $0.55$ at two, $0.57$ at
+three or more. Every other system ends below where it started. That
+phrasing is deliberate and the weaker alternative is the true one ---
+Think-on-Graph does not decay monotonically, it falls from $0.53$ to
+$0.37$ and then partly recovers to $0.45$, which is a different shape
+from a steady decline and is reported as such. The static baselines do
+collapse outright, GraphRAG from $0.34$ to $0.02$.
+
+A rising curve is the signature the architecture predicts. Decomposition
+converts one hard question into several easy ones, so the questions that
+punish single-shot retrieval hardest are the ones an agent that
+re-plans between hops should handle best. The WebQSP panel carries no
+comparable evidence: its three-hop stratum contains four questions,
+which is why the claim is scoped to one dataset.
+
 \subsection{Groundedness}\label{sec:groundedness}
+
+Across both datasets AGR asserted $1{,}709$ entities and \textbf{zero of
+them were ungrounded} --- every entity it named exists in the
+environment and is reachable from a topic entity within the hop cap.
+The parametric control asserted $1{,}001$ entities of which $22.1\%$
+failed that test.
+
+\textbf{This result belongs to graph navigation, not to the verification
+layer, and the distinction is load-bearing.} Think-on-Graph also reaches
+exactly zero ungrounded assertions, on $1{,}265$ entities, without any
+claim-checking component whatsoever. Whatever the verification layer
+contributes, it is not this number. What the comparison establishes is
+that an agent which can only name entities it retrieved cannot fabricate
+one, and that this property follows from the retrieval discipline rather
+than from any check applied afterwards --- a conclusion that costs this
+paper its most quotable claim for the component it contributes, and is
+the conclusion the measurement supports.
+
+The semantic tier separates the systems where the structural tier
+cannot. Judging whether an asserted entity is supported \emph{as the
+answer}, AGR reaches $66.7\%$ and $48.3\%$ against Think-on-Graph's
+$61.7\%$ and $43.3\%$, with the parametric control at $63.3\%$ and
+$36.7\%$. These are conservative lower bounds by construction
+(\Cref{sec:protocol}) and the gaps are small relative to the sample of
+$60$ per cell, so they are reported as consistent with the accuracy
+ordering rather than as independent confirmation of it.

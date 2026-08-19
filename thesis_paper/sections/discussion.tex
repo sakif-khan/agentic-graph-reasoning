@@ -1,34 +1,65 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
-% ~500 words. Every limitation a reviewer could raise should appear here
-% first, in your words. The thesis already has these; do not soften them
-% on the way across.
+% ~500 words. Every limitation a reviewer could raise appears here
+% first, in our words, at full strength. The thesis already states all
+% of these; none of them gets softened on the way across.
 %
-%   - SAMPLE SIZE. 400 questions per dataset rather than the full splits,
-%     with bootstrap intervals of about +/-5 points on Hits@1. This is
-%     the limitation most likely to draw a revision request, so state the
-%     interval and let the reader judge which margins clear it. Several
-%     of the paper's claims -- the eight paired comparisons, the planner
-%     effect at p = 0.006 -- survive it; say which do.
-%   - ONE BACKBONE. gpt-5.4-mini, frozen and closed. The paper
-%     establishes how these architectures compare on one backbone, not
-%     how they scale across backbones.
-%   - NONDETERMINISM. Trajectory stability is about 67%, so a single run
-%     per system is a sample of one. Seeds were not averaged; say so
-%     rather than letting a reader assume they were.
-%   - THE ENVIRONMENT. Per-question subgraphs with a 97%+ reachability
-%     ceiling are friendlier than full Freebase. Between-system
-%     comparisons hold because all five navigate the identical
-%     environment; absolute numbers do not transfer.
-%   - ABLATION POWER. Half-splits of n = 200 and n = 198. Three nulls are
-%     "no effect detected", not "no effect".
-%   - SCOPE. English factoid questions, static graph, no temporal facts,
-%     no graph construction, offline prototype. Latency is a cost
-%     measure, not a production-readiness claim.
-%
-% One forward-looking paragraph, and make it the gated-decomposition
-% proposal -- it follows directly from the planner result and gives the
-% paper a constructive close instead of a defensive one.
+% Close on the gated-decomposition proposal. It follows directly from
+% the planner result and gives the paper a constructive ending rather
+% than a defensive one.
 % ---------------------------------------------------------------------
 
 \section{Discussion and Limitations}\label{sec:discussion}
+
+The limits of this study bound its claims in ways worth stating plainly.
+
+\textbf{Sample size.} Every result rests on $400$ questions per dataset
+rather than the full splits, giving $95\%$ bootstrap intervals of roughly
+$\pm4$ to $\pm5$ points on Hits@1. The main accuracy margins clear that
+width comfortably --- AGR's $9.5$-point lead over the agentic baseline on
+WebQSP and $8.7$ on ComplexWebQuestions --- as does the planner effect,
+which is a paired test on per-question outcomes rather than a comparison
+of two intervals. The groundedness contrast, at zero against $22.1\%$,
+is not close. What the sample does not support is fine distinctions:
+the semantic-tier gaps of a few points in \Cref{sec:groundedness}, and
+the hedge-rate difference on ComplexWebQuestions, are within noise and
+are reported as such.
+
+\textbf{One backbone.} All five systems run on \textsf{gpt-5.4-mini},
+frozen and closed. This paper establishes how these architectures
+compare \emph{on one backbone}, not how the comparison scales across
+model capacities. A larger model might close the gap between guided and
+exhaustive search by finishing more questions inside the same budget, or
+widen it; nothing here decides which.
+
+\textbf{Nondeterminism.} Temperature-zero decoding against a hosted API
+is greedy, not deterministic, and measured trajectory stability is about
+$67\%$. Each system was run once. No seeds were averaged, and a reader
+should not assume they were; run-to-run variation is a real component of
+the differences reported, bounded but not eliminated by the paired
+designs used for the significance tests.
+
+\textbf{The environment.} Per-question subgraphs with a $97\%$-plus
+answer-reachability ceiling are a friendlier substrate than full
+Freebase. Between-system comparisons hold, because all five systems
+navigate the identical graph; absolute accuracies do not transfer.
+
+\textbf{Ablation power.} The four ablations run on half-splits of
+$n = 200$ and $n = 198$. Three of four components show \emph{no effect
+detected at this power}, which is not the same as no effect, and
+\Cref{sec:nulls} states the minimum effect the design could have
+detected.
+
+\textbf{Scope.} English factoid questions over a static graph, with no
+temporal facts, no graph construction, and an offline prototype. Latency
+figures are a cost measure, not a production-readiness claim.
+
+The most actionable finding points forward rather than back. If
+decomposition helps only when a question has compositional structure ---
+improving accuracy by $0.083$ F1 where it does not exist, and costing
+$0.047$ where it does --- then the planner should not run
+unconditionally. A hop-count predictor gating the planner would capture
+both arms of that asymmetry, and it can be evaluated with the ablation
+instrument used here. More generally, the result suggests that agentic
+components should be treated as conditionally rather than universally
+beneficial, and that the condition is worth measuring.

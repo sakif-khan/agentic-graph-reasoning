@@ -2,13 +2,41 @@
 % ---------------------------------------------------------------------
 % ~300 words. No new numbers, no new claims.
 %
-% Close on the attribution argument rather than on the system: agentic
-% KGQA systems are reported as assemblies, this one was taken apart, and
-% three of its four components could not be shown to earn their cost
-% while the fourth was actively harmful on the shallower benchmark. That
-% is a claim about how the field measures, and it outlives any particular
-% architecture -- which is the right note for a paper whose own headline
-% component produced a null.
+% Close on the attribution argument, not on the system. A paper whose
+% own headline component produced a null should end on what that null
+% demonstrates about measurement, which outlives any one architecture.
 % ---------------------------------------------------------------------
 
 \section{Conclusion}\label{sec:conclusion}
+
+We presented AGR, a knowledge-graph question-answering framework built
+as an explicit state machine over a constrained graph tool API, whose
+answers are paired with the traversed triples that support them. Against
+four baselines sharing one frozen backbone and one call budget, it leads
+every accuracy cell on both benchmarks at roughly half the model calls
+of the strongest of them, and it is the only system whose accuracy rises
+with hop count on the compositional benchmark. Its advantage is located
+rather than asserted: on the questions where the shared budget lets the
+agentic baseline finish, that baseline is slightly ahead, and the entire
+aggregate margin comes from the questions where the budget truncates it.
+The finding is about affordability under a fixed spend, and we report it
+as such.
+
+The result we consider most useful is the one that did not go our way.
+Agentic systems are assemblies, and the field reports them whole. We took
+this one apart, and three of its four components could not be shown to
+earn their cost --- including the claim-verification layer this work set
+out to contribute, which does not measurably change how often the system
+is right. It changes how often the system is right for a reason it can
+exhibit, which is an auditability claim and not an accuracy one. The
+fourth component was actively harmful on the shallower benchmark:
+removing the planner improved accuracy and cut token use, because
+decomposing a question that has no compositional structure discards the
+context that would have answered it.
+
+That pattern is a claim about how this field measures rather than about
+this architecture. A component adopted because the assembly containing it
+performed well may be contributing nothing, or less than nothing, and the
+only way to know is to remove it and test. We would rather report three
+nulls and a harmful component honestly than a system that works for
+reasons nobody has checked.

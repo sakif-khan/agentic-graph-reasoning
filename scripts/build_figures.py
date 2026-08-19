@@ -125,10 +125,29 @@ TARGETS = {
         # heights would need revisiting for the publisher's two-column
         # proof, where a column is roughly 3.5in rather than 6in.
         width=r"0.47\textwidth", height="48mm", gutter="10mm",
-        legend_drop=-0.34, strata_legend_drop=-0.34,
+        legend_drop=-0.34, strata_legend_drop=-0.42,
         mark_size=2.6, line_mark=2.2,
-        hist_width=r"0.92\textwidth", hist_height="88mm", bar_width="3.8mm",
-        stack_ticks=False, strata_xlabel=True, hist_tick_font=r"\scriptsize",
+        # Same problem the slide panel has, for the same reason: two
+        # 0.47\textwidth panels leave the hop ticks about 55pt each, and
+        # "1 hop ($n{=}256$)" needs roughly twice that. On one line the
+        # three labels overprinted each other and the right-hand panel's
+        # first label collided with the left-hand panel's last across the
+        # gutter. Stacking costs a line of depth, hence the deeper
+        # strata_legend_drop above.
+        stack_ticks=True,
+        # ...and stacking pushed "Hop stratum" down onto the legend row,
+        # where it overprinted "Vector-RAG" and "Think-on-Graph". The slide
+        # target hit this too and the reasoning carries over unchanged: once
+        # the ticks read "1 hop", "2 hops", "3+ hops", an axis labelled
+        # "Hop stratum" tells the reader nothing the ticks have not.
+        strata_xlabel=False,
+        # 0.78, not 0.92. pgfplots' `width' is the AXIS width and excludes
+        # the y tick labels, which here are twelve typewriter category
+        # names -- "premature_termination" is the widest. At 0.92 the
+        # picture ran 33.5pt past the measure; the labels are what
+        # overflowed, not the bars, so the axis gives way instead.
+        hist_width=r"0.78\textwidth", hist_height="88mm", bar_width="3.8mm",
+        hist_tick_font=r"\scriptsize",
     ),
 }
 

@@ -3,44 +3,136 @@
 % Compresses thesis ch:environment (3,653) and ch:setup (9,090) to
 % ~1,200.
 %
-% Keep:
-%   - the environment: 2.59M entities, 8.31M triples, per-question
-%     subgraphs, answer-reachability ceiling 97.3% / 99.7%. State the
-%     reachability gate as a strength (it lets a failure be attributed to
-%     the system rather than the substrate) and its cost in the same
-%     breath (absolute accuracies are not comparable to full-Freebase
-%     numbers). Do not let a reviewer find that second half on their own.
-%   - benchmarks and the full test splits
-%   - the four baselines and the certification threshold
-%   - one frozen backbone, same call budget for all five systems
-%   - metrics: Hits@1, F1, groundedness, tokens, calls
-%   - the pre-specified protocol and the no-tuning rule
+% TWO RULES THIS SECTION MUST NOT BREAK:
 %
-% ON PRE-REGISTRATION: the protocol was fixed and documented before the
-% test sets were built, but nothing was filed with a registry. Write
-% "pre-specified", never "pre-registered". The distinction is small and a
-% reviewer who catches the overclaim discounts everything else the paper
-% says about rigour.
+% 1. "pre-specified", NEVER "pre-registered". The protocol was fixed and
+%    documented before the test sets were built; nothing was filed with a
+%    registry. The thesis uses "pre-registered" in several places and
+%    that is an overclaim being corrected here, not a divergence to
+%    reconcile back the other way.
 %
-% ON THE SAMPLE: this paper reports the thesis's numbers unchanged -- 400
-% questions per dataset, a pre-specified fallback adopted when full-split
-% cost was projected at $45-55 against a $15-20 ceiling. State the sample
-% size and its bootstrap interval (about +/-5 points on Hits@1) in the
-% text, not only in a table caption. A reviewer who finds the sample size
-% unaided reads it as something the paper hoped they would not check; a
-% reviewer told it up front reads it as a stated limit. Same number, and
-% the difference is entirely in who says it first.
+% 2. Reachability is the SAMPLE ceiling, 97.0 / 99.2, not the full-split
+%    97.3 / 99.66. Different populations. scripts/check_paper_numbers.py
+%    fails the build if the full-split pair appears.
+%
+% The sample size and the environment's friendliness are both stated in
+% the body, up front, rather than left in a table caption. Same numbers
+% either way; the difference is entirely in who says it first.
 %
 % CUT: the backbone selection reversal, the wrong-split incident, the
-% judge threshold missed by 0.0005. Compress all three to one sentence:
-% deviations are recorded in the repository. They are admirable and they
-% are not what a reviewer is reading for.
+% judge threshold missed by 0.0005. One sentence points at the
+% repository; they are admirable and they are not what a reviewer reads
+% a setup section for.
 % ---------------------------------------------------------------------
 
 \section{Experimental Setup}\label{sec:setup}
 
 \subsection{Knowledge Environment}\label{sec:environment}
 
+All five systems navigate one shared environment, a property graph of
+$2.59$ million entities and $8.31$ million triples over $7{,}058$
+distinct relation types, built as the union of the per-question
+subgraphs distributed with Reasoning-on-Graphs~\cite{luo2024reasoning}
+and derived from Freebase~\cite{bollacker2008freebase}. Just under
+two-thirds of the nodes --- $63.7\%$ --- are unnamed mediators encoding
+$n$-ary facts, which is why the tool layer traverses them transparently
+rather than exposing them as candidate entities (\Cref{sec:framework}).
+
+An environment assembled this way is friendlier than full Freebase, and
+the paper states the consequence rather than leaving it to be inferred.
+Before any system ran, a validation gate measured what fraction of
+questions have at least one gold answer reachable from a topic entity
+within the four-hop cap: $97.0\%$ on the WebQSP sample and $99.2\%$ on
+the ComplexWebQuestions sample. That ceiling is the reason a failure in
+\Cref{sec:erroranalysis} can be attributed to the system rather than to
+a missing edge --- almost every question is answerable in principle, so
+a wrong answer is a navigation or selection error, not an absent fact.
+It is equally the reason \textbf{absolute accuracies here do not
+transfer to a full-Freebase setting}. Every comparison in
+\Cref{sec:results} is between systems traversing the identical
+environment, which is what the comparison is for; none of the numbers
+should be read against published figures obtained over a different
+substrate.
+
 \subsection{Benchmarks, Baselines, and Backbone}\label{sec:baselines}
 
+We evaluate on WebQSP~\cite{yih2016value} and
+ComplexWebQuestions~\cite{talmor2018web}, the two standard multi-hop
+KGQA benchmarks over Freebase. \textbf{We sample $400$ questions from
+each} rather than running the full $1{,}628$ and $3{,}531$ splits --- a
+pre-specified fallback adopted when full-split cost was projected at
+roughly three times the budget available for the work. The sample is
+stratified by hop count, and the resulting $95\%$ bootstrap intervals
+are roughly $\pm4$ to $\pm5$ points on Hits@1; \Cref{sec:discussion}
+says which of the paper's claims survive that width and which are
+reported as directions rather than effects.
+
+Four baselines span the design space, each a paradigm rather than a
+tuned competitor. A \textbf{no-retrieval} control answers from
+parametric memory alone, establishing what the backbone knows without
+the graph. \textbf{Vector-RAG} retrieves verbalised triples by embedding
+similarity. \textbf{Static GraphRAG}~\cite{edge2024local} fetches a
+fixed-radius neighbourhood around the linked topic entities in one shot.
+\textbf{Think-on-Graph}~\cite{sun2024think} is the agentic comparator,
+performing model-guided beam search over relations and entities, and is
+the system AGR is measured against throughout. Baselines were debugged
+on development data and certified before any test question ran, against
+a pre-specified diagnostic targeting the one failure that would be an
+implementation defect rather than a paradigm limit: retrieval found the
+gold answer and the system hedged anyway.
+
+Every system shares one frozen backbone --- \textsf{gpt-5.4-mini}, at
+temperature $0.0$ with reasoning effort disabled --- together with the
+entity resolver, the question files, the output schema, and \emph{one
+budget meter with the same $25$-call cap}. Both graph-navigating systems
+seed from the datasets' annotated topic entities, which removes entity
+linking as a confound. Holding all of this constant is what licenses the
+paper's central inference: a difference between two systems is
+attributable to architecture, not to model capacity, retrieval corpus,
+or spend. Two things are deliberately not held constant and are named
+here rather than buried --- the baselines receive a plain answering
+prompt while AGR's drafting prompt carries the grounding provisions that
+are part of the system under test, and the two navigators consider
+candidate sets of different widths, $40$ relations and $20$ neighbours
+for Think-on-Graph against $300$ and $200$ for AGR. The second is where
+a reader should look first for a confound, and \Cref{sec:cost} reports
+the measurement that bounds it.
+
 \subsection{Metrics and Protocol}\label{sec:protocol}
+
+Accuracy is reported as \textbf{Hits@1} and per-question \textbf{F1}, the
+latter because a system can score a clean hit on set-intersection while
+asserting several wrong entities alongside the right one. A
+\textbf{hedge} is an empty predicted entity set; hedges score zero on
+both metrics and hedge rate is reported as its own column, so a system
+buying precision through abstention is visible rather than flattered.
+Hits, hedges, and wrong answers always partition the whole set: nothing
+is dropped from the denominator, including questions the environment
+provably cannot answer.
+
+\textbf{Groundedness} is measured at two levels. The structural tier is
+deterministic and applies to every asserted entity in all $4{,}000$
+records: an entity is grounded if and only if it exists as a node in the
+environment and connects to a topic entity within four hops. The
+semantic tier asks the harder question --- whether the entity is
+supported \emph{as the answer} --- by retrieving the graph's own
+shortest connecting paths for a stratified sample of $60$ answers per
+system per dataset and having a language model judge whether any path
+expresses the relationship the question asks about, under the governing
+instruction that mere connectedness is not support. That judge was
+validated against a human annotator on $100$ items, reaching $85\%$
+agreement and Cohen's $\kappa = 0.70$. Because path retrieval takes only
+the three shortest paths, semantic-tier rates are conservative lower
+bounds, depressed uniformly across systems and read as a between-system
+comparison rather than as absolute support rates. Efficiency is tokens
+and model calls, both exact from the shared meter.
+
+The protocol was \textbf{pre-specified}: research questions, metrics,
+baseline certification thresholds, and ablation conditions were fixed
+and documented before the test sets were constructed, and no
+hyperparameter was tuned on test. The blend $\alpha = 0.7$ and the
+backtracking threshold $\tau = 0.20$ were selected on a disjoint
+$80$-question development set. Nothing was filed with a public registry,
+so the claim is pre-specification and not pre-registration. Deviations
+encountered during execution --- and there were several --- are recorded
+in the repository rather than narrated here.
