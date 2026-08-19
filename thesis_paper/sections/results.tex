@@ -1,0 +1,43 @@
+% !TEX root = ../agr-paper.tex
+% ---------------------------------------------------------------------
+% Compresses thesis ch:results (8,866 words) to ~1,600.
+%
+% Three claims, in this order:
+%
+% 1. ACCURACY. AGR leads every cell of the main matrix. Say where it does
+%    not lead too -- the agentic baseline hedges marginally less on CWQ.
+%    Eight paired comparisons, all rejecting.
+%
+% 2. EFFICIENCY, AND WHERE THE MARGIN COMES FROM. This is the strongest
+%    single result and the thesis reports it well: on the questions where
+%    the shared cap lets Think-on-Graph finish, it is slightly ahead; the
+%    whole margin comes from the 29% and 44% of questions where the cap
+%    truncates it, and AGR never reaches that cap. Frame it as
+%    affordability, not as resolution quality -- guided search completes
+%    under a budget beam search cannot. Use \input{figures/fig_accuracy_cost}.
+%
+% 3. HOP DEPTH. On CWQ, AGR is the only system whose accuracy rises with
+%    hop count and every other system ends below where it started. The
+%    agentic baseline falls and partly recovers, which is weaker than a
+%    rise -- report it as such. Use \input{figures/fig_hop_strata}.
+%
+% GROUNDEDNESS BELONGS HERE AND MUST BE ATTRIBUTED CORRECTLY: zero
+% ungrounded assertions in 1,709, against 22.1% of the parametric
+% control's 1,001 -- and the agentic baseline reaches the same zero.
+% Attribute it to graph navigation, not to the verification layer. This
+% is the paper's credibility set-piece; claiming it for the verifier
+% would be the easiest thing to disprove in the whole submission.
+%
+% CUT: the alpha sweep, the reproducibility note about 65/11/4 vs
+% 64/11/5, and the per-question narratives. Repository material.
+% ---------------------------------------------------------------------
+
+\section{Results}\label{sec:results}
+
+\subsection{Accuracy}\label{sec:accuracy}
+
+\subsection{Cost and the Location of the Margin}\label{sec:cost}
+
+\subsection{Accuracy by Hop Depth}\label{sec:hops}
+
+\subsection{Groundedness}\label{sec:groundedness}

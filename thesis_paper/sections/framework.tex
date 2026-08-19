@@ -1,0 +1,43 @@
+% !TEX root = ../agr-paper.tex
+% ---------------------------------------------------------------------
+% Compresses thesis ch:framework (7,869) and ch:verification (6,668),
+% 14,537 words down to ~1,600. This is the hardest cut in the paper.
+%
+% Keep only what a reader needs to reimplement the thing or to judge the
+% ablation:
+%   - the state machine: six nodes, two cycles, every path to the
+%     answerer passes the verifier (redraw thesis fig:statemachine)
+%   - the tool API: parameterised Cypher templates, five operations of
+%     which four are reachable -- one paragraph, and say plainly that
+%     verify_triple did not survive contact with generated text
+%   - the hybrid scorer: embedding similarity blended with a batched
+%     model judgement, alpha = 0.7
+%   - budgets: the table of caps, because termination is a claim and the
+%     budget meter is what makes cost first-class
+%   - the verification layer: three checks in cheap-to-expensive order,
+%     and the routing (grounded / retry / give_up)
+%
+% Include fig_claim_path here -- it is hand-drawn and shared, so
+% \input{../thesis_book/figures/fig_claim_path}. It carries the whole
+% verification argument in one picture and is worth the column space.
+%
+% REPORT THE LAYER'S REACH HONESTLY AND EARLY. The re-exploration route
+% never fired on the development set, the entity filter ran on three of
+% eighty questions, and on most questions the layer is a pass-through
+% that certifies at no extra model call. Stating this in the method
+% section, before the results, is what makes the null ablation read as
+% an expected result rather than a disappointment. A reviewer who
+% discovers it in Section 6 instead will not be generous about it.
+%
+% CUT: the worked example, the falsy-empty trap, the smoke-set narrative,
+% and every defect-and-fix story. Those are the thesis's engineering
+% record. One sentence pointing at the repository covers them.
+% ---------------------------------------------------------------------
+
+\section{The AGR Framework}\label{sec:framework}
+
+\subsection{State Machine and Tool API}\label{sec:statemachine}
+
+\subsection{Structural Verification Layer}\label{sec:verification}
+
+\subsection{Budgets and Termination}\label{sec:budgets}

@@ -1,0 +1,89 @@
+% !TEX root = agr-paper.tex
+% =====================================================================
+% NOT A DOCUMENT. Packages and styles for agr-paper.tex, which carries
+% the \documentclass and the \begin{document}; building this file
+% directly stops with "Missing \begin{document}".
+%
+% What elsarticle actually loads is fontenc[T1], graphicx, natbib and
+% geometry, and nothing else worth relying on. It does NOT load hyperref,
+% amsmath, amssymb or url -- \url is undefined until something here
+% provides it, which is how the data-availability statement first failed
+% to compile. Do not load geometry; elsarticle sets the measure per class
+% option and a second geometry undoes it.
+% =====================================================================
+
+% Not cosmetic. elsarticle typesets \elsaddress with \footnotesize\itshape
+% inside its frontmatter, and under `review' that call reaches font
+% selection with an empty size -- "Calculating math sizes for size <>",
+% then nine "Font shape OT1/cmr/m/n in size <> not available" warnings
+% substituting size <5>. Bisected to \affiliation: remove it and the
+% warnings vanish, and all three affiliation forms (full key-value,
+% organization-only, plain text) trigger it equally. A scalable family
+% clears every one of them, because there is then a shape to find at
+% whatever size is asked for. Elsevier re-typesets in their own fonts at
+% proof stage, so this affects the submission PDF only. The class already
+% sets T1 for text; the warnings are OT1/cmr, which is where maths lives,
+% and lmodern is scalable in both.
+\usepackage{lmodern}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,fit,
+  backgrounds,patterns}
+
+% Semantic figure palette, identical to buetcsepgthesis.sty and to the
+% deck: blue for a step that does work, green for supported, vermillion
+% for unsupported. The generated figures repeat their own \definecolor
+% so they stay self-contained; these are for the hand-drawn ones.
+\definecolor{agrNode}{HTML}{0072B2}
+\definecolor{agrSup}{HTML}{009E73}
+\definecolor{agrUns}{HTML}{D55E00}
+
+% The plot style the generated figures expect. Width and height are set
+% per figure by scripts/build_figures.py --target paper, not here: the
+% paper target carries its own geometry the way the thesis and slide
+% targets do, and repeating it here would silently override nothing
+% while misleading the next reader.
+\pgfplotsset{
+  agrplot/.style={
+    tick label style={font=\scriptsize},
+    label style={font=\small},
+    title style={font=\small\bfseries},
+    legend style={font=\scriptsize, draw=none, fill=none},
+    grid=major,
+    grid style={gray!25, very thin},
+    axis line style={gray!60},
+    tick align=outside,
+    tick style={gray!60},
+  }}
+
+% Ragged table cells. Justification spaces badly on a column this narrow,
+% and a paper column is narrower than the thesis's.
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Consistent names for the systems, so a rename touches one line rather
+% than forty. The thesis writes these out longhand in every table.
+\newcommand{\noret}{no-retrieval}
+\newcommand{\vecrag}{Vector-RAG}
+\newcommand{\graphrag}{GraphRAG}
+\newcommand{\tog}{Think-on-Graph}
+\newcommand{\agr}{AGR}
+
+% Loaded last, which is hyperref's requirement: it redefines a great many
+% internals and wants everything else already in place. `hidelinks' keeps
+% the coloured boxes out of a manuscript that will be read on paper as
+% often as on screen, while \Cref, \ref and \cite stay clickable for a
+% reviewer who is navigating a PDF. It also supplies \url, which
+% elsarticle does not.
+\usepackage[hidelinks]{hyperref}
+
+% \url breaks only at punctuation, and the repository URL in the
+% data-availability statement has none in the right place: it set 0.68pt
+% overfull in the double-spaced measure, which survives however much
+% prose surrounds it. xurl lets a URL break anywhere, which is the only
+% thing that helps when the unbreakable run is "agentic-graph-reasoning".
+% Load it after hyperref -- it patches hyperref's \url.
+\usepackage{xurl}

@@ -522,14 +522,20 @@ cd thesis_book
 latexmk -pdf buetcsepgthesis.tex
 ```
 
-The slide decks are in [thesis_presentation/](thesis_presentation/) and build the
-same way; see that directory's README.
+The slide decks are in [thesis_presentation/](thesis_presentation/) and the
+journal manuscript in [thesis_paper/](thesis_paper/); both build the same way,
+and each has its own README.
 
-**Three files here are documents and thirty are not.**
-`thesis_book/buetcsepgthesis.tex` and the two `thesis_presentation/pre-defense-*.tex`
-carry `\begin{document}`. Everything else — every chapter, appendix, figure,
-table and preamble — is a fragment that stops with *Missing `\begin{document}`*
-if you build it on its own. Each fragment names its document in a `% !TEX root`
+All three documents draw their figures from `results/phase4/thesis_numbers.json`
+through `scripts/build_figures.py`, which emits one target per document because
+a thesis column, a 16:9 slide and a journal measure are different shapes. Re-run
+the experiments and all three move together.
+
+**Four files here are documents and forty-three are not.**
+`thesis_book/buetcsepgthesis.tex`, the two `thesis_presentation/pre-defense-*.tex`
+and `thesis_paper/agr-paper.tex` carry `\begin{document}`. Everything else — every
+chapter, appendix, section, figure, table and preamble — is a fragment that stops
+with *Missing `\begin{document}`* if you build it on its own. Each fragment names its document in a `% !TEX root`
 line on its first line, so an editor's build button compiles the right thing
 from any file. The repository holds three roots, so nothing else could resolve
 that. Fragments under `figures/` and `tables/` are generated, and their
@@ -549,6 +555,30 @@ several.
 
 ## License
 
-No license file is present, so default copyright applies and no permissions are
-granted. If you intend others to use, modify or build on this work, add a
-`LICENSE` file — MIT or Apache-2.0 are the usual choices for research code.
+Three different things live in this repository and they are not covered by the
+same terms.
+
+**Code — MIT.** [`LICENSE`](LICENSE) covers `agr/`, `scripts/`, `tests/`, and
+the configuration and build files at the root. Use it, modify it, build on it.
+
+**The thesis and the manuscript — © 2026 Md. Sakif Khan, all rights reserved.**
+`thesis_book/`, `thesis_presentation/`, and `thesis_paper/` — their sources,
+figures, and PDFs — are academic writing, not software, and MIT is the wrong
+instrument for them. They are readable here; they are not licensed for reuse or
+redistribution. This matters practically: `thesis_paper/` is prepared for
+journal submission, and a publisher's agreement will govern that manuscript on
+acceptance.
+
+**The data — upstream terms apply.** The knowledge environment is derived from
+Freebase, and the questions come from the public WebQSP and ComplexWebQuestions
+releases. None of it is redistributed here: `cache/`, `datasets/`, and the
+triple index are gitignored and rebuilt by the Phase 1 scripts. What is
+committed under `results/` is measurement output, covered by the MIT terms
+above. Anyone rebuilding the environment takes it from the original sources
+under whatever terms those sources carry — check them rather than relying on
+this file.
+
+> **Confirm before relying on this.** BUET may assert rights over thesis work
+> under its own IP policy, which would sit above anything stated here. Raise it
+> with your supervisor and the department; a licence file is not a substitute
+> for that conversation.

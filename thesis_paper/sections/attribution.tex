@@ -1,0 +1,42 @@
+% !TEX root = ../agr-paper.tex
+% ---------------------------------------------------------------------
+% From thesis sec:ablations. ~1,000 words. THIS IS THE PAPER'S HEADLINE
+% SECTION -- give it the space and the prominence.
+%
+% Four single-deviation conditions against the unmodified system on the
+% same questions, with paired significance testing. Delta is
+% ablated-minus-reference, so positive means removing the component
+% improved the metric. Say that once, clearly, or every number below
+% reads backwards.
+%
+% The lead finding: removing the planner IMPROVES WebQSP by 0.083 F1
+% (p = 0.006) and cuts tokens by 31%, while trending the other way on
+% CWQ (p = 0.088). Report the asymmetry, not the pooled average -- the
+% pooled number averages away the entire result. Only the improving arm
+% reaches significance; report the harming arm as a direction, not an
+% effect, and resist the temptation to describe it as "marginally
+% significant".
+%
+% The three null results get reported at the SAME LENGTH as the positive
+% one. That is unusual and it is the paper's methodological argument:
+% a field that only reports what moved cannot attribute anything. The
+% verification layer's null belongs here, and the honest reading is the
+% thesis's own: claim verification does not measurably change how often
+% AGR is right, it changes how often AGR is right for a reason it can
+% exhibit. The evidence for the layer is the output contract, not an
+% accuracy delta.
+%
+% State the power limitation in the same section rather than in
+% Discussion: n = 200 and n = 198 half-splits, so a null is "no effect
+% detected at this power", not "no effect". A reviewer will ask for the
+% minimum detectable effect size -- compute it and put it in the text.
+%
+% Recommend the actionable consequence explicitly: gate decomposition on
+% question structure. That sentence is what other people will cite.
+% ---------------------------------------------------------------------
+
+\section{Component-Level Attribution}\label{sec:attribution}
+
+\subsection{When Planning Hurts}\label{sec:planner}
+
+\subsection{Three Components with No Detected Effect}\label{sec:nulls}

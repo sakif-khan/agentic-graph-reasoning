@@ -1,0 +1,91 @@
+% =====================================================================
+% THE JOURNAL PAPER. This is a document; build it.
+%
+%   latexmk -pdf agr-paper.tex
+%
+% Target: Elsevier (Knowledge-Based Systems / Information Processing &
+% Management). `review' gives the double-spaced, line-numbered single
+% column Elsevier wants for peer review; the two-column look is the
+% publisher's typesetting at proof stage, not ours. Switch to
+% [preprint,12pt] alone for a readable single-spaced copy to circulate,
+% and to [final,5p,times,twocolumn] only to preview the proof.
+%
+% Numbers are NOT typed into this paper. Every figure under figures/ is
+% emitted by scripts/build_figures.py --target paper from
+% results/phase4/thesis_numbers.json, the same file the thesis reads.
+% Values quoted in prose are checked by scripts/check_paper_numbers.py.
+% =====================================================================
+\documentclass[preprint,review,12pt]{elsarticle}
+
+\input{preamble}
+
+\journal{Knowledge-Based Systems}
+
+\begin{document}
+
+\begin{frontmatter}
+
+% The thesis title registered with CASR is deliberately broader than what
+% the measurements establish -- see "How to read the title" in the thesis
+% introduction. This one is scoped to what the paper actually shows.
+\title{What Actually Works in Agentic Knowledge Graph Question
+  Answering: A Component-Level Attribution Study}
+
+\author[buet]{Md. Sakif Khan}
+\ead{sakifkhanopu@gmail.com}
+
+\author[buet]{Sadia Sharmin}
+
+\affiliation[buet]{organization={Department of Computer Science and
+    Engineering, Bangladesh University of Engineering and Technology},
+  city={Dhaka},
+  country={Bangladesh}}
+
+\begin{abstract}
+% ~200 words, Elsevier's limit for these journals. Compress the thesis
+% abstract's five paragraphs to four sentences of setup, one of method,
+% and three of findings -- leading with the attribution result, not with
+% the verification layer.
+\end{abstract}
+
+\begin{keyword}
+  knowledge graph question answering \sep large language models \sep
+  agentic retrieval \sep ablation study \sep hallucination \sep
+  benchmark quality
+\end{keyword}
+
+\end{frontmatter}
+
+\input{sections/introduction}
+\input{sections/related-work}
+\input{sections/framework}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/attribution}
+\input{sections/error-analysis}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+% Elsevier requires these as declarations, not as prose in the body.
+\section*{Declaration of competing interest}
+The authors declare no competing financial interests or personal
+relationships that could have influenced the work reported here.
+
+\section*{Data availability}
+% CHECK BEFORE SUBMITTING that the repository is actually public and that
+% the URL resolves for a logged-out visitor. A data-availability
+% statement pointing at a private repository is the kind of thing an
+% editor checks and a reviewer resents.
+Code, prompts, per-question run records, and the analysis scripts that
+produce every figure and table in this paper are available at
+\url{https://github.com/sakif-khan/agentic-graph-reasoning} under the MIT
+licence. The knowledge environment is derived from
+Freebase~\cite{bollacker2008freebase} and is rebuilt from its public
+source by the scripts in that repository rather than redistributed; the
+question sets are the public WebQSP~\cite{yih2016value} and
+ComplexWebQuestions~\cite{talmor2018web} releases.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{../thesis_book/buetcsepgthesis}
+
+\end{document}

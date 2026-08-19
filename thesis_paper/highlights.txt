@@ -1,0 +1,12 @@
+Elsevier Highlights -- submitted as a separate file, not part of the PDF.
+Three to five bullets, each at most 85 characters including spaces.
+
+Draft them against the attribution framing, not the verification layer.
+Candidates below are starting points; the character counts are what the
+submission system enforces, so check each one after editing.
+
+- Removing the planner improves shallow-benchmark accuracy and cuts tokens by 31%
+- Component ablation shows three of four agentic mechanisms earn no measurable gain
+- AGR matches or beats four baselines at half the language-model calls
+- The echo attractor: a true, grounded entity one hop from the answer, shared across systems
+- Measured label-defect rates for WebQSP and ComplexWebQuestions

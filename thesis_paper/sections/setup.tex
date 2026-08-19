@@ -1,0 +1,46 @@
+% !TEX root = ../agr-paper.tex
+% ---------------------------------------------------------------------
+% Compresses thesis ch:environment (3,653) and ch:setup (9,090) to
+% ~1,200.
+%
+% Keep:
+%   - the environment: 2.59M entities, 8.31M triples, per-question
+%     subgraphs, answer-reachability ceiling 97.3% / 99.7%. State the
+%     reachability gate as a strength (it lets a failure be attributed to
+%     the system rather than the substrate) and its cost in the same
+%     breath (absolute accuracies are not comparable to full-Freebase
+%     numbers). Do not let a reviewer find that second half on their own.
+%   - benchmarks and the full test splits
+%   - the four baselines and the certification threshold
+%   - one frozen backbone, same call budget for all five systems
+%   - metrics: Hits@1, F1, groundedness, tokens, calls
+%   - the pre-specified protocol and the no-tuning rule
+%
+% ON PRE-REGISTRATION: the protocol was fixed and documented before the
+% test sets were built, but nothing was filed with a registry. Write
+% "pre-specified", never "pre-registered". The distinction is small and a
+% reviewer who catches the overclaim discounts everything else the paper
+% says about rigour.
+%
+% ON THE SAMPLE: this paper reports the thesis's numbers unchanged -- 400
+% questions per dataset, a pre-specified fallback adopted when full-split
+% cost was projected at $45-55 against a $15-20 ceiling. State the sample
+% size and its bootstrap interval (about +/-5 points on Hits@1) in the
+% text, not only in a table caption. A reviewer who finds the sample size
+% unaided reads it as something the paper hoped they would not check; a
+% reviewer told it up front reads it as a stated limit. Same number, and
+% the difference is entirely in who says it first.
+%
+% CUT: the backbone selection reversal, the wrong-split incident, the
+% judge threshold missed by 0.0005. Compress all three to one sentence:
+% deviations are recorded in the repository. They are admirable and they
+% are not what a reviewer is reading for.
+% ---------------------------------------------------------------------
+
+\section{Experimental Setup}\label{sec:setup}
+
+\subsection{Knowledge Environment}\label{sec:environment}
+
+\subsection{Benchmarks, Baselines, and Backbone}\label{sec:baselines}
+
+\subsection{Metrics and Protocol}\label{sec:protocol}

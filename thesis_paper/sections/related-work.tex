@@ -1,0 +1,27 @@
+% !TEX root = ../agr-paper.tex
+% ---------------------------------------------------------------------
+% Compresses thesis ch:related (2,865 words) to ~900.
+%
+% Three subsections, no more:
+%   - static graph retrieval: GraphRAG, HippoRAG, TG-RAG
+%   - agentic navigation: Think-on-Graph, Plan-on-Graph,
+%     Reasoning-on-Graphs, KG-Agent, StructGPT
+%   - post-hoc verification: Chain-of-Verification, multi-agent debate,
+%     Hu et al.'s self-correcting clinical pipeline
+%
+% The gap statement carries the paper, so make it precise and make it
+% about attribution: these systems are assemblies reported as wholes.
+% KBQA-o1 is the closest system and the thesis distinguishes it honestly
+% (it has the rollouts and value backpropagation this work does not) --
+% keep that paragraph, it inoculates against an obvious reviewer
+% objection. Its MCTS ablation, which drops GrailQA F1 from 78.5 to 48.5,
+% is the best evidence that component ablation is informative, so cite it
+% as motivation rather than only as a competitor.
+%
+% CUT: the withdrawn "MCTS-inspired" self-correction. That is a thesis
+% integrity note, not a related-work contribution; it belongs in the
+% method section as one sentence naming the search as guided best-first,
+% if anywhere.
+% ---------------------------------------------------------------------
+
+\section{Related Work}\label{sec:related}

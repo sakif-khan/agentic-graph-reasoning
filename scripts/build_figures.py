@@ -116,6 +116,20 @@ TARGETS = {
         strata_xlabel=False,
         hist_tick_font=r"\small",
     ),
+    "paper": dict(
+        outdir=Path("thesis_paper/figures"),
+        root="../agr-paper.tex",
+        # Sized for elsarticle's single-column `review' measure, which is
+        # what gets submitted. Widths are \textwidth-relative so the same
+        # files still work if the class options change; only the fixed
+        # heights would need revisiting for the publisher's two-column
+        # proof, where a column is roughly 3.5in rather than 6in.
+        width=r"0.47\textwidth", height="48mm", gutter="10mm",
+        legend_drop=-0.34, strata_legend_drop=-0.34,
+        mark_size=2.6, line_mark=2.2,
+        hist_width=r"0.92\textwidth", hist_height="88mm", bar_width="3.8mm",
+        stack_ticks=False, strata_xlabel=True, hist_tick_font=r"\scriptsize",
+    ),
 }
 
 

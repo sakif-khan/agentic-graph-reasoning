@@ -1,0 +1,31 @@
+% !TEX root = ../agr-paper.tex
+% ---------------------------------------------------------------------
+% Compresses thesis ch:intro (2,978 words) to ~900.
+%
+% FRAME IT AS ATTRIBUTION, NOT AS A NEW METHOD. The thesis leads with the
+% Structural Verification Layer as its contribution; the measurements say
+% the precision column does not move when that layer is removed
+% (results.tex, sec:abl-noverify). A paper that opens by proposing a
+% verifier invites the reviewer to check whether it works and find that
+% it does not. Open instead on what the field cannot currently answer:
+% agentic KGQA systems bundle decomposition, search and verification into
+% one reported number, so nobody knows which part earns its cost.
+%
+% Contributions, in the order they should be claimed:
+%   1. component-level attribution, with the planner result as the lead
+%      finding (removing it IMPROVES WebQSP, p = 0.006, -31% tokens)
+%   2. efficiency located rather than asserted: the margin over the
+%      agentic baseline comes entirely from where its budget truncates it
+%   3. the echo attractor, a cross-system failure consensus evaluation
+%      cannot see
+%   4. measured label-defect rates for WebQSP and CWQ
+%   5. the answer + supporting-triples output contract as the auditable
+%      artifact the verification layer actually delivers
+%
+% CUT: the three loci of hallucination (training data / model / prompt),
+% the single-fact vs multi-hop tutorial, and "How to read the title".
+% Those are thesis scaffolding for an examiner, not argument for a
+% reviewer who already knows the field.
+% ---------------------------------------------------------------------
+
+\section{Introduction}\label{sec:intro}

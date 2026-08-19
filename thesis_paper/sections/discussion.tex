@@ -1,0 +1,34 @@
+% !TEX root = ../agr-paper.tex
+% ---------------------------------------------------------------------
+% ~500 words. Every limitation a reviewer could raise should appear here
+% first, in your words. The thesis already has these; do not soften them
+% on the way across.
+%
+%   - SAMPLE SIZE. 400 questions per dataset rather than the full splits,
+%     with bootstrap intervals of about +/-5 points on Hits@1. This is
+%     the limitation most likely to draw a revision request, so state the
+%     interval and let the reader judge which margins clear it. Several
+%     of the paper's claims -- the eight paired comparisons, the planner
+%     effect at p = 0.006 -- survive it; say which do.
+%   - ONE BACKBONE. gpt-5.4-mini, frozen and closed. The paper
+%     establishes how these architectures compare on one backbone, not
+%     how they scale across backbones.
+%   - NONDETERMINISM. Trajectory stability is about 67%, so a single run
+%     per system is a sample of one. Seeds were not averaged; say so
+%     rather than letting a reader assume they were.
+%   - THE ENVIRONMENT. Per-question subgraphs with a 97%+ reachability
+%     ceiling are friendlier than full Freebase. Between-system
+%     comparisons hold because all five navigate the identical
+%     environment; absolute numbers do not transfer.
+%   - ABLATION POWER. Half-splits of n = 200 and n = 198. Three nulls are
+%     "no effect detected", not "no effect".
+%   - SCOPE. English factoid questions, static graph, no temporal facts,
+%     no graph construction, offline prototype. Latency is a cost
+%     measure, not a production-readiness claim.
+%
+% One forward-looking paragraph, and make it the gated-decomposition
+% proposal -- it follows directly from the planner result and gives the
+% paper a constructive close instead of a defensive one.
+% ---------------------------------------------------------------------
+
+\section{Discussion and Limitations}\label{sec:discussion}

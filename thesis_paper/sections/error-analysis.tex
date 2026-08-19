@@ -1,0 +1,42 @@
+% !TEX root = ../agr-paper.tex
+% ---------------------------------------------------------------------
+% Compresses thesis ch:erroranalysis (8,097 words) to ~1,100.
+%
+% All 259 remaining failures were read and labelled by hand across both
+% datasets. Say so -- a hand-read census is a real contribution and
+% almost nobody does it. Use \input{figures/fig_failure_histogram}.
+%
+% Two findings carry beyond this system, and only these two belong here:
+%
+% 1. THE ECHO ATTRACTOR. A real, well-grounded entity one hop from the
+%    answer, which any grounding check passes because it is genuinely
+%    true. Three shapes: topic (name/cluster confusion), granularity
+%    (right family, wrong level -- "Kingdom of Denmark" for "Denmark"),
+%    and intermediate (stopping a hop early). Keep the Denmark and the
+%    Lex Luthor specimens; they are short and they land.
+%
+%    The generalisable claim is the evaluation one: because unrelated
+%    architectures converge on the SAME wrong entity for the SAME
+%    questions, any protocol that treats systems as independent -- every
+%    consensus, ensemble, or majority-vote gold-repair method -- is blind
+%    to it by construction. That is the sentence other papers will cite.
+%    It accounts for 13 of the 259 failures; lead with the mechanism and
+%    give the frequency second, because the contribution is the named
+%    mechanism, not its rate at this n.
+%
+% 2. BENCHMARK DEFECTS. The consensus pass flagged 58 WebQSP and 47 CWQ
+%    questions; adjudication confirmed 22 and 19. Keep those two pairs
+%    apart -- the gap between flagged and confirmed IS the echo attractor
+%    operating across systems, which is what ties this subsection to the
+%    previous one. Report results with and without the affected items.
+%
+% CUT: relation_selection, decomposition_error, and the rest of the
+% category-by-category walk. Summarise the census in the figure and spend
+% the prose on the two findings that generalise.
+% ---------------------------------------------------------------------
+
+\section{Error Analysis}\label{sec:erroranalysis}
+
+\subsection{The Echo Attractor}\label{sec:echo}
+
+\subsection{Benchmark Label Defects}\label{sec:defects}
