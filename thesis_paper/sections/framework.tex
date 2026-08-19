@@ -1,43 +1,260 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
 % Compresses thesis ch:framework (7,869) and ch:verification (6,668),
-% 14,537 words down to ~1,600. This is the hardest cut in the paper.
+% 14,537 words, to ~1,600 -- the hardest cut in the paper.
 %
-% Keep only what a reader needs to reimplement the thing or to judge the
-% ablation:
-%   - the state machine: six nodes, two cycles, every path to the
-%     answerer passes the verifier (redraw thesis fig:statemachine)
-%   - the tool API: parameterised Cypher templates, five operations of
-%     which four are reachable -- one paragraph, and say plainly that
-%     verify_triple did not survive contact with generated text
-%   - the hybrid scorer: embedding similarity blended with a batched
-%     model judgement, alpha = 0.7
-%   - budgets: the table of caps, because termination is a claim and the
-%     budget meter is what makes cost first-class
-%   - the verification layer: three checks in cheap-to-expensive order,
-%     and the routing (grounded / retry / give_up)
+% fig:statemachine is redrawn here rather than \input, because it is
+% inline tikz in the thesis chapter, not a shared figures/ file, and the
+% paper's column width warrants checking independently. fig:claim-path
+% IS shared -- \input{../thesis_book/figures/fig_claim_path} -- since
+% that one is hand-drawn once and already set at a single-column
+% measure.
 %
-% Include fig_claim_path here -- it is hand-drawn and shared, so
-% \input{../thesis_book/figures/fig_claim_path}. It carries the whole
-% verification argument in one picture and is worth the column space.
+% The 77/80 grounded-pass-through and 3/80 give_up figures below are
+% development-set numbers (n = 80), stated as such on purpose: Sections
+% 5-6 report the test-set behaviour, and scoping this one to the set it
+% was measured on is what keeps the two from reading as contradictory.
 %
-% REPORT THE LAYER'S REACH HONESTLY AND EARLY. The re-exploration route
-% never fired on the development set, the entity filter ran on three of
-% eighty questions, and on most questions the layer is a pass-through
-% that certifies at no extra model call. Stating this in the method
-% section, before the results, is what makes the null ablation read as
-% an expected result rather than a disappointment. A reviewer who
-% discovers it in Section 6 instead will not be generous about it.
-%
-% CUT: the worked example, the falsy-empty trap, the smoke-set narrative,
-% and every defect-and-fix story. Those are the thesis's engineering
-% record. One sentence pointing at the repository covers them.
+% CUT: the worked example, the falsy-empty-list trap, the smoke-set
+% narrative, and every defect-and-fix story. Engineering record; the
+% repository has it.
 % ---------------------------------------------------------------------
 
 \section{The AGR Framework}\label{sec:framework}
 
+AGR inverts the usual agent pattern. Rather than handing the model a set
+of tools through native function-calling and letting it drive the loop
+itself, a program orchestrates every step, calls the graph tools
+deterministically, and consults the model only at bounded decision
+points through prompts constrained to return JSON. Three consequences
+follow directly. Every graph operation is logged by construction rather
+than reconstructed from the model's account of what it did. Budgets are
+enforced by counters a router checks, not requested in a prompt the
+model may ignore. And a malformed model response degrades one decision
+rather than corrupting control flow: every call is wrapped in a parser
+that, on failure, spends one metered retry asking the model to repair
+its own output before falling back. What follows specifies the loop
+that produces a traversal (\Cref{sec:statemachine}), the layer that
+checks a draft against it before an answer is emitted
+(\Cref{sec:verification}), and the budgets that bound the whole loop's
+cost (\Cref{sec:budgets}).
+
 \subsection{State Machine and Tool API}\label{sec:statemachine}
+
+\Cref{fig:statemachine} gives the topology: six agent nodes over a
+shared typed state, with two cycles. The \textbf{Planner} decomposes the
+question into an ordered chain of sub-objectives in one model call;
+\textbf{Explorer} and \textbf{Evaluator} form a search loop, expanding
+the frontier and judging whether the active sub-objective is satisfied;
+\textbf{Backtracker} restores an earlier, higher-scoring frontier and
+bans the edges that led away from it, which is what turns backtracking
+into a search operation rather than a deterministic no-op against an
+unchanged scorer. Two properties of the topology matter beyond the nodes
+themselves. It contains cycles rather than running once through, because
+exploration continues until the evaluator is satisfied and verification
+can send the agent back to explore. And every path from Evaluator to
+Answerer passes through the \textbf{Verifier} --- there is no route that
+reaches the Answerer without it, which is the structural expression of
+this paper's contribution and the subject of \Cref{sec:verification}.
+
+\begin{figure}[!tb]
+  \begin{center}
+    \begin{tikzpicture}[
+        node distance=9mm,
+        box/.style={draw=agrNode, thick, rounded corners=2pt,
+                    minimum height=7.5mm, fill=agrNode!8,
+                    minimum width=24mm, align=center, font=\small},
+        vbox/.style={box, draw=agrSup, fill=agrSup!12},
+        term/.style={draw=black!45, rounded corners=6pt, minimum height=6mm,
+                     minimum width=16mm, font=\scriptsize\sffamily,
+                     fill=black!6},
+        flow/.style={-{Stealth[length=2mm]}, semithick, draw=black!68},
+        lbl/.style={font=\scriptsize\ttfamily, inner sep=1.5pt,
+                    fill=white, anchor=center}]
+
+      \node[term]              (start) {START};
+      \node[box, below=of start] (plan) {Planner};
+      \node[box, below=of plan]  (expl) {Explorer};
+      \node[box, below=of expl]  (eval) {Evaluator};
+      \node[vbox, below=of eval] (ver)  {Verifier};
+      \node[box, below=of ver]   (ans)  {Answerer};
+      \node[term, below=of ans]  (end)  {END};
+      \node[box, right=26mm of eval] (back) {Backtracker};
+
+      \draw[flow] (start) -- (plan);
+      \draw[flow] (plan)  -- (expl);
+      \draw[flow] (expl)  -- (eval);
+      \draw[flow] (eval)  -- node[lbl] {answer} (ver);
+      \draw[flow] (ver)   -- node[lbl] {grounded $\mid$ give\_up} (ans);
+      \draw[flow] (ans)   -- (end);
+
+      \draw[flow] (eval.west) -- ++(-22mm,0)
+        node[lbl, above, pos=0.5] {continue}
+        |- (expl.west);
+
+      \draw[flow] (eval.east) -- node[lbl] {backtrack} (back.west);
+      \draw[flow] (back.north) |- (expl.east);
+
+      \draw[flow] (ver.west) -- ++(-30mm,0)
+        node[lbl, below, pos=0.5] {retry}
+        |- ([yshift=-2mm] expl.west);
+
+      \begin{scope}[on background layer]
+        \node[draw=black!35, dashed, rounded corners, inner sep=2.5mm,
+              fit=(expl)(eval)] {};
+      \end{scope}
+    \end{tikzpicture}
+  \end{center}
+  \caption{The AGR state machine. The dashed region is the
+    Explorer\,$\leftrightarrow$\,Evaluator search loop; Verifier
+    $\rightarrow$ Explorer is verification-driven re-exploration. Both
+    cycles are bounded by the budgets of \Cref{sec:budgets}. Every path
+    from Evaluator to Answerer passes through the Verifier.}
+  \label{fig:statemachine}
+\end{figure}
+
+Five graph operations back this loop, specified as parameterised Cypher
+templates rather than left to free-form generation the model would write
+itself --- a generated-query failure is indistinguishable, in the
+results, from a reasoning failure, and this paper's central claims are
+about reasoning and verification, not about syntax. Only four of the
+five are reachable from a node in the final design.
+\textsf{verify\_triple} was built first, to check a claim $\langle
+h,r,t\rangle$ by asking whether that exact relation held between the two
+entities; it did not survive contact with generated text, because claim
+decomposition phrases relations in English (``played for'', ``is the
+capital of'') that rarely correspond to a single Freebase predicate, and
+matching on them rejected claims that were true.
+\textsf{verify\_connection} replaced it: it drops the relation and asks
+only whether the two entities are adjacent, directly or through one
+mediator node, which is the check \Cref{sec:verification} actually uses.
+\textsf{verify\_triple} remains in the API and in its unit tests, but
+nothing in the running loop calls it.
+
+Each candidate edge the Explorer considers is scored by
+\[
+  \mathrm{score}(c) \;=\; \alpha \cos\!\big(v_{\mathrm{rel}(c)},\,
+  v_{\mathrm{obj}}\big) \;+\; (1-\alpha)\, \mathrm{LLM}(c),
+\]
+blending the cosine similarity of the candidate relation's embedding
+against the embedding of the \emph{active sub-objective} --- not the
+original question, which is the concrete mechanism through which
+decomposition is meant to help --- with a batched model judgement over a
+pre-filtered shortlist of twenty, at the frozen $\alpha = 0.7$. The blend
+is applied after the model call rather than inside the prompt, so a
+prompt free of any configuration value lets an $\alpha$ sweep reuse one
+set of cached responses across every condition; setting $\alpha = 1$
+disables the model term entirely, which is the ablation
+\Cref{sec:attribution} reports.
 
 \subsection{Structural Verification Layer}\label{sec:verification}
 
+The navigation loop above ends with a set of traversed triples and a set
+of accumulated candidate entities; nothing in it constrains what the
+final answer \emph{asserts}. The verifier is the check that does. A
+single model call drafts prose, extracts the entities the draft asserts
+as its answer, and decomposes the draft into atomic claims $\langle h,
+r, t \rangle$ over entity \emph{names}, since the model has never seen a
+graph identifier; the relation slot is left as free text, because asking
+the model to name a Freebase predicate would fail as unreliably as
+\textsf{verify\_triple} did.
+
+\begin{figure}[!tbp]
+  \begin{center}
+    \input{../thesis_book/figures/fig_claim_path}
+  \end{center}
+  \caption{The path one atomic claim takes through the verification
+    layer. Three tests are tried in a fixed, cheap-to-expensive order and
+    a claim leaves at the first that settles it. Only traversed adjacency
+    attaches citable evidence; a claim naming an entity the agent never
+    reached skips both structural routes entirely.}
+  \label{fig:claim-path}
+\end{figure}
+
+Each claim is routed through up to three tests, and a claim leaves at
+the first one that settles it. \textbf{Traversed adjacency} collapses
+the traversed triples into an undirected set of endpoint pairs; a claim
+is supported if its pair is in that set, and --- uniquely among the
+three routes --- every traversed triple joining the pair is attached as
+citable evidence. \textbf{\textsf{verify\_connection}} catches claims
+whose endpoints were both reached but never directly walked together,
+querying the full graph for the same relation-agnostic adjacency. Claims
+that clear neither route, together with those naming an entity the agent
+never traversed at all, fall to an \textbf{entailment check}: one
+batched model call judging each remaining claim against the same fact
+window the drafter saw. The order is deliberate rather than incidental:
+symbols decide and the model is consulted only where the graph is
+silent, so cheap-to-expensive ordering also means the model adjudicates
+a residue rather than every claim, and only the first route yields
+evidence that can be attached to the answer.
+
+The router that follows has three outcomes. No unsupported claim routes
+to \textsf{grounded}, and the draft is emitted verbatim with no further
+model call. An unsupported claim with verification, depth, and time
+budget remaining routes to \textsf{retry}: the verifier re-targets the
+agent on the first unsupported claim and control returns to the
+Explorer. Otherwise the router takes \textsf{give\_up}, and one rewrite
+call restates the draft around a \emph{deterministically filtered}
+entity list --- an entity survives if it appears in a supported claim or
+in no unsupported claim --- rather than letting the model regenerate the
+list itself, which an earlier design did and which reintroduced exactly
+the ungroundedness the layer exists to prevent.
+
+The layer's reach should be stated plainly here, because it bears
+directly on how the null result of \Cref{sec:attribution} should be
+read. On the 80-question development set used to validate this design,
+77 questions asserted no unsupported claim and took the grounded path at
+zero additional model cost; the remaining 3 took \textsf{give\_up}, and
+the retry route did not fire even once, because every question that
+reached the verifier with an unsupported claim had already exhausted its
+depth budget by the time it got there. On most questions, in other
+words, the layer is a pass-through that certifies a draft rather than a
+mechanism that visibly intervenes. \Cref{sec:results,sec:attribution}
+report what it measurably changes at test scale; engineering detail
+beyond that --- defects found along the way and recorded rather than
+quietly repaired --- is in the repository rather than reproduced here.
+
 \subsection{Budgets and Termination}\label{sec:budgets}
+
+\Cref{tab:budget} lists the caps that bound every run. They are enforced
+in routers and the model client rather than requested in prompts, and
+three of them --- depth, wall-clock, and verification iterations --- are
+checked at two separate sites each, because the \textsf{retry} edge
+re-enters the Explorer without passing back through the router that
+would otherwise catch it; closing that gap is what lets
+\Cref{tab:budget} be called a guarantee rather than a convention.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{Budget configuration. Every row is hashed into the run
+      configuration, so a reported result can always be traced to the
+      caps that produced it.}
+    \label{tab:budget}
+    \footnotesize
+    \begin{tabular}{|l|r|L{55mm}|}
+      \hline
+      \textbf{Parameter} & \textbf{Value} & \textbf{Enforced in} \\
+      \hline
+      \textsf{max\_depth} & 4 & post-evaluation \emph{and}
+      post-verification routers \\
+      \textsf{beam\_width} & 3 & Explorer (per-anchor slice) \\
+      \textsf{max\_anchors} & 5 & Explorer \emph{and} Evaluator
+      (frontier slice) \\
+      \textsf{max\_backtracks} & 3 & post-evaluation router \\
+      \textsf{max\_llm\_calls} & 25 & model client, before every call \\
+      \textsf{max\_verify\_iters} & 2 & post-verification router
+      \emph{and} the verifier \\
+      \textsf{max\_seconds} & 300 & post-evaluation \emph{and}
+      post-verification routers \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+Every cycle in \Cref{fig:statemachine} therefore passes through a router
+that checks or decrements a monotone counter, so no sequence of model
+outputs, however adversarial, can produce a non-terminating run. The
+cost of enforcing this is small in the common case: the grounded path
+above adds nothing beyond the single drafting call already required to
+produce a draft. \Cref{sec:cost} reports what the layer costs in
+aggregate, on the questions where it is not a pass-through.

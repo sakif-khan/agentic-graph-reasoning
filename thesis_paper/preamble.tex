@@ -105,15 +105,22 @@
 \newcommand{\tog}{Think-on-Graph}
 \newcommand{\agr}{AGR}
 
-% Numbered lines, so a reviewer can write "line 214" instead of
-% "paragraph 3 on page 6". The `review' class option does NOT provide
-% these -- all it does is \gdef\@blstr{1.5}, which is 1.5 line spacing
-% and nothing else; lineno appeared nowhere in the log until this line
-% was added. Elsevier's own guidance asks for numbered lines at
-% submission, so the option's name is a trap worth knowing about.
-% Loaded before hyperref, which patches some of the same internals.
-\usepackage{lineno}
-\linenumbers
+% NO LINE NUMBERS, DELIBERATELY. `lineno' was loaded here and activated
+% after \end{frontmatter}; both are gone, and the justification
+% originally written in this comment did not survive checking. It claimed
+% "Elsevier's own guidance asks for numbered lines at submission" -- that
+% was never verified against this journal's guide for authors, which
+% returns 403 to an automated fetch, and Editorial Manager builds the
+% reviewer PDF itself. Do not re-add on the strength of the old comment.
+%
+% If a submission checklist ever does ask for them, it is two lines:
+% \usepackage{lineno} here, and \linenumbers after \end{frontmatter} in
+% agr-paper.tex -- in that order and in those two places. Activating in
+% the preamble instead numbers the title, author line and abstract
+% heading, each on its own inconsistent count before the body starts.
+%
+% What `review' actually does is \gdef\@blstr{1.5}: 1.5 line spacing, and
+% nothing else. It never provided line numbers, whatever the name suggests.
 
 % Loaded last, which is hyperref's requirement: it redefines a great many
 % internals and wants everything else already in place. `hidelinks' keeps

@@ -19,9 +19,19 @@ latexmk -pdf agr-paper.tex
 ```
 
 `review` gives the 1.5-spaced single column Elsevier wants for peer
-review. **It does not number the lines** — all the option does is set the
-baseline stretch; `lineno` in `preamble.tex` is what puts numbers in the
-margin, and Elsevier asks for them at submission. **One column is correct for submission** — the
+review — all the option does is set the baseline stretch.
+
+**No line numbers, deliberately.** `lineno` was loaded and then removed.
+The claim that Elsevier requires author-supplied line numbers was never
+verified against the KBS guide for authors — that page returns 403 to an
+automated fetch — and Editorial Manager builds the reviewer PDF itself.
+If a submission checklist does ask for them, it is two lines:
+`\usepackage{lineno}` in `preamble.tex`, and `\linenumbers` *after*
+`\end{frontmatter}` in `agr-paper.tex` — never in the preamble, which
+numbers the title block on its own inconsistent count before the body
+starts.
+
+**One column is correct for submission** — the
 two-column look is the publisher's typesetting at proof stage, not
 yours. Swap the class options for other purposes:
 
