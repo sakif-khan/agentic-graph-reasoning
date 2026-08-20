@@ -392,6 +392,39 @@ def main():
     ck("the stated band is the measured one",
        got == band, f"paper {got or 'NO MATCH'}, computed {band}")
 
+    print("\n== the judge's kappa is reported short, never rounded ==")
+    # The judge that produces the semantic tier above missed its own
+    # pre-specified bar. The draft wrote "Cohen's $\kappa = 0.70$", which is
+    # precisely the rendering the thesis singles out: "Rounded to three
+    # decimals this value reads 0.700 and appears to clear; it does not."
+    # Four ways to lose that, all of which passed before this block existed:
+    # rounding to 0.70, rounding to 0.700, keeping 0.6995 but cutting the
+    # miss, and dropping the sentence from setup.tex entirely -- the last
+    # one silent because discussion.tex also says 0.6995, so a
+    # document-wide presence test stayed green.
+    jv = d["judge_validation"]
+    kappa, bar = jv["cohens_kappa"], jv["preregistered_threshold"]
+    setup = section_body("sec:protocol")
+    ck("setup states the judge's kappa exactly, not rounded",
+       re.search(r"\\kappa\s*=\s*" + re.escape(str(kappa)) + r"\b", setup or ""),
+       f"expected \\kappa = {kappa} in sec:protocol")
+    ck("setup states that it MISSES the bar it was set",
+       bool(setup) and re.search(r"misses\}? the \$0\.70?\$", setup, re.I),
+       "the number without the miss reads as a pass")
+    shortfall = float(Decimal(str(bar)) - Decimal(str(kappa)))
+    ck(f"the stated shortfall is {shortfall}",
+       bool(setup) and f"{shortfall}" in setup,
+       f"{bar} - {kappa} = {shortfall}")
+    says(r"on \$(\d+)\$ items, reaching \$(\d+)\\%\$", "judge validated on n items at agreement",
+         (jv["n"], int(round(jv["observed_agreement"] * 100))))
+    # No occurrence of \kappa anywhere in the paper may assign it a rounded
+    # value. Whitespace-tolerant: the .tex hard-wraps, and "\kappa =\n0.70"
+    # slipped past a literal-space guard. Mentions of the THRESHOLD as
+    # "$0.70$" are untouched -- this fires only on \kappa being *set* to it.
+    rounded = re.findall(r"\\kappa\$?\s*=\s*\$?(0\.7|0\.70|0\.700)\b", text)
+    ck("kappa is never assigned a rounded value anywhere in the paper",
+       not rounded, f"found \\kappa = {', '.join(rounded)}")
+
     print("\n== the limitations list is complete ==")
     # discussion.tex claims every limitation a reviewer could raise appears
     # there. An earlier draft made that claim while carrying six of the
@@ -434,9 +467,13 @@ def main():
        "most serious gap" in disc)
     ck("the output-contract gap names what the log actually keeps",
        "count" in disc and "discards the list" in disc)
-    ck("the judge shortfall is not rounded into a pass",
-       "0.6995" in disc and not re.search(r"\\kappa = 0\.70\b(?![\d])", text),
-       "kappa = 0.70 reads as clearing the bar it missed")
+    # The rounding guard itself lives in the kappa block above, which is
+    # whitespace-tolerant and covers every section. This one only asserts
+    # that the discussion states the shortfall as a limitation; the literal
+    # regex that used to sit here missed a hard-wrapped "\kappa =\n0.70".
+    ck("the discussion carries the judge shortfall as a limitation",
+       "0.6995" in disc and "missed its own bar" in disc,
+       "the discussion must name the miss, not just the number")
 
     print("\n== forward promises land somewhere that delivers ==")
     # LaTeX verifies that a \Cref target EXISTS; nothing verifies that the
