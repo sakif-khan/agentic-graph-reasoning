@@ -1,0 +1,85 @@
+% !TEX root = ../agr-paper.tex
+% Hand-drawn (not generated): the path one atomic claim takes through the
+% verification layer. Mirrors Algorithm 6.1 line for line, including which of
+% the three routes records citable evidence.
+%
+% Colour is semantic, not decorative: blue marks a step that does work, green
+% the supported bucket, vermillion the unsupported one. The palette is the same
+% colour-blind-safe set the generated figures use, and every distinction is
+% still carried by shape and position, so a greyscale print loses nothing.
+% Defined here because this figure is hand-drawn and has no generator.
+\definecolor{agrNode}{HTML}{0072B2}
+\definecolor{agrSup}{HTML}{009E73}
+\definecolor{agrUns}{HTML}{D55E00}
+% This figure is set at two different sizes in two different text fonts (the
+% thesis body font and the slide font), and the node widths are in millimetres
+% either way. Hyphenation is switched off inside the picture so a node cannot
+% break a word in one document and not the other; widths below are the ones
+% that hold every label on the line count it was drawn for in both.
+\begin{tikzpicture}[
+    node distance=6mm,
+    execute at begin picture={\hyphenpenalty=10000\exhyphenpenalty=10000},
+    box/.style={draw=agrNode, thick, rounded corners=2pt, minimum height=7mm,
+                text width=33mm, align=center, font=\small,
+                fill=agrNode!8},
+    dec/.style={draw=agrNode!55, rounded corners=2pt, minimum height=8mm,
+                text width=38mm, align=center, font=\scriptsize,
+                fill=agrNode!4},
+    bucket/.style={draw, rounded corners=6pt, minimum height=6mm,
+                text width=21mm, align=center, font=\scriptsize\sffamily},
+    sup/.style={bucket, draw=agrSup, thick, fill=agrSup!14},
+    uns/.style={bucket, draw=agrUns, thick, fill=agrUns!14},
+    flow/.style={-{Stealth[length=2mm]}, semithick, draw=black!68},
+    lbl/.style={font=\scriptsize, inner sep=1.5pt, fill=white},
+    ev/.style={font=\scriptsize\itshape, inner sep=1.5pt, text=agrSup}]
+
+  \node[box]                  (draft) {Draft and decompose
+                                       \\[-2pt]{\scriptsize one model call}};
+  \node[dec, below=of draft]  (d1)    {both endpoint names seen
+                                       during traversal?};
+  \node[dec, below=of d1]     (d2)    {pair in \emph{traversed}
+                                       adjacency?};
+  \node[dec, below=of d2]     (d3)    {\textsf{verify\_connection}:
+                                       adjacent in the full graph?};
+  \node[box, below=9mm of d3] (ent)   {entailment check
+                                       \\[-2pt]{\scriptsize one batched call}};
+
+  \node[sup, right=30mm of d2] (sup)  {supported $S$};
+  \node[uns, right=30mm of ent] (uns) {unsupported $U$};
+
+  \draw[flow] (draft) -- node[lbl, pos=0.5] {claims $K$} (d1);
+  \draw[flow] (d1) -- node[lbl] {yes} (d2);
+  \draw[flow] (d2) -- node[lbl] {no} (d3);
+
+  % The one route that records evidence. "+ evidence" is the widest label on
+  % the picture; at pos=0.80 its right edge crossed into the supported bucket,
+  % so it is pulled back to the middle of the run instead.
+  \draw[flow] (d2.east) -- node[lbl, pos=0.24] {yes}
+              node[ev, pos=0.66, above] {+ evidence} (sup.west);
+  \draw[flow] (d3.east) -- ++(8mm,0) node[lbl, pos=0.55] {yes} |- (sup.south east);
+  \draw[flow] (d3) -- node[lbl] {no} (ent);
+  % Endpoint never traversed: skip both structural routes entirely. The run is
+  % long enough to clear the "structural routes" caption, which sits to the
+  % left of the dashed region at the same height as this line's descent.
+  \draw[flow] (d1.west) -- ++(-26mm,0) node[lbl, pos=0.5] {no} |- (ent.west);
+
+  \draw[flow] (ent.east) -- ++(9mm,0) coordinate (e)
+              |- node[lbl, pos=0.75] {entailed} (sup.south west);
+  \draw[flow] (e) -- (uns.west);
+
+  \node[bucket, draw=black!45, fill=black!5, below=11mm of uns.south,
+        anchor=north, text width=56mm]
+        (route) {$U = \emptyset \Rightarrow$ \textsf{grounded}\quad$\mid$\quad
+                 budget $\Rightarrow$ \textsf{retry}\quad$\mid$\quad
+                 \textsf{give\_up}};
+  \draw[flow] (uns) -- (route);
+  \draw[flow] (sup.east) -- ++(7mm,0) |- (route.east);
+
+  \begin{scope}[on background layer]
+    \node[draw=black!35, dashed, rounded corners, inner sep=2.5mm,
+          fit=(d2)(d3), label={[font=\scriptsize\itshape, anchor=west,
+          xshift=1mm]west:}] (strbox) {};
+  \end{scope}
+  \node[font=\scriptsize\itshape, left=1.5mm of strbox, align=right,
+        text width=17mm] {structural\\routes};
+\end{tikzpicture}

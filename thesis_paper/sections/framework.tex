@@ -5,10 +5,11 @@
 %
 % fig:statemachine is redrawn here rather than \input, because it is
 % inline tikz in the thesis chapter, not a shared figures/ file, and the
-% paper's column width warrants checking independently. fig:claim-path
-% IS shared -- \input{../thesis_book/figures/fig_claim_path} -- since
-% that one is hand-drawn once and already set at a single-column
-% measure.
+% paper's column width warrants checking independently. fig:claim-path is
+% a COPY of the thesis's hand-drawn figure, not a reference across the
+% directory boundary: this manuscript has to build from its own directory
+% alone once it is uploaded. tests/test_paper_self_contained.py fails if
+% the copy drifts from thesis_book/figures/fig_claim_path.tex.
 %
 % The 77/80 grounded-pass-through and 3/80 give_up figures below are
 % development-set numbers (n = 80), stated as such on purpose: Sections
@@ -161,7 +162,7 @@ the model to name a Freebase predicate would fail as unreliably as
 
 \begin{figure}[!tbp]
   \begin{center}
-    \input{../thesis_book/figures/fig_claim_path}
+    \input{figures/fig_claim_path}
   \end{center}
   \caption{The path one atomic claim takes through the verification
     layer. Three tests are tried in a fixed, cheap-to-expensive order and

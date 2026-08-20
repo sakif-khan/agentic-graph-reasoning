@@ -48,7 +48,8 @@ if built directly; each carries a `% !TEX root` line, checked by
 
 ## Numbers and figures
 
-Nothing is transcribed. `figures/` is emitted by
+Nothing is transcribed. The three data figures in `figures/` are emitted
+by
 
 ```bash
 python scripts/build_figures.py --target paper
@@ -57,15 +58,35 @@ python scripts/build_figures.py --target paper
 from `results/phase4/thesis_numbers.json` — the same file the thesis and
 the slides read. `paper` is a third target beside `thesis` and
 `presentation`, so a re-run of the experiments propagates to all three
-documents at once. Nothing here is re-drawn by hand, so if the numbers
-ever are regenerated, the figures follow without anyone remembering to
-update them.
+documents at once. No figure that carries a number is re-drawn by hand,
+so if the numbers ever are regenerated, the figures follow without
+anyone remembering to update them. The fourth file in `figures/`,
+`fig_claim_path.tex`, carries no numbers: it is hand-drawn, has no
+generator, and is a copy — see below.
 
-The bibliography is shared, not forked:
-`\bibliography{../thesis_book/buetcsepgthesis}`. That is the file the
-thesis builds against, with `agr.bib` as its annotated mirror and
-`tests/test_citation_convention.py` keeping the two in step. Adding a
-reference for the paper means adding it there.
+## The directory has to build on its own
+
+What gets uploaded is `thesis_paper/` and nothing above it, so the
+manuscript must build with no parent directory present. It did not,
+until this was fixed: `\bibliography` and one `\input` reached into
+`../thesis_book/`, which resolved perfectly here and would have failed
+at the publisher. Both are now local copies:
+
+| file | copied from | differs by |
+| --- | --- | --- |
+| `agr-paper.bib` | `thesis_book/buetcsepgthesis.bib` | nothing |
+| `figures/fig_claim_path.tex` | `thesis_book/figures/fig_claim_path.tex` | its `% !TEX root` line |
+
+A copy is a thing that drifts, which is the same hazard the two
+bibliographies already have a test for. `tests/test_paper_self_contained.py`
+pins both against their originals, fails if any source names a path
+outside `thesis_paper/`, and fails if an `\input` names a file that is
+not there.
+
+**The thesis is still the source of truth for references.** Add to
+`thesis_book/buetcsepgthesis.bib` — with `agr.bib` as its annotated
+mirror, kept in step by `tests/test_citation_convention.py` — then
+re-copy it here. The test tells you when you have forgotten.
 
 ## The numbers are the thesis's numbers
 
