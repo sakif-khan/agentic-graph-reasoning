@@ -123,10 +123,23 @@ misclassify. Had we accepted the pre-pass without per-item adjudication,
 we would have "corrected" the benchmark toward the systems' shared bias
 and reported an inflated accuracy for every system including our own.
 
-All results in \Cref{sec:results} are reported over the full samples,
-without excluding the confirmed defects. Excluding them raises every
-system's accuracy by roughly the defect rate and changes no ordering; we
-report the unadjusted figures as the primary result and note that the
-$400$-question samples carry a label-defect floor of about five per cent,
-which bounds what any system evaluated on them can be measured to
-achieve.
+\textbf{The accuracy tables are not rescored.} \Cref{sec:results}
+reports every system exactly as measured over the full samples, for two
+reasons. Rescoring against labels we adjudicated ourselves would
+substitute one contestable ground truth for another. And the defects cut
+both ways: a broken label can just as easily hand a system a hit as
+deny it one, and $10$ of the $22$ WebQSP exclusions and $4$ of the $19$
+on ComplexWebQuestions are questions AGR scored as hits against a label
+now judged defective.
+
+That symmetry also bounds how much the exclusions could matter, which is
+worth stating because the defect rate on its own invites a much larger
+inference. Recomputing every cell of \Cref{tab:main} with the adjudicated
+questions removed moves each system by between $+0.001$ and $+0.020$
+Hits@1 --- an order of magnitude below the $5.5\%$ and $4.8\%$ defect
+rates, because removing a question the system got right subtracts from
+the numerator as well as the denominator --- and leaves the ranking on
+both datasets unchanged. The exclusions therefore do not threaten any
+comparison this paper draws. What they do establish is that a
+non-trivial share of both benchmarks is mislabelled, which is a fact
+about the benchmarks rather than a correction to be applied to them.

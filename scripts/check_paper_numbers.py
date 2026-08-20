@@ -30,6 +30,7 @@ import math
 import pathlib
 import re
 import sys
+import unicodedata
 from decimal import Decimal, ROUND_HALF_UP
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -315,6 +316,60 @@ def main():
        quoted(nums, caps["questions_any_topic_over_100_pct"]),
        f"{caps['questions_any_topic_over_100_pct']}% of questions "
        "have >=1 topic entity truncated")
+
+    print("\n== gold-defect exclusions: recomputed, not asserted ==")
+    # The paper claimed exclusion "raises every system's accuracy by roughly
+    # the defect rate", which is wrong by up to 20x -- the true range is
+    # +0.001 to +0.020 against defect rates of 5.5% and 4.8%, because a
+    # broken label hands out hits as well as denying them. The thesis
+    # declines to rescore at all. This block recomputes the sensitivity from
+    # the run records so the paper's range and its ordering claim are
+    # measured rather than asserted.
+    P4 = NUMBERS.parent
+    excl = json.load(open(P4 / "census_exclusions.json", encoding="utf-8"))
+    SYSTEMS_ALL = ("noretrieval", "vectorrag", "graphrag", "tog", "agr")
+
+    def _n(s):
+        return unicodedata.normalize("NFKC", s).strip().lower()
+
+    def _hit(rec):
+        return bool({_n(g) for g in rec["gold"]}
+                    & {_n(a) for a in rec.get("answer_entities", [])})
+
+    deltas, order_ok, repro_ok = [], True, True
+    for ds in ("webqsp", "cwq"):
+        drop = set(excl[ds])
+        acc = {}
+        for s in SYSTEMS_ALL:
+            recs = [json.loads(l) for l in
+                    open(P4 / f"test_{ds}_{s}.jsonl", encoding="utf-8")]
+            full = sum(_hit(r) for r in recs) / len(recs)
+            kept = [r for r in recs if r["qid"] not in drop]
+            acc[s] = (full, sum(_hit(r) for r in kept) / len(kept))
+            # The recomputation must reproduce the published cell first --
+            # to within a last-place rounding, not exactly. The two
+            # conventions genuinely disagree on one cell: CWQ no-retrieval is
+            # 123/400 = 0.3075, whose double is 0.30749999999999999556, so
+            # Python's round() gives the published 0.307 while rnd()'s
+            # Decimal half-up gives 0.308. That is the 0.6295 hazard again,
+            # pointing the other way. Neither convention is wrong; comparing
+            # exactly against either one is.
+            repro_ok &= abs(full - by[f"{ds}/{s}"]["hits_at_1"]) < 0.001
+            deltas.append(acc[s][1] - acc[s][0])
+        order_ok &= (sorted(SYSTEMS_ALL, key=lambda s: -acc[s][0])
+                     == sorted(SYSTEMS_ALL, key=lambda s: -acc[s][1]))
+
+    ck("the rescoring recomputation reproduces the published table", repro_ok)
+    lo, hi = rnd(min(deltas)), rnd(max(deltas))
+    m = re.search(r"between\s+\$\+([\d.]+)\$\s+and\s+\$\+([\d.]+)\$\s+Hits@1", text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    ck("the exclusion-sensitivity range is the measured one",
+       got == (lo, hi), f"paper {got or 'NO MATCH'}, computed {(lo, hi)}")
+    ck("the ordering claim matches the recomputation", order_ok)
+    ck("the paper no longer equates the shift with the defect rate",
+       not re.search(r"roughly the defect rate", text))
+    ck("the paper does not claim a defect floor bounding achievable accuracy",
+       not re.search(r"label-defect floor", text))
 
     print("\n== groundedness bound ==")
     bound = {
