@@ -133,9 +133,10 @@ the scoring change alone.
 
 \textbf{Claim verification.} Removing the layer this paper contributes
 changes WebQSP F1 by $+0.004$ and ComplexWebQuestions F1 by $-0.009$,
-$p = 1.000$ on both. Across $400$ questions per dataset the two
-conditions disagreed on one question on each. \textbf{Claim verification
-does not measurably change how often AGR is right.}
+$p = 1.000$ on both. Across the half-splits --- $200$ questions on
+WebQSP and $198$ on ComplexWebQuestions --- the two conditions disagreed
+on exactly one question each. \textbf{Claim verification does not
+measurably change how often AGR is right.}
 
 The result is expected rather than disappointing, for the reason
 \Cref{sec:verification} gave before any of these numbers appeared: on
@@ -164,9 +165,9 @@ disagree --- and the null conditions produced very few of them.
 Removing claim verification changed the outcome on exactly one question
 per dataset. With a single discordant pair no split whatsoever can reach
 significance, so that row is not a test that failed to reject; it is the
-two conditions agreeing on $399$ of $400$ questions, which is a
-statement about how rarely the layer alters an answer rather than about
-statistical power. Backtracking produced $8$ and $11$ discordant pairs,
+two conditions agreeing on $396$ of the $398$ paired questions, which is
+a statement about how rarely the layer alters an answer rather than
+about statistical power. Backtracking produced $8$ and $11$ discordant pairs,
 and model scoring $21$ and $18$. At those counts the smallest imbalance
 the exact test could have called significant is $8$ and $9$ questions
 for backtracking --- all eight would have had to fall the same way ---

@@ -234,6 +234,21 @@ def main():
        f"discordant pairs: {disc[('webqsp','noverifier')]} and "
        f"{disc[('cwq','noverifier')]}")
 
+    # The ablations run on HALF-splits. The first draft reported the verifier
+    # null "across 400 questions per dataset" and as "399 of 400" agreeing --
+    # the full test-set size, which is the denominator two sections away, not
+    # this one. Both sentences are bound to the half-split sizes here so the
+    # ablation section cannot quote a test-set denominator again.
+    says(r"the half-splits --- \$(\d+)\$ questions on WebQSP and \$(\d+)\$ on",
+         "the verification-null sentence uses the half-split denominators",
+         (N_HALF["webqsp"], N_HALF["cwq"]))
+
+    paired = N_HALF["webqsp"] + N_HALF["cwq"]
+    agree = paired - disc[("webqsp", "noverifier")] - disc[("cwq", "noverifier")]
+    says(r"agreeing on \$(\d+)\$ of the \$(\d+)\$ paired questions",
+         "the agreement count is over the paired half-splits, not the test sets",
+         (agree, paired))
+
     pcts = sorted(rnd(100 * gaps[k] / N_HALF[k[0]], 1)
                   for k in gaps if gaps[k] is not None and k[1] != "noplanner")
     m = re.search(r"between\s+\$([\d.]+)\$\s+and\s+\$([\d.]+)\$\s+points of accuracy",
