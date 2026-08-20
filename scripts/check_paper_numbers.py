@@ -532,6 +532,77 @@ def main():
        re.search(r"lower bound", text) is not None
        and "equal-width" in text)
 
+    print("\n== populations are not mixed, and ratios are per dataset ==")
+    # Three ways a number can be right and still be wrong in place.
+    #
+    # 1. Right value, wrong population. The backtracking paragraph paired
+    #    "38 and 108 backtracks across the half-splits" with a 6.2% refusal
+    #    rate -- but 6.2% is 50/800 over the MAIN runs (budget_binding is
+    #    sourced from test_{ds}_agr.jsonl and says n_questions: 800). Over
+    #    the 398 paired questions the figure is 7.0%. Recomputed here from
+    #    the ablation records with the same unit build_thesis_numbers uses
+    #    -- the meter DENIED a request -- rather than read from the JSON,
+    #    which does not carry a half-split budget block at all.
+    cap = d["budget_binding"]["_caps"]["backtracks"]
+    ref = n_ab = bts = 0
+    for ds in ("webqsp", "cwq"):
+        rows = [json.loads(l) for l in io.open(
+            ROOT / "results" / "phase4" / "ablations" /
+            f"test_{ds}_half_abl_full.jsonl", encoding="utf-8") if l.strip()]
+        ref += sum(1 for r in rows
+                   if "backtrack" in (r["budget"].get("exhausted") or []))
+        bts += sum(r["budget"].get("backtracks", 0) for r in rows)
+        n_ab += len(rows)
+    m = re.search(r"\$(\d+)\$\s+and\s+\$(\d+)\$\s+backtracks\s+over\s+the\s+"
+                  r"\$(\d+)\$\s+paired\s+questions[\s\S]{0,90}?refuses\s+a\s+"
+                  r"further\s+attempt\s+on\s+\$(\d+)\$\s+of\s+them,\s+"
+                  r"\$([\d.]+)\\%\$", text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    reasons = d["ablations"]["backtrack_reasons"]
+    want = (float(reasons["webqsp/full"]["total"]),
+            float(reasons["cwq/full"]["total"]),
+            float(n_ab), float(ref), rnd(100 * ref / n_ab, 1))
+    ck("backtracking's rarity is stated over the half-splits throughout",
+       got == want, f"paper {got or 'NO MATCH'}, computed {want}")
+    main_pct = d["budget_binding"]["both"]["backtracks"]["refused_pct"]
+    nulls = section_body("sec:nulls") or ""
+    ck("the ablation paragraph does not quote the main-run refusal rate",
+       f"${main_pct}\\%$" not in nulls,
+       f"{main_pct}% is the 800-question figure, a different population")
+    ck("the recomputed backtrack total matches the reasons table",
+       bts == (d["ablations"]["backtrack_reasons"]["webqsp/full"]["total"]
+               + d["ablations"]["backtrack_reasons"]["cwq/full"]["total"]),
+       f"records {bts}")
+
+    # 2. Right counts, wrong fraction named. "Roughly half of what the
+    #    consensus pass flagged was not a bad label" -- 105 flagged, 41
+    #    confirmed, so it is roughly three-fifths. The word is checked
+    #    against the arithmetic, not spot-read: if the counts move, the
+    #    nearest simple fraction moves and this fails.
+    ga = d["gold_adjudication"]
+    flagged = ga["webqsp"]["flagged_questions"] + ga["cwq"]["flagged_questions"]
+    confirmed = d["benchmark_defects"]["excluded_before_census"]
+    says(r"flagged \$(\d+)\$ questions and adjudication confirmed \$(\d+)\$",
+         "the flagged and confirmed counts are both stated", (flagged, confirmed))
+    NAMED = {"half": 0.5, "three-fifths": 0.6, "two-thirds": 2 / 3,
+             "three-quarters": 0.75, "two-fifths": 0.4, "a third": 1 / 3}
+    not_defect = 1 - confirmed / flagged
+    nearest = min(NAMED, key=lambda k: abs(NAMED[k] - not_defect))
+    ck(f"the fraction is named {nearest} ({not_defect:.3f} of {flagged})",
+       re.search(r"roughly\s+" + nearest + r"\s+of\s+what", text),
+       f"{flagged} flagged - {confirmed} confirmed = {flagged - confirmed}")
+
+    # 3. One ratio quoted for two datasets that do not share it. 6.2/12.8
+    #    is 0.48, but 8.9/18.2 is 0.49; "a ratio of 0.48 on both" was true
+    #    of one of them.
+    ratios = tuple(rnd(by[f"{ds}/agr"]["mean_calls"]
+                       / by[f"{ds}/tog"]["mean_calls"], 2)
+                   for ds in ("webqsp", "cwq"))
+    m = re.search(r"ratios\s+of\s+\$([\d.]+)\$\s+and\s+\$([\d.]+)\$", text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    ck("the call ratios are stated per dataset, not merged",
+       got == ratios, f"paper {got or 'NO MATCH'}, computed {ratios}")
+
     print("\n== the 57 must be reachable from the numbers printed ==")
     # 57 is 41 + 17 - 1, not 22 + 19 reconciled. The paper presented it as
     # the latter, which is arithmetically impossible (22 + 19 = 41) and
