@@ -1,48 +1,112 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
-% ~500 words. Every limitation a reviewer could raise appears here
-% first, in our words, at full strength. The thesis already states all
-% of these; none of them gets softened on the way across.
+% Every limitation a reviewer could raise appears here first, in our
+% words, at full strength. None is softened on the way across.
 %
-% Close on the gated-decomposition proposal. It follows directly from
-% the planner result and gives the paper a constructive ending rather
-% than a defensive one.
+% THE LIST IS THE CONTRACT. An earlier draft made that claim in this
+% comment and then carried six of the thesis's eleven threats, which is
+% worse than making no claim at all. The full set, and where each comes
+% from, so nothing drops silently again:
+%
+%   1  sample size ......................... 400/dataset, +-4-5 pts
+%   2  one backbone ....................... gpt-5.4-mini, frozen
+%   3  nondeterminism ..................... ~67% trajectory stability
+%   4  environment friendlier ............. 97%+ reachability ceiling
+%   5  ablation power ..................... n=200/198, three nulls
+%   6  scope .............................. English factoid, static
+%   7  WRONGFUL ACCEPTANCE UNMEASURED ..... thesis's most serious item;
+%                                           also kills auditability of
+%                                           the output contract, because
+%                                           the log keeps the COUNT of
+%                                           supporting triples, not the
+%                                           triples
+%   8  view of the graph not held constant  candidate widths, Sec 5.2
+%   9  static baseline is radius-bounded .. one logical hop, Sec 4.2
+%  10  topic entities given, not linked ... setup gives only the benefit
+%  11  measured accuracy has a floor ...... extraction bug on one shape
+%  12  single-annotator adjudication ...... author, consensus visible
+%  13  homonyms merge ..................... graph is name-keyed
+%  14  judge missed its own bar ........... kappa 0.6995 vs 0.70
+%  15  one relabelling after seeing result
+%
+% 7, 8 and 9 are load-bearing for claims this paper makes, so they are
+% not optional. 14 was actively softened -- the draft wrote kappa = 0.70,
+% which reads as clearing the bar it in fact missed.
+%
+% Close on gated decomposition: it follows from the planner result and
+% ends the paper constructively rather than defensively.
 % ---------------------------------------------------------------------
 
 \section{Discussion and Limitations}\label{sec:discussion}
 
-The limits of this study bound its claims in ways worth stating plainly.
+The limits of this study bound its claims in ways worth stating plainly,
+and we state all of them rather than the flattering subset.
+
+\subsection{What Bounds the Contribution}\label{sec:limits-contribution}
+
+\textbf{Wrongful acceptance is unmeasured, and it is the most serious
+gap in this work.} The verifier logs the claims it rejects and not the
+ones it accepts, so a claim certified on an edge unrelated to the
+relation it asserts leaves no trace. The exposure is real rather than
+hypothetical, because both structural routes ignore the relation and the
+direction: any edge between two entities certifies any claimed relation
+between them, so a claim that X is Y's mother is accepted on an edge
+recording that X is Y's child. We therefore report one polarity at
+census scale and the other anecdotally, and that asymmetry is a property
+of the logging decision rather than of the verifier. There is no way,
+from the committed record, to know how many wrongful acceptances sit
+inside the $761$ questions that ended grounded.
+
+\textbf{The output contract cannot be audited from the run records.}
+This paper offers, as its contribution, an answer paired with the
+traversed triples supporting it, and the pairing does hold inside the
+run --- the answerer receives the verifier's triple list and emits
+against it. But the logger writes the \emph{count} of supporting
+triples and discards the list, so no committed artifact in this work
+contains a single supporting triple. A reader can confirm that these
+answers came from a system that tracked its evidence; they cannot
+inspect that evidence. Persisting accepted claims with their matching
+triples is one logging change and would repair this limitation and the
+previous one together.
+
+\subsection{What Bounds the Comparisons}\label{sec:limits-comparison}
 
 \textbf{Sample size.} Every result rests on $400$ questions per dataset
 rather than the full splits, giving $95\%$ bootstrap intervals of roughly
 $\pm4$ to $\pm5$ points on Hits@1. The main accuracy margins clear that
-width comfortably --- AGR's $9.5$-point lead over the agentic baseline on
-WebQSP and $8.7$ on ComplexWebQuestions --- as does the planner effect,
-which is a paired test on per-question outcomes rather than a comparison
-of two intervals. The groundedness contrast, at zero against $22.1\%$,
-is not close. What the sample does not support is fine distinctions:
-the semantic-tier gaps of a few points in \Cref{sec:groundedness}, and
-the hedge-rate difference on ComplexWebQuestions, are within noise and
-are reported as such.
+width --- $9.5$ points over the agentic baseline on WebQSP, $8.7$ on
+ComplexWebQuestions --- as does the planner effect, which is a paired
+test on per-question outcomes rather than a comparison of two intervals.
+The groundedness contrast, at zero against $22.1\%$, is not close. What
+the sample does not support is fine distinctions: the semantic-tier gaps
+of \Cref{sec:groundedness} and the hedge-rate difference on
+ComplexWebQuestions are within noise and are reported as such.
+
+\textbf{An identical environment is not identical access to it.} The
+agentic baseline truncates candidate sets at $40$ relations and $20$
+neighbours against AGR's $300$ and $200$, binding on about a third of
+its expansions and effectively none of ours (\Cref{sec:cost}). The
+comparison holds the graph constant and does not hold the view of it
+constant, which is why the baseline's figures on the questions it
+finishes are a lower bound rather than an estimate.
+
+\textbf{The static graph baseline is radius-bounded.} Its one-logical-hop
+expansion cannot contain a two-hop chain, so its decay across hop strata
+measures the radius as much as the paradigm, and \Cref{sec:hops}
+declines to offer it as evidence for either. Its unordered $100$-edge
+fanout cap compounds this.
 
 \textbf{One backbone.} All five systems run on \textsf{gpt-5.4-mini},
 frozen and closed. This paper establishes how these architectures
 compare \emph{on one backbone}, not how the comparison scales across
-model capacities. A larger model might close the gap between guided and
-exhaustive search by finishing more questions inside the same budget, or
-widen it; nothing here decides which.
+model capacities.
 
 \textbf{Nondeterminism.} Temperature-zero decoding against a hosted API
 is greedy, not deterministic, and measured trajectory stability is about
-$67\%$. Each system was run once. No seeds were averaged, and a reader
-should not assume they were; run-to-run variation is a real component of
-the differences reported, bounded but not eliminated by the paired
-designs used for the significance tests.
-
-\textbf{The environment.} Per-question subgraphs with a $97\%$-plus
-answer-reachability ceiling are a friendlier substrate than full
-Freebase. Between-system comparisons hold, because all five systems
-navigate the identical graph; absolute accuracies do not transfer.
+$67\%$. Each system was run once; no seeds were averaged, and a reader
+should not assume they were. The intervals and paired tests resample
+questions, so they bound the sampling variance of the question draw and
+nothing else --- each system's answer set enters them as fixed.
 
 \textbf{Ablation power.} The four ablations run on half-splits of
 $n = 200$ and $n = 198$, and the paired test sees only the questions on
@@ -52,9 +116,49 @@ this power}, which is not the same as no effect; \Cref{sec:nulls} gives
 the smallest difference each condition could have detected, between
 $4.0$ and $5.5$ accuracy points where a test was possible at all.
 
+\subsection{What Bounds the Measurements}\label{sec:limits-measurement}
+
+\textbf{The environment is friendlier than the knowledge base it stands
+in for.} Per-question subgraphs with a $97\%$-plus answer-reachability
+ceiling are a more forgiving substrate than full Freebase.
+Between-system comparisons hold, because all five systems navigate the
+identical graph; absolute accuracies do not transfer.
+
+\textbf{Topic entities are given, not linked.} Both graph-navigating
+systems seed from the datasets' annotated topic entities, which isolates
+navigation from entity linking --- the intent --- but means every
+reported accuracy assumes a linking step a deployed system would have to
+perform, and which would introduce errors of its own.
+
+\textbf{Entities are keyed by name, so homonyms merge.} Distinct
+real-world entities sharing a surface form collapse to one node. This
+can manufacture a path between things not actually connected, letting a
+wrong answer verify as grounded, and can equally destroy a distinction a
+question depends on. Neither direction is measured, and structural
+groundedness is therefore a claim about this graph's node identity
+rather than about the world.
+
+\textbf{The measured accuracy has an unmeasured floor.} An extraction
+defect converts correct reasoning into a wrong entity list on one
+specific question shape, so accuracy on that shape is a lower bound
+rather than an estimate.
+
+\textbf{The judge missed its own bar, and the adjudication was
+single-annotator.} Agreement between the semantic-tier judge and a human
+annotator reached $\kappa = 0.6995$ against a pre-specified $0.70$ --- a
+miss, by $0.0005$, which is why those numbers are reported as
+corroborating rather than decisive and no conclusion rests on them
+alone; the judge also runs on the same backbone as the systems it
+judges. Separately, the benchmark-defect exclusions rest on
+single-annotator judgements made by an author with the consensus signal
+visible. One development-set relabelling was also made after its outcome
+was known; it is flagged in place and no aggregate was rescored.
+
 \textbf{Scope.} English factoid questions over a static graph, with no
 temporal facts, no graph construction, and an offline prototype. Latency
 figures are a cost measure, not a production-readiness claim.
+
+\subsection{Outlook}\label{sec:outlook}
 
 The most actionable finding points forward rather than back. If
 decomposition helps only when a question has compositional structure ---
@@ -64,4 +168,8 @@ unconditionally. A hop-count predictor gating the planner would capture
 both arms of that asymmetry, and it can be evaluated with the ablation
 instrument used here. More generally, the result suggests that agentic
 components should be treated as conditionally rather than universally
-beneficial, and that the condition is worth measuring.
+beneficial, and that the condition is worth measuring. The single
+highest-value change to this system is smaller still: persist accepted
+claims with the triples that certified them, which converts the two
+limitations opening this section from acknowledged gaps into measurable
+quantities.

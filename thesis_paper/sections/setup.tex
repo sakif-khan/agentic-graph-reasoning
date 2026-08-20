@@ -136,7 +136,9 @@ system per dataset and having a language model judge whether any path
 expresses the relationship the question asks about, under the governing
 instruction that mere connectedness is not support. That judge was
 validated against a human annotator on $100$ items, reaching $85\%$
-agreement and Cohen's $\kappa = 0.70$. Because path retrieval takes only
+agreement and Cohen's $\kappa = 0.6995$ --- which \emph{misses} the
+$0.70$ we pre-specified, by $0.0005$; \Cref{sec:discussion} treats that
+as a limitation rather than rounding it away. Because path retrieval takes only
 the three shortest paths, semantic-tier rates are conservative lower
 bounds, depressed uniformly across systems and read as a between-system
 comparison rather than as absolute support rates. Efficiency is tokens

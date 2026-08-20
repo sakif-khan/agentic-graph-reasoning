@@ -121,6 +121,26 @@ def min_detectable_gap(n):
     return min(abs(2 * b - n) for b in R)
 
 
+def section_body(label):
+    """The text under the section carrying `label`, whitespace collapsed.
+
+    Collapsing matters: the .tex is hard-wrapped, so a phrase as short as
+    "relations per entity" straddles a newline and a naive substring search
+    misses it. That reported sec:cost as failing to deliver text sitting
+    right inside it.
+    """
+    for p in sorted(SECTIONS.glob("*.tex")):
+        raw = COMMENT.sub("", io.open(p, encoding="utf-8").read())
+        m = re.search(r"\\(?:sub)*section\{[^}]*\}\s*\\label\{"
+                      + re.escape(label) + r"\}", raw)
+        if not m:
+            continue
+        rest = raw[m.end():]
+        nxt = re.search(r"\n\\(?:sub)*section\{", rest)
+        return re.sub(r"\s+", " ", rest[:nxt.start()] if nxt else rest)
+    return None
+
+
 def rnd(val, places=3):
     """Round the way a person writing the number would.
 
@@ -331,6 +351,52 @@ def main():
        f"{caps['questions_any_topic_over_100_pct']}% of questions "
        "have >=1 topic entity truncated")
 
+    print("\n== the limitations list is complete ==")
+    # discussion.tex claims every limitation a reviewer could raise appears
+    # there. An earlier draft made that claim while carrying six of the
+    # thesis's eleven threats. A claim of completeness that is not complete
+    # is worse than no claim, so the roster is enforced rather than trusted.
+    # Each entry: a phrase that must appear in the discussion section.
+    # The whole file, not section_body("sec:discussion"): that stops at the
+    # first \subsection and returned only the two-line preamble, which
+    # reported all sixteen limitations missing when none were.
+    disc = re.sub(r"\s+", " ", COMMENT.sub(
+        "", io.open(SECTIONS / "discussion.tex", encoding="utf-8").read()))
+    LIMITS = {
+        # Phrases must avoid LaTeX math delimiters: "400 questions per
+        # dataset" is written "$400$ questions per dataset" and does not
+        # match as a plain substring.
+        "sample size": "questions per dataset",
+        "one backbone": "one backbone",
+        "nondeterminism": "trajectory stability",
+        "environment ceiling": "reachability",
+        "ablation power": "no effect detected",
+        "scope": "English factoid",
+        "wrongful acceptance": "Wrongful acceptance is unmeasured",
+        "output contract unauditable": "cannot be audited",
+        "candidate widths": "identical access",
+        "static baseline radius": "radius-bounded",
+        "entity linking assumed": "given, not linked",
+        "homonym merging": "homonyms merge",
+        "extraction-bug floor": "unmeasured floor",
+        "judge missed its bar": "0.6995",
+        "single-annotator adjudication": "single-annotator",
+        "post-hoc relabelling": "after its outcome was known",
+    }
+    missing = [k for k, v in LIMITS.items() if v.lower() not in disc.lower()]
+    ck(f"all {len(LIMITS)} limitations are present in the discussion",
+       not missing, f"missing: {', '.join(missing)}" if missing else "")
+
+    # The three that bound claims this paper actually makes must be stated
+    # at full strength, not merely mentioned.
+    ck("wrongful acceptance is called the most serious gap",
+       "most serious gap" in disc)
+    ck("the output-contract gap names what the log actually keeps",
+       "count" in disc and "discards the list" in disc)
+    ck("the judge shortfall is not rounded into a pass",
+       "0.6995" in disc and not re.search(r"\\kappa = 0\.70\b(?![\d])", text),
+       "kappa = 0.70 reads as clearing the bar it missed")
+
     print("\n== forward promises land somewhere that delivers ==")
     # LaTeX verifies that a \Cref target EXISTS; nothing verifies that the
     # target says what the sentence promised. setup.tex pointed at Sec 5.2
@@ -338,23 +404,6 @@ def main():
     # resolved fine, and contained nothing about widths. A dangling promise
     # of this kind is invisible to the build and to a reading that follows
     # the reference forward expecting to find the topic already introduced.
-    def section_body(label):
-        for p in sorted(SECTIONS.glob("*.tex")):
-            raw = COMMENT.sub("", io.open(p, encoding="utf-8").read())
-            m = re.search(r"\\(?:sub)*section\{[^}]*\}\s*\\label\{"
-                          + re.escape(label) + r"\}", raw)
-            if not m:
-                continue
-            rest = raw[m.end():]
-            nxt = re.search(r"\n\\(?:sub)*section\{", rest)
-            body = rest[:nxt.start()] if nxt else rest
-            # Collapse whitespace: the .tex is hard-wrapped, so a keyword as
-            # short as "relations per entity" straddles a newline and a naive
-            # substring search misses it. This reported sec:cost as failing to
-            # deliver text that was sitting in it.
-            return re.sub(r"\s+", " ", body)
-        return None
-
     PROMISES = [
         ("sec:cost", ("relations per entity",),
          "setup names the candidate-width confound and points here"),
