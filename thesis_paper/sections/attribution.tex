@@ -156,10 +156,27 @@ groundedness, and it is the claim the measurements support.
 
 \subsection*{Power}
 
-These are nulls at a stated power, not demonstrations of absence. At
-$n = 200$, McNemar's test detects a discordance ratio of roughly $2{:}1$
-at $80\%$ power --- about $30$ discordant pairs split $20$ to $10$. The
-observed splits for backtracking, verification, and model scoring are
-far smaller than that, so effects up to roughly $4$ to $5$ points of F1
-would not reliably have been detected. \textbf{Three of four components
+These are nulls at low power, not demonstrations of absence, and the
+arithmetic is worth stating exactly. McNemar's exact test sees only the
+\emph{discordant} pairs --- the questions on which the two conditions
+disagree --- and the null conditions produced very few of them.
+
+Removing claim verification changed the outcome on exactly one question
+per dataset. With a single discordant pair no split whatsoever can reach
+significance, so that row is not a test that failed to reject; it is the
+two conditions agreeing on $399$ of $400$ questions, which is a
+statement about how rarely the layer alters an answer rather than about
+statistical power. Backtracking produced $8$ and $11$ discordant pairs,
+and model scoring $21$ and $18$. At those counts the smallest imbalance
+the exact test could have called significant is $8$ and $9$ questions
+for backtracking --- all eight would have had to fall the same way ---
+and $11$ and $10$ for model scoring, which is between $4.0$ and $5.5$
+points of accuracy. Differences below that were undetectable at any
+power, whatever their true size.
+
+For calibration: detecting a true $2{:}1$ discordance ratio at $80\%$
+power requires roughly $72$ discordant pairs, and the largest of these
+conditions produced $21$. At that count the smallest ratio detectable at
+$80\%$ power is nearer $4{:}1$ --- a true $2{:}1$ effect would have been
+caught about a quarter of the time. \textbf{Three of four components
 show no effect at this power}; none is shown to have no effect.

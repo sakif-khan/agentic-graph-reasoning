@@ -26,6 +26,7 @@ Traps this catches, all of them recorded in the JSON's own _note fields:
 """
 import io
 import json
+import math
 import pathlib
 import re
 import sys
@@ -92,6 +93,33 @@ def quoted(nums, val, tol=1e-9):
     return any(abs(n - float(val)) <= tol for n in nums)
 
 
+def _pmf(k, n, p):
+    return math.comb(n, k) * p**k * (1 - p)**(n - k)
+
+
+def exact_p(b, n):
+    """McNemar exact two-sided p for b of n discordant, doubling the tail."""
+    lo = sum(_pmf(k, n, 0.5) for k in range(0, min(b, n - b) + 1))
+    return min(1.0, 2 * lo)
+
+
+def reject_set(n, alpha=0.05):
+    return {b for b in range(n + 1) if exact_p(b, n) < alpha}
+
+
+def mcnemar_power(n, ratio):
+    p = ratio / (1 + ratio)
+    return sum(_pmf(b, n, p) for b in reject_set(n))
+
+
+def min_detectable_gap(n):
+    """Smallest |b-(n-b)| the exact test can call significant; None if never."""
+    R = reject_set(n)
+    if not R:
+        return None
+    return min(abs(2 * b - n) for b in R)
+
+
 def rnd(val, places=3):
     """Round the way a person writing the number would.
 
@@ -152,6 +180,97 @@ def main():
         p = rnd(row["p"])
         cond = row["system_b"].replace("half_abl_", "")
         ck(f"{row['dataset']} {cond} p = {p}", quoted(nums, p))
+
+    print("\n== power arithmetic bound ==")
+    # These are DERIVED claims, computed here rather than read from the JSON,
+    # and the paper's first version got every component of them wrong: it
+    # asserted 80% power at a 2:1 ratio from "about 30 discordant pairs split
+    # 20 to 10", a split whose exact p is 0.0987 and which does not reject at
+    # all. True power there is 0.43; 80% at 2:1 needs ~72 pairs. Those numbers
+    # were sitting in the unbound-literal list at the bottom of this report,
+    # which is where a value goes to not be read. Recomputing them makes a
+    # wrong one fail the build instead.
+    N_HALF = {"webqsp": 200, "cwq": 198}
+    disc, gaps = {}, {}
+    for row in d["ablations"]["mcnemar_vs_full"]:
+        cond = row["system_b"].replace("half_abl_", "")
+        key = (row["dataset"], cond)
+        disc[key] = row["a_only_correct"] + row["b_only_correct"]
+        gaps[key] = min_detectable_gap(disc[key])
+
+    def says(pattern, label, expect):
+        """Bind a tuple of numbers to the ONE sentence that states them.
+
+        Presence-matching is not enough here. Corrupting "conditions produced
+        $21$" to $22$ still passed, because 21 also appears in the sentence
+        listing the pair counts and the check only asked whether the value
+        was somewhere in the paper. In a document full of small integers, it
+        always is. These patterns pin each number to its own sentence.
+        """
+        m = re.search(pattern.replace(" ", r"\s+"), text)
+        got = tuple(int(g) for g in m.groups()) if m else None
+        ck(label, got == expect, f"paper {got or 'NO MATCH'}, computed {expect}")
+
+    says(r"Backtracking produced \$(\d+)\$ and \$(\d+)\$ discordant pairs, "
+         r"and model scoring \$(\d+)\$ and \$(\d+)\$",
+         "the discordant-pair sentence states the real counts",
+         (disc[("webqsp", "nobacktrack")], disc[("cwq", "nobacktrack")],
+          disc[("webqsp", "embonly")], disc[("cwq", "embonly")]))
+
+    says(r"called significant is \$(\d+)\$ and \$(\d+)\$ questions for backtracking",
+         "backtracking's minimum detectable gap is stated correctly",
+         (gaps[("webqsp", "nobacktrack")], gaps[("cwq", "nobacktrack")]))
+
+    says(r"and \$(\d+)\$ and \$(\d+)\$ for model scoring",
+         "model scoring's minimum detectable gap is stated correctly",
+         (gaps[("webqsp", "embonly")], gaps[("cwq", "embonly")]))
+
+    # Both verifier arms have a single discordant pair, where no split can
+    # reach alpha at all. That is a stronger statement than a failed test and
+    # the paper has to make it, not soften it into "underpowered".
+    ck("the verifier arms are reported as untestable, not merely underpowered",
+       all(gaps[(ds, "noverifier")] is None for ds in ("webqsp", "cwq"))
+       and "no split whatsoever" in text,
+       f"discordant pairs: {disc[('webqsp','noverifier')]} and "
+       f"{disc[('cwq','noverifier')]}")
+
+    pcts = sorted(rnd(100 * gaps[k] / N_HALF[k[0]], 1)
+                  for k in gaps if gaps[k] is not None and k[1] != "noplanner")
+    m = re.search(r"between\s+\$([\d.]+)\$\s+and\s+\$([\d.]+)\$\s+points of accuracy",
+                  text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    ck("the MDE range endpoints match the computed range",
+       got == (min(pcts), max(pcts)),
+       f"paper {got or 'NO MATCH'}, computed {(min(pcts), max(pcts))}")
+
+    n80 = next(n for n in range(4, 200) if mcnemar_power(n, 2) >= 0.80)
+    ck(f"discordant pairs for 80% power at 2:1 = {n80}", quoted(nums, n80))
+
+    biggest = max(v for k, v in disc.items() if k[1] != "noplanner")
+    says(r"the largest of these conditions produced \$(\d+)\$",
+         "the largest-condition sentence states the real count", (biggest,))
+    ratio = 1.0
+    while mcnemar_power(biggest, ratio) < 0.80 and ratio < 20:
+        ratio += 0.01
+    # Read the ratio out of the sentence that states it, rather than asking
+    # whether the rounded value appears anywhere. Presence-matching passed
+    # this when the paper said 3:1 and the truth was 4.23:1, because "4.0"
+    # was already in the text as an MDE endpoint and round(4.23) == 4 met
+    # it by coincidence. A small integer will always find a match somewhere
+    # in a paper full of small integers.
+    m = re.search(r"detectable at\s*\$?80\\%\$?\s*power is nearer \$(\d+)\{:\}1\$",
+                  text)
+    ck("the detectable-ratio sentence states the computed ratio",
+       m is not None and int(m.group(1)) == round(ratio),
+       f"paper says {m.group(1) if m else 'NO MATCH'}:1, computed {ratio:.2f}:1")
+
+    ck("a 2:1 effect's power at that pair count is quoted as about a quarter",
+       "a quarter" in text,
+       f"power({biggest}, 2:1) = {mcnemar_power(biggest, 2):.3f}")
+
+    ck("the paper does not claim 80% power at 2:1 from ~30 pairs",
+       not re.search(r"2\{:\}1[^.]{0,80}80\\%\s*power", text)
+       and "$20$ to $10$" not in text)
 
     print("\n== groundedness bound ==")
     bound = {

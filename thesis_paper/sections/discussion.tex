@@ -45,10 +45,12 @@ Freebase. Between-system comparisons hold, because all five systems
 navigate the identical graph; absolute accuracies do not transfer.
 
 \textbf{Ablation power.} The four ablations run on half-splits of
-$n = 200$ and $n = 198$. Three of four components show \emph{no effect
-detected at this power}, which is not the same as no effect, and
-\Cref{sec:nulls} states the minimum effect the design could have
-detected.
+$n = 200$ and $n = 198$, and the paired test sees only the questions on
+which two conditions disagree --- as few as one, for claim
+verification. Three of four components show \emph{no effect detected at
+this power}, which is not the same as no effect; \Cref{sec:nulls} gives
+the smallest difference each condition could have detected, between
+$4.0$ and $5.5$ accuracy points where a test was possible at all.
 
 \textbf{Scope.} English factoid questions over a static graph, with no
 temporal facts, no graph construction, and an offline prototype. Latency
