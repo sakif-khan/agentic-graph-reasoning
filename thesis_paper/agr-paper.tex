@@ -38,10 +38,16 @@
 \title{Agentic Graph Reasoning: Claim-Level Structural Verification for
   Multi-Hop Knowledge Graph Question Answering}
 
-\author[buet]{Md. Sakif Khan}
+% \ead alone does not designate anyone: elsarticle prints the address as
+% an author footnote either way, and the submission system asks which
+% author corresponds. \corref/\cortext is the designation -- the idiom is
+% elsarticle's own (elsdoc.tex line 283), and the labels must match.
+\author[buet]{Md. Sakif Khan\corref{cor1}}
 \ead{sakifkhanopu@gmail.com}
 
 \author[buet]{Sadia Sharmin}
+
+\cortext[cor1]{Corresponding author}
 
 \affiliation[buet]{organization={Department of Computer Science and
     Engineering, Bangladesh University of Engineering and Technology},
@@ -97,6 +103,31 @@ protocols cannot detect.
 \input{sections/conclusion}
 
 % Elsevier requires these as declarations, not as prose in the body.
+%
+% ORDER MATTERS FOR ONE OF THEM. Elsevier's generative-AI policy says the
+% AI declaration goes "at the end of the manuscript, immediately before
+% the references", so it sits last, after data availability. The rest
+% follow the order Elsevier prints them in.
+%
+% The CRediT roles below are the fourteen of the official taxonomy,
+% spelled as Elsevier spells them; tests/test_paper_declarations.py
+% rejects any role outside that vocabulary, because a plausible-looking
+% invention ("Experimentation") is not a role and is rejected on
+% submission.
+\section*{CRediT authorship contribution statement}
+\textbf{Md. Sakif Khan:} Conceptualization, Methodology, Software,
+Validation, Formal analysis, Investigation, Data curation, Writing --
+original draft, Visualization. \textbf{Sadia Sharmin:}
+Conceptualization, Methodology, Supervision, Project administration,
+Writing -- review \& editing.
+
+\section*{Funding}
+% Elsevier asks for this even when the answer is none; this is their
+% recommended sentence for that case, quoted rather than paraphrased.
+% Nothing in the thesis records a grant, fellowship, or CASR award.
+This research did not receive any specific grant from funding agencies
+in the public, commercial, or not-for-profit sectors.
+
 \section*{Declaration of competing interest}
 The authors declare no competing financial interests or personal
 relationships that could have influenced the work reported here.
@@ -113,6 +144,29 @@ Freebase~\cite{bollacker2008freebase} and is rebuilt from its public
 source by the scripts in that repository rather than redistributed; the
 question sets are the public WebQSP~\cite{yih2016value} and
 ComplexWebQuestions~\cite{talmor2018web} releases.
+
+% Required, and required HERE: Elsevier's policy places this at the end
+% of the manuscript, immediately before the references. It follows their
+% suggested form -- tool, reason, then the review-and-responsibility
+% sentence, which is the part that carries the obligation.
+%
+% This declaration is not boilerplate to trim. The measurements, the
+% experiments, and the thesis this paper compresses are the authors'
+% and predate it; the drafting of this manuscript's prose was not, and
+% the second sentence says exactly where the line falls. Narrow it if
+% the scope is wrong, but it is a disclosure, so do not narrow it to
+% something smaller than what happened.
+\section*{Declaration of generative AI and AI-assisted technologies in
+  the manuscript preparation process}
+During the preparation of this work the authors used Claude (Anthropic)
+to draft and revise the prose of this manuscript from the completed
+thesis on which it is based, and to write the scripts that check the
+values quoted in the text against the study's recorded results. The
+study design, the experiments, the analysis, and the findings reported
+here are the authors' own and predate the preparation of this
+manuscript. After using this tool the authors reviewed and edited the
+content as needed and take full responsibility for the content of the
+publication.
 
 \bibliographystyle{elsarticle-num}
 \bibliography{agr-paper}
