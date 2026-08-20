@@ -331,6 +331,80 @@ def main():
        f"{caps['questions_any_topic_over_100_pct']}% of questions "
        "have >=1 topic entity truncated")
 
+    print("\n== forward promises land somewhere that delivers ==")
+    # LaTeX verifies that a \Cref target EXISTS; nothing verifies that the
+    # target says what the sentence promised. setup.tex pointed at Sec 5.2
+    # for "the measurement that bounds" the candidate-width confound, Sec 5.2
+    # resolved fine, and contained nothing about widths. A dangling promise
+    # of this kind is invisible to the build and to a reading that follows
+    # the reference forward expecting to find the topic already introduced.
+    def section_body(label):
+        for p in sorted(SECTIONS.glob("*.tex")):
+            raw = COMMENT.sub("", io.open(p, encoding="utf-8").read())
+            m = re.search(r"\\(?:sub)*section\{[^}]*\}\s*\\label\{"
+                          + re.escape(label) + r"\}", raw)
+            if not m:
+                continue
+            rest = raw[m.end():]
+            nxt = re.search(r"\n\\(?:sub)*section\{", rest)
+            body = rest[:nxt.start()] if nxt else rest
+            # Collapse whitespace: the .tex is hard-wrapped, so a keyword as
+            # short as "relations per entity" straddles a newline and a naive
+            # substring search misses it. This reported sec:cost as failing to
+            # deliver text that was sitting in it.
+            return re.sub(r"\s+", " ", body)
+        return None
+
+    PROMISES = [
+        ("sec:cost", ("relations per entity",),
+         "setup names the candidate-width confound and points here"),
+        ("sec:nulls", ("detectable",),
+         "discussion points here for the minimum detectable effect"),
+        ("sec:groundedness", ("ungrounded",),
+         "the introduction points here for the groundedness result"),
+        ("sec:verification", ("claim",),
+         "the introduction points here for the verification layer"),
+        ("sec:echo", ("echo attractor",),
+         "the introduction names the echo attractor and points here"),
+    ]
+    for label, keywords, why in PROMISES:
+        body = section_body(label)
+        ck(f"{label} delivers what is promised of it",
+           body is not None and any(k.lower() in body.lower() for k in keywords),
+           why if body is not None else f"NO SECTION LABELLED {label}")
+
+    print("\n== the candidate-width confound is measured, not just named ==")
+    # setup.tex names this confound and promised "Sec 5.2 reports the
+    # measurement that bounds it". Sec 5.2 reported nothing of the kind --
+    # it discusses the call cap only. The binding rates and the lower-bound
+    # reading they force are stated in the thesis four times and appeared
+    # nowhere in the paper.
+    cc = d["candidate_caps"]
+    says(r"the first \$(\d+)\$ relations per entity and the first \$(\d+)\$ "
+         r"neighbours per relation",
+         "the baseline's candidate widths are stated",
+         (cc["tog"]["relation_cap"], cc["tog"]["neighbor_cap"]))
+    says(r"against AGR's \$(\d+)\$ and \$(\d+)\$",
+         "AGR's candidate widths are stated",
+         (cc["agr"]["relation_cap"], cc["agr"]["neighbor_cap"]))
+    m = re.search(r"binds on \$([\d.]+)\\%\$ of the\s+\$1\{,\}(\d+)\$ entities"
+                  r"[\s\S]{0,80}?on\s+\$([\d.]+)\\%\$ of its \$7\{,\}(\d+)\$ "
+                  r"neighbour calls", text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    want = (cc["tog"]["entities_at_relation_cap_pct"],
+            float(str(cc["tog"]["entities_expanded"])[1:]),
+            cc["tog"]["neighbor_calls_at_cap_pct"],
+            float(str(cc["tog"]["get_neighbors_calls"])[1:]))
+    ck("the baseline's binding rates are the measured ones",
+       got == want, f"paper {got or 'NO MATCH'}, computed {want}")
+    ck("AGR's own binding rates are stated for contrast",
+       quoted(nums, cc["agr"]["entities_at_relation_cap"])
+       and quoted(nums, cc["agr"]["entities_expanded"])
+       and quoted(nums, cc["agr"]["neighbor_calls_at_cap_pct"]))
+    ck("the unclipped figures are called a lower bound",
+       re.search(r"lower bound", text) is not None
+       and "equal-width" in text)
+
     print("\n== the 57 must be reachable from the numbers printed ==")
     # 57 is 41 + 17 - 1, not 22 + 19 reconciled. The paper presented it as
     # the latter, which is arithmetically impossible (22 + 19 = 41) and

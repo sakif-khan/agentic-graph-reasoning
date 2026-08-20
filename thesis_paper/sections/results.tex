@@ -162,6 +162,33 @@ architecture, and the first would win if spend were unconstrained --- a
 claim about operating regimes rather than about reasoning power, and
 narrower than the aggregate table alone would suggest.
 
+\textbf{One asymmetry bounds how far that reading extends}, and it is
+the candidate-width difference named in \Cref{sec:baselines}. Both
+navigators call the same tools, but truncate what those tools return at
+different widths: Think-on-Graph keeps the first $40$ relations per
+entity and the first $20$ neighbours per relation, the pruning widths of
+the reimplemented algorithm, against AGR's $300$ and $200$. The relation
+list is returned sorted by \emph{descending} fanout, so a binding cut
+discards the low-fanout tail --- which is where the specific relation
+answering a specific question tends to sit, a high-fanout relation
+rarely being the edge that resolves a particular entity. Over the
+committed tool logs the $40$-relation cut binds on $31.6\%$ of the
+$1{,}651$ entities Think-on-Graph expanded and the $20$-neighbour cut on
+$32.8\%$ of its $7{,}992$ neighbour calls, against $1$ of AGR's
+$3{,}097$ expanded entities and $3.3\%$ of its neighbour calls.
+
+The affordability conclusion survives this, because a thinner candidate
+pool cannot explain why a system runs \emph{out of calls}. What it bounds
+is the other half of the split. The $0.852$ and $0.630$ the baseline
+reaches on the questions it finishes were measured while it searched a
+narrower pool than AGR, so they are a \textbf{lower bound} on what an
+equal-width reimplementation would reach rather than an estimate of it
+--- and since the baseline is already ahead of AGR on those questions,
+equalising the widths would be expected to widen that lead, not close
+it. Beam width and depth follow the original paper; the candidate widths
+behind them do not, and equalising them is the first change we would
+make in a follow-up.
+
 \subsection{Accuracy by Hop Depth}\label{sec:hops}
 
 \Cref{fig:hopstrata} stratifies by the number of hops separating a topic
