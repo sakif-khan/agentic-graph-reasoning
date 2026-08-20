@@ -69,15 +69,29 @@ against the four baselines reject at the conventional level.
 \end{table}
 
 Two features of this table are worth naming because they cut against a
-simple reading. The static graph baseline is the \emph{weakest} system
-on both datasets, below even the no-retrieval control --- a fixed-radius
-neighbourhood is not merely insufficient for multi-hop questions, it is
-actively worse than parametric memory, because it floods the context
-with edges that are structurally adjacent and semantically irrelevant.
-And AGR does not lead on every column: on ComplexWebQuestions its hedge
-rate of $23.0\%$ is marginally \emph{above} Think-on-Graph's $22.5\%$,
-so it declines to answer slightly more often there. The accuracy lead is
-real and it is not bought by answering more freely.
+simple reading. \textbf{Raw hits mislead on the static graph baseline,
+and the correction is itself a finding.} GraphRAG scores $0.340$ on
+WebQSP, below the no-retrieval control's $0.453$, which invites the
+conclusion that the implementation is broken. Putting the wrong-answer
+counts beside the hits inverts the picture. The control asserts on $351$
+of $400$ questions and is wrong on $170$ of them, an \emph{assertion
+precision} --- the share of questions a system commits on that it
+answers correctly --- of $51.6\%$. GraphRAG asserts on $177$ and is
+wrong on $41$, or $76.8\%$. The mechanism is the prompt: the retrieval
+baselines are instructed to answer only from the facts retrieved and to
+return nothing otherwise, so they abstain when retrieval misses, while
+the control has no such constraint and guesses from memory. On a
+decade-old benchmark plausibly present in the backbone's pretraining
+data, guessing pays. A grounded system scoring below an ungrounded one
+on raw hits while committing four times fewer falsehoods is the
+contamination effect the control exists to expose, and we report it as a
+result rather than as an anomaly.
+
+The second is that AGR does not lead on every column: on
+ComplexWebQuestions its hedge rate of $23.0\%$ is marginally
+\emph{above} Think-on-Graph's $22.5\%$, so it declines to answer
+slightly more often there. The accuracy lead is real and it is not
+bought by answering more freely.
 
 \subsection{Cost and the Location of the Margin}\label{sec:cost}
 
@@ -170,8 +184,21 @@ three or more. Every other system ends below where it started. That
 phrasing is deliberate and the weaker alternative is the true one ---
 Think-on-Graph does not decay monotonically, it falls from $0.53$ to
 $0.37$ and then partly recovers to $0.45$, which is a different shape
-from a steady decline and is reported as such. The static baselines do
-collapse outright, GraphRAG from $0.34$ to $0.02$.
+from a steady decline and is reported as such.
+
+The static graph baseline's decay across these strata is deliberately
+\emph{not} offered as evidence for the paradigm, because its retrieval
+radius confounds it: a one-hop retriever cannot contain a two-hop chain,
+so part of that decline measures the radius rather than static retrieval
+as such. The evidence that it is a radius effect is in the strata
+themselves --- GraphRAG scores $0.44$ on WebQSP's two-hop stratum, where
+those questions are largely mediator paths a one-hop expansion does
+reach, against $0.16$ on the ComplexWebQuestions two-hop stratum, where
+the chains are genuine compositions it cannot reach at all. A retriever
+failing uniformly on depth would not show that gap. Where the
+per-stratum argument needs a static comparator that is not
+radius-limited it uses Vector-RAG, whose one-triple context cannot
+represent a chain at any radius.
 
 A rising curve is the signature the architecture predicts. Decomposition
 converts one hard question into several easy ones, so the questions that

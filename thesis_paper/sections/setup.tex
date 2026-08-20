@@ -72,7 +72,22 @@ tuned competitor. A \textbf{no-retrieval} control answers from
 parametric memory alone, establishing what the backbone knows without
 the graph. \textbf{Vector-RAG} retrieves verbalised triples by embedding
 similarity. \textbf{Static GraphRAG}~\cite{edge2024local} fetches a
-fixed-radius neighbourhood around the linked topic entities in one shot.
+fixed-radius neighbourhood around the linked topic entities in one shot,
+reranks it, and answers from the top $30$ facts. Two properties of that
+implementation bound what it licenses and are stated here rather than
+left for a reader to infer from its scores. The radius is \emph{one
+logical hop} --- mediators are traversed transparently, so a mediator
+path costs two graph edges while remaining one hop --- which means a
+genuine two-hop chain is outside its reach by construction. And
+expansion retrieves at most $100$ edges per topic entity with no
+ordering criterion, so on a high-degree entity the retained edges are an
+arbitrary sample rather than the best or the first: at least one topic
+entity is truncated on $72.5\%$ of the $800$ test questions. This
+baseline therefore licenses the narrow claim that \emph{retrieval fixed
+before reasoning must commit to a radius in advance, and any fixed
+radius is wrong for some question in the set}. It does not license a
+claim about what a two-hop static retriever would score, which was not
+run.
 \textbf{Think-on-Graph}~\cite{sun2024think} is the agentic comparator,
 performing model-guided beam search over relations and entities, and is
 the system AGR is measured against throughout. Baselines were debugged

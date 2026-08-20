@@ -287,6 +287,35 @@ def main():
        not re.search(r"2\{:\}1[^.]{0,80}80\\%\s*power", text)
        and "$20$ to $10$" not in text)
 
+    print("\n== the static baseline's claim boundary ==")
+    # The thesis draws a hard line here (sec:baseline-graphrag, sec:findings):
+    # GraphRAG's per-stratum decay is confounded by its ONE-hop radius and is
+    # "not offered as evidence", because "the alternative is to read an
+    # implementation limit as a result". The paper's first draft crossed that
+    # line -- it called the baseline "actively worse than parametric memory"
+    # and invented a context-flooding mechanism. The thesis's actual finding
+    # is the opposite: the raw-hits comparison misleads, and GraphRAG is the
+    # MORE precise system once abstention is accounted for.
+    caps = d["candidate_caps"]["expanded_entity_degree"]
+    for sysname, label in (("graphrag", "GraphRAG"), ("noretrieval", "control")):
+        ans = gnd[f"test_webqsp_{sysname}"]["questions_answered"]
+        hits = round(by[f"webqsp/{sysname}"]["hits_at_1"] * 400)
+        ck(f"{label} asserts on {ans}, wrong on {ans - hits}",
+           quoted(nums, ans) and quoted(nums, ans - hits))
+        ck(f"{label} assertion precision = {rnd(100 * hits / ans, 1)}%",
+           quoted(nums, rnd(100 * hits / ans, 1)))
+
+    ck("the paper does not call the static baseline worse than parametric memory",
+       not re.search(r"actively worse than parametric", text))
+    ck("the paper does not attribute its score to context flooding",
+       not re.search(r"floods the context", text))
+    ck("the radius confound is disclosed where the strata are discussed",
+       "radius confounds it" in text or "radius confounds" in text)
+    ck("the fanout cap's question-level reach is stated",
+       quoted(nums, caps["questions_any_topic_over_100_pct"]),
+       f"{caps['questions_any_topic_over_100_pct']}% of questions "
+       "have >=1 topic entity truncated")
+
     print("\n== groundedness bound ==")
     bound = {
         "AGR entities asserted":     gnd["both_agr"]["entities_asserted"],
