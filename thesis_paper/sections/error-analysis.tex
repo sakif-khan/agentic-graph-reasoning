@@ -18,8 +18,21 @@
 % ON THE DEFECT COUNTS: flagged and confirmed are different units and
 % must stay apart -- 58/47 flagged, 22/19 confirmed. The gap between
 % them IS the echo attractor operating across systems, which is what
-% ties the two subsections together. Do not add 22 + 19 and report 41:
-% one question sits in both datasets' counts. The distinct figure is 57.
+% ties the two subsections together.
+%
+% THREE populations, not two, and 22 + 19 = 41 is only the first of them:
+%
+%   41  excluded before the census began (22 WebQSP + 19 CWQ)
+%   17  defects the hand-read found anyway, filed under its own
+%       gold_noise and ambiguous_question categories (3 WebQSP + 14 CWQ)
+%   -1  WebQTrn-64_d8e43a02, which is in both sets
+%   ==  57 distinct questions
+%
+% An earlier version of this comment said the duplicate "sits in both
+% datasets' counts" and that 41 was the figure to avoid. Both wrong, and
+% the body text inherited it: it presented 57 as 22 and 19 reconciled,
+% which is arithmetically impossible and hides the 17 entirely. The
+% duplicate spans the exclusion set and the census, not the two datasets.
 % ---------------------------------------------------------------------
 
 \section{Error Analysis}\label{sec:erroranalysis}
@@ -108,11 +121,20 @@ graph and the question text.
 The two counts must be kept apart. The pre-pass \textbf{flagged} $58$
 WebQSP and $47$ ComplexWebQuestions questions; adjudication
 \textbf{confirmed} a genuine label defect in $22$ and $19$ of them
-respectively --- $5.5\%$ and $4.8\%$ of each sample, and $57$ distinct
-questions once the one question appearing in both counts is resolved.
-Confirmed defects split into two kinds: gold answers that are simply
-wrong ($12$ and $17$), and questions whose phrasing admits several
-defensible answers of which the benchmark lists one ($10$ and $2$).
+respectively --- $5.5\%$ and $4.8\%$ of each sample. Confirmed defects
+split into two kinds: gold answers that are simply wrong ($12$ and
+$17$), and questions whose phrasing admits several defensible answers of
+which the benchmark lists one ($10$ and $2$). All $41$ were removed
+before the census began, as benchmark artifacts rather than system
+failures.
+
+The hand-read then found $17$ more that the pre-pass had missed --- $3$
+on WebQSP and $14$ on ComplexWebQuestions --- which it filed under its
+own gold-noise and ambiguous-question labels. One question belongs to
+both sets, so \textbf{$57$ distinct questions} across the two benchmarks
+turned out to need correcting. That the census recovered defects a
+dedicated consensus pass had missed is itself an argument for reading
+failures individually rather than screening them in aggregate.
 
 The gap between flagged and confirmed is not adjudication noise --- it is
 the echo attractor, measured. Roughly half of what the consensus pass

@@ -298,13 +298,27 @@ def main():
     # is the opposite: the raw-hits comparison misleads, and GraphRAG is the
     # MORE precise system once abstention is accounted for.
     caps = d["candidate_caps"]["expanded_entity_degree"]
-    for sysname, label in (("graphrag", "GraphRAG"), ("noretrieval", "control")):
+    counts = {}
+    for sysname in ("graphrag", "noretrieval"):
         ans = gnd[f"test_webqsp_{sysname}"]["questions_answered"]
         hits = round(by[f"webqsp/{sysname}"]["hits_at_1"] * 400)
-        ck(f"{label} asserts on {ans}, wrong on {ans - hits}",
-           quoted(nums, ans) and quoted(nums, ans - hits))
-        ck(f"{label} assertion precision = {rnd(100 * hits / ans, 1)}%",
-           quoted(nums, rnd(100 * hits / ans, 1)))
+        counts[sysname] = (ans, ans - hits, rnd(100 * hits / ans, 1))
+
+    # Pinned to their own sentences. These were presence checks until adding
+    # "All $41$ were removed" to the error analysis gave GraphRAG's
+    # wrong-answer count a second home in the paper -- after which
+    # corrupting it here still passed. Any small integer will eventually
+    # acquire one; the sentence is the only stable anchor.
+    says(r"The control asserts on \$(\d+)\$ of \$400\$ questions and is "
+         r"wrong on \$(\d+)\$ of them",
+         "the control's assert/wrong counts are stated in their sentence",
+         counts["noretrieval"][:2])
+    says(r"GraphRAG asserts on \$(\d+)\$ and is wrong on \$(\d+)\$",
+         "GraphRAG's assert/wrong counts are stated in their sentence",
+         counts["graphrag"][:2])
+    for sysname, label in (("graphrag", "GraphRAG"), ("noretrieval", "control")):
+        ck(f"{label} assertion precision = {counts[sysname][2]}%",
+           quoted(nums, counts[sysname][2]))
 
     ck("the paper does not call the static baseline worse than parametric memory",
        not re.search(r"actively worse than parametric", text))
@@ -316,6 +330,54 @@ def main():
        quoted(nums, caps["questions_any_topic_over_100_pct"]),
        f"{caps['questions_any_topic_over_100_pct']}% of questions "
        "have >=1 topic entity truncated")
+
+    print("\n== the 57 must be reachable from the numbers printed ==")
+    # 57 is 41 + 17 - 1, not 22 + 19 reconciled. The paper presented it as
+    # the latter, which is arithmetically impossible (22 + 19 = 41) and
+    # hides the 17 census-found defects entirely; it also described the
+    # duplicate as spanning the two datasets when it spans the exclusion set
+    # and the census. Every term is bound here so the total has to add up in
+    # the text a reader can see.
+    bd = d["benchmark_defects"]
+    ce = d["census_exclusions"]
+    hist = d["failure_histogram"]
+    excl_total = ce["webqsp"] + ce["cwq"]
+    ck("the per-dataset exclusion counts are stated",
+       quoted(nums, ce["webqsp"]) and quoted(nums, ce["cwq"]))
+    # Pinned, not merely present: 41 also appears as GraphRAG's wrong-answer
+    # count, so a presence check passed this when the total was corrupted.
+    says(r"All \$(\d+)\$ were removed",
+         "the exclusion total is stated in its own sentence", (excl_total,))
+    ck("the exclusion total matches the JSON's own",
+       excl_total == bd["excluded_before_census"],
+       f"{ce['webqsp']} + {ce['cwq']} = {excl_total}")
+
+    per_ds = {ds: sum(hist[ds][k].get(c, 0)
+                      for k in ("wrong", "hedge")
+                      for c in ("gold_noise", "ambiguous_question"))
+              for ds in ("webqsp", "cwq")}
+    census_defects = sum(per_ds.values())
+    # Also pinned: 17 appears as the CWQ gold_wrong count two sentences up,
+    # so dropping this term entirely still left 17 "present" in the paper.
+    # That is the term whose omission made 57 unreachable in the first place.
+    says(r"found \$(\d+)\$ more that the pre-pass had missed --- "
+         r"\$(\d+)\$ on WebQSP and \$(\d+)\$ on",
+         "the census-found defects and their split are stated in one sentence",
+         (census_defects, per_ds["webqsp"], per_ds["cwq"]))
+    ck("the census-defect count matches the JSON's own",
+       census_defects == bd["census_rows_in_defect_categories"])
+
+    dup = len(bd["counted_in_both"])
+    ck(f"57 = {excl_total} + {census_defects} - {dup} adds up",
+       excl_total + census_defects - dup == bd["distinct_questions"])
+    ck(f"the paper quotes the distinct total {bd['distinct_questions']}",
+       quoted(nums, bd["distinct_questions"]))
+    # Target the retired wording, not the phrase "both datasets", which is
+    # ordinary English used correctly four times elsewhere in the paper.
+    ck("the duplicate is not described as spanning the two datasets",
+       not re.search(r"appearing in both counts", text)
+       and not re.search(r"both datasets'? counts", text),
+       "it spans the exclusion set and the census")
 
     print("\n== gold-defect exclusions: recomputed, not asserted ==")
     # The paper claimed exclusion "raises every system's accuracy by roughly
