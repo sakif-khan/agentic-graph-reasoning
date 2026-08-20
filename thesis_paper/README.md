@@ -21,11 +21,26 @@ latexmk -pdf agr-paper.tex
 `review` gives the 1.5-spaced single column Elsevier wants for peer
 review — all the option does is set the baseline stretch.
 
-**No line numbers, deliberately.** `lineno` was loaded and then removed.
-The claim that Elsevier requires author-supplied line numbers was never
-verified against the KBS guide for authors — that page returns 403 to an
-automated fetch — and Editorial Manager builds the reviewer PDF itself.
-If a submission checklist does ask for them, it is two lines:
+**No line numbers, deliberately** — and as of August 2026 this is
+settled rather than merely unverified. Elsevier's generic guide for
+authors states that at initial submission "there are no strict
+formatting requirements", and mentions line numbering nowhere. So the
+absence is consistent with Elsevier's stated position, and the original
+justification for adding them — "Elsevier's own guidance asks for
+numbered lines at submission" — was simply false.
+
+Two caveats, because this is guidance about guidance:
+
+- The **KBS** guide for authors specifically is still unread. It returns
+  403 to an automated fetch by every route tried: `sciencedirect.com`
+  directly, and `elsevier.com`, which 301s there. A journal may add its
+  own requirement. If you can open that page in a browser, check it and
+  replace this paragraph with what it says.
+- An earlier version of this note claimed Editorial Manager builds the
+  reviewer PDF itself. That may well be true, but it was never verified
+  either, so it is gone rather than repeated.
+
+If a checklist does ask for line numbers, it is two lines:
 `\usepackage{lineno}` in `preamble.tex`, and `\linenumbers` *after*
 `\end{frontmatter}` in `agr-paper.tex` — never in the preamble, which
 numbers the title block on its own inconsistent count before the body

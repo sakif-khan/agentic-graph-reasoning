@@ -531,6 +531,19 @@ def main():
     ck("the unclipped figures are called a lower bound",
        re.search(r"lower bound", text) is not None
        and "equal-width" in text)
+    # Proposing the equal-width re-run without its confound reads as a
+    # clean single-variable experiment, which it is not: the thesis's
+    # future-work section notes that wider candidate sets make each
+    # pruning call dearer, so equalising widths ALSO raises the baseline's
+    # clip rate and moves the boundary of the very split the comparison is
+    # read from. The paper proposed the re-run and dropped the caveat.
+    cost = section_body("sec:cost") or ""
+    ck("the equal-width re-run carries its clip-rate confound",
+       "clip rate" in cost and "read apart" in cost,
+       "equalising widths also moves the split it would be measured on")
+    ck("and says to report the split rather than an aggregate",
+       re.search(r"rather than an aggregate", cost) is not None,
+       "the two effects cancel or compound invisibly in a pooled number")
 
     print("\n== populations are not mixed, and ratios are per dataset ==")
     # Three ways a number can be right and still be wrong in place.

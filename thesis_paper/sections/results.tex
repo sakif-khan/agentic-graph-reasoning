@@ -187,7 +187,13 @@ equal-width reimplementation would reach rather than an estimate of it
 equalising the widths would be expected to widen that lead, not close
 it. Beam width and depth follow the original paper; the candidate widths
 behind them do not, and equalising them is the first change we would
-make in a follow-up.
+make in a follow-up. That re-run would not vary one thing, though. Wider
+candidate sets make each pruning call dearer, so equal widths would also
+raise the baseline's clip rate, moving the boundary between the two
+halves of \Cref{tab:togsplit} at the same time as they change what the
+search resolves within each. The two effects have to be read apart,
+which means reporting that split again rather than an aggregate in which
+they cancel or compound invisibly.
 
 \subsection{Accuracy by Hop Depth}\label{sec:hops}
 
