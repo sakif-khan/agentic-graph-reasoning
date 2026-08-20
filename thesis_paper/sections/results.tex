@@ -253,11 +253,48 @@ than from any check applied afterwards --- a conclusion that costs this
 paper its most quotable claim for the component it contributes, and is
 the conclusion the measurement supports.
 
-The semantic tier separates the systems where the structural tier
-cannot. Judging whether an asserted entity is supported \emph{as the
-answer}, AGR reaches $66.7\%$ and $48.3\%$ against Think-on-Graph's
-$61.7\%$ and $43.3\%$, with the parametric control at $63.3\%$ and
-$36.7\%$. These are conservative lower bounds by construction
-(\Cref{sec:protocol}) and the gaps are small relative to the sample of
-$60$ per cell, so they are reported as consistent with the accuracy
-ordering rather than as independent confirmation of it.
+The semantic tier asks the harder question --- whether an asserted
+entity is supported \emph{as the answer} --- and separates the systems
+far less. \Cref{tab:tier2} gives every cell rather than a selection,
+because the ordering differs by dataset and any subset of it misleads.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{Semantic-tier support rate: the share of sampled assertions
+      a judge found supported \emph{as the answer} by the graph's own
+      connecting paths. $n = 60$ per cell, so the $95\%$ binomial
+      interval has a half-width of roughly $12$ to $13$ points. These
+      are conservative lower bounds by construction
+      (\Cref{sec:protocol}).}
+    \label{tab:tier2}
+    \footnotesize
+    \begin{tabular}{|l|rr|}
+      \hline
+      \textbf{System} & \textbf{WebQSP} & \textbf{CWQ} \\
+      \hline
+      \noret        & 63.3\% & 36.7\% \\
+      \vecrag       & 61.7\% & \textbf{50.0\%} \\
+      \graphrag     & 55.0\% & 36.7\% \\
+      \tog          & 61.7\% & 43.3\% \\
+      \agr          & \textbf{66.7\%} & 48.3\% \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+Every system lands in a $36.7$--$66.7\%$ band. AGR is highest on WebQSP
+at $66.7\%$. \textbf{On ComplexWebQuestions it is second}, $5.0$ points
+ahead of the agentic baseline but $1.7$ behind Vector-RAG's $50.0\%$.
+Its margin over Think-on-Graph is $5.0$ points on both datasets; its
+lead over \emph{every} system is a WebQSP result only, and we say so
+rather than quoting the two comparators it happens to beat.
+
+Neither gap survives the sample. At $n = 60$ per cell a $5$-point
+difference sits well inside the interval, as does Vector-RAG's $1.7$,
+and no conclusion in this paper rests on either. What the tier
+establishes is the level rather than the ranking, and that is the more
+useful finding: \textbf{zero structural hallucination coexists with
+between a third and nearly two-thirds of assertions failing a strict
+semantic-support test} --- for every system, including the two that are
+structurally perfect. Semantic support is hard for the paradigm, not for
+one system within it.

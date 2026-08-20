@@ -351,6 +351,47 @@ def main():
        f"{caps['questions_any_topic_over_100_pct']}% of questions "
        "have >=1 topic entity truncated")
 
+    print("\n== semantic tier: every cell, no selection ==")
+    # The draft quoted AGR's 66.7/48.3 against Think-on-Graph and the
+    # parametric control only, omitting Vector-RAG's 50.0 -- the highest
+    # cell on CWQ, above AGR. Quoting the comparators a system beats and
+    # dropping the one it loses to is the failure mode this block exists
+    # for, so every cell must appear and the second-place fact must be said.
+    t2 = d["groundedness_tier2_judge"]
+    # Parse the TABLE ROWS, not the document. A presence check passed when
+    # Vector-RAG's leading CWQ cell was corrupted in the table, because the
+    # same value also appears in the prose sentence beside it. Every cell
+    # has to be right where a reader reads it off.
+    MACRO = {"noretrieval": r"\\noret", "vectorrag": r"\\vecrag",
+             "graphrag": r"\\graphrag", "tog": r"\\tog", "agr": r"\\agr"}
+    NUM = r"(?:\\textbf\{)?([\d.]+)\\%\}?"
+    for s in SYSTEMS:
+        m = re.search(MACRO[s] + r"\s*&\s*" + NUM + r"\s*&\s*" + NUM + r"\s*\\\\",
+                      text)
+        got = tuple(float(g) for g in m.groups()) if m else None
+        want = (t2[f"test_webqsp_{s}"]["supported_pct"],
+                t2[f"test_cwq_{s}"]["supported_pct"])
+        ck(f"tier-2 table row for {s} = {want}",
+           got == want, f"table says {got or 'NO ROW'}")
+
+    cwq = {s: t2[f"test_cwq_{s}"]["supported_pct"] for s in SYSTEMS}
+    wq = {s: t2[f"test_webqsp_{s}"]["supported_pct"] for s in SYSTEMS}
+    best_cwq = max(cwq, key=cwq.get)
+    ck("AGR is not the top system on CWQ's semantic tier",
+       best_cwq != "agr", f"{best_cwq} leads at {cwq[best_cwq]}%")
+    ck("the paper says AGR is second there",
+       "it is second" in text.lower(),
+       f"AGR {cwq['agr']}% vs {best_cwq} {cwq[best_cwq]}%")
+    ck("the paper scopes the clean sweep to WebQSP",
+       "WebQSP result only" in text,
+       f"AGR leads WebQSP at {wq['agr']}% but not CWQ")
+    band = (min(list(wq.values()) + list(cwq.values())),
+            max(list(wq.values()) + list(cwq.values())))
+    m = re.search(r"lands?\s+in\s+a\s+\$([\d.]+)\$--\$([\d.]+)\\%\$\s+band", text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    ck("the stated band is the measured one",
+       got == band, f"paper {got or 'NO MATCH'}, computed {band}")
+
     print("\n== the limitations list is complete ==")
     # discussion.tex claims every limitation a reviewer could raise appears
     # there. An earlier draft made that claim while carrying six of the
