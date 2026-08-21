@@ -77,16 +77,44 @@ def test_the_limit_is_not_attributed_to_elsevier_unverified():
         "guide is unfetchable, so this is house style: say so.")
 
 
+# A clause boundary: punctuation, or a conjunction that starts a new one.
+CLAUSE = re.compile(r"[,;:.]|\bwhile\b|\band that\b|\bwhereas\b|\balthough\b"
+                    r"|\bbut\b|\byet\b")
+GAIN = re.compile(r"improv\w*\s+accuracy|rais\w*\s+accuracy"
+                  r"|boost\w*\s+accuracy|increas\w*\s+accuracy"
+                  r"|accuracy\s+(?:gain|improvement)")
+VERIFY = re.compile(r"verification|verifier|verify|claim check")
+NEGATED = re.compile(r"\b(?:no|not|never|without|cannot|nor)\b")
+
+
 def test_the_abstract_does_not_promise_verification_raises_accuracy():
     """Section 6 reports the null. The comment states this rule; hold it.
 
     An abstract that oversells the verification layer turns the paper's
     own attribution section into a retraction.
+
+    Checked per clause, not by proximity. This test used to take a
+    +-120-character window around each mention of verification and fail
+    if a gain phrase fell inside it. That measures distance, and the rule
+    is about grammatical subject: the hazard is verification *being* the
+    thing said to improve accuracy, not sitting near something else that
+    does. The abstract legitimately says the planner improves accuracy in
+    one clause and that verification shows no detectable accuracy effect
+    in the next, and the window cleared that by five characters -- so any
+    trim of the clause between them turned a correct abstract red. It is
+    the clause that carries the claim, so the clause is what is read.
     """
     text = " ".join(words()).lower()
-    for m in re.finditer(r"verification|verify|claim check", text):
-        window = text[max(0, m.start() - 120):m.end() + 120]
-        assert not re.search(r"improv\w*\s+accuracy|rais\w*\s+accuracy"
-                             r"|accuracy\s+gain", window), (
-            f"the abstract appears to credit verification with an accuracy "
-            f"gain: ...{window}...")
+    for clause in CLAUSE.split(text):
+        if not VERIFY.search(clause):
+            continue
+        g = GAIN.search(clause)
+        if not g:
+            continue
+        # "verification does not improve accuracy" states the null; that
+        # is the paper's finding, not a promise of a gain.
+        if NEGATED.search(clause[:g.start()]):
+            continue
+        raise AssertionError(
+            f"the abstract credits verification with an accuracy gain in "
+            f"its own clause: {clause.strip()!r}")
