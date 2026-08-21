@@ -55,33 +55,40 @@
   country={Bangladesh}}
 
 \begin{abstract}
-% ~200 words, Elsevier's limit for these journals. Leads with the system
-% and closes on the attribution result, which is what the paper actually
-% establishes. It must NOT promise that verification raises accuracy --
-% Section 6 reports the null, and an abstract that oversells it turns
-% that section into a retraction.
-Multi-hop question answering over knowledge graphs requires composing
-facts across several edges, and systems that retrieve once before
-reasoning cannot know what the second hop will need. Agentic approaches
-interleave retrieval with reasoning, but none checks that what the final
-answer asserts is supported by what the agent actually retrieved. We
-present Agentic Graph Reasoning (AGR), a framework built as an explicit
-state machine over a constrained, deterministic graph tool API, in which
-a structural verification layer decomposes each draft answer into atomic
-claims and checks them against the traversed triples before emission, so
-every answer is returned with the evidence supporting it. On $400$
-certified questions from each of WebQSP and ComplexWebQuestions over a
-Freebase-derived environment, AGR reaches Hits@1 of $0.755$ and $0.522$
-against four baselines sharing one frozen backbone and one call budget,
-using roughly half the language-model calls of the strongest. A
-component-level ablation with paired significance testing finds that
-removing the planner \emph{improves} accuracy on the shallower benchmark
-while cutting tokens by $31\%$, and that three of four components ---
-including claim verification --- show no detectable effect on accuracy.
-A hand-read census of all $259$ residual failures identifies the
-\emph{echo attractor}, a true, grounded entity one hop from the answer
-that every grounding check passes and that consensus-based evaluation
-protocols cannot detect.
+% AT MOST 200 WORDS -- OUR line, not a quoted requirement. An earlier
+% version of this comment attributed the figure to the publisher, which
+% was never checked and appears to be false: Elsevier's generic guide
+% asks only for "a concise and factual abstract" and sets no word limit
+% at all. The KBS guide 403s to an automated fetch, so a journal-level
+% limit cannot be ruled out or cited -- see thesis_paper/README.md. So
+% 200 is house style, and the draft sat at 215 words until something
+% counted it. tests/test_paper_abstract.py counts it now.
+%
+% Leads with the system and closes on the attribution result, which is
+% what the paper actually establishes. It must NOT promise that
+% verification raises accuracy -- Section 6 reports the null, and an
+% abstract that oversells it turns that section into a retraction.
+Multi-hop question answering over knowledge graphs composes facts across
+several edges, so systems that retrieve once before reasoning cannot
+know what the second hop will need. Agentic approaches interleave
+retrieval with reasoning, but none checks that what the final answer
+asserts is supported by what the agent retrieved. We present
+Agentic Graph Reasoning (AGR), an explicit state machine over a
+constrained graph tool API whose structural verification layer
+decomposes each draft answer into atomic claims and checks them against
+the traversed triples before emission, pairing every answer with its
+evidence. On $400$ certified questions from each of WebQSP and
+ComplexWebQuestions over a Freebase-derived environment, AGR reaches
+Hits@1 of $0.755$ and $0.522$ against four baselines sharing one frozen
+backbone and call budget, using roughly half the language-model calls of
+the strongest. A component-level ablation with paired significance
+testing finds that removing the planner \emph{improves} accuracy on the
+shallower benchmark while cutting tokens by $31\%$, and that three of
+four components --- including claim verification --- show no detectable
+accuracy effect. A hand-read census of all $259$ residual failures
+identifies the \emph{echo attractor}: a true, grounded entity one hop
+from the answer that passes every grounding check and that
+consensus-based evaluation cannot detect.
 \end{abstract}
 
 \begin{keyword}
