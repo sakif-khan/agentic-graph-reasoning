@@ -250,16 +250,23 @@ recite 40/20/300/200 here.
 >
 > Two things I'd draw your attention to beyond the top line.
 >
-> First, look at vector RAG and GraphRAG on ComplexWebQuestions — 0.203 and
-> 0.205, *below* the no-retrieval control at 0.307. On genuinely multi-hop
-> questions, single-shot retrieval is worse than not retrieving at all. It fills
-> the context with plausible but wrong material.
+> First, vector RAG on ComplexWebQuestions — 0.203, *below* the no-retrieval
+> control at 0.307. One verbalised triple cannot contain a chain, so single-shot
+> retrieval is worse there than not retrieving at all. GraphRAG is beside it at
+> 0.205, but its one-hop radius confounds the paradigm, so the claim rests on
+> vector RAG.
 >
 > Second, the cost columns. AGR spends 4,511 tokens and 6.2 calls against
 > Think-on-Graph's 3,615 and 12.8. More tokens, but half the calls. I'll come
 > back to why calls are the number that matters.
 
 **Slow down here. This is the slide they read while you talk.**
+
+**Do not pool the two retrieval baselines.** The table puts 0.203 and 0.205 side
+by side and the pooled version of this point is the one that gets walked back:
+results.tex calls GraphRAG the weaker evidence of the two and says the claim
+rests on vector RAG. The paper retracted the pooled claim in its own words. If
+they press on GraphRAG, the answer below has the strata.
 
 ---
 
@@ -496,6 +503,21 @@ It's the cap Think-on-Graph's own paper operates under. And AGR never reaches it
 — zero percent on both datasets (B2). If I raised the cap, AGR's numbers would
 not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
+
+**"Doesn't GraphRAG show the same thing?"** *(Slide 11 puts 0.203 and 0.205
+side by side. Do not pool them.)*
+No, and the thesis says so rather than letting the two numbers be read together.
+GraphRAG retrieves a one-logical-hop neighbourhood, so its fall on CWQ confounds
+static retrieval with a radius I chose in advance. The evidence that it is the
+radius is in the strata: GraphRAG scores 0.44 on WebQSP's two-hop questions,
+which are largely mediator paths a one-hop expansion does reach, against 0.16 on
+the CWQ two-hop stratum, where the chains are genuine compositions it cannot
+reach at all. A retriever failing uniformly on depth would not show that gap.
+There is a second bound on it: it takes at most 100 edges per topic entity with
+no ordering imposed, and on 72.5 percent of questions at least one topic entity
+exceeds that degree, so on those it answers from an arbitrary sample. Vector RAG
+carries the paradigm claim, because one verbalised triple cannot contain a chain
+at any radius.
 
 **"Did both systems see the same candidate sets?"** *(The sharper form of the
 cap question. Slide 10 raises it deliberately — answer it, don't deflect.)*

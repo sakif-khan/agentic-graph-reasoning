@@ -17,6 +17,10 @@ clean document, and several of these could not, at first:
 - the build log was declared clean for several rounds while carrying four
   `Package hyperref Warning` lines, because the check was a grep for
   `LaTeX Warning` and `Overfull`
+- a rule spelled `below the no-retrieval` never matched the sentence it
+  was written for, which reads `*below* the no-retrieval` — markdown
+  emphasis sits inside the phrase. The probe reported CAUGHT anyway,
+  because a different check in the same block failed on that corruption
 - the candidate widths were checked against the whole deck, so once they
   had a second home the check passed a slide that had dropped them — the
   same shape as the GraphRAG and highlights failures above, on its ninth
@@ -43,7 +47,7 @@ raises at import time if any of the four variables is missing, so on a
 fresh clone `prove_abstract`, `prove_contract`, `prove_declarations`,
 `prove_highlights` and `prove_selfcontained` die with `IndexError: list
 index out of range` before testing anything. `cp .env.example .env` and
-fill it in; the other fifteen probes run without it.
+fill it in; the other sixteen probes run without it.
 
 **`prove_log` needs a LaTeX toolchain**, because three of its cases are
 only visible in a build: it reinstates the defect in `preamble.tex` and

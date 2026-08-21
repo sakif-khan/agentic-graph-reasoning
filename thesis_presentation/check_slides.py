@@ -454,6 +454,126 @@ if rank:
     ck(f"the transcript calls it limitation {rank}",
        stated == {str(rank)}, f"transcript says {sorted(stated) or 'nothing'}")
 
+# ---------------------------------------------------------------------
+# The deck may not make a claim the paper retracted.
+#
+# The script pooled the two static baselines on CWQ -- "vector RAG and
+# GraphRAG ... 0.203 and 0.205, below the no-retrieval control at 0.307.
+# On genuinely multi-hop questions, single-shot retrieval is worse than
+# not retrieving at all" -- on the slide marked "Slow down here". The
+# thesis refuses that pooling in the same paragraph as the numbers:
+# GraphRAG's CWQ figure "is the weaker evidence of the two: it confounds
+# the paradigm with the radius ... The claim rests on the first
+# baseline", which is Vector-RAG, whose single verbalised triple cannot
+# contain a chain at any radius. The paper retracted it outright, in two
+# commits titled "Paper: retract the GraphRAG paradigm claim".
+#
+# Bound per sentence, not per window. A distance rule cannot tell the
+# pooled claim from the sentence that disowns it -- both name GraphRAG
+# within a few words of the numbers -- and the sentence splitter has to
+# leave decimals alone, which "0.203" and "0.205" would otherwise break.
+print("\n== the GraphRAG paradigm claim stays retracted ==")
+
+
+def sents(text):
+    """Sentences, splitting only on periods that end one.
+
+    A decimal point is always followed by a digit and never by a space,
+    so this never cuts 0.203 in half -- which a plain [^.] window does,
+    silently truncating the very defect this is meant to catch.
+    """
+    return re.split(r"\.(?=\s|$)", text)
+
+
+def plain(text):
+    """Drop markdown emphasis and quote markers before matching prose.
+
+    The shipped sentence read "*below* the no-retrieval control", and a
+    rule spelled "below the no-retrieval" does not match that. The probe
+    still reported CAUGHT, on a different check -- which is how a rule
+    that never fires looks from the outside.
+    """
+    return " ".join(re.sub(r"[*`>]", "", text).split())
+
+
+POOLED = re.compile(r"vector[\s-]*RAG\s+and\s+(?:static\s+)?GraphRAG"
+                    r"|(?:static\s+)?GraphRAG\s+and\s+vector[\s-]*RAG", re.I)
+CLAIM = re.compile(r"below the no-retrieval|worse than not retrieving"
+                   r"|worse than no retrieval", re.I)
+for label, text in (("deck", plain(FLAT)), ("transcript", plain(MDF))):
+    pooled = [s for s in sents(text) if CLAIM.search(s) and POOLED.search(s)]
+    ck(f"{label} never pools the two static baselines under the claim",
+       not pooled, pooled[0].strip()[:80] if pooled else "")
+    credited = [s for s in sents(text)
+                if re.search(r"worse than not retrieving", s, re.I)
+                and re.search(r"GraphRAG", s, re.I)]
+    ck(f"{label} never credits GraphRAG with the paradigm claim",
+       not credited, credited[0].strip()[:80] if credited else "")
+
+
+def spoken(n):
+    """The quoted lines of one transcript section, without the markers."""
+    m = re.search(rf"^## {n} [^\n]*$(.*?)(?=^## |\Z)", MD, re.S | re.M)
+    return plain(" ".join(l for l in m.group(1).splitlines()
+                          if l.startswith(">"))) if m else ""
+
+
+# Retracting it is only half the job: the table puts 0.203 and 0.205 next
+# to each other, so the script has to say which baseline carries the claim
+# and why the other does not, or the audience pools them anyway.
+#
+# Bound to what is actually said on slide 11, not to the whole file. The
+# first version searched the transcript and passed while section 11 had
+# been stripped of it, because the speaker note below the section quotes
+# the same phrase -- a second home, again.
+s11 = spoken(11)
+ck("section 11 is in the transcript", bool(s11))
+ck("section 11 names the baseline the claim rests on",
+   re.search(r"claim rests on vector RAG", s11, re.I) is not None)
+ck("and says why GraphRAG's number does not carry it",
+   re.search(r"radius confounds", s11, re.I) is not None)
+
+# The deck's caveat is correct only while the thesis holds that position.
+RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
+res = " ".join(open(RES, encoding="utf-8").read().split())
+ck("the thesis still refuses the pooling",
+   "weaker evidence of the two" in res
+   and "claim rests on the first baseline" in res,
+   "sec:cwq-results is what the deck's caveat answers to")
+
+# The strata the answer quotes are the figure's own, and the figure is
+# generated from thesis_numbers.json by scripts/build_figures.py.
+FIG = os.path.join(ROOT, "thesis_book", "figures", "fig_hop_strata.tex")
+fig = open(FIG, encoding="utf-8").read()
+for title, hop, want_label in (("WebQSP", 1, "WebQSP two-hop"),
+                               ("ComplexWebQuestions", 1, "CWQ two-hop")):
+    axis = next((a for a in fig.split(r"\begin{axis}")
+                 if f"title={{{title}}}" in a), "")
+    m = re.search(r"color=agrGraph[^\n]*coordinates \{([^}]*)\}", axis)
+    pt = re.search(rf"\({hop},([\d.]+)\)", m.group(1)) if m else None
+    ck(f"the figure gives GraphRAG's {want_label} stratum", pt is not None)
+    if pt:
+        ck(f"the script quotes {want_label} = {pt.group(1)}",
+           re.search(rf"{re.escape(pt.group(1))}[^.]{{0,60}}?"
+                     rf"{'WebQSP' if title == 'WebQSP' else 'CWQ'}", MDF)
+           is not None, f"figure says {pt.group(1)}")
+
+# The second bound on that baseline: its fanout cap, from the code, and
+# the share of questions it binds on, from the measurement.
+g = re.search(r"fanout_cap=(\d+)",
+              open(os.path.join(ROOT, "agr", "baselines", "graphrag.py"),
+                   encoding="utf-8").read())
+ck("graphrag.py states its fanout cap", g is not None)
+deg = J["candidate_caps"]["expanded_entity_degree"]
+if g:
+    ck(f"the script quotes the {g.group(1)}-edge cap and "
+       f"{deg['questions_any_topic_over_100_pct']}% above it",
+       re.search(rf"at most {g.group(1)} edges per topic entity", MDF)
+       is not None
+       and re.search(rf"on {deg['questions_any_topic_over_100_pct']} percent "
+                     rf"of questions at least one topic entity", MDF)
+       is not None)
+
 # The candidate widths are configuration, not results, so they are read
 # from the code that sets them rather than from thesis_numbers.json.
 #

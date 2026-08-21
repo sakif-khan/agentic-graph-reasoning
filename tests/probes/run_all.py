@@ -35,7 +35,9 @@ TARGETS = ("thesis_paper/", "scripts/check_paper_numbers.py",
            "thesis_presentation/transcript.md",
            "thesis_book/chapters/introduction.tex",
            "thesis_book/chapters/conclusion.tex",
-           "agr/baselines/tog.py",
+           "thesis_book/chapters/results.tex",
+           "thesis_book/figures/fig_hop_strata.tex",
+           "agr/baselines/tog.py", "agr/baselines/graphrag.py",
            "results/phase4/thesis_numbers.json")
 
 
