@@ -32,7 +32,8 @@ right driver instead; `preamble.tex` points at the main deck, which leaves the
 backup deck to rebuild by hand. The figures under `figures/` are generated, so
 their directive comes from `scripts/build_figures.py` — editing it into the
 files themselves would last until the next regeneration.
-`python scripts/check_tex_roots.py` checks both this module and the book.
+`python scripts/check_tex_roots.py` checks all three modules — this one, the
+book, and the paper.
 
 ## Why two documents
 
@@ -64,8 +65,16 @@ the hop tick labels over two lines, drop the redundant *Hop stratum* axis label,
 and use a deeper legend offset. Getting that offset wrong prints the legend on
 top of the x-axis label, which is what the first version of this deck did.
 
-`fig_claim_path.tex` is hand-drawn and has no slide variant, so both documents
-`\input` it from `thesis_book/figures/`.
+`fig_claim_path.tex` is hand-drawn and has no slide variant. The presented deck
+`\input`s it across the directory boundary, from `thesis_book/figures/`; the
+backup deck does not use it at all.
+
+That reach is harmless here — the two modules are always checked out together
+— but it does mean `thesis_presentation/` is the one module that will not build
+from its own directory alone. `thesis_paper/` was deliberately fixed the other
+way: it keeps its own copy, because a manuscript uploaded to a publisher has no
+`../thesis_book/`, and `tests/test_paper_self_contained.py` fails if that copy
+drifts. Do the same here if this deck ever has to travel on its own.
 
 ## Numbers
 

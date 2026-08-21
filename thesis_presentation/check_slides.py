@@ -72,6 +72,12 @@ LEAD = re.compile(r"^(?:\\(?:top|mid|bottom)rule"
                   r"|\\hline|\\addlinespace|\[[^\]]*\]|\s)+")
 
 
+# Counts that appear as words on a slide -- nodes, cycles, modules -- are
+# compared through this rather than spelled out at each site.
+NUM = {0: "No", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
+       6: "Six", 7: "Seven", 8: "Eight", 9: "Nine"}
+
+
 def frame(title):
     """The one frame with this title, from \\begin{frame} to \\end{frame}."""
     m = re.search(r"\\begin\{frame\}\{" + re.escape(title) + r"\}(.*?)"
@@ -410,6 +416,44 @@ ck("the deck asks RQ1, RQ2 and RQ3", asked == [1, 2, 3], f"deck asks RQ{asked}")
 # checking" because build_figures.py generates them -- but a generated
 # file is only right until the JSON moves under it, and the deck keeps its
 # own copies at a different geometry.
+# ---------------------------------------------------------------------
+# The module README describes this module.
+#
+# It said check_tex_roots.py "checks both this module and the book" -- it
+# covers three, thesis_paper included -- and that "both documents \input
+# [fig_claim_path] from thesis_book/figures/", when only the presented deck
+# uses it and the backup deck does not. Prose about the repository goes
+# stale the same way a transcribed number does, and nothing was reading it.
+print("\n== the module README describes this module ==")
+RM = open(os.path.join(HERE, "README.md"), encoding="utf-8").read()
+roots = open(os.path.join(ROOT, "scripts", "check_tex_roots.py"),
+             encoding="utf-8").read()
+mods = re.search(r"MODULES\s*=\s*\(([^)]*)\)", roots, re.S)
+n_mods = len(re.findall(r'"[^"]+"', mods.group(1))) if mods else 0
+ck(f"check_tex_roots.py covers {n_mods} modules", n_mods in NUM, str(n_mods))
+if n_mods in NUM:
+    ck(f"the README says it checks all {NUM[n_mods].lower()}",
+       re.search(rf"check_tex_roots\.py` checks all {NUM[n_mods].lower()}",
+                 RM) is not None,
+       f"it covers {n_mods}")
+
+main_src = open(os.path.join(HERE, "content-main.tex"), encoding="utf-8").read()
+back_src = open(os.path.join(HERE, "content-backup.tex"),
+                encoding="utf-8").read()
+claim = re.search(r"\\input\{([^}]*fig_claim_path[^}]*)\}", main_src)
+ck("the presented deck inputs fig_claim_path", claim is not None)
+if claim:
+    # Whether the README should describe a cross-directory reach or a local
+    # copy is decided by which one the deck actually does.
+    crosses = claim.group(1).startswith("../")
+    ck("the README describes where the figure comes from",
+       ("across the directory boundary" in RM) == crosses,
+       f"deck inputs {claim.group(1)!r}")
+ck("the backup deck does not use it, and the README says so",
+   ("fig_claim_path" in back_src)
+   == ("backup deck does not use it" not in RM),
+   "the README must match which decks input the figure")
+
 print("\n== the deck's generated figures are current ==")
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 try:
@@ -942,8 +986,6 @@ ck("and not the one no node calls", "verify_triple" not in named)
 # while the word is being said, so the deck is where it costs.
 print("\n== the cycle count is what the diagram draws ==")
 SM = frame("AGR: an explicit state machine")
-NUM = {0: "No", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
-       6: "Six", 7: "Seven", 8: "Eight", 9: "Nine"}
 
 # The node count, from the same diagram. START is a terminal, not a node
 # of the machine, which is why box and vbox are counted and term is not.
