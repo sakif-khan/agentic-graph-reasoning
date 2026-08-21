@@ -72,6 +72,40 @@ LEAD = re.compile(r"^(?:\\(?:top|mid|bottom)rule"
                   r"|\\hline|\\addlinespace|\[[^\]]*\]|\s)+")
 
 
+MD = open(os.path.join(HERE, "transcript.md"), encoding="utf-8").read() \
+    if os.path.exists(os.path.join(HERE, "transcript.md")) else ""
+
+
+def plain(text):
+    """Drop markdown emphasis and quote markers before matching prose.
+
+    The shipped sentence read "*below* the no-retrieval control", and a
+    rule spelled "below the no-retrieval" does not match that. The probe
+    still reported CAUGHT, on a different check -- which is how a rule
+    that never fires looks from the outside.
+    """
+    return " ".join(re.sub(r"[*`>]", "", text).split())
+
+
+def answer(question):
+    """One anticipated-questions entry: its heading and the prose under it.
+
+    The Q&A section is not quoted speech, so spoken() does not reach it --
+    and it was the one part of this material bound to nothing, which is
+    where the arithmetic error this file now guards was written.
+    """
+    m = re.search(r"\*\*\"[^\"]*" + re.escape(question)
+                  + r"[^\"]*\"\*\*(.*?)(?=\n\*\*\"|\n## |\Z)", MD, re.S)
+    return " ".join(m.group(1).split()) if m else ""
+
+
+def spoken(n):
+    """The quoted lines of one transcript section, without the markers."""
+    m = re.search(rf"^## {n} [^\n]*$(.*?)(?=^## |\Z)", MD, re.S | re.M)
+    return plain(" ".join(l for l in m.group(1).splitlines()
+                          if l.startswith(">"))) if m else ""
+
+
 # Counts that appear as words on a slide -- nodes, cycles, modules -- are
 # compared through this rather than spelled out at each site.
 NUM = {0: "No", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
@@ -454,6 +488,96 @@ ck("the backup deck does not use it, and the README says so",
    == ("backup deck does not use it" not in RM),
    "the README must match which decks input the figure")
 
+# ---------------------------------------------------------------------
+# The hedge-difference answer, recomputed from the paired records.
+#
+# The prepared answer said correctness "moved on exactly one of the 398
+# paired questions, so at least five of those six were assertions that
+# would have been wrong". Two errors and an omission: it moved on two of
+# 398, one per dataset -- "one" is the CWQ-only figure against the pooled
+# denominator -- and none of the six came back correct, not five, so the
+# claim available was stronger than the one written. The omission was the
+# one that mattered: on WebQSP the single question the layer hedged on is
+# one the ablated run got right, which is the counter-example to the whole
+# answer and was not mentioned.
+#
+# Computed from the records rather than from a number in a JSON file,
+# because the paired sets are what the answer is about and nothing
+# generated carries them.
+print("\n== the hedge-difference answer is the paired records ==")
+ABL = os.path.join(ROOT, "results", "phase4", "ablations")
+
+
+def _pairs(ds):
+    def load(cond):
+        out = {}
+        with open(os.path.join(ABL, f"test_{ds}_half_abl_{cond}.jsonl"),
+                  encoding="utf-8") as f:
+            for line in f:
+                if line.strip():
+                    rec = json.loads(line)
+                    out[rec["qid"]] = rec
+        return out
+
+    def ents(rec):
+        return {str(x).strip().lower()
+                for x in (rec.get("answer_entities") or []) if str(x).strip()}
+
+    full, abl = load("full"), load("noverifier")
+    qids = sorted(set(full) & set(abl))
+    stats = {"n": len(qids)}
+    stats["full_only"] = [q for q in qids
+                          if not ents(full[q]) and ents(abl[q])]
+    stats["abl_only"] = [q for q in qids
+                         if not ents(abl[q]) and ents(full[q])]
+    stats["rescued"] = [q for q in stats["full_only"]
+                        if ents(abl[q]) & {str(g).strip().lower()
+                                           for g in (abl[q].get("gold") or [])}]
+    hit = lambda r: bool(ents(r) & {str(g).strip().lower()
+                                    for g in (r.get("gold") or [])})
+    stats["discordant"] = sum(1 for q in qids if hit(full[q]) != hit(abl[q]))
+    return stats
+
+
+if not os.path.isdir(ABL):
+    print("  [   ] ablation records absent")
+else:
+    qa = answer("How many questions is that hedge difference")
+    ck("the hedge-difference answer is in the script", bool(qa))
+    st = {ds: _pairs(ds) for ds in ("cwq", "webqsp")}
+    paired = st["cwq"]["n"] + st["webqsp"]["n"]
+    moved = st["cwq"]["discordant"] + st["webqsp"]["discordant"]
+    ck(f"the answer states the {paired} paired questions",
+       str(paired) in qa, f"{paired} paired")
+    # "twice", not "two times": the answer is spoken aloud, and the rule
+    # has to match the English a person would say.
+    said = {1: "once", 2: "twice"}.get(
+        moved, f"{NUM.get(moved, moved)} times".lower())
+    ck(f"correctness moved {said}, and the answer says so",
+       re.search(rf"moved {said}", qa, re.I) is not None,
+       f"{st['cwq']['discordant']} on CWQ, {st['webqsp']['discordant']} on "
+       f"WebQSP")
+    ck(f"CWQ: the layer declined on {len(st['cwq']['full_only'])}",
+       re.search(rf"\b{NUM[len(st['cwq']['full_only'])]}, on CWQ", qa)
+       is not None, str(len(st["cwq"]["full_only"])))
+    # The sets nest, so "exactly the six the ablated run answered" is a fact
+    # about the records rather than an inference from a difference of rates.
+    nests = not st["cwq"]["abl_only"] and not st["webqsp"]["abl_only"]
+    ck("the sets nest, and the answer claims that", nests
+       and "sets nest" in qa,
+       f"cwq {len(st['cwq']['abl_only'])}, webqsp "
+       f"{len(st['webqsp']['abl_only'])} the other way")
+    ck(f"none of the {len(st['cwq']['full_only'])} came back correct",
+       not st["cwq"]["rescued"] and "None of the six came back correct" in qa,
+       f"{len(st['cwq']['rescued'])} were correct")
+    # The counter-example. It is the half an examiner would find.
+    ck(f"WebQSP: {len(st['webqsp']['full_only'])} hedged question, and the "
+       f"ablated run got {len(st['webqsp']['rescued'])} right",
+       len(st["webqsp"]["full_only"]) == 1
+       and len(st["webqsp"]["rescued"]) == 1
+       and "the ablated run got it right" in qa,
+       "the answer must volunteer the question the layer cost")
+
 print("\n== the deck's generated figures are current ==")
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 try:
@@ -670,8 +794,6 @@ ck("the first-ranked limitation leads the list",
 # is denying a confound, and a rewrite that denies a different one ("the
 # same candidate sets") is the same defect.
 print("\n== the fairness slide does not deny a stated confound ==")
-MD = open(os.path.join(HERE, "transcript.md"), encoding="utf-8").read() \
-    if os.path.exists(os.path.join(HERE, "transcript.md")) else ""
 DENIED = (r"(?:retrieval budget|bigger retrieval|retrieval width"
           r"|candidate (?:set|width)s?|same candidates?)")
 OVERCLAIM = re.compile(
@@ -776,17 +898,6 @@ def sents(text):
     return re.split(r"\.(?=\s|$)", text)
 
 
-def plain(text):
-    """Drop markdown emphasis and quote markers before matching prose.
-
-    The shipped sentence read "*below* the no-retrieval control", and a
-    rule spelled "below the no-retrieval" does not match that. The probe
-    still reported CAUGHT, on a different check -- which is how a rule
-    that never fires looks from the outside.
-    """
-    return " ".join(re.sub(r"[*`>]", "", text).split())
-
-
 POOLED = re.compile(r"vector[\s-]*RAG\s+and\s+(?:static\s+)?GraphRAG"
                     r"|(?:static\s+)?GraphRAG\s+and\s+vector[\s-]*RAG", re.I)
 CLAIM = re.compile(r"below the no-retrieval|worse than not retrieving"
@@ -800,13 +911,6 @@ for label, text in (("deck", plain(FLAT)), ("transcript", plain(MDF))):
                 and re.search(r"GraphRAG", s, re.I)]
     ck(f"{label} never credits GraphRAG with the paradigm claim",
        not credited, credited[0].strip()[:80] if credited else "")
-
-
-def spoken(n):
-    """The quoted lines of one transcript section, without the markers."""
-    m = re.search(rf"^## {n} [^\n]*$(.*?)(?=^## |\Z)", MD, re.S | re.M)
-    return plain(" ".join(l for l in m.group(1).splitlines()
-                          if l.startswith(">"))) if m else ""
 
 
 # Retracting it is only half the job: the table puts 0.203 and 0.205 next

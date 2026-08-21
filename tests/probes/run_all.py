@@ -42,7 +42,8 @@ TARGETS = ("thesis_paper/", "scripts/check_paper_numbers.py",
            "thesis_book/figures/fig_hop_strata.tex",
            "agr/baselines/tog.py", "agr/baselines/graphrag.py",
            "agr/kg_tools.py",
-           "results/phase4/thesis_numbers.json")
+           "results/phase4/thesis_numbers.json",
+           "results/phase4/ablations/")
 
 
 def main():

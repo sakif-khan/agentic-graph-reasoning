@@ -600,12 +600,17 @@ and dropped the ablation, the decomposition finding and the protocol to make roo
 mismatch, where its conclusion counted four against section 1.6's six.
 
 **"How many questions is that hedge difference, and is it significant?"**
-Six, on CWQ: 23.2 percent of 198 against 20.2, so the layer declined to assert on
-six questions the ablated system answered. Correctness moved on exactly one of
-the 398 paired questions, so at least five of those six were assertions that
-would have been wrong — which is the mechanism, seen at the only place the design
-isolates it. No, it is not significance-tested; the ablation's McNemar test is on
-correctness, not on the hedge column, and I claim the direction and nothing more.
+Six, on CWQ: 23.2 percent of 198 against 20.2. The sets nest — there is no
+question the ablated run hedged on that the full system asserted on — so those
+are exactly the six the ablated run answered and the layer declined to. None of
+the six came back correct: all six were assertions that would have been wrong,
+which is the mechanism, seen at the only place the design isolates it.
+
+On WebQSP it is one question, and there the ablated run got it right. So across
+the 398 paired questions correctness moved twice, once each way. I would rather
+say that than be shown it. No, it is not significance-tested; the ablation's
+McNemar test is on correctness, not on the hedge column, and I claim the
+direction and nothing more.
 *Do not* offer the no-retrieval contrast here. Its 12.2 percent is a hedge rate,
 not an error rate — backup slide 5 has it in a column headed "WebQSP hedge %" —
 and AGR hedges *less* than it does, 8.2 against 12.2, so that comparison argues
