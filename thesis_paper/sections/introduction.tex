@@ -6,9 +6,19 @@
 % The one thing this section must not do is promise that the
 % verification layer raises accuracy. It does not -- the precision column
 % does not move when the layer is removed (Sec 6). What it delivers is
-% the output contract: every answer arrives with the traversed triples
-% that support it. Claiming that here, and only that, is what keeps
+% the output contract. Claiming that here, and only that, is what keeps
 % Section 6 from reading as a retraction.
+%
+% And claim the contract at its real width. An earlier version of this
+% comment read "every answer arrives with the traversed triples that
+% support it", which is the phrase the thesis spends its Sec 6.6
+% withdrawing: only the traversed-adjacency route attaches evidence, and
+% the logger keeps the COUNT and discards the list. Both bounds are in
+% this paper already -- Sec 3 for the routes, Sec 7 for the record -- so
+% the introduction must not say anything Sec 7 has to take back. In
+% particular do not write that the reasoning is "auditable" without
+% saying auditable WHERE; Sec 7's heading is that the contract cannot be
+% audited from the run records.
 % ---------------------------------------------------------------------
 
 \section{Introduction}\label{sec:intro}
@@ -68,8 +78,8 @@ bounded decision points. Its distinguishing component is a
 \emph{Structural Verification Layer}: before an answer is emitted, the
 draft is decomposed into atomic claims and each is checked against the
 triples the agent actually traversed. Claims that cannot be grounded
-trigger targeted re-exploration or are removed, and every answer AGR
-returns is paired with the supporting triples that justify it.
+trigger targeted re-exploration or are removed, and the claims the
+traversal itself grounds carry those triples back with the answer.
 
 We are precise about what that layer buys, because the ablation of
 \Cref{sec:attribution} is precise about what it does not. Claim
@@ -97,8 +107,9 @@ of questions on which the cap truncates it.
 \begin{enumerate}
   \item \textbf{AGR}, a state-machine agent over a constrained graph tool
     API whose answers carry the traversed triples that support them, so
-    the reasoning is auditable rather than merely asserted
-    (\Cref{sec:framework}).
+    the reasoning is auditable at emission rather than merely asserted
+    (\Cref{sec:framework}); \Cref{sec:limits-contribution} bounds how
+    far that reaches.
   \item A \textbf{Structural Verification Layer} that checks atomic
     claims against traversed adjacency before emission, with its repair
     routes and their measured firing rates reported as they behave rather

@@ -3,7 +3,7 @@ Three to five bullets, each at most 85 characters including spaces.
 
 FINAL SET (checked by tests/test_paper_highlights.py, not by hand):
 
-- Agentic KGQA framework pairs every answer with the triples that support it
+- Agentic KGQA framework returns answers with the traversed triples supporting them
 - Matches or beats four baselines at roughly half the language-model calls
 - Removing the planner improves accuracy on the shallower benchmark, cutting tokens 31%
 - Three of four agentic components show no detectable accuracy effect
@@ -30,6 +30,13 @@ paragraph applies: it would have been contradicted by the paper it
 introduces, in a document an editor reads before the abstract. At 85
 characters it is exactly at the limit, so anything added must displace
 something, not extend it.
+
+Bullet 1 said "pairs every answer with the triples that support it" until
+that phrase was checked against what the system does. Only the
+traversed-adjacency route attaches evidence -- verify_connection and
+entailment attach none -- and 13 of 80 development answers carry no
+supporting triples, two of them having asserted a claim. "Returns answers
+with" is true where "every answer" is not, and costs two characters.
 
 Also dropped: the measured label-defect rates for the two benchmarks.
 True and interesting, but it needs both the flagged and the confirmed

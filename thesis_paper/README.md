@@ -151,9 +151,29 @@ that removes the objection is roughly fifty dollars.
 - **AGR-led framing, but the verification layer sells auditability, not
   accuracy.** The precision column does not move when the layer is
   removed, so the paper must never promise that it does. What it delivers
-  is the output contract: every answer arrives with the traversed triples
-  supporting it. Claiming that, and only that, is what keeps
+  is the output contract. Claiming that, and only that, is what keeps
   §6 from reading as a retraction.
+- **State the output contract at its real width, which is narrower than
+  the phrase.** An earlier version of the note above said "every answer
+  arrives with the traversed triples supporting it", and that is the
+  overclaim the thesis spends §6.6 withdrawing, propagated here as
+  guidance. Two independent bounds, both already in the paper — §3 for
+  the first, §7 for the second:
+  - **One route of three records evidence.** Traversed adjacency attaches
+    the triples; a claim certified by `verify_connection` or by
+    entailment is accepted with nothing attached. On the development set
+    13 of 80 answers carry no supporting triples, and two of those did
+    assert a claim.
+  - **The pairing does not survive into the record.** `RunLogger` writes
+    `n_supporting_triples`, an integer, and discards the list, so no
+    committed artifact in this repository contains a single supporting
+    triple — verified across 112,901 run records. A reader can confirm
+    the answers came from a system that tracked its evidence; they
+    cannot inspect it.
+
+  So write *auditable in the run*, never *auditable* flat, and never
+  "every answer". The thesis ranks this its most serious limitation,
+  above the underpowered ablations.
 - **Report the nulls at the same length as the positive result.** That is
   the methodological argument, not an apology.
 - **A near-empty draft reports one overfull `\vbox`.** It is the

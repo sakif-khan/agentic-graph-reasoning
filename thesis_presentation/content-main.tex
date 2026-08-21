@@ -188,13 +188,15 @@
         \item Draft answer is split into \alert{atomic claims}
         \item Each claim is checked against the \alert{triples actually
           traversed}
-        \item Supported claims keep their supporting triples
+        \item Claims grounded by the traversal keep those triples as
+          \alert{evidence}
         \item Unsupported claims trigger \alert{targeted re-exploration}, or
           are \alert{dropped}
       \end{enumerate}
       \vspace{2mm}
-      The system therefore \textbf{hedges rather than asserts}, and returns
-      every answer with its evidence.
+      The system therefore \textbf{hedges rather than asserts}, and carries
+      its evidence with the answer --- from \alert{one route of three}, and
+      only inside the run.
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{block}{Why \emph{structural}}
@@ -204,10 +206,12 @@
         is not an independent check.
       \end{block}
       \vspace{2mm}
-      \begin{block}{The honest limit}
+      \begin{block}{The honest limits}
         \small
         A claim can be \emph{true} and still be the wrong answer. Structural
-        grounding cannot catch that --- see the echo attractor later.
+        grounding cannot catch that --- see the echo attractor later. And the
+        run log keeps the \alert{count} of supporting triples rather than the
+        triples, so the pairing does not outlive the run.
       \end{block}
     \end{column}
   \end{columns}
@@ -421,6 +425,12 @@
         $p = 1.0$ on \emph{both} datasets. It does not earn its place on
         Hits@1 or F1.
       \end{block}
+      \vspace{2mm}
+      \begin{block}{What does \emph{not} survive the run}
+        \small
+        The log keeps the \alert{count} of supporting triples and discards
+        the list. \emph{Auditable in the run, not from the record.}
+      \end{block}
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{block}{What it does do}
@@ -428,15 +438,16 @@
         \begin{itemize}
           \item Turns silent error into a \alert{hedge}: AGR hedges on
             $8.2\%$ of WebQSP against no-retrieval's $12.2\%$ error rate
-          \item Attaches \alert{supporting triples} to every asserted claim
-          \item Gives an \alert{auditable output contract}
+          \item Attaches \alert{supporting triples} --- from one route of
+            three; \textsf{verify\_connection} and entailment attach none
+          \item Pairs answer with evidence, \alert{in the run}
         \end{itemize}
       \end{block}
     \end{column}
   \end{columns}
   \vspace{2mm}
   {\small This is a negative result reported as one. The layer's case rests on
-  auditability, and the thesis says so rather than claiming an accuracy
+  auditability, and the thesis bounds that too rather than claiming an accuracy
   benefit the measurement does not support.}
 \end{frame}
 
@@ -593,6 +604,8 @@
       \textbf{Limitations I state plainly}
       \small
       \begin{itemize}
+        \item The verifier logs only what it \alert{rejects}: wrongful
+          acceptance is unmeasured, and the evidence is not persisted
         \item Verification earns \alert{no} detectable accuracy gain
         \item Zero ungrounded assertion is \alert{navigation}, not the layer
         \item ToG leads on the questions it finishes

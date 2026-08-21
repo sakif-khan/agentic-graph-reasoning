@@ -8,9 +8,15 @@ The four backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 22 min 30 s of speaking against a 25-minute limit.** The 2.5-minute
-margin is deliberate. Nobody has ever finished a defense talk faster than they
-rehearsed it.
+**Budget: 23 min 57 s of speaking against a 25-minute limit.** The margin is
+down to 1 min 3 s, and that is worth knowing before you stand up: nobody has
+ever finished a defense talk faster than they rehearsed it.
+
+It was 22:30 with a 2.5-minute margin until slides 7, 16 and 21 took on the
+bounds around the output contract — 133 words, 86 seconds at this script's own
+93 wpm. That content is not optional; being walked into it in questions costs
+more than the eighty-six seconds. If you want the old margin back, the recovery
+note below already names where it comes from: slides 3, 6 and 8.
 
 Times below are *cumulative at the end of that slide*. If you are more than
 40 seconds past a marker, use the recovery notes at the bottom.
@@ -23,22 +29,22 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 4 | Research questions | 0:45 | 3:00 |
 | 5 | AGR: an explicit state machine | 1:20 | 4:20 |
 | 6 | Constrained tools | 0:50 | 5:10 |
-| 7 | The Structural Verification Layer | 1:20 | 6:30 |
-| 8 | One claim, three routes | 0:55 | 7:25 |
-| 9 | Environment and question sets | 0:55 | 8:20 |
-| 10 | Making the comparison fair | 1:00 | 9:20 |
-| 11 | **Main results** | 1:30 | 10:50 |
-| 12 | Accuracy against cost | 1:05 | 11:55 |
-| 13 | **RQ1: hop count** | 1:15 | 13:10 |
-| 14 | The caveat I want to raise myself | 1:10 | 14:20 |
-| 15 | RQ2: groundedness | 1:10 | 15:30 |
-| 16 | RQ2: what verification contributes | 1:05 | 16:35 |
-| 17 | **RQ3: ablation** | 1:20 | 17:55 |
-| 18 | The result I did not expect | 1:10 | 19:05 |
-| 19 | The echo attractor | 1:15 | 20:20 |
-| 20 | The benchmark was wrong 57 times | 0:50 | 21:10 |
-| 21 | Contributions and limitations | 1:05 | 22:15 |
-| 22 | Thank you | 0:15 | 22:30 |
+| 7 | The Structural Verification Layer | 1:43 | 6:53 |
+| 8 | One claim, three routes | 1:02 | 7:55 |
+| 9 | Environment and question sets | 0:55 | 8:50 |
+| 10 | Making the comparison fair | 1:00 | 9:50 |
+| 11 | **Main results** | 1:30 | 11:20 |
+| 12 | Accuracy against cost | 1:05 | 12:25 |
+| 13 | **RQ1: hop count** | 1:15 | 13:40 |
+| 14 | The caveat I want to raise myself | 1:10 | 14:50 |
+| 15 | RQ2: groundedness | 1:10 | 16:00 |
+| 16 | RQ2: what verification contributes | 1:37 | 17:37 |
+| 17 | **RQ3: ablation** | 1:20 | 18:57 |
+| 18 | The result I did not expect | 1:10 | 20:07 |
+| 19 | The echo attractor | 1:15 | 21:22 |
+| 20 | The benchmark was wrong 57 times | 0:50 | 22:12 |
+| 21 | Contributions and limitations | 1:30 | 23:42 |
+| 22 | Thank you | 0:15 | 23:57 |
 
 The four **bold** slides are the ones the committee will actually interrogate.
 If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
@@ -143,31 +149,36 @@ If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
 
 ---
 
-## 7 — The Structural Verification Layer *(1:20)*
+## 7 — The Structural Verification Layer *(1:43)*
 
 > This is the contribution.
 >
 > Before anything is emitted, the draft answer is split into atomic claims. Each
-> claim is checked against the triples the agent actually traversed. Claims that
-> are supported keep their supporting triples and are returned with the answer.
-> Claims that can't be grounded either trigger targeted re-exploration, or are
-> dropped.
+> claim is checked against the triples the agent actually traversed. A claim the
+> traversal itself grounds keeps those triples and carries them back with the
+> answer. Claims that can't be grounded either trigger targeted re-exploration,
+> or are dropped.
 >
-> The consequence is that the system hedges rather than asserts, and every answer
+> The consequence is that the system hedges rather than asserts, and the answer
 > comes back with its evidence attached.
 >
-> Two things I want to be precise about. First, why *structural* — the check is
-> against the graph the agent walked, not against the model's own opinion of its
-> own output. A model grading itself is not an independent check. Second, the
-> honest limit: a claim can be perfectly true and still be the wrong answer.
-> Structural grounding cannot catch that. I'll show you exactly that failure in a
-> few minutes.
+> Three things I want to be precise about. First, why *structural* — the check is
+> against the graph the agent walked, not the model's opinion of its own output.
+> A model grading itself is not an independent check.
+>
+> Second, "its evidence" is narrower than it sounds, and the slide says so: one
+> of the three routes records evidence, and the log keeps the count, not the
+> triples. Both come back on slide 15.
+>
+> Third, the honest limit: a claim can be perfectly true and still be the wrong
+> answer. Structural grounding cannot catch that. I'll show you exactly that
+> failure in a few minutes.
 
 **The last sentence is a promise. Slide 19 pays it off.**
 
 ---
 
-## 8 — One claim, three routes *(0:55)*
+## 8 — One claim, three routes *(1:02)*
 
 > This is the path a single claim takes. Three routes to being called supported.
 >
@@ -177,6 +188,8 @@ If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
 >
 > The point of the ordering is cost. Only the third route spends a model call.
 > The first two are pure lookups against a record we already have.
+>
+> And the "+ evidence" label sits on the first route only.
 
 ---
 
@@ -312,7 +325,7 @@ If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
 
 ---
 
-## 16 — RQ2: so what does verification actually contribute? *(1:05)*
+## 16 — RQ2: so what does verification actually contribute? *(1:37)*
 
 > Which leaves the real question.
 >
@@ -322,11 +335,15 @@ If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
 >
 > What it does do: it converts silent error into an explicit hedge — AGR hedges
 > on 8.2 percent of WebQSP where the parametric control is simply wrong on more
-> than that. It attaches supporting triples to every claim it does assert. And it
-> gives an auditable output contract — you can check the system's work.
+> than that. It attaches supporting triples to the claims traversal grounds. And
+> it pairs the answer with that evidence at the point it is emitted.
 >
-> The layer's case rests on auditability, not accuracy. The thesis says that
-> plainly rather than claiming a benefit the measurement doesn't support.
+> The layer's case rests on auditability, not accuracy — and I'll be as plain
+> about how far that goes. Two bounds, both on the slide. One route of three
+> records evidence; `verify_connection` and entailment accept with nothing
+> attached. And the logger writes the *count* of supporting triples and drops the
+> list. You can confirm these answers came from a system that tracked its
+> evidence; you cannot open the record and inspect it.
 
 ---
 
@@ -412,7 +429,7 @@ you can't.**
 
 ---
 
-## 21 — Contributions, and what I would not claim *(1:05)*
+## 21 — Contributions, and what I would not claim *(1:30)*
 
 > To summarise. Six contributions: the framework, the verification layer and its
 > output contract, the controlled five-system comparison, the hop-count result
@@ -421,9 +438,13 @@ you can't.**
 >
 > And the limitations, which I'd rather state than be asked.
 >
-> Verification earns no detectable accuracy gain. Zero ungrounded assertion comes
-> from navigation, not from my layer. Think-on-Graph leads on the questions it
-> finishes. And everything here runs on one backbone — these are architectural
+> The first is the most serious. The verifier persists only what it *rejects*, so
+> wrongful acceptance has no rate at all — and the same decision is why the
+> output contract cannot be audited from the record.
+>
+> Then: verification earns no detectable accuracy gain. Zero ungrounded assertion
+> comes from navigation, not from my layer. Think-on-Graph leads on the questions
+> it finishes. And everything here runs on one backbone — these are architectural
 > results, not universal ones.
 
 ---
@@ -463,9 +484,30 @@ for someone to find.
 
 **"If verification doesn't improve accuracy, why keep it?"**
 Because accuracy was never the only claim. It converts silent error into an
-explicit hedge and attaches evidence to every assertion. If you want a system
-whose answers can be *checked*, that is the deliverable. I report the null on
-accuracy rather than hiding it.
+explicit hedge, and it pairs the answer with the triples that ground it at the
+point of emission. I report the null on accuracy rather than hiding it — and I
+report the bounds on the auditability too, which is the next question.
+
+**"Show me one supporting triple, then."** *(Expect this. Slide 15 invites it.)*
+I can't, from the committed record, and that is a limitation rather than an
+evasion. `RunLogger` writes `n_supporting_triples` — an integer — and discards
+the list, so no committed artifact in this work contains a single supporting
+triple; every statistic I quote about them comes from that counter. What I can
+show is the traversal record each answer was produced against. Two things follow
+and I state both: the pairing is real inside the run and unavailable afterwards,
+and one polarity of the verifier's error is therefore unmeasured. Persisting
+accepted claims with their matching triples is one logging change, and it is the
+first item in my future work. I did not make it late because it would separate
+the code from results already frozen against it.
+
+**"Does every accepted claim get evidence attached?"**
+No — one route of three does. Traversed adjacency attaches every traversed
+triple joining the pair; `verify_connection` and the entailment fallback accept
+with nothing attached. On the 80-question development set, 13 answers carry no
+supporting triples: ten are hedges that asserted nothing, one had every claim
+rejected, and two asserted a single claim certified by the route that records no
+evidence. Median across all 80 is 3, mean 4.1, maximum 16 — read from the
+counter, since the triples are exactly what the log does not keep.
 
 **"Your planner result says your own design is wrong."**
 It says the planner is wrong *for one-hop questions*, and WebQSP is mostly
