@@ -590,27 +590,58 @@
 \begin{frame}{Contributions, and what I would not claim}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
+      % THESE ARE THE THESIS'S SIX, IN ITS ORDER (sec:contribution, one
+      % \subsection each). They were a different six: this slide had split
+      % the framework and its verification layer into two items, promoted
+      % the five-system comparison and the hop-count shape from results to
+      % contributions, and dropped the ablation, the decomposition finding
+      % and the protocol -- while still saying "six". An examiner with the
+      % thesis open reads both lists. 49a85cb audited exactly this in the
+      % thesis, where the conclusion counted four; do not let the deck
+      % reopen it. check_slides.py holds each one against sec:contribution.
+      %
+      % "pre-specified", not the thesis's "pre-registered": nothing was
+      % filed with a registry. That correction is the standing rule
+      % recorded in thesis_paper/sections/setup.tex, and it is not a
+      % divergence to reconcile back the other way.
       \textbf{Contributions}
       \small
-      \begin{enumerate}
-        \item AGR: a state machine over a constrained graph tool API
-        \item The Structural Verification Layer and its output contract
-        \item A controlled five-system comparison, one backbone, one budget
-        \item The hop-count shape answering RQ1
-        \item The \emph{echo attractor}, named
-        \item A counted benchmark-defect rate ($57$)
+      % Six contributions beside five limitations overruns beamer's default
+      % list spacing by 19pt. Tightened rather than cut: every item here is
+      % one of the thesis's, and dropping one is the defect this slide is
+      % being fixed for. itemsep clears most of it; the last 0.8pt is the
+      % gap under these headers, which no amount of rewording touched --
+      % three separate trims left the overfull at exactly 0.76761pt.
+      \vspace{-1.5mm}
+      \begin{enumerate}\setlength{\itemsep}{0pt}
+        \item AGR and its \alert{Structural Verification Layer}
+        \item A \alert{component-level ablation} of four mechanisms
+        \item \alert{Stratum-dependent decomposition} --- planning hurts
+        \item The \emph{\alert{echo attractor}}, named
+        \item \alert{Benchmark-defect rates} for WebQSP and CWQ ($57$)
+        \item \alert{Pre-specified} evaluation thresholds
       \end{enumerate}
     \end{column}
     \begin{column}{0.48\textwidth}
+      % Each of these maps to a heading in sec:limitations-final, in its
+      % severity order. "ToG leads on the questions it finishes" stood here
+      % alone and is an honest disclosure, but it is not one of the
+      % thesis's limitations; the thesis's item is the candidate-width
+      % confound, which is the caveat ON that disclosure, so the two are
+      % now one bullet. The widths come from agr/baselines/tog.py and
+      % agr/kg_tools.py, and check_slides.py reads them from there.
       \textbf{Limitations I state plainly}
       \small
-      \begin{itemize}
+      \vspace{-1.5mm}
+      \begin{itemize}\setlength{\itemsep}{0pt}
         \item The verifier logs only what it \alert{rejects}: wrongful
           acceptance is unmeasured, and the evidence is not persisted
-        \item Verification earns \alert{no} detectable accuracy gain
+        \item \alert{No} detectable accuracy gain --- and at $n \approx 200$
+          that is ``not detected'', not ``none''
         \item Zero ungrounded assertion is \alert{navigation}, not the layer
-        \item ToG leads on the questions it finishes
-        \item One backbone: results are architectural, not universal
+        \item ToG leads where it finishes, from a \alert{narrower
+          candidate set}: $40$/$20$ vs $300$/$200$
+        \item One environment, one backbone, one annotator
       \end{itemize}
     \end{column}
   \end{columns}

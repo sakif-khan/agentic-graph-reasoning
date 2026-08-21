@@ -8,15 +8,20 @@ The four backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 23 min 57 s of speaking against a 25-minute limit.** The margin is
-down to 1 min 3 s, and that is worth knowing before you stand up: nobody has
+**Budget: 24 min 12 s of speaking against a 25-minute limit.** The margin is
+down to 48 seconds, and that is worth knowing before you stand up: nobody has
 ever finished a defense talk faster than they rehearsed it.
 
-It was 22:30 with a 2.5-minute margin until slides 7, 16 and 21 took on the
-bounds around the output contract — 133 words, 86 seconds at this script's own
-93 wpm. That content is not optional; being walked into it in questions costs
-more than the eighty-six seconds. If you want the old margin back, the recovery
-note below already names where it comes from: slides 3, 6 and 8.
+It was 22:30 with a 2.5-minute margin. Slides 7, 16 and 21 took on the bounds
+around the output contract (86 seconds at this script's own 93 wpm), and slide
+21 then took on the thesis's own contribution list and the candidate-width
+limitation (a further 15). None of that is optional — being walked into any of
+it in questions costs more than the 102 seconds it buys back.
+
+**48 seconds is thin.** Everything that could move to the answers has already
+moved there; what is left is spoken because it has to be. If you want a real
+margin, the recovery note below names where it comes from — slides 3, 6 and 8 —
+and that is a decision about those slides, not about this one.
 
 Times below are *cumulative at the end of that slide*. If you are more than
 40 seconds past a marker, use the recovery notes at the bottom.
@@ -43,8 +48,8 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 18 | The result I did not expect | 1:10 | 20:07 |
 | 19 | The echo attractor | 1:15 | 21:22 |
 | 20 | The benchmark was wrong 57 times | 0:50 | 22:12 |
-| 21 | Contributions and limitations | 1:30 | 23:42 |
-| 22 | Thank you | 0:15 | 23:57 |
+| 21 | Contributions and limitations | 1:45 | 23:57 |
+| 22 | Thank you | 0:15 | 24:12 |
 
 The four **bold** slides are the ones the committee will actually interrogate.
 If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
@@ -429,12 +434,11 @@ you can't.**
 
 ---
 
-## 21 — Contributions, and what I would not claim *(1:30)*
+## 21 — Contributions, and what I would not claim *(1:45)*
 
-> To summarise. Six contributions: the framework, the verification layer and its
-> output contract, the controlled five-system comparison, the hop-count result
-> for RQ1, the echo attractor as a named failure mode, and the benchmark-defect
-> rate.
+> To summarise. Six contributions, and they are the six the thesis claims in
+> section 1.6. The one I would underline is stratum-dependent decomposition: the
+> literature treats decomposition as straightforwardly beneficial, and it is not.
 >
 > And the limitations, which I'd rather state than be asked.
 >
@@ -442,10 +446,11 @@ you can't.**
 > wrongful acceptance has no rate at all — and the same decision is why the
 > output contract cannot be audited from the record.
 >
-> Then: verification earns no detectable accuracy gain. Zero ungrounded assertion
-> comes from navigation, not from my layer. Think-on-Graph leads on the questions
-> it finishes. And everything here runs on one backbone — these are architectural
-> results, not universal ones.
+> Then: no detectable accuracy gain from verification, and at n around 200 that
+> is "not detected", not "none". Zero ungrounded assertion comes from navigation,
+> not my layer. Think-on-Graph leads where it finishes, and prunes from a
+> narrower candidate set — 40 and 20 against my 300 and 200 — so its unclipped
+> subset understates it. And one environment, one backbone, one annotator.
 
 ---
 
@@ -499,6 +504,15 @@ and one polarity of the verifier's error is therefore unmeasured. Persisting
 accepted claims with their matching triples is one logging change, and it is the
 first item in my future work. I did not make it late because it would separate
 the code from results already frozen against it.
+
+**"Why isn't the five-system comparison one of your contributions?"**
+Because the thesis does not count it as one, and slide 21 is the thesis's list —
+section 1.6, one subsection per item. The comparison and the hop-count shape are
+results the contributions rest on; they get slides 11 and 13, which is where the
+weight belongs. An earlier version of that slide promoted both to contributions
+and dropped the ablation, the decomposition finding and the protocol to make room
+— still saying "six". The thesis had already been audited for exactly that
+mismatch, where its conclusion counted four against section 1.6's six.
 
 **"How many questions is that hedge difference, and is it significant?"**
 Six, on CWQ: 23.2 percent of 198 against 20.2, so the layer declined to assert on

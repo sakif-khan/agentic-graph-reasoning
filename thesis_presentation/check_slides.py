@@ -287,6 +287,143 @@ for drv in DRIVERS:
     ck(f"{drv}: no warnings, of any class", not hits,
        "; ".join(sorted(set(hits))))
 
+# ---------------------------------------------------------------------
+# The deck's six contributions must be the thesis's six.
+#
+# They were not. sec:contribution has one \subsection per contribution;
+# the deck had split the framework and its verification layer into two
+# items, promoted the five-system comparison and the hop-count shape from
+# results to contributions, and dropped the ablation, the decomposition
+# finding and the protocol -- while both lists said "six". Only two mapped.
+# 49a85cb had already audited this inside the thesis, where the conclusion
+# counted four; nothing was holding the deck to the same standard.
+#
+# Held to the thesis rather than to a list repeated here, so adding a
+# seventh contribution to sec:contribution fails this until the deck says
+# so. The keys are alternatives per contribution, not a spelling test, and
+# they are matched inside the contributions block alone -- "echo attractor"
+# also appears on slide 19, and matching the whole deck would pass a slide
+# that had dropped it.
+print("\n== the deck's contributions are the thesis's ==")
+INTRO = os.path.join(ROOT, "thesis_book", "chapters", "introduction.tex")
+CONTRIB_KEYS = [
+    ("framework / verification layer", ("verification layer",)),
+    ("component-level ablation", ("component-level ablation",)),
+    ("stratum-dependent decomposition", ("stratum-dependent",)),
+    ("echo attractor", ("echo attractor",)),
+    ("benchmark defect rates", ("benchmark-defect", "benchmark defect")),
+    ("pre-specified protocol", ("pre-specified", "pre-registered")),
+]
+
+
+def block(after, environment):
+    """The one list environment following a marker in the deck source."""
+    i = FLAT.find(after)
+    if i < 0:
+        return ""
+    m = re.search(r"\\begin\{" + environment + r"\}(.*?)\\end\{"
+                  + environment + r"\}", FLAT[i:])
+    return m.group(1) if m else ""
+
+
+intro = open(INTRO, encoding="utf-8").read()
+start = intro.index(r"\section{Our Contribution}")
+end = intro.index(r"\section", start + 10)
+claimed = re.findall(r"\\subsection\{", intro[start:end])
+contrib = block(r"\textbf{Contributions}", "enumerate").lower()
+# \itemsep is not an \item. Counting it made a six-item list read as seven.
+listed = re.findall(r"\\item(?![a-zA-Z])", contrib)
+
+ck(f"thesis claims {len(claimed)} contributions, deck lists {len(listed)}",
+   len(claimed) == len(listed) == len(CONTRIB_KEYS),
+   f"{len(claimed)} vs {len(listed)}")
+for label, keys in CONTRIB_KEYS:
+    ck(f"contribution present: {label}",
+       any(k in contrib for k in keys))
+
+# Every limitation on the slide answers to a heading in the thesis's
+# ordered list. "ToG leads on the questions it finishes" stood alone here
+# and is not one of them; the thesis's item is the candidate-width
+# confound, which is the caveat on that disclosure.
+print("\n== the deck's limitations are the thesis's ==")
+LIMIT_KEYS = ("rejects", "detectable accuracy", "navigation",
+              "candidate set", "one environment")
+limits = block(r"\textbf{Limitations I state plainly}", "itemize").lower()
+for key in LIMIT_KEYS:
+    ck(f"limitation present: {key}", key in limits)
+ck("the first-ranked limitation leads the list",
+   limits.find("rejects") >= 0
+   and all(limits.find("rejects") < limits.find(k)
+           for k in LIMIT_KEYS if k != "rejects" and k in limits))
+
+# The candidate widths are configuration, not results, so they are read
+# from the code that sets them rather than from thesis_numbers.json.
+print("\n== candidate widths come from the code ==")
+tog = open(os.path.join(ROOT, "agr", "baselines", "tog.py"),
+           encoding="utf-8").read()
+tools = open(os.path.join(ROOT, "agr", "kg_tools.py"), encoding="utf-8").read()
+m = re.search(r"MAX_RELATIONS,\s*MAX_NEIGHBORS\s*=\s*(\d+),\s*(\d+)", tog)
+ck("tog.py states its caps", m is not None)
+if m:
+    ck(f"deck quotes ToG {m.group(1)}/{m.group(2)}",
+       f"${m.group(1)}$/${m.group(2)}$" in FLAT)
+a = re.search(r"max_fanout=(\d+),\s*max_relations=(\d+)", tools)
+ck("kg_tools.py states AGR's caps", a is not None)
+if a:
+    ck(f"deck quotes AGR {a.group(2)}/{a.group(1)}",
+       f"${a.group(2)}$/${a.group(1)}$" in FLAT)
+
+# ---------------------------------------------------------------------
+# The rehearsal transcript's timing table has to add up.
+#
+# It is three numbers deep -- a per-slide time, a running cumulative, and a
+# total quoted in the budget line -- and every edit to the script moves all
+# three. That is exactly the shape that goes stale silently: a table still
+# claiming 22:30 while the script has grown past 24 minutes is worse than
+# no table, because it is consulted under pressure and believed.
+print("\n== the transcript's timing table adds up ==")
+SCRIPT = os.path.join(HERE, "transcript.md")
+if not os.path.exists(SCRIPT):
+    print("  [   ] transcript.md absent")
+else:
+    md = open(SCRIPT, encoding="utf-8").read()
+
+    def secs(m, s):
+        return int(m) * 60 + int(s)
+
+    rows = re.findall(r"^\| (\d+) \| ([^|]*?) \| (\d+):(\d\d) \| (\d+):(\d\d) \|",
+                      md, re.M)
+    ck("the table has a row per slide", len(rows) == 22, f"{len(rows)} rows")
+
+    run = 0
+    drift = []
+    for n, _t, ms, ss, mc, sc in rows:
+        run += secs(ms, ss)
+        if run != secs(mc, sc):
+            drift.append(f"row {n}: sum {run}s vs stated {secs(mc, sc)}s")
+    ck("cumulative column is the running sum", not drift,
+       drift[0] if drift else "")
+
+    # Each section heading repeats its slide's time; both have to move.
+    heads = dict((n, secs(m, s)) for n, m, s in
+                 re.findall(r"^## (\d+) — .*?\*\((\d+):(\d\d)\)\*", md, re.M))
+    table = dict((n, secs(ms, ss)) for n, _t, ms, ss, _c, _d in rows)
+    mism = [f"slide {n}: heading {heads[n]}s vs table {table[n]}s"
+            for n in sorted(table, key=int)
+            if n in heads and heads[n] != table[n]]
+    ck("section headings match the table", not mism, mism[0] if mism else "")
+
+    b = re.search(r"\*\*Budget: (\d+) min (\d+) s of speaking", md)
+    ck("the budget line states the table's total",
+       b is not None and secs(b.group(1), b.group(2)) == run,
+       f"stated {b.group(0) if b else '?'} vs {run//60}:{run % 60:02d}")
+
+    # The point of the budget is the limit it sits under.
+    lim = re.search(r"against a (\d+)-minute limit", md)
+    ck("the talk fits the limit it names",
+       lim is not None and run <= int(lim.group(1)) * 60,
+       f"{run}s vs {lim.group(1) if lim else '?'} min")
+
 print("\n" + ("ALL SLIDE NUMBERS MATCH THEIR SOURCE"
               if ok else "SOMETHING DOES NOT MATCH"))
 sys.exit(0 if ok else 1)
