@@ -1,11 +1,11 @@
 Elsevier Highlights -- submitted as a separate file, not part of the PDF.
 Three to five bullets, each at most 85 characters including spaces.
 
-FINAL SET (character counts verified; re-check after any edit):
+FINAL SET (checked by tests/test_paper_highlights.py, not by hand):
 
 - Agentic KGQA framework pairs every answer with the triples that support it
 - Matches or beats four baselines at roughly half the language-model calls
-- Ablation: removing the planner improves accuracy and cuts tokens by 31%
+- Removing the planner improves accuracy on the shallower benchmark, cutting tokens 31%
 - Three of four agentic components show no detectable accuracy effect
 - The echo attractor: a true entity one hop away that consensus cannot detect
 
@@ -19,6 +19,17 @@ it is a claim about evaluation methodology rather than about this system.
 Deliberately NOT included: any claim that the verification layer raises
 accuracy. It does not (Section 6), and a highlight promising it would be
 contradicted by the paper it introduces.
+
+Bullet 3 carries "on the shallower benchmark" because the planner result
+is not a both-benchmark result: removing the planner improves WebQSP
+(+0.083 F1, p = 0.006) and costs ComplexWebQuestions (-0.047 F1,
+p = 0.088), and the 31% token cut is the WebQSP figure too -- CWQ is
+21%. An earlier version of this bullet said "improves accuracy and cuts
+tokens by 31%" with no scope, which fails the same standard the previous
+paragraph applies: it would have been contradicted by the paper it
+introduces, in a document an editor reads before the abstract. At 85
+characters it is exactly at the limit, so anything added must displace
+something, not extend it.
 
 Also dropped: the measured label-defect rates for the two benchmarks.
 True and interesting, but it needs both the flagged and the confirmed
