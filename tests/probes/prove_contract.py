@@ -48,8 +48,17 @@ def edit(path, old, new):
     anchor is a liability -- runs of whitespace become \\s+ and the anchor
     survives a rewrap. The replacement goes in through a lambda so that a
     backslash in the LaTeX does not read as a regex group reference.
+
+    The gap also swallows a markdown blockquote marker. transcript.md is
+    written as `> ' quoted speech, so a rewrap puts "\\n> " between two
+    words and plain \\s+ stops at the `>'. That is not hypothetical: an
+    unrelated edit to the same sentence moved the wrap by four words and
+    this probe went from CAUGHT to raising, which run_all reported as a
+    failure -- correctly, since a probe that cannot find its anchor proves
+    nothing about the check.
     """
-    pattern = re.compile(r"\s+".join(re.escape(w) for w in old.split()))
+    gap = r"\s+(?:>\s*)?"
+    pattern = re.compile(gap.join(re.escape(w) for w in old.split()))
 
     def go():
         s = orig[path]

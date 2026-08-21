@@ -333,10 +333,10 @@ If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
 > p equals 1.0 on both datasets. It does not earn its place on Hits@1 or F1, and
 > I report that as a negative result.
 >
-> What it does do: it converts silent error into an explicit hedge — AGR hedges
-> on 8.2 percent of WebQSP where the parametric control is simply wrong on more
-> than that. It attaches supporting triples to the claims traversal grounds. And
-> it pairs the answer with that evidence at the point it is emitted.
+> What it does do: it withholds what it cannot ground. Removing the layer drops
+> the hedge rate 23.2 to 20.2 percent on CWQ, 8.5 to 8.0 on WebQSP — direction
+> only; I have not tested that column. It attaches supporting triples to the
+> claims traversal grounds, and pairs the answer with that evidence at emission.
 >
 > The layer's case rests on auditability, not accuracy — and I'll be as plain
 > about how far that goes. Two bounds, both on the slide. One route of three
@@ -499,6 +499,19 @@ and one polarity of the verifier's error is therefore unmeasured. Persisting
 accepted claims with their matching triples is one logging change, and it is the
 first item in my future work. I did not make it late because it would separate
 the code from results already frozen against it.
+
+**"How many questions is that hedge difference, and is it significant?"**
+Six, on CWQ: 23.2 percent of 198 against 20.2, so the layer declined to assert on
+six questions the ablated system answered. Correctness moved on exactly one of
+the 398 paired questions, so at least five of those six were assertions that
+would have been wrong — which is the mechanism, seen at the only place the design
+isolates it. No, it is not significance-tested; the ablation's McNemar test is on
+correctness, not on the hedge column, and I claim the direction and nothing more.
+*Do not* offer the no-retrieval contrast here. Its 12.2 percent is a hedge rate,
+not an error rate — backup slide 5 has it in a column headed "WebQSP hedge %" —
+and AGR hedges *less* than it does, 8.2 against 12.2, so that comparison argues
+the opposite of what it looks like. No-retrieval's actual error rate is 170 wrong
+out of the 351 questions it asserts on.
 
 **"Does every accepted claim get evidence attached?"**
 No — one route of three does. Traversed adjacency attaches every traversed

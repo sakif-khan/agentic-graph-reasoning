@@ -68,6 +68,45 @@ for s, label in NAME.items():
         v = f"{B[f'{ds}/{s}']['hedge_pct']:.1f}"
         ck(f"{label:15s} {ds:6s} hedge {v}", has(v))
 
+# A hedge rate is a refusal to assert. Presence alone does not say the deck
+# calls it that, and for one release it did not: slide 15 read "AGR hedges
+# on 8.2% of WebQSP against no-retrieval's 12.2% error rate". 12.2 is
+# no-retrieval's hedge_pct -- backup slide 5 prints it under "WebQSP hedge
+# %" -- and its error rate is 170 wrong out of the 351 it asserts on. The
+# check above passed the whole time, because 12.2 was indeed present.
+#
+# Worse than the label: hedge against hedge is 8.2 < 12.2, so the sentence
+# meant to show verification converting error into abstention showed AGR
+# abstaining LESS than the unverified control, and contradicted the thesis
+# sentence that calls 8.2% "the lowest of the five systems".
+print("\n== hedge rates are not called error rates ==")
+MISLABEL = re.compile(r"(?:error|wrong|accuracy|hallucination)\s+rate")
+for s, label in NAME.items():
+    for ds in ("webqsp", "cwq"):
+        v = f"{B[f'{ds}/{s}']['hedge_pct']:.1f}"
+        near = []
+        for m in re.finditer(re.escape(v), FLAT):
+            window = FLAT[m.start():m.end() + 60]
+            if MISLABEL.search(window):
+                near.append(window[:70])
+        ck(f"{label:15s} {ds:6s} hedge {v} not labelled an error rate",
+           not near, near[0] if near else "")
+
+# The one comparison that isolates the verification layer, quoted on slide
+# 15. Bound to the sentence rather than to the four values appearing
+# somewhere: each is also a cell in the ablation table on another slide.
+print("\n== verifier hedge deltas (slide 15) ==")
+AB = J["ablations"]["by_condition"]
+for ds, name in (("cwq", "CWQ"), ("webqsp", "WebQSP")):
+    full = f"{AB[f'{ds}/half_abl_full']['hedge_pct']:.1f}"
+    none = f"{AB[f'{ds}/half_abl_noverifier']['hedge_pct']:.1f}"
+    pat = re.compile(rf"\${re.escape(full)}\\%\s*\\to\s*{re.escape(none)}"
+                     rf"\\%\$\s*on\s*{name}")
+    ck(f"{name:6s} verifier hedge {full} -> {none} stated as such",
+       bool(pat.search(FLAT)), f"{full} -> {none}")
+    ck(f"{name:6s} removing the verifier lowers hedging",
+       float(none) < float(full), f"{full} vs {none}")
+
 print("\n== ablation table ==")
 A = J["ablations"]["by_condition"]
 COND = {"full": "Full system", "noplanner": "No planner",
