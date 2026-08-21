@@ -215,7 +215,9 @@ print("\n== deck hygiene ==")
 # body text must not shrink below \small. Font sizes set inside a TikZ/pgfplots
 # style declaration (font=\scriptsize) label a diagram, not prose, so strip
 # those before looking.
-body = re.sub(r"font=\\\w+", "", TEX)
+# uncomment() first, for the same reason FLAT does: a comment recording
+# why a size command was removed must not read as a size command.
+body = re.sub(r"font=\\\w+", "", uncomment(TEX))
 body = re.sub(r"agrplot/\.style=\{.*?\}\}", "", body, flags=re.S)
 ck("no body text smaller than \\small",
    not re.search(r"\\(footnotesize|scriptsize|tiny)\b", body),
@@ -749,6 +751,83 @@ ck("the script does not harden the old count",
 if len(back) in NUM:
     ck(f"the script also says {NUM[len(back)].lower()} cycles",
        re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s5, re.I) is not None)
+
+# ---------------------------------------------------------------------
+# The script's own internals: one backup numbering system, one protected
+# set, and a bold count that matches what is bold.
+#
+# The script referred to backup slides two ways at once. "Go to Backup 1"
+# and "(B2)" are ordinals; "Backup 4" was a page number, and the tables
+# use pages. The file opens on a title page, so the two are off by one and
+# an ordinal read resolves every reference one slide short -- "backup 4"
+# lands on hedging rather than the census. That is a note consulted under
+# pressure, which is when the wrong slide costs most.
+print("\n== the script's own internals agree ==")
+BACKUP = os.path.join(HERE, "content-backup.tex")
+backup_titles = re.findall(r"\\begin\{frame\}\{Backup: ([^}]*)\}",
+                           open(BACKUP, encoding="utf-8").read())
+rows = re.findall(r"^\| (\d+) \| ([^|]+?) \| \"", MD, re.M)
+ck(f"the backup table has a row per backup slide ({len(backup_titles)})",
+   len(rows) == len(backup_titles), f"{len(rows)} rows")
+ck("and the pages start at 2, after the title page",
+   [int(p) for p, _ in rows] == list(range(2, len(backup_titles) + 2)),
+   str([p for p, _ in rows]))
+
+
+def stems(text):
+    return {w[:5] for w in re.findall(r"[a-z]{4,}", text.lower())}
+
+
+for (page, contents), title in zip(rows, backup_titles):
+    ck(f"page {page} is {title!r}", bool(stems(contents) & stems(title)),
+       f"table says {contents.strip()!r}")
+
+ordinal = re.search(r"\bbackup\s+\d|\(B\d\)", MD, re.I)
+ck("nothing refers to a backup slide by ordinal", ordinal is None,
+   f"{ordinal.group(0)!r} -- say 'backup page N'" if ordinal else "")
+for m in re.finditer(r"backup page (\d+)", MD, re.I):
+    ck(f"backup page {m.group(1)} is a page the table lists",
+       m.group(1) in [p for p, _ in rows])
+
+# "The four bold slides" against three bold rows, and two lists of slides
+# not to take time from that named different slides.
+bold = [int(n) for n, _t in re.findall(r"^\| (\d+) \| (\*\*[^|]*\*\*) \|",
+                                       MD, re.M)]
+starred = [int(n) for n in re.findall(r"^## (\d+) [^\n]*★", MD, re.M)]
+ck(f"the bold rows and the starred sections are the same {len(bold)}",
+   bold == starred and bool(bold), f"{bold} vs {starred}")
+if len(bold) in NUM:
+    ck(f"the script calls them the {NUM[len(bold)].lower()} bold slides",
+       re.search(rf"[Tt]he {NUM[len(bold)].lower()} \*\*bold\*\* slides", MD)
+       is not None, f"{len(bold)} are bold")
+# \s+ rather than a literal space: this file is hard-wrapped, and the
+# first of these two lists had its numbers pushed onto the next line by an
+# unrelated edit, which made the rule match one list and compare it with
+# nothing.
+protect = [set(re.findall(r"\d+", m.group(1)))
+           for m in (re.search(r"never from\s+([^.]*)\.", MD),
+                     re.search(r"Never compress\s+([^.]*)\.", MD)) if m]
+ck("both lists of slides not to shorten name the same slides",
+   len(protect) == 2 and protect[0] == protect[1],
+   " vs ".join(str(sorted(p, key=int)) for p in protect))
+
+# The census slide pools wrong with hedge and both datasets. Those are the
+# thesis's own Total column, so the numbers are right -- but sec:taxonomy
+# says three times that the two are "never pooled" and that "a pooled
+# percentage would describe neither", and pooling hides the shape flip.
+print("\n== the pooled census says it is pooled ==")
+FH = J["failure_histogram"]
+split = {ds: sum(FH[ds][k].get("composite_claim", 0) for k in ("wrong", "hedge"))
+         for ds in ("webqsp", "cwq")}
+census = frame("Every failure, read: the echo attractor")
+ck("the census slide says the totals are pooled",
+   re.search(r"never pooled", census, re.I) is not None)
+ck(f"and gives the shape flip, {split['webqsp']} against {split['cwq']}",
+   re.search(rf"\${split['webqsp']}\$ on WebQSP against \${split['cwq']}\$ "
+             rf"on CWQ", census) is not None,
+   f"composite_claim is {split['webqsp']}/{split['cwq']}")
+ck("and points at the split census",
+   re.search(r"backup page \$?\d", census) is not None)
 
 # ---------------------------------------------------------------------
 # The rehearsal transcript's timing table has to add up.

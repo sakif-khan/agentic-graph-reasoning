@@ -52,8 +52,10 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 21 | Contributions and limitations | 1:45 | 24:11 |
 | 22 | Thank you | 0:15 | 24:26 |
 
-The four **bold** slides are the ones the committee will actually interrogate.
-If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
+The three **bold** slides are the ones the committee will actually
+interrogate. If you are running long, take time from 3, 6, and 8 — never from
+11, 13, 14, 17 or 18. That is the same list the recovery notes protect, and 14
+is on it for a different reason: skipping it hands the clipping issue to them.
 
 ---
 
@@ -144,7 +146,7 @@ caption says two and names two, but the figure source calls the third one a
 cycle in its own comment. Naming them after the edge labels — continue,
 backtrack, retry — means counting the arrows confirms the sentence.
 
-**If asked about budgets, go to Backup 1.**
+**If asked about budgets, go to backup page 2.**
 
 ---
 
@@ -445,7 +447,14 @@ and section 1.6 says the contribution is the mechanism "and what it means for
 consensus-based evaluation, not the frequency". Slide 20 is the same finding
 seen from the other side.
 
-**The full 12-category histogram is Backup 4 if anyone wants it.**
+**The table is pooled, and the slide says so.** Wrong and hedge are never
+pooled in the thesis — sec:taxonomy: "a pooled percentage would describe
+neither" — and pooling also hides the shape flip: `composite_claim` is 1 on
+WebQSP against 46 on CWQ. The caption carries both facts and points at backup
+page 4, so the split census is something you offer rather than something you
+are corrected with.
+
+**The full 12-category histogram is backup page 4 if anyone wants it.**
 
 ---
 
@@ -494,7 +503,11 @@ seen from the other side.
 ## Backup slides — `pre-defense-0421052099-backup.pdf`
 
 A separate document. Open it before you start, minimised or on a second screen.
-Page numbers below are that file's own.
+**Everything in this script refers to backup slides by the page number the
+viewer shows**, which is what this table lists. The file opens on a title page,
+so the first backup slide is page 2. An ordinal would resolve one short of
+every one of them: counted that way, the fourth backup slide is hedging
+rather than the census.
 
 | Page | Contents | Use when asked |
 | --- | --- | --- |
@@ -514,9 +527,18 @@ chosen to suit AGR.
 
 **"Isn't the 25-call cap arbitrary, and doesn't it favour AGR?"**
 It's the cap Think-on-Graph's own paper operates under. And AGR never reaches it
-— zero percent on both datasets (B2). If I raised the cap, AGR's numbers would
+— zero percent on both datasets (backup page 3). If I raised the cap, AGR's numbers would
 not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
+
+**"Do the categories look the same on both datasets?"** *(Slide 19 is pooled.)*
+No, and that is the more interesting answer. The census is reported split in the
+thesis and never pooled, because wrong and hedge describe different failure
+semantics and the proportions differ sharply by dataset. The clearest case is
+`composite_claim`: 1 on WebQSP against 46 on CWQ. WebQSP questions mostly are
+not compound, so the category barely exists there; on ComplexWebQuestions it is
+the largest single failure mode. A pooled percentage would describe neither
+dataset. The full split is backup page 4.
 
 **"Doesn't GraphRAG show the same thing?"** *(Slide 11 puts 0.203 and 0.205
 side by side. Do not pool them.)*

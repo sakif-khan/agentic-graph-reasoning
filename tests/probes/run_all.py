@@ -33,6 +33,7 @@ def tracked_dirty():
 TARGETS = ("thesis_paper/", "scripts/check_paper_numbers.py",
            "tests/test_paper_", "thesis_presentation/content-main.tex",
            "thesis_presentation/transcript.md",
+           "thesis_presentation/content-backup.tex",
            "thesis_book/chapters/introduction.tex",
            "thesis_book/chapters/conclusion.tex",
            "thesis_book/chapters/results.tex",

@@ -569,6 +569,26 @@
         \alert{Echo attractor} & \alert{13} \\
         \bottomrule
       \end{tabular}
+
+      % The blank line above is load-bearing: the tabular is an inline box in
+      % the current paragraph, so without it this caption sets *beside* the
+      % table rather than under it. A comment does not end a paragraph.
+      \vspace{1mm}
+      % These are the thesis's own Total column, so they are right -- but
+      % sec:taxonomy says three times that wrong and hedge are "never pooled,
+      % because they describe different failure semantics" and that "a pooled
+      % percentage would describe neither". Pooling also hides the shape flip:
+      % composite_claim is 1 on WebQSP against 46 on CWQ. Saying so here costs
+      % one line and stops the split census being produced as a correction.
+      % No size command: the column is already \small, and deck hygiene bans
+      % body prose below it. A \footnotesize caption here failed that check.
+      % "Composite claim" rather than \texttt{composite\_claim}: the monospace
+      % token cannot hyphenate, and on a 48mm measure it stretched the line to
+      % badness 2503 against this deck's ceiling of 2000. The table above
+      % spells the category the same way.
+      Totals. Wrong and hedge are \emph{never pooled} in the thesis, and the
+      shape flips: composite claim is $1$ on WebQSP against $46$ on CWQ.
+      Split census: backup page $4$.
     \end{column}
     \begin{column}{0.48\textwidth}
       \small
