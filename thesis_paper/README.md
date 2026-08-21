@@ -16,10 +16,20 @@ Journal manuscript drawn from `thesis_book/`. Target: Elsevier —
 ```bash
 cd thesis_paper
 latexmk -pdf agr-paper.tex
+python ../scripts/check_paper_log.py
 ```
 
 `review` gives the 1.5-spaced single column Elsevier wants for peer
 review — all the option does is set the baseline stretch.
+
+**The second line is part of building, not an extra.** The bar below is
+"0 warnings of any class", and reading a 900-line log by eye does not
+enforce it: four `Package hyperref Warning` lines rode through several
+rounds of *zero warnings* because the check was a grep for `LaTeX
+Warning` and `Overfull`. `check_paper_log.py` looks for the word rather
+than for remembered phrasings, and refuses a log that is missing, that
+was built from sources since edited, or that stops before the run
+finished — none of which is the same as a quiet one.
 
 **No line numbers, deliberately** — and as of August 2026 this is
 settled rather than merely unverified. Elsevier's generic guide for
@@ -156,7 +166,20 @@ that removes the objection is roughly fifty dollars.
   statement has no punctuation where a break is needed, so plain `\url`
   set it 0.68pt overfull — and unlike the `\vbox` above, that one
   survives at any document length. `xurl` loads after `hyperref` and
-  lets a URL break anywhere.
+  lets a URL break anywhere. Removing it today reports an *underfull*
+  `\hbox` of badness 2564 rather than the overfull box measured then:
+  `\emergencystretch=1em` arrived in between and stretches the line
+  instead of letting it overrun. Same defect, and still a diagnostic.
+- **`\corref` needs keeping out of the PDF string.** elsarticle hands
+  hyperref the raw `\author` and `\title` arguments for the PDF's
+  `/Author` and `/Title` fields, so the footnote marker designating the
+  corresponding author reached a string that has no footnotes — four
+  `Package hyperref Warning: Token not allowed in a PDF string` per
+  build. The metadata was correct anyway, because hyperref drops what it
+  cannot use, so nothing looked wrong on the page or in the file.
+  `\pdfstringdefDisableCommands` in `preamble.tex` blanks the three
+  title-block markers while a PDF string is being built and nowhere
+  else; the asterisk still marks the author on page 1.
 - **`\affiliation` needs a scalable font family.** Under `review`,
   elsarticle asks for a font at an empty size while typesetting the
   address block, and CM has no shape to give it — nine `Font shape …

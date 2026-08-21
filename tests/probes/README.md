@@ -14,6 +14,9 @@ clean document, and several of these could not, at first:
 - `prove_abstract` itself reconstructed its "shipped state" by reading
   `HEAD`, so it stopped corrupting anything the moment the fix landed —
   and went on reporting `CAUGHT`
+- the build log was declared clean for several rounds while carrying four
+  `Package hyperref Warning` lines, because the check was a grep for
+  `LaTeX Warning` and `Overfull`
 
 Each probe reinstates a defect that actually shipped, verbatim where
 possible, runs the relevant checker, and asserts it fails. Then it
@@ -36,7 +39,14 @@ raises at import time if any of the four variables is missing, so on a
 fresh clone `prove_abstract`, `prove_declarations`, `prove_highlights` and
 `prove_selfcontained` die with `IndexError: list index out of range`
 before testing anything. `cp .env.example .env` and fill it in; the other
-eleven probes run without it.
+twelve probes run without it.
+
+**`prove_log` needs a LaTeX toolchain**, because three of its cases are
+only visible in a build: it reinstates the defect in `preamble.tex` and
+runs `latexmk` for each, into a temporary directory so the tracked
+`agr-paper.pdf` is never touched. That is about thirty seconds of
+`run_all.py`'s six and a half minutes. It also needs the manuscript to have
+been built already, since two more cases age and truncate the real log.
 
 They are **not** pytest tests and pytest will not collect them — the
 filenames do not match `test_*.py`, deliberately.

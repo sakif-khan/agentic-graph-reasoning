@@ -135,6 +135,36 @@
 % elsarticle does not.
 \usepackage[hidelinks]{hyperref}
 
+% The PDF's /Author and /Title strings are built from the raw arguments
+% of \author and \title, markup and all: elsarticle accumulates them
+% into \useelstitle and \useauthors (class lines 121--125 and 239--284)
+% and hands both to hyperref at \begin{document} (287--290). \corref{cor1}
+% is markup -- a footnote marker for the printed page -- and a metadata
+% string has no footnotes, so \pdfstringdef stopped on it four times at
+% \end{frontmatter}: "Token not allowed in a PDF string", for \corref
+% itself, for the \cnotenum and \@corref it expands to, and for the
+% \ifcase inside those.
+%
+% The string it produced was already right ("Md. Sakif Khan; Sadia
+% Sharmin; ") because hyperref drops what it cannot use and carries on,
+% so this was noise rather than damage -- but it is noise that has to be
+% read and dismissed on every build, and it is what a log check counts.
+%
+% \pdfstringdefDisableCommands is hyperref's hook for precisely this:
+% definitions that hold only while a PDF string is being built and never
+% reach the page, so the asterisk still marks the corresponding author
+% in the typeset frontmatter. All three of elsarticle's title-block
+% reference markers are named, not just the one in use: \fnref belongs
+% inside \author exactly as \corref does, and the class's own gobbling
+% of \tnoteref covers the typeset title but not the copy kept for the
+% metadata. Anything new inside \author or \title that expands to a mark
+% rather than to text belongs in this list.
+\pdfstringdefDisableCommands{%
+  \renewcommand{\corref}[1]{}%
+  \renewcommand{\fnref}[1]{}%
+  \renewcommand{\tnoteref}[1]{}%
+}
+
 % \url breaks only at punctuation, and the repository URL in the
 % data-availability statement has none in the right place: it set 0.68pt
 % overfull in the 1.5-spaced measure, which survives however much
