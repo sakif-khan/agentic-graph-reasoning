@@ -291,16 +291,31 @@
       graph.
     \end{column}
     \begin{column}{0.48\textwidth}
+      % This block claimed "not to model capacity or to a bigger retrieval
+      % budget". The retrieval-budget half is the deck's own addition: the
+      % thesis abstract claims only "architecture, not model capacity", and
+      % setup.tex names the candidate widths as one of two things NOT held
+      % constant and "where a reader should look first for a confound". It
+      % is limitation #5 in sec:limitations-final. Denying it on the slide
+      % titled "Making the comparison fair" is the expensive way to be
+      % caught -- and cheap to avoid, because the widths cut against the
+      % baseline, not for it. Caps are checked against tog.py/kg_tools.py.
+      \vspace{-2mm}
       \begin{block}{What this buys}
         \small
         Differences are attributable to \textbf{architecture}, not to model
-        capacity or to a bigger retrieval budget.
+        capacity or spend.
       \end{block}
-      \vspace{1mm}
+      \begin{block}{What is \emph{not} held equal}
+        \small
+        ToG prunes to $40$/$20$ candidates per step, AGR to $300$/$200$ ---
+        \alert{narrower is cheaper}, so it cannot explain ToG's clipping, but
+        its unclipped score is a \alert{lower bound}.
+      \end{block}
       \begin{block}{Why a parametric control}
         \small
         These benchmarks predate current models and may be partly memorised.
-        Without the control we could not separate retrieval from recall.
+        Without it we could not separate retrieval from recall.
       \end{block}
     \end{column}
   \end{columns}

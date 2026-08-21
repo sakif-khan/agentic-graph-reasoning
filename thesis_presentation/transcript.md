@@ -8,17 +8,18 @@ The four backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 24 min 12 s of speaking against a 25-minute limit.** The margin is
-down to 48 seconds, and that is worth knowing before you stand up: nobody has
+**Budget: 24 min 26 s of speaking against a 25-minute limit.** The margin is
+down to 34 seconds, and that is worth knowing before you stand up: nobody has
 ever finished a defense talk faster than they rehearsed it.
 
 It was 22:30 with a 2.5-minute margin. Slides 7, 16 and 21 took on the bounds
-around the output contract (86 seconds at this script's own 93 wpm), and slide
-21 then took on the thesis's own contribution list and the candidate-width
-limitation (a further 15). None of that is optional — being walked into any of
-it in questions costs more than the 102 seconds it buys back.
+around the output contract (86 seconds at this script's own 93 wpm), slide 21
+then took on the thesis's own contribution list and the candidate-width
+limitation (a further 15), and slide 10 stopped claiming a retrieval-budget
+control it does not have (14). None of that is optional — being walked into any
+of it in questions costs more than the 116 seconds it buys back.
 
-**48 seconds is thin.** Everything that could move to the answers has already
+**34 seconds is thin.** Everything that could move to the answers has already
 moved there; what is left is spoken because it has to be. If you want a real
 margin, the recovery note below names where it comes from — slides 3, 6 and 8 —
 and that is a decision about those slides, not about this one.
@@ -37,19 +38,19 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 7 | The Structural Verification Layer | 1:43 | 6:53 |
 | 8 | One claim, three routes | 1:02 | 7:55 |
 | 9 | Environment and question sets | 0:55 | 8:50 |
-| 10 | Making the comparison fair | 1:00 | 9:50 |
-| 11 | **Main results** | 1:30 | 11:20 |
-| 12 | Accuracy against cost | 1:05 | 12:25 |
-| 13 | **RQ1: hop count** | 1:15 | 13:40 |
-| 14 | The caveat I want to raise myself | 1:10 | 14:50 |
-| 15 | RQ2: groundedness | 1:10 | 16:00 |
-| 16 | RQ2: what verification contributes | 1:37 | 17:37 |
-| 17 | **RQ3: ablation** | 1:20 | 18:57 |
-| 18 | The result I did not expect | 1:10 | 20:07 |
-| 19 | The echo attractor | 1:15 | 21:22 |
-| 20 | The benchmark was wrong 57 times | 0:50 | 22:12 |
-| 21 | Contributions and limitations | 1:45 | 23:57 |
-| 22 | Thank you | 0:15 | 24:12 |
+| 10 | Making the comparison fair | 1:14 | 10:04 |
+| 11 | **Main results** | 1:30 | 11:34 |
+| 12 | Accuracy against cost | 1:05 | 12:39 |
+| 13 | **RQ1: hop count** | 1:15 | 13:54 |
+| 14 | The caveat I want to raise myself | 1:10 | 15:04 |
+| 15 | RQ2: groundedness | 1:10 | 16:14 |
+| 16 | RQ2: what verification contributes | 1:37 | 17:51 |
+| 17 | **RQ3: ablation** | 1:20 | 19:11 |
+| 18 | The result I did not expect | 1:10 | 20:21 |
+| 19 | The echo attractor | 1:15 | 21:36 |
+| 20 | The benchmark was wrong 57 times | 0:50 | 22:26 |
+| 21 | Contributions and limitations | 1:45 | 24:11 |
+| 22 | Thank you | 0:15 | 24:26 |
 
 The four **bold** slides are the ones the committee will actually interrogate.
 If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
@@ -214,7 +215,7 @@ If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
 
 ---
 
-## 10 — Making the comparison fair *(1:00)*
+## 10 — Making the comparison fair *(1:14)*
 
 > Five systems: a parametric control, vector RAG, static GraphRAG,
 > Think-on-Graph as the agentic comparison, and AGR.
@@ -223,11 +224,20 @@ If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
 > 25-call budget, on the same questions, against the same graph.
 >
 > That's what lets me attribute differences to architecture rather than to model
-> capacity or to somebody getting a bigger retrieval budget.
+> capacity or to spend. One thing is *not* equal, and the slide says so:
+> Think-on-Graph prunes from a narrower candidate set. That cuts against it, not
+> for it — a thinner set is cheaper.
 >
-> The parametric control deserves a word. These benchmarks predate current
-> models and may be partly memorised. Without a no-retrieval control I couldn't
-> separate what retrieval contributes from what the model already knew.
+> These benchmarks predate current models and may be partly memorised. Without a
+> no-retrieval control I couldn't separate what retrieval contributes from what
+> the model already knew.
+
+**Say the width line, don't skip it.** The slide claimed a retrieval-budget
+control it does not have; the Think-on-Graph baseline section names the widths
+as the one place a reader should look first for a confound, and the conclusion
+ranks it limitation 5.
+The numbers are on the slide and in the answer below — you do not have to
+recite 40/20/300/200 here.
 
 ---
 
@@ -486,6 +496,23 @@ It's the cap Think-on-Graph's own paper operates under. And AGR never reaches it
 — zero percent on both datasets (B2). If I raised the cap, AGR's numbers would
 not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
+
+**"Did both systems see the same candidate sets?"** *(The sharper form of the
+cap question. Slide 10 raises it deliberately — answer it, don't deflect.)*
+No, and it is the one thing I do not hold constant. Think-on-Graph keeps 40
+relations per entity and 20 neighbours per relation — the pruning widths of the
+algorithm as published — where AGR keeps 300 and 200. Measured over the
+committed tool logs, the 40-relation cut binds on 31.6 percent of the 1,651
+entities it expanded and the 20-neighbour cut on 32.8 percent of its neighbour
+calls; AGR's relation cap binds once in 3,097 expansions and its neighbour cap
+on 3.3 percent of calls. So the cut is real and it is asymmetric. What it cannot
+do is rescue the budget argument: a narrower candidate set makes each step
+*cheaper*, so it cannot explain why Think-on-Graph runs out of calls. What it
+does mean is that the residual gap on the questions it *finishes* is measured
+against a system searching a thinner pool, so that figure is a lower bound on
+what it could resolve at equal width — not an estimate of it. Re-running it at
+300 and 200 is the first item in my future work, and it is limitation 5 in the
+conclusion.
 
 **"If verification doesn't improve accuracy, why keep it?"**
 Because accuracy was never the only claim. It converts silent error into an

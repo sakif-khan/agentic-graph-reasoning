@@ -68,6 +68,41 @@ def edit(path, old, new):
     return go
 
 
+def stretch_row(n, delta):
+    """Add delta seconds to row n's slide time, leaving the cumulative.
+
+    Self-locating on purpose. Hard-coding the row verbatim -- times and all
+    -- put a computed value in the anchor, so the probe raised the first
+    time an unrelated slide grew and shifted the cumulative column. An
+    anchor must not contain anything the document derives.
+    """
+    def go():
+        row = re.compile(rf"^\| {n} \|([^|]*)\| (\d+):(\d\d) \| (\d+):(\d\d) \|",
+                         re.M)
+        m = row.search(orig[SCRIPT])
+        assert m, f"no timing row {n} in transcript.md"
+        ms, ss = divmod(int(m.group(2)) * 60 + int(m.group(3)) + delta, 60)
+        io.open(SCRIPT, "w", encoding="utf-8", newline="").write(
+            orig[SCRIPT][:m.start()]
+            + f"| {n} |{m.group(1)}| {ms}:{ss:02d} | {m.group(4)}:{m.group(5)} |"
+            + orig[SCRIPT][m.end():])
+    return go
+
+
+def rewrite_budget(mins, secs):
+    """Quote a total in the budget line that the table does not add up to."""
+    def go():
+        line = re.compile(r"\*\*Budget: (\d+) min (\d+) s of speaking")
+        m = line.search(orig[SCRIPT])
+        assert m, "no budget line in transcript.md"
+        assert (int(m.group(1)), int(m.group(2))) != (mins, secs), \
+            "the corruption is a no-op: pick a total the table does not have"
+        io.open(SCRIPT, "w", encoding="utf-8", newline="").write(
+            line.sub(f"**Budget: {mins} min {secs} s of speaking",
+                     orig[SCRIPT], count=1))
+    return go
+
+
 SHIPPED = [
     r"AGR: a state machine over a constrained graph tool API",
     r"The Structural Verification Layer and its output contract",
@@ -115,11 +150,9 @@ CASES = [
     # The timing table, which has gone stale twice while being edited and
     # is consulted under pressure. Each of its three depths, separately.
     ("a slide runs longer and the cumulative column does not follow",
-     edit(SCRIPT, "| 16 | RQ2: what verification contributes | 1:37 | 17:37 |",
-          "| 16 | RQ2: what verification contributes | 2:37 | 17:37 |")),
+     stretch_row(16, 60)),
     ("the budget line still quotes the old total",
-     edit(SCRIPT, "**Budget: 24 min 12 s of speaking",
-          "**Budget: 22 min 30 s of speaking")),
+     rewrite_budget(22, 30)),
     ("a section heading disagrees with its row",
      edit(SCRIPT, "## 21 — Contributions, and what I would not claim *(1:45)*",
           "## 21 — Contributions, and what I would not claim *(1:05)*")),

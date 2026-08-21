@@ -356,22 +356,128 @@ ck("the first-ranked limitation leads the list",
    and all(limits.find("rejects") < limits.find(k)
            for k in LIMIT_KEYS if k != "rejects" and k in limits))
 
+# The fairness slide may not deny a confound the thesis lists.
+#
+# It read: differences are attributable to architecture, "not to model
+# capacity or to a bigger retrieval budget". No source document claims
+# that. The thesis abstract claims only "architecture, not model capacity";
+# setup.tex Sec 7.4.3 names the candidate widths as one of two things
+# deliberately NOT held constant and as "where a reader should look first
+# for a confound"; and it is limitation #5 in sec:limitations-final. The
+# denial sat on the slide titled "Making the comparison fair", with the
+# widths named nowhere on it -- and it bought nothing, because a narrower
+# candidate set is cheaper and so cuts against the baseline, not for it.
+#
+# Bound to the attribution clause rather than to the phrase: what is wrong
+# is denying a confound, and a rewrite that denies a different one ("the
+# same candidate sets") is the same defect.
+print("\n== the fairness slide does not deny a stated confound ==")
+MD = open(os.path.join(HERE, "transcript.md"), encoding="utf-8").read() \
+    if os.path.exists(os.path.join(HERE, "transcript.md")) else ""
+DENIED = (r"(?:retrieval budget|bigger retrieval|retrieval width"
+          r"|candidate (?:set|width)s?|same candidates?)")
+OVERCLAIM = re.compile(
+    r"attribut\w+[^.]{0,140}?\b(?:not|rather than)\b[^.]{0,140}?" + DENIED,
+    re.I)
+
+
+def frame(title):
+    """The one frame with this title, from \\begin{frame} to \\end{frame}."""
+    m = re.search(r"\\begin\{frame\}\{" + re.escape(title) + r"\}(.*?)"
+                  r"\\end\{frame\}", FLAT)
+    return m.group(1) if m else ""
+
+
+fair = frame("Making the comparison fair")
+ck("the fairness frame is in the deck", bool(fair))
+for label, text in (("deck", FLAT), ("transcript", MD)):
+    hit = OVERCLAIM.search(text)
+    ck(f"{label} does not deny the candidate-width confound",
+       hit is None, hit.group(0)[:88] if hit else "")
+
+# Disclosing it is not enough if the disclosure invites the wrong
+# inference: a reader who learns the widths differ and nothing else will
+# assume the confound could explain the clipping. It cannot -- thinner is
+# cheaper -- and the slide has to say which way it cuts.
+ck("the fairness frame names what is not held equal",
+   re.search(r"not\}? held equal", fair, re.I) is not None)
+ck("and says which way the difference cuts",
+   "cheaper" in fair.lower() and "lower bound" in fair.lower(),
+   "a narrower set cannot explain the clipping; it bounds the unclipped score")
+ck("the transcript answers the sharp form of the cap question",
+   re.search(r"same candidate sets\?", MD, re.I) is not None,
+   'anticipated questions must carry "did both systems see the same '
+   'candidate sets?"')
+
+# That answer quotes five measured figures, and a spoken figure is as much
+# a transcription as one on a slide. Bound to the sentence rather than
+# matched loose: 3.3 and 1,651 both have other homes in this repository,
+# and "does the number appear" is how the hedge-rate mislabel survived.
+MDF = " ".join(MD.split())
+CC = J["candidate_caps"]
+m = re.search(r"the (\d+)-relation cut binds on ([\d.]+) percent of the "
+              r"([\d,]+) entities it expanded and the (\d+)-neighbour cut on "
+              r"([\d.]+) percent of its neighbour calls; AGR's relation cap "
+              r"binds once in ([\d,]+) expansions and its neighbour cap on "
+              r"([\d.]+) percent", MDF)
+ck("the transcript states the binding rates", m is not None,
+   "the anticipated-questions answer must give them in one sentence")
+if m:
+    got = [int(m.group(1)), float(m.group(2)), int(m.group(3).replace(",", "")),
+           int(m.group(4)), float(m.group(5)),
+           int(m.group(6).replace(",", "")), float(m.group(7))]
+    want = [CC["tog"]["relation_cap"],
+            CC["tog"]["entities_at_relation_cap_pct"],
+            CC["tog"]["entities_expanded"],
+            CC["tog"]["neighbor_cap"],
+            CC["tog"]["neighbor_calls_at_cap_pct"],
+            CC["agr"]["entities_expanded"],
+            CC["agr"]["neighbor_calls_at_cap_pct"]]
+    ck("and they are the measured ones", got == want, f"{got} vs {want}")
+    # "binds once" is a word, not a number, so nothing above would catch it
+    # drifting away from the measured count of 1.
+    ck("AGR's relation cap is described as binding once",
+       CC["agr"]["entities_at_relation_cap"] == 1,
+       f"measured {CC['agr']['entities_at_relation_cap']}, transcript says once")
+
+# The transcript ranks this limitation. An ordinal typed into a script is a
+# transcription like any other, and the thesis's list is the source.
+CONC = os.path.join(ROOT, "thesis_book", "chapters", "conclusion.tex")
+conc = open(CONC, encoding="utf-8").read()
+i = conc.index(r"\section{Limitations}")
+heads = re.findall(r"\\textbf\{([^}]*)\}", conc[i:conc.index(r"\section", i + 10)])
+rank = next((n for n, h in enumerate(heads, 1)
+             if "narrower candidate set" in " ".join(h.split())), None)
+ck("the thesis ranks the candidate-width limitation", rank is not None)
+if rank:
+    stated = set(re.findall(r"limitation (\d+)", MDF))
+    ck(f"the transcript calls it limitation {rank}",
+       stated == {str(rank)}, f"transcript says {sorted(stated) or 'nothing'}")
+
 # The candidate widths are configuration, not results, so they are read
 # from the code that sets them rather than from thesis_numbers.json.
+#
+# Checked in each block that needs them, not once against the whole deck:
+# the widths now have two homes (the fairness frame and the limitations
+# list), and "does this value appear somewhere" would pass a deck that had
+# dropped either one.
 print("\n== candidate widths come from the code ==")
 tog = open(os.path.join(ROOT, "agr", "baselines", "tog.py"),
            encoding="utf-8").read()
 tools = open(os.path.join(ROOT, "agr", "kg_tools.py"), encoding="utf-8").read()
+WHERE = (("fairness frame", fair), ("limitations list", limits))
 m = re.search(r"MAX_RELATIONS,\s*MAX_NEIGHBORS\s*=\s*(\d+),\s*(\d+)", tog)
 ck("tog.py states its caps", m is not None)
 if m:
-    ck(f"deck quotes ToG {m.group(1)}/{m.group(2)}",
-       f"${m.group(1)}$/${m.group(2)}$" in FLAT)
+    for where, txt in WHERE:
+        ck(f"{where} quotes ToG {m.group(1)}/{m.group(2)}",
+           f"${m.group(1)}$/${m.group(2)}$" in txt)
 a = re.search(r"max_fanout=(\d+),\s*max_relations=(\d+)", tools)
 ck("kg_tools.py states AGR's caps", a is not None)
 if a:
-    ck(f"deck quotes AGR {a.group(2)}/{a.group(1)}",
-       f"${a.group(2)}$/${a.group(1)}$" in FLAT)
+    for where, txt in WHERE:
+        ck(f"{where} quotes AGR {a.group(2)}/{a.group(1)}",
+           f"${a.group(2)}$/${a.group(1)}$" in txt)
 
 # ---------------------------------------------------------------------
 # The rehearsal transcript's timing table has to add up.

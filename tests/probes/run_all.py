@@ -31,7 +31,12 @@ def tracked_dirty():
 # exactly that, so an existing corruption gets preserved rather than
 # reverted, and every later run bakes it in further.
 TARGETS = ("thesis_paper/", "scripts/check_paper_numbers.py",
-           "tests/test_paper_")
+           "tests/test_paper_", "thesis_presentation/content-main.tex",
+           "thesis_presentation/transcript.md",
+           "thesis_book/chapters/introduction.tex",
+           "thesis_book/chapters/conclusion.tex",
+           "agr/baselines/tog.py",
+           "results/phase4/thesis_numbers.json")
 
 
 def main():

@@ -17,6 +17,10 @@ clean document, and several of these could not, at first:
 - the build log was declared clean for several rounds while carrying four
   `Package hyperref Warning` lines, because the check was a grep for
   `LaTeX Warning` and `Overfull`
+- the candidate widths were checked against the whole deck, so once they
+  had a second home the check passed a slide that had dropped them — the
+  same shape as the GraphRAG and highlights failures above, on its ninth
+  recurrence. Values with more than one home are checked per block now
 
 Each probe reinstates a defect that actually shipped, verbatim where
 possible, runs the relevant checker, and asserts it fails. Then it
@@ -39,7 +43,7 @@ raises at import time if any of the four variables is missing, so on a
 fresh clone `prove_abstract`, `prove_contract`, `prove_declarations`,
 `prove_highlights` and `prove_selfcontained` die with `IndexError: list
 index out of range` before testing anything. `cp .env.example .env` and
-fill it in; the other thirteen probes run without it.
+fill it in; the other fifteen probes run without it.
 
 **`prove_log` needs a LaTeX toolchain**, because three of its cases are
 only visible in a build: it reinstates the defect in `preamble.tex` and
@@ -80,3 +84,9 @@ An anchor that matches today breaks the moment an unrelated edit to the
 same paragraph moves the wrap by a few words — which happened to
 `prove_contract` and turned it from `CAUGHT` into a raise. Anchors into
 the transcript need the marker in the gap: `\s+(?:>\s*)?`.
+
+Nor is whitespace tolerance enough when the anchor **contains a value the
+document derives**. `prove_lists` anchored a timing row verbatim,
+cumulative column included, and raised the first time an unrelated slide
+grew by ten seconds. The corruption a probe applies has to be computed
+from the file it is about to corrupt, not written down beside it.
