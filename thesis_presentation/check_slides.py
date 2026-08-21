@@ -23,7 +23,22 @@ DRIVERS = ["pre-defense-0421052099.tex", "pre-defense-0421052099-backup.tex"]
 J = json.load(open(NUMS, encoding="utf-8"))
 TEX = "\n".join(open(os.path.join(HERE, f), encoding="utf-8").read()
                 for f in SOURCES)
-FLAT = " ".join(TEX.split())
+
+
+def uncomment(tex):
+    """Drop % comments before anything matches against the source.
+
+    These slides carry long comments recording *why* a claim is worded the
+    way it is, and those comments quote the retracted wording verbatim --
+    so a rule banning a phrase was matching the note explaining the ban.
+    The echo-attractor rule passed only because a line wrap happened to
+    put "%" between "the" and "task"; rewrapping the comment would have
+    failed a correct slide. \\% is a literal sign, not a comment.
+    """
+    return "\n".join(re.sub(r"(?<!\\)%.*$", "", l) for l in tex.splitlines())
+
+
+FLAT = " ".join(uncomment(TEX).split())
 ok = True
 
 
@@ -659,6 +674,30 @@ if a:
     for where, txt in WHERE:
         ck(f"{where} quotes AGR {a.group(2)}/{a.group(1)}",
            f"${a.group(2)}$/${a.group(1)}$" in txt)
+
+# ---------------------------------------------------------------------
+# Every operation named on the tool slide is a def in kg_tools.py.
+#
+# The slide listed \texttt{link_entity}. There is no such operation --
+# it is search_entity, in kg_tools.py, in app:tool-search and in
+# tab:toolapi -- and "link_entity" appeared nowhere else in the
+# repository. Set in monospace on a slide, a name reads as the literal
+# API. Every number in this deck was bound to its source; the
+# identifiers were not bound to anything.
+print("\n== the tool slide names real operations ==")
+TOOLSLIDE = frame("Constrained tools, not free-form queries")
+defined = set(re.findall(r"^    def (\w+)\(", tools, re.M))
+named = [n.replace("\\_", "_")
+         for n in re.findall(r"\\texttt\{([a-z\\_]+)\}", TOOLSLIDE)]
+ck("the tool slide is in the deck", bool(TOOLSLIDE))
+ck("the slide names four operations", len(named) == 4, str(named))
+for n in named:
+    ck(f"{n} is defined in kg_tools.py", n in defined,
+       f"kg_tools.py defines {sorted(defined)}")
+# sec:five-operations is titled "The Five Operations, of Which Four Are
+# Live": verify_triple is "not called by any node in the final design",
+# so four is the right count and verify_triple is the wrong fourth.
+ck("and not the one no node calls", "verify_triple" not in named)
 
 # ---------------------------------------------------------------------
 # The rehearsal transcript's timing table has to add up.

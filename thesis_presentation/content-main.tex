@@ -168,7 +168,12 @@
                                & $\leq 200$ per expansion \\
       \texttt{verify\_connection} & Adjacency in the full graph
                                & Used only by the verifier \\
-      \texttt{link\_entity}    & Surface form $\rightarrow$ node
+      % Was \texttt{link_entity}, which is not the name of anything: the
+      % operation is search_entity in kg_tools.py, in app:tool-search, and in
+      % tab:toolapi. On a slide that sets these in monospace, a name that
+      % appears nowhere else in the repository reads as the literal API.
+      % Every name in this column is checked against a def in kg_tools.py.
+      \texttt{search\_entity}  & Surface form $\rightarrow$ node
                                & Three-stage resolver \\
       \bottomrule
     \end{tabular}

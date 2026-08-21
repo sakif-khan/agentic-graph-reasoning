@@ -47,7 +47,7 @@ raises at import time if any of the four variables is missing, so on a
 fresh clone `prove_abstract`, `prove_contract`, `prove_declarations`,
 `prove_highlights` and `prove_selfcontained` die with `IndexError: list
 index out of range` before testing anything. `cp .env.example .env` and
-fill it in; the other seventeen probes run without it.
+fill it in; the other eighteen probes run without it.
 
 **`prove_log` needs a LaTeX toolchain**, because three of its cases are
 only visible in a build: it reinstates the defect in `preamble.tex` and
