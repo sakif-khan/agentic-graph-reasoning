@@ -60,5 +60,6 @@ for ph, rc in out:
 r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                    cwd=ROOT, capture_output=True, text=True)
 print(f"\nrestored -> rc={r.returncode}")
-print("ALL LIMITATIONS ENFORCED" if all(rc for _, rc in out) and r.returncode == 0
-      else "SOME LIMITATION NOT ENFORCED")
+passed = all(rc for _, rc in out) and r.returncode == 0
+print("ALL LIMITATIONS ENFORCED" if passed else "SOME LIMITATION NOT ENFORCED")
+sys.exit(0 if passed else 1)

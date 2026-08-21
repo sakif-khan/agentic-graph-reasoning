@@ -36,4 +36,6 @@ finally:
 
 rc, out = run()
 print(f"restored          :  rc={rc}")
-print("PROBE PASSED" if hit and rc == 0 else "PROBE FAILED -- check is vacuous")
+passed = hit and rc == 0
+print("PROBE PASSED" if passed else "PROBE FAILED -- check is vacuous")
+sys.exit(0 if passed else 1)

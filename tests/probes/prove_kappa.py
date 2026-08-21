@@ -1,4 +1,4 @@
-"""Prove the kappa guard fires -- including on the forms it currently misses.
+r"""Prove the kappa guard fires -- including on the forms it currently misses.
 
 Case 1 reinstates the shipped setup.tex sentence verbatim.
 Case 2 does the same but hard-wrapped, the way the .tex actually wraps.
@@ -61,5 +61,6 @@ for name, rc, f in out:
 r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                    cwd=ROOT, capture_output=True, text=True)
 print(f"\nrestored -> rc={r.returncode}")
-print("ALL CAUGHT" if all(rc for _, rc, _ in out) and r.returncode == 0
-      else "SOME CASE MISSED")
+passed = all(rc for _, rc, _ in out) and r.returncode == 0
+print("ALL CAUGHT" if passed else "SOME CASE MISSED")
+sys.exit(0 if passed else 1)

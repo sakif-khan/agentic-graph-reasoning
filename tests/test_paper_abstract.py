@@ -85,8 +85,17 @@ GAIN = re.compile(r"improv\w*\s+accuracy|rais\w*\s+accuracy"
                   r"|accuracy\s+(?:gain|improvement)")
 VERIFY = re.compile(r"verification|verifier|verify|claim check")
 NEGATED = re.compile(r"\b(?:no|not|never|without|cannot|nor)\b")
-# ",X," where X is short and carries no sentence punctuation: an aside.
-PARENTHETICAL = re.compile(r",\s*([^,.;:]{1,80}?),\s*")
+# ",X," where X is short and carries no sentence punctuation: a candidate
+# aside. Being comma-delimited is not enough -- ", and that claim
+# verification," has that shape and is a coordinate clause, and eliding it
+# would delete the subject the rule is looking for.
+PARENTHETICAL = re.compile(r",\s*([^,.;:]{1,80}?)\s*,\s*")
+# What actually opens an aside: a non-restrictive relative, a participial
+# phrase, an exemplifier, or a determiner-led noun appositive.
+ASIDE = re.compile(r"^(?:which|who|whom|whose|that)\b"
+                   r"|^\w+(?:ing|ed)\b"
+                   r"|^(?:including|excluding|such as)\b"
+                   r"|^(?:a|an|the|our|its|their)\s+\w+")
 
 
 def elide_parentheticals(text):
@@ -100,18 +109,64 @@ def elide_parentheticals(text):
     -- the paper's own abstract uses the shape, with em dashes rather
     than commas, and words() drops em dashes, so it escaped by accident.
 
-    An aside that itself mentions the component or a gain is kept, since
-    removing it would lose the thing being tested.
+    Two things this has to get right, both of which an earlier version
+    got wrong:
+
+    Comma pairs overlap. In "A, B, C, D" the match on ",B," consumes the
+    comma that opens ",C,", so a left-to-right pairwise scan cannot see
+    the second aside at all. When a candidate is NOT elided this advances
+    past its opening comma only, leaving the closing one available to
+    open the next pair.
+
+    Deciding to keep an aside must not stop the scan. The earlier version
+    implemented "keep" as returning the text unchanged and looped until
+    the text stopped changing, so the first aside it kept ended the pass
+    and everything after it went unexamined. On this abstract that was
+    the first comma, which is why the function was inert.
+
+    An aside mentioning the component or a gain is kept, since removing
+    it would lose the thing being tested.
     """
-    prev = None
-    while prev != text:
-        prev = text
-        text = PARENTHETICAL.sub(
-            lambda m: m.group(0)
-            if VERIFY.search(m.group(1)) or GAIN.search(m.group(1))
-            else " ",
-            text, count=1)
-    return text
+    out, i = [], 0
+    while True:
+        m = PARENTHETICAL.search(text, i)
+        if not m:
+            out.append(text[i:])
+            return "".join(out)
+        inner = m.group(1)
+        if ASIDE.search(inner) and not (VERIFY.search(inner)
+                                        or GAIN.search(inner)):
+            out.append(text[i:m.start()])
+            out.append(" ")
+            i = m.end()
+        else:
+            # Not an aside, or one worth keeping: emit up to and including
+            # the opening comma, then resume just after it so the closing
+            # comma can still open the following pair.
+            out.append(text[i:m.start() + 1])
+            i = m.start() + 1
+
+
+def verification_credited_with_gain(text):
+    """The predicate the test asserts on: the offending clause, or None.
+
+    Named and exported so tests/probes/prove_clause.py scores what
+    actually runs. The probe used to rebuild this composition itself,
+    which meant the call site was untested -- deleting the elide call
+    from the test left the probe still reporting a sound rule.
+    """
+    for clause in CLAUSE.split(elide_parentheticals(text)):
+        if not VERIFY.search(clause):
+            continue
+        g = GAIN.search(clause)
+        if not g:
+            continue
+        # "verification does not improve accuracy" states the null; that
+        # is the paper's finding, not a promise of a gain.
+        if NEGATED.search(clause[:g.start()]):
+            continue
+        return clause.strip()
+    return None
 
 
 def test_the_abstract_does_not_promise_verification_raises_accuracy():
@@ -134,22 +189,12 @@ def test_the_abstract_does_not_promise_verification_raises_accuracy():
     Parentheticals are elided first, so an appositive between subject and
     verb does not hide one from the other; see elide_parentheticals.
 
-    Known limits, both vocabulary rather than structure: passive voice
+    Known limits, all vocabulary rather than structure: passive voice
     ("accuracy is improved by the verification layer") and gain verbs
     outside GAIN ("lifts accuracy") are not caught. Chasing those is
     where this stops paying for itself.
     """
-    text = elide_parentheticals(" ".join(words()).lower())
-    for clause in CLAUSE.split(text):
-        if not VERIFY.search(clause):
-            continue
-        g = GAIN.search(clause)
-        if not g:
-            continue
-        # "verification does not improve accuracy" states the null; that
-        # is the paper's finding, not a promise of a gain.
-        if NEGATED.search(clause[:g.start()]):
-            continue
-        raise AssertionError(
-            f"the abstract credits verification with an accuracy gain in "
-            f"its own clause: {clause.strip()!r}")
+    clause = verification_credited_with_gain(" ".join(words()).lower())
+    assert clause is None, (
+        f"the abstract credits verification with an accuracy gain in its "
+        f"own clause: {clause!r}")

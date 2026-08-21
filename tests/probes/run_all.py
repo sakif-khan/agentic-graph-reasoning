@@ -26,8 +26,25 @@ def tracked_dirty():
     return {l[3:].strip() for l in r.stdout.splitlines() if l.strip()}
 
 
+# What the probes mutate. Dirt here before a run is worth saying out loud:
+# a probe reads the current contents as its pristine state and restores
+# exactly that, so an existing corruption gets preserved rather than
+# reverted, and every later run bakes it in further.
+TARGETS = ("thesis_paper/", "scripts/check_paper_numbers.py",
+           "tests/test_paper_")
+
+
 def main():
     before = tracked_dirty()
+    at_risk = sorted(f for f in before if f.startswith(TARGETS))
+    if at_risk:
+        print("NOTE: these are already modified, and the probes will treat")
+        print("their current contents as the state to restore:")
+        for f in at_risk:
+            print(f"  {f}")
+        print("If any of that is a leftover corruption rather than your own")
+        print("edit, revert it first -- otherwise it becomes permanent.\n")
+
     probes = sorted(HERE.glob("prove_*.py"))
     if not probes:
         print("no probes found")

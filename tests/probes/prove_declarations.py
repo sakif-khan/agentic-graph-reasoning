@@ -90,5 +90,6 @@ r = subprocess.run([sys.executable, "-m", "pytest",
                     "tests/test_paper_declarations.py", "-q"],
                    cwd=ROOT, capture_output=True, text=True)
 print(f"\nrestored -> rc={r.returncode}  ({r.stdout.strip().splitlines()[-1]})")
-print("ALL CASES CAUGHT" if all(rc for _, rc in out) and r.returncode == 0
-      else "SOME CASE MISSED")
+passed = all(rc for _, rc in out) and r.returncode == 0
+print("ALL CASES CAUGHT" if passed else "SOME CASE MISSED")
+sys.exit(0 if passed else 1)

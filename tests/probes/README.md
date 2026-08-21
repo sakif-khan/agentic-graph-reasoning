@@ -26,13 +26,32 @@ python tests/probes/run_all.py          # all of them
 python tests/probes/prove_kappa.py .    # one, repo root as argv[1]
 ```
 
-Every probe takes the repository root as `sys.argv[1]`.
+Every probe takes the repository root as `sys.argv[1]` and exits non-zero
+if any corruption slipped through, so `&&` and CI both work. `run_all.py`
+additionally fails if a probe leaked a modification.
+
+**Four of the probes shell out to `pytest`, which needs a `.env`.**
+`tests/conftest.py` imports `agr.runtime` at module scope and `agr/env.py`
+raises at import time if any of the four variables is missing, so on a
+fresh clone `prove_abstract`, `prove_declarations`, `prove_highlights` and
+`prove_selfcontained` die with `IndexError: list index out of range`
+before testing anything. `cp .env.example .env` and fill it in; the other
+eleven probes run without it.
 
 They are **not** pytest tests and pytest will not collect them — the
-filenames do not match `test_*.py`, deliberately. They mutate tracked
-files while running, so they are not safe to run concurrently with each
-other or with an editor saving over the same paths. If one is interrupted
-its `finally` will not run; `git diff` will show what was left behind.
+filenames do not match `test_*.py`, deliberately.
+
+## Do not run them against a dirty tree
+
+A probe reads the file it is about to corrupt, mutates it, checks that the
+checker fails, and writes back **what it read**. If what it read was
+already corrupt — because an earlier probe was interrupted, or because
+something else was mid-edit — then the corruption is what gets restored,
+and it survives every later run. `run_all.py` prints a warning when a file
+the probes touch is already modified, and lists anything left behind
+afterwards, but `git diff` is the authority. They are likewise not safe to
+run concurrently with each other or with an editor saving over the same
+paths.
 
 ## Reading the output
 

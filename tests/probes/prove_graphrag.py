@@ -18,11 +18,11 @@ CASES = [
      "It is actively worse than parametric memory because it floods the "
      "context. Raw hits mislead on the static graph baseline"),
     (R, "assertion precision 76.8 -> 77.8",
-     "or $76.8\%$", "or $77.8\%$"),
+     r"or $76.8\%$", r"or $77.8\%$"),
     (R, "wrong-count 41 -> 42",
      "wrong on $41$", "wrong on $42$"),
     (S, "fanout reach 72.5 -> 62.5",
-     "on $72.5\%$ of the", "on $62.5\%$ of the"),
+     r"on $72.5\%$ of the", r"on $62.5\%$ of the"),
 ]
 
 orig = {p: io.open(p, encoding="utf-8").read() for p in (R, S)}
@@ -48,5 +48,6 @@ for name, rc, fails in out:
 r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                    cwd=ROOT, capture_output=True, text=True)
 print(f"\nrestored -> rc={r.returncode}")
-print("ALL CASES CAUGHT" if all(rc for _, rc, _ in out) and r.returncode == 0
-      else "SOME CASE MISSED")
+passed = all(rc for _, rc, _ in out) and r.returncode == 0
+print("ALL CASES CAUGHT" if passed else "SOME CASE MISSED")
+sys.exit(0 if passed else 1)

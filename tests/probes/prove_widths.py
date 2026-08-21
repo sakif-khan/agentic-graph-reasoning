@@ -54,5 +54,6 @@ for name, rc, fails in out:
 r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                    cwd=ROOT, capture_output=True, text=True)
 print(f"\nrestored -> rc={r.returncode}")
-print("ALL CASES CAUGHT" if all(rc for _, rc, _ in out) and r.returncode == 0
-      else "SOME CASE MISSED")
+passed = all(rc for _, rc, _ in out) and r.returncode == 0
+print("ALL CASES CAUGHT" if passed else "SOME CASE MISSED")
+sys.exit(0 if passed else 1)
