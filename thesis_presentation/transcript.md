@@ -127,16 +127,22 @@ If you are running long, take time from 3, 6, and 8 — never from 11, 13, 17.
 >
 > The planner decomposes the question into ordered sub-objectives. The explorer
 > scores candidate edges and expands the frontier. The evaluator decides whether
-> the current sub-objective has been met. The backtracker undoes a bad expansion
-> and bans the edge that caused it, so the agent can't re-take the same wrong
-> turn. The verifier is the contribution and I'll come back to it. The answerer
-> emits only what survived.
+> the sub-objective has been met. The backtracker undoes a bad expansion and
+> bans the edge that caused it, so it can't re-take the same wrong turn. The
+> verifier is the contribution; more on it shortly. The answerer emits only
+> what survived.
 >
-> There are exactly two cycles — explorer-to-evaluator, and verifier back to
-> explorer. Both are bounded by explicit budgets rather than by model behaviour.
-> That gives a termination guarantee that doesn't depend on the model
-> cooperating: every cycle passes through a router that checks a monotone
-> counter.
+> There are three cycles — the three arrows going back to the Explorer:
+> continue, backtrack, retry. All three are bounded by explicit budgets rather
+> than by model behaviour. That gives a termination guarantee that doesn't
+> depend on the model cooperating: every cycle passes through a router that
+> checks a monotone counter.
+
+**Do not say "exactly two cycles."** The diagram has three arrows returning to
+the Explorer and the audience is looking at it while you speak. The thesis
+caption says two and names two, but the figure source calls the third one a
+cycle in its own comment. Naming them after the edge labels — continue,
+backtrack, retry — means counting the arrows confirms the sentence.
 
 **If asked about budgets, go to Backup 1.**
 

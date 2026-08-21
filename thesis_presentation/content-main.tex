@@ -98,7 +98,16 @@
         \item \textbf{Verifier} --- \alert{the contribution}
         \item \textbf{Answerer} --- emits what survived
       \end{itemize}
-      Two cycles, both bounded by budgets rather than by model behaviour.
+      % This said "Two cycles", against a diagram with three arrows returning
+      % to the Explorer. The thesis caption says the same and names two, but
+      % its own figure source calls the third one a cycle: "% backtracking
+      % cycle: evaluator to backtracker to explorer". Inherited, but the deck
+      % is where a listener can count the arrows while the word is being said.
+      % Naming them after the edge labels means counting confirms the sentence
+      % instead of contradicting it. The count is checked against the number
+      % of flow edges arriving at (expl) in the tikzpicture below.
+      Three cycles --- \emph{continue}, \emph{backtrack}, \emph{retry} --- all
+      bounded by budgets rather than by model behaviour.
     \end{column}
     \begin{column}{0.52\textwidth}
       \centering

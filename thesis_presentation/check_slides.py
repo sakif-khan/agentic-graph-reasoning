@@ -700,6 +700,57 @@ for n in named:
 ck("and not the one no node calls", "verify_triple" not in named)
 
 # ---------------------------------------------------------------------
+# The cycle count is whatever the diagram draws.
+#
+# The slide said "Two cycles" beside a diagram with three arrows returning
+# to the Explorer -- continue, backtrack, retry -- and the script hardened
+# it to "exactly two". The thesis caption says two and names two, but its
+# own figure source calls the third one a cycle: "% backtracking cycle:
+# evaluator to backtracker to explorer". A listener can count the arrows
+# while the word is being said, so the deck is where it costs.
+print("\n== the cycle count is what the diagram draws ==")
+SM = frame("AGR: an explicit state machine")
+NUM = {0: "No", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five"}
+
+
+def target(edge):
+    """The last coordinate a tikz edge names -- where the arrow lands."""
+    coords = re.findall(r"\(([^()]*)\)", edge)
+    return coords[-1] if coords else ""
+
+
+# A cycle is a flow edge landing back on the Explorer. The forward edge
+# from the Planner lands there too and is not one.
+edges = re.findall(r"\\draw\[flow\](.*?);", SM)
+back = [e for e in edges if "expl" in target(e) and "plan" not in e]
+ck("the state machine frame is in the deck", bool(edges))
+ck(f"the diagram draws {len(back)} edges back to the Explorer",
+   len(back) in NUM, f"{len(back)} of {len(edges)} flow edges")
+
+m = re.search(r"(One|Two|Three|Four|Five) cycles(.*?)bounded by budgets", SM)
+ck("the slide states a cycle count", m is not None)
+if m and len(back) in NUM:
+    ck(f"the slide says {NUM[len(back)]}, matching the diagram",
+       m.group(1) == NUM[len(back)],
+       f"slide says {m.group(1)}, diagram draws {len(back)}")
+    # Naming them after the edge labels is what makes counting confirm the
+    # sentence instead of contradicting it -- so the names have to be
+    # labels the diagram actually carries.
+    listed = re.findall(r"\\emph\{(\w+)\}", m.group(2))
+    labels = set(re.findall(r"node\[lbl[^\]]*\]\s*\{(\w+)\}", SM))
+    ck(f"the slide names {len(listed)} of them", len(listed) == len(back),
+       f"names {listed}")
+    ck("and every name is a label on the diagram",
+       set(listed) <= labels, f"{sorted(set(listed) - labels)} not labelled")
+
+s5 = spoken(5)
+ck("the script does not harden the old count",
+   re.search(r"exactly (?:one|two|three|four|five) cycles", s5, re.I) is None)
+if len(back) in NUM:
+    ck(f"the script also says {NUM[len(back)].lower()} cycles",
+       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s5, re.I) is not None)
+
+# ---------------------------------------------------------------------
 # The rehearsal transcript's timing table has to add up.
 #
 # It is three numbers deep -- a per-slide time, a running cumulative, and a
