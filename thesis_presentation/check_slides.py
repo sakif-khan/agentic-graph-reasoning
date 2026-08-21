@@ -49,22 +49,97 @@ def ck(label, cond, detail=""):
 
 
 def has(s):
-    """Is this literal present in the deck, ignoring LaTeX thousands markers?"""
+    """Is this literal present in the deck, ignoring LaTeX thousands markers?
+
+    Whole-deck presence. That is the right question only when the value has
+    exactly one home, and it is the wrong one everywhere else -- corrupting
+    a cell whose value is also printed on a backup slide left this silent.
+    Prefer cell() and row(); has() survives for values that genuinely may
+    appear anywhere.
+    """
     return s in FLAT or s.replace(",", "{,}") in FLAT
+
+
+# Rows of every tabular in the deck, flattened. Splitting the whole source
+# on \\ is crude and exactly enough: a row is the unit a reader sees a
+# number in, and it is the unit a corruption lands in.
+#
+# A chunk begins after the previous row's \\, so it carries whatever rule
+# command followed it -- "\midrule No-retrieval & 0.453 ..." does not start
+# with its own label. Strip those first or every lookup returns nothing.
+LEAD = re.compile(r"^(?:\\(?:top|mid|bottom)rule"
+                  r"|\\cmidrule(?:\([lr]+\))?\{[^}]*\}"
+                  r"|\\hline|\\addlinespace|\[[^\]]*\]|\s)+")
+
+
+def frame(title):
+    """The one frame with this title, from \\begin{frame} to \\end{frame}."""
+    m = re.search(r"\\begin\{frame\}\{" + re.escape(title) + r"\}(.*?)"
+                  r"\\end\{frame\}", FLAT)
+    return m.group(1) if m else ""
+
+
+def row(scope, label):
+    """The one table row in `scope` that begins with this label, or ''.
+
+    Scoped to a frame, not to the deck: "No-retrieval" begins three rows
+    across these two files -- the main table, the backup hedging table, and
+    a bullet on the fairness slide -- and a deck-wide lookup is ambiguous
+    for exactly the labels that matter most. Returns '' when the label is
+    absent OR ambiguous within the scope, so the check fails rather than
+    silently reading someone else's row.
+    """
+    hits = [LEAD.sub("", c).strip() for c in re.split(r"\\\\", scope)]
+    hits = [r for r in hits if r.startswith(label)]
+    return hits[0] if len(hits) == 1 else ""
+
+
+def cell(scope, label, n):
+    """Cell n of that row, counting the label as cell 0."""
+    parts = [c.strip() for c in row(scope, label).split("&")]
+    return parts[n] if len(parts) > n else ""
+
+
+def holds(scope, label, n, value):
+    """Does cell n of this row hold this value, as a whole number?
+
+    Token-matched, not substring-matched. Scoping to the cell was not
+    enough on its own: the call cap reads 0.0% in every column, and
+    corrupting it to 40.0% still contained "0.0", so the check passed on
+    the row it was written for. A digit or a dot on either side means this
+    is part of a different number.
+    """
+    got = cell(scope, label, n)
+    alts = "|".join(sorted({re.escape(value),
+                            re.escape(value.replace(",", "{,}"))}))
+    return bool(got) and re.search(rf"(?<![\d.])(?:{alts})(?![\d.])",
+                                   got) is not None
 
 
 print("== main results table ==")
 B = J["main_results"]["by_system"]
 NAME = {"noretrieval": "No-retrieval", "vectorrag": "Vector RAG",
         "graphrag": "Static GraphRAG", "tog": "Think-on-Graph", "agr": "AGR"}
+# The label as the row actually begins, and the column each metric sits in:
+# system, WebQSP Hits@1, WebQSP F1, CWQ Hits@1, CWQ F1, tokens, calls.
+LABEL = dict(NAME, agr=r"\textbf{AGR}")
+COL = {("webqsp", "hits_at_1"): 1, ("webqsp", "f1"): 2,
+       ("cwq", "hits_at_1"): 3, ("cwq", "f1"): 4}
+MAIN = frame("Main results")
+ck("the main results frame is in the deck", bool(MAIN))
 for s, label in NAME.items():
+    ck(f"{label:15s} has one row there", bool(row(MAIN, LABEL[s])))
     for ds in ("webqsp", "cwq"):
         r = B[f"{ds}/{s}"]
         for metric in ("hits_at_1", "f1"):
             v = f"{r[metric]:.3f}"
-            ck(f"{label:15s} {ds:6s} {metric:9s} = {v}", has(v))
+            ck(f"{label:15s} {ds:6s} {metric:9s} = {v}",
+               holds(MAIN, LABEL[s], COL[(ds, metric)], v),
+               f"cell holds {cell(MAIN, LABEL[s], COL[(ds, metric)])!r}")
 
 print("\n== cost figures quoted on the results slide ==")
+# WebQSP cost is the last two columns of the same row; the CWQ costs are in
+# a sentence under the table, so they are checked against that sentence.
 for ds, s, tok, calls in (("webqsp", "noretrieval", 113, 1.0),
                           ("webqsp", "vectorrag", 527, 1.0),
                           ("webqsp", "graphrag", 531, 1.0),
@@ -75,7 +150,21 @@ for ds, s, tok, calls in (("webqsp", "noretrieval", 113, 1.0),
     r = B[f"{ds}/{s}"]
     ck(f"{ds}/{s} tokens {tok}", r["mean_tokens"] == tok, str(r["mean_tokens"]))
     ck(f"{ds}/{s} calls {calls}", r["mean_calls"] == calls, str(r["mean_calls"]))
-    ck(f"{ds}/{s} tokens appear in deck", has(f"{tok:,}"))
+    if ds == "webqsp":
+        ck(f"{ds}/{s} tokens are in the cost column",
+           holds(MAIN, LABEL[s], 5, f"{tok:,}"),
+           f"cell holds {cell(MAIN, LABEL[s], 5)!r}")
+        ck(f"{ds}/{s} calls are in the cost column",
+           holds(MAIN, LABEL[s], 6, f"{calls}"),
+           f"cell holds {cell(MAIN, LABEL[s], 6)!r}")
+    else:
+        # Build the number first and escape it on its own: applying the
+        # thousands-marker substitution to the whole pattern rewrote the
+        # comma inside {0,120} and the regex stopped meaning anything.
+        num = re.escape(f"{tok:,}".replace(",", "{,}"))
+        ck(f"{ds}/{s} cost is in the sentence under the table",
+           re.search(rf"CWQ:.{{0,200}}?{num}.{{0,40}}?{re.escape(str(calls))}",
+                     FLAT) is not None)
 
 print("\n== hedge rates (backup slide) ==")
 for s, label in NAME.items():
@@ -179,21 +268,169 @@ for s, label in NAME.items():
 
 print("\n== budget binding (backup slide) ==")
 BB = J["budget_binding"]
+BIND = frame("Backup: which budgets actually bind")
+ck("the budget-binding frame is in the backup deck", bool(BIND))
+BINDROW = {"depth": "Depth cap", "backtracks": "Backtrack cap",
+           "verify_iters": "Verify-iteration cap",
+           "llm_calls": r"\textbf{Call cap}"}
 for key, label in (("depth", "depth"), ("backtracks", "backtrack"),
                    ("verify_iters", "verify"), ("llm_calls", "call")):
-    for pop in ("webqsp", "cwq", "both"):
+    for n, pop in ((1, "webqsp"), (2, "cwq"), (3, "both")):
         v = f"{BB[pop][key]['refused_pct']:.1f}"
-        ck(f"{label:10s} {pop:6s} {v}%", has(f"{v}\\%"))
+        # Cell-scoped: the call cap is 0.0% in all three columns, and "0.0"
+        # occurs all over this deck, so whole-deck presence asserted nothing
+        # about the row that matters most.
+        ck(f"{label:10s} {pop:6s} {v}%", holds(BIND, BINDROW[key], n, v),
+           f"cell holds {cell(BIND, BINDROW[key], n)!r}")
+
+
+def num(text):
+    """The numeric content of a cell, ignoring $, \\, and thousands marks."""
+    return re.sub(r"[^0-9.]", "", text.replace("{,}", ""))
+
 
 print("\n== test sets and environment ==")
-for ds in ("webqsp", "cwq"):
+# The graph statistics were quoted on a slide and checked nowhere. Their
+# source of record is the thesis's own tab:graphstats, so they are held to
+# that table cell for cell rather than to a number repeated here.
+ENVSLIDE = frame("The environment and the question sets")
+ck("the environment frame is in the deck", bool(ENVSLIDE))
+envtex = " ".join(uncomment(
+    open(os.path.join(ROOT, "thesis_book", "chapters", "environment.tex"),
+         encoding="utf-8").read()).split())
+for deck_label, thesis_label in (("Entities", "Entities (nodes)"),
+                                 ("Triples", "Triples (relationships)"),
+                                 ("Distinct relations",
+                                  "Distinct relation types"),
+                                 ("Import time", "Import wall-clock time")):
+    want = num(cell(envtex, thesis_label, 1))
+    got = num(cell(ENVSLIDE, deck_label, 1))
+    ck(f"graph {deck_label.lower()} = {want}", bool(want) and got == want,
+       f"thesis {want!r}, deck {got!r}")
+
+for n, ds in ((1, "webqsp"), (2, "cwq")):
     t = J["test_sets"][ds]
     ck(f"{ds} n_questions 400", t["n_questions"] == 400)
-    ck(f"{ds} gold median {t['gold_median']}", has(f"{t['gold_median']:.1f}"))
+    ck(f"{ds} questions cell", holds(ENVSLIDE, "Questions", n,
+                                     str(t["n_questions"])),
+       f"cell holds {cell(ENVSLIDE, 'Questions', n)!r}")
+    ck(f"{ds} gold median {t['gold_median']}",
+       holds(ENVSLIDE, "Gold (median)", n, f"{t['gold_median']:.1f}"),
+       f"cell holds {cell(ENVSLIDE, 'Gold (median)', n)!r}")
     ck(f"{ds} reachable {t['reachable_pct']}%",
-       has(f"{t['reachable_pct']:.1f}\\%"))
+       holds(ENVSLIDE, "Reachable", n, f"{t['reachable_pct']:.1f}"),
+       f"cell holds {cell(ENVSLIDE, 'Reachable', n)!r}")
     multi = t["strata"]["h2"] + t["strata"]["h3plus"]
-    ck(f"{ds} multi-hop {multi}", has(str(multi)))
+    ck(f"{ds} multi-hop {multi}", holds(ENVSLIDE, "Multi-hop", n, str(multi)),
+       f"cell holds {cell(ENVSLIDE, 'Multi-hop', n)!r}")
+
+# The headline that opens the talk, checked nowhere until now.
+print("\n== the opening slide's headline figures ==")
+G = J["groundedness_tier1_structural"]["test_webqsp_noretrieval"]
+PROBLEM = frame("The problem")
+ck("the problem frame is in the deck", bool(PROBLEM))
+for label, want, pat in (
+        ("entities asserted", G["entities_asserted"],
+         r"\${}\$ entities asserted"),
+        ("ungrounded", G["entities_ungrounded"], r"\${}\$ of them"),
+        ("rate", G["entity_ungrounded_pct"], r"that is \${}\\%\$")):
+    ck(f"slide 1 {label} = {want}",
+       re.search(pat.format(re.escape(str(want))), PROBLEM) is not None,
+       f"expected {want} in the opening bullets")
+
+# Per-category census counts. The slide prints the six largest as Totals;
+# each is the sum of wrong and hedge over both datasets.
+print("\n== the census categories are the measured ones ==")
+CENSUS = frame("Every failure, read: the echo attractor")
+CATS = (("Relation selection", "relation_selection"),
+        ("Composite claim", "composite_claim"),
+        ("Knowledge-graph gap", "kg_gap"),
+        ("Decomposition error", "decomposition_error"),
+        ("Answer selection", "answer_selection"),
+        (r"\alert{Echo attractor}", "echo"))
+H2 = J["failure_histogram"]
+for label, key in CATS:
+    want = sum(H2[ds][k].get(key, 0)
+               for ds in ("webqsp", "cwq") for k in ("wrong", "hedge"))
+    ck(f"census {key} = {want}", holds(CENSUS, label, 1, str(want)),
+       f"cell holds {cell(CENSUS, label, 1)!r}")
+ck("the six listed are the six largest",
+   [k for _, k in CATS] == [k for k, _ in sorted(
+       ((k, sum(H2[ds][c].get(k, 0) for ds in ("webqsp", "cwq")
+                for c in ("wrong", "hedge")))
+        for k in {k for ds in ("webqsp", "cwq") for c in ("wrong", "hedge")
+                  for k in H2[ds][c] if not k.startswith("_")}),
+       key=lambda kv: -kv[1])[:6]],
+   "the slide claims the top categories")
+
+# The tool caps, printed on the tool slide and checked nowhere.
+print("\n== the tool slide's caps come from the code ==")
+kg = open(os.path.join(ROOT, "agr", "kg_tools.py"), encoding="utf-8").read()
+caps = re.search(r"max_fanout=(\d+),\s*max_relations=(\d+)", kg)
+TS = frame("Constrained tools, not free-form queries")
+ck("kg_tools.py states the caps", caps is not None)
+if caps:
+    for label, want in ((r"\texttt{get\_relations}", caps.group(2)),
+                        (r"\texttt{get\_neighbors}", caps.group(1))):
+        ck(f"{label} is capped at {want} on the slide",
+           want in cell(TS, label, 2),
+           f"cell holds {cell(TS, label, 2)!r}")
+
+# The backup budget table, transcribed from agr/budget.py and checked
+# nowhere -- every row of it.
+print("\n== the backup budget table is the code's ==")
+bud = open(os.path.join(ROOT, "agr", "budget.py"), encoding="utf-8").read()
+BUDGET = frame("Backup: budget configuration")
+ck("the budget frame is in the backup deck", bool(BUDGET))
+# BudgetConfig only. budget.py also defines BudgetMeter, whose fields are
+# running counters that all default to 0 -- reading the whole file gave
+# fifteen "defaults" and asked the slide to print cache_hits.
+body_cfg = re.search(r"class BudgetConfig:\n(.*?)\n\n", bud, re.S)
+ck("budget.py defines BudgetConfig", body_cfg is not None)
+defaults = dict(re.findall(r"^    (\w+): \w+ = ([\d.]+)",
+                           body_cfg.group(1) if body_cfg else "", re.M))
+ck(f"budget.py states {len(defaults)} configured budgets", len(defaults) == 7,
+   str(sorted(defaults)))
+for field, value in sorted(defaults.items()):
+    label = "\\texttt{" + field.replace("_", "\\_") + "}"
+    got = num(cell(BUDGET, label, 1))
+    # float(), not string equality: the code says 300.0 and the slide says
+    # 300, and both are the same budget.
+    ck(f"{field} = {value}",
+       bool(got) and float(got) == float(value),
+       f"code {value!r}, slide {cell(BUDGET, label, 1)!r}")
+
+# Research questions are numbered, and a renumbering that the deck does
+# not follow reads as a different set of questions.
+print("\n== the research questions are numbered as the thesis numbers them ==")
+asked = sorted({int(n) for n in re.findall(r"\bRQ(\d+)", FLAT)})
+ck("the deck asks RQ1, RQ2 and RQ3", asked == [1, 2, 3], f"deck asks RQ{asked}")
+
+# The three generated figures. check_slides used to say these "need no
+# checking" because build_figures.py generates them -- but a generated
+# file is only right until the JSON moves under it, and the deck keeps its
+# own copies at a different geometry.
+print("\n== the deck's generated figures are current ==")
+sys.path.insert(0, os.path.join(ROOT, "scripts"))
+try:
+    import build_figures as BF
+    cwd = os.getcwd()
+    os.chdir(ROOT)
+    try:
+        data = BF.load()
+        cfg = BF.TARGETS["presentation"]
+        for name, fn in (("fig_accuracy_cost", BF.accuracy_cost),
+                         ("fig_hop_strata", BF.hop_strata),
+                         ("fig_failure_histogram", BF.failure_histogram)):
+            on_disk = open(os.path.join(HERE, "figures", f"{name}.tex"),
+                           encoding="utf-8", newline="").read()
+            ck(f"{name}.tex matches what build_figures would write now",
+               on_disk.replace("\r\n", "\n") == fn(data, cfg),
+               "re-run scripts/build_figures.py")
+    finally:
+        os.chdir(cwd)
+except ImportError as e:
+    ck("build_figures.py is importable", False, str(e))
 ck("WebQSP h3plus is 4 (quoted as a limitation)",
    J["test_sets"]["webqsp"]["strata"]["h3plus"] == 4)
 
@@ -396,13 +633,6 @@ DENIED = (r"(?:retrieval budget|bigger retrieval|retrieval width"
 OVERCLAIM = re.compile(
     r"attribut\w+[^.]{0,140}?\b(?:not|rather than)\b[^.]{0,140}?" + DENIED,
     re.I)
-
-
-def frame(title):
-    """The one frame with this title, from \\begin{frame} to \\end{frame}."""
-    m = re.search(r"\\begin\{frame\}\{" + re.escape(title) + r"\}(.*?)"
-                  r"\\end\{frame\}", FLAT)
-    return m.group(1) if m else ""
 
 
 fair = frame("Making the comparison fair")
@@ -712,7 +942,18 @@ ck("and not the one no node calls", "verify_triple" not in named)
 # while the word is being said, so the deck is where it costs.
 print("\n== the cycle count is what the diagram draws ==")
 SM = frame("AGR: an explicit state machine")
-NUM = {0: "No", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five"}
+NUM = {0: "No", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
+       6: "Six", 7: "Seven", 8: "Eight", 9: "Nine"}
+
+# The node count, from the same diagram. START is a terminal, not a node
+# of the machine, which is why box and vbox are counted and term is not.
+nodes = len(re.findall(r"\\node\[v?box[,\]]", SM))
+ck(f"the diagram draws {nodes} nodes", nodes in NUM, str(nodes))
+if nodes in NUM:
+    ck(f"the slide says {NUM[nodes]} nodes", f"{NUM[nodes]} nodes" in SM,
+       f"diagram draws {nodes}")
+    ck(f"the script says {NUM[nodes].lower()} nodes",
+       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(5), re.I) is not None)
 
 
 def target(edge):

@@ -41,7 +41,8 @@ backup slides are a separate PDF you open alongside it and jump into when a
 question calls for one; `transcript.md` maps each to the question it answers.
 `check_slides.py` fails if a backup slide ever leaks into the presented deck.
 
-Budgeted at 22 min 30 s of speaking against a 25-minute limit.
+Budgeted at 24 min 26 s of speaking against a 25-minute limit; `check_slides.py`
+holds that figure to the transcript's own timing table.
 
 ## Figures
 
@@ -52,7 +53,9 @@ python scripts/build_figures.py --target presentation
 ```
 
 from `results/phase4/thesis_numbers.json` — the same source the thesis reads.
-Nothing plotted is transcribed. Running the script with no `--target` emits both
+Nothing plotted is transcribed, and `check_slides.py` re-renders all three to
+confirm the committed copies are what `build_figures.py` would write today — a
+generated file is only current until the JSON moves under it. Running the script with no `--target` emits both
 the thesis and the presentation variants.
 
 The two targets exist because a thesis text column and a 16:9 slide are
@@ -73,11 +76,38 @@ checked:
 python thesis_presentation/check_slides.py
 ```
 
-This binds every result, cost, p-value, rate, and count in **both** decks back
-to `thesis_numbers.json`, and asserts the decks' formatting invariants — 16:9,
-12 pt base, nothing in body text below `\small`, both justification hooks,
-figures generated rather than hand-edited. Run it after editing any table. It
-exits non-zero on a mismatch.
+This binds the figures in **both** decks back to the artifact, code, or thesis
+section each came from, and asserts the decks' formatting invariants — 16:9,
+12 pt base, nothing in body text below `\small`, both justification hooks. Run
+it after editing any table. It exits non-zero on a mismatch, and
+`tests/test_slide_numbers.py` runs it, so a red checker fails the suite rather
+than waiting to be noticed by whoever remembers.
+
+Sources, not one source: results and rates come from `thesis_numbers.json`;
+the tool caps, the budget table and the operation names from `agr/`; the graph
+statistics from the thesis's own `tab:graphstats`; the contributions and
+limitations from `introduction.tex` and `conclusion.tex`; and the cycle and
+node counts from the tikzpicture on the slide itself.
+
+**How a value is matched matters more than whether it is present.** This file
+used to claim it bound *every* result, cost, p-value, rate and count. Measured
+against a sweep of 25 single-value corruptions, it caught 7. The rest slipped
+through for two reasons, both fixed:
+
+- `has()` searched the three source files concatenated, so it asked whether a
+  value appeared *anywhere* rather than whether a given cell held it. Any
+  figure printed twice was effectively unchecked, and this deck deliberately
+  prints several twice — corrupting a headline on a main slide passed because
+  a backup slide still carried the same number. Table figures now go through
+  `holds()`, scoped to one frame, one row, one column, matching a whole
+  number: `0.0` no longer matches inside `40.0`.
+- Whole classes were outside its coverage: the graph statistics and import
+  time, the tool caps and operation names, the per-category census counts, the
+  opening slide's headline figures, the research-question numbering, and the
+  entire backup budget table.
+
+The same sweep now catches 25 of 25, and `tests/probes/prove_coverage.py`
+keeps it that way.
 
 It also reads the build logs, if they are there, and requires **zero warnings
 of any class** — not just `LaTeX Warning`. Grepping for that one string is how
