@@ -85,6 +85,33 @@ GAIN = re.compile(r"improv\w*\s+accuracy|rais\w*\s+accuracy"
                   r"|accuracy\s+(?:gain|improvement)")
 VERIFY = re.compile(r"verification|verifier|verify|claim check")
 NEGATED = re.compile(r"\b(?:no|not|never|without|cannot|nor)\b")
+# ",X," where X is short and carries no sentence punctuation: an aside.
+PARENTHETICAL = re.compile(r",\s*([^,.;:]{1,80}?),\s*")
+
+
+def elide_parentheticals(text):
+    """Rejoin a subject to its verb across an appositive.
+
+    Splitting on commas alone puts "claim verification, which checks each
+    claim against the traversed triples, improves accuracy" into three
+    clauses, with the subject in the first and the verb in the third, and
+    the rule sees neither together. Subject, non-restrictive relative,
+    verb is the ordinary way an abstract introduces exactly this sentence
+    -- the paper's own abstract uses the shape, with em dashes rather
+    than commas, and words() drops em dashes, so it escaped by accident.
+
+    An aside that itself mentions the component or a gain is kept, since
+    removing it would lose the thing being tested.
+    """
+    prev = None
+    while prev != text:
+        prev = text
+        text = PARENTHETICAL.sub(
+            lambda m: m.group(0)
+            if VERIFY.search(m.group(1)) or GAIN.search(m.group(1))
+            else " ",
+            text, count=1)
+    return text
 
 
 def test_the_abstract_does_not_promise_verification_raises_accuracy():
@@ -103,8 +130,16 @@ def test_the_abstract_does_not_promise_verification_raises_accuracy():
     in the next, and the window cleared that by five characters -- so any
     trim of the clause between them turned a correct abstract red. It is
     the clause that carries the claim, so the clause is what is read.
+
+    Parentheticals are elided first, so an appositive between subject and
+    verb does not hide one from the other; see elide_parentheticals.
+
+    Known limits, both vocabulary rather than structure: passive voice
+    ("accuracy is improved by the verification layer") and gain verbs
+    outside GAIN ("lifts accuracy") are not caught. Chasing those is
+    where this stops paying for itself.
     """
-    text = " ".join(words()).lower()
+    text = elide_parentheticals(" ".join(words()).lower())
     for clause in CLAUSE.split(text):
         if not VERIFY.search(clause):
             continue
