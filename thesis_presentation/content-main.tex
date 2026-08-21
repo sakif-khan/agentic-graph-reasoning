@@ -569,8 +569,19 @@
         cannot catch it by construction.
       \end{block}
       \vspace{1mm}
-      {\small It appears across systems, so it is a property of the task, not
-      of AGR. Naming it is what lets future work target it.}
+      % This read "it appears across systems, so it is a property of the
+      % task, not of AGR" -- defensive where the thesis is substantive.
+      % sec:echo: "invisible to any evaluation treating systems as
+      % independent", and sec:contribution says the contribution is "the
+      % named mechanism itself and what it means for consensus-based
+      % evaluation, not the frequency". Commit 2acfc2a moved the abstract off
+      % the independence framing for this reason, from "turns up across
+      % unrelated systems" to "which different systems fall into together";
+      % this slide had not followed. The deflection was also unnecessary --
+      % nothing on the slide blames AGR for it.
+      {\small Different systems fall into it \alert{together}, so no evaluation
+      treating them as independent can see it --- and a policy of rescoring on
+      majority agreement turns it into apparent \alert{correctness}.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -580,8 +591,14 @@
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
       \small
-      Reading every failure also found questions where the \emph{benchmark},
-      not the system, was at fault:
+      % "Reading every failure also found..." presented this as a second,
+      % unrelated finding. sec:benchmark-defects makes them one: "The gap
+      % between those figures is not measurement noise --- it is the echo
+      % attractor of sec:echo, operating across systems." 105 is 58 + 47
+      % flagged, 41 is 22 + 19 adjudicated; both are in gold_adjudication.
+      The same cross-system agreement is also a \alert{\mbox{detector}}:
+      consensus flagged $105$ questions, adjudication confirmed $41$, and the
+      gap is the attractor above rather than label noise.
       \begin{itemize}
         \item $41$ excluded before the census
         \item $17$ found inside the census

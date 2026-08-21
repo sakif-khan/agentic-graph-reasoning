@@ -412,11 +412,9 @@ you can't.**
 
 ## 19 — Every failure, read: the echo attractor *(1:15)*
 
-> I read all 259 remaining failures and labelled them against a ten-category
-> scheme. Here are the top categories pooled.
+> I read all 259 remaining failures and labelled them. Top categories, pooled.
 >
-> The one I want to name is sixth on that list, with 13 cases, and it is the one
-> that matters conceptually.
+> The one I want to name is sixth, with 13 cases.
 >
 > The characteristic error of a graph navigator is not invention. It's what I
 > call the **echo attractor** — the system returns a real, grounded entity that
@@ -428,8 +426,18 @@ you can't.**
 > exists. It is true and it is wrong. Verification cannot catch this by
 > construction.
 >
-> It appears across systems, so it's a property of the task rather than of AGR.
-> Naming it is what lets future work target it.
+> Different systems fall into it together, so no evaluation treating them as
+> independent can see it. Rescore whenever a majority agree — a natural thing
+> to want — and this becomes apparent correctness. That is the contribution:
+> the mechanism, not the count.
+
+**Do not say "it appears across systems, so it is a property of the task rather
+than of AGR."** That is defensive where the thesis is substantive, and nothing
+on the slide blames AGR for it. The claim is about evaluation: sec:echo calls
+the attractor "invisible to any evaluation treating systems as independent",
+and section 1.6 says the contribution is the mechanism "and what it means for
+consensus-based evaluation, not the frequency". Slide 20 is the same finding
+seen from the other side.
 
 **The full 12-category histogram is Backup 4 if anyone wants it.**
 
@@ -437,17 +445,17 @@ you can't.**
 
 ## 20 — The benchmark was wrong 57 times *(0:50)*
 
-> One more thing came out of reading every failure.
+> Same pass, same cross-system agreement: consensus flagged 105 questions,
+> adjudication confirmed 41 — and the gap is the attractor I just described, not
+> label noise.
 >
-> 57 distinct questions where the *benchmark* was wrong, not the system —
-> 41 caught before the census and 17 inside it, with one question in both, so 57
-> distinct.
+> Those 41 were excluded before the census. 17 more turned up inside it, one is
+> in both, so 57 distinct questions where the benchmark was wrong, not the
+> system.
 >
-> Published defect rates for these two standard benchmarks are rare and usually
-> anecdotal. This is a counted rate, with a documented adjudication procedure and
-> per-question provenance, so anyone can check it.
->
-> That's a contribution that outlives this particular system.
+> Published defect rates for these benchmarks are rare and usually anecdotal.
+> This is a counted rate with a documented adjudication procedure and
+> per-question provenance.
 
 ---
 

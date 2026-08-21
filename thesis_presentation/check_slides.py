@@ -574,6 +574,67 @@ if g:
                      rf"of questions at least one topic entity", MDF)
        is not None)
 
+# ---------------------------------------------------------------------
+# The echo attractor's point is about evaluation, not about blame.
+#
+# The slide said "It appears across systems, so it is a property of the
+# task, not of AGR" -- defensive, and pointed the wrong way. sec:echo:
+# "That is also why the echo attractor is invisible to any evaluation
+# treating systems as independent." sec:contribution: the contribution is
+# "the named mechanism itself and what it means for consensus-based
+# evaluation, not the frequency." sec:limitations-final's chapter lists it
+# as "shared attractors break consensus-based evaluation", because a
+# majority-rescoring policy converts the failure into apparent
+# correctness. Commit 2acfc2a moved the abstract off the independence
+# framing -- "turns up across unrelated systems" became "which different
+# systems fall into together" -- and the deck never followed.
+print("\n== the echo attractor is framed as the thesis frames it ==")
+echo = frame("Every failure, read: the echo attractor")
+bench = frame(r"The benchmark was wrong $57$ times")
+s19, s20 = spoken(19), spoken(20)
+ck("both frames are in the deck", bool(echo) and bool(bench))
+
+RETRACTED = re.compile(r"propert\w+ of the task|across unrelated systems"
+                       r"|not (?:a propert\w+ of )?AGR\b"
+                       r"|rather than (?:of )?AGR\b", re.I)
+for label, text in (("echo slide", echo), ("section 19", s19)):
+    hit = RETRACTED.search(text)
+    ck(f"{label} does not deflect it onto the task", hit is None,
+       hit.group(0)[:60] if hit else "")
+    ck(f"{label} says no independent evaluation can see it",
+       re.search(r"independent", text, re.I) is not None
+       and re.search(r"evaluation|see it", text, re.I) is not None)
+    ck(f"{label} names what majority rescoring would do",
+       re.search(r"majority|consensus", text, re.I) is not None
+       and re.search(r"correctness", text, re.I) is not None)
+
+# The framing is only right while the thesis frames it that way.
+ck("the thesis still makes it a claim about evaluation",
+   "what it means for consensus-based evaluation, not the" in
+   " ".join(open(INTRO, encoding="utf-8").read().split()),
+   "sec:contribution is what the slide answers to")
+
+# Slides 19 and 20 are one finding. sec:benchmark-defects: "The gap
+# between those figures is not measurement noise --- it is the echo
+# attractor of sec:echo, operating across systems." The deck introduced
+# the second as "Reading every failure also found...", which reads as an
+# unrelated bonus.
+GA = J["gold_adjudication"]
+flagged = GA["webqsp"]["flagged_questions"] + GA["cwq"]["flagged_questions"]
+confirmed = GA["webqsp"]["excluded_questions"] + GA["cwq"]["excluded_questions"]
+ck(f"the flagged total is {flagged} and the confirmed total is {confirmed}",
+   confirmed == J["benchmark_defects"]["excluded_before_census"],
+   "the confirmed pair must be the count excluded before the census")
+for label, text, fl, cf in (("benchmark slide", bench, f"${flagged}$",
+                             f"${confirmed}$"),
+                            ("section 20", s20, str(flagged), str(confirmed))):
+    ck(f"{label} gives both the flagged and the confirmed count",
+       fl in text and cf in text, f"wants {fl} and {cf}")
+    ck(f"{label} attributes the gap to the attractor",
+       re.search(r"gap is the attractor|attractor I just described", text,
+                 re.I) is not None,
+       "the gap is the finding, not measurement noise")
+
 # The candidate widths are configuration, not results, so they are read
 # from the code that sets them rather than from thesis_numbers.json.
 #
