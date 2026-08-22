@@ -1611,11 +1611,13 @@ else:
     # search_entity takes a caller's k. "No free-form queries" is the
     # claim all four support, and the card makes it.
     #
-    # Scoped to the card on purpose: transcript section 6 says "four
-    # operations with fixed signatures and hard caps", which is the same
-    # overstatement, and rewording a rehearsed line costs speaking time
-    # the budget does not have. That one is open, not overlooked.
-        # Per operation body. Searching the whole file counted __init__,
+    # Held over the script as well as the card. Section 6 said "four
+    # operations with fixed signatures and hard caps" and was left open
+    # one round on the grounds that rewording a rehearsed line costs
+    # speaking time -- which had it backwards: the fix was deleting three
+    # words, and the timing rule only flags rows SHORT of their words, so
+    # slide 6 keeps its slack and the table does not move.
+    # Per operation body. Searching the whole file counted __init__,
     # which is where max_relations is assigned. `named` is the four the
     # tool slide lists, already checked against kg_tools.py above --
     # verify_triple is the fifth operation and no node calls it.
@@ -1626,9 +1628,14 @@ else:
     ck(f"{len(capped)} of the {len(named)} live tools truncate what they "
        f"return", 0 < len(capped) < len(named),
        f"{capped}, not {sorted(set(named) - set(capped))}")
-    ck("the card does not claim a cap on all of them",
-       re.search(rf"{len(named)} tools with hard caps", CARD) is None,
-       f"only {len(capped)} of {len(named)} cap anything")
+    # Both spellings, because the two artifacts count differently: the
+    # card writes "4 tools" and the script says "four operations".
+    allcaps = re.compile(rf"(?:{len(named)}|{NUM[len(named)]})\s+"
+                         rf"(?:tools|operations)[^.]{{0,40}}hard caps", re.I)
+    for label, text in (("card", CARD), ("script", spoken(6))):
+        ck(f"the {label} does not claim a cap on all of them",
+           allcaps.search(text) is None,
+           f"only {len(capped)} of {len(named)} cap anything")
 
     # -- the hedge rate counts questions ---------------------------
     # scripts/score_test.py takes `not pred` over per-question rows, so

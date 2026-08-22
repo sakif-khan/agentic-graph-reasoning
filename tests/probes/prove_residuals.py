@@ -40,6 +40,12 @@ the divergence keyed off the deck -- so a slide drifting back to
 answer grouped two systems as "the static baselines" while naming Static
 GraphRAG two clauses earlier as one of the three that do seed.
 
+The caps case has a twin on the script, section 6, which said "four
+operations with fixed signatures and hard caps" one round longer than
+the card did. Removing three words fixed it and the timing table did not
+move, because the achievability rule only flags rows SHORT of their word
+count.
+
 Cases 22-24 revert three wordings on the event card, each of which was
 corrected with nothing behind it. Its numbers are generated and cannot
 drift; these were typed. "Gold labels were wrong" is untrue of the 22
@@ -269,6 +275,9 @@ CASES = [
      edit(CARD, r"{questions where the benchmark,\\ not the system, was at "
                 r"fault}",
           r"{benchmark questions whose own\\ gold labels were wrong}")),
+    ("shipped: the script caps all four operations",
+     edit(SCRIPT, "It gets four operations with fixed signatures \u2014",
+          "It gets four operations with fixed signatures and hard caps \u2014")),
     ("shipped: the card caps all four tools",
      edit(CARD, "4 tools, no free-form queries",
           "4 tools with hard caps, no free-form queries")),

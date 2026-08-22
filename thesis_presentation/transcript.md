@@ -155,8 +155,8 @@ backtrack, retry — means counting the arrows confirms the sentence.
 ## 6 — Constrained tools *(0:45)*
 
 > The agent never writes a graph query. It gets four operations with fixed
-> signatures and hard caps — relations, neighbours, an adjacency check, and
-> entity linking.
+> signatures — relations, neighbours, an adjacency check, and entity
+> linking.
 >
 > This matters for more than safety. Because every operation is deterministic and
 > logged with its arguments and result, the traversal is a record. And that record
