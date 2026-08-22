@@ -31,15 +31,23 @@ clean document, and several of these could not, at first:
   same file to a slide-to-seconds dict. It searched section times for
   "wrongful acceptance" and reported that the thesis ranks nothing. This
   one failed loudly; a rebinding to a *compatible* value would not have
-- four times in three rounds a standalone comment landed one indent step
-  deeper than the code around it, always inside the block being edited
-  and always caught by someone reading rather than by anything running.
-  The cause is mechanical: a patch anchored on a line's first
-  non-whitespace character keeps that line's indent and prepends the
-  replacement's own. `tests/test_comment_indent.py` now scans every
-  Python file for it, and `prove_indent` carries three must-not-fire
-  cases, because a repo-wide rule that has to be suppressed anywhere is
-  a rule that gets suppressed everywhere
+- nine times across five commits a line drifted inward by exactly its
+  own indent, always inside the block being edited and every one of them
+  found by someone reading a diff. The cause is mechanical: a patch
+  anchored on a line's first non-whitespace character keeps that line's
+  indent and prepends the replacement's own, so four plus four makes
+  eight and eleven plus eleven makes twenty-two. `tests/test_indent_drift.py`
+  scans every Python file for both shapes this takes — a standalone
+  comment one step deeper than the code either side, and an element of a
+  bracketed literal at twice its siblings' column. The comment rule was
+  written first and alone, and could not see the second shape twice
+  over: it is code rather than a comment, and it sits inside brackets,
+  where that rule deliberately stops looking. Two of the five element
+  drifts had been in the tree six commits by the time it was added.
+  `prove_indent` carries seven must-not-fire cases, because a repo-wide
+  rule that has to be suppressed anywhere is a rule that gets suppressed
+  everywhere — and each of the four new ones is flagged by exactly one
+  loosened clause of the element rule, so none of them is decoration
 - a `ck` was pulled one level too deep by a careless re-indent and ended
   up inside the `if` that detects the defect, so on a clean document it
   never ran at all. It still failed when a row was short, so every probe
@@ -64,13 +72,16 @@ Every probe takes the repository root as `sys.argv[1]` and exits non-zero
 if any corruption slipped through, so `&&` and CI both work. `run_all.py`
 additionally fails if a probe leaked a modification.
 
-**Five of the probes shell out to `pytest`, which needs a `.env`.**
+**Six of the probes shell out to `pytest`, which needs a `.env`.**
 `tests/conftest.py` imports `agr.runtime` at module scope and `agr/env.py`
 raises at import time if any of the four variables is missing, so on a
 fresh clone `prove_abstract`, `prove_contract`, `prove_declarations`,
 `prove_highlights` and `prove_selfcontained` die with `IndexError: list
-index out of range` before testing anything. `cp .env.example .env` and
-fill it in; the other twenty-five probes run without it.
+index out of range` before testing anything. `prove_indent` shells out to
+pytest too, and reports the same missing `.env` as `not clean before the
+probe` — it checks that the tree passes before corrupting it, and a
+collection error is indistinguishable from a real failure at that point.
+`cp .env.example .env` and fill it in; the other twenty-four run without it.
 
 **`prove_log` needs a LaTeX toolchain**, because three of its cases are
 only visible in a build: it reinstates the defect in `preamble.tex` and
@@ -137,3 +148,13 @@ and contradicts it in the next still passes. That is the design — where
 the bounds live inside an artifact is an editorial matter, and the defect
 that shipped was omission, which this does catch. It is not a defence
 against a document arguing with itself.
+
+**A convention needs at least two lines to be a convention.** The indent
+rule for bracketed literals measures an element against the modal column
+of its siblings, and requires that column to be held by two lines before
+it will call anything a departure from it. In a two-element literal whose
+second element drifted there is one line at each column and nothing to
+say which is the norm, so the rule stays quiet rather than guess. Every
+drift that has actually happened was in a literal of at least four
+elements, and `prove_indent` pins the quiet case so it stays a decision
+rather than becoming an accident.

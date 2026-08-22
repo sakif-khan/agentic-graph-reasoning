@@ -174,7 +174,7 @@ CASES = [
      stretch_row(16, 60)),
     ("the budget line still quotes the old total",
      rewrite_budget(22, 30)),
-        ("a section heading disagrees with its row", desync_heading(21)),
+    ("a section heading disagrees with its row", desync_heading(21)),
     # Edits the limit rather than the times: changing a slide's time
     # desynchronises the cumulative column, and that check fires first,
     # leaving this one unproven. The limit is the only free variable that

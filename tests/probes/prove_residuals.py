@@ -249,7 +249,7 @@ CASES = [
     ("the extraction bug is quoted against the wrong denominator",
      edit(SCRIPT, "Nine of the 38 `decomposition_error` cases",
           "Nine of the 17 `decomposition_error` cases")),
-        ("a labelled instance is taken out of the census", drop_subtype()),
+    ("a labelled instance is taken out of the census", drop_subtype()),
 
     # ---- the table said 24:26 while the words said 24:50 ----
     ("shipped: slide 19 gets 75 seconds for 156 words", retime_row(19, 75)),
@@ -265,7 +265,7 @@ CASES = [
           r"\alert{Pre-registered} evaluation thresholds")),
 
     # ---- "static baselines" collides with Static GraphRAG ----
-        ("the two systems that do not seed are grouped, not named",
+    ("the two systems that do not seed are grouped, not named",
      edit(SCRIPT, "and neither the parametric control nor Vector-RAG ever "
                   "sees them.",
           "and the two static baselines never see them.")),
