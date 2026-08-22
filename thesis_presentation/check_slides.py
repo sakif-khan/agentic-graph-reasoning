@@ -7,6 +7,7 @@ which are transcribed and can therefore drift.
 
 Run from anywhere:  python thesis_presentation/check_slides.py
 """
+import csv
 import json
 import os
 import re
@@ -858,14 +859,29 @@ if m:
 CONC = os.path.join(ROOT, "thesis_book", "chapters", "conclusion.tex")
 conc = open(CONC, encoding="utf-8").read()
 i = conc.index(r"\section{Limitations}")
-heads = re.findall(r"\\textbf\{([^}]*)\}", conc[i:conc.index(r"\section", i + 10)])
-rank = next((n for n, h in enumerate(heads, 1)
-             if "narrower candidate set" in " ".join(h.split())), None)
-ck("the thesis ranks the candidate-width limitation", rank is not None)
-if rank:
-    stated = set(re.findall(r"limitation (\d+)", MDF))
-    ck(f"the transcript calls it limitation {rank}",
-       stated == {str(rank)}, f"transcript says {sorted(stated) or 'nothing'}")
+LIMIT_HEADS = [" ".join(h.split()).lower() for h in re.findall(
+    r"\\textbf\{([^}]*)\}", conc[i:conc.index(r"\section", i + 10)])]
+# Three answers cite an ordinal now, so a set equality against one rank
+# would fail a correct script. Each is ranked off the thesis heading it
+# is about, and the set is still closed: an ordinal quoted anywhere else
+# in the script belongs to no ranked limitation and fails here.
+RANKS = (("narrower candidate set", "Did both systems see the same"),
+         ("entity linking is assumed", "topic entities come from"),
+         ("depresses the reported accuracy", "Nine of your failures"))
+used = set()
+for head_key, question in RANKS:
+    at = next((n for n, h in enumerate(LIMIT_HEADS, 1)
+               if head_key in h), None)
+    ck(f"the thesis ranks {head_key!r}", at is not None)
+    said = answer(question)
+    ck(f"the script prepares {question!r}", bool(said))
+    if at and said:
+        ck(f"and calls it limitation {at}", f"limitation {at}" in said,
+           f"answer says {re.findall(r'limitation (.d+)', said) or 'nothing'}")
+        used.add(str(at))
+stated = set(re.findall(r"limitation (\d+)", MDF))
+ck("no other limitation ordinal is quoted", stated == used,
+   f"script says {sorted(stated)}, ranked {sorted(used)}")
 
 # ---------------------------------------------------------------------
 # The deck may not make a claim the paper retracted.
@@ -1139,6 +1155,45 @@ if len(back) in NUM:
     ck(f"the script also says {NUM[len(back)].lower()} cycles",
        re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s5, re.I) is not None)
 
+# The same diagram is drawn three times, and each copy's prose has to
+# count what that copy draws. Correcting the deck to three left the deck
+# as the outlier: the thesis caption still read "Two cycles exist" and
+# the paper still said "with two cycles", against figure sources whose
+# own comments call the third one a cycle. Each copy is held to its own
+# tikzpicture rather than to the deck's number, so a diagram that changes
+# in one document fails that document and not the other two.
+print("\n== every copy of the state machine counts its own arrows ==")
+# "Both cycles are bounded" is a count like any other, which is how the
+# paper's caption stated two without ever writing the word.
+WORD = {v.lower(): k for k, v in NUM.items()}
+WORD["both"] = 2
+COUNTED = re.compile(r"\b(" + "|".join(WORD) + r")\s+(?:\\emph\{)?cycles\b",
+                     re.I)
+for label, path in (("deck", os.path.join(HERE, "content-main.tex")),
+                    ("thesis", os.path.join(ROOT, "thesis_book", "chapters",
+                                            "framework.tex")),
+                    ("paper", os.path.join(ROOT, "thesis_paper", "sections",
+                                           "framework.tex"))):
+    src = " ".join(uncomment(open(path, encoding="utf-8").read()).split())
+    # The one picture that draws this machine. A file may hold several.
+    pic = next((p for p in re.findall(
+        r"\\begin\{tikzpicture\}(.*?)\\end\{tikzpicture\}", src)
+        if "(expl)" in p), "")
+    ck(f"{label}: the state-machine figure is there", bool(pic))
+    if not pic:
+        continue
+    ret = [e for e in re.findall(r"\\draw\[flow\](.*?);", pic)
+           if "expl" in target(e) and "plan" not in e]
+    ck(f"{label}: the diagram draws {len(ret)} arrows back to the Explorer",
+       len(ret) in NUM, str(len(ret)))
+    said = COUNTED.findall(src)
+    ck(f"{label}: the prose counts the cycles", bool(said))
+    wrong = [w for w in said if WORD[w.lower()] != len(ret)]
+    ck(f"{label}: every count beside it says {NUM.get(len(ret), '?')}",
+       not wrong,
+       f"says {wrong[0]!r}, diagram draws {len(ret)}" if wrong else "")
+
+
 # ---------------------------------------------------------------------
 # The script's own internals: one backup numbering system, one protected
 # set, and a bold count that matches what is bold.
@@ -1266,6 +1321,193 @@ else:
     ck("the talk fits the limit it names",
        lim is not None and run <= int(lim.group(1)) * 60,
        f"{run}s vs {lim.group(1) if lim else '?'} min")
+
+# ---------------------------------------------------------------------
+# The deck's limitations are the thesis's, IN the thesis's order.
+#
+# Presence was checked and order was not, past the first item. Items 4
+# and 5 had swapped against sec:limitations-final -- which opens "in
+# order of severity", and which the slide's own comment claims to follow
+# -- putting the candidate-width confound above the scoping of the whole
+# evaluation. Ranked off the thesis headings, so a reordering there fails
+# this until the slide follows.
+print("\n== the deck's limitations keep the thesis's order ==")
+RANKED = (("rejects", "wrongful acceptance"),
+          ("detectable accuracy", "underpowered"),
+          ("navigation", "structural grounding"),
+          ("one environment", "single-environment"),
+          ("candidate set", "narrower candidate set"))
+order = []
+for deck_key, head_key in RANKED:
+    at = next((n for n, h in enumerate(LIMIT_HEADS) if head_key in h), None)
+    ck(f"the thesis ranks {head_key!r}", at is not None)
+    here = limits.find(deck_key)
+    ck(f"the slide carries {deck_key!r}", here >= 0)
+    if at is not None and here >= 0:
+        order.append((here, at, deck_key))
+order.sort()
+swaps = [f"{y[2]!r} (thesis rank {y[1] + 1}) is listed below "
+         f"{x[2]!r} (rank {x[1] + 1})"
+         for x, y in zip(order, order[1:]) if x[1] > y[1]]
+ck("the slide lists them in the thesis's severity order", not swaps,
+   swaps[0] if swaps else "")
+
+# ---------------------------------------------------------------------
+# One deliberate wording divergence, said out loud.
+#
+# The slide writes contribution 6 as "pre-specified" where the thesis
+# titles it "Pre-Registered", per the standing rule in
+# thesis_paper/sections/setup.tex -- nothing was filed with a registry.
+# That is a rigour point, and it read as a discrepancy: this is the one
+# slide whose premise is that the six are the thesis's, in its order, and
+# the script did not mention the change. Held only while the two
+# documents actually differ, so reconciling either way retires the rule
+# rather than leaving behind a check that cannot fail.
+print("\n== the pre-specified wording is accounted for ==")
+thesis_six = " ".join(intro[start:end].split()).lower()
+if "pre-specified" in contrib and "pre-registered" in thesis_six:
+    s21 = spoken(21)
+    ck("the script names the thesis's word", "pre-registered" in s21.lower())
+    ck("and the word the slide uses", "pre-specified" in s21.lower())
+    ck("and gives the reason the slide diverges",
+       re.search(r"registr(y|ies)", s21, re.I) is not None)
+else:
+    ck("the two documents still differ on this word", True,
+       "reconciled -- rule retired")
+
+# ---------------------------------------------------------------------
+# Slide 13's hop curve, from the strata rather than from the figure.
+#
+# This was the last transcription in the deck bound to nothing. The
+# numbers sit as prose beside a generated figure, so 0.46/0.55/0.57 could
+# be corrupted to 0.96/0.95/0.97 with the whole suite still green -- and
+# the shape claims around them ("the only system that ends above where it
+# started", "three of the other four decay") are assertions about four
+# other systems that no rule read at all.
+print("\n== the hop curve is the strata ==")
+TR = J["main_results"]["hop_trends"]["cwq"]
+HOP = frame("RQ1: accuracy against hop count")
+s13 = spoken(13)
+agr = TR["agr"]["hits_at_1"]
+arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)
+ck("the hop slide is in the deck", bool(HOP))
+ck(f"the slide quotes AGR's CWQ curve {agr}",
+   re.search(arrow, HOP) is not None, "in that order")
+ck("the script quotes the same three", re.search(arrow, s13) is not None)
+
+rising = TR["_systems_monotone_rising"]
+ck("AGR is the only CWQ system that rises", rising == ["agr"], str(rising))
+below = TR["_systems_ending_below_h1"]
+ck(f"the other {len(below)} end below their one-hop score",
+   sorted(below) == sorted(k for k in TR
+                           if not k.startswith("_") and k != "agr"))
+for label, text in (("slide", HOP), ("script", s13)):
+    ck(f"the {label} says AGR alone ends above where it started",
+       re.search(r"only\b[^.]*\bend(?:s|ing)? above where it started",
+                 plain(text)) is not None)
+
+falling = TR["_systems_monotone_falling"]
+ck(f"{len(falling)} of the other four decay monotonically",
+   len(falling) in NUM, str(sorted(falling)))
+decay = re.compile(NUM[len(falling)] + r" of the other (\w+) decay", re.I)
+for label, text in (("slide", HOP), ("script", s13)):
+    m = decay.search(plain(text))
+    ck(f"the {label} says {NUM[len(falling)].lower()} of the others decay",
+       m is not None)
+    if m:
+        ck(f"and puts the others at {NUM[len(below)].lower()}",
+           WORD.get(m.group(1).lower()) == len(below), f"says {m.group(1)!r}")
+
+# The exception to the monotonicity, and by how much it misses.
+net = TR["tog"]["net_hits_at_1"]
+ck("ToG's CWQ curve is neither rising nor falling throughout",
+   not TR["tog"]["monotone_falling"] and not TR["tog"]["monotone_rising"])
+ck(f"the script says it ends {abs(net)} below its one-hop score",
+   re.search(r"(?<![\d.])" + re.escape(str(abs(net)))
+             + r"(?![\d.])[^.]*below its own one-hop", s13) is not None,
+   f"hop_trends gives {net}")
+
+# The strata the answer rests on, from the stratum table.
+n = [J["main_results"]["by_hop_stratum"]["cwq/agr"][k]["n"]
+     for k in ("h1", "h2", "h3plus")]
+a4 = answer("n=4 in the three-hop WebQSP stratum")
+# (?!\.\d) rather than (?![\d.]): the strata are spoken as "137, 211, and
+# 49." and a plain token guard rejects the full stop that ends the
+# sentence, while still having to reject the 49 inside 49.5.
+ck("the n=4 answer names the CWQ strata",
+   bool(a4) and all(re.search(rf"(?<![\d.]){v}(?!\d)(?!\.\d)", a4)
+                    for v in n), str(n))
+
+# ---------------------------------------------------------------------
+# Two thesis limitations that reached neither document.
+#
+# sec:limitations-final lists eight and the slide carries five. #6 is
+# answered under the GraphRAG question; #7 and #8 appeared nowhere in the
+# deck or the script. #7 is a standard KGQA question with a one-line
+# answer, and #8 only makes the reported numbers a floor -- both cheaper
+# volunteered than extracted. Their ordinals are ranked above with the
+# candidate-width one; what is checked here is the substance.
+print("\n== limitations 7 and 8 reach the Q&A ==")
+link = answer("topic entities come from")
+CFG = open(os.path.join(ROOT, "agr", "config.py"), encoding="utf-8").read()
+gold = re.search(r"use_gold_entities: bool = (True|False)", CFG)
+ck("config.py sets use_gold_entities", gold is not None)
+if gold:
+    # The answer's whole premise is that this is on. Flip it and "they
+    # are given by the datasets" stops being true.
+    ck("mentions really do come from the dataset", gold.group(1) == "True",
+       f"config says {gold.group(1)}")
+    ck("the answer names the flag", "use_gold_entities" in link)
+    ck("and the operation that resolves them to nodes",
+       "search_entity" in link)
+# Which systems the assumption binds. Vector-RAG and the parametric
+# control never read the annotation, so claiming all five share it would
+# be wrong in the other direction.
+seeded = {b for b in ("tog", "graphrag", "vectorrag", "noretrieval")
+          if "gold_q_entities" in open(
+              os.path.join(ROOT, "agr", "baselines", b + ".py"),
+              encoding="utf-8").read()}
+ck("two baselines seed from the annotation", seeded == {"tog", "graphrag"},
+   str(sorted(seeded)))
+ck("the answer names those two and excludes the static pair",
+   all(k in link for k in ("Think-on-Graph", "GraphRAG"))
+   and "static baselines never see them" in link)
+
+# The extraction bug, counted from the committed label sheets -- the same
+# files scripts/synthesize_census.py merges into the census.
+SHEETS = [os.path.join(ROOT, "results", "phase4", f) for f in
+          ("labels_webqsp.csv", "labels_cwq.csv", "labels_cwq_dropped.csv")]
+SHEETS += [os.path.join(ROOT, "results", "phase4", "ablations",
+                        "noplanner_categories_" + d + ".csv")
+           for d in ("webqsp", "cwq")]
+rows = [r for f in SHEETS if os.path.exists(f)
+        for r in csv.DictReader(open(f, encoding="utf-8"))]
+decomp = [r for r in rows if r["category"] == "decomposition_error"]
+bug = [r for r in decomp if r["subtype"] == "extraction_bug"]
+ck(f"the label sheets hold {len(decomp)} decomposition_error cases",
+   len(decomp) == sum(J["failure_histogram"][d][k]["decomposition_error"]
+                      for d in ("webqsp", "cwq") for k in ("wrong", "hedge")),
+   "sheets vs the histogram")
+ck(f"{len(bug)} of them carry the extraction_bug subtype", len(bug) in NUM)
+
+ebug = answer("Nine of your failures")
+ck("the extraction-bug question is prepared", bool(ebug))
+if ebug:
+    ck(f"the answer says {NUM[len(bug)].lower()} of {len(decomp)}",
+       re.search(NUM[len(bug)] + r"\D{0,24}(?<![\d.])" + str(len(decomp))
+                 + r"(?![\d.])", ebug, re.I) is not None,
+       f"the sheets give {len(bug)} of {len(decomp)}")
+    # The specimen, read from the sheet rather than from the prose.
+    spec = next((r for r in bug if r["qid"] in ebug), None)
+    ck("the answer names a labelled instance", spec is not None)
+    if spec:
+        m = re.search(r"only the subject '([^']+)'", spec["note"])
+        ck("and the entity that question actually scored",
+           m is not None and m.group(1) in ebug,
+           f"{spec['qid']} scored {m.group(1) if m else '?'}")
+    # The direction is the point: it costs AGR accuracy, not the baselines.
+    ck("the answer says which way it cuts", "floor" in ebug)
+
 
 print("\n" + ("ALL SLIDE NUMBERS MATCH THEIR SOURCE"
               if ok else "SOMETHING DOES NOT MATCH"))

@@ -121,11 +121,12 @@ with LangGraph. \Cref{fig:statemachine} gives the topology.
       \end{scope}
     \end{tikzpicture}
   \end{center}
-  \caption[The AGR state machine]{The AGR state machine. Two cycles exist: the dashed region marks the
-    Explorer\,$\leftrightarrow$\,Evaluator search loop, and
-    Verifier\,$\rightarrow$\,Explorer is verification-driven re-exploration.
-    Both are bounded by the budgets of \Cref{sec:budgets} rather than by the
-    graph structure. Every path from Evaluator to Answerer passes through the
+  \caption[The AGR state machine]{The AGR state machine. Three cycles exist: the dashed region marks the
+    Explorer\,$\leftrightarrow$\,Evaluator search loop;
+    Evaluator\,$\rightarrow$\,Backtracker\,$\rightarrow$\,Explorer restores an
+    earlier frontier; and Verifier\,$\rightarrow$\,Explorer is
+    verification-driven re-exploration. All three are bounded by the budgets
+    of \Cref{sec:budgets} rather than by the graph structure. Every path from Evaluator to Answerer passes through the
     Verifier, which is the structural expression of this thesis's contribution.}
   \label{fig:statemachine}
 \end{figure}

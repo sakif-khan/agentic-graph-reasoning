@@ -690,7 +690,11 @@
     \end{column}
     \begin{column}{0.48\textwidth}
       % Each of these maps to a heading in sec:limitations-final, in its
-      % severity order. "ToG leads on the questions it finishes" stood here
+      % severity order -- the order of the \textbf{} headings in that
+      % section, which check_slides.py reads and holds this list to. Items
+      % 4 and 5 were swapped against it: the thesis ranks the environment
+      % scoping above the candidate-width confound.
+      % "ToG leads on the questions it finishes" stood here
       % alone and is an honest disclosure, but it is not one of the
       % thesis's limitations; the thesis's item is the candidate-width
       % confound, which is the caveat ON that disclosure, so the two are
@@ -705,9 +709,9 @@
         \item \alert{No} detectable accuracy gain --- and at $n \approx 200$
           that is ``not detected'', not ``none''
         \item Zero ungrounded assertion is \alert{navigation}, not the layer
+        \item One environment, one backbone, one annotator
         \item ToG leads where it finishes, from a \alert{narrower
           candidate set}: $40$/$20$ vs $300$/$200$
-        \item One environment, one backbone, one annotator
       \end{itemize}
     \end{column}
   \end{columns}

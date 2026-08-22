@@ -43,7 +43,7 @@ cost (\Cref{sec:budgets}).
 \subsection{State Machine and Tool API}\label{sec:statemachine}
 
 \Cref{fig:statemachine} gives the topology: six agent nodes over a
-shared typed state, with two cycles. The \textbf{Planner} decomposes the
+shared typed state, with three cycles. The \textbf{Planner} decomposes the
 question into an ordered chain of sub-objectives in one model call;
 \textbf{Explorer} and \textbf{Evaluator} form a search loop, expanding
 the frontier and judging whether the active sub-objective is satisfied;
@@ -107,9 +107,11 @@ this paper's contribution and the subject of \Cref{sec:verification}.
     \end{tikzpicture}
   \end{center}
   \caption{The AGR state machine. The dashed region is the
-    Explorer\,$\leftrightarrow$\,Evaluator search loop; Verifier
-    $\rightarrow$ Explorer is verification-driven re-exploration. Both
-    cycles are bounded by the budgets of \Cref{sec:budgets}. Every path
+    Explorer\,$\leftrightarrow$\,Evaluator search loop;
+    Evaluator $\rightarrow$ Backtracker $\rightarrow$ Explorer restores an
+    earlier frontier; Verifier $\rightarrow$ Explorer is verification-driven
+    re-exploration. All three cycles are bounded by the budgets of
+    \Cref{sec:budgets}. Every path
     from Evaluator to Answerer passes through the Verifier.}
   \label{fig:statemachine}
 \end{figure}

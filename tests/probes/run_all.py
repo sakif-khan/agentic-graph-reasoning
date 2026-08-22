@@ -39,10 +39,12 @@ TARGETS = ("thesis_paper/", "scripts/check_paper_numbers.py",
            "thesis_book/chapters/introduction.tex",
            "thesis_book/chapters/conclusion.tex",
            "thesis_book/chapters/results.tex",
+           "thesis_book/chapters/framework.tex",
            "thesis_book/figures/fig_hop_strata.tex",
            "agr/baselines/tog.py", "agr/baselines/graphrag.py",
-           "agr/kg_tools.py",
+           "agr/kg_tools.py", "agr/config.py",
            "results/phase4/thesis_numbers.json",
+           "results/phase4/labels_",
            "results/phase4/ablations/")
 
 

@@ -26,6 +26,16 @@ clean document, and several of these could not, at first:
   same shape as the GraphRAG and highlights failures above, on its ninth
   recurrence. Values with more than one home are checked per block now
 
+- the new limitation-order rule ranked the deck's bullets against
+  `heads`, a name the transcript-timing block rebinds further down the
+  same file to a slide-to-seconds dict. It searched section times for
+  "wrongful acceptance" and reported that the thesis ranks nothing. This
+  one failed loudly; a rebinding to a *compatible* value would not have
+- the token guard `(?![\d.])`, added so that `0.0` stops matching inside
+  `40.0`, also rejects a number that ends a sentence — and the strata
+  are spoken as "137, 211, and 49." Guarding against a period is not the
+  same as guarding against a decimal point, which is `(?!\.\d)`
+
 Each probe reinstates a defect that actually shipped, verbatim where
 possible, runs the relevant checker, and asserts it fails. Then it
 restores the file in a `finally` block.
@@ -47,7 +57,7 @@ raises at import time if any of the four variables is missing, so on a
 fresh clone `prove_abstract`, `prove_contract`, `prove_declarations`,
 `prove_highlights` and `prove_selfcontained` die with `IndexError: list
 index out of range` before testing anything. `cp .env.example .env` and
-fill it in; the other twenty-three probes run without it.
+fill it in; the other twenty-four probes run without it.
 
 **`prove_log` needs a LaTeX toolchain**, because three of its cases are
 only visible in a build: it reinstates the defect in `preamble.tex` and
@@ -94,3 +104,19 @@ document derives**. `prove_lists` anchored a timing row verbatim,
 cumulative column included, and raised the first time an unrelated slide
 grew by ten seconds. The corruption a probe applies has to be computed
 from the file it is about to corrupt, not written down beside it.
+
+## What these checks do not catch
+
+**Presence is not order.** Each of the deck's five limitations was
+checked to be present and only the first was checked to be in position,
+so items 4 and 5 sat swapped against the thesis's severity order — the
+order the slide's own comment claimed to follow. A rule about a list has
+to rank it, not look each item up.
+
+**A bound satisfied somewhere is not a bound satisfied everywhere.** The
+output-contract rule is presence-scoped per document: it asks whether the
+document states the bound, and a document that states it in one sentence
+and contradicts it in the next still passes. That is the design — where
+the bounds live inside an artifact is an editorial matter, and the defect
+that shipped was omission, which this does catch. It is not a defence
+against a document arguing with itself.

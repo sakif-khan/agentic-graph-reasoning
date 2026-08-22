@@ -480,6 +480,9 @@ are corrected with.
 > section 1.6. The one I would underline is stratum-dependent decomposition: the
 > literature treats decomposition as straightforwardly beneficial, and it is not.
 >
+> The sixth is worded *pre-registered* in the thesis; nothing was filed with a
+> registry, so I say *pre-specified*.
+>
 > And the limitations, which I'd rather state than be asked.
 >
 > The first is the most serious. The verifier persists only what it *rejects*, so
@@ -488,9 +491,10 @@ are corrected with.
 >
 > Then: no detectable accuracy gain from verification, and at n around 200 that
 > is "not detected", not "none". Zero ungrounded assertion comes from navigation,
-> not my layer. Think-on-Graph leads where it finishes, and prunes from a
-> narrower candidate set — 40 and 20 against my 300 and 200 — so its unclipped
-> subset understates it. And one environment, one backbone, one annotator.
+> not my layer. One environment, one backbone, one annotator. And
+> Think-on-Graph leads where it finishes, and prunes from a narrower candidate
+> set — 40 and 20 against my 300 and 200 — so its unclipped subset
+> understates it.
 
 ---
 
@@ -639,6 +643,34 @@ ComplexWebQuestions, where the strata are 137, 211, and 49.
 **"How do you know the gold answers are reachable?"**
 Verified per question against the graph before scoring — 97.0 percent on WebQSP,
 99.2 on CWQ. It's the ceiling on every Hits@1 I report, and it's stated as such.
+
+**"Where do the topic entities come from — doesn't the system have to find
+them first?"**
+They are given by the datasets. `use_gold_entities` is on for every run I
+report, so the question's annotated mentions go to `search_entity`, which
+resolves each one to a graph node through the three-stage resolver. Mention
+*detection* is assumed; mention-to-node resolution is not — that part the
+system does. It is limitation 7 in the conclusion: the accuracies I report
+presume a linking step a deployed system would have to perform, and I do not
+measure that step. What it is not is a between-system confound. The three
+systems that touch the graph — AGR, Think-on-Graph and GraphRAG — all seed
+from the same annotated mentions, and the two static baselines never see them.
+
+**"Nine of your failures are one bug. Isn't the census measuring your
+implementation?"**
+In part, and I would rather say which part. Nine of the 38
+`decomposition_error` cases carry the subtype `extraction_bug`, and they share
+one mechanism: the evaluator resolves every gold value, the drafted sentence
+names them verbatim, and `answer_entities` then collapses to the sentence's
+grammatical subject. WebQTest-1215 drafts all six of Stephen Covey's
+professions and scores `['Stephen Covey']`. The reasoning was complete and the
+verifier certified it; what failed is the step that reads entities back out of
+the draft. That is limitation 8, and the direction is the part worth saying:
+it depresses my *own* reported accuracy, so on that question shape the
+headline numbers are a floor rather than an estimate. The fix is an
+instruction to the claim decomposer, not an architecture change, and it is the
+first of the three repairs the census earned. The category split is backup
+page 4.
 
 **"Is this reproducible?"**
 Every number in the thesis is generated from frozen run records by a script;

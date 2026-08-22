@@ -1,0 +1,200 @@
+"""Prove the four residuals are held, and by what.
+
+Case 1 reinstates the thesis caption verbatim -- "Two cycles exist ...
+Both are bounded" -- beside a figure whose own source comments call the
+third arrow a cycle. Cases 2 and 3 do the same to the paper, which said
+"with two cycles" in the body and "Both cycles are bounded" in the
+caption. Correcting the deck alone in an earlier round had made the deck
+the outlier against the two documents it is drawn from.
+
+Case 4 swaps the deck's limitations 4 and 5 back. Presence was checked
+and order was not, past the first item, while the slide's own comment
+claimed the thesis's severity order.
+
+Case 5 removes the sentence accounting for "pre-specified" on the one
+slide whose premise is that the six contributions are the thesis's, in
+its order -- a rigour point that reads as a discrepancy unspoken.
+
+Cases 6-12 are the hop curve, which was the last transcription in this
+material bound to nothing: 0.46/0.55/0.57 could become 0.96/0.95/0.97
+with the whole suite still green, and the shape claims around it were
+assertions about four other systems that no rule read.
+
+Cases 13-17 are the two limitations that reached neither document.
+Two of them move sources rather than prose: config.py's
+use_gold_entities, whose being on is the answer's whole premise, and one
+label sheet, which is where the nine instances are counted.
+
+Every file is restored in a finally block.
+"""
+import io
+import pathlib
+import re
+import subprocess
+import sys
+
+ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
+                    pathlib.Path(__file__).resolve().parents[2])
+BOOK = ROOT / "thesis_book" / "chapters" / "framework.tex"
+PAPER = ROOT / "thesis_paper" / "sections" / "framework.tex"
+DECK = ROOT / "thesis_presentation" / "content-main.tex"
+SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
+CFG = ROOT / "agr" / "config.py"
+SHEET = ROOT / "results" / "phase4" / "labels_webqsp.csv"
+CHECK = ROOT / "thesis_presentation" / "check_slides.py"
+
+FILES = (BOOK, PAPER, DECK, SCRIPT, CFG, SHEET)
+orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
+
+
+def restore():
+    for p, s in orig.items():
+        io.open(p, "w", encoding="utf-8", newline="").write(s)
+
+
+def run():
+    r = subprocess.run([sys.executable, str(CHECK)],
+                       cwd=ROOT, capture_output=True, text=True)
+    fail = [l.strip() for l in r.stdout.splitlines() if "[FAIL]" in l]
+    return r.returncode, (fail[0][:88] if fail else "")
+
+
+def edit(path, old, new):
+    """Rewrite one passage, tolerating rewrap and blockquote markers.
+
+    An anchor that spans a line break must not carry the wrapping with
+    it, and in the script every continuation line opens with "> ".
+    """
+    def go():
+        pattern = re.compile(r"\s+(?:>\s*)?".join(
+            re.escape(w) for w in old.split()))
+        assert pattern.search(orig[path]), f"anchor gone in {path.name}: {old[:60]!r}"
+        io.open(path, "w", encoding="utf-8", newline="").write(
+            pattern.sub(lambda _: new, orig[path], count=1))
+    return go
+
+
+def drop_subtype():
+    """Take one instance out of the census the answer counts from.
+
+    The nine is read from the label sheets, not from the prose, so
+    relabelling one row has to break the answer.
+    """
+    def go():
+        s = orig[SHEET]
+        assert s.count(",extraction_bug,") > 1
+        io.open(SHEET, "w", encoding="utf-8", newline="").write(
+            s.replace(",extraction_bug,", ",,", 1))
+    return go
+
+
+CASES = [
+    # ---- the cycle count, in the two documents that still said two ----
+    ("shipped: the thesis caption says two cycles", edit(
+        BOOK,
+        "The AGR state machine. Three cycles exist: the dashed region marks "
+        "the Explorer\\,$\\leftrightarrow$\\,Evaluator search loop; "
+        "Evaluator\\,$\\rightarrow$\\,Backtracker\\,$\\rightarrow$\\,Explorer "
+        "restores an earlier frontier; and "
+        "Verifier\\,$\\rightarrow$\\,Explorer is verification-driven "
+        "re-exploration. All three are bounded",
+        "The AGR state machine. Two cycles exist: the dashed region marks the\n"
+        "    Explorer\\,$\\leftrightarrow$\\,Evaluator search loop, and\n"
+        "    Verifier\\,$\\rightarrow$\\,Explorer is verification-driven "
+        "re-exploration.\n    Both are bounded")),
+    ("shipped: the paper's body says two cycles",
+     edit(PAPER, "shared typed state, with three cycles.",
+          "shared typed state, with two cycles.")),
+    ("shipped: the paper's caption says both cycles", edit(
+        PAPER,
+        "Evaluator $\\rightarrow$ Backtracker $\\rightarrow$ Explorer restores "
+        "an earlier frontier; Verifier $\\rightarrow$ Explorer is "
+        "verification-driven re-exploration. All three cycles are bounded",
+        "Verifier $\\rightarrow$ Explorer is verification-driven\n"
+        "    re-exploration. Both cycles are bounded")),
+
+    # ---- the limitations, in the thesis's severity order ----
+    ("shipped: the deck's limitations 4 and 5 are swapped", edit(
+        DECK,
+        "\\item One environment, one backbone, one annotator "
+        "\\item ToG leads where it finishes, from a \\alert{narrower "
+        "candidate set}: $40$/$20$ vs $300$/$200$",
+        "\\item ToG leads where it finishes, from a \\alert{narrower\n"
+        "          candidate set}: $40$/$20$ vs $300$/$200$\n"
+        "        \\item One environment, one backbone, one annotator")),
+
+    # ---- the wording divergence ----
+    ("shipped: nothing says why the slide diverges on pre-specified", edit(
+        SCRIPT,
+        "> The sixth is worded *pre-registered* in the thesis; nothing was "
+        "filed with a registry, so I say *pre-specified*.\n>\n",
+        "")),
+
+    # ---- the hop curve ----
+    ("the slide's AGR curve is corrupted",
+     edit(DECK, "$0.46 \\to 0.55 \\to 0.57$", "$0.96 \\to 0.95 \\to 0.97$")),
+    ("the script's AGR curve is corrupted",
+     edit(SCRIPT, "AGR goes 0.46, 0.55, 0.57 as",
+          "AGR goes 0.96, 0.95, 0.97 as")),
+    ("the slide drops the ends-above claim",
+     edit(DECK, "that ends above where it started",
+          "that ends above where it began")),
+    ("the script drops the ends-above claim",
+     edit(SCRIPT, "It is the only system on that dataset that ends above "
+                  "where it started.",
+          "It is the strongest system on that dataset.")),
+    ("the slide miscounts the systems that decay",
+     edit(DECK, "Three of the other four decay",
+          "Two of the other four decay")),
+    ("the script miscounts the systems that decay",
+     edit(SCRIPT, "Three of the other four decay monotonically",
+          "Three of the other three decay monotonically")),
+    ("ToG's shortfall is misquoted",
+     edit(SCRIPT, "still 0.08 below its own one-hop score",
+          "still 0.18 below its own one-hop score")),
+
+    # ---- limitations 7 and 8 ----
+    ("shipped: no answer on where topic entities come from", edit(
+        SCRIPT,
+        "**\"Where do the topic entities come from",
+        "**\"Where do the tropic entities come from")),
+    ("the entity-linking answer overclaims which systems share it", edit(
+        SCRIPT,
+        "The three systems that touch the graph \u2014 AGR, Think-on-Graph and "
+        "GraphRAG \u2014 all seed from the same annotated mentions, and the two "
+        "static baselines never see them.",
+        "All five systems seed from the same annotated mentions.")),
+    ("the gold-entity flag is turned off under the answer",
+     edit(CFG, "use_gold_entities: bool = True",
+          "use_gold_entities: bool = False")),
+    ("shipped: no answer on the extraction bug", edit(
+        SCRIPT, "**\"Nine of your failures are one bug.",
+        "**\"Nine of your setbacks are one bug.")),
+    ("the extraction bug is quoted against the wrong denominator",
+     edit(SCRIPT, "Nine of the 38 `decomposition_error` cases",
+          "Nine of the 17 `decomposition_error` cases")),
+    ("a labelled instance is taken out of the census", drop_subtype()),
+]
+
+rc, first = run()
+assert rc == 0, f"not clean before the probe: {first}"
+
+out = []
+try:
+    for name, mutate in CASES:
+        mutate()
+        rc, first = run()
+        out.append((name, rc, first))
+        restore()
+finally:
+    restore()
+
+for name, rc, first in out:
+    print(f"{'CAUGHT' if rc else 'MISSED':7s}  {name}")
+    print(f"{'':9s}{first[:96]}")
+
+rc, first = run()
+print(f"\nrestored -> rc={rc}  ({first[:70]})")
+passed = all(rc for _, rc, _ in out) and rc == 0
+print("ALL CASES CAUGHT" if passed else "SOME CASE MISSED")
+sys.exit(0 if passed else 1)
