@@ -30,8 +30,10 @@ SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 TABS = ROOT / "thesis_book" / "inputs" / "buetcsepgthesisabstract.tex"
 PREADME = ROOT / "thesis_paper" / "README.md"
 HIGH = ROOT / "thesis_paper" / "highlights.txt"
+CARD = ROOT / "thumbnail" / "thumbnail.tex"
 
-FILES = (DECK, SCRIPT, TABS, PREADME, HIGH)
+CHECKER = ROOT / TEST
+FILES = (DECK, SCRIPT, TABS, PREADME, HIGH, CARD, CHECKER)
 orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
 
 
@@ -114,6 +116,44 @@ def strip_bound(path, bound, label):
     return go
 
 
+FLAT_FIXED = r'return " ".join(re.sub(r"\\\\", " ", text).split())'
+FLAT_PLAIN = 'return " ".join(text.split())'
+
+
+def set_flat(collapse):
+    """Turn the LaTeX line break collapse in the checker's flat() on or off."""
+    s = io.open(CHECKER, encoding="utf-8", newline="").read()
+    want, other = ((FLAT_FIXED, FLAT_PLAIN) if collapse
+                   else (FLAT_PLAIN, FLAT_FIXED))
+    assert other in s or want in s, "flat() is not where this probe left it"
+    io.open(CHECKER, "w", encoding="utf-8", newline="").write(
+        s.replace(other, want) if other in s else s)
+
+
+def card_as_shipped():
+    """The output panel exactly as it went to the event page.
+
+    Both halves matter. Reverting only the headline leaves the bounds
+    standing, and the checker then passes for the right reason -- which
+    proves nothing about flat().
+    """
+    gap = r"\s+"
+    now = (r"{\textbf{The answer}, paired with\\ the traversed triples "
+           r"that ground it};")
+    was = r"{\textbf{The answer}, paired with\\ the triples that support it};"
+    pat = re.compile(gap.join(re.escape(w) for w in now.split()))
+    s = orig[CARD]
+    assert pat.search(s), "the card no longer reads as this probe expects"
+    s = pat.sub(lambda _: was, s, count=1)
+    for bound in (BOUND_ROUTE, BOUND_RECORD):
+        s = rewrapped(bound).sub("", s)
+    # Asserted through the checker's own predicates, so "the shipped
+    # state" is its definition of the defect and not this probe's.
+    assert CLAIM.search(flat(s)), "the reproduction lost the claim"
+    assert not BOUND_ROUTE.search(flat(s)), "a route bound survived"
+    assert not BOUND_RECORD.search(flat(s)), "a record bound survived"
+    io.open(CARD, "w", encoding="utf-8", newline="").write(s)
+
 def unquote_a_retraction():
     """Strip the quotation marks off a cited overclaim, making it a claim."""
     def go():
@@ -126,6 +166,14 @@ def unquote_a_retraction():
 
 
 CASES = [
+    # The card, which reaches more people than the other five artifacts
+    # combined and carries no section 6 to withdraw anything in.
+    ("shipped: the event card claims the contract with neither bound",
+     card_as_shipped),
+    ("...and its route bound alone is not enough",
+     strip_bound(CARD, BOUND_ROUTE, "route")),
+    ("...nor its record bound alone",
+     strip_bound(CARD, BOUND_RECORD, "record")),
     ("shipped: slide 15, evidence for every asserted claim",
      edit(DECK, r"\item Attaches \alert{supporting triples} --- from one route of",
           r"\item Attaches \alert{supporting triples} to every asserted claim %")),
@@ -172,15 +220,41 @@ try:
 finally:
     restore()
 
+# ---------------------------------------------------------------------
+# The fix itself, not the document. The card shipped
+# "paired with\\ the triples that support it", and CLAIM wants a space
+# between "with" and "the" -- so the LaTeX line break hid the claim from
+# the rule written to catch exactly it. Adding thumbnail/ to units()
+# would not have caught it either; both had to change.
+#
+# This cannot be an ordinary case, because the state it demonstrates is
+# the checker PASSING. Run as a pair instead.
+two_state = []
+try:
+    card_as_shipped()
+    for collapse in (False, True):
+        set_flat(collapse)
+        r = subprocess.run([sys.executable, "-m", "pytest", TEST, "-q"],
+                           cwd=ROOT, capture_output=True, text=True)
+        two_state.append((collapse, r.returncode))
+finally:
+    restore()
+
+flat_proves = two_state == [(False, 0), (True, 1)]
+
 for name, rc, first in out:
     print(f"{'CAUGHT' if rc else 'MISSED':7s}  {name}")
     if first:
         print(f"{'':9s}{first[:96]}")
+print(f"\nflat() collapsing the LaTeX line break is what catches the card:")
+for collapse, rc in two_state:
+    print(f"  {'ENABLED ' if collapse else 'DISABLED'} -> rc={rc}"
+          f"   {'caught' if rc else 'missed'}")
 
 r = subprocess.run([sys.executable, "-m", "pytest", TEST, "-q"],
                    cwd=ROOT, capture_output=True, text=True)
 print(f"\nrestored -> rc={r.returncode}  "
       f"({r.stdout.strip().splitlines()[-1]})")
-passed = all(rc for _, rc, _ in out) and r.returncode == 0
+passed = all(rc for _, rc, _ in out) and r.returncode == 0 and flat_proves
 print("ALL CASES CAUGHT" if passed else "SOME CASE MISSED")
 sys.exit(0 if passed else 1)

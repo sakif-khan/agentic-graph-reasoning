@@ -140,8 +140,8 @@ TEMPLATE = r"""
 
 \node[lbl, align=center, text width=80mm] at (93,59)
   {Planner, Explorer, Evaluator, Backtracker, Verifier, Answerer over one
-   typed state \textperiodcentered\ 4 tools with hard caps, no free-form
-   queries \textperiodcentered\ $\leq$ @@CALLS@@ model calls per question};
+   typed state \textperiodcentered\ 4 tools, no free-form queries
+   \textperiodcentered\ $\leq$ @@CALLS@@ model calls per question};
 
 % ================= 3. the verifier =================================
 \node[stage, minimum width=54mm, minimum height=50mm, draw=agrSup!50,
@@ -167,17 +167,26 @@ TEMPLATE = r"""
 \node[stage, minimum width=56mm, minimum height=50mm] (obox) at (230,79) {};
 \node[head, anchor=north] at (230,101.5) {One of two outputs, never a third};
 \node[node, minimum width=48mm, draw=agrSup, fill=agrSup!10,
-      text=agrSup!52!black] (ans) at (230,93)
-  {\textbf{The answer}, paired with\\ the triples that support it};
+      text=agrSup!52!black] (ans) at (230,94)
+  {\textbf{The answer}, paired with\\ the traversed triples that ground it};
 \node[node, minimum width=48mm, draw=agrUns, fill=agrUns!8,
-      text=agrUns!60!black] (hedge) at (230,80)
+      text=agrUns!60!black] (hedge) at (230,82)
   {\textbf{An explicit hedge}\\ ``I cannot ground this''};
-\node[lbl, align=center, text width=50mm] at (230,70)
+% The two bounds, on the card that makes the claim. A long document can
+% claim the contract in section 1 and withdraw it in section 6 because
+% section 6 is always there to be read; an event card has no section 6.
+\node[lbl, align=center, text width=50mm] at (230,73.5)
+  {one route of three attaches evidence; the run log keeps the count of
+   supporting triples, not the list};
+\node[lbl, align=center, text width=50mm] at (230,65)
   {silent error becomes a visible refusal --- the property the layer is
    for, and the one it is measured on};
-\node[lbl, align=center, text width=50mm] at (230,60)
-  {@@HEDGEWQ@@\% of WebQSP answers and @@HEDGECWQ@@\% of CWQ answers are
-   hedges rather than guesses};
+% hedge_pct is a share of QUESTIONS (scripts/score_test.py counts
+% `not pred` over per-question rows), and a hedge is by definition not an
+% answer, so "of answers" contradicted itself.
+\node[lbl, align=center, text width=50mm] at (230,57.5)
+  {@@HEDGEWQ@@\% of WebQSP questions and @@HEDGECWQ@@\% of CWQ questions
+   are hedged rather than answered};
 
 % ================= the spine =======================================
 \draw[flow] (44,95) -- (50,95);
@@ -215,7 +224,7 @@ TEMPLATE = r"""
 \node[anchor=north west, font=\LARGE\bfseries, text=agraccent]
   at (221,36.5) {@@DEFECTS@@};
 \node[anchor=north west, lbl, align=left] at (221,27.5)
-  {benchmark questions whose own\\ gold labels were wrong};
+  {questions where the benchmark,\\ not the system, was at fault};
 
 \node[anchor=east, lbl] at (254,9)
   {Every figure here is generated from frozen run records

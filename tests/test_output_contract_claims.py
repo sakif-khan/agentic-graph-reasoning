@@ -62,13 +62,31 @@ def units():
         "transcript": _read("thesis_presentation/transcript.md"),
         "manuscript": _read("thesis_paper/*.tex", "thesis_paper/sections/*.tex",
                             "thesis_paper/README.md"),
-        "thesis": _read("thesis_book/chapters/*.tex",
+                "thesis": _read("thesis_book/chapters/*.tex",
                         "thesis_book/inputs/*abstract*.tex"),
+        # The event card. Widest audience, least context, and no
+        # section 6 to withdraw anything in: whoever reads it reads it
+        # alone. thumbnail.tex is generated, so a bound added here has
+        # to go into the template in thumbnail/build_thumbnail.py and be
+        # rebuilt -- which is the point.
+        "thumbnail": _read("thumbnail/thumbnail.tex"),
     }
 
 
 def flat(text):
-    return " ".join(text.split())
+    r"""Whitespace-normalised, with LaTeX's line break read as a space.
+
+    A reader sees "paired with the triples"; the source said "paired
+    with\\ the triples", and \\ is not whitespace, so every rule spelled
+    with a space between those words missed the claim entirely. The
+    thumbnail escaped this file on that alone -- adding it to units()
+    would not have caught it.
+
+    Same shape as the transcript's "*below* the no-retrieval", where
+    markdown emphasis sat inside the phrase a rule was spelled for: a
+    rule has to match the text as rendered, not as typed.
+    """
+    return " ".join(re.sub(r"\\\\", " ", text).split())
 
 
 # Claiming the contract. Any of these is enough to owe the bounds.
