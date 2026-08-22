@@ -169,7 +169,12 @@
     \small
     \begin{tabular}{@{}lll@{}}
       \toprule
-      \textbf{Operation} & \textbf{Returns} & \textbf{Why it is capped} \\
+      % The header generalises over its own rows, and two of the four
+      % name no cap: verify_connection returns a boolean and
+      % search_entity runs a resolver. app:toolapi puts it correctly --
+      % "Two limits appear throughout", max_relations and max_fanout.
+      % check_slides.py holds this header against the rows beneath it.
+      \textbf{Operation} & \textbf{Returns} & \textbf{Why it is bounded} \\
       \midrule
       \texttt{get\_relations}  & Candidate relations
                                & $\leq 300$ offered to the scorer \\

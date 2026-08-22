@@ -1095,6 +1095,33 @@ for n in named:
 # so four is the right count and verify_triple is the wrong fourth.
 ck("and not the one no node calls", "verify_triple" not in named)
 
+# How many of them actually cap anything. Per operation body, because
+# searching the whole file counts __init__, which is where max_relations
+# is assigned.
+bodies = dict(zip(re.findall(r"^    def (\w+)\(", tools, re.M),
+                  re.split(r"^    def \w+\(", tools, flags=re.M)[1:]))
+capped = [n for n in named
+          if re.search(r"max_relations|max_fanout", bodies.get(n, ""))]
+ck(f"{len(capped)} of the {len(named)} live tools truncate what they return",
+   0 < len(capped) < len(named),
+   f"{capped}, not {sorted(set(named) - set(capped))}")
+
+# The third column's rows carry the two numeric limits, and its header
+# generalises over all four. The values were pinned to the code and the
+# header was not, so it could claim a cap for rows that name none --
+# "Used only by the verifier" and "Three-stage resolver" are not caps.
+# app:toolapi says it correctly: "Two limits appear throughout".
+numeric = [c for c in re.split(r"\\\\", TOOLSLIDE)
+           if re.search(r"\\leq\s*\d+", c)]
+ck(f"{len(numeric)} rows of the table name a numeric limit",
+   len(numeric) == len(capped), f"{len(numeric)} rows, {len(capped)} capped")
+colheads = re.findall(r"\\textbf\{([^}]*)\}", TOOLSLIDE)
+ck("the table has a header for each column", len(colheads) == 3,
+   str(colheads))
+if len(colheads) == 3 and len(numeric) < len(named):
+    ck("the third column does not claim a cap its rows do not have",
+       "cap" not in colheads[2].lower(), f"header reads {colheads[2]!r}")
+
 # ---------------------------------------------------------------------
 # The cycle count is whatever the diagram draws.
 #
@@ -1617,17 +1644,8 @@ else:
     # speaking time -- which had it backwards: the fix was deleting three
     # words, and the timing rule only flags rows SHORT of their words, so
     # slide 6 keeps its slack and the table does not move.
-    # Per operation body. Searching the whole file counted __init__,
-    # which is where max_relations is assigned. `named` is the four the
-    # tool slide lists, already checked against kg_tools.py above --
-    # verify_triple is the fifth operation and no node calls it.
-    bodies = dict(zip(re.findall(r"^    def (\w+)\(", tools, re.M),
-                      re.split(r"^    def \w+\(", tools, flags=re.M)[1:]))
-    capped = [n for n in named
-              if re.search(r"max_relations|max_fanout", bodies.get(n, ""))]
-    ck(f"{len(capped)} of the {len(named)} live tools truncate what they "
-       f"return", 0 < len(capped) < len(named),
-       f"{capped}, not {sorted(set(named) - set(capped))}")
+        # `capped` and `named` come from the tool-slide block above, which is
+    # where the count belongs; this is the third artifact held to it.
     # Both spellings, because the two artifacts count differently: the
     # card writes "4 tools" and the script says "four operations".
     allcaps = re.compile(rf"(?:{len(named)}|{NUM[len(named)]})\s+"

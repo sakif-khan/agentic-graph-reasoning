@@ -1,58 +1,61 @@
-"""Prove the four residuals are held, and by what.
+"""Prove the residual fixes are held, and by what.
 
-Case 1 reinstates the thesis caption verbatim -- "Two cycles exist ...
-Both are bounded" -- beside a figure whose own source comments call the
-third arrow a cycle. Cases 2 and 3 do the same to the paper, which said
+Cases are grouped below by what they corrupt. They are deliberately not
+numbered: the indices drifted twice, once by an off-by-one and once when
+a case was inserted mid-group, and nothing reads them.
+
+THE CYCLE COUNT reinstates the thesis caption verbatim -- "Two cycles
+exist ... Both are bounded" -- beside a figure whose own source comments
+call the third arrow a cycle, and does the same to the paper, which said
 "with two cycles" in the body and "Both cycles are bounded" in the
 caption. Correcting the deck alone in an earlier round had made the deck
 the outlier against the two documents it is drawn from.
 
-Case 4 swaps the deck's limitations 4 and 5 back. Presence was checked
-and order was not, past the first item, while the slide's own comment
-claimed the thesis's severity order.
+THE LIMITATIONS swap the deck's 4 and 5 back. Presence was checked and
+order was not, past the first item, while the slide's own comment claimed
+the thesis's severity order.
 
-Case 5 removes the sentence accounting for "pre-specified" on the one
-slide whose premise is that the six contributions are the thesis's, in
-its order -- a rigour point that reads as a discrepancy unspoken.
+THE WORDING DIVERGENCE removes the sentence accounting for
+"pre-specified" on the one slide whose premise is that the six
+contributions are the thesis's, in its order -- a rigour point that reads
+as a discrepancy unspoken.
 
-Cases 6-12 are the hop curve, which was the last transcription in this
-material bound to nothing: 0.46/0.55/0.57 could become 0.96/0.95/0.97
-with the whole suite still green, and the shape claims around it were
-assertions about four other systems that no rule read.
+THE HOP CURVE was the last transcription in this material bound to
+nothing: 0.46/0.55/0.57 could become 0.96/0.95/0.97 with the whole suite
+still green, and the shape claims around it were assertions about four
+other systems that no rule read.
 
-Cases 13-17 are the two limitations that reached neither document.
-Two of them move sources rather than prose: config.py's
-use_gold_entities, whose being on is the answer's whole premise, and one
-label sheet, which is where the nine instances are counted.
+LIMITATIONS 7 AND 8 reached neither document. Two of those cases move
+sources rather than prose: config.py's use_gold_entities, whose being on
+is the answer's whole premise, and one label sheet, which is where the
+nine instances are counted.
 
-Case 18 gives slide 19 back the seventy-five seconds it shipped with,
-against 156 words -- 125 wpm on a script that states 93. It is the only
-case here that has to repair the document as it corrupts it: the
+THE TIMING TABLE gives slide 19 back the seventy-five seconds it shipped
+with, against 156 words -- 125 wpm on a script that states 93. It is the
+only case here that has to repair the document as it corrupts it: the
 cumulative column, the headings and the budget line all agreed with that
 table, and without repairing them the probe would prove one of those
 three rules instead of the achievability rule it is for.
 
-Cases 19-21 are three rules that could not fail. "Nine of the 38" was
-guarded on its digits and not on its number word, so Nineteen passed.
-Contribution 6 was allowed either spelling, and the rule that explains
-the divergence keyed off the deck -- so a slide drifting back to
-"pre-registered" also switched off its own guard. And the entity-linking
-answer grouped two systems as "the static baselines" while naming Static
-GraphRAG two clauses earlier as one of the three that do seed.
+RULES THAT COULD NOT FAIL: "Nine of the 38" was guarded on its digits and
+not on its number word, so Nineteen passed. Contribution 6 was allowed
+either spelling, and the rule that explains the divergence keyed off the
+deck -- so a slide drifting back to "pre-registered" also switched off
+its own guard. And the entity-linking answer grouped two systems as "the
+static baselines" while naming Static GraphRAG two clauses earlier as one
+of the three that do seed.
 
-The caps case has a twin on the script, section 6, which said "four
-operations with fixed signatures and hard caps" one round longer than
-the card did. Removing three words fixed it and the timing table did not
-move, because the achievability rule only flags rows SHORT of their word
-count.
+THE CAPS CLAIM, in all three places it was made. "Four tools with hard
+caps" is untrue of verify_connection and search_entity; the deck's table
+headed a column "Why it is capped" over two rows that name no cap; and
+the script's section 6 said the same. The deck's cap VALUES were pinned
+to the code and the column framing them was not.
 
-Cases 22-24 revert three wordings on the event card, each of which was
-corrected with nothing behind it. Its numbers are generated and cannot
-drift; these were typed. "Gold labels were wrong" is untrue of the 22
-ambiguous questions among the 57; "4 tools with hard caps" is untrue of
-verify_connection and search_entity; and hedge_pct is a share of
-questions, which makes "of answers" contradict itself, since a hedge is
-not an answer.
+THE EVENT CARD's other wordings, each corrected with nothing behind it.
+Its numbers are generated and cannot drift; these were typed. "Gold
+labels were wrong" is untrue of the 22 ambiguous questions among the 57,
+and hedge_pct is a share of questions, which makes "of answers"
+contradict itself, since a hedge is not an answer.
 
 Every file is restored in a finally block.
 """
@@ -275,6 +278,12 @@ CASES = [
      edit(CARD, r"{questions where the benchmark,\\ not the system, was at "
                 r"fault}",
           r"{benchmark questions whose own\\ gold labels were wrong}")),
+    ("shipped: the deck heads the column 'Why it is capped'",
+     edit(DECK, r"\textbf{Why it is bounded} \\",
+          r"\textbf{Why it is capped} \\")),
+    ("the deck's header states a cap outright",
+     edit(DECK, r"\textbf{Why it is bounded} \\",
+          r"\textbf{Why all four are capped} \\")),
     ("shipped: the script caps all four operations",
      edit(SCRIPT, "It gets four operations with fixed signatures \u2014",
           "It gets four operations with fixed signatures and hard caps \u2014")),
