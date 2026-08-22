@@ -20,21 +20,21 @@ dict value wrapped onto its own line at twice its key's column, a string
 continued on its own line at twice the element column, and an element
 merely off the modal column rather than at twice it.
 
-Only two of the six exclude anything in this repository as it stands.
-Dropping the comment rule's bracket test reports about sixty comments.
-Dropping the element rule's test for what continues an element rather
-than starting one takes it from four flagged lines to ten -- six wrapped
-dict values in prove_clause.py, two continued strings in
-prove_residuals.py, and drop both clauses together for thirty-five.
+Only two of the six exclude anything in the repository as it stands,
+where both rules flag nothing. Dropping the comment rule's bracket test
+reports seventy-four comments. Dropping the element rule's test for what
+continues an element rather than starting one reports six, every one of
+them a wrapped dict value in prove_clause.py; drop that clause and the
+doubling bound together and it reports thirty-one.
 
-The remaining two clauses -- exactly twice rather than merely different,
-and a modal column held by at least two lines -- exclude nothing here
-today: with the continuation test in place, "differs" and "twice" agree
-on every file in the repository. They are not filters earning their
-keep. They are the statement that doubling is the signature of this
-defect and that a line at some other column is a style question, and
-their cases are here so that stays a decision rather than drifting into
-one by accident.
+The other two clauses -- exactly twice rather than merely different, and
+a modal column held by at least two lines -- exclude nothing here at
+all. Removing either changes no count, on this commit or on the one
+before it, where four element drifts were still live. They are not
+filters earning their keep. They are the statement that doubling is the
+signature of this defect and that a line at some other column is a style
+question, and their cases are here so that stays a decision rather than
+drifting into one by accident.
 
 Not covered, and deliberately: a two-element literal whose second
 element drifted. With one line at each column neither is the norm, so
