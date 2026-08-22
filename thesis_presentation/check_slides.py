@@ -1644,7 +1644,7 @@ else:
     # speaking time -- which had it backwards: the fix was deleting three
     # words, and the timing rule only flags rows SHORT of their words, so
     # slide 6 keeps its slack and the table does not move.
-        # `capped` and `named` come from the tool-slide block above, which is
+    # `capped` and `named` come from the tool-slide block above, which is
     # where the count belongs; this is the third artifact held to it.
     # Both spellings, because the two artifacts count differently: the
     # card writes "4 tools" and the script says "four operations".

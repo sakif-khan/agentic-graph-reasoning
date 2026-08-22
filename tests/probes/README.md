@@ -31,6 +31,15 @@ clean document, and several of these could not, at first:
   same file to a slide-to-seconds dict. It searched section times for
   "wrongful acceptance" and reported that the thesis ranks nothing. This
   one failed loudly; a rebinding to a *compatible* value would not have
+- four times in three rounds a standalone comment landed one indent step
+  deeper than the code around it, always inside the block being edited
+  and always caught by someone reading rather than by anything running.
+  The cause is mechanical: a patch anchored on a line's first
+  non-whitespace character keeps that line's indent and prepends the
+  replacement's own. `tests/test_comment_indent.py` now scans every
+  Python file for it, and `prove_indent` carries three must-not-fire
+  cases, because a repo-wide rule that has to be suppressed anywhere is
+  a rule that gets suppressed everywhere
 - a `ck` was pulled one level too deep by a careless re-indent and ended
   up inside the `if` that detects the defect, so on a clean document it
   never ran at all. It still failed when a row was short, so every probe
@@ -61,7 +70,7 @@ raises at import time if any of the four variables is missing, so on a
 fresh clone `prove_abstract`, `prove_contract`, `prove_declarations`,
 `prove_highlights` and `prove_selfcontained` die with `IndexError: list
 index out of range` before testing anything. `cp .env.example .env` and
-fill it in; the other twenty-four probes run without it.
+fill it in; the other twenty-five probes run without it.
 
 **`prove_log` needs a LaTeX toolchain**, because three of its cases are
 only visible in a build: it reinstates the defect in `preamble.tex` and
