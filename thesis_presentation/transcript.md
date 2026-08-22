@@ -8,20 +8,22 @@ The four backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 24 min 26 s of speaking against a 25-minute limit.** The margin is
-down to 34 seconds, and that is worth knowing before you stand up: nobody has
-ever finished a defense talk faster than they rehearsed it.
+**Budget: 24 min 55 s of speaking against a 25-minute limit.** That leaves
+five seconds, and every row below is now set to exactly what its own words
+take at 93 wpm — so there is no slack on any individual slide either. Both
+numbers are a constraint, not a cushion.
 
-It was 22:30 with a 2.5-minute margin. Slides 7, 16 and 21 took on the bounds
-around the output contract (86 seconds at this script's own 93 wpm), slide 21
-then took on the thesis's own contribution list and the candidate-width
-limitation (a further 15), and slide 10 stopped claiming a retrieval-budget
-control it does not have (14). None of that is optional — being walked into any
-of it in questions costs more than the 116 seconds it buys back.
+The table read 24:26 until its rows were checked against the words above
+them, and fourteen of the twenty-two demanded a faster rate than this
+script's own — slide 19 worst, at 125 wpm against 93. Every round's
+additions had been costed against the total and never against the row they
+landed in, so the table stayed internally consistent while drifting away from
+the speech it describes. The same words, re-timed, come to 24:55.
 
-**34 seconds is thin.** Everything that could move to the answers has already
-moved there; what is left is spoken because it has to be. If you want a real
-margin, the recovery note below names where it comes from — slides 3, 6 and 8 —
+**Five seconds is not a margin.** Everything that could move to the answers
+has already moved there, and what is left is spoken because it has to be. A
+real cushion has to come out of what is said: about 60 words buys 40 seconds.
+The recovery note below names the slides that can give it up — 3, 6 and 8 —
 and that is a decision about those slides, not about this one.
 
 Times below are *cumulative at the end of that slide*. If you are more than
@@ -29,28 +31,28 @@ Times below are *cumulative at the end of that slide*. If you are more than
 
 | # | Slide | Slide time | Cumulative |
 | --- | --- | ---: | ---: |
-| 1 | Title | 0:15 | 0:15 |
-| 2 | The problem | 1:00 | 1:15 |
-| 3 | Where existing approaches stop | 1:00 | 2:15 |
-| 4 | Research questions | 0:45 | 3:00 |
-| 5 | AGR: an explicit state machine | 1:20 | 4:20 |
-| 6 | Constrained tools | 0:50 | 5:10 |
-| 7 | The Structural Verification Layer | 1:43 | 6:53 |
-| 8 | One claim, three routes | 1:02 | 7:55 |
-| 9 | Environment and question sets | 0:55 | 8:50 |
-| 10 | Making the comparison fair | 1:14 | 10:04 |
-| 11 | **Main results** | 1:30 | 11:34 |
-| 12 | Accuracy against cost | 1:05 | 12:39 |
-| 13 | **RQ1: hop count** | 1:15 | 13:54 |
-| 14 | The caveat I want to raise myself | 1:10 | 15:04 |
-| 15 | RQ2: groundedness | 1:10 | 16:14 |
-| 16 | RQ2: what verification contributes | 1:37 | 17:51 |
-| 17 | **RQ3: ablation** | 1:20 | 19:11 |
-| 18 | The result I did not expect | 1:10 | 20:21 |
-| 19 | The echo attractor | 1:15 | 21:36 |
-| 20 | The benchmark was wrong 57 times | 0:50 | 22:26 |
-| 21 | Contributions and limitations | 1:45 | 24:11 |
-| 22 | Thank you | 0:15 | 24:26 |
+| 1 | Title | 0:19 | 0:19 |
+| 2 | The problem | 1:01 | 1:20 |
+| 3 | Where existing approaches stop | 1:01 | 2:21 |
+| 4 | Research questions | 0:52 | 3:13 |
+| 5 | AGR: an explicit state machine | 1:21 | 4:34 |
+| 6 | Constrained tools | 0:45 | 5:19 |
+| 7 | The Structural Verification Layer | 1:55 | 7:14 |
+| 8 | One claim, three routes | 0:54 | 8:08 |
+| 9 | Environment and question sets | 1:05 | 9:13 |
+| 10 | Making the comparison fair | 1:12 | 10:25 |
+| 11 | **Main results** | 1:19 | 11:44 |
+| 12 | Accuracy against cost | 0:58 | 12:42 |
+| 13 | **RQ1: hop count** | 1:15 | 13:57 |
+| 14 | The caveat I want to raise myself | 1:16 | 15:13 |
+| 15 | RQ2: groundedness | 1:10 | 16:23 |
+| 16 | RQ2: what verification contributes | 1:50 | 18:13 |
+| 17 | **RQ3: ablation** | 1:02 | 19:15 |
+| 18 | The result I did not expect | 1:15 | 20:30 |
+| 19 | The echo attractor | 1:41 | 22:11 |
+| 20 | The benchmark was wrong 57 times | 0:50 | 23:01 |
+| 21 | Contributions and limitations | 1:44 | 24:45 |
+| 22 | Thank you | 0:10 | 24:55 |
 
 The three **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 3, 6, and 8 — never from
@@ -59,7 +61,7 @@ is on it for a different reason: skipping it hands the clipping issue to them.
 
 ---
 
-## 1 — Title *(0:15)*
+## 1 — Title *(0:19)*
 
 > Good morning. I'm Sakif Khan. This is my pre-defense on Agentic Graph
 > Reasoning — knowledge graph navigation with verification before the answer is
@@ -69,7 +71,7 @@ is on it for a different reason: skipping it hands the clipping issue to them.
 
 ---
 
-## 2 — The problem *(1:00)*
+## 2 — The problem *(1:01)*
 
 > Language models answer factual questions fluently. The difficulty is that they
 > answer just as fluently when they do not hold the fact.
@@ -87,7 +89,7 @@ is on it for a different reason: skipping it hands the clipping issue to them.
 
 ---
 
-## 3 — Where existing approaches stop *(1:00)*
+## 3 — Where existing approaches stop *(1:01)*
 
 > Four families of approach, and each stops somewhere specific.
 >
@@ -105,7 +107,7 @@ is on it for a different reason: skipping it hands the clipping issue to them.
 
 ---
 
-## 4 — Research questions *(0:45)*
+## 4 — Research questions *(0:52)*
 
 > Three questions.
 >
@@ -123,7 +125,7 @@ is on it for a different reason: skipping it hands the clipping issue to them.
 
 ---
 
-## 5 — AGR: an explicit state machine *(1:20)*
+## 5 — AGR: an explicit state machine *(1:21)*
 
 > AGR is an explicit state machine — not a prompt loop. Six nodes.
 >
@@ -150,7 +152,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 6 — Constrained tools *(0:50)*
+## 6 — Constrained tools *(0:45)*
 
 > The agent never writes a graph query. It gets four operations with fixed
 > signatures and hard caps — relations, neighbours, an adjacency check, and
@@ -163,7 +165,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 7 — The Structural Verification Layer *(1:43)*
+## 7 — The Structural Verification Layer *(1:55)*
 
 > This is the contribution.
 >
@@ -192,7 +194,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 8 — One claim, three routes *(1:02)*
+## 8 — One claim, three routes *(0:54)*
 
 > This is the path a single claim takes. Three routes to being called supported.
 >
@@ -207,7 +209,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 9 — The environment and the question sets *(0:55)*
+## 9 — The environment and the question sets *(1:05)*
 
 > The environment is a Freebase-derived graph: 2.6 million entities, 8.3 million
 > triples, seven thousand distinct relations. It imports in 36 seconds, which
@@ -223,7 +225,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 10 — Making the comparison fair *(1:14)*
+## 10 — Making the comparison fair *(1:12)*
 
 > Five systems: a parametric control, vector RAG, static GraphRAG,
 > Think-on-Graph as the agentic comparison, and AGR.
@@ -249,7 +251,7 @@ recite 40/20/300/200 here.
 
 ---
 
-## 11 — Main results *(1:30)* ★
+## 11 — Main results *(1:19)* ★
 
 > Here is the comparison.
 >
@@ -278,7 +280,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 12 — Accuracy against cost *(1:05)*
+## 12 — Accuracy against cost *(0:58)*
 
 > Plotted, the frontier depends on which cost you charge, and the two costs I
 > record disagree.
@@ -316,7 +318,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 14 — The caveat I want to raise myself *(1:10)*
+## 14 — The caveat I want to raise myself *(1:16)*
 
 > I want to raise this before you do.
 >
@@ -355,7 +357,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 16 — RQ2: so what does verification actually contribute? *(1:37)*
+## 16 — RQ2: so what does verification actually contribute? *(1:50)*
 
 > Which leaves the real question.
 >
@@ -377,7 +379,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 17 — RQ3: what each component earns *(1:20)* ★
+## 17 — RQ3: what each component earns *(1:02)* ★
 
 > RQ3, and this is a four-condition ablation with paired McNemar tests against
 > the full system on stratified halves.
@@ -396,7 +398,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 18 — The result I did not expect *(1:10)*
+## 18 — The result I did not expect *(1:15)*
 
 > Removing the planner *improves* WebQSP. Plus 0.083 F1, at p equals 0.006, while
 > cutting tokens 31 percent and calls from 6.2 to 4.0. Better, cheaper, and
@@ -418,7 +420,7 @@ you can't.**
 
 ---
 
-## 19 — Every failure, read: the echo attractor *(1:15)*
+## 19 — Every failure, read: the echo attractor *(1:41)*
 
 > I read all 259 remaining failures and labelled them. Top categories, pooled.
 >
@@ -474,7 +476,7 @@ are corrected with.
 
 ---
 
-## 21 — Contributions, and what I would not claim *(1:45)*
+## 21 — Contributions, and what I would not claim *(1:44)*
 
 > To summarise. Six contributions, and they are the six the thesis claims in
 > section 1.6. The one I would underline is stratum-dependent decomposition: the
@@ -498,7 +500,7 @@ are corrected with.
 
 ---
 
-## 22 — Thank you *(0:15)*
+## 22 — Thank you *(0:10)*
 
 > Thank you. I'm happy to take questions.
 
@@ -654,7 +656,7 @@ system does. It is limitation 7 in the conclusion: the accuracies I report
 presume a linking step a deployed system would have to perform, and I do not
 measure that step. What it is not is a between-system confound. The three
 systems that touch the graph — AGR, Think-on-Graph and GraphRAG — all seed
-from the same annotated mentions, and the two static baselines never see them.
+from the same annotated mentions, and neither the parametric control nor Vector-RAG ever sees them.
 
 **"Nine of your failures are one bug. Isn't the census measuring your
 implementation?"**

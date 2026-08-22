@@ -89,6 +89,27 @@ def stretch_row(n, delta):
     return go
 
 
+def desync_heading(n):
+    """Move one section heading off its row, whatever the row now says.
+
+    The anchor here used to be the heading verbatim, "*(1:45)*" and all.
+    That is a value the table derives, so re-timing slide 21 turned this
+    probe from CAUGHT into a raise -- the third time an anchor carrying a
+    derived value has done that. Read the time, then change it.
+    """
+    def go():
+        head = re.compile(rf"^(## {n} — .*?\*\()(\d+):(\d\d)(\)\*)", re.M)
+        m = head.search(orig[SCRIPT])
+        assert m, f"no section heading {n} in transcript.md"
+        was = int(m.group(2)) * 60 + int(m.group(3))
+        ms, ss = divmod(was + 40, 60)
+        io.open(SCRIPT, "w", encoding="utf-8", newline="").write(
+            orig[SCRIPT][:m.start()]
+            + f"{m.group(1)}{ms}:{ss:02d}{m.group(4)}"
+            + orig[SCRIPT][m.end():])
+    return go
+
+
 def rewrite_budget(mins, secs):
     """Quote a total in the budget line that the table does not add up to."""
     def go():
@@ -153,9 +174,7 @@ CASES = [
      stretch_row(16, 60)),
     ("the budget line still quotes the old total",
      rewrite_budget(22, 30)),
-    ("a section heading disagrees with its row",
-     edit(SCRIPT, "## 21 — Contributions, and what I would not claim *(1:45)*",
-          "## 21 — Contributions, and what I would not claim *(1:05)*")),
+        ("a section heading disagrees with its row", desync_heading(21)),
     # Edits the limit rather than the times: changing a slide's time
     # desynchronises the cumulative column, and that check fires first,
     # leaving this one unproven. The limit is the only free variable that

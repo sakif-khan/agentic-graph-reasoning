@@ -25,6 +25,21 @@ Two of them move sources rather than prose: config.py's
 use_gold_entities, whose being on is the answer's whole premise, and one
 label sheet, which is where the nine instances are counted.
 
+Case 18 gives slide 19 back the seventy-five seconds it shipped with,
+against 156 words -- 125 wpm on a script that states 93. It is the only
+case here that has to repair the document as it corrupts it: the
+cumulative column, the headings and the budget line all agreed with that
+table, and without repairing them the probe would prove one of those
+three rules instead of the achievability rule it is for.
+
+Cases 19-21 are three rules that could not fail. "Nine of the 38" was
+guarded on its digits and not on its number word, so Nineteen passed.
+Contribution 6 was allowed either spelling, and the rule that explains
+the divergence keyed off the deck -- so a slide drifting back to
+"pre-registered" also switched off its own guard. And the entity-linking
+answer grouped two systems as "the static baselines" while naming Static
+GraphRAG two clauses earlier as one of the three that do seed.
+
 Every file is restored in a finally block.
 """
 import io
@@ -71,6 +86,49 @@ def edit(path, old, new):
         assert pattern.search(orig[path]), f"anchor gone in {path.name}: {old[:60]!r}"
         io.open(path, "w", encoding="utf-8", newline="").write(
             pattern.sub(lambda _: new, orig[path], count=1))
+    return go
+
+
+def retime_row(n, secs):
+    """Put one row's allocation back, repairing everything derived from it.
+
+    The shipped table gave slide 19 seventy-five seconds for 156 words,
+    which is 125 wpm against a script that states 93. Every other rule
+    about this table passed on that: the cumulative column summed, the
+    headings agreed, the budget line matched the total, and the total fit
+    the limit. So the corruption has to repair all four, or the probe
+    proves one of those rules instead of the one being tested.
+    """
+    def go():
+        md = orig[SCRIPT]
+        rows = re.findall(
+            r"^\| (\d+) \| ([^|]*?) \| (\d+):(\d\d) \| (\d+):(\d\d) \|",
+            md, re.M)
+        assert rows, "no timing table"
+        alloc = {int(r[0]): int(r[2]) * 60 + int(r[3]) for r in rows}
+        assert alloc[n] != secs, "the corruption is a no-op"
+        alloc[n] = secs
+
+        def mmss(s):
+            return f"{s // 60}:{s % 60:02d}"
+
+        run, lines = 0, []
+        for r in rows:
+            run += alloc[int(r[0])]
+            lines.append(f"| {r[0]} | {r[1]} | {mmss(alloc[int(r[0])])} "
+                         f"| {mmss(run)} |")
+        old = "\n".join(f"| {r[0]} | {r[1]} | {r[2]}:{r[3]} | {r[4]}:{r[5]} |"
+                        for r in rows)
+        assert old in md, "the table is not laid out as expected"
+        md = md.replace(old, "\n".join(lines))
+        md = re.sub(r"^## (\d+) — (.*?)\*\(\d+:\d\d\)\*",
+                    lambda m: f"## {m.group(1)} — {m.group(2)}"
+                              f"*({mmss(alloc[int(m.group(1))])})*",
+                    md, flags=re.M)
+        md = re.sub(r"\*\*Budget: \d+ min \d+ s of speaking",
+                    f"**Budget: {run // 60} min {run % 60} s of speaking", md,
+                    count=1)
+        io.open(SCRIPT, "w", encoding="utf-8", newline="").write(md)
     return go
 
 
@@ -161,8 +219,8 @@ CASES = [
     ("the entity-linking answer overclaims which systems share it", edit(
         SCRIPT,
         "The three systems that touch the graph \u2014 AGR, Think-on-Graph and "
-        "GraphRAG \u2014 all seed from the same annotated mentions, and the two "
-        "static baselines never see them.",
+        "GraphRAG \u2014 all seed from the same annotated mentions, and neither "
+        "the parametric control nor Vector-RAG ever sees them.",
         "All five systems seed from the same annotated mentions.")),
     ("the gold-entity flag is turned off under the answer",
      edit(CFG, "use_gold_entities: bool = True",
@@ -173,7 +231,26 @@ CASES = [
     ("the extraction bug is quoted against the wrong denominator",
      edit(SCRIPT, "Nine of the 38 `decomposition_error` cases",
           "Nine of the 17 `decomposition_error` cases")),
-    ("a labelled instance is taken out of the census", drop_subtype()),
+        ("a labelled instance is taken out of the census", drop_subtype()),
+
+    # ---- the table said 24:26 while the words said 24:50 ----
+    ("shipped: slide 19 gets 75 seconds for 156 words", retime_row(19, 75)),
+
+    # ---- Nine matched inside Nineteen ----
+    ("the extraction-bug count grows a syllable",
+     edit(SCRIPT, "Nine of the 38 `decomposition_error` cases",
+          "Nineteen of the 38 `decomposition_error` cases")),
+
+    # ---- the spelling rule, stated three times and checked in none ----
+    ("shipped: contribution 6 drifts back to the thesis's word",
+     edit(DECK, r"\alert{Pre-specified} evaluation thresholds",
+          r"\alert{Pre-registered} evaluation thresholds")),
+
+    # ---- "static baselines" collides with Static GraphRAG ----
+    ("the two systems that do not seed are grouped, not named",
+     edit(SCRIPT, "and neither the parametric control nor Vector-RAG ever "
+                  "sees them.",
+          "and the two static baselines never see them.")),
 ]
 
 rc, first = run()

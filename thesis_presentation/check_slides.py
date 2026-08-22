@@ -735,7 +735,7 @@ CONTRIB_KEYS = [
     ("stratum-dependent decomposition", ("stratum-dependent",)),
     ("echo attractor", ("echo attractor",)),
     ("benchmark defect rates", ("benchmark-defect", "benchmark defect")),
-    ("pre-specified protocol", ("pre-specified", "pre-registered")),
+    ("pre-specified protocol", ("pre-specified",)),
 ]
 
 
@@ -1316,6 +1316,38 @@ else:
        b is not None and secs(b.group(1), b.group(2)) == run,
        f"stated {b.group(0) if b else '?'} vs {run//60}:{run % 60:02d}")
 
+    # ...and every row is achievable at the rate the script claims for
+    # itself. This is the rule the table lacked: its arithmetic was
+    # checked three ways and never against the words, so a section could
+    # grow by fifty words and stay green as long as the columns still
+    # summed. Slide 19 reached 125 wpm against a stated 93 that way.
+    #
+    # The rate is read from the script rather than written down here, so
+    # rehearsing at a different measured pace re-times the whole table
+    # instead of quietly retiring the rule.
+    #
+    # Slack is allowed and is not flagged: a row legitimately holds time
+    # for a pause or for letting a table land. Only the other direction
+    # is a defect. The one-second tolerance is whole-second rounding of a
+    # fractional requirement, nothing more.
+    rate = re.search(r"(\d+)\s*wpm", md)
+    ck("the script states its own speaking rate", rate is not None)
+    if rate:
+        wpm = int(rate.group(1))
+        short = []
+        for n in sorted(table, key=int):
+            said = spoken(n)
+            if not said:
+                continue
+            needs = len(said.split()) / wpm * 60
+            if table[n] < needs - 1:
+                short.append(f"slide {n}: {len(said.split())} words needs "
+                             f"{needs:.0f}s, allotted {table[n]}s "
+                             f"({round(len(said.split()) / table[n] * 60)} wpm)")
+        ck(f"every row is achievable at {wpm} wpm", not short,
+           f"{len(short)} row{'s' if len(short) > 1 else ''} short; "
+           f"{short[0]}" if short else "")
+
     # The point of the budget is the limit it sits under.
     lim = re.search(r"against a (\d+)-minute limit", md)
     ck("the talk fits the limit it names",
@@ -1364,8 +1396,19 @@ ck("the slide lists them in the thesis's severity order", not swaps,
 # documents actually differ, so reconciling either way retires the rule
 # rather than leaving behind a check that cannot fail.
 print("\n== the pre-specified wording is accounted for ==")
+# The deck's own spelling is a rule, not a preference: the standing note
+# in thesis_paper/sections/setup.tex says never "pre-registered", the
+# slide comment repeats it, and section 21 now says it out loud. It was
+# checked in none of the three -- CONTRIB_KEYS accepted either spelling,
+# and the explanation rule below keyed off the deck, so a slide drifting
+# back to the thesis's word ALSO switched off the rule that would have
+# caught it. Keyed off the thesis now, which is the document that has
+# not changed.
+ck("the deck never writes pre-registered",
+   "pre-registered" not in FLAT.lower(),
+   "thesis_paper/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
-if "pre-specified" in contrib and "pre-registered" in thesis_six:
+if "pre-registered" in thesis_six:
     s21 = spoken(21)
     ck("the script names the thesis's word", "pre-registered" in s21.lower())
     ck("and the word the slide uses", "pre-specified" in s21.lower())
@@ -1469,9 +1512,14 @@ seeded = {b for b in ("tog", "graphrag", "vectorrag", "noretrieval")
               encoding="utf-8").read()}
 ck("two baselines seed from the annotation", seeded == {"tog", "graphrag"},
    str(sorted(seeded)))
-ck("the answer names those two and excludes the static pair",
-   all(k in link for k in ("Think-on-Graph", "GraphRAG"))
-   and "static baselines never see them" in link)
+    # Named, not described as "the static baselines": the deck calls GraphRAG
+# "Static GraphRAG" on slides 2 and 10, and the answer names it two
+# clauses earlier as one of the three that DO seed from the annotation.
+ck("the answer names the two systems that seed from the annotation",
+   all(k in link for k in ("Think-on-Graph", "GraphRAG")))
+ck("and names the two that do not, rather than grouping them",
+   "parametric control" in link and "Vector-RAG" in link
+   and "static baselines" not in link)
 
 # The extraction bug, counted from the committed label sheets -- the same
 # files scripts/synthesize_census.py merges into the census.
@@ -1493,9 +1541,12 @@ ck(f"{len(bug)} of them carry the extraction_bug subtype", len(bug) in NUM)
 ebug = answer("Nine of your failures")
 ck("the extraction-bug question is prepared", bool(ebug))
 if ebug:
+        # \b on the number word as well as the digits. The digits were
+    # guarded and the word was not, so "Nineteen of the 38" passed: Nine
+    # matched inside it and \D{0,24} swallowed "teen of the ".
     ck(f"the answer says {NUM[len(bug)].lower()} of {len(decomp)}",
-       re.search(NUM[len(bug)] + r"\D{0,24}(?<![\d.])" + str(len(decomp))
-                 + r"(?![\d.])", ebug, re.I) is not None,
+       re.search(r"\b" + NUM[len(bug)] + r"\b\D{0,24}(?<![\d.])"
+                 + str(len(decomp)) + r"(?![\d.])", ebug, re.I) is not None,
        f"the sheets give {len(bug)} of {len(decomp)}")
     # The specimen, read from the sheet rather than from the prose.
     spec = next((r for r in bug if r["qid"] in ebug), None)

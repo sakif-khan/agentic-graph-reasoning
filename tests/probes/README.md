@@ -31,6 +31,10 @@ clean document, and several of these could not, at first:
   same file to a slide-to-seconds dict. It searched section times for
   "wrongful acceptance" and reported that the thesis ranks nothing. This
   one failed loudly; a rebinding to a *compatible* value would not have
+- a `ck` was pulled one level too deep by a careless re-indent and ended
+  up inside the `if` that detects the defect, so on a clean document it
+  never ran at all. It still failed when a row was short, so every probe
+  stayed green; the only signal was the total check count dropping by one
 - the token guard `(?![\d.])`, added so that `0.0` stops matching inside
   `40.0`, also rejects a number that ends a sentence — and the strata
   are spoken as "137, 211, and 49." Guarding against a period is not the
@@ -104,6 +108,10 @@ document derives**. `prove_lists` anchored a timing row verbatim,
 cumulative column included, and raised the first time an unrelated slide
 grew by ten seconds. The corruption a probe applies has to be computed
 from the file it is about to corrupt, not written down beside it.
+
+It then happened again in the same file. A second case anchored a section
+heading verbatim, `*(1:45)*` included, and raised the moment slide 21 was
+re-timed. Both are now self-locating: read the value, then change it.
 
 ## What these checks do not catch
 
