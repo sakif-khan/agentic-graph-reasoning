@@ -40,6 +40,14 @@ the divergence keyed off the deck -- so a slide drifting back to
 answer grouped two systems as "the static baselines" while naming Static
 GraphRAG two clauses earlier as one of the three that do seed.
 
+Cases 22-24 revert three wordings on the event card, each of which was
+corrected with nothing behind it. Its numbers are generated and cannot
+drift; these were typed. "Gold labels were wrong" is untrue of the 22
+ambiguous questions among the 57; "4 tools with hard caps" is untrue of
+verify_connection and search_entity; and hedge_pct is a share of
+questions, which makes "of answers" contradict itself, since a hedge is
+not an answer.
+
 Every file is restored in a finally block.
 """
 import io
@@ -55,10 +63,11 @@ PAPER = ROOT / "thesis_paper" / "sections" / "framework.tex"
 DECK = ROOT / "thesis_presentation" / "content-main.tex"
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 CFG = ROOT / "agr" / "config.py"
+CARD = ROOT / "thumbnail" / "thumbnail.tex"
 SHEET = ROOT / "results" / "phase4" / "labels_webqsp.csv"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
-FILES = (BOOK, PAPER, DECK, SCRIPT, CFG, SHEET)
+FILES = (BOOK, PAPER, DECK, SCRIPT, CFG, SHEET, CARD)
 orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
 
 
@@ -247,10 +256,27 @@ CASES = [
           r"\alert{Pre-registered} evaluation thresholds")),
 
     # ---- "static baselines" collides with Static GraphRAG ----
-    ("the two systems that do not seed are grouped, not named",
+        ("the two systems that do not seed are grouped, not named",
      edit(SCRIPT, "and neither the parametric control nor Vector-RAG ever "
                   "sees them.",
           "and the two static baselines never see them.")),
+
+    # ---- the event card's prose, which nothing read ----
+    # Its numbers are generated and cannot drift. These three were typed,
+    # and each was corrected with no rule behind it, so each could go
+    # back in silence.
+    ("shipped: the card calls all 57 defects wrong labels",
+     edit(CARD, r"{questions where the benchmark,\\ not the system, was at "
+                r"fault}",
+          r"{benchmark questions whose own\\ gold labels were wrong}")),
+    ("shipped: the card caps all four tools",
+     edit(CARD, "4 tools, no free-form queries",
+          "4 tools with hard caps, no free-form queries")),
+    ("shipped: the card counts hedges as a share of answers",
+     edit(CARD, r"of WebQSP questions and 23.0\% of CWQ questions are hedged "
+                r"rather than answered",
+          r"of WebQSP answers and 23.0\% of CWQ answers are hedges rather "
+          r"than guesses")),
 ]
 
 rc, first = run()

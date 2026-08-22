@@ -62,7 +62,7 @@ def units():
         "transcript": _read("thesis_presentation/transcript.md"),
         "manuscript": _read("thesis_paper/*.tex", "thesis_paper/sections/*.tex",
                             "thesis_paper/README.md"),
-                "thesis": _read("thesis_book/chapters/*.tex",
+        "thesis": _read("thesis_book/chapters/*.tex",
                         "thesis_book/inputs/*abstract*.tex"),
         # The event card. Widest audience, least context, and no
         # section 6 to withdraw anything in: whoever reads it reads it

@@ -1512,7 +1512,7 @@ seeded = {b for b in ("tog", "graphrag", "vectorrag", "noretrieval")
               encoding="utf-8").read()}
 ck("two baselines seed from the annotation", seeded == {"tog", "graphrag"},
    str(sorted(seeded)))
-    # Named, not described as "the static baselines": the deck calls GraphRAG
+# Named, not described as "the static baselines": the deck calls GraphRAG
 # "Static GraphRAG" on slides 2 and 10, and the answer names it two
 # clauses earlier as one of the three that DO seed from the annotation.
 ck("the answer names the two systems that seed from the annotation",
@@ -1541,7 +1541,7 @@ ck(f"{len(bug)} of them carry the extraction_bug subtype", len(bug) in NUM)
 ebug = answer("Nine of your failures")
 ck("the extraction-bug question is prepared", bool(ebug))
 if ebug:
-        # \b on the number word as well as the digits. The digits were
+    # \b on the number word as well as the digits. The digits were
     # guarded and the word was not, so "Nineteen of the 38" passed: Nine
     # matched inside it and \D{0,24} swallowed "teen of the ".
     ck(f"the answer says {NUM[len(bug)].lower()} of {len(decomp)}",
@@ -1558,6 +1558,93 @@ if ebug:
            f"{spec['qid']} scored {m.group(1) if m else '?'}")
     # The direction is the point: it costs AGR accuracy, not the baselines.
     ck("the answer says which way it cuts", "floor" in ebug)
+
+
+# ---------------------------------------------------------------------
+# The event card's prose.
+#
+# It reaches more people than the deck, the paper and the thesis put
+# together, and it is read by people who will never open any of them. Its
+# numbers come out of thesis_numbers.json and cannot drift; its prose is
+# typed, and three sentences of it were wrong. Nothing here read it: the
+# deck's SOURCES is its own three files, and the output-contract test is
+# the only other rule that reaches the card at all.
+#
+# Each rule below asks the source, not the spelling. thumbnail.tex is
+# generated -- a correction belongs in the template in
+# thumbnail/build_thumbnail.py, and the file here is what that produced.
+print("\n== the event card's prose ==")
+CARDF = os.path.join(ROOT, "thumbnail", "thumbnail.tex")
+if not os.path.exists(CARDF):
+    print("  [   ] thumbnail.tex absent -- run thumbnail/build_thumbnail.py")
+else:
+    CARD = " ".join(uncomment(open(CARDF, encoding="utf-8").read()).split())
+
+    def cell(value):
+        """The one brace group on the card holding this value."""
+        hits = [g for g in re.findall(r"\{([^{}]*)\}", CARD) if value in g]
+        return hits[0] if len(hits) == 1 else ""
+
+    # -- the 57 are not all label errors ---------------------------
+    # goldnoise_summary counts them separately before the census and the
+    # label sheets carry ambiguous_question inside it. The thesis keeps
+    # the two apart deliberately -- they "carry opposite evidence
+    # signatures" -- and titles the section "Gold Noise and Ambiguous
+    # Questions". Saying "gold labels were wrong" of all 57 is wrong
+    # about 22 of them.
+    GN = json.load(open(os.path.join(ROOT, "results", "phase4",
+                                     "goldnoise_summary.json"),
+                        encoding="utf-8"))
+    amb = sum(GN[d]["ambiguous_questions"] for d in ("webqsp", "cwq"))
+    amb += sum(1 for r in rows if r["category"] == "ambiguous_question")
+    total = J["benchmark_defects"]["distinct_questions"]
+    ck(f"{amb} of the {total} benchmark defects are ambiguous questions",
+       0 < amb < total, f"{amb} of {total}")
+    ck("the card does not call all of them wrong labels",
+       re.search(r"gold labels?[^.]{0,20}(?:were|are|was)?\s*wrong"
+                 r"|wrong gold labels?", CARD, re.I) is None,
+       "22 of the 57 are ambiguous questions, not label errors")
+
+    # -- how many tools actually carry a cap -----------------------
+    # get_relations truncates to max_relations and get_neighbors passes a
+    # cap into its query. verify_connection returns two booleans, and
+    # search_entity takes a caller's k. "No free-form queries" is the
+    # claim all four support, and the card makes it.
+    #
+    # Scoped to the card on purpose: transcript section 6 says "four
+    # operations with fixed signatures and hard caps", which is the same
+    # overstatement, and rewording a rehearsed line costs speaking time
+    # the budget does not have. That one is open, not overlooked.
+        # Per operation body. Searching the whole file counted __init__,
+    # which is where max_relations is assigned. `named` is the four the
+    # tool slide lists, already checked against kg_tools.py above --
+    # verify_triple is the fifth operation and no node calls it.
+    bodies = dict(zip(re.findall(r"^    def (\w+)\(", tools, re.M),
+                      re.split(r"^    def \w+\(", tools, flags=re.M)[1:]))
+    capped = [n for n in named
+              if re.search(r"max_relations|max_fanout", bodies.get(n, ""))]
+    ck(f"{len(capped)} of the {len(named)} live tools truncate what they "
+       f"return", 0 < len(capped) < len(named),
+       f"{capped}, not {sorted(set(named) - set(capped))}")
+    ck("the card does not claim a cap on all of them",
+       re.search(rf"{len(named)} tools with hard caps", CARD) is None,
+       f"only {len(capped)} of {len(named)} cap anything")
+
+    # -- the hedge rate counts questions ---------------------------
+    # scripts/score_test.py takes `not pred` over per-question rows, so
+    # hedge_pct is a share of questions -- and a hedge is by definition
+    # not an answer, which made "of answers" contradict itself.
+    ST = open(os.path.join(ROOT, "scripts", "score_test.py"),
+              encoding="utf-8").read()
+    ck("hedge_pct is a share of questions, from score_test.py",
+       re.search(r"sum\(r\['hedge'\] for r in rows\)\s*/\s*n", ST)
+       is not None)
+    hedge = f"{J['main_results']['by_system']['webqsp/agr']['hedge_pct']}"
+    line = cell(hedge)
+    ck("the card's hedge line is on the card", bool(line), hedge)
+    if line:
+        ck("and counts questions rather than answers",
+           "questions" in line and "answers" not in line, line[:70])
 
 
 print("\n" + ("ALL SLIDE NUMBERS MATCH THEIR SOURCE"
