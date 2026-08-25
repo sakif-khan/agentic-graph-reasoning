@@ -87,10 +87,20 @@
   \fancyfoot[C]{\small\color{agrgrey}\thepage}%
   \renewcommand{\headrulewidth}{0pt}}
 
-% One numbered slide-section heading: "N --- Title" in the deck's ink,
-% the timing at the margin, an underrule, a PDF bookmark. Starred form
-% (\slidehead*{..}) adds the accent star marking the three slides the
-% timing table also bolds.
+% One whole slide section -- heading through its last director's note
+% -- kept off two pages: everything from \begin{slide} to \end{slide}
+% is typeset into a single minipage, which the page breaker treats as
+% one atomic box. It either fits in the remaining space on the current
+% page or the entire box relocates to the next one; nothing inside it
+% can ever be split. That is the same mechanism a table or a tall
+% figure relies on to avoid straddling a page, and it needs no
+% \needspace heuristic: an oversized box that will not fit anywhere
+% simply overflows visibly (Overfull \vbox) rather than failing
+% silently, and no section here is remotely close to a full page.
+%
+% "N --- Title" is in the deck's ink, the timing at the margin, an
+% underrule, a PDF bookmark. Starred form (\begin{slide}*) adds the
+% accent star marking the three slides the timing table also bolds.
 % The title and the (time) marker sit in fixed-width columns rather
 % than sharing one \hfill-joined line: three of the twenty-two titles
 % are long enough that a plain \hfill either collapses to no gap at all
@@ -101,10 +111,19 @@
 \setlength{\slidetimewidth}{20mm}
 \newlength{\slideheadgap}
 \setlength{\slideheadgap}{4mm}
-\NewDocumentCommand{\slidehead}{s m m m}{%
-  \needspace{5\baselineskip}%
-  \phantomsection\addcontentsline{toc}{section}{#2 --- #3}%
+% \mark commands placed inside a minipage never reach the page builder
+% -- a documented LaTeX limitation, not a lookahead problem this time --
+% so \markright is issued after \end{minipage} in the *end* code, back
+% in the main vertical list where marks work normally. \slidemark
+% carries the heading text that far. Likewise minipage resets \parskip
+% to 0 internally, which would silently collapse the blank line between
+% paragraphs inside every speech/note box, so it is restored explicitly.
+\NewDocumentEnvironment{slide}{s m m m}{%
   \par\vspace{9mm plus 2mm minus 2mm}%
+  \def\slidemark{#2 --- #3}%
+  \begin{minipage}{\linewidth}
+  \setlength{\parskip}{5pt}%
+  \phantomsection\addcontentsline{toc}{section}{#2 --- #3}%
   \noindent\begin{minipage}[t]{\dimexpr\linewidth-\slidetimewidth-\slideheadgap\relax}
     \raggedright{\color{agrdark}\Large\bfseries #2 --- #3}%
     \IfBooleanT{#1}{\,\textcolor{agraccent}{\ensuremath{\bigstar}}}%
@@ -114,7 +133,9 @@
     \raggedleft{\color{agrgrey}\itshape\large(#4)}
   \end{minipage}\par
   \vspace{0.8mm}{\color{agrdark!55}\hrule height 0.5pt}\vspace{3.5mm}%
-  \markright{#2 --- #3}%
+}{%
+  \end{minipage}\par
+  \markright{\slidemark}%
 }
 
 % A plain (non-numbered) named section: Backup slides, Anticipated
@@ -129,9 +150,10 @@
 }
 
 % The words to say aloud: a blockquote rendered as an agrdark rule down
-% the left edge. Page-breakable, unlike a boxed environment, because
-% framed redraws \FrameCommand on each page instead of refusing to
-% split -- several of these run long enough to cross a page.
+% the left edge, via framed rather than a plain \fbox so the rule can
+% still be colour-scoped per instance. Every use sits inside a `slide`
+% minipage now, so it never actually gets the chance to break across a
+% page -- the enclosing box relocates as a whole before that happens.
 \newenvironment{speech}{%
   \def\FrameCommand{{\color{agrdark}\vrule width 2.2pt}\hspace{3.2mm}}%
   \MakeFramed{\advance\hsize-\width\FrameRestore}%
@@ -230,7 +252,7 @@ protect, and 14 is on it for a different reason: skipping it hands the
 clipping issue to them.
 
 % =====================================================================
-\slidehead{1}{Title}{0:19}
+\begin{slide}{1}{Title}{0:19}
 
 \begin{speech}
 Good morning. I'm Sakif Khan. This is my pre-defense on Agentic Graph
@@ -241,9 +263,10 @@ answer is emitted. My supervisor is Dr. Sadia Sharmin.
 \begin{note}
 \textit{Don't read the title aloud. It's on the screen.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{2}{The problem}{1:01}
+\begin{slide}{2}{The problem}{1:01}
 
 \begin{speech}
 Language models answer factual questions fluently. The difficulty is that
@@ -263,9 +286,10 @@ one you just got.
 \textbf{Beat after "27.1 percent."} It is the number that sets up the
 whole talk.
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{3}{Where existing approaches stop}{1:01}
+\begin{slide}{3}{Where existing approaches stop}{1:01}
 
 \begin{speech}
 Four families of approach, and each stops somewhere specific.
@@ -286,9 +310,10 @@ it is delivered.
 \textit{Walk the table left to right with the pointer. Don't read the
 cells verbatim.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{4}{Research questions}{0:52}
+\begin{slide}{4}{Research questions}{0:52}
 
 \begin{speech}
 Three questions.
@@ -305,9 +330,10 @@ One framing note. RQ2 asks what verification \textit{contributes}, not
 whether it reduces hallucination. That's deliberate. The answer has
 several parts, and a yes-or-no question would have hidden most of them.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead{5}{AGR: an explicit state machine}{1:21}
+\begin{slide}{5}{AGR: an explicit state machine}{1:21}
 
 \begin{speech}
 AGR is an explicit state machine --- not a prompt loop. Six nodes.
@@ -338,9 +364,10 @@ confirms the sentence.
 \begin{note}
 \textbf{If asked about budgets, go to backup page 2.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{6}{Constrained tools}{0:45}
+\begin{slide}{6}{Constrained tools}{0:45}
 
 \begin{speech}
 The agent never writes a graph query. It gets four operations with fixed
@@ -353,9 +380,10 @@ a record. And that record is what the verification layer checks against.
 Without deterministic tools there would be nothing to verify
 \textit{against}.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead{7}{The Structural Verification Layer}{1:55}
+\begin{slide}{7}{The Structural Verification Layer}{1:55}
 
 \begin{speech}
 This is the contribution.
@@ -386,9 +414,10 @@ exactly that failure in a few minutes.
 \begin{note}
 \textbf{The last sentence is a promise. Slide 19 pays it off.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{8}{One claim, three routes}{0:54}
+\begin{slide}{8}{One claim, three routes}{0:54}
 
 \begin{speech}
 This is the path a single claim takes. Three routes to being called
@@ -403,9 +432,10 @@ call. The first two are pure lookups against a record we already have.
 
 And the "+ evidence" label sits on the first route only.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead{9}{The environment and the question sets}{1:05}
+\begin{slide}{9}{The environment and the question sets}{1:05}
 
 \begin{speech}
 The environment is a Freebase-derived graph: 2.6 million entities, 8.3
@@ -422,9 +452,10 @@ That number is the \textit{ceiling} on every accuracy figure I'm about to
 show. It means when a system misses, the miss belongs to the system and
 not to the environment.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead{10}{Making the comparison fair}{1:12}
+\begin{slide}{10}{Making the comparison fair}{1:12}
 
 \begin{speech}
 Five systems: a parametric control, vector RAG, static GraphRAG,
@@ -451,9 +482,10 @@ a confound, and the conclusion ranks it limitation 5. The numbers are on
 the slide and in the answer below --- you do not have to recite
 40/20/300/200 here.
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead*{11}{Main results}{1:19}
+\begin{slide}*{11}{Main results}{1:19}
 
 \begin{speech}
 Here is the comparison.
@@ -486,9 +518,10 @@ the two and says the claim rests on vector RAG. The paper retracted the
 pooled claim in its own words. If they press on GraphRAG, the answer
 below has the strata.
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{12}{Accuracy against cost}{0:58}
+\begin{slide}{12}{Accuracy against cost}{0:58}
 
 \begin{speech}
 Plotted, the frontier depends on which cost you charge, and the two costs
@@ -504,9 +537,10 @@ dominated on both datasets.
 
 I'm showing both because stating it on one axis alone would overclaim.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead*{13}{RQ1: accuracy against hop count}{1:15}
+\begin{slide}*{13}{RQ1: accuracy against hop count}{1:15}
 
 \begin{speech}
 This is the direct answer to RQ1, and it's a shape rather than a
@@ -528,9 +562,10 @@ the thesis doesn't either.
 \begin{note}
 \textbf{Volunteering the n=4 weakness pre-empts the obvious attack.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{14}{The caveat I want to raise myself}{1:16}
+\begin{slide}{14}{The caveat I want to raise myself}{1:16}
 
 \begin{speech}
 I want to raise this before you do.
@@ -554,9 +589,10 @@ making.
 \textbf{Deliver this as a strength. It is the most defensible slide in
 the deck.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{15}{RQ2: does anything ungrounded get asserted?}{1:10}
+\begin{slide}{15}{RQ2: does anything ungrounded get asserted?}{1:10}
 
 \begin{speech}
 RQ2. Does anything ungrounded get asserted?
@@ -576,9 +612,10 @@ So zero ungrounded assertion is a property of \textit{navigating a graph}
 one. It is not a property of my verification layer, and I don't claim it
 as one.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead{16}{RQ2: so what does verification actually contribute?}{1:50}
+\begin{slide}{16}{RQ2: so what does verification actually contribute?}{1:50}
 
 \begin{speech}
 Which leaves the real question.
@@ -601,9 +638,10 @@ supporting triples and drops the list. You can confirm these answers came
 from a system that tracked its evidence; you cannot open the record and
 inspect it.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead*{17}{RQ3: what each component earns}{1:02}
+\begin{slide}*{17}{RQ3: what each component earns}{1:02}
 
 \begin{speech}
 RQ3, and this is a four-condition ablation with paired McNemar tests
@@ -624,9 +662,10 @@ One row is different. Removing the planner, on WebQSP, p equals 0.006.
 \begin{note}
 \textbf{Pause on the 0.006. Then turn the slide.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{18}{The result I did not expect}{1:15}
+\begin{slide}{18}{The result I did not expect}{1:15}
 
 \begin{speech}
 Removing the planner \textit{improves} WebQSP. Plus 0.083 F1, at p equals
@@ -650,9 +689,10 @@ the measurement forced on me, not one it confirmed.
 \textbf{Own this. A negative result you can explain is stronger than a
 positive one you can't.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{19}{Every failure, read: the echo attractor}{1:41}
+\begin{slide}{19}{Every failure, read: the echo attractor}{1:41}
 
 \begin{speech}
 I read all 259 remaining failures and labelled them. Top categories,
@@ -700,9 +740,10 @@ something you offer rather than something you are corrected with.
 \textbf{The full 12-category histogram is backup page 4 if anyone wants
 it.}
 \end{note}
+\end{slide}
 
 % =====================================================================
-\slidehead{20}{The benchmark was wrong 57 times}{0:50}
+\begin{slide}{20}{The benchmark was wrong 57 times}{0:50}
 
 \begin{speech}
 Same pass, same cross-system agreement: consensus flagged 105 questions,
@@ -717,9 +758,10 @@ Published defect rates for these benchmarks are rare and usually
 anecdotal. This is a counted rate with a documented adjudication
 procedure and per-question provenance.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead{21}{Contributions, and what I would not claim}{1:44}
+\begin{slide}{21}{Contributions, and what I would not claim}{1:44}
 
 \begin{speech}
 To summarise. Six contributions, and they are the six the thesis claims
@@ -744,13 +786,15 @@ And Think-on-Graph leads where it finishes, and prunes from a narrower
 candidate set --- 40 and 20 against my 300 and 200 --- so its unclipped
 subset understates it.
 \end{speech}
+\end{slide}
 
 % =====================================================================
-\slidehead{22}{Thank you}{0:10}
+\begin{slide}{22}{Thank you}{0:10}
 
 \begin{speech}
 Thank you. I'm happy to take questions.
 \end{speech}
+\end{slide}
 
 % =====================================================================
 \needspace{5\baselineskip}
