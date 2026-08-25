@@ -11,6 +11,7 @@ Pre-defense slide decks for the thesis in `thesis_book/`.
 | `content-backup.tex` | The 4 backup slides |
 | `figures/` | Slide-geometry figures, generated |
 | `transcript.md` | Rehearsal script with per-slide timings |
+| `transcript.tex` / `.pdf` | Typeset rendering of `transcript.md`, for printing or reading on a second screen |
 | `check_slides.py` | Verifies every number in both decks against its source |
 
 ## Build
@@ -19,21 +20,33 @@ Pre-defense slide decks for the thesis in `thesis_book/`.
 cd thesis_presentation
 latexmk -pdf pre-defense-0421052099.tex
 latexmk -pdf pre-defense-0421052099-backup.tex
+latexmk -pdf transcript.tex
 ```
 
-`latexmk -C` cleans. Both drivers `\input{preamble}`, so a change to the look
-applies to both — edit the preamble and you must rebuild **both** decks.
+`latexmk -C` cleans. Both slide drivers `\input{preamble}`, so a change to the
+look applies to both — edit the preamble and you must rebuild **both** decks.
+`transcript.tex` carries its own preamble instead (see below) and is
+unaffected by either.
 
-**Only the two `pre-defense-*.tex` files are documents.** `preamble.tex`,
-`content-main.tex` and `content-backup.tex` have no `\begin{document}` and
-stop with `Emergency stop ... no legal \end found` if you build them directly.
-Each carries a `% !TEX root` line so an editor's build button compiles the
-right driver instead; `preamble.tex` points at the main deck, which leaves the
-backup deck to rebuild by hand. The figures under `figures/` are generated, so
-their directive comes from `scripts/build_figures.py` — editing it into the
-files themselves would last until the next regeneration.
+**Only the two `pre-defense-*.tex` files and `transcript.tex` are documents.**
+`preamble.tex`, `content-main.tex` and `content-backup.tex` have no
+`\begin{document}` and stop with `Emergency stop ... no legal \end found` if
+you build them directly. Each carries a `% !TEX root` line so an editor's
+build button compiles the right driver instead; `preamble.tex` points at the
+main deck, which leaves the backup deck to rebuild by hand. The figures under
+`figures/` are generated, so their directive comes from
+`scripts/build_figures.py` — editing it into the files themselves would last
+until the next regeneration. `transcript.tex` is the odd one out: it is a
+plain working document (portrait, article class, no beamer), not a slide, and
+it does not `\input{preamble}` — it duplicates the handful of preamble
+settings it actually needs (palette, base size, hyphenation list) so that it
+still builds standalone if this file is ever the only one that travels,
+matching how `thesis_paper` keeps its own copy of shared material rather than
+reaching across a directory boundary. Regenerate it by hand after editing
+`transcript.md`; there is no automated `.md` → `.tex` build step.
 `python scripts/check_tex_roots.py` checks all three modules — this one, the
-book, and the paper.
+book, and the paper — and confirms `transcript.tex` is correctly seen as its
+own document rather than a fragment.
 
 ## Why two documents
 
