@@ -23,6 +23,7 @@ that exposed each gap.
 
 Every file is restored in a finally block.
 """
+import io
 import pathlib
 import subprocess
 import sys
@@ -37,6 +38,11 @@ FILES = {
     "verification.tex": ROOT / "thesis_book" / "chapters" / "verification.tex",
     "erroranalysis.tex": ROOT / "thesis_book" / "chapters" / "erroranalysis.tex",
     "discussion.tex": ROOT / "thesis_paper" / "sections" / "discussion.tex",
+    # The rehearsal script answers this question out loud, and it spells
+    # thousands the way prose does rather than the way LaTeX does. Both
+    # renderings, because nothing derives one from the other.
+    "transcript.md": ROOT / "thesis_presentation" / "transcript.md",
+    "transcript.tex": ROOT / "thesis_presentation" / "transcript.tex",
 }
 
 # (label, file, find, replace) -- each is the mistake the rule exists to catch.
@@ -60,6 +66,30 @@ CORRUPTIONS = [
     ("upper endpoint dropped / discussion", "discussion.tex",
      "lies somewhere in\n$[39, 2{,}008]$",
      "is at least\n$39$"),
+    # Under questioning the floor is the tempting number, and the sentence
+    # that follows would go with it -- so the corruption takes both. Leaving
+    # "That is an interval two orders of magnitude wide" behind would park the
+    # word "interval" within eighty characters of a surviving 2,008 and let a
+    # gutted paragraph pass, which is the near-miss this rule already learned
+    # once on discussion.tex.
+    ("upper endpoint dropped / transcript.md", "transcript.md",
+     "somewhere between 39 and all 2,008 were certified without any test of the\n"
+     "asserted relation. That is an interval two orders of magnitude wide and I "
+     "report\nit as one rather than choose a point inside it.",
+     "at least 39 were certified without any test of the asserted relation.\n"
+     "That is a floor rather than a guess."),
+    ("upper endpoint dropped / transcript.tex", "transcript.tex",
+     "somewhere between 39 and all 2,008 were certified without\n"
+     "any test of the asserted relation. That is an interval two orders of\n"
+     "magnitude wide and I report it as one rather than choose a point inside\n"
+     "it.",
+     "at least 39 were certified without any test of the\n"
+     "asserted relation. That is a floor rather than a guess."),
+    # And the inverted inequality, in the register it would actually be said
+    # in: the joint total offered as the reassuring half of the answer.
+    ("inverted inequality / transcript.md", "transcript.md",
+     "and the log does not separate them: on test, of 2,008 accepted",
+     "and 1,969 of them were relation-blind: on test, of 2,008 accepted"),
 ]
 
 
@@ -69,7 +99,27 @@ def run():
     return r.returncode
 
 
-originals = {k: v.read_text(encoding="utf-8") for k, v in FILES.items()}
+def read(p):
+    """Read without translating line endings, so restoring cannot change them.
+
+    Path.read_text/write_text translate both ways on Windows, which turned
+    every file this probe touched into CRLF -- including on the restore, and
+    including on a clean pass. prove_residuals.py looks for an LF-joined block
+    in transcript.md and could not find one afterwards.
+    """
+    return io.open(p, encoding="utf-8", newline="").read()
+
+
+def write(p, s):
+    io.open(p, "w", encoding="utf-8", newline="").write(s)
+
+
+def native(s, text):
+    """The anchor, spelled in the line ending `text` actually uses."""
+    return s.replace("\n", "\r\n" if "\r\n" in text else "\n")
+
+
+originals = {k: read(v) for k, v in FILES.items()}
 assert run() == 0, "suite is not green before the probe"
 
 caught = missed = 0
@@ -77,18 +127,19 @@ try:
     for label, fname, find, repl in CORRUPTIONS:
         path = FILES[fname]
         text = originals[fname]
+        find, repl = native(find, text), native(repl, text)
         if find not in text:
             print(f"  [SKIP  ] {label}: anchor not present")
             continue
-        path.write_text(text.replace(find, repl, 1), encoding="utf-8")
+        write(path, text.replace(find, repl, 1))
         red = run() != 0
-        path.write_text(text, encoding="utf-8")
+        write(path, text)
         print(f"  [{'CAUGHT' if red else 'MISSED'}] {label}")
         caught += red
         missed += not red
 finally:
     for k, v in FILES.items():
-        v.write_text(originals[k], encoding="utf-8")
+        write(v, originals[k])
 
 print(f"\ncaught {caught}, missed {missed}")
 assert run() == 0, "files not restored cleanly"

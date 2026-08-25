@@ -218,19 +218,19 @@
       only inside the run.
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{block}{Why \emph{structural}}
+      \begin{block}{What \emph{structural} means}
         \small
-        The check is against the graph the agent walked --- not against the
-        model's own judgement of its own output. A model asked to grade itself
-        is not an independent check.
+        The check is against the graph the agent walked, not the model's
+        judgement of its own output. But it tests \alert{adjacency}: whether
+        an edge joins the claim's endpoints, not whether it is the edge the
+        claim \emph{names}, and not its direction. A \emph{mother} claim
+        passes on a \emph{child} edge --- only route three reads the relation.
       \end{block}
       \vspace{2mm}
-      \begin{block}{The honest limits}
+      \begin{block}{The other honest limit}
         \small
         A claim can be \emph{true} and still be the wrong answer. Structural
-        grounding cannot catch that --- see the echo attractor later. And the
-        run log keeps the \alert{count} of supporting triples rather than the
-        triples, so the pairing does not outlive the run.
+        grounding cannot catch that --- see the echo attractor later.
       \end{block}
     \end{column}
   \end{columns}
@@ -245,7 +245,7 @@
 
   \vspace{1mm}
   {\small Only the third route costs a model call. The first two are pure
-  graph lookups.}
+  graph lookups --- and neither of them reads the relation.}
 \end{frame}
 
 % ===================== 8 =====================

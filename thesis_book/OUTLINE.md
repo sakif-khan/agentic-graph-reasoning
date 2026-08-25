@@ -787,14 +787,15 @@ wrongful-acceptance class from anecdote to rate)*
 | 8 Results | 12 | 12 | 18 |
 | 9 Error Analysis and Discussion | 10 | 15 | 19 |
 | 10 Conclusion | 5 | 6 | 8 |
-| **Body total** | **87** | **104** | **131** |
+| **Body total** | **87** | **104** | **132** |
 | References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
 
-**The body is 131 pages, against the 60–90 target this file set for itself.** Body runs
-pages 1–131; References begin on 132, the index on 137; the document is 184 pages
+**The body is 132 pages, against the 60–90 target this file set for itself.** Body runs
+pages 1–132; References begin on 133, the index on 138; the document is 185 pages
 including front matter and five appendices — a title page, xvii of roman front
-matter, and 166 arabic-numbered ones. The figure read 183 while the title page
-went uncounted.
+matter, and 167 arabic-numbered ones. The figure read 183 while the title page
+went uncounted, and 184 until the introduction, the abstract and Table 8.2's
+caption took on the relation-agnostic bound and the full-Freebase caveat.
 
 **There is no departmental page limit, and this question is closed.** The supervisor
 confirmed it verbally on 13 August 2026. The 60–90 range was this outline's own

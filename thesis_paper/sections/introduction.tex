@@ -77,7 +77,13 @@ program orchestrates the loop and the language model is consulted only at
 bounded decision points. Its distinguishing component is a
 \emph{Structural Verification Layer}: before an answer is emitted, the
 draft is decomposed into atomic claims and each is checked against the
-triples the agent actually traversed. Claims that cannot be grounded
+triples the agent actually traversed. \emph{Structural} bounds that check
+as much as it names it: the two graph routes ask whether an edge joins a
+claim's endpoints, not whether it is the edge the claim asserts, so a
+claim that X is Y's mother is certified by an edge recording that X is
+Y's child, and only the entailment fallback reads the relation.
+\Cref{sec:limits-contribution} reports the exposure that follows. Claims
+that cannot be grounded
 trigger targeted re-exploration or are removed, and the claims the
 traversal itself grounds carry those triples back with the answer.
 

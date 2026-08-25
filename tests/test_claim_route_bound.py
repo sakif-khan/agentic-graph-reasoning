@@ -40,7 +40,27 @@ PROSE = [
     ROOT / "thesis_book" / "chapters" / "verification.tex",
     ROOT / "thesis_book" / "chapters" / "erroranalysis.tex",
     ROOT / "thesis_paper" / "sections" / "discussion.tex",
+    # The deck's own answer to "your verifier doesn't check the relation",
+    # in both renderings. It is the shortest statement of the interval in the
+    # project and the one delivered under questioning, which is the worst
+    # place for it to have drifted to a floor.
+    ROOT / "thesis_presentation" / "transcript.md",
+    ROOT / "thesis_presentation" / "transcript.tex",
 ]
+
+
+def forms(n):
+    """Every spelling of n these documents use, longest first.
+
+    Three, not two: LaTeX writes thousands as 2{,}008, prose writes 2,008, and
+    both sit beside a bare 2008 elsewhere. The rule knew the first and third
+    only, so adding transcript.md to PROSE without this would have failed on
+    text that states the interval correctly.
+    """
+    return "|".join(sorted({re.escape(str(n)),
+                            re.escape(f"{n:,}"),
+                            re.escape(f"{n:,}".replace(",", "{,}"))},
+                           key=len, reverse=True))
 
 
 @pytest.fixture(scope="module")
@@ -104,8 +124,8 @@ def test_prose_quoting_the_joint_total_says_it_is_a_bound(path, block):
     """
     joint = block["total"]["adjacency_or_entailment_accepted"]
     text = " ".join(path.read_text(encoding="utf-8").split())
-    for form in (str(joint), f"{joint:,}".replace(",", "{,}")):
-        for m in re.finditer(re.escape(form), text):
+    for form in forms(joint).split("|"):
+        for m in re.finditer(form, text):
             window = text[m.start(): m.end() + 220]
             assert not re.search(r"relation-blind|relation blind", window), (
                 f"{path.name}: {form} is quoted next to a relation-blind claim. "
@@ -135,10 +155,8 @@ def test_prose_naming_the_exposure_gives_both_endpoints(path, block):
         punctuation -- and excluding it hid "$[39, 2{,}008]$" from this rule,
         which is the one form the rule most needs to see.
         """
-        forms = "|".join(sorted({re.escape(str(n)),
-                                 re.escape(f"{n:,}".replace(",", "{,}"))}))
         return [m.start() for m in
-                re.finditer(rf"(?<![\d.]){forms}(?![\d.])", text)]
+                re.finditer(rf"(?<![\d.])(?:{forms(n)})(?![\d.])", text)]
 
     lows, highs = positions(lo), positions(hi)
     assert lows, f"{path.name}: lower endpoint {lo} is not stated"
@@ -151,9 +169,21 @@ def test_prose_naming_the_exposure_gives_both_endpoints(path, block):
     # this rule on a paragraph whose interval had been deleted. So the pair has
     # to sit beside language that reads as an interval, not just beside itself.
     def reads_as_an_interval(a, b):
-        window = text[max(0, min(a, b) - 80): max(a, b) + 80]
+        """Interval language must lead into the pair, not merely be nearby.
+
+        The window used to reach eighty characters either side, and the
+        transcript's answer opens "every claim those two routes accept
+        between them" a clause earlier. That stray "between" kept the rule
+        green on a paragraph whose interval had been cut back to "at least
+        39" -- the third time this rule has been passed by proximity, after
+        whole-file presence and bare nearness. So the region is now the
+        run-up to the first endpoint plus the span to the second: "[39,",
+        "somewhere in", "between 39 and" all live there, and a connective
+        belonging to a different sentence does not.
+        """
+        region = text[max(0, min(a, b) - 30): max(a, b)]
         return re.search(r"\[|between|interval|somewhere in|ranges|and at most",
-                         window) is not None
+                         region) is not None
 
     assert any(abs(a - b) <= 120 and reads_as_an_interval(a, b)
                for a in lows for b in highs), (

@@ -23,7 +23,10 @@ PHRASES = [
     "single-annotator", "after its outcome was known",
 ]
 
-orig = io.open(D, encoding="utf-8").read()
+# newline="" both ways: the default translates on read and again on
+# write, so the restore below would hand back a file whose line endings
+# this probe had changed.
+orig = io.open(D, encoding="utf-8", newline="").read()
 out = []
 try:
     for ph in PHRASES:
@@ -47,12 +50,12 @@ try:
         for a, b in spans:
             cur = cur[:a + shift] + "XXREMOVEDXX" + cur[b + shift:]
             shift += len("XXREMOVEDXX") - (b - a)
-        io.open(D, "w", encoding="utf-8").write(cur)
+        io.open(D, "w", encoding="utf-8", newline="").write(cur)
         r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                            cwd=ROOT, capture_output=True, text=True)
         out.append((ph, r.returncode))
 finally:
-    io.open(D, "w", encoding="utf-8").write(orig)
+    io.open(D, "w", encoding="utf-8", newline="").write(orig)
 
 for ph, rc in out:
     print(f"  {'CAUGHT' if rc else 'MISSED':7s} removing {ph!r}")

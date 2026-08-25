@@ -8,23 +8,27 @@ The four backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 24 min 55 s of speaking against a 25-minute limit.** That leaves
-five seconds, and every row below is now set to exactly what its own words
-take at 93 wpm — so there is no slack on any individual slide either. Both
-numbers are a constraint, not a cushion.
+**Budget: 24 min 56 s of speaking against a 25-minute limit.** That leaves
+four seconds, and every row below is set to exactly what its own words take
+at 93 wpm — so there is no slack on any individual slide either. Both numbers
+are a constraint, not a cushion.
 
 The table read 24:26 until its rows were checked against the words above
 them, and fourteen of the twenty-two demanded a faster rate than this
 script's own — slide 19 worst, at 125 wpm against 93. Every round's
 additions had been costed against the total and never against the row they
 landed in, so the table stayed internally consistent while drifting away from
-the speech it describes. The same words, re-timed, come to 24:55.
+the speech it describes. It is re-derived from the words on every edit now.
+That is why slide 7 taking on the relation-agnostic bound cost slide 3 and
+slide 6 six seconds and eight, and cost slide 7 its own restatements: the
+twenty seconds were bought, not added to the total.
 
-**Five seconds is not a margin.** Everything that could move to the answers
+**Four seconds is not a margin.** Everything that could move to the answers
 has already moved there, and what is left is spoken because it has to be. A
 real cushion has to come out of what is said: about 60 words buys 40 seconds.
 The recovery note below names the slides that can give it up — 3, 6 and 8 —
-and that is a decision about those slides, not about this one.
+and that is a decision about those slides, not about this one. Note that 3
+and 6 have already given once.
 
 Times below are *cumulative at the end of that slide*. If you are more than
 40 seconds past a marker, use the recovery notes at the bottom.
@@ -33,26 +37,26 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | --- | --- | ---: | ---: |
 | 1 | Title | 0:19 | 0:19 |
 | 2 | The problem | 1:01 | 1:20 |
-| 3 | Where existing approaches stop | 1:01 | 2:21 |
-| 4 | Research questions | 0:52 | 3:13 |
-| 5 | AGR: an explicit state machine | 1:21 | 4:34 |
-| 6 | Constrained tools | 0:45 | 5:19 |
-| 7 | The Structural Verification Layer | 1:55 | 7:14 |
-| 8 | One claim, three routes | 0:54 | 8:08 |
-| 9 | Environment and question sets | 1:05 | 9:13 |
-| 10 | Making the comparison fair | 1:12 | 10:25 |
-| 11 | **Main results** | 1:19 | 11:44 |
-| 12 | Accuracy against cost | 0:58 | 12:42 |
-| 13 | **RQ1: hop count** | 1:15 | 13:57 |
-| 14 | The caveat I want to raise myself | 1:16 | 15:13 |
-| 15 | RQ2: groundedness | 1:10 | 16:23 |
-| 16 | RQ2: what verification contributes | 1:50 | 18:13 |
-| 17 | **RQ3: ablation** | 1:02 | 19:15 |
-| 18 | The result I did not expect | 1:15 | 20:30 |
-| 19 | The echo attractor | 1:41 | 22:11 |
-| 20 | The benchmark was wrong 57 times | 0:50 | 23:01 |
-| 21 | Contributions and limitations | 1:44 | 24:45 |
-| 22 | Thank you | 0:10 | 24:55 |
+| 3 | Where existing approaches stop | 0:55 | 2:15 |
+| 4 | Research questions | 0:53 | 3:08 |
+| 5 | AGR: an explicit state machine | 1:21 | 4:29 |
+| 6 | Constrained tools | 0:37 | 5:06 |
+| 7 | The Structural Verification Layer | 2:06 | 7:12 |
+| 8 | One claim, three routes | 0:59 | 8:11 |
+| 9 | Environment and question sets | 1:05 | 9:16 |
+| 10 | Making the comparison fair | 1:12 | 10:28 |
+| 11 | **Main results** | 1:19 | 11:47 |
+| 12 | Accuracy against cost | 0:58 | 12:45 |
+| 13 | **RQ1: hop count** | 1:15 | 14:00 |
+| 14 | The caveat I want to raise myself | 1:17 | 15:17 |
+| 15 | RQ2: groundedness | 1:10 | 16:27 |
+| 16 | RQ2: what verification contributes | 1:51 | 18:18 |
+| 17 | **RQ3: ablation** | 1:02 | 19:20 |
+| 18 | The result I did not expect | 1:15 | 20:35 |
+| 19 | The echo attractor | 1:41 | 22:16 |
+| 20 | The benchmark was wrong 57 times | 0:50 | 23:06 |
+| 21 | Contributions and limitations | 1:45 | 24:51 |
+| 22 | Thank you | 0:05 | 24:56 |
 
 The three **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 3, 6, and 8 — never from
@@ -89,25 +93,24 @@ is on it for a different reason: skipping it hands the clipping issue to them.
 
 ---
 
-## 3 — Where existing approaches stop *(1:01)*
+## 3 — Where existing approaches stop *(0:55)*
 
 > Four families of approach, and each stops somewhere specific.
 >
 > Parametric answering uses no external evidence at all. Vector RAG retrieves
-> once and then reasons — so retrieval happens *before* reasoning begins, and a
-> multi-hop question has to be answered from whatever that single query returned.
-> Static GraphRAG fixes a neighbourhood radius before the question is even
-> understood. Agentic navigation does interleave retrieval and reasoning, which
-> is the right move.
+> once and then reasons, so a multi-hop question has to be answered from whatever
+> that single query returned. Static GraphRAG fixes a neighbourhood radius before
+> the question is even understood. Agentic navigation does interleave retrieval
+> and reasoning, which is the right move.
 >
-> But all four share one gap. Whatever the final generation call produces is what
-> gets emitted. Nothing checks what the answer *asserts* before it is delivered.
+> But all four share one gap: whatever the final generation call produces is what
+> gets emitted. Nothing checks what the answer *asserts*.
 
 *Walk the table left to right with the pointer. Don't read the cells verbatim.*
 
 ---
 
-## 4 — Research questions *(0:52)*
+## 4 — Research questions *(0:53)*
 
 > Three questions.
 >
@@ -152,49 +155,48 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 6 — Constrained tools *(0:45)*
+## 6 — Constrained tools *(0:37)*
 
 > The agent never writes a graph query. It gets four operations with fixed
 > signatures — relations, neighbours, an adjacency check, and entity
 > linking.
 >
-> This matters for more than safety. Because every operation is deterministic and
-> logged with its arguments and result, the traversal is a record. And that record
-> is what the verification layer checks against. Without deterministic tools there
-> would be nothing to verify *against*.
+> This matters for more than safety. Every operation is deterministic and logged
+> with its arguments and result, so the traversal is a record — and that record is
+> what the verification layer checks against.
 
 ---
 
-## 7 — The Structural Verification Layer *(1:55)*
+## 7 — The Structural Verification Layer *(2:06)*
 
 > This is the contribution.
 >
 > Before anything is emitted, the draft answer is split into atomic claims. Each
-> claim is checked against the triples the agent actually traversed. A claim the
+> claim is checked against the triples the agent actually traversed. Claims that
+> can't be grounded trigger targeted re-exploration, or are dropped. A claim the
 > traversal itself grounds keeps those triples and carries them back with the
-> answer. Claims that can't be grounded either trigger targeted re-exploration,
-> or are dropped.
+> answer, so the system hedges rather than asserts.
 >
-> The consequence is that the system hedges rather than asserts, and the answer
-> comes back with its evidence attached.
->
-> Three things I want to be precise about. First, why *structural* — the check is
+> Four things I want to be precise about. First, why *structural* — the check is
 > against the graph the agent walked, not the model's opinion of its own output.
 > A model grading itself is not an independent check.
 >
-> Second, "its evidence" is narrower than it sounds, and the slide says so: one
-> of the three routes records evidence, and the log keeps the count, not the
-> triples. Both come back on slide 15.
+> Second, *structural* is a bound, not a boast. The first two routes test
+> adjacency, not the relation — any edge between the endpoints passes, either
+> direction, so a mother claim survives on a child edge. Only route three reads
+> what the claim says.
 >
-> Third, the honest limit: a claim can be perfectly true and still be the wrong
-> answer. Structural grounding cannot catch that. I'll show you exactly that
-> failure in a few minutes.
+> Third, "its evidence" is narrower than it sounds — one route of three records
+> it, and the log keeps the count, not the triples. Slide 16 has both bounds.
+>
+> Fourth, a claim can be true and still be the wrong answer. Structural grounding
+> cannot catch that, and I'll show you exactly that failure shortly.
 
 **The last sentence is a promise. Slide 19 pays it off.**
 
 ---
 
-## 8 — One claim, three routes *(0:54)*
+## 8 — One claim, three routes *(0:59)*
 
 > This is the path a single claim takes. Three routes to being called supported.
 >
@@ -205,7 +207,8 @@ backtrack, retry — means counting the arrows confirms the sentence.
 > The point of the ordering is cost. Only the third route spends a model call.
 > The first two are pure lookups against a record we already have.
 >
-> And the "+ evidence" label sits on the first route only.
+> And the "+ evidence" label sits on the first route only. Neither of the first
+> two reads the relation.
 
 ---
 
@@ -318,7 +321,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 14 — The caveat I want to raise myself *(1:16)*
+## 14 — The caveat I want to raise myself *(1:17)*
 
 > I want to raise this before you do.
 >
@@ -357,7 +360,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 16 — RQ2: so what does verification actually contribute? *(1:50)*
+## 16 — RQ2: so what does verification actually contribute? *(1:51)*
 
 > Which leaves the real question.
 >
@@ -476,7 +479,7 @@ are corrected with.
 
 ---
 
-## 21 — Contributions, and what I would not claim *(1:44)*
+## 21 — Contributions, and what I would not claim *(1:45)*
 
 > To summarise. Six contributions, and they are the six the thesis claims in
 > section 1.6. The one I would underline is stratum-dependent decomposition: the
@@ -500,7 +503,7 @@ are corrected with.
 
 ---
 
-## 22 — Thank you *(0:10)*
+## 22 — Thank you *(0:05)*
 
 > Thank you. I'm happy to take questions.
 
@@ -577,6 +580,28 @@ against a system searching a thinner pool, so that figure is a lower bound on
 what it could resolve at equal width — not an estimate of it. Re-running it at
 300 and 200 is the first item in my future work, and it is limitation 5 in the
 conclusion.
+
+**"Your verifier doesn't verify the relationship — any edge between the two
+entities passes."**
+Correct, and I would rather name it than defend it: it is the layer's principal
+acceptance risk, and section 6.8 lists it first among the mechanisms of wrongful
+acceptance. Both structural routes ignore the relation and the direction, so a
+claim that X is Y's mother is certified by an edge recording that X is Y's child.
+It is a deliberate consequence of one design choice. The claim's relation is free
+text and Freebase predicates are not — "X played for Y" is realised through a
+roster mediator carrying no predicate named for playing — so matching on it would
+reject true claims wholesale. The division of labour is that the structural
+routes buy recall for "some supporting edge exists" and the third route, the
+entailment check, buys the semantic precision. What I will not do is state the
+exposure at the smaller of the two scales available. The population at risk is
+not the rare `verify_connection` route but every claim those two routes accept
+between them, and the log does not separate them: on test, of 2,008 accepted
+claims, somewhere between 39 and all 2,008 were certified without any test of the
+asserted relation. That is an interval two orders of magnitude wide and I report
+it as one rather than choose a point inside it. Narrowing it needs the logging
+change — persist accepted claims with the triples that matched them — which is
+the same future-work item as the previous answer, and it is what would let the
+relation be checked where the mediator schema makes that possible.
 
 **"If verification doesn't improve accuracy, why keep it?"**
 Because accuracy was never the only claim. It converts silent error into an
@@ -683,7 +708,7 @@ pulled directly from the thesis's own generated sources.
 
 ## Recovery notes
 
-If you hit **11:55 (slide 12) more than 40 seconds late**, compress as follows.
+If you hit **11:47 (slide 12) more than 40 seconds late**, compress as follows.
 
 - Slide 16 — cut to: *"It doesn't improve accuracy. It converts silent error
   into an explicit hedge and attaches evidence. The case is auditability."*

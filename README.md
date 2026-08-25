@@ -131,7 +131,7 @@ cp .env.example .env
 
 > **All four are mandatory, even for the offline tests.** `agr/env.py` validates
 > them at *import* time, and `tests/conftest.py` imports the runtime module, so
-> without a complete `.env` pytest fails during collection — including the 294
+> without a complete `.env` pytest fails during collection — including the 313
 > tests that need neither Neo4j nor the API.
 
 ---
@@ -345,29 +345,32 @@ alone.
 python -m pytest
 ```
 
-307 tests, all of which should pass on a complete install. `pytest.ini` sets
+326 tests, all of which should pass on a complete install. `pytest.ini` sets
 `addopts = -m "not integration"`, so a bare run is the offline selection and a
 green result does not mean the whole suite ran — ask for the rest explicitly:
 
 | Selection | Command | Runs | Needs |
 | --- | --- | ---: | --- |
-| Offline only (the default) | `python -m pytest` | 294 | `.env` complete |
-| Everything | `python -m pytest -m ""` | 307 | Neo4j running, `.env` complete |
+| Offline only (the default) | `python -m pytest` | 313 | `.env` complete |
+| Everything | `python -m pytest -m ""` | 326 | Neo4j running, `.env` complete |
 | Integration only | `python -m pytest -m integration` | 13 | Neo4j running |
 
 The `integration` marker is declared in `pytest.ini` and covers the 13 tests
-that talk to Neo4j. The other 294 need no services and read only committed
-files. Read that number with one caveat: 246 of them are the parametrised
+that talk to Neo4j. The other 313 need no services and read only committed
+files. Read that number with one caveat: 250 of them are the parametrised
 sweep in `test_indent_drift.py`, one case per source line it scans, so the
-count measures coverage breadth rather than distinct properties asserted. The
-remaining 48 are the ones worth enumerating: five pure unit tests over plan
+count measures coverage breadth rather than distinct properties asserted — it
+moves whenever a source file gains a line. The remaining 63 are the ones worth
+enumerating: five pure unit tests over plan
 validation, budget accounting and Lucene escaping; two that check the two
 Cohen's kappa implementations against each other and against the
 pre-registered bar; five that check the question-identifier convention
 Chapter 9 states to the reader against the `.tex` sources; three that hold
 Sec 4.5's relation-embedding probe to the run it was written from; eleven that
 refuse any claim of the output contract which omits what bounds it; two that
-run the slide deck's own checker; and twenty that hold the journal
+run the slide deck's own checker; fifteen that hold the relation-blind
+acceptance exposure to the interval the committed record actually supports,
+across the four documents that state it; and twenty that hold the journal
 manuscript's abstract length, highlights, declarations, section structure and
 directory self-containment.
 

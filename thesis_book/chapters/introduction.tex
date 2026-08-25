@@ -231,7 +231,13 @@ We present Agentic Graph Reasoning (AGR), a knowledge-graph question-answering
 framework built as an explicit state machine over a constrained, deterministic
 graph tool API. It carries a \emph{Structural Verification Layer} that decomposes
 the draft answer into atomic claims and checks each one against the traversed
-subgraph before the system emits anything. Where a claim is unsupported, the
+subgraph before the system emits anything. \emph{Structural} names what that
+check establishes and, in the same word, bounds it: the two graph routes ask
+whether an edge joins a claim's endpoints, not whether it is the edge the claim
+names, and not in which direction, so a claim that X is Y's mother is certified
+by an edge recording that X is Y's child. That is the price of admitting
+free-text relations, and \Cref{sec:verify-failure-modes} reports both the reason
+and the exposure. Where a claim is unsupported, the
 design either routes to targeted re-exploration or drops the claim from the
 answer, and AGR returns what survives paired with the triples that support it.
 

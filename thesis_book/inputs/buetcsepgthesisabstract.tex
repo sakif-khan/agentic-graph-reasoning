@@ -43,9 +43,12 @@ only system whose accuracy rises with hop count; every other system ends up
 below where it started.
 
 A four-condition ablation, with paired significance testing, finds an effect in
-only one component. And it runs the opposite way from what we expected: removing
-the planner \emph{improves} WebQSP accuracy by $0.083$ F1 ($p = 0.006$) and cuts
-token use by $31\%$, while it trends the other way on ComplexWebQuestions. So,
+only one component. The other three --- including claim verification, the
+component this work sets out to contribute --- show no detectable accuracy
+effect. And the one effect it does find runs the opposite way from what we
+expected: removing the planner \emph{improves} WebQSP accuracy by $0.083$ F1
+($p = 0.006$) and cuts token use by $31\%$, while it trends the other way on
+ComplexWebQuestions. So,
 decomposition should be gated on question structure, not applied
 unconditionally. We read all $259$ remaining failures by hand. The
 characteristic error is not invention; it is what we call the \emph{echo
