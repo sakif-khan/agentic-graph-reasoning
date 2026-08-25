@@ -55,11 +55,18 @@ def edit(path, old, new):
 
 
 CASES = [
+    # The anchor stops at "the paper" rather than at a full stop. That sentence
+    # gained a second clause -- "and confirms transcript.tex is correctly seen
+    # as its own document" -- when the transcript became the fifth document, and
+    # this anchor still ended in the full stop the clause displaced. The probe
+    # had been failing on an unmodified README ever since, which is the failure
+    # mode a probe can least afford: it reports on a rule that is fine while
+    # itself being the thing that is broken.
     ("shipped: the README undercounts the modules checked",
      edit(RM, "`python scripts/check_tex_roots.py` checks all three modules "
-              "— this one, the book, and the paper.",
+              "— this one, the book, and the paper",
           "`python scripts/check_tex_roots.py` checks both this module and "
-          "the book.")),
+          "the book")),
     ("shipped: the README says both decks input the figure",
      edit(RM, "the backup deck does not use it at all.",
           "and so does the backup deck.")),

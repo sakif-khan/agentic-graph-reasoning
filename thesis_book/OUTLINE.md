@@ -791,8 +791,10 @@ wrongful-acceptance class from anecdote to rate)*
 | References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
 
 **The body is 131 pages, against the 60–90 target this file set for itself.** Body runs
-pages 1–131; References begin on 132, the index on 137; the document is 183 pages
-including front matter and five appendices.
+pages 1–131; References begin on 132, the index on 137; the document is 184 pages
+including front matter and five appendices — a title page, xvii of roman front
+matter, and 166 arabic-numbered ones. The figure read 183 while the title page
+went uncounted.
 
 **There is no departmental page limit, and this question is closed.** The supervisor
 confirmed it verbally on 13 August 2026. The 60–90 range was this outline's own

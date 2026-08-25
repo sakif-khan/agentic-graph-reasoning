@@ -1568,6 +1568,43 @@
    "repaired_to_grounded": 13
   }
  },
+ "claim_routes": {
+  "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl + results/phase4/test_{webqsp,cwq}_agr_tools.jsonl",
+  "_note": "Which route accepted each claim, at test scale. Read the bound, not a point estimate: route2_accepted is exact and adjacency_or_entailment_accepted is a joint total the log cannot split, because a claim reaching the entailment call leaves no per-claim record. Both structural routes ignore the relation and the direction, so the relation-blind share of acceptances lies between relation_blind_accepted_min and _max and is not a single number. sec:structural-check reports this route on the development set, where verify_connection was 4 per cent of claims; that figure is a different and much smaller population. See sec:verify-failure-modes, sec:verifier-errors, sec:threats.",
+  "webqsp": {
+   "verifier_firings": 410,
+   "claims_decomposed": 1408,
+   "claims_accepted": 1372,
+   "claims_rejected": 36,
+   "route2_calls": 43,
+   "route2_accepted": 23,
+   "adjacency_or_entailment_accepted": 1349,
+   "relation_blind_accepted_min": 23,
+   "relation_blind_accepted_max": 1372
+  },
+  "cwq": {
+   "verifier_firings": 418,
+   "claims_decomposed": 702,
+   "claims_accepted": 636,
+   "claims_rejected": 66,
+   "route2_calls": 57,
+   "route2_accepted": 16,
+   "adjacency_or_entailment_accepted": 620,
+   "relation_blind_accepted_min": 16,
+   "relation_blind_accepted_max": 636
+  },
+  "total": {
+   "verifier_firings": 828,
+   "claims_decomposed": 2110,
+   "claims_accepted": 2008,
+   "claims_rejected": 102,
+   "route2_calls": 100,
+   "route2_accepted": 39,
+   "adjacency_or_entailment_accepted": 1969,
+   "relation_blind_accepted_min": 39,
+   "relation_blind_accepted_max": 2008
+  }
+ },
  "budget_binding": {
   "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
   "_note": "Which of AGR's seven budgets actually bind on test. The call cap never does, which is what sec:tog-split and its restatements in sec:findings, sec:discussion and sec:summary compare against the baseline; the depth cap binds on a quarter of questions, which is why those sentences name the call budget rather than 'a budget'. Quote refused, not at_cap -- the two differ for backtracks, for the reason tab:tog-split's caption gives.",

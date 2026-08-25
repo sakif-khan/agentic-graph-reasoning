@@ -57,6 +57,16 @@ of the logging decision rather than of the verifier. There is no way,
 from the committed record, to know how many wrongful acceptances sit
 inside the $761$ questions that ended grounded.
 
+The exposure is best stated in the claim unit, where its scale is visible.
+On test the verifier decomposed $2{,}110$ claims and accepted $2{,}008$ of
+them. The graph-wide adjacency probe accounts for $39$ of those
+acceptances; the rest were made either by traversed adjacency, which is
+equally relation-blind, or by the entailment check, which is not, and the
+record does not say which. So the share of accepted claims certified
+without any test of the asserted relation lies somewhere in
+$[39, 2{,}008]$ --- an interval two orders of magnitude wide, and we
+report it as one rather than choose a point inside it.
+
 \textbf{The output contract cannot be audited from the run records.}
 This paper offers, as its contribution, an answer paired with the
 traversed triples supporting it, and the pairing does hold inside the

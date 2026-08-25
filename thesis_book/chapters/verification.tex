@@ -238,8 +238,27 @@ direct edge at all, so a mediator-blind adjacency test would have rejected them.
 Two were direct edges the traversal had simply never walked. Query latency across
 those same five calls ranged from 1.9 to 75.7\,ms, which with $n = 5$ is a record
 of what happened rather than a latency distribution. The route is therefore
-cheap and, on this evidence, correct --- but it is also rare, and the structural
-check is in practice overwhelmingly the traversed-adjacency test.
+cheap and, on this evidence, correct --- but it is also rare.
+
+Rare at test scale too, and there the counts are large enough to carry weight.
+Across the $800$ test questions the verifier decomposed $2{,}110$ claims over
+$828$ firings, accepted $2{,}008$ of them and rejected $102$; the second route
+was consulted on $100$ of those claims --- $4.7\%$, the same order as the
+development set's four per cent --- and accepted $39$. Both figures are exact:
+the first from the verifier's own trace entries, the second from the tool log,
+which records one \textsf{verify\_connection} call per claim reaching that
+branch because the code issues exactly one there.
+
+What the record cannot say is how the remaining $1{,}969$ acceptances divide
+between traversed adjacency and the entailment check. A claim routed to
+entailment leaves no per-claim trace, and the \textsf{n\_structural} counter
+that \Cref{sec:output-contract} fences counts entailment-accepted claims
+alongside structural ones, so it cannot separate them either. The
+traversed-adjacency share is bounded above by $1{,}969$ and below by nothing at
+all. That is the instrumentation gap of \Cref{sec:threats} in a third form, and
+it is why this paragraph reports the share of \emph{claims} that reached the
+second route, which is measured, and not the share of \emph{acceptances} that
+came through the first, which is not.
 
 \subsection{The Entailment Check}\label{sec:entailment-check}
 
@@ -729,6 +748,17 @@ between them. A claim that X is Y's mother is accepted on an edge recording that
 X is Y's child; a claim that a film was directed by a person is accepted on an
 acting credit. This is the direct cost of allowing free-text relations, and it
 is not a small one --- it is the layer's principal acceptance risk.
+
+That risk should be stated at the scale it actually has, because
+\Cref{sec:structural-check}'s development-set figure invites a smaller reading.
+Neither structural route matches on the relation, so the population exposed is
+not the rare second route but every claim the two of them accept between them,
+and on test that is somewhere in $[39, 2{,}008]$ of the $2{,}008$ accepted
+claims --- an interval, for the reason that section gives, rather than a number.
+The lower end is what the log pins down and it is small; the upper end is what
+the mechanism permits and it is very nearly all of them. Nothing measured in
+this thesis narrows the interval, and \Cref{sec:future-logging} is the change
+that would.
 
 \textbf{The mediator hop.} \textsf{verify\_connection} accepts a path through one
 mediator node. Because a Freebase mediator encodes a single $n$-ary fact, the

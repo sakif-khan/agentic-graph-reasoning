@@ -477,6 +477,77 @@ def verifier_route():
     return out
 
 
+def claim_routes():
+    """Which of the three claim-checking routes accepted what, at test scale.
+
+    sec:structural-check reports this on the 80-question development set, where
+    verify_connection was consulted five times across 121 claims -- four per
+    cent. That reads as a rare fallback, and on that set it was one. The
+    acceptance risk sec:verify-failure-modes calls the layer's principal one
+    does not belong to that rare route, though: it belongs to BOTH structural
+    routes, because neither matches on the relation or the direction. So the
+    quantity a reader needs is how many claims were accepted by a relation-blind
+    test at test scale, and this block collects what the record can answer.
+
+    Exact here: claims decomposed, accepted and rejected, summed over the
+    verifier trace entries; and every verify_connection call with its verdict,
+    from the tool log. The tool call is exact per claim because nodes.py invokes
+    it once, inside the elif, for each claim that resolved both endpoints and
+    failed traversed adjacency.
+
+    NOT recoverable here: how the remaining acceptances split between traversed
+    adjacency and the entailment check. A claim reaching the entailment call
+    leaves no per-claim record, and n_structural counts entailment-accepted
+    claims too -- which is why sec:output-contract fences that counter. So
+    route2_accepted is a count, adjacency_or_entailment_accepted is a joint
+    total, and the relation-blind share is reported as the interval those two
+    bound rather than as a number the log does not hold.
+
+    That unrecoverable split is the instrumentation gap of sec:threats appearing
+    a third time, alongside unlogged accepted claims and the discarded
+    supporting-triple list. Do not derive an adjacency count from this block.
+    """
+    out = {}
+    for ds, rows in _agr_runs():
+        firings = claims = accepted = rejected = 0
+        for r in rows:
+            for t in r["trace"]:
+                if t.get("node") == "verifier" and "n_claims" in t:
+                    firings += 1
+                    claims += t["n_claims"]
+                    accepted += t.get("n_structural", 0)
+                    rejected += len(t.get("unsupported", []))
+        calls = conn = 0
+        for line in (P4 / f"test_{ds}_agr_tools.jsonl").read_text(
+                encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            rec = json.loads(line)
+            if rec["tool"] == "verify_connection":
+                calls += 1
+                conn += 1 if rec["result"].get("connected") else 0
+        assert claims == accepted + rejected, (
+            f"{ds}: claims do not partition into accepted and rejected, so "
+            f"n_structural is not the accepted count it is read as here")
+        assert conn <= accepted, (
+            f"{ds}: verify_connection accepted more claims than the verifier "
+            f"recorded as supported")
+        out[ds] = {
+            "verifier_firings": firings,
+            "claims_decomposed": claims,
+            "claims_accepted": accepted,
+            "claims_rejected": rejected,
+            "route2_calls": calls,
+            "route2_accepted": conn,
+            "adjacency_or_entailment_accepted": accepted - conn,
+            "relation_blind_accepted_min": conn,
+            "relation_blind_accepted_max": accepted,
+        }
+    keys = list(next(iter(out.values())))
+    out["total"] = {k: sum(v[k] for v in out.values()) for k in keys}
+    return out
+
+
 def budget_binding():
     """Which of AGR's own budgets bind on test, and which one never does.
 
@@ -1058,6 +1129,24 @@ def main():
                       "development set only. See sec:repair, "
                       "sec:verifier-errors."),
             **verifier_route(),
+        },
+        "claim_routes": {
+            "_source": ("results/phase4/test_{webqsp,cwq}_agr.jsonl + "
+                        "results/phase4/test_{webqsp,cwq}_agr_tools.jsonl"),
+            "_note": ("Which route accepted each claim, at test scale. Read the "
+                      "bound, not a point estimate: route2_accepted is exact "
+                      "and adjacency_or_entailment_accepted is a joint total "
+                      "the log cannot split, because a claim reaching the "
+                      "entailment call leaves no per-claim record. Both "
+                      "structural routes ignore the relation and the direction, "
+                      "so the relation-blind share of acceptances lies between "
+                      "relation_blind_accepted_min and _max and is not a single "
+                      "number. sec:structural-check reports this route on the "
+                      "development set, where verify_connection was 4 per cent "
+                      "of claims; that figure is a different and much smaller "
+                      "population. See sec:verify-failure-modes, "
+                      "sec:verifier-errors, sec:threats."),
+            **claim_routes(),
         },
         "budget_binding": {
             "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl",
