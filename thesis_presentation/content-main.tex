@@ -38,6 +38,40 @@
 \end{frame}
 
 % ===================== 2 =====================
+\begin{frame}{Why the model does this}
+  \small
+  A \alert{hallucination} is fluent, well formed, and backed by \alert{no
+  source the model can point to} --- not a bug that escaped testing, but a
+  consequence of how these models are built.
+  \begin{columns}[T]
+    \begin{column}{0.63\textwidth}
+      \begin{block}{Three places it comes from}
+        \small
+        \begin{enumerate}\setlength{\itemsep}{0pt}
+          \item \alert{The training data} --- errors and thin coverage,
+            reproduced faithfully
+          \item \alert{The model} --- knowledge is spread across the weights
+            with no index, so nothing separates a memorised fact from a
+            plausible continuation
+          \item \alert{The prompt} --- what we put in the context window
+        \end{enumerate}
+      \end{block}
+    \end{column}
+    \begin{column}{0.34\textwidth}
+      \begin{block}{Which can we act on?}
+        \small
+        Only the third. The first two need a curated corpus or a retrained
+        model.
+
+        The third is a \alert{systems} problem --- and that is this thesis.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{Multi-hop compounds it: a wrong first hop rarely surfaces, so the
+    chain proceeds from a false premise.}
+\end{frame}
+
+% ===================== 3 =====================
 \begin{frame}{Where existing approaches stop}
   % Widths measured from the cells, not guessed. The last column cannot be
   % made single-line -- "Emits whatever the last generation call produces" is
@@ -66,7 +100,7 @@
     delivered.}
 \end{frame}
 
-% ===================== 3 =====================
+% ===================== 4 =====================
 \begin{frame}{Research questions}
   \begin{enumerate}
     \item[\textbf{RQ1}] Does agentic navigation improve multi-hop factual
@@ -84,7 +118,7 @@
     would hide them.}
 \end{frame}
 
-% ===================== 4 =====================
+% ===================== 5 =====================
 \begin{frame}{AGR: an explicit state machine}
   \begin{columns}[T]
     \begin{column}{0.46\textwidth}
@@ -157,7 +191,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 5 =====================
+% ===================== 6 =====================
 \begin{frame}{Constrained tools, not free-form queries}
   % Natural column widths, not fixed ones: every cell here is a short phrase,
   % and a fixed measure wrapped four of them onto a second line for the sake
@@ -197,7 +231,7 @@
     possible.}
 \end{frame}
 
-% ===================== 6 =====================
+% ===================== 7 =====================
 \begin{frame}{The Structural Verification Layer}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
@@ -236,7 +270,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 7 =====================
+% ===================== 8 =====================
 \begin{frame}{One claim, three routes}
   \centering
   % Height-constrained, so the caption below it decides how big the diagram
@@ -248,7 +282,7 @@
   graph lookups --- and neither of them reads the relation.}
 \end{frame}
 
-% ===================== 8 =====================
+% ===================== 9 =====================
 \begin{frame}{The environment and the question sets}
   \begin{columns}[T]
     \begin{column}{0.45\textwidth}
@@ -292,7 +326,7 @@
     accuracy ceiling is known.}
 \end{frame}
 
-% ===================== 9 =====================
+% ===================== 10 =====================
 \begin{frame}{Making the comparison fair}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
@@ -340,7 +374,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 10 =====================
+% ===================== 11 =====================
 \begin{frame}{Main results}
   \begin{table}
     \small
@@ -372,7 +406,7 @@
     of the other agentic system.}
 \end{frame}
 
-% ===================== 11 =====================
+% ===================== 12 =====================
 \begin{frame}{Accuracy against cost}
   \centering
   \input{figures/fig_accuracy_cost.tex}
@@ -384,7 +418,7 @@
   \takeaway{The frontier depends on which cost you charge.}
 \end{frame}
 
-% ===================== 12 =====================
+% ===================== 13 =====================
 \begin{frame}{RQ1: accuracy against hop count}
   \centering
   \input{figures/fig_hop_strata.tex}
@@ -396,7 +430,7 @@
   \takeaway{RQ1 is answered by a shape, not a difference of means.}
 \end{frame}
 
-% ===================== 13 =====================
+% ===================== 14 =====================
 \begin{frame}{The caveat I want to raise myself}
   \begin{table}
     \small
@@ -425,7 +459,7 @@
     reasons better per step.}
 \end{frame}
 
-% ===================== 14 =====================
+% ===================== 15 =====================
 \begin{frame}{RQ2: does anything ungrounded get asserted?}
   \begin{table}
     \small
@@ -449,7 +483,7 @@
     property of \emph{graph navigation}, not of the verification layer.}
 \end{frame}
 
-% ===================== 15 =====================
+% ===================== 16 =====================
 \begin{frame}{RQ2: so what does verification actually contribute?}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
@@ -486,7 +520,7 @@
   benefit the measurement does not support.}
 \end{frame}
 
-% ===================== 16 =====================
+% ===================== 17 =====================
 \begin{frame}{RQ3: what each component earns}
   \begin{table}
     \small
@@ -514,7 +548,7 @@
     the sign is backwards.}
 \end{frame}
 
-% ===================== 17 =====================
+% ===================== 18 =====================
 \begin{frame}{The result I did not expect}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
@@ -551,7 +585,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 18 =====================
+% ===================== 19 =====================
 \begin{frame}{Every failure, read: the echo attractor}
   \begin{columns}[T]
     % 0.50/0.48 rather than 0.46/0.52: the census table needs only 48mm, but
@@ -625,7 +659,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 19 =====================
+% ===================== 20 =====================
 \begin{frame}{The benchmark was wrong $57$ times}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
@@ -657,7 +691,7 @@
   \takeaway{A contribution that outlives this particular system.}
 \end{frame}
 
-% ===================== 20 =====================
+% ===================== 21 =====================
 \begin{frame}{Contributions, and what I would not claim}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}

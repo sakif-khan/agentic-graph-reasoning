@@ -4,7 +4,7 @@ Pre-defense slide decks for the thesis in `thesis_book/`.
 
 | File | What it is |
 | --- | --- |
-| `pre-defense-0421052099.tex` / `.pdf` | **The deck that is presented.** 22 pages |
+| `pre-defense-0421052099.tex` / `.pdf` | **The deck that is presented.** 23 pages |
 | `pre-defense-0421052099-backup.tex` / `.pdf` | Backup slides for questions only. 5 pages |
 | `preamble.tex` | Shared preamble — 16:9, 12 pt, palette, styles |
 | `content-main.tex` | Title, 20 body slides, closing slide |

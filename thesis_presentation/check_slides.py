@@ -725,7 +725,7 @@ for drv in DRIVERS:
 # seventh contribution to sec:contribution fails this until the deck says
 # so. The keys are alternatives per contribution, not a spelling test, and
 # they are matched inside the contributions block alone -- "echo attractor"
-# also appears on slide 19, and matching the whole deck would pass a slide
+# also appears on slide 20, and matching the whole deck would pass a slide
 # that had dropped it.
 print("\n== the deck's contributions are the thesis's ==")
 INTRO = os.path.join(ROOT, "thesis_book", "chapters", "introduction.tex")
@@ -933,16 +933,16 @@ for label, text in (("deck", plain(FLAT)), ("transcript", plain(MDF))):
 # to each other, so the script has to say which baseline carries the claim
 # and why the other does not, or the audience pools them anyway.
 #
-# Bound to what is actually said on slide 11, not to the whole file. The
-# first version searched the transcript and passed while section 11 had
+# Bound to what is actually said on slide 12, not to the whole file. The
+# first version searched the transcript and passed while section 12 had
 # been stripped of it, because the speaker note below the section quotes
 # the same phrase -- a second home, again.
-s11 = spoken(11)
-ck("section 11 is in the transcript", bool(s11))
-ck("section 11 names the baseline the claim rests on",
-   re.search(r"claim rests on vector RAG", s11, re.I) is not None)
+s12 = spoken(12)
+ck("section 12 is in the transcript", bool(s12))
+ck("section 12 names the baseline the claim rests on",
+   re.search(r"claim rests on vector RAG", s12, re.I) is not None)
 ck("and says why GraphRAG's number does not carry it",
-   re.search(r"radius confounds", s11, re.I) is not None)
+   re.search(r"radius confounds", s12, re.I) is not None)
 
 # The deck's caveat is correct only while the thesis holds that position.
 RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
@@ -1002,13 +1002,13 @@ if g:
 print("\n== the echo attractor is framed as the thesis frames it ==")
 echo = frame("Every failure, read: the echo attractor")
 bench = frame(r"The benchmark was wrong $57$ times")
-s19, s20 = spoken(19), spoken(20)
+s20, s21 = spoken(20), spoken(21)
 ck("both frames are in the deck", bool(echo) and bool(bench))
 
 RETRACTED = re.compile(r"propert\w+ of the task|across unrelated systems"
                        r"|not (?:a propert\w+ of )?AGR\b"
                        r"|rather than (?:of )?AGR\b", re.I)
-for label, text in (("echo slide", echo), ("section 19", s19)):
+for label, text in (("echo slide", echo), ("section 20", s20)):
     hit = RETRACTED.search(text)
     ck(f"{label} does not deflect it onto the task", hit is None,
        hit.group(0)[:60] if hit else "")
@@ -1038,7 +1038,7 @@ ck(f"the flagged total is {flagged} and the confirmed total is {confirmed}",
    "the confirmed pair must be the count excluded before the census")
 for label, text, fl, cf in (("benchmark slide", bench, f"${flagged}$",
                              f"${confirmed}$"),
-                            ("section 20", s20, str(flagged), str(confirmed))):
+                            ("section 21", s21, str(flagged), str(confirmed))):
     ck(f"{label} gives both the flagged and the confirmed count",
        fl in text and cf in text, f"wants {fl} and {cf}")
     ck(f"{label} attributes the gap to the attractor",
@@ -1142,7 +1142,7 @@ if nodes in NUM:
     ck(f"the slide says {NUM[nodes]} nodes", f"{NUM[nodes]} nodes" in SM,
        f"diagram draws {nodes}")
     ck(f"the script says {NUM[nodes].lower()} nodes",
-       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(5), re.I) is not None)
+       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(6), re.I) is not None)
 
 
 def target(edge):
@@ -1175,12 +1175,12 @@ if m and len(back) in NUM:
     ck("and every name is a label on the diagram",
        set(listed) <= labels, f"{sorted(set(listed) - labels)} not labelled")
 
-s5 = spoken(5)
+s6 = spoken(6)
 ck("the script does not harden the old count",
-   re.search(r"exactly (?:one|two|three|four|five) cycles", s5, re.I) is None)
+   re.search(r"exactly (?:one|two|three|four|five) cycles", s6, re.I) is None)
 if len(back) in NUM:
     ck(f"the script also says {NUM[len(back)].lower()} cycles",
-       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s5, re.I) is not None)
+       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s6, re.I) is not None)
 
 # The same diagram is drawn three times, and each copy's prose has to
 # count what that copy draws. Correcting the deck to three left the deck
@@ -1318,7 +1318,7 @@ else:
 
     rows = re.findall(r"^\| (\d+) \| ([^|]*?) \| (\d+):(\d\d) \| (\d+):(\d\d) \|",
                       md, re.M)
-    ck("the table has a row per slide", len(rows) == 22, f"{len(rows)} rows")
+    ck("the table has a row per slide", len(rows) == 23, f"{len(rows)} rows")
 
     run = 0
     drift = []
@@ -1425,7 +1425,7 @@ ck("the slide lists them in the thesis's severity order", not swaps,
 print("\n== the pre-specified wording is accounted for ==")
 # The deck's own spelling is a rule, not a preference: the standing note
 # in thesis_paper/sections/setup.tex says never "pre-registered", the
-# slide comment repeats it, and section 21 now says it out loud. It was
+# slide comment repeats it, and section 22 now says it out loud. It was
 # checked in none of the three -- CONTRIB_KEYS accepted either spelling,
 # and the explanation rule below keyed off the deck, so a slide drifting
 # back to the thesis's word ALSO switched off the rule that would have
@@ -1436,11 +1436,11 @@ ck("the deck never writes pre-registered",
    "thesis_paper/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
 if "pre-registered" in thesis_six:
-    s21 = spoken(21)
-    ck("the script names the thesis's word", "pre-registered" in s21.lower())
-    ck("and the word the slide uses", "pre-specified" in s21.lower())
+    s22 = spoken(22)
+    ck("the script names the thesis's word", "pre-registered" in s22.lower())
+    ck("and the word the slide uses", "pre-specified" in s22.lower())
     ck("and gives the reason the slide diverges",
-       re.search(r"registr(y|ies)", s21, re.I) is not None)
+       re.search(r"registr(y|ies)", s22, re.I) is not None)
 else:
     ck("the two documents still differ on this word", True,
        "reconciled -- rule retired")
@@ -1457,13 +1457,13 @@ else:
 print("\n== the hop curve is the strata ==")
 TR = J["main_results"]["hop_trends"]["cwq"]
 HOP = frame("RQ1: accuracy against hop count")
-s13 = spoken(13)
+s14 = spoken(14)
 agr = TR["agr"]["hits_at_1"]
 arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)
 ck("the hop slide is in the deck", bool(HOP))
 ck(f"the slide quotes AGR's CWQ curve {agr}",
    re.search(arrow, HOP) is not None, "in that order")
-ck("the script quotes the same three", re.search(arrow, s13) is not None)
+ck("the script quotes the same three", re.search(arrow, s14) is not None)
 
 rising = TR["_systems_monotone_rising"]
 ck("AGR is the only CWQ system that rises", rising == ["agr"], str(rising))
@@ -1471,7 +1471,7 @@ below = TR["_systems_ending_below_h1"]
 ck(f"the other {len(below)} end below their one-hop score",
    sorted(below) == sorted(k for k in TR
                            if not k.startswith("_") and k != "agr"))
-for label, text in (("slide", HOP), ("script", s13)):
+for label, text in (("slide", HOP), ("script", s14)):
     ck(f"the {label} says AGR alone ends above where it started",
        re.search(r"only\b[^.]*\bend(?:s|ing)? above where it started",
                  plain(text)) is not None)
@@ -1480,7 +1480,7 @@ falling = TR["_systems_monotone_falling"]
 ck(f"{len(falling)} of the other four decay monotonically",
    len(falling) in NUM, str(sorted(falling)))
 decay = re.compile(NUM[len(falling)] + r" of the other (\w+) decay", re.I)
-for label, text in (("slide", HOP), ("script", s13)):
+for label, text in (("slide", HOP), ("script", s14)):
     m = decay.search(plain(text))
     ck(f"the {label} says {NUM[len(falling)].lower()} of the others decay",
        m is not None)
@@ -1494,7 +1494,7 @@ ck("ToG's CWQ curve is neither rising nor falling throughout",
    not TR["tog"]["monotone_falling"] and not TR["tog"]["monotone_rising"])
 ck(f"the script says it ends {abs(net)} below its one-hop score",
    re.search(r"(?<![\d.])" + re.escape(str(abs(net)))
-             + r"(?![\d.])[^.]*below its own one-hop", s13) is not None,
+             + r"(?![\d.])[^.]*below its own one-hop", s14) is not None,
    f"hop_trends gives {net}")
 
 # The strata the answer rests on, from the stratum table.
