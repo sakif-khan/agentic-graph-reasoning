@@ -1,34 +1,37 @@
 # Pre-defense transcript
 
-Rehearsal script for **`pre-defense-0421052099.pdf`** — 23 pages: a title,
-twenty-one body slides, a closing slide.
+Rehearsal script for **`pre-defense-0421052099.pdf`** — 32 pages: a title,
+thirty body slides, a closing slide.
 
-The four backup slides are a **separate file**,
+The six backup slides are a **separate file**,
 `pre-defense-0421052099-backup.pdf`. You do not present them. Open it alongside
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 24 min 56 s of speaking against a 25-minute limit.** That leaves
-four seconds, and every row below is set to exactly what its own words take
-at 93 wpm — so there is no slack on any individual slide either. Both numbers
-are a constraint, not a cushion.
+**Budget: 23 min 58 s of speaking against a 25-minute limit.** That leaves
+just over a minute, and every row below is set to exactly what its own words
+take at 93 wpm — so the minute is the whole of the slack, and no individual
+slide holds any.
 
 The table read 24:26 until its rows were checked against the words above
 them, and fourteen of the rows demanded a faster rate than this script's
 own — the echo-attractor slide worst, at 125 wpm against 93. Every round's
 additions had been costed against the total and never against the row they
 landed in, so the table stayed internally consistent while drifting away from
-the speech it describes. It is re-derived from the words on every edit now,
-and every addition since has been paid for out of another row rather than out
-of the total: the relation-agnostic bound on slide 8 came out of slides 4, 7
-and 8 itself, and slide 3 came out of slides 2, 4 and 9.
+the speech it describes. It is re-derived from the words on every edit now.
 
-**Four seconds is not a margin.** Everything that could move to the answers
-has already moved there, and what is left is spoken because it has to be. A
-real cushion has to come out of what is said: about 60 words buys 40 seconds.
-The recovery note below names the slides that can give it up — 4, 7 and 9 —
-and that is a decision about those slides, not about this one. Note that all
-three have now given once, and 4 and 9 twice.
+The seven crowded slides became seventeen this round, and the background the
+new audience needs — what a hallucination is, where it comes from, what a
+knowledge graph is — is new speech, not redistributed speech. It cost 2 min
+39 s on the first draft, which ran 25:40. All of it came back out of the
+seventeen sections that had just been written: no section that was already
+settled and already timed gave up a word, and the total moved from 22:41 to
+23:58 rather than past the limit.
+
+**A minute is a margin, not a cushion.** Everything that could move to the
+answers has already moved there. If you need more than the minute, it has to
+come out of what is said: about 60 words buys 40 seconds, and the recovery
+notes below name the slides that can give it up.
 
 Times below are *cumulative at the end of that slide*. If you are more than
 40 seconds past a marker, use the recovery notes at the bottom.
@@ -36,33 +39,43 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | # | Slide | Slide time | Cumulative |
 | --- | --- | ---: | ---: |
 | 1 | Title | 0:19 | 0:19 |
-| 2 | The problem | 0:42 | 1:01 |
-| 3 | Why the model does this | 0:55 | 1:56 |
-| 4 | Where existing approaches stop | 0:41 | 2:37 |
-| 5 | Research questions | 0:53 | 3:30 |
-| 6 | AGR: an explicit state machine | 1:21 | 4:51 |
-| 7 | Constrained tools | 0:37 | 5:28 |
-| 8 | The Structural Verification Layer | 2:06 | 7:34 |
-| 9 | One claim, three routes | 0:37 | 8:11 |
-| 10 | Environment and question sets | 1:05 | 9:16 |
-| 11 | Making the comparison fair | 1:12 | 10:28 |
-| 12 | **Main results** | 1:19 | 11:47 |
-| 13 | Accuracy against cost | 0:58 | 12:45 |
-| 14 | **RQ1: hop count** | 1:15 | 14:00 |
-| 15 | The caveat I want to raise myself | 1:17 | 15:17 |
-| 16 | RQ2: groundedness | 1:10 | 16:27 |
-| 17 | RQ2: what verification contributes | 1:51 | 18:18 |
-| 18 | **RQ3: ablation** | 1:02 | 19:20 |
-| 19 | The result I did not expect | 1:15 | 20:35 |
-| 20 | The echo attractor | 1:41 | 22:16 |
-| 21 | The benchmark was wrong 57 times | 0:50 | 23:06 |
-| 22 | Contributions and limitations | 1:45 | 24:51 |
-| 23 | Thank you | 0:05 | 24:56 |
+| 2 | The problem | 0:32 | 0:51 |
+| 3 | How often? Our own control | 0:25 | 1:16 |
+| 4 | What a hallucination is | 0:38 | 1:54 |
+| 5 | Where it comes from | 0:31 | 2:25 |
+| 6 | Which of the three can we act on? | 0:32 | 2:57 |
+| 7 | What a knowledge graph is | 0:37 | 3:34 |
+| 8 | The complication: mediator nodes | 0:34 | 4:08 |
+| 9 | Where existing approaches stop | 0:41 | 4:49 |
+| 10 | What everyone else does | 0:56 | 5:45 |
+| 11 | Research questions | 0:53 | 6:38 |
+| 12 | AGR: an explicit state machine | 1:08 | 7:46 |
+| 13 | Constrained tools | 0:37 | 8:23 |
+| 14 | The Structural Verification Layer | 0:32 | 8:55 |
+| 15 | What *structural* means — and what it does not | 0:58 | 9:53 |
+| 16 | One claim, three routes | 0:37 | 10:30 |
+| 17 | One question, end to end | 1:08 | 11:38 |
+| 18 | The environment and the question sets | 0:59 | 12:37 |
+| 19 | Making the comparison fair | 0:32 | 13:09 |
+| 20 | What is *not* held equal | 0:43 | 13:52 |
+| 21 | **Main results** | 1:10 | 15:02 |
+| 22 | **RQ1: accuracy against hop count** | 1:02 | 16:04 |
+| 23 | The caveat I want to raise myself | 1:05 | 17:09 |
+| 24 | RQ2: does anything ungrounded get asserted? | 1:03 | 18:12 |
+| 25 | RQ2: what verification does *not* do | 0:45 | 18:57 |
+| 26 | RQ2: so what does it do? | 0:41 | 19:38 |
+| 27 | **RQ3: what each component earns** | 0:22 | 20:00 |
+| 28 | **RQ3: one effect, and its sign is backwards** | 0:48 | 20:48 |
+| 29 | Every failure, read and labelled | 0:24 | 21:12 |
+| 30 | The echo attractor | 1:12 | 22:24 |
+| 31 | Contributions, and what I would not claim | 1:29 | 23:53 |
+| 32 | Thank you | 0:05 | 23:58 |
 
-The three **bold** slides are the ones the committee will actually
-interrogate. If you are running long, take time from 4, 7, and 9 — never from
-12, 14, 15, 18 or 19. That is the same list the recovery notes protect, and 15
-is on it for a different reason: skipping it hands the clipping issue to them.
+The four **bold** slides are the ones the committee will actually
+interrogate. If you are running long, take time from 9, 13, and 16 —
+never from 21, 22, 23, 27 or 28. That is the same list the recovery notes
+protect, and 23 is on it for a different reason: skipping it hands the
+clipping issue to them.
 
 ---
 
@@ -76,41 +89,87 @@ is on it for a different reason: skipping it hands the clipping issue to them.
 
 ---
 
-## 2 — The problem *(0:42)*
+## 2 — The problem *(0:32)*
 
-> Language models answer factual questions fluently. The difficulty is that they
-> answer just as fluently when they do not hold the fact.
->
-> That isn't a rhetorical claim — it's measured here. In my own no-retrieval
-> control on WebQSP, the model asserted 661 entities. 179 of them do not exist
-> anywhere in the knowledge graph. That's 27.1 percent, and every one was stated
-> without a hedge.
+> Language models answer factual questions fluently — and just as fluently when
+> they do not hold the fact. Fluency and factuality come out of the same
+> mechanism, so nothing in the wording separates them. A system that is
+> confidently wrong is worse than one that says it does not know.
+
+---
+
+## 3 — How often? Our own control *(0:25)*
+
+> That isn't rhetorical — it's measured here. In my own no-retrieval control on
+> WebQSP, the model asserted 661 entities. 179 of them do not exist anywhere in
+> the knowledge graph. That's 27.1 percent, every one stated without a hedge.
 
 **Beat after "27.1 percent."** It is the number that sets up the whole talk,
 and the next slide opens on the question it raises.
 
 ---
 
-## 3 — Why the model does this *(0:55)*
+## 4 — What a hallucination is *(0:38)*
 
-> So why does this happen at all?
+> First, the word. A hallucination is fluent, well formed, and backed by no
+> source the model can point to.
 >
-> The part of the definition that matters is that this isn't a bug that escaped
-> testing. It comes out of how these models are built, so the response has to be
-> architectural.
+> Two kinds. One contradicts the world — catchable only if you already hold a
+> reference. The other may be true, but nothing retrieved supports it. Only the
+> second is checkable without an oracle, and that is the one I claim.
+
+*The last sentence is a scope limit, not modesty. Say it at normal pace.*
+
+---
+
+## 5 — Where it comes from *(0:31)*
+
+> Why does it happen? Not a bug that escaped testing — it comes out of how these
+> models are built, so the response has to be architectural.
 >
 > Three origins. The training data. The model itself, where knowledge sits spread
-> across the weights with no index, so nothing separates a memorised fact from a
-> plausible continuation. And the prompt.
->
-> Only the third is ours; the other two need retraining. That is where this
-> thesis lives.
+> across the weights with no index. And the prompt.
 
 *Name the three, don't read them. The slide carries the wording.*
 
 ---
 
-## 4 — Where existing approaches stop *(0:41)*
+## 6 — Which of the three can we act on? *(0:32)*
+
+> Only the third; the other two need retraining. So this is a systems problem:
+> control what goes in, and check what comes back out against it.
+>
+> Multi-hop compounds it. A wrong first step is never revisited, so the chain
+> proceeds from a false premise. That is where this thesis lives.
+
+---
+
+## 7 — What a knowledge graph is *(0:37)*
+
+> Two things about the graph, because they shape everything after.
+>
+> Facts are stored as triples — head, relation, tail. Ada Lovelace, place of
+> birth, London. A question needing two of those chained is multi-hop. The point
+> of a graph is that every fact has an address, so a claim can be checked by
+> looking for an edge.
+
+---
+
+## 8 — The complication: mediator nodes *(0:34)*
+
+> Freebase stores any fact with more than two participants as a node rather than
+> an edge. "Rainn Wilson played Dwight in The Office" is one node joining three
+> things. Nearly two thirds of this graph's nodes are that kind, and they carry
+> no name.
+>
+> So nothing here is called "plays". Hold onto that.
+
+*The last line is a setup. The worked example pays it off, and so does the
+verification layer's honest limit.*
+
+---
+
+## 9 — Where existing approaches stop *(0:41)*
 
 > Four families, and each stops somewhere specific — the table walks left to
 > right. The first three stop before reasoning begins, or at a radius fixed in
@@ -124,7 +183,25 @@ and the next slide opens on the question it raises.
 
 ---
 
-## 5 — Research questions *(0:53)*
+## 10 — What everyone else does *(0:56)*
+
+> Five systems, and the column that matters is the last one.
+>
+> They differ in how they explore — a fixed radius, generated paths, beam
+> search, adaptive planning. Some decompose the question, two can backtrack.
+> None checks what its own answer asserts against what it retrieved, before
+> answering. That empty column is where this thesis sits.
+>
+> One caution. Their published accuracies are higher than anything I am about
+> to show, and they are not comparable: different backbones, different subsets,
+> and full Freebase rather than the environment I built.
+
+*If a committee member knows these papers, this is where they will ask about
+the numbers. The environment slide answers it.*
+
+---
+
+## 11 — Research questions *(0:53)*
 
 > Three questions.
 >
@@ -142,22 +219,20 @@ and the next slide opens on the question it raises.
 
 ---
 
-## 6 — AGR: an explicit state machine *(1:21)*
+## 12 — AGR: an explicit state machine *(1:08)*
 
 > AGR is an explicit state machine — not a prompt loop. Six nodes.
 >
 > The planner decomposes the question into ordered sub-objectives. The explorer
 > scores candidate edges and expands the frontier. The evaluator decides whether
 > the sub-objective has been met. The backtracker undoes a bad expansion and
-> bans the edge that caused it, so it can't re-take the same wrong turn. The
-> verifier is the contribution; more on it shortly. The answerer emits only
-> what survived.
+> bans the edge that caused it. The verifier is the contribution. The answerer
+> emits only what survived.
 >
-> There are three cycles — the three arrows going back to the Explorer:
-> continue, backtrack, retry. All three are bounded by explicit budgets rather
-> than by model behaviour. That gives a termination guarantee that doesn't
-> depend on the model cooperating: every cycle passes through a router that
-> checks a monotone counter.
+> Three cycles — the three arrows returning to the explorer — and all three are
+> bounded by explicit budgets rather than by model behaviour. Every cycle passes
+> through a router checking a monotone counter, so termination does not depend
+> on the model cooperating.
 
 **Do not say "exactly two cycles."** The diagram has three arrows returning to
 the Explorer and the audience is looking at it while you speak. The thesis
@@ -169,7 +244,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 7 — Constrained tools *(0:37)*
+## 13 — Constrained tools *(0:37)*
 
 > The agent never writes a graph query. It gets four operations with fixed
 > signatures — relations, neighbours, an adjacency check, and entity
@@ -181,36 +256,36 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 8 — The Structural Verification Layer *(2:06)*
+## 14 — The Structural Verification Layer *(0:32)*
 
 > This is the contribution.
 >
-> Before anything is emitted, the draft answer is split into atomic claims. Each
-> claim is checked against the triples the agent actually traversed. Claims that
-> can't be grounded trigger targeted re-exploration, or are dropped. A claim the
-> traversal itself grounds keeps those triples and carries them back with the
-> answer, so the system hedges rather than asserts.
->
-> Four things I want to be precise about. First, why *structural* — the check is
-> against the graph the agent walked, not the model's opinion of its own output.
-> A model grading itself is not an independent check.
->
-> Second, *structural* is a bound, not a boast. The first two routes test
-> adjacency, not the relation — any edge between the endpoints passes, either
-> direction, so a mother claim survives on a child edge. Only route three reads
-> what the claim says.
->
-> Third, "its evidence" is narrower than it sounds — one route of three records
-> it, and the log keeps the count, not the triples. Slide 17 has both bounds.
->
-> Fourth, a claim can be true and still be the wrong answer. Structural grounding
-> cannot catch that, and I'll show you exactly that failure shortly.
-
-**The last sentence is a promise. Slide 20 pays it off.**
+> Before anything is emitted, the draft is split into atomic claims, each checked
+> against the triples the agent actually traversed. What cannot be grounded is
+> re-explored or dropped; what is grounded carries its triples back with the
+> answer. So the system hedges rather than asserts.
 
 ---
 
-## 9 — One claim, three routes *(0:37)*
+## 15 — What *structural* means — and what it does not *(0:58)*
+
+> Now the bound.
+>
+> *Structural* means the check is against the graph the agent walked, not the
+> model's opinion of its own output. It does not mean the check reads the
+> relation: the first two routes test adjacency, either direction, so a mother
+> claim survives on a child edge — the mediator problem from slide 8, arriving as
+> a limitation.
+>
+> "Its evidence" is narrower too — one route of three, inside the run only.
+> Slide 25 has both bounds. And a claim can be true and still be the wrong
+> answer.
+
+**The last sentence is a promise. Slide 30 pays it off.**
+
+---
+
+## 16 — One claim, three routes *(0:37)*
 
 > This is the path a single claim takes. Three routes to being called supported,
 > and the ordering is about cost: only the third spends a model call. The first
@@ -221,38 +296,60 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 10 — The environment and the question sets *(1:05)*
+## 17 — One question, end to end *(1:08)*
 
-> The environment is a Freebase-derived graph: 2.6 million entities, 8.3 million
-> triples, seven thousand distinct relations. It imports in 36 seconds, which
-> matters only because it means the whole thing is reproducible on one machine.
+> One real question, all the way through — a run out of the committed records.
 >
-> Questions: 400 each from WebQSP and ComplexWebQuestions. The important column
-> is reachability — for every question I verified whether the gold answer is
-> actually reachable in this graph. 97 percent on WebQSP, 99.2 on CWQ.
+> "Who plays Dwight in The Office." The planner splits it in two and resolves
+> The Office to a node. The explorer scores the available relations and takes
+> the regular-cast one; the evaluator resolves Dwight Schrute. Second hop: the
+> character relation, and the evaluator resolves Rainn Wilson and answers. The
+> verifier splits the draft into two claims, both supported.
 >
-> That number is the *ceiling* on every accuracy figure I'm about to show. It
-> means when a system misses, the miss belongs to the system and not to the
-> environment.
+> Six model calls, depth two, eighteen supporting triples.
+>
+> And look at that second relation: the path runs *through* a mediator, which is
+> why it is named for the appearance rather than for "plays".
+
+*If you are behind, cut everything after "decides to answer."*
 
 ---
 
-## 11 — Making the comparison fair *(1:12)*
+## 18 — The environment and the question sets *(0:59)*
 
-> Five systems: a parametric control, vector RAG, static GraphRAG,
-> Think-on-Graph as the agentic comparison, and AGR.
+> The environment is a Freebase-derived graph: 2.6 million entities, 8.3
+> million triples, seven thousand distinct relations, importing in 36 seconds.
+>
+> Questions: 400 each from WebQSP and ComplexWebQuestions. The important column
+> is reachability — for every question I verified the gold answer is actually
+> reachable here. 97 percent on WebQSP, 99.2 on CWQ.
+>
+> That is the *ceiling* on every accuracy figure I'm about to show. It is also
+> the answer to the caution two slides back: an environment this reachable is
+> not full Freebase, so these numbers are not comparable with published ones.
+
+---
+
+## 19 — Making the comparison fair *(0:32)*
+
+> Five systems, on the slide: a parametric control, three retrieval baselines,
+> and AGR.
 >
 > All five run on one frozen backbone, at temperature zero, under the same
-> 25-call budget, on the same questions, against the same graph.
+> 25-call budget, on the same questions, against the same graph. That is what
+> lets me attribute differences to architecture rather than to model capacity.
+
+---
+
+## 20 — What is *not* held equal *(0:43)*
+
+> One thing is not equal, and I would rather say it than have it found.
+> Think-on-Graph prunes from a narrower candidate set than AGR. That cuts against
+> it, not for it — a thinner set is cheaper — so it cannot explain the clipping,
+> but it does make its score a lower bound.
 >
-> That's what lets me attribute differences to architecture rather than to model
-> capacity or to spend. One thing is *not* equal, and the slide says so:
-> Think-on-Graph prunes from a narrower candidate set. That cuts against it, not
-> for it — a thinner set is cheaper.
->
-> These benchmarks predate current models and may be partly memorised. Without a
-> no-retrieval control I couldn't separate what retrieval contributes from what
-> the model already knew.
+> And the parametric control is there because these benchmarks may be partly
+> memorised.
 
 **Say the width line, don't skip it.** The slide claimed a retrieval-budget
 control it does not have; the Think-on-Graph baseline section names the widths
@@ -263,24 +360,22 @@ recite 40/20/300/200 here.
 
 ---
 
-## 12 — Main results *(1:19)* ★
+## 21 — Main results *(1:10)* ★
 
 > Here is the comparison.
 >
-> AGR reaches 0.755 Hits@1 and 0.642 F1 on WebQSP, and 0.522 and 0.469 on
-> ComplexWebQuestions. That's ahead of every baseline on both datasets.
+> AGR reaches 0.755 Hits@1 and 0.642 F1 on WebQSP, 0.522 and 0.469 on
+> ComplexWebQuestions — ahead of every baseline on both.
 >
-> Two things I'd draw your attention to beyond the top line.
+> Two things beyond the top line. First, vector RAG on ComplexWebQuestions:
+> 0.203, *below* the no-retrieval control at 0.307. One verbalised triple cannot
+> contain a chain, so single-shot retrieval is worse there than not retrieving
+> at all. GraphRAG sits beside it at 0.205, but its one-hop radius confounds the
+> paradigm, so the claim rests on vector RAG.
 >
-> First, vector RAG on ComplexWebQuestions — 0.203, *below* the no-retrieval
-> control at 0.307. One verbalised triple cannot contain a chain, so single-shot
-> retrieval is worse there than not retrieving at all. GraphRAG is beside it at
-> 0.205, but its one-hop radius confounds the paradigm, so the claim rests on
-> vector RAG.
->
-> Second, the cost columns. AGR spends 4,511 tokens and 6.2 calls against
-> Think-on-Graph's 3,615 and 12.8. More tokens, but half the calls. I'll come
-> back to why calls are the number that matters.
+> Second, the cost columns: 4,511 tokens and 6.2 calls against Think-on-Graph's
+> 3,615 and 12.8. More tokens, half the calls — and calls are what the budget
+> meters.
 
 **Slow down here. This is the slide they read while you talk.**
 
@@ -292,174 +387,117 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 13 — Accuracy against cost *(0:58)*
+## 22 — RQ1: accuracy against hop count *(1:02)* ★
 
-> Plotted, the frontier depends on which cost you charge, and the two costs I
-> record disagree.
+> The direct answer to RQ1, and it is a shape rather than a difference of means.
 >
-> On tokens — the axis here — Think-on-Graph is *not* dominated. It buys lower
-> accuracy at a genuinely lower token price, and any honest reading has to say
-> so. The interior point on WebQSP is static GraphRAG, which the parametric
-> control beats on both axes at once.
+> ComplexWebQuestions, on the right. AGR goes 0.46, 0.55, 0.57 as questions get
+> harder — one hop, two, three or more. It is the only system on that dataset
+> that ends above where it started. Three of the other four decay monotonically;
+> Think-on-Graph falls and partially recovers, still 0.08 below its own one-hop
+> score.
 >
-> On calls, which is what the budget actually meters, Think-on-Graph is dominated
-> on both datasets.
->
-> I'm showing both because stating it on one axis alone would overclaim.
-
----
-
-## 14 — RQ1: accuracy against hop count *(1:15)* ★
-
-> This is the direct answer to RQ1, and it's a shape rather than a difference of
-> means.
->
-> Look at ComplexWebQuestions on the right. AGR goes 0.46, 0.55, 0.57 as
-> questions get harder — one hop, two hops, three or more. It is the only system
-> on that dataset that ends above where it started.
->
-> Three of the other four decay monotonically. Think-on-Graph is the exception to
-> the monotonicity but not to the direction — it falls and partially recovers,
-> still 0.08 below its own one-hop score.
->
-> I want to be careful about the left panel. On WebQSP the three-or-more stratum
-> has n equals 4. I don't draw a conclusion from four questions, and the thesis
-> doesn't either.
+> One caution about the left panel: on WebQSP the three-or-more stratum is n
+> equals 4. I draw no conclusion from four questions, and neither does the
+> thesis.
 
 **Volunteering the n=4 weakness pre-empts the obvious attack.**
 
 ---
 
-## 15 — The caveat I want to raise myself *(1:17)*
+## 23 — The caveat I want to raise myself *(1:05)*
 
 > I want to raise this before you do.
 >
-> If you split the questions by whether Think-on-Graph finished inside the shared
-> 25-call cap, then on the questions it *finishes*, Think-on-Graph is ahead of
-> AGR. 0.852 against 0.788 on WebQSP. 0.629 against 0.607 on CWQ.
+> Split the questions by whether Think-on-Graph finished inside the shared
+> 25-call cap. On the ones it *finishes*, it is ahead of AGR — 0.852 against
+> 0.788 on WebQSP, 0.629 against 0.607 on CWQ.
 >
-> The entire aggregate margin comes from the questions it cannot finish — where
-> it drops to 0.197 and 0.188, because it is cut off mid-search. It gets clipped
-> on 29 percent of WebQSP and 44 percent of CWQ.
+> The entire aggregate margin comes from the questions it cannot finish, where
+> it drops to 0.197 and 0.188. It gets clipped on 29 percent of WebQSP and 44
+> percent of CWQ.
 >
-> So the honest claim is not that AGR reasons better per step. It's that AGR
-> completes its reasoning inside a fixed budget, and Think-on-Graph frequently
-> does not. That's an efficiency claim, and it's the one I'm making.
+> So the honest claim is not that AGR reasons better per step. It is that AGR
+> completes its reasoning inside a fixed budget and Think-on-Graph frequently
+> does not.
 
 **Deliver this as a strength. It is the most defensible slide in the deck.**
 
 ---
 
-## 16 — RQ2: does anything ungrounded get asserted? *(1:10)*
+## 24 — RQ2: does anything ungrounded get asserted? *(1:03)*
 
 > RQ2. Does anything ungrounded get asserted?
 >
-> Pooling both datasets: AGR asserts 1,709 entities and zero of them are absent
-> from the graph. The parametric control asserts 1,001 and 22.1 percent of them
-> don't exist.
+> Pooling both datasets: AGR asserts 1,709 entities and zero are absent from the
+> graph. The parametric control asserts 1,001 and 22.1 percent don't exist.
 >
-> That looks like a headline result for the verification layer. It isn't — and
-> this is the finding I think matters most.
+> That looks like a headline result for the verification layer. It isn't, and
+> this is the finding I think matters most: Think-on-Graph also reaches 0.0
+> percent, and it has no verification layer at all.
 >
-> Think-on-Graph also reaches 0.0 percent. It has no verification layer at all.
->
-> So zero ungrounded assertion is a property of *navigating a graph* — if you can
-> only name entities you actually visited, you can't invent one. It is not a
-> property of my verification layer, and I don't claim it as one.
+> So zero ungrounded assertion is a property of *navigating a graph* — you can
+> only name what you visited. It is not a property of my layer, and I don't
+> claim it as one.
 
 ---
 
-## 17 — RQ2: so what does verification actually contribute? *(1:51)*
+## 25 — RQ2: what verification does *not* do *(0:45)*
 
-> Which leaves the real question.
->
-> What it does not do: removing it changes accuracy by an amount I cannot detect.
-> p equals 1.0 on both datasets. It does not earn its place on Hits@1 or F1, and
+> Which leaves the real question. The negative half first: removing the layer
+> changes accuracy by an amount I cannot detect — p equals 1.0 on both datasets.
 > I report that as a negative result.
 >
-> What it does do: it withholds what it cannot ground. Removing the layer drops
-> the hedge rate 23.2 to 20.2 percent on CWQ, 8.5 to 8.0 on WebQSP — direction
-> only; I have not tested that column. It attaches supporting triples to the
-> claims traversal grounds, and pairs the answer with that evidence at emission.
->
-> The layer's case rests on auditability, not accuracy — and I'll be as plain
-> about how far that goes. Two bounds, both on the slide. One route of three
-> records evidence; `verify_connection` and entailment accept with nothing
-> attached. And the logger writes the *count* of supporting triples and drops the
-> list. You can confirm these answers came from a system that tracked its
+> And the record does not survive the run: the logger writes the count of
+> supporting triples and drops the list. You can confirm the system tracked its
 > evidence; you cannot open the record and inspect it.
 
 ---
 
-## 18 — RQ3: what each component earns *(1:02)* ★
+## 26 — RQ2: so what does it do? *(0:41)*
 
-> RQ3, and this is a four-condition ablation with paired McNemar tests against
-> the full system on stratified halves.
+> What it does do is withhold what it cannot ground. Removing the layer drops the
+> CWQ hedge rate from 23.2 to 20.2 percent — direction only, six questions. A
+> hedge is a calibrated non-assertion, not a refusal.
 >
-> Read the p-value columns. Backtracking: 0.727 and 1.0. Verification: 1.0 and
-> 1.0. Learned scoring versus embedding-only: 0.664 and 0.481. For three of the
-> four components I detect no accuracy effect at this sample size.
->
-> I want to be careful with that phrasing — that is "no detectable effect at
-> n equals 200," not "confirmed no effect." These are underpowered for small
-> differences and I say so.
->
-> One row is different. Removing the planner, on WebQSP, p equals 0.006.
-
-**Pause on the 0.006. Then turn the slide.**
+> It attaches supporting triples, from one route of three, and pairs the answer
+> with its evidence inside the run. So the case rests on auditability, not
+> accuracy.
 
 ---
 
-## 19 — The result I did not expect *(1:15)*
+## 27 — RQ3: what each component earns *(0:22)* ★
 
-> Removing the planner *improves* WebQSP. Plus 0.083 F1, at p equals 0.006, while
-> cutting tokens 31 percent and calls from 6.2 to 4.0. Better, cheaper, and
-> faster, by deleting a component I built.
+> RQ3: which components earn their cost.
 >
-> On ComplexWebQuestions it trends the other way — minus 0.047 F1 at p equals
-> 0.088. Not significant, but the opposite sign, and that's the useful part.
->
-> The explanation is that WebQSP is predominantly one hop. Decomposing a one-hop
-> question invents a second sub-objective that sends the frontier away from the
-> answer it already had.
->
-> So the conclusion is that decomposition should be gated on question structure
-> rather than applied unconditionally. That's a design conclusion the measurement
-> forced on me, not one it confirmed.
-
-**Own this. A negative result you can explain is stronger than a positive one
-you can't.**
+> Four ablations, paired McNemar against the full system. Three of the four
+> change nothing I can detect — backtracking, the verifier, and the learned half
+> of the scorer.
 
 ---
 
-## 20 — Every failure, read: the echo attractor *(1:41)*
+## 28 — RQ3: one effect, and its sign is backwards *(0:48)* ★
 
-> I read all 259 remaining failures and labelled them. Top categories, pooled.
+> The one that does is the planner, and the sign is backwards. Removing it
+> *improves* WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31 percent.
+> On ComplexWebQuestions it trends the other way.
 >
-> The one I want to name is sixth, with 13 cases.
->
-> The characteristic error of a graph navigator is not invention. It's what I
-> call the **echo attractor** — the system returns a real, grounded entity that
-> sits one hop from the correct answer. Ask for a director and get the film. Ask
-> for a capital and get the country.
->
-> Here's why it matters, and this is the promise I made on slide seven: any
-> grounding check *passes* it. The entity is real, it was traversed, the triple
-> exists. It is true and it is wrong. Verification cannot catch this by
-> construction.
->
-> Different systems fall into it together, so no evaluation treating them as
-> independent can see it. Rescore whenever a majority agree — a natural thing
-> to want — and this becomes apparent correctness. That is the contribution:
-> the mechanism, not the count.
+> The explanation is hop count: WebQSP is mostly one-hop, and decomposing a
+> one-hop question sends the frontier away from the answer. So decomposition
+> should be gated on question structure — a conclusion the measurement forced,
+> not one it confirmed.
 
-**Do not say "it appears across systems, so it is a property of the task rather
-than of AGR."** That is defensive where the thesis is substantive, and nothing
-on the slide blames AGR for it. The claim is about evaluation: sec:echo calls
-the attractor "invisible to any evaluation treating systems as independent",
-and section 1.6 says the contribution is the mechanism "and what it means for
-consensus-based evaluation, not the frequency". Slide 21 is the same finding
-seen from the other side.
+**Do not compress this one.** It is the only place a component's cost is priced.
+
+---
+
+## 29 — Every failure, read and labelled *(0:24)*
+
+> I read all 259 remaining failures and labelled them by hand. Top categories,
+> pooled across both datasets.
+>
+> The largest is relation selection — the agent taking the wrong edge, not
+> inventing one. That shape is the finding.
 
 **The table is pooled, and the slide says so.** Wrong and hedge are never
 pooled in the thesis — sec:taxonomy: "a pooled percentage would describe
@@ -472,51 +510,57 @@ are corrected with.
 
 ---
 
-## 21 — The benchmark was wrong 57 times *(0:50)*
+## 30 — The echo attractor *(1:12)*
 
-> Same pass, same cross-system agreement: consensus flagged 105 questions,
-> adjudication confirmed 41 — and the gap is the attractor I just described, not
-> label noise.
+> The one to name is sixth, with 13 cases: the **echo attractor** — a real,
+> grounded entity one hop from the correct answer. Ask for a director and get the
+> film; ask for a capital and get the country.
 >
-> Those 41 were excluded before the census. 17 more turned up inside it, one is
-> in both, so 57 distinct questions where the benchmark was wrong, not the
-> system.
+> Why it matters, and it is the promise I made on slide 15: any grounding check
+> *passes* it. It is real, it was traversed, the triple exists — true, and wrong.
 >
-> Published defect rates for these benchmarks are rare and usually anecdotal.
-> This is a counted rate with a documented adjudication procedure and
-> per-question provenance.
+> Different systems fall into it together, so no evaluation treating them as
+> independent can see it. Rescore whenever a majority agrees — a natural thing
+> to want — and this becomes apparent correctness. That is the contribution:
+> the mechanism, not the count.
+
+**Do not say "it appears across systems, so it is a property of the task rather
+than of AGR."** That is defensive where the thesis is substantive, and nothing
+on the slide blames AGR for it. The claim is about evaluation: sec:echo calls
+the attractor "invisible to any evaluation treating systems as independent",
+and section 1.6 says the contribution is the mechanism "and what it means for
+consensus-based evaluation, not the frequency". Backup page 7 is the same finding
+seen from the other side.
 
 ---
 
-## 22 — Contributions, and what I would not claim *(1:45)*
+## 31 — Contributions, and what I would not claim *(1:29)*
 
-> To summarise. Six contributions, and they are the six the thesis claims in
-> section 1.6. The one I would underline is stratum-dependent decomposition: the
-> literature treats decomposition as straightforwardly beneficial, and it is not.
+> To summarise. Six contributions, the six the thesis claims in section 1.6.
+> The one I'd underline is stratum-dependent decomposition: the literature
+> treats it as straightforwardly beneficial, and it is not.
 >
 > The sixth is worded *pre-registered* in the thesis; nothing was filed with a
 > registry, so I say *pre-specified*.
 >
-> And the limitations, which I'd rather state than be asked.
+> The limitations, which I'd rather state than be asked. The first is the most
+> serious: the verifier persists only what it *rejects*, so wrongful acceptance
+> has no rate at all — and the same decision is why the output contract cannot
+> be audited from the record.
 >
-> The first is the most serious. The verifier persists only what it *rejects*, so
-> wrongful acceptance has no rate at all — and the same decision is why the
-> output contract cannot be audited from the record.
->
-> Then: no detectable accuracy gain from verification, and at n around 200 that
-> is "not detected", not "none". Zero ungrounded assertion comes from navigation,
-> not my layer. One environment, one backbone, one annotator. And
-> Think-on-Graph leads where it finishes, and prunes from a narrower candidate
-> set — 40 and 20 against my 300 and 200 — so its unclipped subset
-> understates it.
+> Then: no detectable accuracy gain, and at n around 200 that is "not detected",
+> not "none". Zero ungrounded assertion comes from navigation, not my layer. One
+> environment, one backbone, one annotator. And Think-on-Graph leads where it
+> finishes, from a narrower candidate set.
 
 ---
 
-## 23 — Thank you *(0:05)*
+## 32 — Thank you *(0:05)*
 
 > Thank you. I'm happy to take questions.
 
 ---
+
 
 ## Backup slides — `pre-defense-0421052099-backup.pdf`
 
@@ -533,6 +577,8 @@ rather than the census.
 | 3 | Which budgets actually bind | "Is the 25-call cap fair to Think-on-Graph?" |
 | 4 | Full 12-category failure histogram | "What were the other failure modes?" |
 | 5 | Hedging rates, all five systems | "Doesn't it just refuse more often?" |
+| 6 | Accuracy against cost, both metrics | "Is it cheaper, or just better?" |
+| 7 | The benchmark was wrong 57 times | "How good is the gold?" |
 
 **Page 3 is the important one.** It shows AGR never reaches the call cap —
 0.0 percent on both datasets — which is precisely what makes the comparison
@@ -549,7 +595,7 @@ It's the cap Think-on-Graph's own paper operates under. And AGR never reaches it
 not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
 
-**"Do the categories look the same on both datasets?"** *(Slide 20 is pooled.)*
+**"Do the categories look the same on both datasets?"** *(Slide 29 is pooled.)*
 No, and that is the more interesting answer. The census is reported split in the
 thesis and never pooled, because wrong and hedge describe different failure
 semantics and the proportions differ sharply by dataset. The clearest case is
@@ -558,7 +604,7 @@ not compound, so the category barely exists there; on ComplexWebQuestions it is
 the largest single failure mode. A pooled percentage would describe neither
 dataset. The full split is backup page 4.
 
-**"Doesn't GraphRAG show the same thing?"** *(Slide 12 puts 0.203 and 0.205
+**"Doesn't GraphRAG show the same thing?"** *(Slide 21 puts 0.203 and 0.205
 side by side. Do not pool them.)*
 No, and the thesis says so rather than letting the two numbers be read together.
 GraphRAG retrieves a one-logical-hop neighbourhood, so its fall on CWQ confounds
@@ -574,7 +620,7 @@ carries the paradigm claim, because one verbalised triple cannot contain a chain
 at any radius.
 
 **"Did both systems see the same candidate sets?"** *(The sharper form of the
-cap question. Slide 11 raises it deliberately — answer it, don't deflect.)*
+cap question. Slide 20 raises it deliberately — answer it, don't deflect.)*
 No, and it is the one thing I do not hold constant. Think-on-Graph keeps 40
 relations per entity and 20 neighbours per relation — the pruning widths of the
 algorithm as published — where AGR keeps 300 and 200. Measured over the
@@ -618,7 +664,7 @@ explicit hedge, and it pairs the answer with the triples that ground it at the
 point of emission. I report the null on accuracy rather than hiding it — and I
 report the bounds on the auditability too, which is the next question.
 
-**"Show me one supporting triple, then."** *(Expect this. Slide 16 invites it.)*
+**"Show me one supporting triple, then."** *(Expect this. Slide 24 invites it.)*
 I can't, from the committed record, and that is a limitation rather than an
 evasion. `RunLogger` writes `n_supporting_triples` — an integer — and discards
 the list, so no committed artifact in this work contains a single supporting
@@ -631,9 +677,9 @@ first item in my future work. I did not make it late because it would separate
 the code from results already frozen against it.
 
 **"Why isn't the five-system comparison one of your contributions?"**
-Because the thesis does not count it as one, and slide 22 is the thesis's list —
+Because the thesis does not count it as one, and slide 31 is the thesis's list —
 section 1.6, one subsection per item. The comparison and the hop-count shape are
-results the contributions rest on; they get slides 11 and 13, which is where the
+results the contributions rest on; they get slides 21 and 22, which is where the
 weight belongs. An earlier version of that slide promoted both to contributions
 and dropped the ablation, the decomposition finding and the protocol to make room
 — still saying "six". The thesis had already been audited for exactly that
@@ -717,26 +763,28 @@ pulled directly from the thesis's own generated sources.
 
 ## Recovery notes
 
-If you hit **11:47 (slide 13) more than 40 seconds late**, compress as follows.
+If you hit **15:02 (the end of slide 21) more than 40 seconds late**, compress
+as follows.
 
-- Slide 17 — cut to: *"It doesn't improve accuracy. It converts silent error
-  into an explicit hedge and attaches evidence. The case is auditability."*
-  Saves ~35 s.
-- Slide 21 — cut to: *"Reading every failure also found 57 questions where the
-  benchmark was wrong, with documented provenance."* Saves ~25 s.
-- Slide 3 — name the three origins and stop; skip the model sentence.
-  Saves ~20 s. Slide 4 has already been compressed this way and cannot give
+- Slides 25 and 26 — take them as one: *"It doesn't improve accuracy. It
+  converts silent error into an explicit hedge and attaches evidence. The case
+  is auditability."* Saves ~50 s.
+- Slide 5 — name the three origins and stop; skip the model sentence.
+  Saves ~15 s. Slide 9 has already been compressed this way and cannot give
   again.
+- Slide 4 — the two kinds are on the slide; say the last sentence only.
+  Saves ~20 s. This is the one addition of this round that the talk can lose
+  without losing a claim.
 
-Never compress 12, 14, 15, 18, or 19. Slide 15 in particular: skipping it means
-a committee member raises the clipping issue instead of you, and it lands very
-differently that way.
+Never compress 21, 22, 23, 27, or 28. Slide 23 in particular: skipping it
+means a committee member raises the clipping issue instead of you, and it
+lands very differently that way.
 
 ## Delivery
 
 - **Say the number, then what it means.** Not the reverse. "Twenty-seven percent
   of asserted entities don't exist — the model is confidently inventing."
-- **Three slides are negative results** (16, 17, 18). Deliver them at normal
+- **Four slides are negative results** (22, 23, 24, 25). Deliver them at normal
   pace, not apologetically. A student who reports a clean null is more credible
   than one who reports only wins.
 - The word is **hedge**, not "refuse." A hedge is a calibrated non-assertion.

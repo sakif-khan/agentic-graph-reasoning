@@ -67,3 +67,45 @@
   {\small A hedge is a refusal to assert, not a wrong answer. AGR hedges least
   on WebQSP while also being most accurate there.}
 \end{frame}
+
+\begin{frame}{Backup: accuracy against cost}
+  \centering
+  \input{figures/fig_accuracy_cost.tex}
+
+  \vspace{1mm}
+  {\small On \emph{tokens} Think-on-Graph is \textbf{not} dominated --- it buys
+  lower accuracy at a lower token price. On \emph{calls}, which the budget
+  meters, it is.}
+  \takeaway{The frontier depends on which cost you charge.}
+\end{frame}
+
+\begin{frame}{Backup: the benchmark was wrong $57$ times}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \small
+      % "Reading every failure also found..." presented this as a second,
+      % unrelated finding. sec:benchmark-defects makes them one: "The gap
+      % between those figures is not measurement noise --- it is the echo
+      % attractor of sec:echo, operating across systems." 105 is 58 + 47
+      % flagged, 41 is 22 + 19 adjudicated; both are in gold_adjudication.
+      The same cross-system agreement is also a \alert{\mbox{detector}}:
+      consensus flagged $105$ questions, adjudication confirmed $41$, and the
+      gap is the attractor above rather than label noise.
+      \begin{itemize}
+        \item $41$ excluded before the census
+        \item $17$ found inside the census
+        \item $1$ counted in both
+        \item[$\Rightarrow$] \textbf{$57$ distinct questions}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Why report it}
+        \small
+        Reported defect rates for these two standard benchmarks are rare and
+        usually anecdotal. This is a counted rate with a documented
+        adjudication procedure and per-question provenance.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{A contribution that outlives this particular system.}
+\end{frame}

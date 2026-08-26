@@ -8,15 +8,41 @@
   \titlepage
 \end{frame}}
 
-% ===================== 1 =====================
+% ===================== 2 =====================
 \begin{frame}{The problem}
   \begin{columns}[T]
     \begin{column}{0.54\textwidth}
-      Language models answer factual questions \alert{fluently}, and just as
-      fluently when they do not hold the fact.
+      Language models answer factual questions \alert{fluently}.
 
+      \vspace{4mm}
+      They answer just as fluently when they \alert{do not hold the fact}.
+
+      \vspace{4mm}
+      Nothing in the wording separates the two.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{The gap}
+        Fluency and factuality are produced by the same mechanism, so the
+        output gives the reader no signal about which one they are getting.
+      \end{block}
       \vspace{3mm}
-      In our own no-retrieval control, on WebQSP:
+      A system that is confidently wrong is worse than one that says it
+      does not know.
+    \end{column}
+  \end{columns}
+  \takeaway{The failure is not visible in the answer.}
+\end{frame}
+
+% ===================== 3 =====================
+% The three headline figures moved here off the opening slide, which was
+% carrying the argument and the measurement at once. check_slides.py reads
+% all three out of thesis_numbers.json and no longer finds them on one
+% frame, so its lookup spans this pair -- see frames() there.
+\begin{frame}{How often? Our own control}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      No retrieval, same backbone, WebQSP:
+      \vspace{2mm}
       \begin{itemize}
         \item $661$ entities asserted
         \item $179$ of them \alert{do not exist} in the knowledge graph
@@ -24,54 +50,145 @@
       \end{itemize}
     \end{column}
     \begin{column}{0.44\textwidth}
-      \begin{block}{The gap}
-        \small
-        Fluency and factuality are produced by the same mechanism, so the
-        output gives the reader no signal about which one they are getting.
+      \begin{block}{Read that again}
+        More than one asserted entity in four names \alert{nothing at all}
+        --- and the sentence around it is indistinguishable from the ones
+        that are right.
       \end{block}
-      \vspace{2mm}
-      {\small A system that is confidently wrong is worse than one that
-      says it does not know.}
     \end{column}
   \end{columns}
-  \takeaway{The failure is not rare, and it is not visible in the answer.}
+  \takeaway{The failure is not rare either: $27.1\%$, measured here rather
+    than quoted.}
 \end{frame}
 
-% ===================== 2 =====================
-\begin{frame}{Why the model does this}
-  \small
-  A \alert{hallucination} is fluent, well formed, and backed by \alert{no
-  source the model can point to} --- not a bug that escaped testing, but a
-  consequence of how these models are built.
+% ===================== 4 =====================
+\begin{frame}{What a hallucination is}
+  Output that is fluent, well formed, and backed by \alert{no source the
+  model can point to}.
+  \vspace{3mm}
   \begin{columns}[T]
-    \begin{column}{0.63\textwidth}
-      \begin{block}{Three places it comes from}
-        \small
-        \begin{enumerate}\setlength{\itemsep}{0pt}
-          \item \alert{The training data} --- errors and thin coverage,
-            reproduced faithfully
-          \item \alert{The model} --- knowledge is spread across the weights
-            with no index, so nothing separates a memorised fact from a
-            plausible continuation
-          \item \alert{The prompt} --- what we put in the context window
-        \end{enumerate}
+    \begin{column}{0.47\textwidth}
+      \begin{block}{Factually wrong}
+        \agrraggedright
+        It contradicts the world. \emph{``Ada Lovelace was born in Paris.''}
+        Checkable --- if you already have a reference to check it against.
       \end{block}
     \end{column}
-    \begin{column}{0.34\textwidth}
-      \begin{block}{Which can we act on?}
-        \small
-        Only the third. The first two need a curated corpus or a retrained
-        model.
-
-        The third is a \alert{systems} problem --- and that is this thesis.
+    \begin{column}{0.47\textwidth}
+      \begin{block}{Unsupported}
+        \agrraggedright
+        It may even be true, but nothing the system retrieved says so.
+        Checkable \alert{without} an oracle: against what was retrieved.
       \end{block}
     \end{column}
   \end{columns}
-  \takeaway{Multi-hop compounds it: a wrong first hop rarely surfaces, so the
-    chain proceeds from a false premise.}
+  \vspace{2mm}
+  From the outside the two are identical: confident, well formed, no hedge.
+  \takeaway{A retrieval system can only police the second --- so that is the
+    one this thesis attacks, and the only one it claims.}
 \end{frame}
 
-% ===================== 3 =====================
+% ===================== 5 =====================
+\begin{frame}{Where it comes from}
+  Not a bug that escaped testing --- a consequence of how these models are
+  built, which is why the response has to be architectural.
+  \vspace{4mm}
+  \begin{columns}[T]
+    \begin{column}{0.31\textwidth}
+      \begin{block}{The training data}
+        Errors and thin coverage, reproduced faithfully.
+      \end{block}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \begin{block}{The model}
+        Knowledge is spread across the weights with \alert{no index}, so
+        nothing separates a memorised fact from a plausible continuation.
+      \end{block}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{block}{The prompt}
+        What we put in the context window --- and what we leave out of it.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{Generating text and recalling a fact are the same operation.}
+\end{frame}
+
+% ===================== 6 =====================
+\begin{frame}{Which of the three can we act on?}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Only the third}
+        The other two need a curated corpus or a retrained model, and
+        neither is available to most people deploying one of these systems.
+      \end{block}
+      \vspace{3mm}
+      Controlling what enters the context window --- and checking what
+      comes back out against it --- is a \alert{systems} problem.
+      That is this thesis.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{And multi-hop compounds it}
+        When an answer needs two facts chained, a wrong first step is
+        never revisited: the rest of the chain proceeds from a false
+        premise, just as fluently.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{Fix what goes in, then check what comes out against it --- before
+    anything is emitted.}
+\end{frame}
+
+% ===================== 7 =====================
+\begin{frame}{What a knowledge graph is}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      Facts are stored as \alert{triples} --- head, relation, tail:
+      \vspace{3mm}
+
+      \hspace{3mm}\textsf{(Ada Lovelace, place\_of\_birth, London)}
+      \vspace{3mm}
+
+      A question needing two of them \emph{chained} is \alert{multi-hop}.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{Why a graph at all}
+        Every fact has an address. A claim can then be checked by looking
+        for an edge --- rather than by asking the model whether it believes
+        itself.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{Each step depends on the last, so a wrong first hop is never
+    seen again.}
+\end{frame}
+
+% ===================== 8 =====================
+\begin{frame}{The complication: mediator nodes}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      Freebase stores any fact with more than two participants as a
+      \alert{node}, not an edge.
+      \vspace{3mm}
+
+      ``Rainn Wilson played Dwight in \textsf{The Office}'' is \alert{one
+      node} joining three things --- series, character, actor.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{What that costs}
+        $63.7\%$ of this graph's nodes are mediators, and they carry
+        \alert{no name}.
+        \smallskip
+
+        A path that reads as two hops is often three.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{Nothing in the graph is called \textsf{plays}: the relation a
+    question names is rarely the relation the graph stores.}
+\end{frame}
+
+% ===================== 9 =====================
 \begin{frame}{Where existing approaches stop}
   % Widths measured from the cells, not guessed. The last column cannot be
   % made single-line -- "Emits whatever the last generation call produces" is
@@ -100,7 +217,32 @@
     delivered.}
 \end{frame}
 
-% ===================== 4 =====================
+% ===================== 10 =====================
+\begin{frame}{What everyone else does}
+  \begin{table}
+    \small
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabular}{@{}lL{42mm}ccc@{}}
+      \toprule
+      \textbf{System} & \textbf{Exploration} & \textbf{Decomp.} &
+      \textbf{Backtrack} & \textbf{Verifies first} \\
+      \midrule
+      GraphRAG     & Fixed radius, no search  & No  & No  & No \\
+      RoG          & Generated relation paths & Partial & No & No \\
+      ToG          & LLM-guided beam search   & No  & No  & No \\
+      PoG          & Adaptive planning        & Yes & Yes & Partial \\
+      \textbf{AGR} & \textbf{Guided beam, backtracking} & \textbf{Yes}
+                   & \textbf{Yes} & \alert{\textbf{Yes}} \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small Their published Hits@1 runs higher than anything here and is
+  \emph{not} comparable: other backbones, other subsets, full Freebase.}
+  \takeaway{No prior system checks its \emph{answer's} claims against what it
+    retrieved, before answering.}
+\end{frame}
+
+% ===================== 11 =====================
 \begin{frame}{Research questions}
   \begin{enumerate}
     \item[\textbf{RQ1}] Does agentic navigation improve multi-hop factual
@@ -118,7 +260,7 @@
     would hide them.}
 \end{frame}
 
-% ===================== 5 =====================
+% ===================== 12 =====================
 \begin{frame}{AGR: an explicit state machine}
   \begin{columns}[T]
     \begin{column}{0.46\textwidth}
@@ -191,7 +333,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 6 =====================
+% ===================== 13 =====================
 \begin{frame}{Constrained tools, not free-form queries}
   % Natural column widths, not fixed ones: every cell here is a short phrase,
   % and a fixed measure wrapped four of them onto a second line for the sake
@@ -231,11 +373,10 @@
     possible.}
 \end{frame}
 
-% ===================== 7 =====================
+% ===================== 14 =====================
 \begin{frame}{The Structural Verification Layer}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \small
+    \begin{column}{0.55\textwidth}
       Before anything is emitted:
       \begin{enumerate}
         \item Draft answer is split into \alert{atomic claims}
@@ -246,31 +387,54 @@
         \item Unsupported claims trigger \alert{targeted re-exploration}, or
           are \alert{dropped}
       \end{enumerate}
-      \vspace{2mm}
-      The system therefore \textbf{hedges rather than asserts}, and carries
-      its evidence with the answer --- from \alert{one route of three}, and
-      only inside the run.
     \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{block}{What \emph{structural} means}
-        \small
-        The check is against the graph the agent walked, not the model's
-        judgement of its own output. But it tests \alert{adjacency}: whether
-        an edge joins the claim's endpoints, not whether it is the edge the
-        claim \emph{names}, and not its direction. A \emph{mother} claim
-        passes on a \emph{child} edge --- only route three reads the relation.
+    \begin{column}{0.42\textwidth}
+      \begin{block}{The behaviour this buys}
+        The system \textbf{hedges rather than asserts}, and carries its
+        evidence with the answer.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{This is the contribution. The next slide is what it does
+    \emph{not} do.}
+\end{frame}
+
+% ===================== 15 =====================
+% The bound used to sit in a block on the same slide as the four steps,
+% under a heading that read as a footnote to them. It is not a footnote:
+% it is the property the supervisor's first issue is about, and it is now
+% the whole of a slide with the contribution's name in its title.
+\begin{frame}{What \emph{structural} means --- and what it does not}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{What it means}
+        The check is against the graph the agent \alert{walked}, not the
+        model's judgement of its own output.
       \end{block}
       \vspace{2mm}
+      \begin{block}{What it does not mean}
+        \small
+        It tests \alert{adjacency}: whether an edge joins the claim's
+        endpoints, not whether it is the edge the claim \emph{names}, and
+        not its direction. A \emph{mother} claim passes on a \emph{child}
+        edge --- only route three reads the relation.
+      \end{block}
+    \end{column}
+    \begin{column}{0.46\textwidth}
       \begin{block}{The other honest limit}
         \small
-        A claim can be \emph{true} and still be the wrong answer. Structural
-        grounding cannot catch that --- see the echo attractor later.
+        A claim can be \emph{true} and still be the wrong answer.
+        Structural grounding cannot catch that --- see the echo attractor
+        later.
       \end{block}
+      \vspace{2mm}
+      {\small ``Its evidence'' is narrower than it sounds, too:
+      \alert{one route of three} records any, and only inside the run.\par}
     \end{column}
   \end{columns}
 \end{frame}
 
-% ===================== 8 =====================
+% ===================== 16 =====================
 \begin{frame}{One claim, three routes}
   \centering
   % Height-constrained, so the caption below it decides how big the diagram
@@ -282,7 +446,46 @@
   graph lookups --- and neither of them reads the relation.}
 \end{frame}
 
-% ===================== 9 =====================
+% ===================== 17 =====================
+\begin{frame}{One question, end to end}
+  \small
+  \textsf{WebQTest-960} --- ``who plays dwight in the office''
+  \vspace{1mm}
+  \begin{columns}[T]
+    \begin{column}{0.57\textwidth}
+      \agrraggedright
+      \begin{enumerate}\setlength{\itemsep}{0pt}
+        \item \alert{Planner} --- two sub-objectives; \textsf{The Office}
+          resolved to one node
+        \item \alert{Explorer} --- scores relations, takes\\
+          \textsf{tv.tv\_program.regular\_cast}
+        \item \alert{Evaluator} --- objective met, resolves
+          \textsf{Dwight Schrute}
+        \item \alert{Explorer} --- takes\\
+          \textsf{tv.regular\_tv\_appearance.character}
+        \item \alert{Evaluator} --- resolves \textsf{Rainn Wilson}, decides
+          \textsf{answer}
+        \item \alert{Verifier} --- $2$ claims, $2$ supported, none dropped
+      \end{enumerate}
+    \end{column}
+    \begin{column}{0.41\textwidth}
+      \begin{block}{What came out}
+        \small\agrraggedright
+        ``Rainn Wilson plays Dwight Schrute in The Office.''
+        \smallskip
+
+        $6$ model calls \textperiodcentered\ depth $2$ \textperiodcentered\
+        $18$ supporting triples
+      \end{block}
+      \vspace{1mm}
+      {\small\agrraggedright The second hop runs \emph{through} a
+      mediator --- which is why that relation is named for the
+      \emph{appearance}, not for \textsf{plays}.\par}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 18 =====================
 \begin{frame}{The environment and the question sets}
   \begin{columns}[T]
     \begin{column}{0.45\textwidth}
@@ -326,11 +529,10 @@
     accuracy ceiling is known.}
 \end{frame}
 
-% ===================== 10 =====================
+% ===================== 19 =====================
 \begin{frame}{Making the comparison fair}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
-      \small
       Five systems, \alert{one frozen backbone}, \alert{one budget}:
       \begin{itemize}
         \item No-retrieval (parametric control)
@@ -339,42 +541,55 @@
         \item Think-on-Graph (agentic)
         \item \textbf{AGR}
       \end{itemize}
-      \vspace{2mm}
-      Same model, temperature $0$, same $25$-call cap, same questions, same
-      graph.
     \end{column}
-    \begin{column}{0.48\textwidth}
-      % This block claimed "not to model capacity or to a bigger retrieval
-      % budget". The retrieval-budget half is the deck's own addition: the
-      % thesis abstract claims only "architecture, not model capacity", and
-      % setup.tex names the candidate widths as one of two things NOT held
-      % constant and "where a reader should look first for a confound". It
-      % is limitation #5 in sec:limitations-final. Denying it on the slide
-      % titled "Making the comparison fair" is the expensive way to be
-      % caught -- and cheap to avoid, because the widths cut against the
-      % baseline, not for it. Caps are checked against tog.py/kg_tools.py.
-      \vspace{-2mm}
+    \begin{column}{0.46\textwidth}
+      \begin{block}{Held constant}
+        Same model, temperature $0$, same $25$-call cap, same questions,
+        same graph.
+      \end{block}
+      \vspace{3mm}
       \begin{block}{What this buys}
-        \small
         Differences are attributable to \textbf{architecture}, not to model
         capacity or spend.
       \end{block}
-      \begin{block}{What is \emph{not} held equal}
-        \small
-        ToG prunes to $40$/$20$ candidates per step, AGR to $300$/$200$ ---
-        \alert{narrower is cheaper}, so it cannot explain ToG's clipping, but
-        its unclipped score is a \alert{lower bound}.
+    \end{column}
+  \end{columns}
+  \takeaway{One thing is \emph{not} held equal, and it is the next slide.}
+\end{frame}
+
+% ===================== 20 =====================
+% This block claimed "not to model capacity or to a bigger retrieval
+% budget". The retrieval-budget half was the deck's own addition: the
+% thesis abstract claims only "architecture, not model capacity", and
+% setup.tex names the candidate widths as one of two things NOT held
+% constant and "where a reader should look first for a confound". It is
+% limitation #5 in sec:limitations-final. Denying it on the slide titled
+% "Making the comparison fair" is the expensive way to be caught -- and
+% cheap to avoid, because the widths cut against the baseline, not for it.
+% Caps are checked against tog.py/kg_tools.py.
+\begin{frame}{What is \emph{not} held equal}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Candidate widths}
+        ToG prunes to $40$/$20$ candidates per step, AGR to $300$/$200$.
+        \smallskip
+
+        \alert{Narrower is cheaper}, so it cannot explain ToG's clipping
+        --- but its unclipped score is a \alert{lower bound}.
       \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
       \begin{block}{Why a parametric control}
-        \small
-        These benchmarks predate current models and may be partly memorised.
-        Without it we could not separate retrieval from recall.
+        These benchmarks predate current models and may be partly
+        memorised. Without it we could not separate retrieval from recall.
       \end{block}
     \end{column}
   \end{columns}
+  \takeaway{Said here rather than found later: this is limitation five in
+    the thesis.}
 \end{frame}
 
-% ===================== 11 =====================
+% ===================== 21 =====================
 \begin{frame}{Main results}
   \begin{table}
     \small
@@ -406,19 +621,7 @@
     of the other agentic system.}
 \end{frame}
 
-% ===================== 12 =====================
-\begin{frame}{Accuracy against cost}
-  \centering
-  \input{figures/fig_accuracy_cost.tex}
-
-  \vspace{1mm}
-  {\small On \emph{tokens} Think-on-Graph is \textbf{not} dominated --- it buys
-  lower accuracy at a lower token price. On \emph{calls}, which the budget
-  meters, it is.}
-  \takeaway{The frontier depends on which cost you charge.}
-\end{frame}
-
-% ===================== 13 =====================
+% ===================== 22 =====================
 \begin{frame}{RQ1: accuracy against hop count}
   \centering
   \input{figures/fig_hop_strata.tex}
@@ -430,7 +633,7 @@
   \takeaway{RQ1 is answered by a shape, not a difference of means.}
 \end{frame}
 
-% ===================== 14 =====================
+% ===================== 23 =====================
 \begin{frame}{The caveat I want to raise myself}
   \begin{table}
     \small
@@ -459,7 +662,7 @@
     reasons better per step.}
 \end{frame}
 
-% ===================== 15 =====================
+% ===================== 24 =====================
 \begin{frame}{RQ2: does anything ungrounded get asserted?}
   \begin{table}
     \small
@@ -483,44 +686,57 @@
     property of \emph{graph navigation}, not of the verification layer.}
 \end{frame}
 
-% ===================== 16 =====================
-\begin{frame}{RQ2: so what does verification actually contribute?}
+% ===================== 25 =====================
+\begin{frame}{RQ2: what verification does \emph{not} do}
   \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{block}{What it does \emph{not} do}
-        \small
+    \begin{column}{0.5\textwidth}
+      \begin{block}{It does not move accuracy}
         Removing it changes accuracy by an amount we cannot detect:
         $p = 1.0$ on \emph{both} datasets. It does not earn its place on
         Hits@1 or F1.
       \end{block}
-      \vspace{2mm}
-      \begin{block}{What does \emph{not} survive the run}
-        \small
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \begin{block}{The record does not survive the run}
         The log keeps the \alert{count} of supporting triples and discards
         the list. \emph{Auditable in the run, not from the record.}
       \end{block}
     \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{block}{What it does do}
-        \small
-        \begin{itemize}
-          \item Withholds what it cannot ground, as a \alert{hedge}:
-            removing the layer drops hedging $23.2\% \to 20.2\%$ on CWQ,
-            $8.5\% \to 8.0\%$ on WebQSP
-          \item Attaches \alert{supporting triples} --- from one route of
-            three; \textsf{verify\_connection} and entailment attach none
-          \item Pairs answer with evidence, \alert{in the run}
-        \end{itemize}
+  \end{columns}
+  \vspace{2mm}
+  This is a negative result reported as one. The layer's case rests on
+  auditability, and the thesis bounds that too rather than claiming an
+  accuracy benefit the measurement does not support.
+\end{frame}
+
+% ===================== 26 =====================
+\begin{frame}{RQ2: so what does it do?}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{It withholds what it cannot ground}
+        \agrraggedright
+        Removing the layer drops hedging $23.2\% \to 20.2\%$ on CWQ and
+        $8.5\% \to 8.0\%$ on WebQSP. A hedge is a \alert{calibrated
+        non-assertion}, not a refusal.
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{It attaches supporting triples}
+        From \alert{one route of three}: \textsf{verify\_connection} and
+        entailment attach none.
+      \end{block}
+      \vspace{2mm}
+      \begin{block}{It pairs answer with evidence}
+        \alert{In the run} --- which is where the previous slide's bound
+        bites.
       \end{block}
     \end{column}
   \end{columns}
-  \vspace{2mm}
-  {\small This is a negative result reported as one. The layer's case rests on
-  auditability, and the thesis bounds that too rather than claiming an accuracy
-  benefit the measurement does not support.}
+  \takeaway{Silent error becomes an explicit hedge. That is the claim, and
+    it is the whole of it.}
 \end{frame}
 
-% ===================== 17 =====================
+% ===================== 27 =====================
 \begin{frame}{RQ3: what each component earns}
   \begin{table}
     \small
@@ -542,60 +758,50 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  {\small Paired McNemar against the full system, stratified halves
-  ($n=200$ / $198$).}
-  \takeaway{Exactly one component shows a detectable accuracy effect --- and
-    the sign is backwards.}
+  {\small Paired McNemar, halves of $200$ and $198$.}
+  \takeaway{Three of the four change nothing detectable. The fourth is on
+    the next slide, and its sign is backwards.}
 \end{frame}
 
-% ===================== 18 =====================
-\begin{frame}{The result I did not expect}
+% ===================== 28 =====================
+% The interpretation used to sit under the table with \vspace{-5mm} in
+% front of it, which is how the block titles came to overprint the
+% table's bottom rule. Negative vspace produces no overfull box, so the
+% log-reading rule this deck relies on saw nothing; the geometric check
+% added to check_slides.py is what would have caught it, and the table
+% having a slide to itself is what makes it unnecessary.
+\begin{frame}{RQ3: one effect, and its sign is backwards}
   \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
-      % A display line introducing the list below it, not a paragraph of
-      % prose. Justifying a two-line heading stretches the first line to the
-      % measure and leaves one word alone on the second; headings are set
-      % ragged for the same reason the frame titles are.
-      {\agrraggedright\textbf{Removing the planner \emph{improves} WebQSP:}\par}
-      \begin{itemize}
-        \item $+0.083$ F1, at $p = 0.006$
-        \item $-31\%$ tokens
-        \item $6.2 \rightarrow 4.0$ calls
-      \end{itemize}
-      \vspace{2mm}
-      \small
-      On ComplexWebQuestions it trends the other way ($-0.047$ F1,
-      $p = 0.088$) --- not significant, but the opposite sign.
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Removing the planner \emph{improves} WebQSP}
+        $+0.083$ F1, $p = 0.006$, and $-31\%$ tokens.
+        \smallskip
+
+        ComplexWebQuestions trends the other way: $-0.047$, $p = 0.088$.
+      \end{block}
     \end{column}
     \begin{column}{0.46\textwidth}
-      \begin{block}{Why}
-        \small
-        WebQSP is predominantly one hop. Decomposing a one-hop question
-        invents a second sub-objective that sends the frontier away from the
-        answer.
-      \end{block}
-      \vspace{1mm}
       \begin{block}{What follows}
-        \small
-        Decomposition should be \textbf{gated on question structure}, not
-        applied unconditionally. That is a design conclusion the measurement
-        forced, not one it confirmed.
+        WebQSP is mostly one hop, and decomposing a one-hop question sends
+        the frontier away from the answer.
       \end{block}
     \end{column}
   \end{columns}
+  \vspace{2mm}
+  \takeaway{\textbf{Gate decomposition on structure} --- a conclusion the
+    measurement forced, not one it confirmed.}
 \end{frame}
 
-% ===================== 19 =====================
-\begin{frame}{Every failure, read: the echo attractor}
+% ===================== 29 =====================
+\begin{frame}{Every failure, read and labelled}
   \begin{columns}[T]
-    % 0.50/0.48 rather than 0.46/0.52: the census table needs only 48mm, but
-    % the sentence above it is two lines of prose and could not be justified
-    % on a 64mm measure without gaping word spaces.
-    \begin{column}{0.50\textwidth}
-      \small
+    \begin{column}{0.44\textwidth}
       All $259$ remaining failures were read and labelled by hand, both
       datasets pooled:
-      \vspace{1mm}
+
+      % A tabular is an inline box in the current paragraph. Without the
+      % blank line above, "pooled:" stays on the line the table then sets
+      % beside, and no box warning is issued for it.
       \begin{tabular}{@{}lr@{}}
         \toprule
         \textbf{Category} & \textbf{n} \\
@@ -608,90 +814,76 @@
         \alert{Echo attractor} & \alert{13} \\
         \bottomrule
       \end{tabular}
-
-      % The blank line above is load-bearing: the tabular is an inline box in
-      % the current paragraph, so without it this caption sets *beside* the
-      % table rather than under it. A comment does not end a paragraph.
-      \vspace{1mm}
+    \end{column}
+    \begin{column}{0.52\textwidth}
       % These are the thesis's own Total column, so they are right -- but
       % sec:taxonomy says three times that wrong and hedge are "never pooled,
       % because they describe different failure semantics" and that "a pooled
       % percentage would describe neither". Pooling also hides the shape flip:
       % composite_claim is 1 on WebQSP against 46 on CWQ. Saying so here costs
       % one line and stops the split census being produced as a correction.
-      % No size command: the column is already \small, and deck hygiene bans
-      % body prose below it. A \footnotesize caption here failed that check.
+      % No size command below \small: deck hygiene bans body prose below it,
+      % and a \footnotesize caption here failed that check.
       % "Composite claim" rather than \texttt{composite\_claim}: the monospace
-      % token cannot hyphenate, and on a 48mm measure it stretched the line to
-      % badness 2503 against this deck's ceiling of 2000. The table above
-      % spells the category the same way.
-      Totals. Wrong and hedge are \emph{never pooled} in the thesis, and the
-      shape flips: composite claim is $1$ on WebQSP against $46$ on CWQ.
-      Split census: backup page $4$.
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \small
-      The characteristic error of a graph navigator is \alert{not invention}.
-      It is the \textbf{echo attractor}: a real, grounded entity one hop from
-      the answer.
+      % token cannot hyphenate, and on a narrow measure it stretched the line
+      % to badness 2503 against this deck's ceiling of 2000. The table beside
+      % it spells the category the same way.
+      \begin{block}{These are totals, and totals hide things}
+        Wrong and hedge are \emph{never pooled} in the thesis, and the shape
+        flips across datasets: composite claim is $1$ on WebQSP against $46$
+        on CWQ.
+        \smallskip
 
-      \vspace{2mm}
-      \begin{block}{Why it matters}
-        \small
-        Any grounding check \emph{passes} it --- because it is true. Verification
-        cannot catch it by construction.
+        Split census: backup page $4$.
       \end{block}
       \vspace{1mm}
-      % This read "it appears across systems, so it is a property of the
-      % task, not of AGR" -- defensive where the thesis is substantive.
-      % sec:echo: "invisible to any evaluation treating systems as
-      % independent", and sec:contribution says the contribution is "the
-      % named mechanism itself and what it means for consensus-based
-      % evaluation, not the frequency". Commit 2acfc2a moved the abstract off
-      % the independence framing for this reason, from "turns up across
-      % unrelated systems" to "which different systems fall into together";
-      % this slide had not followed. The deflection was also unnecessary --
-      % nothing on the slide blames AGR for it.
-      {\small Different systems fall into it \alert{together}, so no evaluation
-      treating them as independent can see it --- and a policy of rescoring on
-      majority agreement turns it into apparent \alert{correctness}.}
+      The largest category is \alert{relation selection} --- the agent
+      taking the wrong edge, not inventing one.
     \end{column}
   \end{columns}
+  \takeaway{The characteristic error of a graph navigator is \emph{not}
+    invention.}
 \end{frame}
 
-% ===================== 20 =====================
-\begin{frame}{The benchmark was wrong $57$ times}
+% ===================== 30 =====================
+\begin{frame}{The echo attractor}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
-      \small
-      % "Reading every failure also found..." presented this as a second,
-      % unrelated finding. sec:benchmark-defects makes them one: "The gap
-      % between those figures is not measurement noise --- it is the echo
-      % attractor of sec:echo, operating across systems." 105 is 58 + 47
-      % flagged, 41 is 22 + 19 adjudicated; both are in gold_adjudication.
-      The same cross-system agreement is also a \alert{\mbox{detector}}:
-      consensus flagged $105$ questions, adjudication confirmed $41$, and the
-      gap is the attractor above rather than label noise.
-      \begin{itemize}
-        \item $41$ excluded before the census
-        \item $17$ found inside the census
-        \item $1$ counted in both
-        \item[$\Rightarrow$] \textbf{$57$ distinct questions}
-      \end{itemize}
+      Sixth in that census, with $13$ cases, and the one worth naming:
+      \vspace{2mm}
+
+      a real, \alert{grounded} entity \alert{one hop} from the answer.
+      \vspace{3mm}
+
+      Ask for a director and get the film. Ask for a capital and get the
+      country.
     \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Why report it}
-        \small
-        Reported defect rates for these two standard benchmarks are rare and
-        usually anecdotal. This is a counted rate with a documented
-        adjudication procedure and per-question provenance.
+    \begin{column}{0.46\textwidth}
+      \begin{block}{Why it matters}
+        Any grounding check \emph{passes} it --- because it is true. The
+        entity is real, it was traversed, the triple exists. Verification
+        cannot catch it by construction.
       \end{block}
     \end{column}
   \end{columns}
-  \takeaway{A contribution that outlives this particular system.}
+  % This read "it appears across systems, so it is a property of the
+  % task, not of AGR" -- defensive where the thesis is substantive.
+  % sec:echo: "invisible to any evaluation treating systems as
+  % independent", and sec:contribution says the contribution is "the
+  % named mechanism itself and what it means for consensus-based
+  % evaluation, not the frequency". Commit 2acfc2a moved the abstract off
+  % the independence framing for this reason, from "turns up across
+  % unrelated systems" to "which different systems fall into together";
+  % this slide had not followed. The deflection was also unnecessary --
+  % nothing on the slide blames AGR for it.
+  \vspace{2mm}
+  Different systems fall into it \alert{together}, so no evaluation treating
+  them as independent can see it --- and a policy of rescoring on majority
+  agreement turns it into apparent \alert{correctness}.
+  \takeaway{The contribution is the mechanism, named, not the count.}
 \end{frame}
 
-% ===================== 21 =====================
+% ===================== 31 =====================
 \begin{frame}{Contributions, and what I would not claim}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}

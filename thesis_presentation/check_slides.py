@@ -120,6 +120,20 @@ def frame(title):
     return m.group(1) if m else ""
 
 
+def frames(*titles):
+    """Several frames' bodies, concatenated, as one scope.
+
+    A rule written against a frame that has since been split into two would
+    otherwise search only the half whose title it names -- and pass or fail
+    for the wrong reason. The seven frames split this round each carry one
+    argument across two slides, so the scope of a rule about that argument
+    is the pair. Returns '' if any of them is missing, so a renamed frame
+    fails the rule that needs it instead of quietly shrinking its scope.
+    """
+    got = [frame(t) for t in titles]
+    return " ".join(got) if all(got) else ""
+
+
 def row(scope, label):
     """The one table row in `scope` that begins with this label, or ''.
 
@@ -368,7 +382,7 @@ for n, ds in ((1, "webqsp"), (2, "cwq")):
 # The headline that opens the talk, checked nowhere until now.
 print("\n== the opening slide's headline figures ==")
 G = J["groundedness_tier1_structural"]["test_webqsp_noretrieval"]
-PROBLEM = frame("The problem")
+PROBLEM = frames("The problem", "How often? Our own control")
 ck("the problem frame is in the deck", bool(PROBLEM))
 for label, want, pat in (
         ("entities asserted", G["entities_asserted"],
@@ -382,7 +396,7 @@ for label, want, pat in (
 # Per-category census counts. The slide prints the six largest as Totals;
 # each is the sum of wrong and hedge over both datasets.
 print("\n== the census categories are the measured ones ==")
-CENSUS = frame("Every failure, read: the echo attractor")
+CENSUS = frames("Every failure, read and labelled", "The echo attractor")
 CATS = (("Relation selection", "relation_selection"),
         ("Composite claim", "composite_claim"),
         ("Knowledge-graph gap", "kg_gap"),
@@ -711,6 +725,61 @@ for drv in DRIVERS:
        "; ".join(sorted(set(hits))))
 
 # ---------------------------------------------------------------------
+# ...and nothing on a rendered page prints on top of anything else.
+#
+# Everything above reads the build log, which is the record of whether
+# material FIT. A negative \vspace does not make material too big for its
+# box, so no overfull is issued and no warning of any class -- it simply
+# moves the material somewhere else, possibly on top of something. The RQ3
+# ablation frame shipped a round that way: \vspace{-5mm} put the
+# interpretation blocks across the table's last rows and \vspace{-3mm} put
+# the McNemar caption inside a block, under a checker printing "no
+# warnings, of any class" three lines earlier.
+#
+# Measured on the page instead of in the log. Two text lines collide when
+# their boxes overlap horizontally, and vertically by more than a quarter
+# of the shorter line's height.
+#
+# A quarter rather than a fixed point: the first version used 1pt and fired
+# on the backup census, where two monospace y-axis tick labels are set
+# close enough that their ascender/descender boxes lap by 1.4pt with a
+# clear gap between the ink. Relative to line height that is 14%, against
+# 43% for the RQ3 collision -- and being scale-free, it reads the same on
+# \small body text and on a frametitle. Lines sharing a baseline are one
+# line set in several runs and are skipped.
+print("\n== no text on any page prints on top of other text ==")
+try:
+    import pymupdf
+except ImportError:
+    print("  [   ] pymupdf not installed -- pages not measured")
+    pymupdf = None
+if pymupdf is not None:
+    for drv in DRIVERS:
+        pdf = os.path.join(HERE, os.path.splitext(drv)[0] + ".pdf")
+        if not os.path.exists(pdf):
+            print(f"  [   ] {drv}: no PDF to measure -- run latexmk first")
+            continue
+        clashes = []
+        for page in pymupdf.open(pdf):
+            boxes = [(pymupdf.Rect(l["bbox"]),
+                      "".join(s["text"] for s in l["spans"]).strip())
+                     for b in page.get_text("dict")["blocks"]
+                     for l in b.get("lines", [])
+                     if "".join(s["text"] for s in l["spans"]).strip()]
+            for i, (ra, ta) in enumerate(boxes):
+                for rb, tb in boxes[i + 1:]:
+                    if abs(ra.y0 - rb.y0) < 0.6 and abs(ra.y1 - rb.y1) < 0.6:
+                        continue
+                    dy = min(ra.y1, rb.y1) - max(ra.y0, rb.y0)
+                    if (min(ra.x1, rb.x1) - max(ra.x0, rb.x0) > 1.0
+                            and dy > 1.0
+                            and dy > 0.25 * min(ra.height, rb.height)):
+                        clashes.append(f"page {page.number + 1}: "
+                                       f"{ta[:34]!r} over {tb[:34]!r}")
+        ck(f"{drv}: no overprinted text", not clashes,
+           clashes[0] if clashes else "")
+
+# ---------------------------------------------------------------------
 # The deck's six contributions must be the thesis's six.
 #
 # They were not. sec:contribution has one \subsection per contribution;
@@ -802,7 +871,8 @@ OVERCLAIM = re.compile(
     re.I)
 
 
-fair = frame("Making the comparison fair")
+fair = frames("Making the comparison fair",
+              r"What is \emph{not} held equal")
 ck("the fairness frame is in the deck", bool(fair))
 for label, text in (("deck", FLAT), ("transcript", MD)):
     hit = OVERCLAIM.search(text)
@@ -934,15 +1004,15 @@ for label, text in (("deck", plain(FLAT)), ("transcript", plain(MDF))):
 # and why the other does not, or the audience pools them anyway.
 #
 # Bound to what is actually said on slide 12, not to the whole file. The
-# first version searched the transcript and passed while section 12 had
+# first version searched the transcript and passed while section 21 had
 # been stripped of it, because the speaker note below the section quotes
 # the same phrase -- a second home, again.
-s12 = spoken(12)
-ck("section 12 is in the transcript", bool(s12))
-ck("section 12 names the baseline the claim rests on",
-   re.search(r"claim rests on vector RAG", s12, re.I) is not None)
+s21 = spoken(21)
+ck("section 21 is in the transcript", bool(s21))
+ck("section 21 names the baseline the claim rests on",
+   re.search(r"claim rests on vector RAG", s21, re.I) is not None)
 ck("and says why GraphRAG's number does not carry it",
-   re.search(r"radius confounds", s12, re.I) is not None)
+   re.search(r"radius confounds", s21, re.I) is not None)
 
 # The deck's caveat is correct only while the thesis holds that position.
 RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
@@ -1000,15 +1070,20 @@ if g:
 # framing -- "turns up across unrelated systems" became "which different
 # systems fall into together" -- and the deck never followed.
 print("\n== the echo attractor is framed as the thesis frames it ==")
-echo = frame("Every failure, read: the echo attractor")
-bench = frame(r"The benchmark was wrong $57$ times")
-s20, s21 = spoken(20), spoken(21)
+echo = frames("Every failure, read and labelled", "The echo attractor")
+bench = frame(r"Backup: the benchmark was wrong $57$ times")
+# The benchmark-defect slide moved to the backup deck, so it has no
+# spoken section any more. Its numbers are still checked, off the slide.
+# The census and the attractor are two sections now, and the framing
+# rules below are about the pair: the deflection this bans could be
+# reintroduced in either one.
+said = spoken(29) + " " + spoken(30)
 ck("both frames are in the deck", bool(echo) and bool(bench))
 
 RETRACTED = re.compile(r"propert\w+ of the task|across unrelated systems"
                        r"|not (?:a propert\w+ of )?AGR\b"
                        r"|rather than (?:of )?AGR\b", re.I)
-for label, text in (("echo slide", echo), ("section 20", s20)):
+for label, text in (("echo slide", echo), ("sections 29-30", said)):
     hit = RETRACTED.search(text)
     ck(f"{label} does not deflect it onto the task", hit is None,
        hit.group(0)[:60] if hit else "")
@@ -1037,8 +1112,7 @@ ck(f"the flagged total is {flagged} and the confirmed total is {confirmed}",
    confirmed == J["benchmark_defects"]["excluded_before_census"],
    "the confirmed pair must be the count excluded before the census")
 for label, text, fl, cf in (("benchmark slide", bench, f"${flagged}$",
-                             f"${confirmed}$"),
-                            ("section 21", s21, str(flagged), str(confirmed))):
+                             f"${confirmed}$"),):
     ck(f"{label} gives both the flagged and the confirmed count",
        fl in text and cf in text, f"wants {fl} and {cf}")
     ck(f"{label} attributes the gap to the attractor",
@@ -1142,7 +1216,7 @@ if nodes in NUM:
     ck(f"the slide says {NUM[nodes]} nodes", f"{NUM[nodes]} nodes" in SM,
        f"diagram draws {nodes}")
     ck(f"the script says {NUM[nodes].lower()} nodes",
-       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(6), re.I) is not None)
+       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(12), re.I) is not None)
 
 
 def target(edge):
@@ -1175,12 +1249,13 @@ if m and len(back) in NUM:
     ck("and every name is a label on the diagram",
        set(listed) <= labels, f"{sorted(set(listed) - labels)} not labelled")
 
-s6 = spoken(6)
+s12 = spoken(12)
 ck("the script does not harden the old count",
-   re.search(r"exactly (?:one|two|three|four|five) cycles", s6, re.I) is None)
+   re.search(r"exactly (?:one|two|three|four|five) cycles", s12, re.I) is None)
 if len(back) in NUM:
     ck(f"the script also says {NUM[len(back)].lower()} cycles",
-       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s6, re.I) is not None)
+       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s12, re.I)
+       is not None)
 
 # The same diagram is drawn three times, and each copy's prose has to
 # count what that copy draws. Correcting the deck to three left the deck
@@ -1288,7 +1363,7 @@ print("\n== the pooled census says it is pooled ==")
 FH = J["failure_histogram"]
 split = {ds: sum(FH[ds][k].get("composite_claim", 0) for k in ("wrong", "hedge"))
          for ds in ("webqsp", "cwq")}
-census = frame("Every failure, read: the echo attractor")
+census = frames("Every failure, read and labelled", "The echo attractor")
 ck("the census slide says the totals are pooled",
    re.search(r"never pooled", census, re.I) is not None)
 ck(f"and gives the shape flip, {split['webqsp']} against {split['cwq']}",
@@ -1318,7 +1393,28 @@ else:
 
     rows = re.findall(r"^\| (\d+) \| ([^|]*?) \| (\d+):(\d\d) \| (\d+):(\d\d) \|",
                       md, re.M)
-    ck("the table has a row per slide", len(rows) == 23, f"{len(rows)} rows")
+    # Off the built deck, not off a number kept here. WORDS is only for
+    # the header sentence, which spells its body count out.
+    WORDS = {20: "twenty", 30: "thirty", 40: "forty"}
+    pages = None
+    deck = os.path.join(HERE, os.path.splitext(DRIVERS[0])[0] + ".pdf")
+    if pymupdf is not None and os.path.exists(deck):
+        with pymupdf.open(deck) as d:
+            pages = d.page_count
+    if pages is None:
+        print("  [   ] deck not measured -- row count checked against itself")
+        ck("the table has a row per slide", len(rows) > 0, f"{len(rows)} rows")
+    else:
+        ck(f"the table has a row per slide ({pages} pages)",
+           len(rows) == pages, f"{len(rows)} rows")
+        # ...and the sentence that opens the file says the same thing.
+        body = pages - 2                       # a title and a closing slide
+        spelt = WORDS.get(body - body % 10, "") + \
+            ("" if body % 10 == 0 else "-" + NUM[body % 10].lower())
+        ck(f"the opening sentence says {pages} pages and {spelt} body slides",
+           re.search(rf"{pages} pages: a title,\s+{spelt} body slides,"
+                     rf"\s+a closing slide", md) is not None,
+           f"deck is {pages} pages")
 
     run = 0
     drift = []
@@ -1375,6 +1471,21 @@ else:
            f"{len(short)} row{'s' if len(short) > 1 else ''} short; "
            f"{short[0]}" if short else "")
 
+    # The recovery marker names a slide and a cumulative, and they have to
+    # be each other's. Nothing read this until it had been wrong twice:
+    # first as a cumulative no row held at all, then as 15:05 against a
+    # table saying 15:02, after a trim upstream moved every row after it.
+    mk = re.search(r"If you hit \*\*(\d+):(\d\d) \(the end of slide (\d+)\)",
+                   md)
+    ck("the recovery notes name a marker", mk is not None)
+    if mk:
+        cum = dict((n, secs(mc, sc)) for n, _t, _a, _b, mc, sc in rows)
+        ck(f"the marker's time is slide {mk.group(3)}'s cumulative",
+           cum.get(mk.group(3)) == secs(mk.group(1), mk.group(2)),
+           f"marker {mk.group(1)}:{mk.group(2)}, table "
+           f"{cum.get(mk.group(3), 0) // 60}:"
+           f"{cum.get(mk.group(3), 0) % 60:02d}")
+
     # The point of the budget is the limit it sits under.
     lim = re.search(r"against a (\d+)-minute limit", md)
     ck("the talk fits the limit it names",
@@ -1425,7 +1536,7 @@ ck("the slide lists them in the thesis's severity order", not swaps,
 print("\n== the pre-specified wording is accounted for ==")
 # The deck's own spelling is a rule, not a preference: the standing note
 # in thesis_paper/sections/setup.tex says never "pre-registered", the
-# slide comment repeats it, and section 22 now says it out loud. It was
+# slide comment repeats it, and section 31 now says it out loud. It was
 # checked in none of the three -- CONTRIB_KEYS accepted either spelling,
 # and the explanation rule below keyed off the deck, so a slide drifting
 # back to the thesis's word ALSO switched off the rule that would have
@@ -1436,11 +1547,11 @@ ck("the deck never writes pre-registered",
    "thesis_paper/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
 if "pre-registered" in thesis_six:
-    s22 = spoken(22)
-    ck("the script names the thesis's word", "pre-registered" in s22.lower())
-    ck("and the word the slide uses", "pre-specified" in s22.lower())
+    s31 = spoken(31)
+    ck("the script names the thesis's word", "pre-registered" in s31.lower())
+    ck("and the word the slide uses", "pre-specified" in s31.lower())
     ck("and gives the reason the slide diverges",
-       re.search(r"registr(y|ies)", s22, re.I) is not None)
+       re.search(r"registr(y|ies)", s31, re.I) is not None)
 else:
     ck("the two documents still differ on this word", True,
        "reconciled -- rule retired")
@@ -1457,13 +1568,13 @@ else:
 print("\n== the hop curve is the strata ==")
 TR = J["main_results"]["hop_trends"]["cwq"]
 HOP = frame("RQ1: accuracy against hop count")
-s14 = spoken(14)
+s22 = spoken(22)
 agr = TR["agr"]["hits_at_1"]
 arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)
 ck("the hop slide is in the deck", bool(HOP))
 ck(f"the slide quotes AGR's CWQ curve {agr}",
    re.search(arrow, HOP) is not None, "in that order")
-ck("the script quotes the same three", re.search(arrow, s14) is not None)
+ck("the script quotes the same three", re.search(arrow, s22) is not None)
 
 rising = TR["_systems_monotone_rising"]
 ck("AGR is the only CWQ system that rises", rising == ["agr"], str(rising))
@@ -1471,7 +1582,7 @@ below = TR["_systems_ending_below_h1"]
 ck(f"the other {len(below)} end below their one-hop score",
    sorted(below) == sorted(k for k in TR
                            if not k.startswith("_") and k != "agr"))
-for label, text in (("slide", HOP), ("script", s14)):
+for label, text in (("slide", HOP), ("script", s22)):
     ck(f"the {label} says AGR alone ends above where it started",
        re.search(r"only\b[^.]*\bend(?:s|ing)? above where it started",
                  plain(text)) is not None)
@@ -1480,7 +1591,7 @@ falling = TR["_systems_monotone_falling"]
 ck(f"{len(falling)} of the other four decay monotonically",
    len(falling) in NUM, str(sorted(falling)))
 decay = re.compile(NUM[len(falling)] + r" of the other (\w+) decay", re.I)
-for label, text in (("slide", HOP), ("script", s14)):
+for label, text in (("slide", HOP), ("script", s22)):
     m = decay.search(plain(text))
     ck(f"the {label} says {NUM[len(falling)].lower()} of the others decay",
        m is not None)
@@ -1494,7 +1605,7 @@ ck("ToG's CWQ curve is neither rising nor falling throughout",
    not TR["tog"]["monotone_falling"] and not TR["tog"]["monotone_rising"])
 ck(f"the script says it ends {abs(net)} below its one-hop score",
    re.search(r"(?<![\d.])" + re.escape(str(abs(net)))
-             + r"(?![\d.])[^.]*below its own one-hop", s14) is not None,
+             + r"(?![\d.])[^.]*below its own one-hop", s22) is not None,
    f"hop_trends gives {net}")
 
 # The strata the answer rests on, from the stratum table.
@@ -1650,7 +1761,10 @@ else:
     # card writes "4 tools" and the script says "four operations".
     allcaps = re.compile(rf"(?:{len(named)}|{NUM[len(named)]})\s+"
                          rf"(?:tools|operations)[^.]{{0,40}}hard caps", re.I)
-    for label, text in (("card", CARD), ("script", spoken(6))):
+    # spoken(8) until now, which is the state-machine section and has
+    # never made this claim -- an earlier bulk renumber moved the
+    # number without moving the rule. Section 13 is the tools section.
+    for label, text in (("card", CARD), ("script", spoken(13))):
         ck(f"the {label} does not claim a cap on all of them",
            allcaps.search(text) is None,
            f"only {len(capped)} of {len(named)} cap anything")
