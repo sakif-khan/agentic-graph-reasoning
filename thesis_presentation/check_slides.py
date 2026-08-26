@@ -379,19 +379,46 @@ for n, ds in ((1, "webqsp"), (2, "cwq")):
     ck(f"{ds} multi-hop {multi}", holds(ENVSLIDE, "Multi-hop", n, str(multi)),
        f"cell holds {cell(ENVSLIDE, 'Multi-hop', n)!r}")
 
-# The headline that opens the talk, checked nowhere until now.
-print("\n== the opening slide's headline figures ==")
-G = J["groundedness_tier1_structural"]["test_webqsp_noretrieval"]
-PROBLEM = frames("The problem", "How often? Our own control")
+# The headline figures, wherever they are.
+#
+# They were bullets on the second slide, three slides before the talk
+# defines "hallucination" and eighteen before it introduces the control
+# they come from -- unreadable where they stood, and a second rate for a
+# phenomenon the RQ2 table already reports pooled. The slide is gone and
+# the numbers are an answer now, which is the right home for evidence you
+# produce on demand and the worst-bound part of that file.
+#
+# So the rule follows them, and adds what the move makes necessary: an
+# answer quoting 27.1% has to give the pooled figure beside it, or the
+# questioner is left to reconcile it with the 22.1% on the slide.
+print("\n== the opening claim's evidence, wherever it is stated ==")
+PROBLEM = frame("The problem")
 ck("the problem frame is in the deck", bool(PROBLEM))
-for label, want, pat in (
-        ("entities asserted", G["entities_asserted"],
-         r"\${}\$ entities asserted"),
-        ("ungrounded", G["entities_ungrounded"], r"\${}\$ of them"),
-        ("rate", G["entity_ungrounded_pct"], r"that is \${}\\%\$")):
-    ck(f"slide 1 {label} = {want}",
-       re.search(pat.format(re.escape(str(want))), PROBLEM) is not None,
-       f"expected {want} in the opening bullets")
+ck("the deck no longer asserts a rate it cannot source on the slide",
+   "27.1" not in FLAT, "the WebQSP slice belongs to the answer now")
+G = J["groundedness_tier1_structural"]["test_webqsp_noretrieval"]
+eq = answer("Where is your evidence?")
+ck("the evidence question is in the anticipated questions", bool(eq))
+for label, want in (("entities asserted", G["entities_asserted"]),
+                    ("ungrounded", G["entities_ungrounded"]),
+                    ("rate", f'{G["entity_ungrounded_pct"]} percent')):
+    ck(f"the answer gives WebQSP {label} = {want}",
+       re.search(rf"(?<![\d.]){re.escape(str(want))}(?![\d.])", eq)
+       is not None, f"expected {want}")
+
+# ...and the pooled row beside it, from the same source the slide uses, so
+# the two rates are reconciled where they are both stated.
+pool = {k: sum(J["groundedness_tier1_structural"]
+               [f"test_{d}_noretrieval"][k] for d in ("webqsp", "cwq"))
+        for k in ("entities_asserted", "entities_ungrounded")}
+for label, want in (("asserted", pool["entities_asserted"]),
+                    ("ungrounded", pool["entities_ungrounded"])):
+    ck(f"and the pooled {label} = {want}",
+       re.search(rf"(?<![\d.]){want:,}(?![\d.])".replace(",", ",?"), eq)
+       is not None, f"expected {want:,}")
+ck("and says why the two rates differ",
+   re.search(r"slice runs higher|differ|because", eq, re.I) is not None,
+   "27.1 against 22.1 needs a reason where both are stated")
 
 # Per-category census counts. The slide prints the six largest as Totals;
 # each is the sum of wrong and hedge over both datasets.
@@ -1004,15 +1031,15 @@ for label, text in (("deck", plain(FLAT)), ("transcript", plain(MDF))):
 # and why the other does not, or the audience pools them anyway.
 #
 # Bound to what is actually said on slide 12, not to the whole file. The
-# first version searched the transcript and passed while section 21 had
+# first version searched the transcript and passed while section 20 had
 # been stripped of it, because the speaker note below the section quotes
 # the same phrase -- a second home, again.
-s21 = spoken(21)
-ck("section 21 is in the transcript", bool(s21))
-ck("section 21 names the baseline the claim rests on",
-   re.search(r"claim rests on vector RAG", s21, re.I) is not None)
+s20 = spoken(20)
+ck("section 20 is in the transcript", bool(s20))
+ck("section 20 names the baseline the claim rests on",
+   re.search(r"claim rests on vector RAG", s20, re.I) is not None)
 ck("and says why GraphRAG's number does not carry it",
-   re.search(r"radius confounds", s21, re.I) is not None)
+   re.search(r"radius confounds", s20, re.I) is not None)
 
 # The deck's caveat is correct only while the thesis holds that position.
 RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
@@ -1077,13 +1104,13 @@ bench = frame(r"Backup: the benchmark was wrong $57$ times")
 # The census and the attractor are two sections now, and the framing
 # rules below are about the pair: the deflection this bans could be
 # reintroduced in either one.
-said = spoken(29) + " " + spoken(30)
+said = spoken(28) + " " + spoken(29)
 ck("both frames are in the deck", bool(echo) and bool(bench))
 
 RETRACTED = re.compile(r"propert\w+ of the task|across unrelated systems"
                        r"|not (?:a propert\w+ of )?AGR\b"
                        r"|rather than (?:of )?AGR\b", re.I)
-for label, text in (("echo slide", echo), ("sections 29-30", said)):
+for label, text in (("echo slide", echo), ("sections 28-29", said)):
     hit = RETRACTED.search(text)
     ck(f"{label} does not deflect it onto the task", hit is None,
        hit.group(0)[:60] if hit else "")
@@ -1216,7 +1243,7 @@ if nodes in NUM:
     ck(f"the slide says {NUM[nodes]} nodes", f"{NUM[nodes]} nodes" in SM,
        f"diagram draws {nodes}")
     ck(f"the script says {NUM[nodes].lower()} nodes",
-       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(12), re.I) is not None)
+       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(11), re.I) is not None)
 
 
 def target(edge):
@@ -1249,12 +1276,12 @@ if m and len(back) in NUM:
     ck("and every name is a label on the diagram",
        set(listed) <= labels, f"{sorted(set(listed) - labels)} not labelled")
 
-s12 = spoken(12)
+s11 = spoken(11)
 ck("the script does not harden the old count",
-   re.search(r"exactly (?:one|two|three|four|five) cycles", s12, re.I) is None)
+   re.search(r"exactly (?:one|two|three|four|five) cycles", s11, re.I) is None)
 if len(back) in NUM:
     ck(f"the script also says {NUM[len(back)].lower()} cycles",
-       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s12, re.I)
+       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s11, re.I)
        is not None)
 
 # The same diagram is drawn three times, and each copy's prose has to
@@ -1536,7 +1563,7 @@ ck("the slide lists them in the thesis's severity order", not swaps,
 print("\n== the pre-specified wording is accounted for ==")
 # The deck's own spelling is a rule, not a preference: the standing note
 # in thesis_paper/sections/setup.tex says never "pre-registered", the
-# slide comment repeats it, and section 31 now says it out loud. It was
+# slide comment repeats it, and section 30 now says it out loud. It was
 # checked in none of the three -- CONTRIB_KEYS accepted either spelling,
 # and the explanation rule below keyed off the deck, so a slide drifting
 # back to the thesis's word ALSO switched off the rule that would have
@@ -1547,11 +1574,11 @@ ck("the deck never writes pre-registered",
    "thesis_paper/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
 if "pre-registered" in thesis_six:
-    s31 = spoken(31)
-    ck("the script names the thesis's word", "pre-registered" in s31.lower())
-    ck("and the word the slide uses", "pre-specified" in s31.lower())
+    s30 = spoken(30)
+    ck("the script names the thesis's word", "pre-registered" in s30.lower())
+    ck("and the word the slide uses", "pre-specified" in s30.lower())
     ck("and gives the reason the slide diverges",
-       re.search(r"registr(y|ies)", s31, re.I) is not None)
+       re.search(r"registr(y|ies)", s30, re.I) is not None)
 else:
     ck("the two documents still differ on this word", True,
        "reconciled -- rule retired")
@@ -1568,13 +1595,13 @@ else:
 print("\n== the hop curve is the strata ==")
 TR = J["main_results"]["hop_trends"]["cwq"]
 HOP = frame("RQ1: accuracy against hop count")
-s22 = spoken(22)
+s21 = spoken(21)
 agr = TR["agr"]["hits_at_1"]
 arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)
 ck("the hop slide is in the deck", bool(HOP))
 ck(f"the slide quotes AGR's CWQ curve {agr}",
    re.search(arrow, HOP) is not None, "in that order")
-ck("the script quotes the same three", re.search(arrow, s22) is not None)
+ck("the script quotes the same three", re.search(arrow, s21) is not None)
 
 rising = TR["_systems_monotone_rising"]
 ck("AGR is the only CWQ system that rises", rising == ["agr"], str(rising))
@@ -1582,7 +1609,7 @@ below = TR["_systems_ending_below_h1"]
 ck(f"the other {len(below)} end below their one-hop score",
    sorted(below) == sorted(k for k in TR
                            if not k.startswith("_") and k != "agr"))
-for label, text in (("slide", HOP), ("script", s22)):
+for label, text in (("slide", HOP), ("script", s21)):
     ck(f"the {label} says AGR alone ends above where it started",
        re.search(r"only\b[^.]*\bend(?:s|ing)? above where it started",
                  plain(text)) is not None)
@@ -1591,7 +1618,7 @@ falling = TR["_systems_monotone_falling"]
 ck(f"{len(falling)} of the other four decay monotonically",
    len(falling) in NUM, str(sorted(falling)))
 decay = re.compile(NUM[len(falling)] + r" of the other (\w+) decay", re.I)
-for label, text in (("slide", HOP), ("script", s22)):
+for label, text in (("slide", HOP), ("script", s21)):
     m = decay.search(plain(text))
     ck(f"the {label} says {NUM[len(falling)].lower()} of the others decay",
        m is not None)
@@ -1605,7 +1632,7 @@ ck("ToG's CWQ curve is neither rising nor falling throughout",
    not TR["tog"]["monotone_falling"] and not TR["tog"]["monotone_rising"])
 ck(f"the script says it ends {abs(net)} below its one-hop score",
    re.search(r"(?<![\d.])" + re.escape(str(abs(net)))
-             + r"(?![\d.])[^.]*below its own one-hop", s22) is not None,
+             + r"(?![\d.])[^.]*below its own one-hop", s21) is not None,
    f"hop_trends gives {net}")
 
 # The strata the answer rests on, from the stratum table.
@@ -1763,8 +1790,8 @@ else:
                          rf"(?:tools|operations)[^.]{{0,40}}hard caps", re.I)
     # spoken(8) until now, which is the state-machine section and has
     # never made this claim -- an earlier bulk renumber moved the
-    # number without moving the rule. Section 13 is the tools section.
-    for label, text in (("card", CARD), ("script", spoken(13))):
+    # number without moving the rule. Section 12 is the tools section.
+    for label, text in (("card", CARD), ("script", spoken(12))):
         ck(f"the {label} does not claim a cap on all of them",
            allcaps.search(text) is None,
            f"only {len(capped)} of {len(named)} cap anything")

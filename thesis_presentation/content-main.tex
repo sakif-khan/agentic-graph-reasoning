@@ -33,35 +33,8 @@
   \takeaway{The failure is not visible in the answer.}
 \end{frame}
 
-% ===================== 3 =====================
-% The three headline figures moved here off the opening slide, which was
-% carrying the argument and the measurement at once. check_slides.py reads
-% all three out of thesis_numbers.json and no longer finds them on one
-% frame, so its lookup spans this pair -- see frames() there.
-\begin{frame}{How often? Our own control}
-  \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
-      No retrieval, same backbone, WebQSP:
-      \vspace{2mm}
-      \begin{itemize}
-        \item $661$ entities asserted
-        \item $179$ of them \alert{do not exist} in the knowledge graph
-        \item that is $27.1\%$, stated with no hedge
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.44\textwidth}
-      \begin{block}{Read that again}
-        More than one asserted entity in four names \alert{nothing at all}
-        --- and the sentence around it is indistinguishable from the ones
-        that are right.
-      \end{block}
-    \end{column}
-  \end{columns}
-  \takeaway{The failure is not rare either: $27.1\%$, measured here rather
-    than quoted.}
-\end{frame}
 
-% ===================== 4 =====================
+% ===================== 3 =====================
 \begin{frame}{What a hallucination is}
   Output that is fluent, well formed, and backed by \alert{no source the
   model can point to}.
@@ -88,7 +61,7 @@
     one this thesis attacks, and the only one it claims.}
 \end{frame}
 
-% ===================== 5 =====================
+% ===================== 4 =====================
 \begin{frame}{Where it comes from}
   Not a bug that escaped testing --- a consequence of how these models are
   built, which is why the response has to be architectural.
@@ -114,7 +87,7 @@
   \takeaway{Generating text and recalling a fact are the same operation.}
 \end{frame}
 
-% ===================== 6 =====================
+% ===================== 5 =====================
 \begin{frame}{Which of the three can we act on?}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
@@ -139,7 +112,7 @@
     anything is emitted.}
 \end{frame}
 
-% ===================== 7 =====================
+% ===================== 6 =====================
 \begin{frame}{What a knowledge graph is}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
@@ -163,7 +136,7 @@
     seen again.}
 \end{frame}
 
-% ===================== 8 =====================
+% ===================== 7 =====================
 \begin{frame}{The complication: mediator nodes}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
@@ -188,7 +161,7 @@
     question names is rarely the relation the graph stores.}
 \end{frame}
 
-% ===================== 9 =====================
+% ===================== 8 =====================
 \begin{frame}{Where existing approaches stop}
   % Widths measured from the cells, not guessed. The last column cannot be
   % made single-line -- "Emits whatever the last generation call produces" is
@@ -217,7 +190,7 @@
     delivered.}
 \end{frame}
 
-% ===================== 10 =====================
+% ===================== 9 =====================
 \begin{frame}{What everyone else does}
   \begin{table}
     \small
@@ -242,7 +215,7 @@
     retrieved, before answering.}
 \end{frame}
 
-% ===================== 11 =====================
+% ===================== 10 =====================
 \begin{frame}{Research questions}
   \begin{enumerate}
     \item[\textbf{RQ1}] Does agentic navigation improve multi-hop factual
@@ -260,7 +233,7 @@
     would hide them.}
 \end{frame}
 
-% ===================== 12 =====================
+% ===================== 11 =====================
 \begin{frame}{AGR: an explicit state machine}
   \begin{columns}[T]
     \begin{column}{0.46\textwidth}
@@ -333,7 +306,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 13 =====================
+% ===================== 12 =====================
 \begin{frame}{Constrained tools, not free-form queries}
   % Natural column widths, not fixed ones: every cell here is a short phrase,
   % and a fixed measure wrapped four of them onto a second line for the sake
@@ -373,7 +346,7 @@
     possible.}
 \end{frame}
 
-% ===================== 14 =====================
+% ===================== 13 =====================
 \begin{frame}{The Structural Verification Layer}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}
@@ -399,7 +372,7 @@
     \emph{not} do.}
 \end{frame}
 
-% ===================== 15 =====================
+% ===================== 14 =====================
 % The bound used to sit in a block on the same slide as the four steps,
 % under a heading that read as a footnote to them. It is not a footnote:
 % it is the property the supervisor's first issue is about, and it is now
@@ -434,7 +407,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 16 =====================
+% ===================== 15 =====================
 \begin{frame}{One claim, three routes}
   \centering
   % Height-constrained, so the caption below it decides how big the diagram
@@ -446,7 +419,7 @@
   graph lookups --- and neither of them reads the relation.}
 \end{frame}
 
-% ===================== 17 =====================
+% ===================== 16 =====================
 \begin{frame}{One question, end to end}
   \small
   \textsf{WebQTest-960} --- ``who plays dwight in the office''
@@ -485,7 +458,7 @@
   \end{columns}
 \end{frame}
 
-% ===================== 18 =====================
+% ===================== 17 =====================
 \begin{frame}{The environment and the question sets}
   \begin{columns}[T]
     \begin{column}{0.45\textwidth}
@@ -529,7 +502,7 @@
     accuracy ceiling is known.}
 \end{frame}
 
-% ===================== 19 =====================
+% ===================== 18 =====================
 \begin{frame}{Making the comparison fair}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
@@ -557,7 +530,7 @@
   \takeaway{One thing is \emph{not} held equal, and it is the next slide.}
 \end{frame}
 
-% ===================== 20 =====================
+% ===================== 19 =====================
 % This block claimed "not to model capacity or to a bigger retrieval
 % budget". The retrieval-budget half was the deck's own addition: the
 % thesis abstract claims only "architecture, not model capacity", and
@@ -589,7 +562,7 @@
     the thesis.}
 \end{frame}
 
-% ===================== 21 =====================
+% ===================== 20 =====================
 \begin{frame}{Main results}
   \begin{table}
     \small
@@ -621,7 +594,7 @@
     of the other agentic system.}
 \end{frame}
 
-% ===================== 22 =====================
+% ===================== 21 =====================
 \begin{frame}{RQ1: accuracy against hop count}
   \centering
   \input{figures/fig_hop_strata.tex}
@@ -633,7 +606,7 @@
   \takeaway{RQ1 is answered by a shape, not a difference of means.}
 \end{frame}
 
-% ===================== 23 =====================
+% ===================== 22 =====================
 \begin{frame}{The caveat I want to raise myself}
   \begin{table}
     \small
@@ -662,7 +635,7 @@
     reasons better per step.}
 \end{frame}
 
-% ===================== 24 =====================
+% ===================== 23 =====================
 \begin{frame}{RQ2: does anything ungrounded get asserted?}
   \begin{table}
     \small
@@ -686,7 +659,7 @@
     property of \emph{graph navigation}, not of the verification layer.}
 \end{frame}
 
-% ===================== 25 =====================
+% ===================== 24 =====================
 \begin{frame}{RQ2: what verification does \emph{not} do}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
@@ -709,7 +682,7 @@
   accuracy benefit the measurement does not support.
 \end{frame}
 
-% ===================== 26 =====================
+% ===================== 25 =====================
 \begin{frame}{RQ2: so what does it do?}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
@@ -736,7 +709,7 @@
     it is the whole of it.}
 \end{frame}
 
-% ===================== 27 =====================
+% ===================== 26 =====================
 \begin{frame}{RQ3: what each component earns}
   \begin{table}
     \small
@@ -763,7 +736,7 @@
     the next slide, and its sign is backwards.}
 \end{frame}
 
-% ===================== 28 =====================
+% ===================== 27 =====================
 % The interpretation used to sit under the table with \vspace{-5mm} in
 % front of it, which is how the block titles came to overprint the
 % table's bottom rule. Negative vspace produces no overfull box, so the
@@ -792,7 +765,7 @@
     measurement forced, not one it confirmed.}
 \end{frame}
 
-% ===================== 29 =====================
+% ===================== 28 =====================
 \begin{frame}{Every failure, read and labelled}
   \begin{columns}[T]
     \begin{column}{0.44\textwidth}
@@ -845,7 +818,7 @@
     invention.}
 \end{frame}
 
-% ===================== 30 =====================
+% ===================== 29 =====================
 \begin{frame}{The echo attractor}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
@@ -883,7 +856,7 @@
   \takeaway{The contribution is the mechanism, named, not the count.}
 \end{frame}
 
-% ===================== 31 =====================
+% ===================== 30 =====================
 \begin{frame}{Contributions, and what I would not claim}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}

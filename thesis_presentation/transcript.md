@@ -1,14 +1,14 @@
 # Pre-defense transcript
 
-Rehearsal script for **`pre-defense-0421052099.pdf`** — 32 pages: a title,
-thirty body slides, a closing slide.
+Rehearsal script for **`pre-defense-0421052099.pdf`** — 31 pages: a title,
+twenty-nine body slides, a closing slide.
 
 The six backup slides are a **separate file**,
 `pre-defense-0421052099-backup.pdf`. You do not present them. Open it alongside
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 23 min 58 s of speaking against a 25-minute limit.** That leaves
+**Budget: 23 min 33 s of speaking against a 25-minute limit.** That leaves
 just over a minute, and every row below is set to exactly what its own words
 take at 93 wpm — so the minute is the whole of the slack, and no individual
 slide holds any.
@@ -40,41 +40,40 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | --- | --- | ---: | ---: |
 | 1 | Title | 0:19 | 0:19 |
 | 2 | The problem | 0:32 | 0:51 |
-| 3 | How often? Our own control | 0:25 | 1:16 |
-| 4 | What a hallucination is | 0:38 | 1:54 |
-| 5 | Where it comes from | 0:31 | 2:25 |
-| 6 | Which of the three can we act on? | 0:32 | 2:57 |
-| 7 | What a knowledge graph is | 0:37 | 3:34 |
-| 8 | The complication: mediator nodes | 0:34 | 4:08 |
-| 9 | Where existing approaches stop | 0:41 | 4:49 |
-| 10 | What everyone else does | 0:56 | 5:45 |
-| 11 | Research questions | 0:53 | 6:38 |
-| 12 | AGR: an explicit state machine | 1:08 | 7:46 |
-| 13 | Constrained tools | 0:37 | 8:23 |
-| 14 | The Structural Verification Layer | 0:32 | 8:55 |
-| 15 | What *structural* means — and what it does not | 0:58 | 9:53 |
-| 16 | One claim, three routes | 0:37 | 10:30 |
-| 17 | One question, end to end | 1:08 | 11:38 |
-| 18 | The environment and the question sets | 0:59 | 12:37 |
-| 19 | Making the comparison fair | 0:32 | 13:09 |
-| 20 | What is *not* held equal | 0:43 | 13:52 |
-| 21 | **Main results** | 1:10 | 15:02 |
-| 22 | **RQ1: accuracy against hop count** | 1:02 | 16:04 |
-| 23 | The caveat I want to raise myself | 1:05 | 17:09 |
-| 24 | RQ2: does anything ungrounded get asserted? | 1:03 | 18:12 |
-| 25 | RQ2: what verification does *not* do | 0:45 | 18:57 |
-| 26 | RQ2: so what does it do? | 0:41 | 19:38 |
-| 27 | **RQ3: what each component earns** | 0:22 | 20:00 |
-| 28 | **RQ3: one effect, and its sign is backwards** | 0:48 | 20:48 |
-| 29 | Every failure, read and labelled | 0:24 | 21:12 |
-| 30 | The echo attractor | 1:12 | 22:24 |
-| 31 | Contributions, and what I would not claim | 1:29 | 23:53 |
-| 32 | Thank you | 0:05 | 23:58 |
+| 3 | What a hallucination is | 0:38 | 1:29 |
+| 4 | Where it comes from | 0:31 | 2:00 |
+| 5 | Which of the three can we act on? | 0:32 | 2:32 |
+| 6 | What a knowledge graph is | 0:37 | 3:09 |
+| 7 | The complication: mediator nodes | 0:34 | 3:43 |
+| 8 | Where existing approaches stop | 0:41 | 4:24 |
+| 9 | What everyone else does | 0:56 | 5:20 |
+| 10 | Research questions | 0:53 | 6:13 |
+| 11 | AGR: an explicit state machine | 1:08 | 7:21 |
+| 12 | Constrained tools | 0:37 | 7:58 |
+| 13 | The Structural Verification Layer | 0:32 | 8:30 |
+| 14 | What *structural* means — and what it does not | 0:58 | 9:28 |
+| 15 | One claim, three routes | 0:37 | 10:05 |
+| 16 | One question, end to end | 1:08 | 11:13 |
+| 17 | The environment and the question sets | 0:59 | 12:12 |
+| 18 | Making the comparison fair | 0:32 | 12:44 |
+| 19 | What is *not* held equal | 0:43 | 13:27 |
+| 20 | **Main results** | 1:10 | 14:37 |
+| 21 | **RQ1: accuracy against hop count** | 1:02 | 15:39 |
+| 22 | The caveat I want to raise myself | 1:05 | 16:44 |
+| 23 | RQ2: does anything ungrounded get asserted? | 1:03 | 17:47 |
+| 24 | RQ2: what verification does *not* do | 0:45 | 18:32 |
+| 25 | RQ2: so what does it do? | 0:41 | 19:13 |
+| 26 | **RQ3: what each component earns** | 0:22 | 19:35 |
+| 27 | **RQ3: one effect, and its sign is backwards** | 0:48 | 20:23 |
+| 28 | Every failure, read and labelled | 0:24 | 20:47 |
+| 29 | The echo attractor | 1:12 | 21:59 |
+| 30 | Contributions, and what I would not claim | 1:29 | 23:28 |
+| 31 | Thank you | 0:05 | 23:33 |
 
 The four **bold** slides are the ones the committee will actually
-interrogate. If you are running long, take time from 9, 13, and 16 —
-never from 21, 22, 23, 27 or 28. That is the same list the recovery notes
-protect, and 23 is on it for a different reason: skipping it hands the
+interrogate. If you are running long, take time from 8, 12, and 15 —
+never from 20, 21, 22, 26 or 27. That is the same list the recovery notes
+protect, and 22 is on it for a different reason: skipping it hands the
 clipping issue to them.
 
 ---
@@ -98,18 +97,7 @@ clipping issue to them.
 
 ---
 
-## 3 — How often? Our own control *(0:25)*
-
-> That isn't rhetorical — it's measured here. In my own no-retrieval control on
-> WebQSP, the model asserted 661 entities. 179 of them do not exist anywhere in
-> the knowledge graph. That's 27.1 percent, every one stated without a hedge.
-
-**Beat after "27.1 percent."** It is the number that sets up the whole talk,
-and the next slide opens on the question it raises.
-
----
-
-## 4 — What a hallucination is *(0:38)*
+## 3 — What a hallucination is *(0:38)*
 
 > First, the word. A hallucination is fluent, well formed, and backed by no
 > source the model can point to.
@@ -122,7 +110,7 @@ and the next slide opens on the question it raises.
 
 ---
 
-## 5 — Where it comes from *(0:31)*
+## 4 — Where it comes from *(0:31)*
 
 > Why does it happen? Not a bug that escaped testing — it comes out of how these
 > models are built, so the response has to be architectural.
@@ -134,7 +122,7 @@ and the next slide opens on the question it raises.
 
 ---
 
-## 6 — Which of the three can we act on? *(0:32)*
+## 5 — Which of the three can we act on? *(0:32)*
 
 > Only the third; the other two need retraining. So this is a systems problem:
 > control what goes in, and check what comes back out against it.
@@ -144,7 +132,7 @@ and the next slide opens on the question it raises.
 
 ---
 
-## 7 — What a knowledge graph is *(0:37)*
+## 6 — What a knowledge graph is *(0:37)*
 
 > Two things about the graph, because they shape everything after.
 >
@@ -155,7 +143,7 @@ and the next slide opens on the question it raises.
 
 ---
 
-## 8 — The complication: mediator nodes *(0:34)*
+## 7 — The complication: mediator nodes *(0:34)*
 
 > Freebase stores any fact with more than two participants as a node rather than
 > an edge. "Rainn Wilson played Dwight in The Office" is one node joining three
@@ -169,7 +157,7 @@ verification layer's honest limit.*
 
 ---
 
-## 9 — Where existing approaches stop *(0:41)*
+## 8 — Where existing approaches stop *(0:41)*
 
 > Four families, and each stops somewhere specific — the table walks left to
 > right. The first three stop before reasoning begins, or at a radius fixed in
@@ -183,7 +171,7 @@ verification layer's honest limit.*
 
 ---
 
-## 10 — What everyone else does *(0:56)*
+## 9 — What everyone else does *(0:56)*
 
 > Five systems, and the column that matters is the last one.
 >
@@ -201,7 +189,7 @@ the numbers. The environment slide answers it.*
 
 ---
 
-## 11 — Research questions *(0:53)*
+## 10 — Research questions *(0:53)*
 
 > Three questions.
 >
@@ -219,7 +207,7 @@ the numbers. The environment slide answers it.*
 
 ---
 
-## 12 — AGR: an explicit state machine *(1:08)*
+## 11 — AGR: an explicit state machine *(1:08)*
 
 > AGR is an explicit state machine — not a prompt loop. Six nodes.
 >
@@ -244,7 +232,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 13 — Constrained tools *(0:37)*
+## 12 — Constrained tools *(0:37)*
 
 > The agent never writes a graph query. It gets four operations with fixed
 > signatures — relations, neighbours, an adjacency check, and entity
@@ -256,7 +244,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 14 — The Structural Verification Layer *(0:32)*
+## 13 — The Structural Verification Layer *(0:32)*
 
 > This is the contribution.
 >
@@ -267,25 +255,25 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 15 — What *structural* means — and what it does not *(0:58)*
+## 14 — What *structural* means — and what it does not *(0:58)*
 
 > Now the bound.
 >
 > *Structural* means the check is against the graph the agent walked, not the
 > model's opinion of its own output. It does not mean the check reads the
 > relation: the first two routes test adjacency, either direction, so a mother
-> claim survives on a child edge — the mediator problem from slide 8, arriving as
+> claim survives on a child edge — the mediator problem from slide 7, arriving as
 > a limitation.
 >
 > "Its evidence" is narrower too — one route of three, inside the run only.
-> Slide 25 has both bounds. And a claim can be true and still be the wrong
+> Slide 24 has both bounds. And a claim can be true and still be the wrong
 > answer.
 
-**The last sentence is a promise. Slide 30 pays it off.**
+**The last sentence is a promise. Slide 29 pays it off.**
 
 ---
 
-## 16 — One claim, three routes *(0:37)*
+## 15 — One claim, three routes *(0:37)*
 
 > This is the path a single claim takes. Three routes to being called supported,
 > and the ordering is about cost: only the third spends a model call. The first
@@ -296,7 +284,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 17 — One question, end to end *(1:08)*
+## 16 — One question, end to end *(1:08)*
 
 > One real question, all the way through — a run out of the committed records.
 >
@@ -315,7 +303,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 18 — The environment and the question sets *(0:59)*
+## 17 — The environment and the question sets *(0:59)*
 
 > The environment is a Freebase-derived graph: 2.6 million entities, 8.3
 > million triples, seven thousand distinct relations, importing in 36 seconds.
@@ -330,7 +318,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 19 — Making the comparison fair *(0:32)*
+## 18 — Making the comparison fair *(0:32)*
 
 > Five systems, on the slide: a parametric control, three retrieval baselines,
 > and AGR.
@@ -341,7 +329,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 20 — What is *not* held equal *(0:43)*
+## 19 — What is *not* held equal *(0:43)*
 
 > One thing is not equal, and I would rather say it than have it found.
 > Think-on-Graph prunes from a narrower candidate set than AGR. That cuts against
@@ -360,7 +348,7 @@ recite 40/20/300/200 here.
 
 ---
 
-## 21 — Main results *(1:10)* ★
+## 20 — Main results *(1:10)* ★
 
 > Here is the comparison.
 >
@@ -387,7 +375,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 22 — RQ1: accuracy against hop count *(1:02)* ★
+## 21 — RQ1: accuracy against hop count *(1:02)* ★
 
 > The direct answer to RQ1, and it is a shape rather than a difference of means.
 >
@@ -405,7 +393,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 23 — The caveat I want to raise myself *(1:05)*
+## 22 — The caveat I want to raise myself *(1:05)*
 
 > I want to raise this before you do.
 >
@@ -425,7 +413,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 24 — RQ2: does anything ungrounded get asserted? *(1:03)*
+## 23 — RQ2: does anything ungrounded get asserted? *(1:03)*
 
 > RQ2. Does anything ungrounded get asserted?
 >
@@ -442,7 +430,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 25 — RQ2: what verification does *not* do *(0:45)*
+## 24 — RQ2: what verification does *not* do *(0:45)*
 
 > Which leaves the real question. The negative half first: removing the layer
 > changes accuracy by an amount I cannot detect — p equals 1.0 on both datasets.
@@ -454,7 +442,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 26 — RQ2: so what does it do? *(0:41)*
+## 25 — RQ2: so what does it do? *(0:41)*
 
 > What it does do is withhold what it cannot ground. Removing the layer drops the
 > CWQ hedge rate from 23.2 to 20.2 percent — direction only, six questions. A
@@ -466,7 +454,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 27 — RQ3: what each component earns *(0:22)* ★
+## 26 — RQ3: what each component earns *(0:22)* ★
 
 > RQ3: which components earn their cost.
 >
@@ -476,7 +464,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 28 — RQ3: one effect, and its sign is backwards *(0:48)* ★
+## 27 — RQ3: one effect, and its sign is backwards *(0:48)* ★
 
 > The one that does is the planner, and the sign is backwards. Removing it
 > *improves* WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31 percent.
@@ -491,7 +479,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 29 — Every failure, read and labelled *(0:24)*
+## 28 — Every failure, read and labelled *(0:24)*
 
 > I read all 259 remaining failures and labelled them by hand. Top categories,
 > pooled across both datasets.
@@ -510,13 +498,13 @@ are corrected with.
 
 ---
 
-## 30 — The echo attractor *(1:12)*
+## 29 — The echo attractor *(1:12)*
 
 > The one to name is sixth, with 13 cases: the **echo attractor** — a real,
 > grounded entity one hop from the correct answer. Ask for a director and get the
 > film; ask for a capital and get the country.
 >
-> Why it matters, and it is the promise I made on slide 15: any grounding check
+> Why it matters, and it is the promise I made on slide 14: any grounding check
 > *passes* it. It is real, it was traversed, the triple exists — true, and wrong.
 >
 > Different systems fall into it together, so no evaluation treating them as
@@ -534,7 +522,7 @@ seen from the other side.
 
 ---
 
-## 31 — Contributions, and what I would not claim *(1:29)*
+## 30 — Contributions, and what I would not claim *(1:29)*
 
 > To summarise. Six contributions, the six the thesis claims in section 1.6.
 > The one I'd underline is stratum-dependent decomposition: the literature
@@ -555,7 +543,7 @@ seen from the other side.
 
 ---
 
-## 32 — Thank you *(0:05)*
+## 31 — Thank you *(0:05)*
 
 > Thank you. I'm happy to take questions.
 
@@ -589,13 +577,22 @@ chosen to suit AGR.
 
 ## Anticipated questions
 
+**"How do you know models actually do this? Where is your evidence?"**
+From this work's own no-retrieval baseline, which is the parametric control
+in the five-system comparison. On WebQSP it asserted 661 entities and 179 of
+them do not exist anywhere in the knowledge graph — 27.1 percent, every one
+stated without a hedge. Slide 23 gives the same measurement over both
+datasets pooled: 1,001 asserted, 221 ungrounded, 22.1 percent. The WebQSP
+slice runs higher because CWQ questions are longer and the model hedges more
+on them; the pooled row is the one I quote, and it is the one in the thesis.
+
 **"Isn't the 25-call cap arbitrary, and doesn't it favour AGR?"**
 It's the cap Think-on-Graph's own paper operates under. And AGR never reaches it
 — zero percent on both datasets (backup page 3). If I raised the cap, AGR's numbers would
 not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
 
-**"Do the categories look the same on both datasets?"** *(Slide 29 is pooled.)*
+**"Do the categories look the same on both datasets?"** *(Slide 28 is pooled.)*
 No, and that is the more interesting answer. The census is reported split in the
 thesis and never pooled, because wrong and hedge describe different failure
 semantics and the proportions differ sharply by dataset. The clearest case is
@@ -604,7 +601,7 @@ not compound, so the category barely exists there; on ComplexWebQuestions it is
 the largest single failure mode. A pooled percentage would describe neither
 dataset. The full split is backup page 4.
 
-**"Doesn't GraphRAG show the same thing?"** *(Slide 21 puts 0.203 and 0.205
+**"Doesn't GraphRAG show the same thing?"** *(Slide 20 puts 0.203 and 0.205
 side by side. Do not pool them.)*
 No, and the thesis says so rather than letting the two numbers be read together.
 GraphRAG retrieves a one-logical-hop neighbourhood, so its fall on CWQ confounds
@@ -620,7 +617,7 @@ carries the paradigm claim, because one verbalised triple cannot contain a chain
 at any radius.
 
 **"Did both systems see the same candidate sets?"** *(The sharper form of the
-cap question. Slide 20 raises it deliberately — answer it, don't deflect.)*
+cap question. Slide 19 raises it deliberately — answer it, don't deflect.)*
 No, and it is the one thing I do not hold constant. Think-on-Graph keeps 40
 relations per entity and 20 neighbours per relation — the pruning widths of the
 algorithm as published — where AGR keeps 300 and 200. Measured over the
@@ -664,7 +661,7 @@ explicit hedge, and it pairs the answer with the triples that ground it at the
 point of emission. I report the null on accuracy rather than hiding it — and I
 report the bounds on the auditability too, which is the next question.
 
-**"Show me one supporting triple, then."** *(Expect this. Slide 24 invites it.)*
+**"Show me one supporting triple, then."** *(Expect this. Slide 23 invites it.)*
 I can't, from the committed record, and that is a limitation rather than an
 evasion. `RunLogger` writes `n_supporting_triples` — an integer — and discards
 the list, so no committed artifact in this work contains a single supporting
@@ -677,9 +674,9 @@ first item in my future work. I did not make it late because it would separate
 the code from results already frozen against it.
 
 **"Why isn't the five-system comparison one of your contributions?"**
-Because the thesis does not count it as one, and slide 31 is the thesis's list —
+Because the thesis does not count it as one, and slide 30 is the thesis's list —
 section 1.6, one subsection per item. The comparison and the hop-count shape are
-results the contributions rest on; they get slides 21 and 22, which is where the
+results the contributions rest on; they get slides 20 and 21, which is where the
 weight belongs. An earlier version of that slide promoted both to contributions
 and dropped the ablation, the decomposition finding and the protocol to make room
 — still saying "six". The thesis had already been audited for exactly that
@@ -763,20 +760,20 @@ pulled directly from the thesis's own generated sources.
 
 ## Recovery notes
 
-If you hit **15:02 (the end of slide 21) more than 40 seconds late**, compress
+If you hit **14:37 (the end of slide 20) more than 40 seconds late**, compress
 as follows.
 
-- Slides 25 and 26 — take them as one: *"It doesn't improve accuracy. It
+- Slides 24 and 25 — take them as one: *"It doesn't improve accuracy. It
   converts silent error into an explicit hedge and attaches evidence. The case
   is auditability."* Saves ~50 s.
-- Slide 5 — name the three origins and stop; skip the model sentence.
-  Saves ~15 s. Slide 9 has already been compressed this way and cannot give
+- Slide 4 — name the three origins and stop; skip the model sentence.
+  Saves ~15 s. Slide 8 has already been compressed this way and cannot give
   again.
-- Slide 4 — the two kinds are on the slide; say the last sentence only.
+- Slide 3 — the two kinds are on the slide; say the last sentence only.
   Saves ~20 s. This is the one addition of this round that the talk can lose
   without losing a claim.
 
-Never compress 21, 22, 23, 27, or 28. Slide 23 in particular: skipping it
+Never compress 20, 21, 22, 26, or 27. Slide 22 in particular: skipping it
 means a committee member raises the clipping issue instead of you, and it
 lands very differently that way.
 
@@ -784,7 +781,7 @@ lands very differently that way.
 
 - **Say the number, then what it means.** Not the reverse. "Twenty-seven percent
   of asserted entities don't exist — the model is confidently inventing."
-- **Four slides are negative results** (22, 23, 24, 25). Deliver them at normal
+- **Four slides are negative results** (21, 22, 23, 24). Deliver them at normal
   pace, not apologetically. A student who reports a clean null is more credible
   than one who reports only wins.
 - The word is **hedge**, not "refuse." A hedge is a calibrated non-assertion.
