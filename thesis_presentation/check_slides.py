@@ -11,6 +11,7 @@ import csv
 import json
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -1399,6 +1400,29 @@ ck(f"and gives the shape flip, {split['webqsp']} against {split['cwq']}",
    f"composite_claim is {split['webqsp']}/{split['cwq']}")
 ck("and points at the split census",
    re.search(r"backup page \$?\d", census) is not None)
+
+# ---------------------------------------------------------------------
+# ...and the typeset transcript has to be the same script.
+#
+# transcript.tex is generated from transcript.md by build_transcript.py.
+# Every other rule in this file reads the Markdown, which is why the .tex
+# could sit nine sections behind through three resectionings with the whole
+# suite green: it was the one artifact nothing looked at. Its own header
+# said to regenerate it by hand, and by hand is how it went stale.
+#
+# Asked as "would regenerating change anything", so it is exact rather than
+# a sample of properties -- and scoped to the generated body, so editing the
+# preamble, which is still hand-authored, does not trip it.
+print("\n== the typeset transcript is the same script ==")
+GEN = os.path.join(HERE, "build_transcript.py")
+if not os.path.exists(GEN):
+    print("  [   ] build_transcript.py absent")
+else:
+    r = subprocess.run([sys.executable, GEN, "--check"],
+                       capture_output=True, text=True, cwd=HERE)
+    ck("transcript.tex matches transcript.md", r.returncode == 0,
+       (r.stdout + r.stderr).strip().splitlines()[-1]
+       if (r.stdout + r.stderr).strip() else "")
 
 # ---------------------------------------------------------------------
 # The rehearsal transcript's timing table has to add up.

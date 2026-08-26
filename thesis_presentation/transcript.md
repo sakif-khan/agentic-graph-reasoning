@@ -352,7 +352,7 @@ recite 40/20/300/200 here.
 
 > Here is the comparison.
 >
-> AGR reaches 0.755 Hits@1 and 0.642 F1 on WebQSP, 0.522 and 0.469 on
+> AGR reaches 0.755 Hits@1 and 0.642 F1 on WebQSP, and 0.522 and 0.469 on
 > ComplexWebQuestions — ahead of every baseline on both.
 >
 > Two things beyond the top line. First, vector RAG on ComplexWebQuestions:
