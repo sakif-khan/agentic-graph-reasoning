@@ -87,7 +87,8 @@ limitation rather than an evasion.
 
 Not fixed because the fix is persisting triples and re-running, which is
 an experiment: excluded by the window, and it would separate the code
-from results already frozen against it.
+from results already frozen against it. See *Persist the supporting
+triples* under deferred work.
 
 ## 3. Verification produces no measurable accuracy improvement
 
@@ -146,7 +147,8 @@ finishes is stated as a **lower bound** on what it could resolve at equal
 width, not an estimate.
 
 Re-running at 300/200 is real API cost and prompt changes miss the cache;
-it is already the first item in future work.
+it is already the first item in future work. See *Re-run Think-on-Graph
+at 300/200* under deferred work.
 
 ## 5. Only one run per system
 
@@ -166,7 +168,8 @@ re-run would measure nothing.** The response cache keys on model,
 temperature, reasoning effort and the full prompt, so an identical rerun
 is 100% cache hits and reproduces the run exactly, budget snapshots
 included. Genuine variance requires bypassing the cache at full price — a
-new experiment, not a re-execution.
+new experiment, not a re-execution. See *Repeated runs for variance*
+under deferred work.
 
 ## 6. Evaluation uses only 400 questions per benchmark
 
@@ -186,7 +189,8 @@ split rather than the sample size itself. If asked, that is the right
 place to point.
 
 Unchanged this round; full test splits are roughly $45–55 of API spend
-plus hours of runtime, which is an experiment and outside the window.
+plus hours of runtime, which is an experiment and outside the window —
+see *Evaluate the full test splits* under deferred work.
 Worth saying plainly in the room: the 400 per benchmark are *certified*
 questions, and every comparison is within-environment and paired, so the
 sample size costs power, not validity.
@@ -324,13 +328,79 @@ slide 14, and the transcript speaks it.
 
 ## What was deferred, and what each would cost
 
-These are the four experiment-dependent items, held back because the
+Four of the eight issues cannot be closed by writing anything. Each needs
+an experiment, and all four are held back for the same reason: the
 pre-defense is on 29 August 2026 and the frozen results must not move
-before it.
+before it. They are described in full here rather than abbreviated —
+these were "C1" to "C4" in the working checklist, which meant nothing to
+a reader of this file and collides with the unrelated C-numbering in
+`judge_v2.md` and `judge_v3.md`.
 
-| | Item | Cost / obstacle |
-|---|---|---|
-| **C1** | Persist triples, re-run | Closes 2. Splits code from results. |
-| **C2** | ToG at 300/200 | Closes 4. Real spend; the cache misses. |
-| **C3** | Repeated runs | Closes 5. Same config = 100% cache hits. |
-| **C4** | Full test splits | Closes 6. ~$45–55 plus hours of runtime. |
+Ordered by how much of a supervisor issue each would actually remove.
+
+### Persist the supporting triples, and re-run — closes issue 2
+
+**What it is.** `RunLogger` writes `n_supporting_triples`, an integer, and
+discards the triple list. The change is to write the list too, then re-run
+so the committed records carry it.
+
+**What it buys.** The evidence contract becomes externally auditable
+instead of auditable only inside the run — which is the thesis's own
+first-ranked limitation (§10.2, p. 127). It would also make wrongful
+acceptance measurable, since you could inspect what was accepted and on
+what basis; today only rejections are logged, so one polarity of the
+verifier's error rate is a blank.
+
+**Why not now.** It is one logging change and a full re-run. The re-run is
+the problem: every number in chapters 8 and 9 is frozen against the
+current records, so new records separate the code from the results the
+thesis reports. It is already the first item in future work
+(§10.3.2, p. 129).
+
+### Re-run Think-on-Graph at 300/200 — closes issue 4
+
+**What it is.** The agentic baseline prunes to 40 relations and 20
+neighbours per step, the widths of the published algorithm; AGR uses 300
+and 200. Re-running the baseline at AGR's widths removes the one variable
+the comparison does not hold constant.
+
+**What it buys.** The comparison becomes fully controlled, and the
+residual gap on questions Think-on-Graph finishes stops being a lower
+bound and becomes a measurement.
+
+**Why not now.** Real API spend, and the response cache cannot absorb it:
+changing the widths changes the prompts, so every call misses the cache
+and is billed. Note the direction first, though — a narrower candidate
+set makes each step *cheaper*, so the widths cannot explain why
+Think-on-Graph runs out of calls. This is a rigour item, not a threat to
+the finding.
+
+### Repeated runs for variance — closes issue 5
+
+**What it is.** Run each system more than once and report variance rather
+than a single trajectory.
+
+**What it buys.** Turns "≈67% trajectory stability" from a caveat into an
+error bar, so the reported differences could be stated with a spread.
+
+**Why not now, and this is the part worth knowing:** **a same-config
+re-run would measure nothing.** The response cache keys on model,
+temperature, reasoning effort and the full prompt, so an identical rerun
+is 100% cache hits and reproduces the first run exactly, budget snapshots
+included. It would look like perfect stability and mean nothing at all.
+Genuine variance requires bypassing the cache, which means paying full
+price for every call — a new experiment, not a re-execution. If one
+question in the viva deserves a prepared answer, it is this one.
+
+### Evaluate the full test splits — closes issue 6
+
+**What it is.** Run all questions in each benchmark's test split instead
+of the pre-registered stratified sample of 400 per dataset.
+
+**What it buys.** Power. It does not buy validity: every comparison here
+is within-environment and paired, so 400 costs the ability to detect
+small effects, not the right to compare.
+
+**Why not now.** Roughly $45–55 of API spend plus hours of runtime, and
+the same freezing problem as the first item — new runs would not match
+the reported numbers.
