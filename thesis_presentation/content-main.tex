@@ -36,27 +36,38 @@
 
 % ===================== 3 =====================
 \begin{frame}{What a hallucination is}
-  Output that is fluent, well formed, and backed by \alert{no source the
+  Output that is fluent, confident, and backed by \alert{no source the
   model can point to}.
-  \vspace{3mm}
+  % The two blocks sat 34pt below the lead-in and 9pt above the line under
+  % them, because a columns environment and a block each contribute their
+  % own skip above and neither contributes one below. Measured off the
+  % page and split evenly: 12.4pt comes off the top and goes back on at
+  % the bottom, so the pair is centred in its band and the frame's total
+  % height is unchanged. Negative here removes part of that inherited
+  % skip; it leaves 21.7pt of clear space, and the overprint rule in
+  % check_slides.py is what stands behind that claim.
+  \vspace{-3.9pt}
   \begin{columns}[T]
     \begin{column}{0.47\textwidth}
       \begin{block}{Factually wrong}
         \agrraggedright
-        It contradicts the world. \emph{``Ada Lovelace was born in Paris.''}
-        Checkable --- if you already have a reference to check it against.
+        It contradicts the world: \emph{``Ada Lovelace was born in
+        Paris.''} To catch it you need the true answer already --- the
+        thing we are trying to produce.
       \end{block}
     \end{column}
     \begin{column}{0.47\textwidth}
       \begin{block}{Unsupported}
         \agrraggedright
-        It may even be true, but nothing the system retrieved says so.
-        Checkable \alert{without} an oracle: against what was retrieved.
+        It may even be true, but nothing the system retrieved says so. To
+        catch it you need \alert{only what was retrieved} --- and we have
+        that.
       \end{block}
     \end{column}
   \end{columns}
-  \vspace{2mm}
-  From the outside the two are identical: confident, well formed, no hedge.
+  \vspace{18.1pt}
+  Identical from the outside. What differs is what it takes to
+  \emph{catch} them.
   \takeaway{A retrieval system can only police the second --- so that is the
     one this thesis attacks, and the only one it claims.}
 \end{frame}

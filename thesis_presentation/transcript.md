@@ -99,14 +99,16 @@ clipping issue to them.
 
 ## 3 — What a hallucination is *(0:38)*
 
-> First, the word. A hallucination is fluent, well formed, and backed by no
+> First, the word. A hallucination is fluent, confident, and backed by no
 > source the model can point to.
 >
-> Two kinds. One contradicts the world — catchable only if you already hold a
-> reference. The other may be true, but nothing retrieved supports it. Only the
-> second is checkable without an oracle, and that is the one I claim.
+> Two kinds, separated by what it takes to catch them. Factually wrong: you
+> need the true answer already, which is what we are trying to produce.
+> Unsupported: you need only what was retrieved, and we have that. I claim
+> the second.
 
-*The last sentence is a scope limit, not modesty. Say it at normal pace.*
+*Name the two block titles as you say them — the slide carries the rest. The
+last sentence is a scope limit, not modesty. Say it at normal pace.*
 
 ---
 
