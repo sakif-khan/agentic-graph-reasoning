@@ -24,9 +24,9 @@ The unit of judgement is therefore an \emph{entity together with its paths}, not
 a claim and not a set of triples. That distinction is what the following rules
 are about, and it is why several of them have no analogue in the claim-level
 structural check of \Cref{sec:structural-check}: that check asks whether an edge
-exists, whereas this one asks whether the edges that exist mean what the question
-asked. The sampling frame is built from asserted entities, so an abstention never
-reaches this task at all.
+exists, whereas this one asks whether the edges that exist mean what the
+question asked. The sampling frame is built from asserted entities, so an
+abstention never reaches this task at all.
 
 Eight rules constrain the judgement. Each was forced by a case met during
 calibration, and the guideline was fixed \emph{before} the blind annotation
@@ -41,25 +41,25 @@ there rather than here.
 
 \begin{enumerate}
 \item \textbf{Judge the asked relationship, under the graph's vocabulary.} The
-  test is whether the path relations express what the question asked, as the
-  graph is able to express it --- not whether a better-designed schema would
-  have said it more directly. A path that is merely \emph{about} the right
-  entities does not qualify.
-\item \textbf{A mediator-bridged pair of edges is one relation.} Freebase
-  routes many binary facts through an unnamed compound-value node, so the path
-  renders as two hops. It is judged as the single relationship it encodes, on
-  the same contract the tool layer uses (\Cref{sec:tool-adjacency}).
+test is whether the path relations express what the question asked, as the graph
+is able to express it --- not whether a better-designed schema would have said
+it more directly. A path that is merely \emph{about} the right entities does not
+qualify.
+\item \textbf{A mediator-bridged pair of edges is one relation.} Freebase routes
+many binary facts through an unnamed compound-value node, so the path renders as
+two hops. It is judged as the single relationship it encodes, on the same
+contract the tool layer uses (\Cref{sec:tool-adjacency}).
 \item \textbf{Any one supporting path is enough.} Up to three are shown. If one
-  of them expresses the asked relationship, the entity is supported; the others
-  need not, and a weak path alongside a good one is not evidence against.
+of them expresses the asked relationship, the entity is supported; the others
+need not, and a weak path alongside a good one is not evidence against.
 \item \textbf{Judge relations by role, not by type.} A relation that is generic
-  in most contexts counts when it is itself the thing asked about --- a
-  \textsf{nationality} edge is generic filler for a question about films and is
-  the entire answer for a question about citizenship.
+in most contexts counts when it is itself the thing asked about --- a
+\textsf{nationality} edge is generic filler for a question about films and is
+the entire answer for a question about citizenship.
 \item \textbf{For conjunctions, every asked relationship must be covered by some
-  specific path, jointly rather than in one chain.} A question imposing two
-  constraints is supported when the paths together establish both, even if no
-  single path establishes both at once.
+specific path, jointly rather than in one chain.} A question imposing two
+constraints is supported when the paths together establish both, even if no
+single path establishes both at once.
 \item \textbf{Judge each entity independently of answer-set completeness.}
   Whether the system found the \emph{other} correct answers is recall, and it is
   measured by F1 elsewhere. This task asks only whether \emph{this} assertion is
@@ -71,9 +71,9 @@ there rather than here.
   path for a filter the environment cannot represent would measure the
   environment, not the assertion.
 \item \textbf{A path expressing only the question's identifying descriptor,
-  rather than its actual ask, is unsupported.} ``The 33rd president who led the
-  nation during the war'' identifies its subject twice and asks for it once; a
-  path that only re-establishes the description has answered nothing.
+rather than its actual ask, is unsupported.} ``The 33rd president who led the
+nation during the war'' identifies its subject twice and asks for it once; a
+path that only re-establishes the description has answered nothing.
 \end{enumerate}
 
 Rule 8 names the \emph{composition-echo} case; \Cref{sec:judge} draws out why it
@@ -103,7 +103,7 @@ which was made for an unrelated reason.
 \begin{table}[!htb]
   \begin{center}
     \caption[Failure categories and their subtypes]{Failure categories and their
-      subtypes. One category per packet.}
+    subtypes. One category per packet.}
     \label{tab:census-schema}
     \footnotesize
     \begin{tabular}{|l|L{42mm}|L{45mm}|}
@@ -161,19 +161,21 @@ subtyped there, because the census met each one incidentally while reading a
 failure, whereas the adjudication pass of \Cref{sec:gold-quality} met roughly
 $148$ flagged rows and made exactly this judgement at volume. Subtyping a defect
 class is only worth doing where the boundaries were drawn against many cases, so
-the adjudication pass supplies the reference list and the census rows are counted
-against its categories rather than given a vocabulary of their own. \Cref{tab:golddefect-subtypes} gives them with the counts they
-were derived from.
+the adjudication pass supplies the reference list and the census rows are
+counted against its categories rather than given a vocabulary of their own.
+\Cref{tab:golddefect-subtypes} gives them with the counts they were derived
+from.
 
 \begin{table}[!htb]
   \begin{center}
-    \caption[Gold-defect and question-defect subtypes]{Gold-defect and question-defect subtypes, with the counts observed
-      during adjudication across both datasets. The unit is the \emph{flagged
-      row}: $63$ of the $148$ rows the consensus pass surfaced were adjudicated
-      defective, and these are their subtypes. That is not the unit of
-      \Cref{tab:goldnoise}, which counts the $41$ \emph{questions} the
-      adjudication excluded --- a defective row does not always produce an
-      exclusion, and \Cref{sec:gold-quality} keeps the two apart deliberately.}
+    \caption[Gold-defect and question-defect subtypes]{Gold-defect and
+    question-defect subtypes, with the counts observed during adjudication
+    across both datasets. The unit is the \emph{flagged row}: $63$ of the $148$
+    rows the consensus pass surfaced were adjudicated defective, and these are
+    their subtypes. That is not the unit of \Cref{tab:goldnoise}, which counts
+    the $41$ \emph{questions} the adjudication excluded --- a defective row does
+    not always produce an exclusion, and \Cref{sec:gold-quality} keeps the two
+    apart deliberately.}
     \label{tab:golddefect-subtypes}
     \footnotesize
     \begin{tabular}{|l|L{72mm}|r|}
@@ -232,7 +234,7 @@ file is authoritative for which field is not obvious from inspection.
 \begin{table}[!htb]
   \begin{center}
     \caption[Where each label lives]{Where each label lives, and what
-      regenerating will do to it.}
+    regenerating will do to it.}
     \label{tab:labelfiles}
     \footnotesize
     \begin{tabular}{|l|L{88mm}|}
@@ -278,18 +280,17 @@ absorbed.
 
 \begin{itemize}
 \item The false-positive and false-negative gloss in the working reference
-  paired the two names in reverse of the standard convention. It was corrected,
-  and the convention is now stated explicitly above. Stage~D's labels had
-  followed the standard convention throughout and none was changed on this
-  account; one Stage~A label had not, and is the second item below.
-\item \textsf{WebQTrn-1294\_a4b2006a} (Stage~D) moved from
-  \textsf{verifier\_fn} to \textsf{answer\_selection}. This one is unrelated to
-  the convention: the verifier had been correct, and the error was upstream, in
-  the answerer.
-\item \textsf{WebQTrn-1597\_8adc06ba} (Stage~A, the
-  planner-discordance census) moved from \textsf{verifier\_fn} to
-  \textsf{verifier\_fp}, the original label having used the reversed
-  convention. This is the only label the gloss error reached.
+paired the two names in reverse of the standard convention. It was corrected,
+and the convention is now stated explicitly above. Stage~D's labels had followed
+the standard convention throughout and none was changed on this account; one
+Stage~A label had not, and is the second item below.
+\item \textsf{WebQTrn-1294\_a4b2006a} (Stage~D) moved from \textsf{verifier\_fn}
+to \textsf{answer\_selection}. This one is unrelated to the convention: the
+verifier had been correct, and the error was upstream, in the answerer.
+\item \textsf{WebQTrn-1597\_8adc06ba} (Stage~A, the planner-discordance census)
+moved from \textsf{verifier\_fn} to \textsf{verifier\_fp}, the original label
+having used the reversed convention. This is the only label the gloss error
+reached.
 \end{itemize}
 
 The histogram was regenerated afterwards. Two CWQ hedge rows moved between

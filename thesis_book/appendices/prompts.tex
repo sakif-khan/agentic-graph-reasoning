@@ -1,9 +1,9 @@
 % !TEX root = ../buetcsepgthesis.tex
 \chapter{Prompt Templates}\label{app:prompts}
 
-% Every template below is reproduced verbatim from the source that sends it.
-% If a prompt changes in agr/, it must change here too: the cache keys on
-% prompt text, so a silent divergence would also invalidate every cached run.
+% Every template below is reproduced verbatim from the source that sends it. If
+% a prompt changes in agr/, it must change here too: the cache keys on prompt
+% text, so a silent divergence would also invalidate every cached run.
 % scripts/check_appendix_prompts.py asserts that each block still matches.
 
 Seven prompts constitute the whole of AGR's interface to the language model. Six
@@ -31,11 +31,11 @@ the model in any prompt, which is what allows one cached response to be shared
 across every condition of the $\alpha$--$\tau$ sweep (\Cref{sec:dev-tuning}).
 Second, budgets are counters in code (\Cref{sec:budgets}) rather than
 instructions: no prompt tells the model to stop, and stopping does not depend on
-its cooperation. One template qualifies that second property without breaking
-it --- the evaluator of \Cref{app:prompt-evaluator} is passed the remaining
-depth and backtracks as decision context, the only budget figures any prompt
-carries, substituted at send time rather than written into the template, and the
-note there records why a model that ignores them changes nothing.
+its cooperation. One template qualifies that second property without breaking it
+--- the evaluator of \Cref{app:prompt-evaluator} is passed the remaining depth
+and backtracks as decision context, the only budget figures any prompt carries,
+substituted at send time rather than written into the template, and the note
+there records why a model that ignores them changes nothing.
 
 \section{Planner}\label{app:prompt-planner}
 
@@ -109,9 +109,9 @@ anchor, not surface word overlap.
 \end{lstlisting}
 
 The final instruction exists because of the failure it names. Judging surface
-word overlap is what an embedding does, and the blend of
-\Cref{sec:scoring} already supplies that signal; the model is asked for the
-part the embedding cannot give.
+word overlap is what an embedding does, and the blend of \Cref{sec:scoring}
+already supplies that signal; the model is asked for the part the embedding
+cannot give.
 
 \section{Evaluator}\label{app:prompt-evaluator}
 
@@ -139,20 +139,20 @@ regardless of what the evaluator decides.
 \section{Drafter and Claim Decomposer}\label{app:prompt-draft}
 
 One call produces the draft answer, its asserted entity list, and the atomic
-claims the verification layer will check. \Cref{sec:claim-decomposition} explains why
-these are one call rather than three: a draft and a claim set produced
-separately can disagree about what was asserted, and the layer would then verify
-something the reader never sees.
+claims the verification layer will check. \Cref{sec:claim-decomposition}
+explains why these are one call rather than three: a draft and a claim set
+produced separately can disagree about what was asserted, and the layer would
+then verify something the reader never sees.
 
-Four provisions here are load-bearing, and \Cref{sec:claim-decomposition} gives the
-case that forced each. Copying entity names exactly is what keeps the graph's
-spelling --- \textsf{University Yale} rather than \textsf{Yale University} ---
-in the answer. The distinction between entities the draft \emph{asserts} and
-entities it merely mentions is what stops a hedge from being scored as an
-assertion. The anti-vacuity instruction is what stops the model answering
-``a university'' to a \emph{which university} question. And requiring a hedge to
-carry zero claims is what makes an abstention verifiable rather than merely
-unverified.
+Four provisions here are load-bearing, and \Cref{sec:claim-decomposition} gives
+the case that forced each. Copying entity names exactly is what keeps the
+graph's spelling --- \textsf{University Yale} rather than \textsf{Yale
+University} --- in the answer. The distinction between entities the draft
+\emph{asserts} and entities it merely mentions is what stops a hedge from being
+scored as an assertion. The anti-vacuity instruction is what stops the model
+answering ``a university'' to a \emph{which university} question. And requiring
+a hedge to carry zero claims is what makes an abstention verifiable rather than
+merely unverified.
 
 \begin{lstlisting}[style=verbatimblock]
 Question: {question}
@@ -226,16 +226,16 @@ graph. Respond with prose only.
 \end{lstlisting}
 
 The kept list is computed in code by the deterministic filter of
-\Cref{sec:entity-filtering}, not proposed by the model. The rewrite call may reword the
-answer but cannot change which entities it asserts, and
+\Cref{sec:entity-filtering}, not proposed by the model. The rewrite call may
+reword the answer but cannot change which entities it asserts, and
 \Cref{sec:verify-example} reads the case in which that separation decided
 whether a question was scored correct.
 
 \section{Answerer}\label{app:prompt-answer}
 
-Sent on the path where verification is skipped, which is the draft-only
-ablation of \Cref{sec:ablations}, and on the give-up path where the
-budget drained before a draft existed.
+Sent on the path where verification is skipped, which is the draft-only ablation
+of \Cref{sec:ablations}, and on the give-up path where the budget drained before
+a draft existed.
 
 \begin{lstlisting}[style=verbatimblock]
 Question: {question}
@@ -280,9 +280,9 @@ Question: {question}
 Both use the template below; GraphRAG imports it from the Vector-RAG module
 precisely so that the two differ only in how \verb|{facts}| was retrieved.
 \Cref{sec:baselines} records the consequence noted in
-\Cref{sec:baseline-constants}: this prompt is more abstinent than the full system's
-drafter, and the resulting hedge rates are a property of the prompt as much as
-of the retrieval.
+\Cref{sec:baseline-constants}: this prompt is more abstinent than the full
+system's drafter, and the resulting hedge rates are a property of the prompt as
+much as of the retrieval.
 
 \begin{lstlisting}[style=verbatimblock]
 Facts (retrieved from a knowledge graph):
@@ -299,15 +299,15 @@ Four prompts implement the reimplementation of \Cref{sec:baseline-tog}, at beam
 width $3$ and depth $3$. They are given in full because the thesis's central
 comparison is against this code rather than against published numbers
 (\Cref{sec:tog-split}), and a reader who wants to challenge that comparison
-should be able to read what was actually run. The structure follows the original:
-prune relations, expand, prune entities, ask whether what has been gathered
-suffices, and answer if it does.
+should be able to read what was actually run. The structure follows the
+original: prune relations, expand, prune entities, ask whether what has been
+gathered suffices, and answer if it does.
 
 The contrast with AGR's scorer is worth noting while reading the first of them.
 This prompt \emph{selects} a set of relations; AGR's scores every candidate on
-$[0,1]$ and blends that with an embedding similarity
-(\Cref{sec:scoring}). Selection cannot express ``all of these are poor'', which
-is what the low-signal backtrack trigger needs to fire on.
+$[0,1]$ and blends that with an embedding similarity (\Cref{sec:scoring}).
+Selection cannot express ``all of these are poor'', which is what the low-signal
+backtrack trigger needs to fire on.
 
 \subsection*{Relation pruning}
 

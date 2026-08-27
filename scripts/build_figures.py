@@ -23,6 +23,7 @@ Usage: python scripts/build_figures.py
 """
 import argparse
 import json
+import re
 from pathlib import Path
 
 NUMBERS = Path("results/phase4/thesis_numbers.json")
@@ -72,6 +73,85 @@ BOOK_ROOT = "../buetcsepgthesis.tex"
 
 def banner(root):
     return f"% !TEX root = {root}\n{BANNER}"
+
+
+# The sources in this repository are kept to 80 columns, and generated
+# sources are sources: the emitted plots were the only files in thesis_book
+# still over it, up to 203 characters on one coordinate list. They are not
+# rewrapped after the fact -- a generated file that someone reformats is a
+# file that changes back on the next run, and check_slides.py compares each
+# one against what this script would write now -- so the fold happens here,
+# and every caller returns folded text.
+#
+# The break points are the ones LaTeX and pgfplots allow: after a top-level
+# & in a tabular row, between the ")(" of a coordinate list, after ", " in
+# an option list, and before `coordinates` when the option list alone fills
+# the line. A delimiter always stays on the left, so a reader scanning the
+# first column still sees the first column.
+WIDTH = 80
+
+
+def _depths(s):
+    out, d = [], 0
+    for ch in s:
+        out.append(d)
+        d += (ch in "{[") - (ch in "}]")
+    return out
+
+
+def _split(body):
+    dep = _depths(body)
+    if body.endswith(r"\\") and "&" in body:
+        return [i + 1 for i, c in enumerate(body)
+                if c == "&" and dep[i] == 0 and (not i or body[i - 1] != "\\")]
+    if re.search(r"\)\s+\(", body):
+        return [m.start() + 1 for m in re.finditer(r"\)\s+\(", body)]
+    return [m.start() + 1 for m in re.finditer(r", ", body) if dep[m.start()]]
+
+
+def _pack(indent, body):
+    """Fill `body` to WIDTH, breaking only where _split allows."""
+    cuts = _split(body)
+    if not cuts:
+        return [indent + body]
+    parts, prev = [], 0
+    for c in cuts:
+        parts.append(body[prev:c].strip())
+        prev = c
+    parts.append(body[prev:].strip())
+    out, cur = [], ""
+    for p in [x for x in parts if x]:
+        trial = (indent + p) if not cur else cur + " " + p
+        if not cur or len(trial) <= WIDTH:
+            cur = trial
+        else:
+            out.append(cur)
+            cur = indent + "  " + p
+    out.append(cur)
+    return out
+
+
+def fold80(text):
+    """Break every emitted line that runs past 80 columns."""
+    out = []
+    for line in text.split("\n"):
+        if len(line) <= WIDTH:
+            out.append(line)
+            continue
+        indent = re.match(r"\s*", line).group(0)
+        body = line.strip()
+        # An \addplot is two independent things on one line: an option list
+        # that breaks at its commas and a coordinate list that breaks
+        # between points. Packed separately, because the widest option list
+        # here is 96 characters on its own and no coordinate break reaches
+        # into it.
+        m = re.match(r"(\\addplot\[[^\]]*\])\s+(coordinates\b.*)", body)
+        if m:
+            out += _pack(indent, m.group(1))
+            out += _pack(indent + "  ", m.group(2))
+        else:
+            out += _pack(indent, body)
+    return "\n".join(out)
 
 
 # Two output targets. The geometry differs because a thesis text column and a
@@ -200,7 +280,7 @@ def accuracy_cost(d, cfg):
                 out.append(r"\addlegendentry{%s}" % label)
         out.append(r"\end{axis}")
     out += [r"\end{tikzpicture}", ""]
-    return "\n".join(out)
+    return fold80("\n".join(out))
 
 
 # ---------------------------------------------------------------- figure 2
@@ -241,7 +321,7 @@ def hop_strata(d, cfg):
                 out.append(r"\addlegendentry{%s}" % label)
         out.append(r"\end{axis}")
     out += [r"\end{tikzpicture}", ""]
-    return "\n".join(out)
+    return fold80("\n".join(out))
 
 
 # ---------------------------------------------------------------- figure 3
@@ -293,7 +373,7 @@ def failure_histogram(d, cfg):
                           series(ds, pol)))
             out.append(r"\addlegendentry{%s %s}" % (ds_label, pol))
     out += [r"\end{axis}", r"\end{tikzpicture}", ""]
-    return "\n".join(out)
+    return fold80("\n".join(out))
 
 
 # ----------------------------------------------------------------- table 9.2
@@ -338,7 +418,7 @@ def failure_table(d):
     for (ds, pol), v in zip(cols, foot):
         assert v == fh[ds][pol]["_n"], (
             f"{ds}/{pol} column sums to {v}, census says {fh[ds][pol]['_n']}")
-    return "\n".join(out), sum(foot)
+    return fold80("\n".join(out)), sum(foot)
 
 
 # ----------------------------------------------------------------- table 8.x
@@ -376,7 +456,7 @@ def tog_split_table(d):
                    r"$\mathbf{%+.3f}$ \\" % (n, tog_c, agr_c, agr_c - tog_c))
         out.append(r"\hline")
     out += [r"\end{tabular}", ""]
-    return "\n".join(out)
+    return fold80("\n".join(out))
 
 
 def main():

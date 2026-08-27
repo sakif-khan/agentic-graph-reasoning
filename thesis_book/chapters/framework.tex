@@ -19,10 +19,9 @@ one part of the architecture rather than as the part the rest exists to serve.
 There are two ways to build a graph-navigating agent. The first hands the model
 a set of tools through native function-calling and lets it drive the loop
 itself, ReAct-style~\cite{yao2023react}. The second inverts
-control\index{controlled-agent pattern}: the
-\emph{program} orchestrates the loop, calls the graph tools deterministically,
-and consults the model only at decision points, through constrained prompts that
-must return JSON.
+control\index{controlled-agent pattern}: the \emph{program} orchestrates the
+loop, calls the graph tools deterministically, and consults the model only at
+decision points, through constrained prompts that must return JSON.
 
 AGR uses the second, and the choice is deliberate enough to be worth defending,
 because it determines what the word ``agentic'' means in this thesis. Four
@@ -30,21 +29,21 @@ consequences follow:
 
 \begin{itemize}
   \item \textbf{Every graph operation is logged by construction.} The traversal
-    is not reconstructed from the model's narration of what it did; it is the
-    literal sequence of tool calls the program made.
+  is not reconstructed from the model's narration of what it did; it is the
+  literal sequence of tool calls the program made.
   \item \textbf{Budgets are enforced in code, not requested in prompts.} A
-    prompt asking the model to stop after four hops is a suggestion. A counter
-    checked in a router is a guarantee (\Cref{sec:budgets}).
+  prompt asking the model to stop after four hops is a suggestion. A counter
+  checked in a router is a guarantee (\Cref{sec:budgets}).
   \item \textbf{Failures are reproducible.} A malformed model response degrades
-    a decision; it cannot corrupt the control flow. Every call goes through one
-    wrapper that parses the response as JSON and, if that fails, spends a second
-    metered call asking the model to repair its own output. Each per-node
-    statement below of the form ``makes one model call'' is therefore the normal
-    case rather than a bound, and the second call is charged to the budget like
-    any other, so the call counts of \Cref{sec:efficiency} already contain
-    whatever repairs occurred.
+  a decision; it cannot corrupt the control flow. Every call goes through one
+  wrapper that parses the response as JSON and, if that fails, spends a second
+  metered call asking the model to repair its own output. Each per-node
+  statement below of the form ``makes one model call'' is therefore the normal
+  case rather than a bound, and the second call is charged to the budget like
+  any other, so the call counts of \Cref{sec:efficiency} already contain
+  whatever repairs occurred.
   \item \textbf{Each model call is small, single-purpose, and cacheable}, which
-    is what makes the response cache of \Cref{sec:instrumentation} viable.
+  is what makes the response cache of \Cref{sec:instrumentation} viable.
 \end{itemize}
 
 The agency in AGR therefore lives in the \emph{decision policy} --- which
@@ -57,8 +56,8 @@ objection that AGR is merely a prompt around a function-calling loop.
 \subsection{The State Machine}
 
 The framework is a state machine\index{state machine}: a directed graph of six
-nodes over a shared typed state, built
-with LangGraph. \Cref{fig:statemachine} gives the topology.
+nodes over a shared typed state, built with LangGraph. \Cref{fig:statemachine}
+gives the topology.
 
 \begin{figure}[!tb]
   \begin{center}
@@ -121,13 +120,14 @@ with LangGraph. \Cref{fig:statemachine} gives the topology.
       \end{scope}
     \end{tikzpicture}
   \end{center}
-  \caption[The AGR state machine]{The AGR state machine. Three cycles exist: the dashed region marks the
-    Explorer\,$\leftrightarrow$\,Evaluator search loop;
-    Evaluator\,$\rightarrow$\,Backtracker\,$\rightarrow$\,Explorer restores an
-    earlier frontier; and Verifier\,$\rightarrow$\,Explorer is
-    verification-driven re-exploration. All three are bounded by the budgets
-    of \Cref{sec:budgets} rather than by the graph structure. Every path from Evaluator to Answerer passes through the
-    Verifier, which is the structural expression of this thesis's contribution.}
+  \caption[The AGR state machine]{The AGR state machine. Three cycles exist: the
+  dashed region marks the Explorer\,$\leftrightarrow$\,Evaluator search loop;
+  Evaluator\,$\rightarrow$\,Backtracker\,$\rightarrow$\,Explorer restores an
+  earlier frontier; and Verifier\,$\rightarrow$\,Explorer is verification-driven
+  re-exploration. All three are bounded by the budgets of \Cref{sec:budgets}
+  rather than by the graph structure. Every path from Evaluator to Answerer
+  passes through the Verifier, which is the structural expression of this
+  thesis's contribution.}
   \label{fig:statemachine}
 \end{figure}
 
@@ -135,9 +135,9 @@ Two properties of this topology matter. It contains \emph{cycles}, which is why
 a state-machine framework is used rather than a linear pipeline: exploration
 loops until the evaluator is satisfied, and verification can send the agent back
 to explore. And the verifier sits \emph{between} the decision to answer and the
-answer itself, which is the structural expression of this thesis's
-contribution --- there is no path from evaluator to answerer that does not pass
-through verification.
+answer itself, which is the structural expression of this thesis's contribution
+--- there is no path from evaluator to answerer that does not pass through
+verification.
 
 \section{The Graph Tool API}\label{sec:tool-api}
 
@@ -156,17 +156,17 @@ unacceptable.
 
 The tools are therefore parameterised Cypher templates
 (\Cref{sec:implementation}), written once and unit-tested. They accept entity
-identifiers and
-return names alongside them, so the model always sees human-readable text while
-the program tracks identity. Every invocation is appended to a JSONL log with
-its arguments, result, and latency.
+identifiers and return names alongside them, so the model always sees
+human-readable text while the program tracks identity. Every invocation is
+appended to a JSONL log with its arguments, result, and latency.
 
-\subsection{The Five Operations, of Which Four Are Live}\label{sec:five-operations}
+\subsection{The Five Operations, of Which Four Are
+Live}\label{sec:five-operations}
 
 \Cref{tab:tools} lists the operations. There are five, not the four originally
-planned, and only four of the five are reachable from a node in the final
-design --- both facts are consequences of the same episode and are recorded
-rather than tidied away.
+planned, and only four of the five are reachable from a node in the final design
+--- both facts are consequences of the same episode and are recorded rather than
+tidied away.
 
 \textsf{verify\_triple} was built first, as the claim checker: given a claim
 $\langle h, r, t\rangle$ it asked whether that relation held between those
@@ -174,11 +174,12 @@ entities. It did not survive contact with generated text. Claim decomposition
 produces relations phrased in English --- ``played for'', ``is the capital of''
 --- and Freebase predicates are neither phrased that way nor reliably one edge
 long, so requiring the relation to match rejected claims that were true.
-\textsf{verify\_connection}\index{verify connection@\textsf{verify\_connection}} was added in response: it drops the relation
-entirely and asks only about adjacency. It answered the question the verifier
-actually needed answered, and it superseded rather than complemented its
-predecessor. \Cref{sec:structural-check} describes the two routes the verifier
-ended up with, and \textsf{verify\_triple} is not one of them.
+\textsf{verify\_connection}\index{verify connection@\textsf{verify\_connection}}
+was added in response: it drops the relation entirely and asks only about
+adjacency. It answered the question the verifier actually needed answered, and
+it superseded rather than complemented its predecessor.
+\Cref{sec:structural-check} describes the two routes the verifier ended up with,
+and \textsf{verify\_triple} is not one of them.
 
 The operation is left in the API because it is exercised by the tool integration
 tests and remains the natural primitive for a relation-aware check, which
@@ -187,10 +188,10 @@ table says so.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption[The graph tool API]{The graph tool API. All operations are deterministic
-      parameterised Cypher; none consults an embedding except
-      \textsf{search\_entity}, which delegates to the resolver of
-      \Cref{sec:entity-resolution}.}
+    \caption[The graph tool API]{The graph tool API. All operations are
+    deterministic parameterised Cypher; none consults an embedding except
+    \textsf{search\_entity}, which delegates to the resolver of
+    \Cref{sec:entity-resolution}.}
     \label{tab:tools}
     \footnotesize
     \begin{tabular}{|l|L{47mm}|L{47mm}|}
@@ -248,12 +249,12 @@ low-fanout, high-precision relations that answer specific questions --- again,
 \Cref{sec:design-validation}.
 
 \subsection{Mediator Traversal and Relation-Agnostic
-  Adjacency}\label{sec:tool-adjacency}
+Adjacency}\label{sec:tool-adjacency}
 
 \Cref{sec:graph-construction} established that 63.7\% of the environment's nodes
-are unnamed mediators. If the agent saw these as candidate entities, most of its\index{mediator node}\index{mediator traversal}
-frontier would consist of nodes with no surface form and no meaning to a
-language model.
+are unnamed mediators. If the agent saw these as candidate entities, most of
+its\index{mediator node}\index{mediator traversal} frontier would consist of
+nodes with no surface form and no meaning to a language model.
 
 \textsf{get\_neighbors} therefore hops through them transparently. When an
 expansion reaches a node flagged \textsf{is\_cvt}, the tool immediately expands
@@ -271,28 +272,28 @@ relaxation was necessary but not sufficient, for the reason
 \Cref{sec:five-operations} records: relaxing direction does not help when the
 relation itself has no Freebase counterpart.
 
-\textsf{verify\_connection} goes further and drops the relation entirely,
-asking only whether two entities are adjacent directly or through one mediator.
-It exists because claim decomposition frequently produces a claim whose relation
+\textsf{verify\_connection} goes further and drops the relation entirely, asking
+only whether two entities are adjacent directly or through one mediator. It
+exists because claim decomposition frequently produces a claim whose relation
 does not correspond to any single Freebase predicate --- ``X played for Y'' may
 be realised through a roster mediator with no edge literally named for playing.
 Requiring an exact relation match in such cases rejects true claims. This is the
-adjacency test the verification layer uses, and
-\Cref{sec:structural-check} gives the two routes it sits in. The cost of dropping
-the relation is stated there and not here: an adjacency test cannot tell a true
-claim from a false one that happens to join the same two entities, which is the
-boundary case \Cref{sec:verifier-errors} analyses.
+adjacency test the verification layer uses, and \Cref{sec:structural-check}
+gives the two routes it sits in. The cost of dropping the relation is stated
+there and not here: an adjacency test cannot tell a true claim from a false one
+that happens to join the same two entities, which is the boundary case
+\Cref{sec:verifier-errors} analyses.
 
 \section{Agent State}\label{sec:state}
 
-The state is a typed dictionary threaded through every node.
-\Cref{tab:state} groups its fields by purpose.
+The state is a typed dictionary threaded through every node. \Cref{tab:state}
+groups its fields by purpose.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption[The agent state]{The agent state. Fields marked \emph{append-only} accumulate across
-      node executions through reducers; all others are overwritten by whichever
-      node returns them.}
+    \caption[The agent state]{The agent state. Fields marked \emph{append-only}
+    accumulate across node executions through reducers; all others are
+    overwritten by whichever node returns them.}
     \label{tab:state}
     \footnotesize
     \begin{tabular}{|l|L{88mm}|}
@@ -336,29 +337,28 @@ the three underscore-prefixed scratch keys are for. The explorer records how
 many triples it added and the best score it saw; the evaluator records its
 decision; the routers read those and decide.
 
-\textbf{The budget meter is mutated in place and never returned as a delta.}
-It is a mutable object shared by reference across all nodes, because counters
-that are merged rather than mutated can be silently lost when two nodes return
+\textbf{The budget meter is mutated in place and never returned as a delta.} It
+is a mutable object shared by reference across all nodes, because counters that
+are merged rather than mutated can be silently lost when two nodes return
 overlapping state. Enforcement must not be able to drift.
 
 \section{The Planner}\label{sec:planner}
 
 \subsection{Decomposition into Ordered Sub-Objectives}
 
-The planner\index{planner} makes one model call, converting the question into
-an ordered chain
-of sub-objectives plus the entity mentions to seed the search. The chain is
-strictly sequential; later objectives reference earlier results with a
+The planner\index{planner} makes one model call, converting the question into an
+ordered chain of sub-objectives plus the entity mentions to seed the search. The
+chain is strictly sequential; later objectives reference earlier results with a
 \textsf{\#N} back-reference. A general dependency-graph planner was not built,
 because a sequential chain covers the composition structure that dominates CWQ
 and a DAG planner is a research problem in its own right.
 
 The prompt is reproduced in full as \Cref{app:prompt-planner}. It is few-shot
-with one example per question archetype --- single hop,
-composition, conjunction, superlative --- and the single-hop example exists to
-demonstrate that \emph{not} decomposing is a valid output. Over-decomposition of
-simple questions is a real failure mode, and \Cref{sec:ablations} shows it is
-not hypothetical: on the shallower benchmark, removing the planner improves
+with one example per question archetype --- single hop, composition,
+conjunction, superlative --- and the single-hop example exists to demonstrate
+that \emph{not} decomposing is a valid output. Over-decomposition of simple
+questions is a real failure mode, and \Cref{sec:ablations} shows it is not
+hypothetical: on the shallower benchmark, removing the planner improves
 accuracy.
 
 The prompt also instructs the model to extract only specific named entities as
@@ -398,9 +398,8 @@ one-configuration-line change rather than a separate code path.
 \section{The Explorer}\label{sec:explorer}
 
 The explorer\index{explorer} performs one expansion of the
-frontier\index{frontier}. It is the only node that
-touches the graph in bulk, and its structure is the heart of the navigation
-policy.
+frontier\index{frontier}. It is the only node that touches the graph in bulk,
+and its structure is the heart of the navigation policy.
 
 \subsection{Frontier Construction and the Single Scoring Pass}
 
@@ -408,20 +407,20 @@ The node proceeds in five steps:\index{explorer}\index{frontier}
 
 \begin{enumerate}
   \item \textbf{Checkpoint.} The current frontier, the current depth, and the
-    best score seen at this point are pushed onto the backtrack stack.
+  best score seen at this point are pushed onto the backtrack stack.
   \item \textbf{Gather.} For every anchor, \textsf{get\_relations} is called and
-    the results are collected into a \emph{single} candidate list, each row
-    tagged with the anchor it came from.
+  the results are collected into a \emph{single} candidate list, each row tagged
+  with the anchor it came from.
   \item \textbf{Score.} The whole list is scored in one pass
-    (\Cref{sec:scoring}). Pooling candidates across anchors before scoring is
-    what allows the hybrid scorer to consult the model \emph{once} per
-    expansion rather than once per anchor.
+  (\Cref{sec:scoring}). Pooling candidates across anchors before scoring is what
+  allows the hybrid scorer to consult the model \emph{once} per expansion rather
+  than once per anchor.
   \item \textbf{Beam.} Candidates are taken in descending score order into
-    per-anchor buckets of width three, skipping any \textsf{(anchor, relation,
-    direction)} triple on the ban list (\Cref{sec:backtracking}).
+  per-anchor buckets of width three, skipping any \textsf{(anchor, relation,
+  direction)} triple on the ban list (\Cref{sec:backtracking}).
   \item \textbf{Expand.} Each selected edge is expanded with
-    \textsf{get\_neighbors}; the resulting triples are appended to the traversal
-    log, and the neighbours become frontier candidates.
+  \textsf{get\_neighbors}; the resulting triples are appended to the traversal
+  log, and the neighbours become frontier candidates.
 \end{enumerate}
 
 The new frontier is deduplicated by entity identifier, sorted by the score of
@@ -433,23 +432,19 @@ to drift away from the anchor that mattered.
 \subsection{The Hybrid Scoring Function}\label{sec:scoring}
 
 Each candidate edge receives a hybrid score\index{hybrid scoring function}
-blending semantic similarity with a
-model judgement; the prompt carrying the second is
-\Cref{app:prompt-scorer}:
-\[
-  \mathrm{score}(c) \;=\; \alpha \cdot \cos\!\big(\mathbf{v}_{\mathrm{rel}(c)},\,
-  \mathbf{v}_{\mathrm{obj}}\big) \;+\; (1-\alpha)\cdot \mathrm{LLM}(c),
-\]
-where $\mathbf{v}_{\mathrm{rel}(c)}$ is the precomputed embedding of the
-candidate's relation name (\Cref{sec:vector-index}), $\mathbf{v}_{\mathrm{obj}}$
-is the embedding of the \emph{rendered active sub-objective}, and
-$\mathrm{LLM}(c) \in [0,1]$ rates how likely following that edge from that
-anchor is to advance the sub-objective.
+blending semantic similarity with a model judgement; the prompt carrying the
+second is \Cref{app:prompt-scorer}: \[ \mathrm{score}(c) \;=\; \alpha \cdot
+\cos\!\big(\mathbf{v}_{\mathrm{rel}(c)},\, \mathbf{v}_{\mathrm{obj}}\big) \;+\;
+(1-\alpha)\cdot \mathrm{LLM}(c), \] where $\mathbf{v}_{\mathrm{rel}(c)}$ is the
+precomputed embedding of the candidate's relation name
+(\Cref{sec:vector-index}), $\mathbf{v}_{\mathrm{obj}}$ is the embedding of the
+\emph{rendered active sub-objective}, and $\mathrm{LLM}(c) \in [0,1]$ rates how
+likely following that edge from that anchor is to advance the sub-objective.
 
 Three properties of this design deserve emphasis.
 
-\textbf{The objective, not the question, is embedded.} Hop two of a
-two-hop question is scored against ``find the director of Titanic'', with the
+\textbf{The objective, not the question, is embedded.} Hop two of a two-hop
+question is scored against ``find the director of Titanic'', with the
 back-reference already substituted by the resolved entity name, rather than
 against the original question text. This is the concrete mechanism by which
 decomposition is supposed to help, and isolating it is what makes the planner
@@ -498,10 +493,10 @@ embedding-only ablation.
 \subsection{Sub-Objective Completion Judgment}
 
 The evaluator\index{evaluator} makes one model call per expansion. It is shown
-the active
-sub-objective, a window of retrieved facts, and the remaining budget, and
-returns a decision (\textsf{continue}, \textsf{backtrack}, or \textsf{answer}),
-whether the objective is complete, and which entities satisfy it.
+the active sub-objective, a window of retrieved facts, and the remaining budget,
+and returns a decision (\textsf{continue}, \textsf{backtrack}, or
+\textsf{answer}), whether the objective is complete, and which entities satisfy
+it.
 
 The fact window is \emph{relevance-ranked, not recent}. Traversed triples are
 verbalised, embedded, and the thirty most similar to the current objective are
@@ -512,11 +507,12 @@ succeeded. \Cref{sec:design-validation} documents the case that forced this
 change.
 
 \subsection{The Groundedness Filter on
-  Resolutions}\label{sec:groundedness-filter}
+Resolutions}\label{sec:groundedness-filter}
 
-The evaluator's \textsf{resolved} entity names are not accepted as given. Each\index{groundedness}
-is looked up against a table built from the tail entities of the
-\emph{traversed} triples, and any name that does not appear there is discarded.
+The evaluator's \textsf{resolved} entity names are not accepted as given.
+Each\index{groundedness} is looked up against a table built from the tail
+entities of the \emph{traversed} triples, and any name that does not appear
+there is discarded.
 
 This filter is small in code and significant in effect. A language model asked
 which entities satisfy an objective will readily list entities it knows from
@@ -527,8 +523,8 @@ no retrieved triple, and the filter rejected all nine --- costing a point on
 that question while preserving the property that every entity the system
 proposes came from the graph.
 
-\textbf{The table is built from tail names only, and the verifier's is not.}
-A traversed triple contributes its tail to this lookup and not its head, so an
+\textbf{The table is built from tail names only, and the verifier's is not.} A
+traversed triple contributes its tail to this lookup and not its head, so an
 entity the search \emph{departed from} --- a topic entity, or any intermediate
 the agent has since moved past --- cannot be resolved as an answer by the
 evaluator, however the model phrases it. The structural check of
@@ -558,7 +554,7 @@ the next frontier, truncated to the anchor cap of \Cref{sec:budgets}. When the
 last objective completes, the decision is forced to \textsf{answer}.
 
 \subsection{Backtracking Triggers and the Backtrack
-  Stack}\label{sec:backtracking}
+Stack}\label{sec:backtracking}
 
 Backtracking\index{backtracking} fires on the first of three conditions,
 evaluated in this order:
@@ -566,7 +562,7 @@ evaluated in this order:
 \begin{enumerate}
   \item \textbf{Dead end} --- the last expansion produced no new triples.
   \item \textbf{Low score} --- the frontier's \emph{signal maximum} fell below
-    the threshold $\tau$.
+  the threshold $\tau$.
   \item \textbf{Evaluator veto} --- the model judged the direction a dead end.
 \end{enumerate}
 
@@ -576,24 +572,20 @@ frontier is abandoned without an argument about it.
 
 The second trigger deserves a precise statement, because it is easy to assume it
 tests the blended score and it does not. The quantity compared against $\tau$ is
-\[
-  \sigma \;=\; \max\bigl(\,\underbrace{\max_{c \in E} \mathrm{score}(c)}
-    _{\text{blended, expanded edges}},\;
-    \underbrace{\max_{c \in R} \cos(v(r_c), v(o))}_{\text{embedding, all
-      candidates}},\;
-    \underbrace{\max_{c \in R_{K}} s_{\mathrm{LLM}}(c, o)}_{\text{model, rated
-      candidates}}\bigr),
-\]
-the largest of three signals: the best blended score among the edges actually
-expanded, the best raw embedding similarity over every candidate relation the
-anchors offered, and the best model score over the top-$K$ candidates the model
-was asked to rate. The trigger therefore fires only when \emph{all three}
-signals are weak. A frontier where the blend is depressed --- because $\alpha$
-happens to discount whichever signal is confident here --- does not backtrack if
-either underlying signal still points somewhere. This makes the trigger
-deliberately conservative: it abandons a branch only on unanimous evidence of
-hopelessness, and \Cref{sec:dev-tuning} shows the consequence, which is that
-$\tau$ barely fires at the values swept.
+\[ \sigma \;=\; \max\bigl(\,\underbrace{\max_{c \in E} \mathrm{score}(c)}
+_{\text{blended, expanded edges}},\; \underbrace{\max_{c \in R} \cos(v(r_c),
+v(o))}_{\text{embedding, all candidates}},\; \underbrace{\max_{c \in R_{K}}
+s_{\mathrm{LLM}}(c, o)}_{\text{model, rated candidates}}\bigr), \] the largest
+of three signals: the best blended score among the edges actually expanded, the
+best raw embedding similarity over every candidate relation the anchors offered,
+and the best model score over the top-$K$ candidates the model was asked to
+rate. The trigger therefore fires only when \emph{all three} signals are weak. A
+frontier where the blend is depressed --- because $\alpha$ happens to discount
+whichever signal is confident here --- does not backtrack if either underlying
+signal still points somewhere. This makes the trigger deliberately conservative:
+it abandons a branch only on unanimous evidence of hopelessness, and
+\Cref{sec:dev-tuning} shows the consequence, which is that $\tau$ barely fires
+at the values swept.
 
 \textbf{The implementation departs from what this section specifies in three
 places, and all three are recorded rather than repaired}, under the standing
@@ -608,12 +600,12 @@ written so that a missing signal defaults to a value above any usable $\tau$,
 which is right when no expansion has run yet. But $0.0$ is falsy in Python, so a
 genuine signal maximum of exactly zero takes the same branch, and the trigger
 does not fire at the one point where the formula says it most clearly should.
-This is the same falsy-empty trap that \Cref{sec:output-contract} records in
-the answerer, found in a second place. Its practical reach is narrow: a signal
-maximum of exactly zero means nothing was expanded at all, and the
-\textbf{dead end} trigger --- evaluated first --- fires on that same condition.
-The order of the triggers is what masks the defect, which is a weak reason for
-the behaviour to be correct.
+This is the same falsy-empty trap that \Cref{sec:output-contract} records in the
+answerer, found in a second place. Its practical reach is narrow: a signal
+maximum of exactly zero means nothing was expanded at all, and the \textbf{dead
+end} trigger --- evaluated first --- fires on that same condition. The order of
+the triggers is what masks the defect, which is a weak reason for the behaviour
+to be correct.
 
 \emph{Second, at $\alpha \geq 1$ only the first term is computed.} The scorer
 takes an early return when the model term is disabled, and the two auxiliary
@@ -623,15 +615,15 @@ empty, and there the consequence is worse than a collapse: the maxima are not
 merely unrecorded but \emph{stale}, left holding whatever the last pass to set
 them wrote. They live on the scorer instance, and the runtime memoises one
 instance per $\alpha$ for the process, so the values persist not just across a
-question's passes but across every question in the run. The
-practical reach is again narrow --- an empty candidate list trips the dead-end
-trigger, which is evaluated first --- and the masking is again the order of the
-triggers rather than anything about the values. Since $\alpha = 1$ makes the blend the embedding score, the
-effect is not that $\sigma$ is measured on a different scale but that it is
-measured over a \emph{smaller set}: the beam-selected, non-banned edges rather
-than every candidate the anchors offered. After a backtrack has banned the best
-relation, $\sigma$ falls in this condition where it would have held steady in
-the reference. That is exactly the embedding-only ablation, and
+question's passes but across every question in the run. The practical reach is
+again narrow --- an empty candidate list trips the dead-end trigger, which is
+evaluated first --- and the masking is again the order of the triggers rather
+than anything about the values. Since $\alpha = 1$ makes the blend the embedding
+score, the effect is not that $\sigma$ is measured on a different scale but that
+it is measured over a \emph{smaller set}: the beam-selected, non-banned edges
+rather than every candidate the anchors offered. After a backtrack has banned
+the best relation, $\sigma$ falls in this condition where it would have held
+steady in the reference. That is exactly the embedding-only ablation, and
 \Cref{sec:abl-embonly} reports what it does to that condition's backtrack count
 instead of attributing the difference wholly to $\tau$.
 
@@ -681,21 +673,20 @@ than its name suggests.
 \textsf{route\_after\_eval} is pure Python and enforces budgets before
 preferences. Wall-clock and depth are checked first; if either is exhausted the
 agent is routed to answer with whatever it has. If a backtrack trigger fired,
-the agent backtracks if the backtrack budget permits and otherwise answers.
-Only then is the evaluator's own decision honoured. Routers are deterministic by
+the agent backtracks if the backtrack budget permits and otherwise answers. Only
+then is the evaluator's own decision honoured. Routers are deterministic by
 construction: no adversarial model output can change what they do.
 
 \section{The Answerer}\label{sec:answerer}
 
 The answerer\index{answerer} is a finalizer rather than a generator. Which of
-its three paths
-runs is decided entirely by what the verification layer left in state, and two
-of the three are specified in \Cref{ch:verification}: the \emph{verified} path,
-where no claim was unsupported and the draft is emitted with no further model
-call, and the \emph{repair} path, where unsupported claims remain and one
-rewrite call restates the answer around a deterministically filtered entity list
-(\Cref{sec:entity-filtering}). On the development set the verified path handled
-77 of 80 questions at zero additional cost.
+its three paths runs is decided entirely by what the verification layer left in
+state, and two of the three are specified in \Cref{ch:verification}: the
+\emph{verified} path, where no claim was unsupported and the draft is emitted
+with no further model call, and the \emph{repair} path, where unsupported claims
+remain and one rewrite call restates the answer around a deterministically
+filtered entity list (\Cref{sec:entity-filtering}). On the development set the
+verified path handled 77 of 80 questions at zero additional cost.
 
 The third path exists for the case where the verifier raised before producing a
 draft at all. It makes one model call over the traversed facts and the
@@ -710,8 +701,8 @@ budget exhaustion, which silently misreported genuine errors as expected
 behaviour --- exactly the kind of defect that inflates apparent robustness. What
 now carries the distinction is the recorded exception rather than the handler:
 the handler catches \textsf{(BudgetExhausted, Exception)}, whose first arm is
-unreachable, since the former subclasses the latter. It is the trace entry, which
-stores the exception itself, that tells the two apart. Whether it does so
+unreachable, since the former subclasses the latter. It is the trace entry,
+which stores the exception itself, that tells the two apart. Whether it does so
 correctly is untested by anything in this work: across all $6{,}960$ committed
 runs no handler of this kind fired even once. The third path is entered on a
 missing draft rather than on an exception, so it needs its own check, and it
@@ -723,21 +714,21 @@ window is described here and nowhere in \Cref{ch:results}.
 \section{Budgets and Termination Guarantees}\label{sec:budgets}
 
 Budgets\index{budget} do three jobs: they bound cost, they guarantee
-termination, and they
-produce the efficiency data of \Cref{sec:efficiency}. \Cref{tab:budget} lists
-them.
+termination, and they produce the efficiency data of \Cref{sec:efficiency}.
+\Cref{tab:budget} lists them.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption[Budget configuration and the two tool-layer caps]{Budget configuration, and the two tool-layer caps that bound
-      retrieval alongside it. The rows above the rule are the budget proper: they
-      are hashed and the hash is recorded in every run record, so results can
-      always be attributed to the configuration that produced them. The two rows
-      below the rule are constructor arguments of \textsf{KGTools} and are
-      \emph{not} in that hash --- they are listed here because they bound what
-      the agent can see, which makes them budgets in effect if not in
-      implementation. Four budgets carry two enforcement sites rather than one;
-      the paragraph after this table says which and why.}
+    \caption[Budget configuration and the two tool-layer caps]{Budget
+    configuration, and the two tool-layer caps that bound retrieval alongside
+    it. The rows above the rule are the budget proper: they are hashed and the
+    hash is recorded in every run record, so results can always be attributed to
+    the configuration that produced them. The two rows below the rule are
+    constructor arguments of \textsf{KGTools} and are \emph{not} in that hash
+    --- they are listed here because they bound what the agent can see, which
+    makes them budgets in effect if not in implementation. Four budgets carry
+    two enforcement sites rather than one; the paragraph after this table says
+    which and why.}
     \label{tab:budget}
     \begin{tabular}{|l|r|L{58mm}|}
       \hline
@@ -766,49 +757,51 @@ them.
 The two tool-layer caps deserve a sentence of their own, because they bound
 recall rather than cost and a reader could otherwise take the budget table for a
 complete account of what limits the search. \textsf{max\_fanout} caps neighbours
-returned from a single expansion at $200$. On a high-degree entity --- a country,
-a large film franchise, a prolific author --- the true neighbour set exceeds that,
-so the frontier sees a truncated view and an answer sitting outside the first
-$200$ is unreachable through that edge no matter how well the scorer ranks the
-relation. The hub-noise failures of \Cref{sec:echo} are the place this would be
-expected to matter.
+returned from a single expansion at $200$. On a high-degree entity --- a
+country, a large film franchise, a prolific author --- the true neighbour set
+exceeds that, so the frontier sees a truncated view and an answer sitting
+outside the first $200$ is unreachable through that edge no matter how well the
+scorer ranks the relation. The hub-noise failures of \Cref{sec:echo} are the
+place this would be expected to matter.
 
 The tool returns a \textsf{truncated} flag alongside the neighbours, and two
 defects in it are recorded rather than repaired, under the rule of
 \Cref{sec:design-validation}. First, the flag does not reach the tool log: the
-logger records the returned neighbour count and not the flag, so the condition is
-in fact \emph{not} visible in the log, and the count alone cannot distinguish a
-capped expansion from one that happened to return exactly $200$. Second, the flag
-is computed before mediator traversal, on the raw row count, while the final list
-is truncated after mediators have been expanded into it. An expansion that
-returns few raw rows but many entities through those rows' mediators is therefore
-cut without the flag being set. Both mean the flag is a lower bound on
+logger records the returned neighbour count and not the flag, so the condition
+is in fact \emph{not} visible in the log, and the count alone cannot distinguish
+a capped expansion from one that happened to return exactly $200$. Second, the
+flag is computed before mediator traversal, on the raw row count, while the
+final list is truncated after mediators have been expanded into it. An expansion
+that returns few raw rows but many entities through those rows' mediators is
+therefore cut without the flag being set. Both mean the flag is a lower bound on
 truncation, not a record of it, and no analysis in this thesis reads it --- the
 cap's effect is measured instead from the returned counts, as in
 \Cref{sec:baseline-tog}.
 
 Enforcement is confined to routers and the client, which is what keeps it
 auditable, but the mapping is not one site per budget and the exceptions are the
-interesting part. The model-call budget is checked inside the client before every
-call, so no node can bypass it; exceeding it raises an exception that each node
-catches into a degraded path rather than a crash. The backtrack budget is checked
-in the post-evaluation router alone. Beam width and anchor cap are not checks at
-all but slices: beam width in the explorer, the anchor cap in the explorer and
-again in the evaluator, where resolved entities become the next frontier.
+interesting part. The model-call budget is checked inside the client before
+every call, so no node can bypass it; exceeding it raises an exception that each
+node catches into a degraded path rather than a crash. The backtrack budget is
+checked in the post-evaluation router alone. Beam width and anchor cap are not
+checks at all but slices: beam width in the explorer, the anchor cap in the
+explorer and again in the evaluator, where resolved entities become the next
+frontier.
 
 The remaining three are each checked in two places, and in every case the second
 site exists because the first does not cover the verify--explore cycle.
 \emph{Depth} and \emph{wall-clock} are checked in the post-evaluation router and
 again in the post-verification router: the retry edge re-enters the explorer
 without passing through the first, so without the second a repair would silently
-buy an expansion past the depth budget. \Cref{sec:repair} records the development
-trace that exposed exactly that, and closing it there rather than documenting it
-as an exception is why \Cref{sec:budgets} can call budgets guarantees at all.
-\emph{Verification iterations} are checked in the post-verification router and
-again inside the verifier, which will not append a repair objective it has no
-budget to pursue. The duplication is deliberate and the two sites read the same
-counter through the same predicate, so neither can drift from the other; what it
-costs is the simpler sentence, and the simpler sentence would be false.
+buy an expansion past the depth budget. \Cref{sec:repair} records the
+development trace that exposed exactly that, and closing it there rather than
+documenting it as an exception is why \Cref{sec:budgets} can call budgets
+guarantees at all. \emph{Verification iterations} are checked in the
+post-verification router and again inside the verifier, which will not append a
+repair objective it has no budget to pursue. The duplication is deliberate and
+the two sites read the same counter through the same predicate, so neither can
+drift from the other; what it costs is the simpler sentence, and the simpler
+sentence would be false.
 
 Together these give a termination guarantee that does not depend on model
 behaviour: every cycle in \Cref{fig:statemachine} passes through a router that
@@ -830,28 +823,28 @@ description, the budget configuration hash, the run configuration, and the
 current git commit.
 
 The response cache deserves separate description: it underwrites the thesis's
-reproducibility claims. Every model call is keyed by a hash over the
-model identifier, temperature, reasoning-effort setting, and the full prompt
-text; hits are served from disk. The subtle part is that a cache hit must be
+reproducibility claims. Every model call is keyed by a hash over the model
+identifier, temperature, reasoning-effort setting, and the full prompt text;
+hits are served from disk. The subtle part is that a cache hit must be
 \emph{indistinguishable} from a live call inside the agent: the budget check
 still runs, the call counter still increments, and the original token counts are
 replayed into the meter from the stored record. A fully cached rerun therefore
 reproduces the original run's budget snapshots exactly, rather than reporting
 zero tokens --- with one exception, stated here because it is a property of the
 technique and not of this run: the replay restores prompt and completion tokens
-but not \textsf{reasoning\_tokens}, which the cache stores and does not add back.
-That field is zero throughout this thesis, since the backbone runs at reasoning
-effort \textsf{none} (\Cref{sec:backbone}), so the snapshots do reproduce exactly
-here; anyone reusing the design under a reasoning-effort setting would find they
-do not. A separate counter records cache hits so that live and replayed
-runs can still be told apart in analysis.
+but not \textsf{reasoning\_tokens}, which the cache stores and does not add
+back. That field is zero throughout this thesis, since the backbone runs at
+reasoning effort \textsf{none} (\Cref{sec:backbone}), so the snapshots do
+reproduce exactly here; anyone reusing the design under a reasoning-effort
+setting would find they do not. A separate counter records cache hits so that
+live and replayed runs can still be told apart in analysis.
 
 This has three consequences. Repeated experiments cost nothing. A code change
 that is not supposed to alter behaviour can be verified by confirming that a
 rerun is served entirely from cache. And because the key includes the model
 string, and the backbone configured here is a dated snapshot rather than an
-alias, a silent server-side change cannot poison previously cached results ---
-a property of the configuration and not of the cache, since an alias would hash
+alias, a silent server-side change cannot poison previously cached results --- a
+property of the configuration and not of the cache, since an alias would hash
 identically across the substitution it hides.
 
 \section{Design Validation on the Smoke Set}\label{sec:design-validation}
@@ -859,38 +852,38 @@ identically across the substitution it hides.
 Two tuning sets appear in this thesis and they are not the same set. This
 section uses the \emph{smoke set}: twenty questions, drawn from the training
 splits, used once to validate the assembled framework's mechanics. The
-$80$-question \emph{development set} of \Cref{sec:dev-construction}, on which the
-hyperparameters were swept, is a separate and larger construction. Both are
+$80$-question \emph{development set} of \Cref{sec:dev-construction}, on which
+the hyperparameters were swept, is a separate and larger construction. Both are
 disjoint from test; only the second carries any reported number.
 
 The first end-to-end run of the assembled framework over the smoke set answered
 roughly three to four questions correctly. The final configuration answers
-thirteen to fourteen. The
-interval between those numbers is not incidental tuning; it is where several of
-the mechanisms described above were shown to be necessary, and it is documented
-here because each fix is evidence that a component earns its place.
+thirteen to fourteen. The interval between those numbers is not incidental
+tuning; it is where several of the mechanisms described above were shown to be
+necessary, and it is documented here because each fix is evidence that a
+component earns its place.
 
 \textbf{This section is the one place in the thesis whose \emph{evidence} is not
 fully archived, and the reader should treat it accordingly.} The three other
-provenance gaps are single numbers rather than bodies of evidence --- the
-API spend of \Cref{sec:test-sets}, which is a billing record, the later
-determinism rounds of \Cref{sec:backbone}, read from console tables, and the
-pre-fix support count of \Cref{sec:output-contract}, read from a development
-trace. What survives is one
-smoke-set record file, \textsf{results/phase3/smoke20\_a0.5\_t0.2.jsonl}, which
-scores thirteen correct, six hedged and one wrong --- the lower end of the
-after-state quoted above, at $\alpha = 0.5$ rather than the frozen $0.7$, since
-it was written during the sweep. What does not survive is the before-state: the
-first run was read from a console log and never committed, so the three-to-four
-figure and the root causes of \Cref{tab:rootcauses} rest on that reading
-alone and cannot be recomputed. Neither number enters any result, which is why
-the omission was tolerable, and the ranges are given as ranges for the same
-reason. It is stated here rather than left to be discovered because every other
-provenance gap in this thesis is flagged where it occurs, and an unflagged one
-reads as an oversight rather than a limit.
+provenance gaps are single numbers rather than bodies of evidence --- the API
+spend of \Cref{sec:test-sets}, which is a billing record, the later determinism
+rounds of \Cref{sec:backbone}, read from console tables, and the pre-fix support
+count of \Cref{sec:output-contract}, read from a development trace. What
+survives is one smoke-set record file,
+\textsf{results/phase3/smoke20\_a0.5\_t0.2.jsonl}, which scores thirteen
+correct, six hedged and one wrong --- the lower end of the after-state quoted
+above, at $\alpha = 0.5$ rather than the frozen $0.7$, since it was written
+during the sweep. What does not survive is the before-state: the first run was
+read from a console log and never committed, so the three-to-four figure and the
+root causes of \Cref{tab:rootcauses} rest on that reading alone and cannot be
+recomputed. Neither number enters any result, which is why the omission was
+tolerable, and the ranges are given as ranges for the same reason. It is stated
+here rather than left to be discovered because every other provenance gap in
+this thesis is flagged where it occurs, and an unflagged one reads as an
+oversight rather than a limit.
 
-The smoke set was constructed to exercise specific machinery rather than
-to sample the benchmark distribution: six single-hop questions, eight two-hop
+The smoke set was constructed to exercise specific machinery rather than to
+sample the benchmark distribution: six single-hop questions, eight two-hop
 compositions, three conjunctions, two whose shortest path traverses a mediator,
 and one question about a deliberately non-existent entity whose correct answer
 is a refusal. Questions were drawn from the training and validation splits only,
@@ -899,15 +892,15 @@ evaluation.
 
 The first run produced no crashes, terminated cleanly on every question, and
 abstained rather than confabulated in almost every failure --- which was the
-actual exit criterion for the framework's mechanics. But its sixteen or seventeen
-failures collapsed into just five systematic causes, summarised in
+actual exit criterion for the framework's mechanics. But its sixteen or
+seventeen failures collapsed into just five systematic causes, summarised in
 \Cref{tab:rootcauses}.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption[Root causes of failure in the first end-to-end run]{Root causes of failure in the first end-to-end run, and the
-      mechanism each one motivated. Every fix is described in the section
-      indicated.}
+    \caption[Root causes of failure in the first end-to-end run]{Root causes of
+    failure in the first end-to-end run, and the mechanism each one motivated.
+    Every fix is described in the section indicated.}
     \label{tab:rootcauses}
     \footnotesize
     \begin{tabular}{|L{52mm}|L{52mm}|l|}

@@ -1,21 +1,19 @@
 % !TEX root = ../agr-paper.tex
-% Hand-drawn (not generated): the path one atomic claim takes through the
-% verification layer. Mirrors Algorithm 6.1 line for line, including which of
-% the three routes records citable evidence.
+% atomic claim takes through the verification layer. Mirrors Algorithm 6.1 line
+% for line, including which of the three routes records citable evidence.
 %
 % Colour is semantic, not decorative: blue marks a step that does work, green
 % the supported bucket, vermillion the unsupported one. The palette is the same
 % colour-blind-safe set the generated figures use, and every distinction is
 % still carried by shape and position, so a greyscale print loses nothing.
 % Defined here because this figure is hand-drawn and has no generator.
-\definecolor{agrNode}{HTML}{0072B2}
-\definecolor{agrSup}{HTML}{009E73}
+\definecolor{agrNode}{HTML}{0072B2} \definecolor{agrSup}{HTML}{009E73}
 \definecolor{agrUns}{HTML}{D55E00}
 % This figure is set at two different sizes in two different text fonts (the
 % thesis body font and the slide font), and the node widths are in millimetres
 % either way. Hyphenation is switched off inside the picture so a node cannot
-% break a word in one document and not the other; widths below are the ones
-% that hold every label on the line count it was drawn for in both.
+% break a word in one document and not the other; widths below are the ones that
+% hold every label on the line count it was drawn for in both.
 \begin{tikzpicture}[
     node distance=6mm,
     execute at begin picture={\hyphenpenalty=10000\exhyphenpenalty=10000},
@@ -56,7 +54,8 @@
   % so it is pulled back to the middle of the run instead.
   \draw[flow] (d2.east) -- node[lbl, pos=0.24] {yes}
               node[ev, pos=0.66, above] {+ evidence} (sup.west);
-  \draw[flow] (d3.east) -- ++(8mm,0) node[lbl, pos=0.55] {yes} |- (sup.south east);
+  \draw[flow] (d3.east) -- ++(8mm,0) node[lbl,
+    pos=0.55] {yes} |- (sup.south east);
   \draw[flow] (d3) -- node[lbl] {no} (ent);
   % Endpoint never traversed: skip both structural routes entirely. The run is
   % long enough to clear the "structural routes" caption, which sits to the

@@ -1053,12 +1053,18 @@ ck("the thesis still refuses the pooling",
 # The strata the answer quotes are the figure's own, and the figure is
 # generated from thesis_numbers.json by scripts/build_figures.py.
 FIG = os.path.join(ROOT, "thesis_book", "figures", "fig_hop_strata.tex")
-fig = open(FIG, encoding="utf-8").read()
+# Whitespace-flattened. The old pattern needed `coordinates {` on the
+# same line as `color=agrGraph`, which coupled this rule to a line
+# break in a GENERATED file: when build_figures.py began folding its
+# output to 80 columns, the rule stopped finding a figure that had not
+# changed a digit. [^;]*? rather than [^\n]* because every \addplot
+# ends in a semicolon, so the match still cannot reach the next plot.
+fig = " ".join(open(FIG, encoding="utf-8").read().split())
 for title, hop, want_label in (("WebQSP", 1, "WebQSP two-hop"),
                                ("ComplexWebQuestions", 1, "CWQ two-hop")):
     axis = next((a for a in fig.split(r"\begin{axis}")
                  if f"title={{{title}}}" in a), "")
-    m = re.search(r"color=agrGraph[^\n]*coordinates \{([^}]*)\}", axis)
+    m = re.search(r"color=agrGraph[^;]*?coordinates \{([^}]*)\}", axis)
     pt = re.search(rf"\({hop},([\d.]+)\)", m.group(1)) if m else None
     ck(f"the figure gives GraphRAG's {want_label} stratum", pt is not None)
     if pt:

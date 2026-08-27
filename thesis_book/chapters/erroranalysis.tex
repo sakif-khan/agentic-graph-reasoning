@@ -2,66 +2,67 @@
 \chapter{Error Analysis and Discussion}\label{ch:erroranalysis}
 
 \Cref{ch:results} measured how often each system fails. This chapter reads the
-failures and names the mechanism of each one. It is the part of the work no script
-produced: $259$ failure packets --- question, gold, answer, plan, explored
-relations with their scores, backtrack reasons, verifier outcome --- read and
-labelled by hand, one category and one sentence each.
+failures and names the mechanism of each one. It is the part of the work no
+script produced: $259$ failure packets --- question, gold, answer, plan,
+explored relations with their scores, backtrack reasons, verifier outcome ---
+read and labelled by hand, one category and one sentence each.
 
 The reading protocol was fixed before it began. For each packet, find where the
-trajectory \emph{first} left the correct path, and label that point rather than the
-last visible symptom; when torn, take the earliest plausible cause and record the
-alternative. That rule is what keeps a run that mis-decomposes, then explores the
-wrong relation, then hedges from being counted three times under three categories.
+trajectory \emph{first} left the correct path, and label that point rather than
+the last visible symptom; when torn, take the earliest plausible cause and
+record the alternative. That rule is what keeps a run that mis-decomposes, then
+explores the wrong relation, then hedges from being counted three times under
+three categories.
 
-A note on the identifiers used throughout this chapter, because they are meant to
-be looked up. A ComplexWebQuestions identifier is the WebQSP identifier it was
-derived from followed by a thirty-two character hash, and the stem alone does not
-identify a question: within these samples one stem covers up to twelve distinct
-CWQ questions, and thirteen stems are themselves complete WebQSP identifiers
-naming something else entirely.
-Cases are therefore cited as stem plus the first eight hash characters, which is
-unique within both samples; \Cref{app:samples} lists every identifier in full.
+A note on the identifiers used throughout this chapter, because they are meant
+to be looked up. A ComplexWebQuestions identifier is the WebQSP identifier it
+was derived from followed by a thirty-two character hash, and the stem alone
+does not identify a question: within these samples one stem covers up to twelve
+distinct CWQ questions, and thirteen stems are themselves complete WebQSP
+identifiers naming something else entirely. Cases are therefore cited as stem
+plus the first eight hash characters, which is unique within both samples;
+\Cref{app:samples} lists every identifier in full.
 
 \section{Annotation Protocol and the Failure Taxonomy}\label{sec:taxonomy}
 
 \subsection{Category and Subtype Schema}
 
-Ten categories carry the census, each naming a distinct architectural locus\index{failure census}
-rather than a symptom. That choice is the substantive one. Surveys of
-hallucination classify by how the output fails --- factuality against
-faithfulness, intrinsic against extrinsic~\cite{huang2025survey} --- which is
-the right cut when the generator is a black box and the output is all there is
-to read. It is the wrong cut here, because the run record exposes which
-component produced the failure, and a taxonomy that discarded that would throw
-away the only information this system has over a black box. The categories are
-therefore named for where the trajectory went wrong:
-\textsf{relation\_selection} (the scorer picked the wrong edge),
-\textsf{composite\_claim} (a multi-constraint question handled partially),
-\textsf{kg\_gap} (the environment cannot express what the question needs),
-\textsf{decomposition\_error} (the planner or draft pipeline caused it),
+Ten categories carry the census, each naming a distinct architectural
+locus\index{failure census} rather than a symptom. That choice is the
+substantive one. Surveys of hallucination classify by how the output fails ---
+factuality against faithfulness, intrinsic against
+extrinsic~\cite{huang2025survey} --- which is the right cut when the generator
+is a black box and the output is all there is to read. It is the wrong cut here,
+because the run record exposes which component produced the failure, and a
+taxonomy that discarded that would throw away the only information this system
+has over a black box. The categories are therefore named for where the
+trajectory went wrong: \textsf{relation\_selection} (the scorer picked the wrong
+edge), \textsf{composite\_claim} (a multi-constraint question handled
+partially), \textsf{kg\_gap} (the environment cannot express what the question
+needs), \textsf{decomposition\_error} (the planner or draft pipeline caused it),
 \textsf{answer\_selection} (the correct candidate was retrieved and the drafter
 chose another), \textsf{echo} (a real, grounded entity one node away from the
 answer), \textsf{premature\_termination} (the search stopped before the answer),
 \textsf{verifier\_fn} and \textsf{verifier\_fp} (a right claim rejected, a wrong
 one accepted), and \textsf{gold\_noise} / \textsf{ambiguous\_question} for the
 benchmark defects that escaped the exclusion pass of \Cref{sec:gold-quality}. An
-\textsf{other} category was kept open for mechanisms the schema did not anticipate,
-and \Cref{sec:decomposition-errors} reports what fell into it.
+\textsf{other} category was kept open for mechanisms the schema did not
+anticipate, and \Cref{sec:decomposition-errors} reports what fell into it.
 
 Subtypes are a second, open vocabulary that drives nothing and exists to group
 cases when writing. The full schema, with the worked examples that fixed each
 boundary, is \Cref{tab:census-schema} in \Cref{app:census-schema}.
 
-One naming decision is recorded here because it was got wrong once and corrected.
-The verifier's \emph{positive} class is ``the claim is supported'', so a false
-positive is a claim wrongly \emph{accepted} and a false negative one wrongly
-\emph{rejected}. The taxonomy's gloss originally paired those in the opposite
-order. It was corrected, two mislabelled rows were re-filed
+One naming decision is recorded here because it was got wrong once and
+corrected. The verifier's \emph{positive} class is ``the claim is supported'',
+so a false positive is a claim wrongly \emph{accepted} and a false negative one
+wrongly \emph{rejected}. The taxonomy's gloss originally paired those in the
+opposite order. It was corrected, two mislabelled rows were re-filed
 (\Cref{sec:answer-selection,sec:verifier-errors}), and the merged histogram was
-regenerated. \Cref{sec:polarities} states the convention once; everywhere else this
-thesis says ``wrongly rejected'' and ``wrongly accepted'' in plain English, because
-with outputs labelled \textsf{supported} and \textsf{unsupported} a reader has no
-reliable way to infer which class is positive.
+regenerated. \Cref{sec:polarities} states the convention once; everywhere else
+this thesis says ``wrongly rejected'' and ``wrongly accepted'' in plain English,
+because with outputs labelled \textsf{supported} and \textsf{unsupported} a
+reader has no reliable way to infer which class is positive.
 
 \subsection{Population, Not Sample}
 
@@ -70,17 +71,17 @@ datasets were read to completion: every wrong answer and every hedge produced by
 the full system, less three exclusion sets, each removed for a stated reason and
 each named here rather than folded into one.
 
-The first is the adjudicated benchmark defects of \Cref{sec:gold-quality} --- $22$
-WebQSP and $19$ CWQ questions where the gold label, not the system, is wrong.
-The second is the Stage~B surface-form near-misses of \Cref{sec:metrics}: $1$
-WebQSP and $6$ CWQ answers that strict string matching scores as failures and
-aggressive normalisation scores as hits. They are excluded because they are
-scoring artefacts rather than reasoning failures, and because
-\Cref{sec:metrics} already reports them as a measured quantity in their own
-right. The third is not an exclusion so much as a redirection: the questions
-read under Stage~A, the planner-discordance census, are held out of the Stage~D
-reading so that no question is labelled twice, and they re-enter the histogram
-through their own row in \Cref{tab:census-pop}.
+The first is the adjudicated benchmark defects of \Cref{sec:gold-quality} ---
+$22$ WebQSP and $19$ CWQ questions where the gold label, not the system, is
+wrong. The second is the Stage~B surface-form near-misses of \Cref{sec:metrics}:
+$1$ WebQSP and $6$ CWQ answers that strict string matching scores as failures
+and aggressive normalisation scores as hits. They are excluded because they are
+scoring artefacts rather than reasoning failures, and because \Cref{sec:metrics}
+already reports them as a measured quantity in their own right. The third is not
+an exclusion so much as a redirection: the questions read under Stage~A, the
+planner-discordance census, are held out of the Stage~D reading so that no
+question is labelled twice, and they re-enter the histogram through their own
+row in \Cref{tab:census-pop}.
 
 Only the first set removes questions from the analysis altogether. The second is
 reported elsewhere and the third is counted elsewhere, so the totals of
@@ -89,26 +90,28 @@ reported elsewhere and the third is counted elsewhere, so the totals of
 \textbf{The three sets overlap, so their sizes are not additive.} This is worth
 stating because subtracting them in sequence gives the wrong answer, and the
 generator does not: \textsf{scripts/\allowbreak dump\_\allowbreak
-  failure\_\allowbreak packets.py} skips their \emph{union}. The full system fails on $98$ WebQSP questions and $191$ CWQ
-questions. Of the $22$ and $19$ adjudicated benchmark defects, only $12$ and $15$
-were failures at all --- the rest were questions the system answered correctly
-despite the label --- and of the near-misses, $1$ and $6$. Those subsets are not
-disjoint from the Stage~A reading: one WebQSP question is both an adjudicated
-defect and planner-discordant, and on CWQ one defect and one near-miss are.
-The union skipped is therefore $33$ questions on WebQSP and $34$ on CWQ, which
-leaves exactly the $65$ and $157$ that Stage~D read, and the two totals close
-without remainder. A question that falls in both an exclusion set and Stage~A is still
+failure\_\allowbreak packets.py} skips their \emph{union}. The full system fails
+on $98$ WebQSP questions and $191$ CWQ questions. Of the $22$ and $19$
+adjudicated benchmark defects, only $12$ and $15$ were failures at all --- the
+rest were questions the system answered correctly despite the label --- and of
+the near-misses, $1$ and $6$. Those subsets are not disjoint from the Stage~A
+reading: one WebQSP question is both an adjudicated defect and
+planner-discordant, and on CWQ one defect and one near-miss are. The union
+skipped is therefore $33$ questions on WebQSP and $34$ on CWQ, which leaves
+exactly the $65$ and $157$ that Stage~D read, and the two totals close without
+remainder. A question that falls in both an exclusion set and Stage~A is still
 analysed, through the Stage~A row; net of that re-entry and of the one migrated
 row, $12$ WebQSP and $18$ CWQ failures leave the analysis altogether, which is
 the difference between the failure counts above and the totals in the table.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption[Census provenance]{Census provenance. Stage D is the main reading over the full-matrix
-      failures; Stage A is the separate reading of the questions where removing
-      the planner flipped a failure into a success (\Cref{sec:ablations}); the
-      single migrated row is a Stage D finding later promoted to a formal
-      benchmark-defect exclusion (\Cref{sec:benchmark-defects}).}
+    \caption[Census provenance]{Census provenance. Stage D is the main reading
+    over the full-matrix failures; Stage A is the separate reading of the
+    questions where removing the planner flipped a failure into a success
+    (\Cref{sec:ablations}); the single migrated row is a Stage D finding later
+    promoted to a formal benchmark-defect exclusion
+    (\Cref{sec:benchmark-defects}).}
     \label{tab:census-pop}
     \begin{tabular}{|l|r|r|}
       \hline
@@ -124,27 +127,29 @@ the difference between the failure counts above and the totals in the table.
   \end{center}
 \end{table}
 
-An earlier plan drew a stratified $40 + 20$ sample from CWQ's failures; the census
-was read to completion instead, so there is no sampling-bias caveat on any number
-in this chapter. What does remain is a \emph{composition} caveat: wrong answers and
-hedges are reported separately throughout and never pooled. They are different
-failure semantics --- a wrong answer is a reasoning error that committed, a hedge
-is usually a coverage gap that never produced a committal claim --- and their
-proportions differ sharply between the two datasets, so a pooled percentage would
-describe neither.
+An earlier plan drew a stratified $40 + 20$ sample from CWQ's failures; the
+census was read to completion instead, so there is no sampling-bias caveat on
+any number in this chapter. What does remain is a \emph{composition} caveat:
+wrong answers and hedges are reported separately throughout and never pooled.
+They are different failure semantics --- a wrong answer is a reasoning error
+that committed, a hedge is usually a coverage gap that never produced a
+committal claim --- and their proportions differ sharply between the two
+datasets, so a pooled percentage would describe neither.
 
-\section{Distribution of Failure Categories Across Datasets}\label{sec:failure-distribution}
+\section{Distribution of Failure Categories Across
+Datasets}\label{sec:failure-distribution}
 
 % This table and the figure below hold the same counts in two notations and are
 % meant to be read together, so they are allowed onto a float page (p) rather
 % than being split across two text pages.
 \begin{table}[!tbp]
   \begin{center}
-    \caption[The merged failure histogram]{The merged failure histogram, $n = 259$. Wrong and hedge are kept
-      separate. Counts come from \textsf{scripts/synthesize\_census.py} over the
-      three label sources of \Cref{tab:census-pop}; the table body is generated
-      from \textsf{results/phase4/thesis\_numbers.json}, so it cannot drift out
-      of step with \Cref{fig:histogram}.}
+    \caption[The merged failure histogram]{The merged failure histogram, $n =
+    259$. Wrong and hedge are kept separate. Counts come from
+    \textsf{scripts/synthesize\_census.py} over the three label sources of
+    \Cref{tab:census-pop}; the table body is generated from
+    \textsf{results/phase4/thesis\_numbers.json}, so it cannot drift out of step
+    with \Cref{fig:histogram}.}
     \label{tab:histogram}
     \small
     \input{tables/tab_failure_histogram}
@@ -155,78 +160,81 @@ describe neither.
   \begin{center}
     \input{figures/fig_failure_histogram}
   \end{center}
-  \caption[Failure categories by dataset and polarity]{The failure histogram of \Cref{tab:histogram} drawn as stacked bars,
-    ordered by total. Wrong and hedge are shown as separate segments and are
-    never pooled, because they describe different failure semantics. The
-    asymmetry the section below analyses is visible as the length of the CWQ
-    segments on \textsf{composite\_claim} and \textsf{kg\_gap} against their
-    near-absence on WebQSP. Generated from
-    \textsf{results/phase4/thesis\_numbers.json}.}
+  \caption[Failure categories by dataset and polarity]{The failure histogram of
+  \Cref{tab:histogram} drawn as stacked bars, ordered by total. Wrong and hedge
+  are shown as separate segments and are never pooled, because they describe
+  different failure semantics. The asymmetry the section below analyses is
+  visible as the length of the CWQ segments on \textsf{composite\_claim} and
+  \textsf{kg\_gap} against their near-absence on WebQSP. Generated from
+  \textsf{results/phase4/thesis\_numbers.json}.}
   \label{fig:histogram}
 \end{figure}
 
 \subsection{The Shape Flip, and What It Is Not}
 
 The two datasets fail differently, but not in the way a first reading of
-\Cref{tab:histogram} and \Cref{fig:histogram} suggests. \textsf{relation\_selection} sits at the top
-on \emph{both} --- $26$ of WebQSP's $86$, level there with
-\textsf{decomposition\_error}, and $39$ of CWQ's $173$, behind
-\textsf{composite\_claim} alone --- so it is not
-what distinguishes them. Picking the wrong edge is the base rate of graph
-navigation, and it is dataset-independent.
+\Cref{tab:histogram} and \Cref{fig:histogram} suggests.
+\textsf{relation\_selection} sits at the top on \emph{both} --- $26$ of WebQSP's
+$86$, level there with \textsf{decomposition\_error}, and $39$ of CWQ's $173$,
+behind \textsf{composite\_claim} alone --- so it is not what distinguishes them.
+Picking the wrong edge is the base rate of graph navigation, and it is
+dataset-independent.
 
-What distinguishes them is a pair of categories that are nearly absent from one and
-dominant in the other. \textsf{composite\_claim} is $1$ of $86$ on WebQSP and $46$
-of $173$ on CWQ; \textsf{kg\_gap} is $12$ and $32$. In the other direction,
-\textsf{decomposition\_error} is $26$ on WebQSP --- the tie noted above, the two
-together accounting for just over $60\%$ of its
-failures --- against $12$ on CWQ.
+What distinguishes them is a pair of categories that are nearly absent from one
+and dominant in the other. \textsf{composite\_claim} is $1$ of $86$ on WebQSP
+and $46$ of $173$ on CWQ; \textsf{kg\_gap} is $12$ and $32$. In the other
+direction, \textsf{decomposition\_error} is $26$ on WebQSP --- the tie noted
+above, the two together accounting for just over $60\%$ of its failures ---
+against $12$ on CWQ.
 
 That asymmetry is demonstrable rather than assertable, from two facts already
 established. First, the stratum distribution of \Cref{tab:testsets}: WebQSP is
 $64\%$ one-hop with a four-question deep tail, so most of its questions have no
 composition to get wrong and no constraint to drop, while presenting the planner
 with exactly the questions that do not need decomposing --- which is also the
-significant ablation result of \Cref{sec:ablations}, appearing here as a category
-count. Second, the expressiveness limits certified in \Cref{sec:unanswerable}: the
-environment carries no date literals, no numeric literals, and no ordinals, and
-CWQ's SPARQL templates invoke all three constantly while WebQSP's
-naturally-occurring questions rarely do. The failure profile of a system on a
-dataset is, to this extent, a property of the dataset's construction.
+significant ablation result of \Cref{sec:ablations}, appearing here as a
+category count. Second, the expressiveness limits certified in
+\Cref{sec:unanswerable}: the environment carries no date literals, no numeric
+literals, and no ordinals, and CWQ's SPARQL templates invoke all three
+constantly while WebQSP's naturally-occurring questions rarely do. The failure
+profile of a system on a dataset is, to this extent, a property of the dataset's
+construction.
 
 \subsection{Hedging Where It Should}
 
-A second reading of \Cref{tab:histogram} is worth stating as a positive result\index{hedge}
-rather than only as a deficit. On CWQ, \textsf{kg\_gap} skews three-to-one toward
-hedges --- $24$ against $8$ --- while on WebQSP it leans the other way, $4$ against
-$8$. When CWQ's numeric identifiers, date literals, and ordinal constraints are
-unreachable, the system much more often declines than asserts something wrong.
-That is the behaviour the anti-vacuity and grounding provisions of
-\Cref{sec:claim-decomposition} were written to produce, and it is visible in the
-one place where the environment guarantees the system cannot succeed.
+A second reading of \Cref{tab:histogram} is worth stating as a positive
+result\index{hedge} rather than only as a deficit. On CWQ, \textsf{kg\_gap}
+skews three-to-one toward hedges --- $24$ against $8$ --- while on WebQSP it
+leans the other way, $4$ against $8$. When CWQ's numeric identifiers, date
+literals, and ordinal constraints are unreachable, the system much more often
+declines than asserts something wrong. That is the behaviour the anti-vacuity
+and grounding provisions of \Cref{sec:claim-decomposition} were written to
+produce, and it is visible in the one place where the environment guarantees the
+system cannot succeed.
 
-\section{Decomposition, Drafting, and Answer-Selection Errors}\label{sec:decomposition-errors}
+\section{Decomposition, Drafting, and Answer-Selection
+Errors}\label{sec:decomposition-errors}
 
-Three families share this section because they share a locus: everything downstream
-of retrieval and upstream of the answer. The reasoning is often complete and
-correct by the time these failures occur, which is what makes them both diagnostic
-and cheap to fix.
+Three families share this section because they share a locus: everything
+downstream of retrieval and upstream of the answer. The reasoning is often
+complete and correct by the time these failures occur, which is what makes them
+both diagnostic and cheap to fix.
 
 \subsection{The Entity-Extraction Bug}
 
 Nine of the $38$ \textsf{decomposition\_error} cases carry the subtype
-\textsf{extraction\_bug}, and they are the most actionable finding in the census.
-On profession-shaped and ``what did $X$ do'' questions, the evaluator resolves
-every correct gold value, the drafted text states them verbatim, and
+\textsf{extraction\_bug}, and they are the most actionable finding in the
+census. On profession-shaped and ``what did $X$ do'' questions, the evaluator
+resolves every correct gold value, the drafted text states them verbatim, and
 \textsf{answer\_entities} then collapses to the sentence's grammatical
 \emph{subject}. \Cref{tab:extraction} gives three instances read from the raw
 traces.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption[The entity-extraction bug]{The entity-extraction bug. In each case the drafted answer text names
-      every gold value correctly and the scored entity list holds only the
-      sentence's grammatical subject.}
+    \caption[The entity-extraction bug]{The entity-extraction bug. In each case
+    the drafted answer text names every gold value correctly and the scored
+    entity list holds only the sentence's grammatical subject.}
     \label{tab:extraction}
     \small
     \begin{tabular}{|l|r|c|l|}
@@ -236,153 +244,165 @@ traces.
       \hline
       WebQTest-1215 & 6 professions & all 6 & \textsf{[Stephen Covey]} \\
       WebQTest-704  & 6 professions & all 6 & \textsf{[Thor Heyerdahl]} \\
-      WebQTrn-124\_0782789f   & 4 films       & all 4 & \textsf{[Angelina Jolie]} \\
+      WebQTrn-124\_0782789f   & 4 films       & all 4 &
+        \textsf{[Angelina Jolie]} \\
       \hline
     \end{tabular}
   \end{center}
 \end{table}
 
 \Cref{tab:extraction} understates how complete the drafts are, so one is worth
-quoting whole. For \textsf{WebQTest-1215}, ``who was stephen r covey'', gold lists
-Author, Manager, Writer, Consultant, Professor, and Motivational speaker; the
-drafted answer reads \emph{``Stephen Covey was a Writer, Motivational speaker,
-Author, Consultant, Professor, and Manager''} --- all six, correct, in a different
-order --- and \textsf{answer\_entities} comes back as \textsf{['Stephen Covey']}.
+quoting whole. For \textsf{WebQTest-1215}, ``who was stephen r covey'', gold
+lists Author, Manager, Writer, Consultant, Professor, and Motivational speaker;
+the drafted answer reads \emph{``Stephen Covey was a Writer, Motivational
+speaker, Author, Consultant, Professor, and Manager''} --- all six, correct, in
+a different order --- and \textsf{answer\_entities} comes back as
+\textsf{['Stephen Covey']}.
 
 This is not a reasoning failure at all. The navigation found the answers, the
 verifier certified them, and the prose reports them. What fails is the step that
 turns answer text into the entity list, which consistently reaches for the
 subject rather than the predicate values.
 
-The consequence has to be stated as a limitation on \Cref{ch:results}, not merely
-as a bug: scoring reads \textsf{answer\_entities}, so every one of these cases is
-recorded as a wrong answer or a hedge in \Cref{tab:main}. The reported accuracy of
-this system on ``list the professions'' and ``list what $X$ did'' question shapes
-is therefore depressed by an extraction defect independent of any reasoning
-quality. Nine cases across $259$ is not enough to move the headline numbers
-appreciably, but the correct reading of them is that the measured figure is a
-floor for that question shape, and \Cref{sec:future} lists the fix among the
-repairs the census earned.
+The consequence has to be stated as a limitation on \Cref{ch:results}, not
+merely as a bug: scoring reads \textsf{answer\_entities}, so every one of these
+cases is recorded as a wrong answer or a hedge in \Cref{tab:main}. The reported
+accuracy of this system on ``list the professions'' and ``list what $X$ did''
+question shapes is therefore depressed by an extraction defect independent of
+any reasoning quality. Nine cases across $259$ is not enough to move the
+headline numbers appreciably, but the correct reading of them is that the
+measured figure is a floor for that question shape, and \Cref{sec:future} lists
+the fix among the repairs the census earned.
 
-\subsection{Right Candidate Retrieved, Wrong One Drafted}\label{sec:answer-selection}
+\subsection{Right Candidate Retrieved, Wrong One
+Drafted}\label{sec:answer-selection}
 
 \textsf{answer\_selection} ($15$ cases, $13$ of them on CWQ) is the extraction
 bug's more consequential sibling: the exact gold value demonstrably entered the
 resolved candidate set, and the drafter chose something else.
-\textsf{WebQTest-1555} asks what the parliament of Nepal is called; the evaluator
-resolves \textsf{Parliament of Nepal} itself, and the draft names its two
-component chambers instead. \textsf{WebQTrn-2784\_abedc8ac} asks which Tupac Shakur film
-Malcolm Campbell edited; the trace records \textsf{resolved=['Nothing but
-Trouble']}, the literal gold value satisfying both constraints, and the draft
-substitutes \textsf{Gang Related} and then hedges on it.
+\textsf{WebQTest-1555} asks what the parliament of Nepal is called; the
+evaluator resolves \textsf{Parliament of Nepal} itself, and the draft names its
+two component chambers instead. \textsf{WebQTrn-2784\_abedc8ac} asks which Tupac
+Shakur film Malcolm Campbell edited; the trace records
+\textsf{resolved=['Nothing but Trouble']}, the literal gold value satisfying
+both constraints, and the draft substitutes \textsf{Gang Related} and then
+hedges on it.
 
-One case in this family was originally filed as a verifier error and is worth the
-correction in full, because it is the kind of mistake this taxonomy exists to
-prevent. \textsf{WebQTrn-1294\_a4b2006a} was labelled \textsf{verifier\_fn} on the theory
-that the verifier had checked a claim about a different candidate than the one the
-evaluator resolved. The run record refutes that: the draft itself reads ``Marlon
-Brando also played in \emph{Joy}'', and the verifier rejected exactly what the
-drafter asserted. Brando was not in \emph{Joy}; De Niro was, and the evaluator had
-resolved him. \textbf{The verifier was correct.} The error is upstream, in the
-answerer, and the label was corrected to \textsf{answer\_selection}. That case is
-also the clearest positive demonstration in the census of the verification layer
-doing its job, and \Cref{sec:verifier-errors} opens by pointing back to it.
+One case in this family was originally filed as a verifier error and is worth
+the correction in full, because it is the kind of mistake this taxonomy exists
+to prevent. \textsf{WebQTrn-1294\_a4b2006a} was labelled \textsf{verifier\_fn}
+on the theory that the verifier had checked a claim about a different candidate
+than the one the evaluator resolved. The run record refutes that: the draft
+itself reads ``Marlon Brando also played in \emph{Joy}'', and the verifier
+rejected exactly what the drafter asserted. Brando was not in \emph{Joy}; De
+Niro was, and the evaluator had resolved him. \textbf{The verifier was correct.}
+The error is upstream, in the answerer, and the label was corrected to
+\textsf{answer\_selection}. That case is also the clearest positive
+demonstration in the census of the verification layer doing its job, and
+\Cref{sec:verifier-errors} opens by pointing back to it.
 
 \subsection{Failing to Commit: Six Cases of Hedging on a Verified Fact}
 
-The \textsf{other} category was kept open for mechanisms the schema did not\index{hedge}
-anticipate. All six of its cases turned out to be the same one, and it is not in
-the schema because nothing predicted it: \emph{the evaluator resolves the exact
-gold value, the verifier returns} \textsf{grounded}, \emph{and the drafted text
-hedges anyway}. No rejection is involved, so it is not a verifier error at all.
+The \textsf{other} category was kept open for mechanisms the schema did
+not\index{hedge} anticipate. All six of its cases turned out to be the same one,
+and it is not in the schema because nothing predicted it: \emph{the evaluator
+resolves the exact gold value, the verifier returns} \textsf{grounded},
+\emph{and the drafted text hedges anyway}. No rejection is involved, so it is
+not a verifier error at all.
 
-\textsf{WebQTest-689} states ``Spanish Language was spoken in Spain'' and then that
-the first language spoken in Spain could not be determined, in one answer.
-\textsf{WebQTrn-125\_003c6a04} resolves \textsf{Memphis}, matching gold exactly, and the
-draft says the location could not be determined. \textsf{WebQTrn-1392\_d372995c} names both
-of Eleanor Roosevelt's schools correctly and then declares the school
-undeterminable. \textsf{WebQTest-989\_4b6636a0} (Battle of Dunkirk), \textsf{WebQTest-1923\_a64ef0f5}
-(\emph{The Last Song}), and \textsf{WebQTrn-2721\_2d207ed9} (\textsf{Alois Hitler}) are the
-same shape. In every case the entity list comes back empty and the question is
-scored as a hedge.
+\textsf{WebQTest-689} states ``Spanish Language was spoken in Spain'' and then
+that the first language spoken in Spain could not be determined, in one answer.
+\textsf{WebQTrn-125\_003c6a04} resolves \textsf{Memphis}, matching gold exactly,
+and the draft says the location could not be determined.
+\textsf{WebQTrn-1392\_d372995c} names both of Eleanor Roosevelt's schools
+correctly and then declares the school undeterminable.
+\textsf{WebQTest-989\_4b6636a0} (Battle of Dunkirk),
+\textsf{WebQTest-1923\_a64ef0f5} (\emph{The Last Song}), and
+\textsf{WebQTrn-2721\_2d207ed9} (\textsf{Alois Hitler}) are the same shape. In
+every case the entity list comes back empty and the question is scored as a
+hedge.
 
-The contrast with the extraction bug is exact and worth holding: there the text is
-right and the entity list is wrong; here the text contradicts a fact it has just
-stated. Six of six instances share the mechanism, which makes it a defect rather
-than a distribution.
+The contrast with the extraction bug is exact and worth holding: there the text
+is right and the entity list is wrong; here the text contradicts a fact it has
+just stated. Six of six instances share the mechanism, which makes it a defect
+rather than a distribution.
 
 \subsection{Context-Stripping: When Decomposition Discards the Question}
 
-Subtyping is thinner in this category than elsewhere, and the shortfall is worth\index{planner}
-stating before the cases are read. \textsf{decomposition\_error} holds $38$
-failures; the four named subtypes --- \textsf{extraction\_bug} ($9$),
-\textsf{paraphrase\_drift} ($9$), \textsf{context\_stripping} ($3$), and
-\textsf{over\_decomposition} ($1$) --- cover $22$ of them. The other $16$ are
-labelled at category level only. That is a real limit on how far the mechanisms
-below generalise: they are the mechanisms of the $22$, not of all $38$, and the
-subtype vocabulary was left open rather than stretched to cover the residue.
+Subtyping is thinner in this category than elsewhere, and the shortfall is
+worth\index{planner} stating before the cases are read.
+\textsf{decomposition\_error} holds $38$ failures; the four named subtypes ---
+\textsf{extraction\_bug} ($9$), \textsf{paraphrase\_drift} ($9$),
+\textsf{context\_stripping} ($3$), and \textsf{over\_decomposition} ($1$) ---
+cover $22$ of them. The other $16$ are labelled at category level only. That is
+a real limit on how far the mechanisms below generalise: they are the mechanisms
+of the $22$, not of all $38$, and the subtype vocabulary was left open rather
+than stretched to cover the residue.
 
 \textsf{paraphrase\_drift} ($9$ cases) and \textsf{over\_decomposition} are the
-expected decomposition failures --- a rewritten sub-objective scoring worse against
-the target relation than the raw question text, or a redundant step resolving an
-already-unambiguous entity. \textsf{WebQTest-1829} is the clean over-decomposition
-case: the plan splits ``what type of religion did massachusetts have'' into
-\textsf{['find Massachusetts', 'find the religion type associated with \#1']}, burns
-$14$ of $16$ calls on three evaluator backtracks, and hedges, while the undecomposed
-run finds the same fact in three calls with no backtracks.
+expected decomposition failures --- a rewritten sub-objective scoring worse
+against the target relation than the raw question text, or a redundant step
+resolving an already-unambiguous entity. \textsf{WebQTest-1829} is the clean
+over-decomposition case: the plan splits ``what type of religion did
+massachusetts have'' into \textsf{['find Massachusetts', 'find the religion type
+associated with \#1']}, burns $14$ of $16$ calls on three evaluator backtracks,
+and hedges, while the undecomposed run finds the same fact in three calls with
+no backtracks.
 
-\textsf{context\_stripping} ($3$ cases) is the mechanism this chapter would feature
-if it could feature only one, because it is a failure mode of decomposition that
-decomposition's own design cannot see. Splitting a question into steps
-\emph{removes} a qualifier that appears only in a later clause, so an early
-sub-objective resolves the wrong sense of an ambiguous term before the
+\textsf{context\_stripping} ($3$ cases) is the mechanism this chapter would
+feature if it could feature only one, because it is a failure mode of
+decomposition that decomposition's own design cannot see. Splitting a question
+into steps \emph{removes} a qualifier that appears only in a later clause, so an
+early sub-objective resolves the wrong sense of an ambiguous term before the
 disambiguating information ever arrives.
 
 \textsf{WebQTest-1367} asks where Glastonbury, England is. The plan's first step
 anchors on \textsf{'find Glastonbury'} alone, dropping the question's own
-disambiguator, and the explorer resolves toward the identically-named Connecticut
-town.
+disambiguator, and the explorer resolves toward the identically-named
+Connecticut town.
 
-\textsf{WebQTrn-2615\_48a6ac56} asks what instruments the author of \emph{Fela!} plays. The
-first sub-objective, ``find the author of \emph{Fela!}'', is scored with no mention
-of instruments, so it resolves the wrong sense of an ambiguous authorship relation
-before the constraint that would have disambiguated it appears in step two. The
-undecomposed run answers all five instruments correctly, in fewer calls.
+\textsf{WebQTrn-2615\_48a6ac56} asks what instruments the author of \emph{Fela!}
+plays. The first sub-objective, ``find the author of \emph{Fela!}'', is scored
+with no mention of instruments, so it resolves the wrong sense of an ambiguous
+authorship relation before the constraint that would have disambiguated it
+appears in step two. The undecomposed run answers all five instruments
+correctly, in fewer calls.
 
-\textsf{WebQTrn-2570\_d63877a4} is the strongest specimen in the census, and its trace shows
-every link of the mechanism. The question --- ``This 33rd president was the
-nation's leader during WW2'' --- is a single entity under two descriptions. The
-planner emits \textsf{['find the 33rd president', "find the nation's leader during
-WW2"]}, with no \textsf{\#1} reference between them, modelling two descriptors of
-one entity as though they were a chain. Because sub-objective one is the active
-scoring context, the anchor \textsf{World War II} scores $0.128$--$0.133$ --- the
-noise floor --- while presidency-hub relations score $0.46$--$0.54$. Decomposition
-actively \emph{suppressed} the one anchor that could have discriminated. Objective
-one then never completes (\textsf{objective\_done: false} at every round), so
-objective two never activates and the WW2 constraint is never used at any point in
-the search. The agent spends its depth budget wandering the presidency hub and
-drafts a plausible-sounding president: Woodrow Wilson, the 28th, and nowhere near
-the war. The undecomposed run answers Harry S.~Truman correctly in three calls,
+\textsf{WebQTrn-2570\_d63877a4} is the strongest specimen in the census, and its
+trace shows every link of the mechanism. The question --- ``This 33rd president
+was the nation's leader during WW2'' --- is a single entity under two
+descriptions. The planner emits \textsf{['find the 33rd president', "find the
+nation's leader during WW2"]}, with no \textsf{\#1} reference between them,
+modelling two descriptors of one entity as though they were a chain. Because
+sub-objective one is the active scoring context, the anchor \textsf{World War
+II} scores $0.128$--$0.133$ --- the noise floor --- while presidency-hub
+relations score $0.46$--$0.54$. Decomposition actively \emph{suppressed} the one
+anchor that could have discriminated. Objective one then never completes
+(\textsf{objective\_done: false} at every round), so objective two never
+activates and the WW2 constraint is never used at any point in the search. The
+agent spends its depth budget wandering the presidency hub and drafts a
+plausible-sounding president: Woodrow Wilson, the 28th, and nowhere near the
+war. The undecomposed run answers Harry S.~Truman correctly in three calls,
 because ``WW2'' stayed in the scoring context.
 
-Two further observations belong to that trace. No ordinal relation appears anywhere
-in it, so the ``33rd'' constraint played no part either --- consistent with the
-environment's lack of ordinal encoding (\Cref{sec:kg-gaps}). And the verifier
-returned \textsf{grounded} on the Wilson claim, which \Cref{sec:verifier-errors}
-takes up as a boundary case rather than a defect.
+Two further observations belong to that trace. No ordinal relation appears
+anywhere in it, so the ``33rd'' constraint played no part either --- consistent
+with the environment's lack of ordinal encoding (\Cref{sec:kg-gaps}). And the
+verifier returned \textsf{grounded} on the Wilson claim, which
+\Cref{sec:verifier-errors} takes up as a boundary case rather than a defect.
 
-Three instances of one mechanism, two of them surfaced by the ablation contrast and
-one by ordinary reading, is what makes context-stripping a named finding rather
-than an anecdote --- and it is the concrete evidence behind the adaptive-gating
-proposal of \Cref{sec:future}.
+Three instances of one mechanism, two of them surfaced by the ablation contrast
+and one by ordinary reading, is what makes context-stripping a named finding
+rather than an anecdote --- and it is the concrete evidence behind the
+adaptive-gating proposal of \Cref{sec:future}.
 
 A fourth case belongs beside these and is filed as plain
-\textsf{decomposition\_error}, since no subtype fits it.
-\textsf{WebQTest-869} asks ``where is ancient phoenician''. The planner rewrote the sole sub-objective as \textsf{['find
-ancient Phoenician']}, so the explorer re-identified the topic instead of
-locating it and the run answered ``Phoenicia'' --- the question's own subject,
-grounded, and useless. The undecomposed run answered ``Ancient Phoenicia was in
-Lebanon'' in three calls against six.
+\textsf{decomposition\_error}, since no subtype fits it. \textsf{WebQTest-869}
+asks ``where is ancient phoenician''. The planner rewrote the sole sub-objective
+as \textsf{['find ancient Phoenician']}, so the explorer re-identified the topic
+instead of locating it and the run answered ``Phoenicia'' --- the question's own
+subject, grounded, and useless. The undecomposed run answered ``Ancient
+Phoenicia was in Lebanon'' in three calls against six.
 
 What separates it from the three cases above is \emph{what} the rewrite
 discarded. They drop a constraint that arrives in a later clause; this one drops
@@ -398,135 +418,138 @@ interrogative as well as for redundancy.
 \subsection{The Same Relation Gap Seen from Several Angles}
 
 \textsf{relation\_selection} is the largest category at $65$ and carries no
-subtypes, because the mechanism is uniform: a wrong relation was explored, or the
-right one was explored and abandoned. Its interest is not in the individual cases
-but in the fact that several of them are the \emph{same} gap seen from different
-angles.
+subtypes, because the mechanism is uniform: a wrong relation was explored, or
+the right one was explored and abandoned. Its interest is not in the individual
+cases but in the fact that several of them are the \emph{same} gap seen from
+different angles.
 
-\textsf{WebQTest-1730} asks where the Paraná river flows. The system answers with
-the rivers it flows \emph{into}, having explored \textsf{geography.river.mouth} and
-\textsf{origin}; a location-containment relation was never tried, and gold is the
-continent.
+\textsf{WebQTest-1730} asks where the Paraná river flows. The system answers
+with the rivers it flows \emph{into}, having explored
+\textsf{geography.river.mouth} and \textsf{origin}; a location-containment
+relation was never tried, and gold is the continent.
 
-Three separate questions across both datasets --- \textsf{WebQTrn-1758\_477d7040},
-\textsf{WebQTest-1226}, \textsf{WebQTest-314} --- all reach for
-\textsf{government.\allowbreak governmental\_jurisdiction.\allowbreak government},
-the organisation entity, when the question asks for a form of government and the
-answer lives on
+Three separate questions across both datasets ---
+\textsf{WebQTrn-1758\_477d7040}, \textsf{WebQTest-1226}, \textsf{WebQTest-314}
+--- all reach for \textsf{government.\allowbreak
+governmental\_jurisdiction.\allowbreak government}, the organisation entity,
+when the question asks for a form of government and the answer lives on
 \textsf{government.\allowbreak form\_of\_government.\allowbreak countries}. One
-relation confusion,
-reproduced three times on unrelated questions.
+relation confusion, reproduced three times on unrelated questions.
 
 The sharpest instance is a triplet on CWQ. All three questions sharing the stem
 \textsf{WebQTrn-1770} appear, under different perturbations ---
 \textsf{\_540abec8} via a Beyoncé documentary, \textsf{\_6325ee89} via the actor
 who played Etta James, \textsf{\_6a7c160a} via the composer of a Beyoncé track
---- and all three
-resolve Beyoncé correctly, all three never once try
-\textsf{people.person.children}, the single relation that answers each of them, and
-all three hedge. Three independent entry points into the same resolver hitting the
-identical dead end is the cleanest evidence in the corpus that a relation gap is
-\emph{systemic} rather than an artefact of one question's phrasing. It is a
-property of the scorer's ranking over that entity's relation set, not of the
-question.
+--- and all three resolve Beyoncé correctly, all three never once try
+\textsf{people.person.children}, the single relation that answers each of them,
+and all three hedge. Three independent entry points into the same resolver
+hitting the identical dead end is the cleanest evidence in the corpus that a
+relation gap is \emph{systemic} rather than an artefact of one question's
+phrasing. It is a property of the scorer's ranking over that entity's relation
+set, not of the question.
 
 \subsection{The Evaluator Abandons a Good Relation}
 
-\textsf{premature\_termination} is small ($8$ cases) and splits into two mechanisms
-that must not be merged.\index{evaluator}
+\textsf{premature\_termination} is small ($8$ cases) and splits into two
+mechanisms that must not be merged.\index{evaluator}
 
-Five carry the \textsf{evaluator} subtype and are the \emph{same} systemic pattern:
-the correct relation is explored with a solid score and the evaluator backtracks
-away from it and never returns. \textsf{WebQTest-1226} ($0.451$),
+Five carry the \textsf{evaluator} subtype and are the \emph{same} systemic
+pattern: the correct relation is explored with a solid score and the evaluator
+backtracks away from it and never returns. \textsf{WebQTest-1226} ($0.451$),
 \textsf{WebQTest-517\_e7d8b401} ($0.428$), \textsf{WebQTest-1635} ($0.631$),
-\textsf{WebQTrn-710\_e3d40457} ($0.702$), and \textsf{WebQTest-314} ($0.731$) all show the
-identical shape across entirely unrelated domains --- government form, constructed
-languages, sports drafts, mascots. A relation scoring $0.73$ being explored and
-discarded is not a reasoning gap; it reads as a threshold or backtracking-policy
-defect, and it is one of the most directly fixable findings in the census.
+\textsf{WebQTrn-710\_e3d40457} ($0.702$), and \textsf{WebQTest-314} ($0.731$)
+all show the identical shape across entirely unrelated domains --- government
+form, constructed languages, sports drafts, mascots. A relation scoring $0.73$
+being explored and discarded is not a reasoning gap; it reads as a threshold or
+backtracking-policy defect, and it is one of the most directly fixable findings
+in the census.
 
 The other three carry \textsf{budget} and are genuine exhaustion:
 \textsf{WebQTest-1170} exhausts its backtrack budget wandering person-attribute
-relations after the direct edge returns nothing usable; \textsf{WebQTest-1736\_125140bf}
-hits two real dead ends before the plan's second hop can run. The third,
-\textsf{WebQTest-1630}, is instructive because it belongs to two families at once:
-all five gold names surfaced across repeated evaluator rounds with a grounded
-verifier, and the run never transitioned from \textsf{continue} to \textsf{answer}
-before exhausting its step budget --- a commitment failure of the kind
-\Cref{sec:decomposition-errors} documents, expressed through the budget.
+relations after the direct edge returns nothing usable;
+\textsf{WebQTest-1736\_125140bf} hits two real dead ends before the plan's
+second hop can run. The third, \textsf{WebQTest-1630}, is instructive because it
+belongs to two families at once: all five gold names surfaced across repeated
+evaluator rounds with a grounded verifier, and the run never transitioned from
+\textsf{continue} to \textsf{answer} before exhausting its step budget --- a
+commitment failure of the kind \Cref{sec:decomposition-errors} documents,
+expressed through the budget.
 
 \section{Verifier Rejection and Acceptance Errors}\label{sec:verifier-errors}
 
-Before the errors, the correct rejections. \Cref{sec:answer-selection} narrates one
-in full: the verifier rejected a claim the drafter had fabricated about the wrong
-actor, and the layer worked exactly as designed. The $52$ questions on which the
-verifier fired \textsf{unsupported} are not a population of mistakes.
+Before the errors, the correct rejections. \Cref{sec:answer-selection} narrates
+one in full: the verifier rejected a claim the drafter had fabricated about the
+wrong actor, and the layer worked exactly as designed. The $52$ questions on
+which the verifier fired \textsf{unsupported} are not a population of mistakes.
 
 The two error polarities are, however, very unevenly evidenced --- five cases
-against one --- and that imbalance is not a fact about the verifier. It is a fact
-about the instrumentation, and it is the finding of this section.
+against one --- and that imbalance is not a fact about the verifier. It is a
+fact about the instrumentation, and it is the finding of this section.
 
 \subsection{Defining the Error Polarities}\label{sec:polarities}
 
 The verifier's positive class is ``the claim is supported''. A \emph{false
 positive} is therefore a claim wrongly \textbf{accepted}, and a \emph{false
-negative} a claim wrongly \textbf{rejected}. Because the verifier's own outputs are
-labelled \textsf{supported} and \textsf{unsupported}, ``positive'' has no stable
-referent for a reader, and the rest of this thesis uses the plain-English terms.
+negative} a claim wrongly \textbf{rejected}. Because the verifier's own outputs
+are labelled \textsf{supported} and \textsf{unsupported}, ``positive'' has no
+stable referent for a reader, and the rest of this thesis uses the plain-English
+terms.
 
 \subsection{Wrongly Rejected: Semantically Correct, Structurally Unmatched}
 
 Five cases, all sharing one mechanism and all carrying the subtype
-\textsf{structural\_not\_semantic}: the claim is true and the answer correct, but no
-single triple states it in the phrasing the drafter used, so a transitively-true or
-differently-anchored fact is rejected and the retry loses the answer.
+\textsf{structural\_not\_semantic}: the claim is true and the answer correct,
+but no single triple states it in the phrasing the drafter used, so a
+transitively-true or differently-anchored fact is rejected and the retry loses
+the answer.
 
-\textsf{WebQTest-1133} resolves \textsf{William Henry Smith} across every backtrack
-round; the verifier flags the claim unsupported both times and the run hedges on
-what is very likely the right answer. \textsf{WebQTest-38} resolves \emph{all four}
-gold campaign entities in one attempt; the rejection forces a retry that narrows to
-two names and fails anyway. \textsf{WebQTest-725} resolves both gold states,
-California and Nevada, then loses them over the four exploration rounds that
-follow and is rejected; it is the one case of the five where the depth budget
-blocked the retry, so no repair exploration ran.
-\textsf{WebQTest-1348\_b7598df9} resolves \textsf{Houston Oilers} correctly and grounded; the
-verifier rejects the phrasing ``Peyton Manning's dad played for Houston Oilers''
-because the underlying triple is stated in terms of Archie Manning, and the retry
-recovers only the person's name. \textsf{WebQTrn-568\_f4dd5e48} resolves
-\textsf{Mecklenburg County} --- the exact gold --- through a sound two-hop chain
-from newspaper to city to county, is rejected, retries, resolves it again, and is
-rejected again.
+\textsf{WebQTest-1133} resolves \textsf{William Henry Smith} across every
+backtrack round; the verifier flags the claim unsupported both times and the run
+hedges on what is very likely the right answer. \textsf{WebQTest-38} resolves
+\emph{all four} gold campaign entities in one attempt; the rejection forces a
+retry that narrows to two names and fails anyway. \textsf{WebQTest-725} resolves
+both gold states, California and Nevada, then loses them over the four
+exploration rounds that follow and is rejected; it is the one case of the five
+where the depth budget blocked the retry, so no repair exploration ran.
+\textsf{WebQTest-1348\_b7598df9} resolves \textsf{Houston Oilers} correctly and
+grounded; the verifier rejects the phrasing ``Peyton Manning's dad played for
+Houston Oilers'' because the underlying triple is stated in terms of Archie
+Manning, and the retry recovers only the person's name.
+\textsf{WebQTrn-568\_f4dd5e48} resolves \textsf{Mecklenburg County} --- the
+exact gold --- through a sound two-hop chain from newspaper to city to county,
+is rejected, retries, resolves it again, and is rejected again.
 
-The mechanism is one thing: the structural check demands a single edge asserting the
-drafted claim, and a transitively-true multi-hop fact does not present one. This is
-the same limitation \Cref{sec:structural-check} described by construction, now
-observed at census scale, and \Cref{sec:future} names the semantic-level check that
-would address it.
+The mechanism is one thing: the structural check demands a single edge asserting
+the drafted claim, and a transitively-true multi-hop fact does not present one.
+This is the same limitation \Cref{sec:structural-check} described by
+construction, now observed at census scale, and \Cref{sec:future} names the
+semantic-level check that would address it.
 
 \subsection{Wrongly Accepted: One Specimen and a Boundary Case}
 
-Exactly one clean specimen exists in the whole census. \textsf{WebQTrn-1597\_8adc06ba} asserts
-a Seth MacFarlane connection to \emph{ThunderCats}, the verifier returns
-\textsf{grounded}, and a direct Cypher query confirms that no edge from MacFarlane
-to Lion-O or \emph{ThunderCats} exists in the environment. The claim was accepted
-with nothing behind it.
+Exactly one clean specimen exists in the whole census.
+\textsf{WebQTrn-1597\_8adc06ba} asserts a Seth MacFarlane connection to
+\emph{ThunderCats}, the verifier returns \textsf{grounded}, and a direct Cypher
+query confirms that no edge from MacFarlane to Lion-O or \emph{ThunderCats}
+exists in the environment. The claim was accepted with nothing behind it.
 
-The instructive companion is \emph{not} a second defect. \textsf{WebQTest-1620} asks
-when President Wilson was in office; the environment exposes inauguration events but
-no date literal, so the system answers with two inauguration mentions. The asserted
-entities exist, the edges are real, and the structural check passed
-\emph{correctly}. The answer is nonetheless wrong. The same holds for the
-\textsf{WebQTrn-2570\_d63877a4} case of \Cref{sec:decomposition-errors}: Woodrow Wilson was
-retrieved, the claim's endpoints genuinely connect in the graph, and the verifier
-was right to say so --- while the answer was wrong for the question.
+The instructive companion is \emph{not} a second defect. \textsf{WebQTest-1620}
+asks when President Wilson was in office; the environment exposes inauguration
+events but no date literal, so the system answers with two inauguration
+mentions. The asserted entities exist, the edges are real, and the structural
+check passed \emph{correctly}. The answer is nonetheless wrong. The same holds
+for the \textsf{WebQTrn-2570\_d63877a4} case of \Cref{sec:decomposition-errors}:
+Woodrow Wilson was retrieved, the claim's endpoints genuinely connect in the
+graph, and the verifier was right to say so --- while the answer was wrong for
+the question.
 
-That contrast is the most useful point in this section, and it is the same argument
-\Cref{sec:hallucination-def} makes and \Cref{sec:limitations} builds on: structural
-grounding is a claim about edge existence, not about answer adequacy. A verifier
-that checks whether a claim is \emph{in} the graph cannot, by construction, check
-whether it is \emph{the answer}. \Cref{tab:groundedness}'s Tier-2 column is the
-measurement of that gap; these two cases are what it looks like in a single
-trajectory.
+That contrast is the most useful point in this section, and it is the same
+argument \Cref{sec:hallucination-def} makes and \Cref{sec:limitations} builds
+on: structural grounding is a claim about edge existence, not about answer
+adequacy. A verifier that checks whether a claim is \emph{in} the graph cannot,
+by construction, check whether it is \emph{the answer}.
+\Cref{tab:groundedness}'s Tier-2 column is the measurement of that gap; these
+two cases are what it looks like in a single trajectory.
 
 \subsection{A Rate for One Polarity, and a Blank for the Other}
 
@@ -537,25 +560,25 @@ $800$ questions, since a question that repairs is verified again afterwards. Its
 on WebQSP and $36$ of $400$ on CWQ --- and $13$ of those $52$ end
 \textsf{grounded} after a repair, leaving $761$ questions answered under a
 grounded verdict and $39$ under an unsupported one. The five wrongly-rejected
-cases are drawn from the $52$, so that polarity has a denominator in the question
-unit: roughly one rejected question in ten cost a correct answer. Even that is a
-lower bound, since a wrongful rejection that did not change the final answer
-never entered the census, which reads only failures.
+cases are drawn from the $52$, so that polarity has a denominator in the
+question unit: roughly one rejected question in ten cost a correct answer. Even
+that is a lower bound, since a wrongful rejection that did not change the final
+answer never entered the census, which reads only failures.
 
 The distinction is not pedantry about units. The run record stores the
 \emph{first} verifier entry, so a question repaired into groundedness is filed
 under \textsf{unsupported} in the committed \textsf{verifier\_outcome} field;
 reading that field as the outcome would put $13$ questions on the wrong side of
-the ledger and, in the other direction, treating the $52$ as firings would credit
-the verifier with $52$ of $828$ rather than the $52$ of $800$ the wrongly-rejected
-rate is computed against.
+the ledger and, in the other direction, treating the $52$ as firings would
+credit the verifier with $52$ of $828$ rather than the $52$ of $800$ the
+wrongly-rejected rate is computed against.
 
 Wrongful acceptance has \emph{no logged population at all}. Accepted claims are
-never persisted --- \Cref{sec:instrumentation} records that the verifier logs only
-the claims it rejects --- so the wrongly-accepted cases sit undifferentiated inside
-the $761$ questions answered under a grounded verdict, with nothing marking them.
-The single specimen surfaced only because the ablation-discordance reading
-happened to walk that trajectory by hand.
+never persisted --- \Cref{sec:instrumentation} records that the verifier logs
+only the claims it rejects --- so the wrongly-accepted cases sit
+undifferentiated inside the $761$ questions answered under a grounded verdict,
+with nothing marking them. The single specimen surfaced only because the
+ablation-discordance reading happened to walk that trajectory by hand.
 
 What can be given is the size of the space they hide in, and it is worth giving
 because a blank invites the reading that the space is small. In the claim unit
@@ -567,218 +590,234 @@ many that is beyond the interval $[39, 2{,}008]$. The wrongly-accepted specimen
 of the preceding subsection is one case drawn from a population bounded that
 loosely, which is a stronger statement of the gap than the missing rate alone.
 
-The two polarities are therefore reported asymmetrically and deliberately: a rate
-for rejection, an explicit blank for acceptance, and no average of the two. A
-combined ``verifier error rate'' computed from these numbers would be an artefact
-of what the logs happen to record. \Cref{sec:threats} treats this as the
-instrumentation gap it is, and \Cref{sec:future} gives the one-line fix that would
-convert the blank into a rate.
+The two polarities are therefore reported asymmetrically and deliberately: a
+rate for rejection, an explicit blank for acceptance, and no average of the two.
+A combined ``verifier error rate'' computed from these numbers would be an
+artefact of what the logs happen to record. \Cref{sec:threats} treats this as
+the instrumentation gap it is, and \Cref{sec:future} gives the one-line fix that
+would convert the blank into a rate.
 
-\section{Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and Ordinals}\label{sec:kg-gaps}
+\section{Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and
+Ordinals}\label{sec:kg-gaps}
 
 \textsf{kg\_gap} is the third-largest category at $44$ and CWQ's single largest
-hedge category at $24$. It invokes the unanswerable-in-environment class defined in
-\Cref{sec:unanswerable}, and its five subtypes cluster by mechanism. Those five
-account for $39$ of the $44$; the remaining $5$ carry no subtype, because the
-environment gap in each was specific enough that grouping it with anything else
-would have been an invention. They are counted in the category total throughout
-and are not silently dropped.
+hedge category at $24$. It invokes the unanswerable-in-environment class defined
+in \Cref{sec:unanswerable}, and its five subtypes cluster by mechanism. Those
+five account for $39$ of the $44$; the remaining $5$ carry no subtype, because
+the environment gap in each was specific enough that grouping it with anything
+else would have been an invention. They are counted in the category total
+throughout and are not silently dropped.
 
 \textsf{ordinal} ($9$ cases) --- superlatives such as ``first'', ``last'',
-``smallest'', ``earliest''. Every instance shares one shape: the relevant relation
-is explored, candidates come back, and the minimum-or-maximum comparison across them
-simply never happens, because no component performs it. \textsf{WebQTest-245}, on
-the year of the first Miss America pageant, is the clearest illustration --- the
-system answers $1925$, then $1980$, then $1929$ across successive rounds, genuinely
-different years each time, because nothing sorts and takes the extreme.
+``smallest'', ``earliest''. Every instance shares one shape: the relevant
+relation is explored, candidates come back, and the minimum-or-maximum
+comparison across them simply never happens, because no component performs it.
+\textsf{WebQTest-245}, on the year of the first Miss America pageant, is the
+clearest illustration --- the system answers $1925$, then $1980$, then $1929$
+across successive rounds, genuinely different years each time, because nothing
+sorts and takes the extreme.
 
 \textsf{numeric\_literal} ($16$ cases, the largest subtype) --- internal
-identifiers such as \textsf{tvrage\_id}, \textsf{thetvdb\_id}, ISO alpha-3 codes,
-and Freebase's own located identifiers, which CWQ's templates invoke constantly and
-which no relation in the explored schema exposes. Several of these hedges are
-unusually honest: \textsf{WebQTrn-849\_f0ffa147}, asking which country bordering Germany has
-ISO code CHE, names Switzerland in the answer text and then states explicitly that
-the code itself could not be confirmed from the available facts --- a correct
-inference, correctly caveated, rather than a false assertion.
+identifiers such as \textsf{tvrage\_id}, \textsf{thetvdb\_id}, ISO alpha-3
+codes, and Freebase's own located identifiers, which CWQ's templates invoke
+constantly and which no relation in the explored schema exposes. Several of
+these hedges are unusually honest: \textsf{WebQTrn-849\_f0ffa147}, asking which
+country bordering Germany has ISO code CHE, names Switzerland in the answer text
+and then states explicitly that the code itself could not be confirmed from the
+available facts --- a correct inference, correctly caveated, rather than a false
+assertion.
 
 \textsf{date\_literal} ($4$) and \textsf{temporal\_qualifier} ($4$) --- the
-environment exposes inauguration and election \emph{events} but not the date values
-themselves, so a question about when an office was held returns event mentions
-(\textsf{WebQTest-1620}), and a question about who was president in a given year
-substitutes \textsf{government.election.winner} for a term-range check it cannot
-perform. \textsf{WebQTest-749} answers ``George H.~W.~Bush'' for 1988: the winner
-of that November's election, who took office the following January.
+environment exposes inauguration and election \emph{events} but not the date
+values themselves, so a question about when an office was held returns event
+mentions (\textsf{WebQTest-1620}), and a question about who was president in a
+given year substitutes \textsf{government.election.winner} for a term-range
+check it cannot perform. \textsf{WebQTest-749} answers ``George H.~W.~Bush'' for
+1988: the winner of that November's election, who took office the following
+January.
 
 \textsf{data\_error} ($6$) --- genuine coverage holes rather than expressiveness
 limits. \textsf{WebQTrn-261\_7bc18657} returns four consecutive rounds of
-\textsf{explored=[] (max\_score 0.0)} because the image reference the question names
-resolves to nothing in the graph at all.
+\textsf{explored=[] (max\_score 0.0)} because the image reference the question
+names resolves to nothing in the graph at all.
 
 The distinction between the first four subtypes and the last matters for what
 follows from them. \textsf{data\_error} is a gap in this particular import;
 \textsf{ordinal}, \textsf{numeric\_literal}, \textsf{date\_literal}, and
-\textsf{temporal\_qualifier} are gaps in what a triple-and-traversal architecture
-can express at all, and no larger graph fixes them. They need an operator, which is
-why \Cref{sec:future} lists literal and ordinal support alongside the architectural
-items rather than among the repairs.
+\textsf{temporal\_qualifier} are gaps in what a triple-and-traversal
+architecture can express at all, and no larger graph fixes them. They need an
+operator, which is why \Cref{sec:future} lists literal and ordinal support
+alongside the architectural items rather than among the repairs.
 
 \section{The Echo Attractor: Answering with the Topic or an Intermediate
-  Entity}\label{sec:echo}
+Entity}\label{sec:echo}
 
 \textsf{echo} names a mechanism that recurs independently of the two mechanical
-categories above: the system resolves a real, well-grounded entity that sits\index{echo attractor}
-\emph{near} the correct answer in the graph's structure, and the verifier passes it
-because it genuinely is grounded. The fact is true. It is not what was asked.
+categories above: the system resolves a real, well-grounded entity that
+sits\index{echo attractor} \emph{near} the correct answer in the graph's
+structure, and the verifier passes it because it genuinely is grounded. The fact
+is true. It is not what was asked.
 
 Three shapes appear, and their boundary is not always crisp. \textsf{topic} ($6$
 cases) is confusion between entities sharing a name or a tight cluster:
-\textsf{WebQTest-1707} asks who plays Lex Luthor on \emph{Smallville} and answers
-``John Glover plays Lionel Luthor'' --- a different character in the same fictional
-cluster, with Lionel, Alexander, and Lucas Luthor variants all surfacing in the
-trace before the run gives up. \textsf{granularity} ($7$ cases) is the right entity
-family at the wrong level: \textsf{WebQTest-86} answers ``Kingdom of Denmark'' where
-gold is ``Denmark'' --- a genuinely distinct node, the formal sovereign-state entity
-rather than the common-name one. \textsf{WebQTrn-1405\_ced20d84} asks which school founded in
-1636 President Kennedy attended, has \textsf{Harvard College} in its very first
-candidate list, and narrows to \textsf{Harvard University} instead --- whose
-founding-date claim the verifier then correctly rejects. \textsf{intermediate} ---
-stopping at a hop along the way rather than continuing to the target --- has no rows
-of its own in this census, because the reading pass filed those cases under
+\textsf{WebQTest-1707} asks who plays Lex Luthor on \emph{Smallville} and
+answers ``John Glover plays Lionel Luthor'' --- a different character in the
+same fictional cluster, with Lionel, Alexander, and Lucas Luthor variants all
+surfacing in the trace before the run gives up. \textsf{granularity} ($7$ cases)
+is the right entity family at the wrong level: \textsf{WebQTest-86} answers
+``Kingdom of Denmark'' where gold is ``Denmark'' --- a genuinely distinct node,
+the formal sovereign-state entity rather than the common-name one.
+\textsf{WebQTrn-1405\_ced20d84} asks which school founded in 1636 President
+Kennedy attended, has \textsf{Harvard College} in its very first candidate list,
+and narrows to \textsf{Harvard University} instead --- whose founding-date claim
+the verifier then correctly rejects. \textsf{intermediate} --- stopping at a hop
+along the way rather than continuing to the target --- has no rows of its own in
+this census, because the reading pass filed those cases under
 \textsf{granularity}; the two are best treated as one family.
 
 The throughline is what makes this a named mechanism rather than a residue
-category. None of these are cases where the system knew nothing. Every one resolves
-a real, verifiably-true fact through a real edge. The failure is entirely in
-\emph{which} true fact gets surfaced --- architecturally different from picking a
-wrong edge and from there being no edge at all. The right edge exists, is used, and
-lands one node away.
+category. None of these are cases where the system knew nothing. Every one
+resolves a real, verifiably-true fact through a real edge. The failure is
+entirely in \emph{which} true fact gets surfaced --- architecturally different
+from picking a wrong edge and from there being no edge at all. The right edge
+exists, is used, and lands one node away.
 
-That is also why the echo attractor is invisible to any evaluation treating systems
-as independent. \Cref{sec:benchmark-defects} shows all five systems of the main
-matrix falling into it together, on the same questions.
+That is also why the echo attractor is invisible to any evaluation treating
+systems as independent. \Cref{sec:benchmark-defects} shows all five systems of
+the main matrix falling into it together, on the same questions.
 
-\section{Benchmark Defects: Gold Noise and Ambiguous Questions}\label{sec:benchmark-defects}
+\section{Benchmark Defects: Gold Noise and Ambiguous
+Questions}\label{sec:benchmark-defects}
 
-Two numbers must be kept apart. The consensus pass of \Cref{sec:gold-quality}\index{benchmark defect}\index{gold noise}
-\emph{flagged} $58$ WebQSP and $47$ CWQ questions where at least three of the five
-systems agreed on the same non-gold answer. Adjudication confirmed $22$ and $19$ as
-genuine defects. The gap between those figures is not measurement noise --- it is
-the echo attractor of \Cref{sec:echo}, operating across systems.
+Two numbers must be kept apart. The consensus pass of
+\Cref{sec:gold-quality}\index{benchmark defect}\index{gold noise} \emph{flagged}
+$58$ WebQSP and $47$ CWQ questions where at least three of the five systems
+agreed on the same non-gold answer. Adjudication confirmed $22$ and $19$ as
+genuine defects. The gap between those figures is not measurement noise --- it
+is the echo attractor of \Cref{sec:echo}, operating across systems.
 
-Read what the flagged consensus answers have in common. Five systems answer ``rick
-scott'' where gold lists his professions, ``thor heyerdahl'' where gold lists his
-occupations, ``amelia earhart'' where gold is Pilot and Writer --- the topic entity
-returned as the answer. Five answer ``belgium'' where gold is the containing region,
-``dominican republic'' where gold is Greater Antilles, ``san francisco giants''
-where gold is the 2014 World Series --- the composition's intermediate rather than
-its final hop. Five answer ``maryland'' for counties, ``nevada'' for Las Vegas,
-``united arab emirates'' for Dubai --- one level too coarse.
+Read what the flagged consensus answers have in common. Five systems answer
+``rick scott'' where gold lists his professions, ``thor heyerdahl'' where gold
+lists his occupations, ``amelia earhart'' where gold is Pilot and Writer --- the
+topic entity returned as the answer. Five answer ``belgium'' where gold is the
+containing region, ``dominican republic'' where gold is Greater Antilles, ``san
+francisco giants'' where gold is the 2014 World Series --- the composition's
+intermediate rather than its final hop. Five answer ``maryland'' for counties,
+``nevada'' for Las Vegas, ``united arab emirates'' for Dubai --- one level too
+coarse.
 
-\emph{Cross-system consensus against gold is dominated not by label errors but by a
-shared attractor}, and that is a finding about evaluation methodology as much as
-about these systems. A policy of rescoring whenever three systems agree --- which is
-a natural thing to want --- would have silently converted this system's most
-characteristic failure mode into apparent correctness. The manual adjudication step
-is what stands between the two, and it is the reason the pass is reported with both
-numbers rather than one.
+\emph{Cross-system consensus against gold is dominated not by label errors but
+by a shared attractor}, and that is a finding about evaluation methodology as
+much as about these systems. A policy of rescoring whenever three systems agree
+--- which is a natural thing to want --- would have silently converted this
+system's most characteristic failure mode into apparent correctness. The manual
+adjudication step is what stands between the two, and it is the reason the pass
+is reported with both numbers rather than one.
 
 \subsection{The Confirmed Defects}
 
-What adjudication did confirm is nonetheless substantial: $57$ questions across the
-two datasets where the benchmark, not the system, needed correcting. Two sets
-make that total, and they are \emph{not} disjoint, which is the whole reason the
-figure is $57$ rather than the $58$ an addition would give. There are $41$
-excluded before the census read anything ($22$ + $19$), and $17$ still visible in
-the merged census as \textsf{gold\_noise} or \textsf{ambiguous\_question} rows
-($3$ WebQSP + $14$ CWQ). \textsf{WebQTrn-64\_d8e43a02} is in both: it began as a
-census row, was adjudicated a type mismatch between question and gold, and was
-promoted to a formal exclusion mid-project, which is why the census's own label
-file carries one dropped row. Counting it once gives $41 + 17 - 1 = 57$ distinct
-questions. The number is a set union rather than a sum, and it is taken as one in
+What adjudication did confirm is nonetheless substantial: $57$ questions across
+the two datasets where the benchmark, not the system, needed correcting. Two
+sets make that total, and they are \emph{not} disjoint, which is the whole
+reason the figure is $57$ rather than the $58$ an addition would give. There are
+$41$ excluded before the census read anything ($22$ + $19$), and $17$ still
+visible in the merged census as \textsf{gold\_noise} or
+\textsf{ambiguous\_question} rows ($3$ WebQSP + $14$ CWQ).
+\textsf{WebQTrn-64\_d8e43a02} is in both: it began as a census row, was
+adjudicated a type mismatch between question and gold, and was promoted to a
+formal exclusion mid-project, which is why the census's own label file carries
+one dropped row. Counting it once gives $41 + 17 - 1 = 57$ distinct questions.
+The number is a set union rather than a sum, and it is taken as one in
 \textsf{thesis\_numbers.json} so that the two component counts can move without
 the total drifting.
 
 Two specimens carry the point. \textsf{WebQTest-958} --- ``what are some famous
-people from el salvador'' --- has $116$ gold entities, one of them a raw Freebase
-machine identifier (\textsf{g.11b8058v7j}) leaked into the answer strings: a ``list some famous $X$''
-template ballooning gold past anything a finite answer could match under any
-metric. \textsf{WebQTest-55\_54e856d3} --- ``Who had a concert named Crazy Love Tour?'' ---
-asks for a person and receives gold listing the artist's professions, the annotation
-query having traversed one relation too far past Michael Bublé.
+people from el salvador'' --- has $116$ gold entities, one of them a raw
+Freebase machine identifier (\textsf{g.11b8058v7j}) leaked into the answer
+strings: a ``list some famous $X$'' template ballooning gold past anything a
+finite answer could match under any metric. \textsf{WebQTest-55\_54e856d3} ---
+``Who had a concert named Crazy Love Tour?'' --- asks for a person and receives
+gold listing the artist's professions, the annotation query having traversed one
+relation too far past Michael Bublé.
 
 The Vicksburg pair is worth reading side by side, because two sibling questions
-share a gold string and receive opposite diagnoses. \textsf{WebQTest-1797\_5a1c66f4}
-asks who was president during the battle of Vicksburg, with gold
-\textsf{Ulysses S.~Grant} --- who took office six years afterwards; the president in
-1863 was Lincoln. The full system answers that the claim could not be verified and
-its verifier flags it \textsf{unsupported}; the no-planner ablation asserts Grant
-confidently, with zero backtracks, and is scored a \emph{hit} purely for restating a
-gold value that answers a different question. \textsf{WebQTest-1797\_dece4dda} asks
-which government-position holder fought at Vicksburg --- coherent as asked, since
-Grant was a serving general --- and the full system genuinely fails, answering with
-the Confederate commander John C.~Pemberton, a real combatant who held no government
-position. The qualifier is present in the sub-objective text and never filters the
-candidate frontier.
+share a gold string and receive opposite diagnoses.
+\textsf{WebQTest-1797\_5a1c66f4} asks who was president during the battle of
+Vicksburg, with gold \textsf{Ulysses S.~Grant} --- who took office six years
+afterwards; the president in 1863 was Lincoln. The full system answers that the
+claim could not be verified and its verifier flags it \textsf{unsupported}; the
+no-planner ablation asserts Grant confidently, with zero backtracks, and is
+scored a \emph{hit} purely for restating a gold value that answers a different
+question. \textsf{WebQTest-1797\_dece4dda} asks which government-position holder
+fought at Vicksburg --- coherent as asked, since Grant was a serving general ---
+and the full system genuinely fails, answering with the Confederate commander
+John C.~Pemberton, a real combatant who held no government position. The
+qualifier is present in the sub-objective text and never filters the candidate
+frontier.
 
 Same battle, same gold string: one question unanswerable and one a real
-\textsf{composite\_claim} failure. The pipeline that hedged on the first was more
-epistemically correct than the one that ``succeeded''.
+\textsf{composite\_claim} failure. The pipeline that hedged on the first was
+more epistemically correct than the one that ``succeeded''.
 
-One process observation belongs on the record. \textsf{WebQTrn-64\_d8e43a02} was adjudicated
-\textsf{gold\_ok} by the consensus pass --- several systems converging on ``Tupac
-Shakur'' read as a topic echo --- and the opposite way by the census reading of the
-same evidence: the question literally asks for an actor's name, and gold gives a
-character name from a different role in the same film. The second reading held, and
-the row was promoted to a formal exclusion. Two independent adjudication passes can
-legitimately disagree, and keeping a \textsf{gold\_noise} category open in the
-taxonomy is what let that be resolved rather than settled by whichever ran first.
+One process observation belongs on the record. \textsf{WebQTrn-64\_d8e43a02} was
+adjudicated \textsf{gold\_ok} by the consensus pass --- several systems
+converging on ``Tupac Shakur'' read as a topic echo --- and the opposite way by
+the census reading of the same evidence: the question literally asks for an
+actor's name, and gold gives a character name from a different role in the same
+film. The second reading held, and the row was promoted to a formal exclusion.
+Two independent adjudication passes can legitimately disagree, and keeping a
+\textsf{gold\_noise} category open in the taxonomy is what let that be resolved
+rather than settled by whichever ran first.
 
 \subsection{Where Bad Gold Comes From: Flattened Multi-Valued
-  Relations}\label{sec:gold-provenance}
+Relations}\label{sec:gold-provenance}
 
-The San Antonio case shows the provenance of one defect precisely enough to\index{gold noise}
-generalise. \textsf{WebQTest-634\_4f2c0d9e} asks which county contains the place where the San
-Antonio City Council sits. Four systems, spanning parametric and graph-based
-knowledge, answer Bexar County; gold says Comal. Adjudication recorded the verdict
-\textsf{gold\_wrong}: San Antonio and its city council are in Bexar. But the census
-reading of the same case recorded something more specific, and more useful ---
-\textsf{kg\_gap}, with the note that this is a containment ambiguity in the source
-data, arising from annexed territory or from Freebase carrying multiple imprecise
-containment edges.
+The San Antonio case shows the provenance of one defect precisely enough
+to\index{gold noise} generalise. \textsf{WebQTest-634\_4f2c0d9e} asks which
+county contains the place where the San Antonio City Council sits. Four systems,
+spanning parametric and graph-based knowledge, answer Bexar County; gold says
+Comal. Adjudication recorded the verdict \textsf{gold\_wrong}: San Antonio and
+its city council are in Bexar. But the census reading of the same case recorded
+something more specific, and more useful --- \textsf{kg\_gap}, with the note
+that this is a containment ambiguity in the source data, arising from annexed
+territory or from Freebase carrying multiple imprecise containment edges.
 
 That is neither a pure label error nor a pure graph error. It is a
 \textbf{multi-valued containment relation flattened to a single value}, with the
-annotation pipeline then selecting the marginal one. A city can lie in more than one
-county; a benchmark whose gold field holds one answer per relation must choose; and
-the choice is made by a SPARQL query with no notion of which value is the principal
-one. Framing it this way explains why the consensus diagnostic caught it at all ---
-the systems and the world agree on the principal value while the label holds the
-marginal one --- and it predicts where else such defects will cluster: any relation
-that is genuinely one-to-many but stored as though it were one-to-one.
+annotation pipeline then selecting the marginal one. A city can lie in more than
+one county; a benchmark whose gold field holds one answer per relation must
+choose; and the choice is made by a SPARQL query with no notion of which value
+is the principal one. Framing it this way explains why the consensus diagnostic
+caught it at all --- the systems and the world agree on the principal value
+while the label holds the marginal one --- and it predicts where else such
+defects will cluster: any relation that is genuinely one-to-many but stored as
+though it were one-to-one.
 
 \section{Discussion}\label{sec:discussion}
 
 \subsection{What Agency Buys, and What It Costs}
 
-Agency buys the deep tail. On CWQ the accuracy of the agentic system \emph{rises}
-across hop strata while every static system decays, and it buys that at roughly an
-order of magnitude in tokens over one-shot retrieval. Against the other agentic
-system it buys the same accuracy for half the language-model calls, and never
-exhausts the call budget that clips the baseline on $44\%$ of multi-hop questions
---- the difference between a guided search and a blind one, priced. Its own
-budgets do bind, the depth cap hardest (\Cref{sec:efficiency}); the claim is
-about the shared cap both systems were run under.
+Agency buys the deep tail. On CWQ the accuracy of the agentic system
+\emph{rises} across hop strata while every static system decays, and it buys
+that at roughly an order of magnitude in tokens over one-shot retrieval. Against
+the other agentic system it buys the same accuracy for half the language-model
+calls, and never exhausts the call budget that clips the baseline on $44\%$ of
+multi-hop questions --- the difference between a guided search and a blind one,
+priced. Its own budgets do bind, the depth cap hardest (\Cref{sec:efficiency});
+the claim is about the shared cap both systems were run under.
 
-What it costs, beyond tokens, is a longer failure surface. Every mechanism in this
-chapter except \textsf{kg\_gap} and the benchmark defects is a failure the static
-baselines cannot have, because they have no plan to mis-decompose, no frontier to
-abandon, and no draft to check. \textsf{decomposition\_error} at $38$ cases is the
-clearest instance: a component added to help contributed a failure family of its
-own, and \Cref{sec:ablations} shows it is a net negative on the shallower benchmark.
-The honest summary is that agency converts a retrieval problem into a control
-problem, and control problems fail in more ways.
+What it costs, beyond tokens, is a longer failure surface. Every mechanism in
+this chapter except \textsf{kg\_gap} and the benchmark defects is a failure the
+static baselines cannot have, because they have no plan to mis-decompose, no
+frontier to abandon, and no draft to check. \textsf{decomposition\_error} at
+$38$ cases is the clearest instance: a component added to help contributed a
+failure family of its own, and \Cref{sec:ablations} shows it is a net negative
+on the shallower benchmark. The honest summary is that agency converts a
+retrieval problem into a control problem, and control problems fail in more
+ways.
 
-\subsection{When Verification Helps and When It Over-Hedges}\label{sec:verification-tradeoff}
+\subsection{When Verification Helps and When It
+Over-Hedges}\label{sec:verification-tradeoff}
 
 The verification layer's contribution is auditability, its cost is recall, and
 where it fires it removes false assertions one at a time. Both directions are
@@ -786,41 +825,42 @@ visible in this census at case level --- which is the level at which they are
 established, the aggregate precision effect of removing the layer being
 indistinguishable from zero (\Cref{sec:findings}).
 
-It helps when a draft asserts something the traversal never supported: the De Niro
-case of \Cref{sec:answer-selection}, where a fabricated actor was rejected before it
-could be emitted, and the Vicksburg-president case of
+It helps when a draft asserts something the traversal never supported: the De
+Niro case of \Cref{sec:answer-selection}, where a fabricated actor was rejected
+before it could be emitted, and the Vicksburg-president case of
 \Cref{sec:benchmark-defects}, where declining to assert was the epistemically
 correct act and the metric scored it as a loss.
 
 It over-hedges when a true claim has no single edge stating it in the drafted
-phrasing --- the five wrongly-rejected cases of \Cref{sec:verifier-errors}, three of
-which had already resolved the exact gold answer before the rejection forced a retry
-that lost it. That is the same trade the development set measured at
-\Cref{sec:dev-tuning}, where the layer cost one correct answer out of $80$ and
-removed none that were wrong, and the same one the ablation of
+phrasing --- the five wrongly-rejected cases of \Cref{sec:verifier-errors},
+three of which had already resolved the exact gold answer before the rejection
+forced a retry that lost it. That is the same trade the development set measured
+at \Cref{sec:dev-tuning}, where the layer cost one correct answer out of $80$
+and removed none that were wrong, and the same one the ablation of
 \Cref{sec:ablations} could not detect at $n \approx 200$.
 
 The scope of the claim this evidence supports is therefore narrow and should be
-stated narrowly. Verification does not make this system more accurate. It makes the
-answers it does give attributable, at a small and measurable cost in recall, and it
-provides no protection at all against the failure mode this chapter finds most
-often --- an answer that is grounded, connected, true, and not what was asked.
+stated narrowly. Verification does not make this system more accurate. It makes
+the answers it does give attributable, at a small and measurable cost in recall,
+and it provides no protection at all against the failure mode this chapter finds
+most often --- an answer that is grounded, connected, true, and not what was
+asked.
 
 \subsection{Threats to Validity}\label{sec:threats}
 
 \textbf{The environment is friendlier than the knowledge base it stands in for,
-and this bounds every absolute number.} It is the union of per-question subgraphs
-that the RoG distribution pre-extracted \emph{so as to contain their own
-question's answer} (\Cref{sec:source-data}). Taking the union restores distractor
-mass --- an agent exploring one question's topic meets edges contributed by
-thousands of unrelated questions --- but it cannot restore what was never
-extracted. That is why answer reachability is certified at $97.3\%$ on WebQSP and
-$99.7\%$ on CWQ (\Cref{sec:validation-gate}): a BFS extraction from full Freebase
-under the same hop bound would not reach those rates, and no system here is ever
-asked to search a graph that might simply not contain the answer. Accuracies
-measured on this environment are therefore \emph{not} comparable to
-evaluations over full Freebase, and the ceilings should be read as part of the
-result rather than as background. The mitigation is the one
+and this bounds every absolute number.} It is the union of per-question
+subgraphs that the RoG distribution pre-extracted \emph{so as to contain their
+own question's answer} (\Cref{sec:source-data}). Taking the union restores
+distractor mass --- an agent exploring one question's topic meets edges
+contributed by thousands of unrelated questions --- but it cannot restore what
+was never extracted. That is why answer reachability is certified at $97.3\%$ on
+WebQSP and $99.7\%$ on CWQ (\Cref{sec:validation-gate}): a BFS extraction from
+full Freebase under the same hop bound would not reach those rates, and no
+system here is ever asked to search a graph that might simply not contain the
+answer. Accuracies measured on this environment are therefore \emph{not}
+comparable to evaluations over full Freebase, and the ceilings should be read as
+part of the result rather than as background. The mitigation is the one
 \Cref{sec:source-data} states and it is real but narrow: every system compared
 here navigates the identical environment, so the \emph{relative} ordering is
 sound even where the absolute level is optimistic. Every claim in
@@ -828,39 +868,40 @@ sound even where the absolute level is optimistic. Every claim in
 
 \textbf{An identical environment is not identical access to it, and one baseline
 sees less of it.} The agentic baseline truncates the tool layer's returned
-candidate sets at $40$ relations and $20$ neighbours, against this system's $300$
-and $200$; those are the reimplemented algorithm's own pruning widths, but they
-are narrower, and \Cref{sec:baseline-tog} measures the narrower cut binding on
-about a third of that baseline's expansions against effectively none of this
+candidate sets at $40$ relations and $20$ neighbours, against this system's
+$300$ and $200$; those are the reimplemented algorithm's own pruning widths, but
+they are narrower, and \Cref{sec:baseline-tog} measures the narrower cut binding
+on about a third of that baseline's expansions against effectively none of this
 system's. So the comparison holds the graph constant and does not hold the view
-of it constant. \Cref{sec:findings} states the bound this places on the one claim
-that depends on it; it is recorded here because the mitigation in the paragraph
-above is otherwise easy to read as covering more than it does.
+of it constant. \Cref{sec:findings} states the bound this places on the one
+claim that depends on it; it is recorded here because the mitigation in the
+paragraph above is otherwise easy to read as covering more than it does.
 
 \textbf{Every reported number comes from one run per condition, and run-to-run
 variance is unmeasured.} The confidence intervals and paired tests throughout
 \Cref{ch:results} resample questions, so they bound the sampling variance of the
 question draw and nothing else; each system's answer set enters them as fixed.
 The backbone is not deterministic at the trajectory level even at temperature
-$0.0$ --- \Cref{sec:backbone} measures the frozen model's trajectory stability at
-$8$ of $12$ probes, or $\approx 67\%$, so about one trajectory in three diverges
-on a rerun --- and a divergent trajectory can change an answer, a hedge, a token
-count and a call count at once. That figure is itself only partly auditable, and
-the limit is recorded rather than hidden: the qualification script wrote its
-per-question detail file in truncating mode, so only the first of the four rounds
-survives as a committed artifact and the remaining three exist as console tables
-in the project record. The pooled $9/12$ against $8/12$ therefore cannot be
-recomputed from this repository. A reader who declines to take those three rounds
-on trust should read the stability figure as unquantified rather than as
-$67\%$, which makes this threat larger, not smaller. The margins this thesis defends are large relative to their intervals, and
-the paired tests are computed per question rather than per aggregate, both of
-which make a rank reversal from decoding noise alone unlikely; but unlikely is
-the strongest available statement, because the experiment that would bound it
---- repeating the matrix and reporting across-run spread --- was not run. At
-\$11.13 total API spend against a \$15--20 ceiling it was affordable, so this is
-a gap in the design rather than a constraint imposed by budget.
-A repeated matrix reporting across-run spread is the cheapest correction
-available and belongs with the items in \Cref{sec:future}.
+$0.0$ --- \Cref{sec:backbone} measures the frozen model's trajectory stability
+at $8$ of $12$ probes, or $\approx 67\%$, so about one trajectory in three
+diverges on a rerun --- and a divergent trajectory can change an answer, a
+hedge, a token count and a call count at once. That figure is itself only partly
+auditable, and the limit is recorded rather than hidden: the qualification
+script wrote its per-question detail file in truncating mode, so only the first
+of the four rounds survives as a committed artifact and the remaining three
+exist as console tables in the project record. The pooled $9/12$ against $8/12$
+therefore cannot be recomputed from this repository. A reader who declines to
+take those three rounds on trust should read the stability figure as
+unquantified rather than as $67\%$, which makes this threat larger, not smaller.
+The margins this thesis defends are large relative to their intervals, and the
+paired tests are computed per question rather than per aggregate, both of which
+make a rank reversal from decoding noise alone unlikely; but unlikely is the
+strongest available statement, because the experiment that would bound it ---
+repeating the matrix and reporting across-run spread --- was not run. At \$11.13
+total API spend against a \$15--20 ceiling it was affordable, so this is a gap
+in the design rather than a constraint imposed by budget. A repeated matrix
+reporting across-run spread is the cheapest correction available and belongs
+with the items in \Cref{sec:future}.
 
 \textbf{Entities are keyed by name, so homonyms are merged.} The distribution's
 triples are keyed by human-readable name rather than by machine identifier, so
@@ -868,49 +909,51 @@ distinct real-world entities sharing a surface form collapse into one node. Two
 consequences run in opposite directions and neither is measured here. A merged
 node can manufacture a path between things that are not actually connected,
 which inflates reachability and could let a wrong answer verify as grounded ---
-the structural check asks whether an edge exists, and a spurious edge exists.
-It can equally destroy a distinction the question depends on. This is inherent to
+the structural check asks whether an edge exists, and a spurious edge exists. It
+can equally destroy a distinction the question depends on. This is inherent to
 name-keying rather than a defect of the construction, but it means structural
 groundedness is a claim about \emph{this} graph's node identity, not about the
 world.
 
-\textbf{The instrumentation gap is the most serious of the remaining items.} The verifier logs only the
-claims it rejects, never the ones it accepts with their matching triples. Wrongful
-acceptance is therefore not self-diagnosing: the single specimen in this census
-surfaced by manual trace reconstruction, and there is no way to know how many others
-sit inside the $761$ grounded questions. One polarity is reported at census scale and
-the other anecdotally, and that asymmetry is a property of the logging decision
-rather than of the verifier. \Cref{sec:future} gives the fix.
+\textbf{The instrumentation gap is the most serious of the remaining items.} The
+verifier logs only the claims it rejects, never the ones it accepts with their
+matching triples. Wrongful acceptance is therefore not self-diagnosing: the
+single specimen in this census surfaced by manual trace reconstruction, and
+there is no way to know how many others sit inside the $761$ grounded questions.
+One polarity is reported at census scale and the other anecdotally, and that
+asymmetry is a property of the logging decision rather than of the verifier.
+\Cref{sec:future} gives the fix.
 
-\textbf{The judge fell short of its pre-registered bar.} Cohen's $\kappa = 0.6995$
-against a threshold of $0.7$ (\Cref{sec:judge}). Agreement is substantial by
-conventional reading, and the miss is $0.0005$, but the Tier-2 numbers are reported
-as corroborating rather than decisive, and no conclusion here rests on them alone.
-The judge also runs on the same backbone as the systems it judges.
+\textbf{The judge fell short of its pre-registered bar.} Cohen's $\kappa =
+0.6995$ against a threshold of $0.7$ (\Cref{sec:judge}). Agreement is
+substantial by conventional reading, and the miss is $0.0005$, but the Tier-2
+numbers are reported as corroborating rather than decisive, and no conclusion
+here rests on them alone. The judge also runs on the same backbone as the
+systems it judges.
 
-\textbf{Topic entities are given, not linked.} Both graph-navigating systems seed
-from the dataset's annotated topic entities. This isolates navigation from entity
-linking, which is the intent, but it means the reported accuracies assume a linking
-step that a deployed system would have to perform and that would introduce errors of
-its own.
+\textbf{Topic entities are given, not linked.} Both graph-navigating systems
+seed from the dataset's annotated topic entities. This isolates navigation from
+entity linking, which is the intent, but it means the reported accuracies assume
+a linking step that a deployed system would have to perform and that would
+introduce errors of its own.
 
 \textbf{Ablations are underpowered.} Three of four conditions detect nothing at
 $n \approx 200$, and ``no detectable effect'' is not ``no effect''
 (\Cref{sec:ablations}).
 
-\textbf{One relabelling was made after seeing the result it affects.} A development
-question originally classified as mediator-heavy was reclassified as
+\textbf{One relabelling was made after seeing the result it affects.} A
+development question originally classified as mediator-heavy was reclassified as
 unanswerable-in-environment after its outcome was known; \Cref{ch:verification}
 flags it in place, and the aggregates were not rescored.
 
 \textbf{The reported accuracy has an unmeasured floor.} The extraction bug of
-\Cref{sec:decomposition-errors} converts correct reasoning into a wrong entity list
-on a specific question shape, so the measured accuracy on that shape is a lower
-bound rather than an estimate.
+\Cref{sec:decomposition-errors} converts correct reasoning into a wrong entity
+list on a specific question shape, so the measured accuracy on that shape is a
+lower bound rather than an estimate.
 
 \textbf{Benchmark defects were adjudicated by the author.} The exclusion set of
 \Cref{sec:gold-quality} rests on single-annotator judgements, made with the
-consensus signal visible. The scope limits are recorded there; the accuracy tables
-are not rescored, and the defects run in both directions.
+consensus signal visible. The scope limits are recorded there; the accuracy
+tables are not rescored, and the defects run in both directions.
 
 \endinput

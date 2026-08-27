@@ -16,19 +16,25 @@
   xmode=log, log basis x=10,
   xlabel={Mean tokens per question}, ylabel={Hits@1},
   xmin=80, xmax=12000, ymin=0.15, ymax=0.85,
-  legend style={at={(1.08,-0.30)}, anchor=north, legend columns=5, column sep=1.8mm},
+  legend style={at={(1.08,-0.30)}, anchor=north, legend columns=5,
+    column sep=1.8mm},
   legend cell align=left,
   legend image post style={solid},
 ]
-\addplot[only marks, mark=o, mark size=2.6pt, color=agrNoRet, very thick] coordinates {(113,0.453)};
+\addplot[only marks, mark=o, mark size=2.6pt, color=agrNoRet, very thick]
+  coordinates {(113,0.453)};
 \addlegendentry{No-retrieval}
-\addplot[only marks, mark=square, mark size=2.6pt, color=agrVector, very thick] coordinates {(527,0.568)};
+\addplot[only marks, mark=square, mark size=2.6pt, color=agrVector, very thick]
+  coordinates {(527,0.568)};
 \addlegendentry{Vector-RAG}
-\addplot[only marks, mark=triangle, mark size=2.6pt, color=agrGraph, very thick] coordinates {(531,0.34)};
+\addplot[only marks, mark=triangle, mark size=2.6pt, color=agrGraph, very thick]
+  coordinates {(531,0.34)};
 \addlegendentry{GraphRAG}
-\addplot[only marks, mark=diamond, mark size=2.6pt, color=agrToG, very thick] coordinates {(3615,0.66)};
+\addplot[only marks, mark=diamond, mark size=2.6pt, color=agrToG, very thick]
+  coordinates {(3615,0.66)};
 \addlegendentry{Think-on-Graph}
-\addplot[only marks, mark=*, mark size=2.6pt, color=agrAGR, very thick] coordinates {(4511,0.755)};
+\addplot[only marks, mark=*, mark size=2.6pt, color=agrAGR, very thick]
+  coordinates {(4511,0.755)};
 \addlegendentry{AGR}
 \end{axis}
 \begin{axis}[agrplot, name=plot2, at={($(plot1.east)+(12mm,0)$)}, anchor=west,
@@ -39,10 +45,15 @@
   xmin=80, xmax=12000, ymin=0.15, ymax=0.85,
 %
 ]
-\addplot[only marks, mark=o, mark size=2.6pt, color=agrNoRet, very thick] coordinates {(118,0.307)};
-\addplot[only marks, mark=square, mark size=2.6pt, color=agrVector, very thick] coordinates {(535,0.203)};
-\addplot[only marks, mark=triangle, mark size=2.6pt, color=agrGraph, very thick] coordinates {(470,0.205)};
-\addplot[only marks, mark=diamond, mark size=2.6pt, color=agrToG, very thick] coordinates {(5572,0.435)};
-\addplot[only marks, mark=*, mark size=2.6pt, color=agrAGR, very thick] coordinates {(6818,0.522)};
+\addplot[only marks, mark=o, mark size=2.6pt, color=agrNoRet, very thick]
+  coordinates {(118,0.307)};
+\addplot[only marks, mark=square, mark size=2.6pt, color=agrVector, very thick]
+  coordinates {(535,0.203)};
+\addplot[only marks, mark=triangle, mark size=2.6pt, color=agrGraph, very thick]
+  coordinates {(470,0.205)};
+\addplot[only marks, mark=diamond, mark size=2.6pt, color=agrToG, very thick]
+  coordinates {(5572,0.435)};
+\addplot[only marks, mark=*, mark size=2.6pt, color=agrAGR, very thick]
+  coordinates {(6818,0.522)};
 \end{axis}
 \end{tikzpicture}

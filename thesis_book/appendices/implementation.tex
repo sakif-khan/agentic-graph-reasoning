@@ -16,11 +16,11 @@ practice is given as evidence rather than as narrative.
 
 Every record \textsf{RunLogger} writes carries, alongside its result, the
 backbone description, a hash of the budget configuration, the run configuration,
-and the source commit. On the main matrix, the ablations and the smoke
-baselines --- $6{,}060$ records --- the run configuration also names the system,
-because the runner adds that key to it rather than \textsf{RunConfig} carrying
-it. The development sweep of \Cref{sec:dev-tuning} goes through the same logger
-and carries the same four stamps, but nothing there adds that key, so those $900$
+and the source commit. On the main matrix, the ablations and the smoke baselines
+--- $6{,}060$ records --- the run configuration also names the system, because
+the runner adds that key to it rather than \textsf{RunConfig} carrying it. The
+development sweep of \Cref{sec:dev-tuning} goes through the same logger and
+carries the same four stamps, but nothing there adds that key, so those $900$
 records identify their system by file name alone. The backbone qualification of
 \Cref{sec:backbone} predates the logger and writes its own records, which carry
 the backbone description and none of the rest.
@@ -30,9 +30,9 @@ stops depending on where a file sits or what it is called: a record found in the
 wrong directory, or copied out of one, still states what produced it. The
 cache-replay anomaly of \Cref{sec:backbone} is both what forced the practice and
 what shows its limit --- the question was which model had produced a set of
-records, and the backbone stamp answered it, but those same records carry neither
-the configuration nor the commit, which is the gap the logger was written to
-close.
+records, and the backbone stamp answered it, but those same records carry
+neither the configuration nor the commit, which is the gap the logger was
+written to close.
 
 The generalisation is that a file path is not metadata. Directory layout is
 edited, archived and reorganised over a project's life, and every reorganisation
@@ -40,7 +40,8 @@ is an opportunity to detach a result from the conditions that produced it.
 Anything a reader must know in order to interpret a record belongs inside the
 record.
 
-\section{Frozen Artifacts Are Committed; Regenerable Ones Are Not}\label{app:frozen-vs-regenerable}
+\section{Frozen Artifacts Are Committed; Regenerable Ones Are
+Not}\label{app:frozen-vs-regenerable}
 
 The distinction is not about file size. It is about whether the artifact can be
 recreated.
@@ -54,18 +55,18 @@ though rebuilding them takes hours.
 Applying the rule requires honesty about the second category. An artifact is
 only regenerable if the script that generates it is committed \emph{and} its
 inputs are still obtainable. Where either fails, the artifact is frozen
-regardless of how it was made, and \Cref{sec:implementation} records the one case
-in this project where that judgement had to be made after the fact: a generated
-summary in the development-set archive that predates a fix applied to the runs it
-summarises.
+regardless of how it was made, and \Cref{sec:implementation} records the one
+case in this project where that judgement had to be made after the fact: a
+generated summary in the development-set archive that predates a fix applied to
+the runs it summarises.
 
 \section{Cache-Identity Verification}\label{app:cache-identity}
 
 This is the technique of most methodological interest, and the one most readily
 reusable outside this thesis.
 
-The problem it solves is stated easily and answered badly by ordinary testing.
-A refactor is made to code on the frozen experimental path. Tests pass. Have the
+The problem it solves is stated easily and answered badly by ordinary testing. A
+refactor is made to code on the frozen experimental path. Tests pass. Have the
 reported numbers changed? Re-running the experiment answers the question, but a
 re-run that produces the same numbers is weak evidence, because it is exactly
 what a re-run would produce if the change had also altered which questions
@@ -99,19 +100,19 @@ Anyone lifting this design should carry one defect with it. The replay restores
 prompt and completion tokens but not \textsf{reasoning\_tokens}: the cache
 stores that field and never adds it back to the meter. The backbone here runs at
 reasoning effort \textsf{none} and the field is zero in every one of the
-$6{,}960$ agent runs committed for this work, so ``exactly'' is literally true of
-these runs; under any
-reasoning-effort setting the replayed snapshot would understate the budget and
-the identity assertion would be checking a weaker claim than it appears to.
-\Cref{sec:pre-registration} gives the reason the defect is recorded rather than
-repaired.
+$6{,}960$ agent runs committed for this work, so ``exactly'' is literally true
+of these runs; under any reasoning-effort setting the replayed snapshot would
+understate the budget and the identity assertion would be checking a weaker
+claim than it appears to. \Cref{sec:pre-registration} gives the reason the
+defect is recorded rather than repaired.
 
 \Cref{sec:pre-registration} reports the one occasion this certificate was
 demanded and returned a clean result, for the \textsf{use\_planner} flag that
 must be a no-op when disabled; \Cref{sec:instrumentation} specifies the cache
 whose behaviour makes the certificate meaningful.
 
-\section{Config Injection and the Partial-Edit Hazard}\label{app:config-injection}
+\section{Config Injection and the Partial-Edit
+Hazard}\label{app:config-injection}
 
 The agent is a graph of nodes whose signatures the framework, not the author,
 controls. Passing a run configuration into a node therefore means either closing
@@ -153,7 +154,8 @@ Two categories of scratch key exist in the state for this reason. Node outputs
 are the record. Router inputs, prefixed with an underscore, exist so that a
 router can decide without recomputing what a node already knew.
 
-\section{Instrumentation Decides What Can Be Concluded}\label{app:instrumentation-gap}
+\section{Instrumentation Decides What Can Be
+Concluded}\label{app:instrumentation-gap}
 
 The verifier persists the claims it rejects. It does not persist the claims it
 accepts.
@@ -169,8 +171,7 @@ tested.
 The thesis therefore reports one polarity of verifier error as a rate and the
 other from a single specimen recovered by manual trace reconstruction. Since
 wrongful acceptance is the polarity that bears directly on a hallucination
-claim, this is the limitation named first in
-\Cref{sec:limitations-final}.
+claim, this is the limitation named first in \Cref{sec:limitations-final}.
 
 The technique to extract from this is not a fix; the fix is obvious and is the
 first item of \Cref{sec:future}. It is the prior question:

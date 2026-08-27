@@ -1,16 +1,16 @@
 % !TEX root = ../buetcsepgthesis.tex
 \chapter{Tool API Specification and Cypher Templates}\label{app:toolapi}
 
-% Cypher reproduced from agr/kg_tools.py. The parameterisation is the point:
-% the model supplies only $-parameters, never query text.
+% Cypher reproduced from agr/kg_tools.py. The parameterisation is the point: the
+% model supplies only $-parameters, never query text.
 
 \Cref{sec:tool-api} argues that the model must never author a query. This
 appendix gives the five operations that follow from that decision, with the
 Cypher each one executes. Every query below is a fixed template. The model
 supplies values for the \verb|$|-parameters and nothing else, so a malformed
-model output produces a failed lookup rather than a syntax error, and the
-error taxonomy of \Cref{ch:erroranalysis} never has to separate reasoning
-failures from query-authoring failures.
+model output produces a failed lookup rather than a syntax error, and the error
+taxonomy of \Cref{ch:erroranalysis} never has to separate reasoning failures
+from query-authoring failures.
 
 Two limits appear throughout. \textsf{max\_relations}, set to $300$, caps the
 relation list returned for an entity; \textsf{max\_fanout}, set to $200$, caps
@@ -115,13 +115,13 @@ mediator counts as two edges wherever the thesis measures distance in the graph
 depth budget, because the agent should not be charged twice for an artifact of
 the encoding.
 
-The \textsf{truncated} flag was intended to report whether the fanout cap was hit,
-so that a truncated expansion --- a plausible cause of a later failure --- could
-be distinguished from a relation that was simply never explored. It does not
-deliver that, for the two reasons \Cref{sec:budgets} records: it is returned to
-the caller but never written to the tool log, and it is computed on the row count
-before mediator expansion while the list is truncated after it. Nothing in this
-thesis reads it.
+The \textsf{truncated} flag was intended to report whether the fanout cap was
+hit, so that a truncated expansion --- a plausible cause of a later failure ---
+could be distinguished from a relation that was simply never explored. It does
+not deliver that, for the two reasons \Cref{sec:budgets} records: it is returned
+to the caller but never written to the tool log, and it is computed on the row
+count before mediator expansion while the list is truncated after it. Nothing in
+this thesis reads it.
 
 \section{verify\_triple}\label{app:tool-verify-triple}
 
@@ -130,11 +130,10 @@ built as the relation-aware structural route of the verification layer, and it
 is \emph{not called by any node in the final design}: free-text claim relations
 do not map onto Freebase predicates, so requiring the relation to match rejected
 true claims, and \textsf{verify\_connection} replaced it.
-\Cref{sec:five-operations} gives that history and
-\Cref{sec:structural-check} gives the two routes the verifier ended up with. It
-is reproduced here because it remains part of the tool API, is exercised by the
-integration tests, and is the natural primitive for the relation-aware check
-\Cref{sec:future} proposes.
+\Cref{sec:five-operations} gives that history and \Cref{sec:structural-check}
+gives the two routes the verifier ended up with. It is reproduced here because
+it remains part of the tool API, is exercised by the integration tests, and is
+the natural primitive for the relation-aware check \Cref{sec:future} proposes.
 
 \begin{lstlisting}[style=verbatimblock]
 verify_triple(head_id, relation, tail_id)
@@ -170,9 +169,9 @@ RETURN EXISTS { MATCH (a)-[]-(b) } AS direct,
 This is the fifth operation, and the one not in the original design.
 \Cref{sec:tool-api} records that it was added when the verification layer of
 \Cref{ch:verification} needed a relation-agnostic adjacency test. Its
-permissiveness is deliberate and is also its weakness: \Cref{sec:verify-failure-modes}
-analyses wrongful acceptance as a direct consequence of asking whether two
-entities are connected at all rather than whether they are connected in the way
-the claim asserts.
+permissiveness is deliberate and is also its weakness:
+\Cref{sec:verify-failure-modes} analyses wrongful acceptance as a direct
+consequence of asking whether two entities are connected at all rather than
+whether they are connected in the way the claim asserts.
 
 \endinput
