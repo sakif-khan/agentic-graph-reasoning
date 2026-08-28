@@ -240,13 +240,16 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ## 12 — Constrained tools *(0:37)*
 
-> The agent never writes a graph query. It gets four operations with fixed
-> signatures — relations, neighbours, an adjacency check, and entity
-> linking.
->
-> This matters for more than safety. Every operation is deterministic and logged
-> with its arguments and result, so the traversal is a record — and that record is
-> what the verification layer checks against.
+> One agent, six nodes — and only three touch the graph. The planner links
+> entities, the explorer asks for relations and neighbours, the verifier checks
+> adjacency. Four operations, never Cypher. Every call is deterministic and
+> logged with its arguments and result, so the traversal is a record — and that
+> record is what the verification layer checks against.
+
+*Say "one agent" out loud. The previous slide draws six named boxes, and
+"the agent" on its own invites the question of how many there are: they are
+six nodes of one machine over one shared state, not six agents. The Node
+column answers the follow-up before it is asked.*
 
 ---
 

@@ -453,11 +453,15 @@ caps = re.search(r"max_fanout=(\d+),\s*max_relations=(\d+)", kg)
 TS = frame("Constrained tools, not free-form queries")
 ck("kg_tools.py states the caps", caps is not None)
 if caps:
+    # Cell 3, not 2: a Node column was inserted after the operation, and
+    # cell() counts from the row label. Reading cell 2 after that shift
+    # asks "Candidate relations" whether it contains 300, which is a
+    # question with a stable and useless answer.
     for label, want in ((r"\texttt{get\_relations}", caps.group(2)),
                         (r"\texttt{get\_neighbors}", caps.group(1))):
         ck(f"{label} is capped at {want} on the slide",
-           want in cell(TS, label, 2),
-           f"cell holds {cell(TS, label, 2)!r}")
+           want in cell(TS, label, 3),
+           f"cell holds {cell(TS, label, 3)!r}")
 
 # The backup budget table, transcribed from agr/budget.py and checked
 # nowhere -- every row of it.
@@ -1217,18 +1221,57 @@ ck(f"{len(capped)} of the {len(named)} live tools truncate what they return",
 # The third column's rows carry the two numeric limits, and its header
 # generalises over all four. The values were pinned to the code and the
 # header was not, so it could claim a cap for rows that name none --
-# "Used only by the verifier" and "Three-stage resolver" are not caps.
+# "Boolean; uncapped" and "Three-stage resolver" are not caps.
 # app:toolapi says it correctly: "Two limits appear throughout".
 numeric = [c for c in re.split(r"\\\\", TOOLSLIDE)
            if re.search(r"\\leq\s*\d+", c)]
 ck(f"{len(numeric)} rows of the table name a numeric limit",
    len(numeric) == len(capped), f"{len(numeric)} rows, {len(capped)} capped")
 colheads = re.findall(r"\\textbf\{([^}]*)\}", TOOLSLIDE)
-ck("the table has a header for each column", len(colheads) == 3,
+ck("the table has a header for each column", len(colheads) == 4,
    str(colheads))
-if len(colheads) == 3 and len(numeric) < len(named):
-    ck("the third column does not claim a cap its rows do not have",
-       "cap" not in colheads[2].lower(), f"header reads {colheads[2]!r}")
+if len(colheads) == 4 and len(numeric) < len(named):
+    ck("the last column does not claim a cap its rows do not have",
+       "cap" not in colheads[3].lower(), f"header reads {colheads[3]!r}")
+
+# The Node column is a claim about the program's topology, and it is the
+# kind that rots silently: moving search_entity out of the planner would
+# leave the slide asserting a shape the code no longer has, with nothing
+# to say so. So it is derived, like every number on this deck, from the
+# file that decides it -- the node functions themselves.
+#
+# capitalize() rather than a lookup table: the slide's labels ARE the node
+# function names, and a mapping written here would be a second place for
+# the answer to live.
+print("\n== the tool slide's Node column is the call site ==")
+NODEFN = {}
+for mod in ("nodes.py", "planner.py"):
+    # Per file. Concatenating them lets the tail of nodes.py run into
+    # planner.py's module-level constants, which would attribute a call in
+    # a prompt string to whichever node happened to be defined last.
+    text = open(os.path.join(ROOT, "agr", mod), encoding="utf-8").read()
+    chunks = re.split(r"^def (\w+)\(", text, flags=re.M)
+    for fname, body in zip(chunks[1::2], chunks[2::2]):
+        if fname.endswith("_node"):
+            NODEFN[fname[:-len("_node")].capitalize()] = body
+ck("the six node functions are in agr/", len(NODEFN) == 6, str(sorted(NODEFN)))
+for op in named:
+    callers = sorted(n for n, b in NODEFN.items()
+                     if re.search(rf"\.{op}\(", b))
+    ck(f"{op} is issued by exactly one node", len(callers) == 1, str(callers))
+    if len(callers) == 1:
+        label = "\\texttt{" + op.replace("_", "\\_") + "}"
+        ck(f"the slide gives {op} to the {callers[0]}",
+           cell(TOOLSLIDE, label, 1) == callers[0],
+           f"slide says {cell(TOOLSLIDE, label, 1)!r}, agr/ says {callers[0]}")
+# ...and the three that issue none are named as such, rather than left for
+# the reader to work out from a column that only lists the other three.
+silent = sorted(n for n, b in NODEFN.items()
+                if not any(re.search(rf"\.{o}\(", b) for o in named))
+ck(f"{len(silent)} nodes issue no graph call at all", len(silent) == 3,
+   str(silent))
+missing = [n for n in silent if n not in TOOLSLIDE]
+ck("and the slide names each of them", not missing, str(missing))
 
 # ---------------------------------------------------------------------
 # The cycle count is whatever the diagram draws.

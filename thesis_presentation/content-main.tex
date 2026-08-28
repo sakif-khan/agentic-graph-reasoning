@@ -346,40 +346,54 @@
 
 % ===================== 12 =====================
 \begin{frame}{Constrained tools, not free-form queries}
+  % "The agent" was the only noun on this slide, on a deck whose previous
+  % slide draws six named boxes -- so the slide invited the question of how
+  % many agents there are. There is one. The Node column says which of its
+  % six nodes issues each call, and check_slides.py holds that column
+  % against the call sites in agr/, so it cannot drift from the code.
+  One agent, six nodes --- and only three of them reach the graph, each
+  through a fixed operation.
   % Natural column widths, not fixed ones: every cell here is a short phrase,
   % and a fixed measure wrapped four of them onto a second line for the sake
-  % of a single word. Three l columns cannot wrap at all, so the rows are
-  % single-line by construction. The whole table comes to ~130mm of the 140mm
+  % of a single word. Four l columns cannot wrap at all, so the rows are
+  % single-line by construction. The whole table comes to ~134mm of the 140mm
   % text block; an overfull \hbox in the log is the signal that a reworded
   % cell has outgrown it.
   \begin{table}
     \small
-    \begin{tabular}{@{}lll@{}}
+    \begin{tabular}{@{}llll@{}}
       \toprule
-      % The header generalises over its own rows, and two of the four
+      % The last header generalises over its own rows, and two of the four
       % name no cap: verify_connection returns a boolean and
       % search_entity runs a resolver. app:toolapi puts it correctly --
       % "Two limits appear throughout", max_relations and max_fanout.
       % check_slides.py holds this header against the rows beneath it.
-      \textbf{Operation} & \textbf{Returns} & \textbf{Why it is bounded} \\
+      \textbf{Operation} & \textbf{Node} & \textbf{Returns} &
+      \textbf{Why it is bounded} \\
       \midrule
-      \texttt{get\_relations}  & Candidate relations
-                               & $\leq 300$ offered to the scorer \\
-      \texttt{get\_neighbors}  & Neighbours of an entity
-                               & $\leq 200$ per expansion \\
-      \texttt{verify\_connection} & Adjacency in the full graph
-                               & Used only by the verifier \\
+      % Run order, so the column reads as the path through the machine
+      % rather than as an alphabetised API listing.
       % Was \texttt{link_entity}, which is not the name of anything: the
       % operation is search_entity in kg_tools.py, in app:tool-search, and in
       % tab:toolapi. On a slide that sets these in monospace, a name that
       % appears nowhere else in the repository reads as the literal API.
       % Every name in this column is checked against a def in kg_tools.py.
-      \texttt{search\_entity}  & Surface form $\rightarrow$ node
+      \texttt{search\_entity}  & Planner  & Surface form $\rightarrow$ node
                                & Three-stage resolver \\
+      % "offered to the scorer" was the widest cell in the table and the
+      % Node column cost more than the slide had spare: 4.73pt overfull,
+      % which is what that hbox warning is for.
+      \texttt{get\_relations}  & Explorer & Candidate relations
+                               & $\leq 300$ to the scorer \\
+      \texttt{get\_neighbors}  & Explorer & Neighbours of an entity
+                               & $\leq 200$ per expansion \\
+      \texttt{verify\_connection} & Verifier & Adjacency, full graph
+                               & Boolean; uncapped \\
       \bottomrule
     \end{tabular}
   \end{table}
-  {\small The agent never writes Cypher; every operation is logged.}
+  {\small Evaluator, Backtracker and Answerer read state only. The agent
+  never writes Cypher; every call is logged with its arguments and result.}
   \takeaway{Determinism in the tools is what makes the verification layer
     possible.}
 \end{frame}
