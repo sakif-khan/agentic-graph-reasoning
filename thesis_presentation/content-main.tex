@@ -224,7 +224,12 @@
   \begin{table}
     \small
     \setlength{\tabcolsep}{5pt}
-    \begin{tabular}{@{}lL{42mm}ccc@{}}
+    % 48mm, not 42: the AGR row's cell is bold, and "Guided beam,
+    % backtracking" measures 136pt = 48mm set bold, so 42mm was the one
+    % width in this table that wrapped. The table was only 128mm inside a
+    % 140mm block, so the 6mm comes out of the free margin either side
+    % rather than off another column.
+    \begin{tabular}{@{}lL{48mm}ccc@{}}
       \toprule
       \textbf{System} & \textbf{Exploration} & \textbf{Decomp.} &
       \textbf{Backtrack} & \textbf{Verifies first} \\

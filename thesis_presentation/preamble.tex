@@ -45,6 +45,21 @@
 \setbeamercolor{alerted text}{fg=agraccent}
 \setbeamerfont{frametitle}{size=\large,series=\bfseries}
 \setbeamerfont{title}{size=\Large,series=\bfseries}
+
+% Half of the vertical centring; \takeaway and \sinkfoot are the other
+% half. Anchoring the foot to the bottom of the frame put all of a thin
+% slide's slack into one gap above it -- slide 7 read as a title, a
+% cluster, and 50pt of nothing. This adds matching glue immediately after
+% the frametitle, so the two stretch equally and the body settles midway
+% between the title and the foot.
+%
+% It goes in the frametitle template rather than at the head of each
+% frame because beamer typesets the frametitle into the body's own
+% vertical list, so glue appended here is glue in the body -- one line
+% instead of an edit to twenty-nine frames that a thirtieth would forget.
+% Frames with no frametitle (the title page, the closing slide) never
+% expand the template and are untouched.
+\addtobeamertemplate{frametitle}{}{\vskip 0pt plus 1filll}
 \setbeamertemplate{itemize item}{\textbullet}
 \setbeamertemplate{itemize subitem}{--}
 \setbeamertemplate{footline}{%
