@@ -1302,9 +1302,15 @@ for what, on_slide, in_script in (
         ("...with the mother/child example",
          r"mother.*child", r"mother.*child"),
         # Evidence contract: supervisor issue 2, the thesis's own "most
-        # serious limitation".
+        # serious limitation". Sec 6.6 states it as two bolded sentences
+        # and both are checked, because the slide once carried them as one
+        # eleven-word clause that nobody could read.
         ("only one route records evidence",
-         r"[Oo]ne route of three", r"one route of three"),
+         r"nothing attached|attaches? nothing|one route of three",
+         r"attaches?\s+(the\s+)?triples|one route of three"),
+        ("...and the log keeps the count, not the triples",
+         r"keeps the \\emph\{count\}|keeps a count|count, not the",
+         r"keeps a count|count, not the"),
         # The limit the deck already had. Kept in the list so a rewrite
         # cannot trade one bound for the other and still pass.
         ("a true claim can still be the wrong answer",

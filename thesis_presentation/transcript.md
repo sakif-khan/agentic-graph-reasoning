@@ -271,12 +271,12 @@ column answers the follow-up before it is asked.*
 > *Structural* means the check is against the graph the agent walked, not the
 > model's opinion of its own output. It does not mean the check reads the
 > relation: the first two routes test adjacency, either direction, so a mother
-> claim survives on a child edge — the mediator problem from slide 7, arriving as
-> a limitation.
+> claim survives on a child edge — the mediator problem from slide 7, as a
+> limitation.
 >
-> "Its evidence" is narrower too — one route of three, inside the run only.
-> Slide 24 has both bounds. And a claim can be true and still be the wrong
-> answer.
+> "Its evidence" is narrower too: only the walked-graph check attaches
+> triples, and the log keeps a count. Slide 24 has both. And a claim can be
+> true and still be the wrong answer.
 
 **The last sentence is a promise. Slide 29 pays it off.**
 
