@@ -49,25 +49,6 @@
     \input{figures/fig_failure_histogram.tex}}
 \end{frame}
 
-\begin{frame}{Backup: hedging behaviour}
-  \begin{table}
-    \small
-    \begin{tabular}{@{}lrr@{}}
-      \toprule
-      \textbf{System} & \textbf{WebQSP hedge \%} & \textbf{CWQ hedge \%} \\
-      \midrule
-      No-retrieval    & 12.2 & 38.0 \\
-      Vector RAG      & 27.0 & 48.2 \\
-      Static GraphRAG & 55.8 & 60.8 \\
-      Think-on-Graph  & 18.8 & 22.5 \\
-      \textbf{AGR}    & \textbf{8.2} & 23.0 \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  {\small A hedge is a refusal to assert, not a wrong answer. AGR hedges least
-  on WebQSP while also being most accurate there.}
-\end{frame}
-
 \begin{frame}{Backup: accuracy against cost}
   \centering
   \input{figures/fig_accuracy_cost.tex}

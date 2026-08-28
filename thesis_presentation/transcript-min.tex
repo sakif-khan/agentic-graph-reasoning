@@ -338,14 +338,24 @@ It attaches supporting triples, from one route of three, and pairs the
 answer with its evidence inside the run. So the case rests on auditability,
 not accuracy.
 
-\slidehead{25}{RQ3: Which components contribute what, at what token cost?}{0:22}
+\slidehead{25}{Does it just refuse more often?}{0:43}
+The obvious objection to that claim, and the answer is no.
+
+AGR hedges on 8.2 percent of WebQSP, the lowest of the five, and it is also
+the most accurate there. On CWQ it is 23 percent --- within half a point of
+Think-on-Graph, and nearly nine points more accurate.
+
+A hedge scores zero, exactly like a wrong answer. This is not accuracy
+bought with silence.
+
+\slidehead{26}{RQ3: Which components contribute what, at what token cost?}{0:22}
 RQ3: which components earn their cost.
 
 Four ablations, paired McNemar against the full system. Three of the four
 change nothing I can detect --- backtracking, the verifier, and the learned
 half of the scorer.
 
-\slidehead{26}{RQ3: One effect, and its sign is backwards}{0:48}
+\slidehead{27}{RQ3: One effect, and its sign is backwards}{0:48}
 The one that does is the planner, and the sign is backwards. Removing it
 \textit{improves} WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by
 31 percent. On ComplexWebQuestions it trends the other way.
@@ -355,14 +365,14 @@ one-hop question sends the frontier away from the answer. So decomposition
 should be gated on question structure --- a conclusion the measurement
 forced, not one it confirmed.
 
-\slidehead{27}{Every failure, read and labelled}{0:29}
+\slidehead{28}{Every failure, read and labelled}{0:29}
 Two hundred and fifty-nine failures, read and labelled by hand: every AGR
 failure over the 800 test questions, less the adjudicated benchmark defects.
 
 The largest category is relation selection --- the agent taking the wrong
 edge, not inventing one. That shape is the finding.
 
-\slidehead{28}{The echo attractor}{1:12}
+\slidehead{29}{The echo attractor}{1:12}
 The one to name is sixth, with 13 cases: the \textbf{echo attractor} --- a
 real, grounded entity one hop from the correct answer. Ask for a director
 and get the film; ask for a capital and get the country.
@@ -376,7 +386,7 @@ independent can see it. Rescore whenever a majority agrees --- a natural
 thing to want --- and this becomes apparent correctness. That is the
 contribution: the mechanism, not the count.
 
-\slidehead{29}{Contributions}{1:12}
+\slidehead{30}{Contributions}{1:12}
 To summarise. Six contributions, the six the thesis claims in section 1.6.
 The one I'd underline is stratum-dependent decomposition: the literature
 treats it as straightforwardly beneficial, and it is not.
@@ -392,7 +402,7 @@ contract cannot be audited from the record.
 Then: one environment, one backbone. And Think-on-Graph leads where it
 finishes, from a narrower candidate set.
 
-\slidehead{30}{Thank you}{0:05}
+\slidehead{31}{Thank you}{0:05}
 Thank you. I'm happy to take questions.
 
 \end{document}

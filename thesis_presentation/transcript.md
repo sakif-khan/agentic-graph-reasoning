@@ -1,14 +1,14 @@
 # Pre-defense transcript
 
-Rehearsal script for **`pre-defense-0421052099.pdf`** — 30 pages: a title,
-twenty-eight body slides, a closing slide.
+Rehearsal script for **`pre-defense-0421052099.pdf`** — 31 pages: a title,
+twenty-nine body slides, a closing slide.
 
-The six backup slides are a **separate file**,
+The five backup slides are a **separate file**,
 `pre-defense-0421052099-backup.pdf`. You do not present them. Open it alongside
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 23 min 56 s of speaking against a 25-minute limit.** That leaves
+**Budget: 24 min 39 s of speaking against a 25-minute limit.** That leaves
 just over a minute, and every row below is set to exactly what its own words
 take at 93 wpm — so the minute is the whole of the slack, and no individual
 slide holds any.
@@ -62,16 +62,17 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 22 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 1:08 | 18:14 |
 | 23 | RQ2: What verification does *not* do | 0:53 | 19:07 |
 | 24 | RQ2: So what does it do? | 0:41 | 19:48 |
-| 25 | **RQ3: Which components contribute what, at what token cost?** | 0:22 | 20:10 |
-| 26 | **RQ3: One effect, and its sign is backwards** | 0:48 | 20:58 |
-| 27 | Every failure, read and labelled | 0:29 | 21:27 |
-| 28 | The echo attractor | 1:12 | 22:39 |
-| 29 | Contributions | 1:12 | 23:51 |
-| 30 | Thank you | 0:05 | 23:56 |
+| 25 | Does it just refuse more often? | 0:43 | 20:31 |
+| 26 | **RQ3: Which components contribute what, at what token cost?** | 0:22 | 20:53 |
+| 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 21:41 |
+| 28 | Every failure, read and labelled | 0:29 | 22:10 |
+| 29 | The echo attractor | 1:12 | 23:22 |
+| 30 | Contributions | 1:12 | 24:34 |
+| 31 | Thank you | 0:05 | 24:39 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
-never from 19, 20, 21, 25 or 26. That is the same list the recovery notes
+never from 19, 20, 21, 26 or 27. That is the same list the recovery notes
 protect, and 22 is on it for a different reason: skipping it hands the
 clipping issue to them.
 
@@ -277,7 +278,7 @@ column answers the follow-up before it is asked.*
 > triples, and the log keeps a count. Slide 23 has both. And a claim can be
 > true and still be the wrong answer.
 
-**The last sentence is a promise. Slide 28 pays it off.**
+**The last sentence is a promise. Slide 29 pays it off.**
 
 ---
 
@@ -476,7 +477,28 @@ it before it is asked costs eight seconds.*
 
 ---
 
-## 25 — RQ3: Which components contribute what, at what token cost? *(0:22)* ★
+## 25 — Does it just refuse more often? *(0:43)*
+
+> The obvious objection to that claim, and the answer is no.
+>
+> AGR hedges on 8.2 percent of WebQSP, the lowest of the five, and it is
+> also the most accurate there. On CWQ it is 23 percent — within half a point
+> of Think-on-Graph, and nearly nine points more accurate.
+>
+> A hedge scores zero, exactly like a wrong answer. This is not accuracy
+> bought with silence.
+
+*This was in the backup deck until the last round. It is on the run now
+because the objection it answers is the one the failure census invites three
+slides later — 259 failures, of which 125 are hedges, not wrong answers.*
+
+**Do not overstate CWQ.** 23.0 against Think-on-Graph's 22.5 is half a point
+*more*, not less. What holds on both datasets is the pairing: it hedges no
+more than the agentic baseline and scores above it.
+
+---
+
+## 26 — RQ3: Which components contribute what, at what token cost? *(0:22)* ★
 
 > RQ3: which components earn their cost.
 >
@@ -486,7 +508,7 @@ it before it is asked costs eight seconds.*
 
 ---
 
-## 26 — RQ3: One effect, and its sign is backwards *(0:48)* ★
+## 27 — RQ3: One effect, and its sign is backwards *(0:48)* ★
 
 > The one that does is the planner, and the sign is backwards. Removing it
 > *improves* WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31 percent.
@@ -501,7 +523,7 @@ it before it is asked costs eight seconds.*
 
 ---
 
-## 27 — Every failure, read and labelled *(0:29)*
+## 28 — Every failure, read and labelled *(0:29)*
 
 > Two hundred and fifty-nine failures, read and labelled by hand: every AGR
 > failure over the 800 test questions, less the adjudicated benchmark defects.
@@ -521,7 +543,7 @@ slides no longer advertise it, so it is yours to offer, not theirs to spot.
 
 ---
 
-## 28 — The echo attractor *(1:12)*
+## 29 — The echo attractor *(1:12)*
 
 > The one to name is sixth, with 13 cases: the **echo attractor** — a real,
 > grounded entity one hop from the correct answer. Ask for a director and get the
@@ -540,12 +562,12 @@ than of AGR."** That is defensive where the thesis is substantive, and nothing
 on the slide blames AGR for it. The claim is about evaluation: sec:echo calls
 the attractor "invisible to any evaluation treating systems as independent",
 and section 1.6 says the contribution is the mechanism "and what it means for
-consensus-based evaluation, not the frequency". Backup page 7 is the same finding
+consensus-based evaluation, not the frequency". Backup page 6 is the same finding
 seen from the other side.
 
 ---
 
-## 29 — Contributions *(1:12)*
+## 30 — Contributions *(1:12)*
 
 > To summarise. Six contributions, the six the thesis claims in section 1.6.
 > The one I'd underline is stratum-dependent decomposition: the literature
@@ -564,7 +586,7 @@ seen from the other side.
 
 ---
 
-## 30 — Thank you *(0:05)*
+## 31 — Thank you *(0:05)*
 
 > Thank you. I'm happy to take questions.
 
@@ -585,9 +607,8 @@ rather than the census.
 | 2 | Budget configuration and enforcement sites | "How do you guarantee termination?" |
 | 3 | Which budgets actually bind | "Is the 25-call cap fair to Think-on-Graph?" |
 | 4 | Full 12-category failure histogram | "What were the other failure modes?" |
-| 5 | Hedging rates, all five systems | "Doesn't it just refuse more often?" |
-| 6 | Accuracy against cost, both metrics | "Is it cheaper, or just better?" |
-| 7 | The benchmark was wrong 57 times | "How good is the gold?" |
+| 5 | Accuracy against cost, both metrics | "Is it cheaper, or just better?" |
+| 6 | The benchmark was wrong 57 times | "How good is the gold?" |
 
 **Page 3 is the important one.** It shows AGR never reaches the call cap —
 0.0 percent on both datasets — which is precisely what makes the comparison
@@ -613,7 +634,7 @@ It's the cap Think-on-Graph's own paper operates under. And AGR never reaches it
 not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
 
-**"Do the categories look the same on both datasets?"** *(Slide 27 is pooled.)*
+**"Do the categories look the same on both datasets?"** *(Slide 28 is pooled.)*
 No, and that is the more interesting answer. The census is reported split in the
 thesis and never pooled, because wrong and hedge describe different failure
 semantics and the proportions differ sharply by dataset. The clearest case is
@@ -695,7 +716,7 @@ first item in my future work. I did not make it late because it would separate
 the code from results already frozen against it.
 
 **"Why isn't the five-system comparison one of your contributions?"**
-Because the thesis does not count it as one, and slide 29 is the thesis's list —
+Because the thesis does not count it as one, and slide 30 is the thesis's list —
 section 1.6, one subsection per item. The comparison and the hop-count shape are
 results the contributions rest on; they get slides 20 and 21, which is where the
 weight belongs. An earlier version of that slide promoted both to contributions
@@ -794,7 +815,7 @@ as follows.
   Saves ~20 s. This is the one addition of this round that the talk can lose
   without losing a claim.
 
-Never compress 19, 20, 21, 25, or 26. Slide 21 in particular: skipping it
+Never compress 19, 20, 21, 26, or 27. Slide 21 in particular: skipping it
 means a committee member raises the clipping issue instead of you, and it
 lands very differently that way.
 

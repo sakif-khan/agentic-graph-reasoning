@@ -222,7 +222,7 @@ for ds, s, tok, calls in (("webqsp", "noretrieval", 113, 1.0),
            re.search(rf"CWQ:.{{0,200}}?{num}.{{0,40}}?{re.escape(str(calls))}",
                      FLAT) is not None)
 
-print("\n== hedge rates (backup slide) ==")
+print("\n== hedge rates, all five systems ==")
 for s, label in NAME.items():
     for ds in ("webqsp", "cwq"):
         v = f"{B[f'{ds}/{s}']['hedge_pct']:.1f}"
@@ -854,7 +854,7 @@ intro = open(INTRO, encoding="utf-8").read()
 start = intro.index(r"\section{Our Contribution}")
 end = intro.index(r"\section", start + 10)
 claimed = re.findall(r"\\subsection\{", intro[start:end])
-# The frame title, not a bold line in the body: slide 29 took slide
+# The frame title, not a bold line in the body: slide 30 took slide
 # 7\'s shape, so "Contributions" heads the frame and the six sit
 # under it with no header of their own.
 contrib = block(r"\begin{frame}{Contributions}", "enumerate").lower()
@@ -1146,7 +1146,7 @@ bench = frame(r"Backup: the benchmark was wrong $57$ times")
 # The census and the attractor are two sections now, and the framing
 # rules below are about the pair: the deflection this bans could be
 # reintroduced in either one.
-said = spoken(27) + " " + spoken(28)
+said = spoken(28) + " " + spoken(29)
 ck("both frames are in the deck", bool(echo) and bool(bench))
 
 RETRACTED = re.compile(r"propert\w+ of the task|across unrelated systems"
@@ -1762,11 +1762,11 @@ ck("the deck never writes pre-registered",
    "thesis_paper/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
 if "pre-registered" in thesis_six:
-    s29 = spoken(29)
-    ck("the script names the thesis's word", "pre-registered" in s29.lower())
-    ck("and the word the slide uses", "pre-specified" in s29.lower())
+    s30 = spoken(30)
+    ck("the script names the thesis's word", "pre-registered" in s30.lower())
+    ck("and the word the slide uses", "pre-specified" in s30.lower())
     ck("and gives the reason the slide diverges",
-       re.search(r"registr(y|ies)", s29, re.I) is not None)
+       re.search(r"registr(y|ies)", s30, re.I) is not None)
 else:
     ck("the two documents still differ on this word", True,
        "reconciled -- rule retired")
