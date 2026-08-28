@@ -8,7 +8,7 @@ The six backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 23 min 33 s of speaking against a 25-minute limit.** That leaves
+**Budget: 23 min 56 s of speaking against a 25-minute limit.** That leaves
 just over a minute, and every row below is set to exactly what its own words
 take at 93 wpm — so the minute is the whole of the slack, and no individual
 slide holds any.
@@ -52,23 +52,23 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 12 | Constrained tools | 0:37 | 7:58 |
 | 13 | The Structural Verification Layer | 0:32 | 8:30 |
 | 14 | What *structural* means — and what it does not | 0:58 | 9:28 |
-| 15 | One claim, three routes | 0:37 | 10:05 |
-| 16 | One question, end to end | 1:08 | 11:13 |
-| 17 | The environment and the question sets | 0:59 | 12:12 |
-| 18 | Making the comparison fair | 0:32 | 12:44 |
-| 19 | What is *not* held equal | 0:43 | 13:27 |
-| 20 | **Main results** | 1:10 | 14:37 |
-| 21 | **RQ1: accuracy against hop count** | 1:02 | 15:39 |
-| 22 | The caveat I want to raise myself | 1:05 | 16:44 |
-| 23 | RQ2: does anything ungrounded get asserted? | 1:03 | 17:47 |
-| 24 | RQ2: what verification does *not* do | 0:45 | 18:32 |
-| 25 | RQ2: so what does it do? | 0:41 | 19:13 |
-| 26 | **RQ3: what each component earns** | 0:22 | 19:35 |
-| 27 | **RQ3: one effect, and its sign is backwards** | 0:48 | 20:23 |
-| 28 | Every failure, read and labelled | 0:24 | 20:47 |
-| 29 | The echo attractor | 1:12 | 21:59 |
-| 30 | Contributions, and what I would not claim | 1:29 | 23:28 |
-| 31 | Thank you | 0:05 | 23:33 |
+| 15 | One claim, three routes | 1:00 | 10:28 |
+| 16 | One question, end to end | 1:08 | 11:36 |
+| 17 | The environment and the question sets | 0:59 | 12:35 |
+| 18 | Making the comparison fair | 0:32 | 13:07 |
+| 19 | What is *not* held equal | 0:43 | 13:50 |
+| 20 | **Main results** | 1:10 | 15:00 |
+| 21 | **RQ1: accuracy against hop count** | 1:02 | 16:02 |
+| 22 | The caveat I want to raise myself | 1:05 | 17:07 |
+| 23 | RQ2: does anything ungrounded get asserted? | 1:03 | 18:10 |
+| 24 | RQ2: what verification does *not* do | 0:45 | 18:55 |
+| 25 | RQ2: so what does it do? | 0:41 | 19:36 |
+| 26 | **RQ3: what each component earns** | 0:22 | 19:58 |
+| 27 | **RQ3: one effect, and its sign is backwards** | 0:48 | 20:46 |
+| 28 | Every failure, read and labelled | 0:24 | 21:10 |
+| 29 | The echo attractor | 1:12 | 22:22 |
+| 30 | Contributions, and what I would not claim | 1:29 | 23:51 |
+| 31 | Thank you | 0:05 | 23:56 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
@@ -282,14 +282,25 @@ column answers the follow-up before it is asked.*
 
 ---
 
-## 15 — One claim, three routes *(0:37)*
+## 15 — One claim, three routes *(1:00)*
 
-> This is the path a single claim takes. Three routes to being called supported,
-> and the ordering is about cost: only the third spends a model call. The first
-> two are pure lookups against a record we already have — and neither of them
-> reads the relation.
+> This is the inside of the verifier — the node between the evaluator deciding
+> to answer and the answer going out.
 >
-> The "+ evidence" label sits on the first route only.
+> It drafts an answer and breaks it into atomic claims, one model call. Each
+> claim then takes one of three routes to being called supported, ordered by
+> cost: only the third spends a model call. Plus-evidence sits on the first
+> route only.
+>
+> The box at the bottom is how the node exits: no unsupported claims means
+> grounded and the answer goes out; otherwise retry if the budget allows, or
+> give up.
+
+*Say the first sentence before anything else. This is the one slide in the
+deck that is a zoom rather than a new subject, and without that framing it
+reads as a second, unrelated flowchart next to slide 11's. The bottom box is
+the same three edges leaving the Verifier there: grounded and give\_up go to
+the Answerer, retry goes back to the Explorer.*
 
 ---
 
@@ -769,7 +780,7 @@ pulled directly from the thesis's own generated sources.
 
 ## Recovery notes
 
-If you hit **14:37 (the end of slide 20) more than 40 seconds late**, compress
+If you hit **15:00 (the end of slide 20) more than 40 seconds late**, compress
 as follows.
 
 - Slides 24 and 25 — take them as one: *"It doesn't improve accuracy. It
