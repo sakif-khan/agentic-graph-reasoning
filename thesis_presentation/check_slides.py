@@ -826,7 +826,7 @@ if pymupdf is not None:
 # seventh contribution to sec:contribution fails this until the deck says
 # so. The keys are alternatives per contribution, not a spelling test, and
 # they are matched inside the contributions block alone -- "echo attractor"
-# also appears on slide 20, and matching the whole deck would pass a slide
+# also appears on slide 19, and matching the whole deck would pass a slide
 # that had dropped it.
 print("\n== the deck's contributions are the thesis's ==")
 INTRO = os.path.join(ROOT, "thesis_book", "chapters", "introduction.tex")
@@ -854,7 +854,7 @@ intro = open(INTRO, encoding="utf-8").read()
 start = intro.index(r"\section{Our Contribution}")
 end = intro.index(r"\section", start + 10)
 claimed = re.findall(r"\\subsection\{", intro[start:end])
-# The frame title, not a bold line in the body: slide 30 took slide
+# The frame title, not a bold line in the body: slide 29 took slide
 # 7\'s shape, so "Contributions" heads the frame and the six sit
 # under it with no header of their own.
 contrib = block(r"\begin{frame}{Contributions}", "enumerate").lower()
@@ -881,8 +881,8 @@ for key in LIMIT_KEYS:
 
 # Two of the thesis's limitations left this list without leaving the deck.
 #
-# The underpowered ablations are the whole of slide 24 and the
-# structural-grounding one is slide 23's takeaway, so a third statement
+# The underpowered ablations are the whole of slide 23 and the
+# structural-grounding one is slide 22's takeaway, so a third statement
 # in the closing summary was repetition -- but LIMIT_KEYS was the ONLY
 # rule that named either, and removing them from it would have made the
 # deck free to lose them outright. Pinned to the slide that now carries
@@ -930,8 +930,12 @@ OVERCLAIM = re.compile(
     re.I)
 
 
-fair = frames("Making the comparison fair",
-              r"What is \emph{not} held equal")
+# One frame, not two: "What is not held equal" is the fairness
+# slide's second block now. The scope is the same material and
+# every rule below is unchanged -- but frames() returns "" when a
+# named frame is missing, so this had to move rather than be left
+# to empty the scope and pass its rules against nothing.
+fair = frame("Making the comparison fair")
 ck("the fairness frame is in the deck", bool(fair))
 for label, text in (("deck", FLAT), ("transcript", MD)):
     hit = OVERCLAIM.search(text)
@@ -1066,12 +1070,12 @@ for label, text in (("deck", plain(FLAT)), ("transcript", plain(MDF))):
 # first version searched the transcript and passed while section 20 had
 # been stripped of it, because the speaker note below the section quotes
 # the same phrase -- a second home, again.
-s20 = spoken(20)
-ck("section 20 is in the transcript", bool(s20))
+s19 = spoken(19)
+ck("section 20 is in the transcript", bool(s19))
 ck("section 20 names the baseline the claim rests on",
-   re.search(r"claim rests on vector RAG", s20, re.I) is not None)
+   re.search(r"claim rests on vector RAG", s19, re.I) is not None)
 ck("and says why GraphRAG's number does not carry it",
-   re.search(r"radius confounds", s20, re.I) is not None)
+   re.search(r"radius confounds", s19, re.I) is not None)
 
 # The deck's caveat is correct only while the thesis holds that position.
 RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
@@ -1142,7 +1146,7 @@ bench = frame(r"Backup: the benchmark was wrong $57$ times")
 # The census and the attractor are two sections now, and the framing
 # rules below are about the pair: the deflection this bans could be
 # reintroduced in either one.
-said = spoken(28) + " " + spoken(29)
+said = spoken(27) + " " + spoken(28)
 ck("both frames are in the deck", bool(echo) and bool(bench))
 
 RETRACTED = re.compile(r"propert\w+ of the task|across unrelated systems"
@@ -1758,11 +1762,11 @@ ck("the deck never writes pre-registered",
    "thesis_paper/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
 if "pre-registered" in thesis_six:
-    s30 = spoken(30)
-    ck("the script names the thesis's word", "pre-registered" in s30.lower())
-    ck("and the word the slide uses", "pre-specified" in s30.lower())
+    s29 = spoken(29)
+    ck("the script names the thesis's word", "pre-registered" in s29.lower())
+    ck("and the word the slide uses", "pre-specified" in s29.lower())
     ck("and gives the reason the slide diverges",
-       re.search(r"registr(y|ies)", s30, re.I) is not None)
+       re.search(r"registr(y|ies)", s29, re.I) is not None)
 else:
     ck("the two documents still differ on this word", True,
        "reconciled -- rule retired")
@@ -1780,13 +1784,13 @@ print("\n== the hop curve is the strata ==")
 TR = J["main_results"]["hop_trends"]["cwq"]
 HOP = frame("RQ1: Does agentic navigation improve multi-hop factual "
             "accuracy --- and does the advantage grow with hop count?")
-s21 = spoken(21)
+s20 = spoken(20)
 agr = TR["agr"]["hits_at_1"]
 arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)
 ck("the hop slide is in the deck", bool(HOP))
 ck(f"the slide quotes AGR's CWQ curve {agr}",
    re.search(arrow, HOP) is not None, "in that order")
-ck("the script quotes the same three", re.search(arrow, s21) is not None)
+ck("the script quotes the same three", re.search(arrow, s20) is not None)
 
 rising = TR["_systems_monotone_rising"]
 ck("AGR is the only CWQ system that rises", rising == ["agr"], str(rising))
@@ -1794,7 +1798,7 @@ below = TR["_systems_ending_below_h1"]
 ck(f"the other {len(below)} end below their one-hop score",
    sorted(below) == sorted(k for k in TR
                            if not k.startswith("_") and k != "agr"))
-for label, text in (("slide", HOP), ("script", s21)):
+for label, text in (("slide", HOP), ("script", s20)):
     ck(f"the {label} says AGR alone ends above where it started",
        re.search(r"only\b[^.]*\bend(?:s|ing)? above where it started",
                  plain(text)) is not None)
@@ -1803,7 +1807,7 @@ falling = TR["_systems_monotone_falling"]
 ck(f"{len(falling)} of the other four decay monotonically",
    len(falling) in NUM, str(sorted(falling)))
 decay = re.compile(NUM[len(falling)] + r" of the other (\w+) decay", re.I)
-for label, text in (("slide", HOP), ("script", s21)):
+for label, text in (("slide", HOP), ("script", s20)):
     m = decay.search(plain(text))
     ck(f"the {label} says {NUM[len(falling)].lower()} of the others decay",
        m is not None)
@@ -1817,7 +1821,7 @@ ck("ToG's CWQ curve is neither rising nor falling throughout",
    not TR["tog"]["monotone_falling"] and not TR["tog"]["monotone_rising"])
 ck(f"the script says it ends {abs(net)} below its one-hop score",
    re.search(r"(?<![\d.])" + re.escape(str(abs(net)))
-             + r"(?![\d.])[^.]*below its own one-hop", s21) is not None,
+             + r"(?![\d.])[^.]*below its own one-hop", s20) is not None,
    f"hop_trends gives {net}")
 
 # The strata the answer rests on, from the stratum table.

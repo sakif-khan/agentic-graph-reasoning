@@ -74,7 +74,7 @@ and anticipated questions are in \texttt{transcript.pdf}.\par}
 \vspace{4mm}
 
 \slidehead{1}{Title}{0:19}
-Good morning. I'm Sakif Khan. This is my pre-defense on Agentic Graph
+Good afternoon. I'm Sakif Khan. This is my pre-defense on Agentic Graph
 Reasoning --- knowledge graph navigation with verification before the answer
 is emitted. My supervisor is Dr. Sadia Sharmin.
 
@@ -199,7 +199,7 @@ mother claim survives on a child edge --- the mediator problem from slide 7,
 as a limitation.
 
 "Its evidence" is narrower too: only the walked-graph check attaches
-triples, and the log keeps a count. Slide 24 has both. And a claim can be
+triples, and the log keeps a count. Slide 23 has both. And a claim can be
 true and still be the wrong answer.
 
 \slidehead{15}{One claim, three routes}{1:00}
@@ -243,24 +243,21 @@ is also the answer to the caution two slides back: an environment this
 reachable is not full Freebase, so these numbers are not comparable with
 published ones.
 
-\slidehead{18}{Making the comparison fair}{0:32}
+\slidehead{18}{Making the comparison fair}{1:14}
 Five systems, on the slide: a parametric control, three retrieval baselines,
 and AGR.
 
 All five run on one frozen backbone, at temperature zero, under the same
 25-call budget, on the same questions, against the same graph. That is what
 lets me attribute differences to architecture rather than to model capacity.
+The control is there because these benchmarks may be partly memorised.
 
-\slidehead{19}{What is \textit{not} held equal}{0:43}
 One thing is not equal, and I would rather say it than have it found.
 Think-on-Graph prunes from a narrower candidate set than AGR. That cuts
 against it, not for it --- a thinner set is cheaper --- so it cannot explain
 the clipping, but it does make its score a lower bound.
 
-And the parametric control is there because these benchmarks may be partly
-memorised.
-
-\slidehead{20}{Main results}{1:10}
+\slidehead{19}{Main results}{1:10}
 Here is the comparison.
 
 AGR reaches 0.755 Hits@1 and 0.642 F1 on WebQSP, and 0.522 and 0.469 on
@@ -276,7 +273,7 @@ Second, the cost columns: 4,511 tokens and 6.2 calls against
 Think-on-Graph's 3,615 and 12.8. More tokens, half the calls --- and calls
 are what the budget meters.
 
-\slidehead{21}{RQ1: Does agentic navigation improve multi-hop factual accuracy --- and does the advantage grow with hop count?}{1:02}
+\slidehead{20}{RQ1: Does agentic navigation improve multi-hop factual accuracy --- and does the advantage grow with hop count?}{1:02}
 The direct answer to RQ1, and it is a shape rather than a difference of
 means.
 
@@ -290,7 +287,7 @@ One caution about the left panel: on WebQSP the three-or-more stratum is n
 equals 4. I draw no conclusion from four questions, and neither does the
 thesis.
 
-\slidehead{22}{The caveat I want to raise myself}{1:05}
+\slidehead{21}{The caveat I want to raise myself}{1:05}
 I want to raise this before you do.
 
 Split the questions by whether Think-on-Graph finished inside the shared
@@ -305,7 +302,7 @@ So the honest claim is not that AGR reasons better per step. It is that AGR
 completes its reasoning inside a fixed budget and Think-on-Graph frequently
 does not.
 
-\slidehead{23}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{1:08}
+\slidehead{22}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{1:08}
 RQ2. Start with the narrowest form of it: does anything ungrounded get
 asserted?
 
@@ -321,18 +318,18 @@ So zero ungrounded assertion is a property of \textit{navigating a graph}
 --- you can only name what you visited. It is not a property of my layer,
 and I don't claim it as one.
 
-\slidehead{24}{RQ2: What verification does \textit{not} do}{0:53}
+\slidehead{23}{RQ2: What verification does \textit{not} do}{0:53}
 The negative half first: removing the layer changes accuracy by an amount I
 cannot detect --- p equals 1.0 on both datasets. And its evidence does not
 outlive the run: the logger keeps the count of supporting triples and drops
 the list.
 
-This is not a retraction of slide 20. That was AGR against four baselines;
+This is not a retraction of slide 19. That was AGR against four baselines;
 this is AGR against itself with one part removed. The lead came from
 navigating the graph and finishing inside the budget --- never from this
 layer.
 
-\slidehead{25}{RQ2: So what does it do?}{0:41}
+\slidehead{24}{RQ2: So what does it do?}{0:41}
 What it does do is withhold what it cannot ground. Removing the layer drops
 the CWQ hedge rate from 23.2 to 20.2 percent --- direction only, six
 questions. A hedge is a calibrated non-assertion, not a refusal.
@@ -341,14 +338,14 @@ It attaches supporting triples, from one route of three, and pairs the
 answer with its evidence inside the run. So the case rests on auditability,
 not accuracy.
 
-\slidehead{26}{RQ3: Which components contribute what, at what token cost?}{0:22}
+\slidehead{25}{RQ3: Which components contribute what, at what token cost?}{0:22}
 RQ3: which components earn their cost.
 
 Four ablations, paired McNemar against the full system. Three of the four
 change nothing I can detect --- backtracking, the verifier, and the learned
 half of the scorer.
 
-\slidehead{27}{RQ3: One effect, and its sign is backwards}{0:48}
+\slidehead{26}{RQ3: One effect, and its sign is backwards}{0:48}
 The one that does is the planner, and the sign is backwards. Removing it
 \textit{improves} WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by
 31 percent. On ComplexWebQuestions it trends the other way.
@@ -358,14 +355,14 @@ one-hop question sends the frontier away from the answer. So decomposition
 should be gated on question structure --- a conclusion the measurement
 forced, not one it confirmed.
 
-\slidehead{28}{Every failure, read and labelled}{0:29}
+\slidehead{27}{Every failure, read and labelled}{0:29}
 Two hundred and fifty-nine failures, read and labelled by hand: every AGR
 failure over the 800 test questions, less the adjudicated benchmark defects.
 
 The largest category is relation selection --- the agent taking the wrong
 edge, not inventing one. That shape is the finding.
 
-\slidehead{29}{The echo attractor}{1:12}
+\slidehead{28}{The echo attractor}{1:12}
 The one to name is sixth, with 13 cases: the \textbf{echo attractor} --- a
 real, grounded entity one hop from the correct answer. Ask for a director
 and get the film; ask for a capital and get the country.
@@ -379,7 +376,7 @@ independent can see it. Rescore whenever a majority agrees --- a natural
 thing to want --- and this becomes apparent correctness. That is the
 contribution: the mechanism, not the count.
 
-\slidehead{30}{Contributions}{1:12}
+\slidehead{29}{Contributions}{1:12}
 To summarise. Six contributions, the six the thesis claims in section 1.6.
 The one I'd underline is stratum-dependent decomposition: the literature
 treats it as straightforwardly beneficial, and it is not.
@@ -395,7 +392,7 @@ contract cannot be audited from the record.
 Then: one environment, one backbone. And Think-on-Graph leads where it
 finishes, from a narrower candidate set.
 
-\slidehead{31}{Thank you}{0:05}
+\slidehead{30}{Thank you}{0:05}
 Thank you. I'm happy to take questions.
 
 \end{document}

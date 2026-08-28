@@ -182,7 +182,7 @@ TARGETS = {
         # same way preamble.tex points at it, and the backup deck shares no
         # generated figure with a different geometry.
         root="../pre-defense-0421052099.tex",
-        width="52mm", height="34mm", gutter="11mm",
+        width="52mm", height="34mm", gutter="18mm",
         legend_drop=-0.70, strata_legend_drop=-0.86,
         mark_size=3.0, line_mark=2.6,
         hist_width="112mm", hist_height="62mm", bar_width="3.0mm",
