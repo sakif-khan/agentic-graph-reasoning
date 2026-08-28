@@ -342,6 +342,7 @@
       \end{tikzpicture}
     \end{column}
   \end{columns}
+  \centrebody
 \end{frame}
 
 % ===================== 12 =====================
@@ -430,33 +431,39 @@
 % it is the property the supervisor's first issue is about, and it is now
 % the whole of a slide with the contribution's name in its title.
 \begin{frame}{What \emph{structural} means --- and what it does not}
+  % Four blocks of one sentence each, two per column, instead of three
+  % blocks and a loose paragraph hanging under the shorter one. Nothing was
+  % dropped: both bounds here are the substance of the supervisor's first
+  % two issues, and paper_review_feedback.md records that the deck stated
+  % only the relevance limit and never the relation limit until this slide
+  % existed. What went was the prose around them -- "whether an edge joins
+  % the claim's endpoints", "Structural grounding cannot catch that" --
+  % which restated the block titles.
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.48\textwidth}
       \begin{block}{What it means}
-        The check is against the graph the agent \alert{walked}, not the
+        The check is against the graph the agent \alert{walked} --- not the
         model's judgement of its own output.
       \end{block}
       \vspace{2mm}
       \begin{block}{What it does not mean}
-        \small
-        It tests \alert{adjacency}: whether an edge joins the claim's
-        endpoints, not whether it is the edge the claim \emph{names}, and
+        It tests \alert{adjacency}: not the relation the claim names, and
         not its direction. A \emph{mother} claim passes on a \emph{child}
-        edge --- only route three reads the relation.
+        edge --- only the third route reads the relation.
       \end{block}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      \begin{block}{The other honest limit}
-        \small
-        A claim can be \emph{true} and still be the wrong answer.
-        Structural grounding cannot catch that --- see the echo attractor
-        later.
+    \begin{column}{0.48\textwidth}
+      \begin{block}{What it cannot catch}
+        A claim can be \emph{true} and still be the wrong answer --- the
+        echo attractor, slide 29.
       \end{block}
       \vspace{2mm}
-      {\small ``Its evidence'' is narrower than it sounds, too:
-      \alert{one route of three} records any, and only inside the run.\par}
+      \begin{block}{What ``its evidence'' means}
+        \alert{One route of three} records any, and only inside the run.
+      \end{block}
     \end{column}
   \end{columns}
+  \centrebody
 \end{frame}
 
 % ===================== 15 =====================
@@ -469,6 +476,7 @@
   \vspace{1mm}
   {\small Only the third route costs a model call. The first two are pure
   graph lookups --- and neither of them reads the relation.}
+  \centrebody
 \end{frame}
 
 % ===================== 16 =====================
@@ -508,6 +516,7 @@
       \emph{appearance}, not for \textsf{plays}.\par}
     \end{column}
   \end{columns}
+  \centrebody
 \end{frame}
 
 % ===================== 17 =====================
@@ -971,6 +980,7 @@
       \end{itemize}
     \end{column}
   \end{columns}
+  \centrebody
 \end{frame}
 
 % ===================== CLOSE =====================

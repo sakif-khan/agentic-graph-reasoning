@@ -173,6 +173,14 @@
 % rather than the bar, so the foot of a slide sits at one height whichever
 % form it takes.
 \newcommand{\sinkfoot}{\par\vskip 0pt plus 1filll\relax}
+% The same glue again, and the name says where it goes. A frame with no
+% foot element has only the frametitle's glue, which pushes its whole body
+% to the bottom -- slide 14 sat 61pt below its title and 17pt off the
+% floor. Closing such a frame with this gives the body a second stretch to
+% balance against, and it settles in the middle. Do NOT put it on a frame
+% that ends in \takeaway: there the bar is meant to reach the floor, and a
+% third glue would lift it back off.
+\newcommand{\centrebody}{\par\vskip 0pt plus 1filll\relax}
 \newcommand{\takeaway}[1]{%
   \par\vspace{1mm}\vskip 0pt plus 1filll\relax%
   \begin{beamercolorbox}[wd=\dimexpr\textwidth-3.6mm\relax,sep=1.8mm,

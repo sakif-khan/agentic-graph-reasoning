@@ -1274,6 +1274,47 @@ missing = [n for n in silent if n not in TOOLSLIDE]
 ck("and the slide names each of them", not missing, str(missing))
 
 # ---------------------------------------------------------------------
+# The two bounds the "what structural does not mean" slide exists to say.
+#
+# paper_review_feedback.md records the asymmetry this frame was built to
+# remove: the deck stated only the relevance limit -- a claim can be true
+# and still be the wrong answer -- and never the relation limit, so if the
+# committee had asked the supervisor's first question, the honest answer
+# was on no slide. Both bounds now are, and nothing held them there. They
+# have already been proposed for deletion once, on the reasonable-sounding
+# ground that the slide was wordy; a bound is the last thing a crowded
+# slide should give up, and the ground will sound just as reasonable next
+# time.
+#
+# Checked on the slide AND in the spoken script, because a bound only on
+# the slide is one the speaker can walk past without noticing.
+print("\n== the structural bounds are stated, not just implied ==")
+BOUNDS = frame(r"What \emph{structural} means --- and what it does not")
+ck("the bounds frame is in the deck", bool(BOUNDS))
+SAID = spoken(14)
+for what, on_slide, in_script in (
+        # Relation-blindness: supervisor issue 1. The mother/child pair is
+        # the example the supervisor used and book Sec 6.8 repeats, so it
+        # is checked as the example and not merely as the word "relation".
+        ("the check does not read the relation",
+         r"not the relation", r"read the relation|relation:"),
+        ("...nor its direction", r"not its direction", r"either direction"),
+        ("...with the mother/child example",
+         r"mother.*child", r"mother.*child"),
+        # Evidence contract: supervisor issue 2, the thesis's own "most
+        # serious limitation".
+        ("only one route records evidence",
+         r"[Oo]ne route of three", r"one route of three"),
+        # The limit the deck already had. Kept in the list so a rewrite
+        # cannot trade one bound for the other and still pass.
+        ("a true claim can still be the wrong answer",
+         r"wrong answer", r"wrong answer")):
+    ck(f"the slide says {what}",
+       re.search(on_slide, BOUNDS, re.I | re.S) is not None)
+    ck(f"and the script says {what}",
+       re.search(in_script, SAID, re.I | re.S) is not None)
+
+# ---------------------------------------------------------------------
 # The cycle count is whatever the diagram draws.
 #
 # The slide said "Two cycles" beside a diagram with three arrows returning
