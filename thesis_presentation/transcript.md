@@ -49,7 +49,7 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 9 | What everyone else does | 0:56 | 5:20 |
 | 10 | Research questions | 0:53 | 6:13 |
 | 11 | AGR: An explicit state machine | 1:08 | 7:21 |
-| 12 | Constrained tools | 0:37 | 7:58 |
+| 12 | Constrained tools, not free-form queries | 0:37 | 7:58 |
 | 13 | The Structural Verification Layer | 0:32 | 8:30 |
 | 14 | What *structural* means — and what it does not | 0:58 | 9:28 |
 | 15 | One claim, three routes | 1:00 | 10:28 |
@@ -238,7 +238,7 @@ backtrack, retry — means counting the arrows confirms the sentence.
 
 ---
 
-## 12 — Constrained tools *(0:37)*
+## 12 — Constrained tools, not free-form queries *(0:37)*
 
 > One agent, six nodes — and only three touch the graph. The planner links
 > entities, the explorer asks for relations and neighbours, the verifier checks
