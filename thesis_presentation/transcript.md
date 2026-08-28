@@ -8,7 +8,7 @@ The six backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 24 min 14 s of speaking against a 25-minute limit.** That leaves
+**Budget: 23 min 57 s of speaking against a 25-minute limit.** That leaves
 just over a minute, and every row below is set to exactly what its own words
 take at 93 wpm — so the minute is the whole of the slack, and no individual
 slide holds any.
@@ -67,8 +67,8 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 20:59 |
 | 28 | Every failure, read and labelled | 0:29 | 21:28 |
 | 29 | The echo attractor | 1:12 | 22:40 |
-| 30 | Contributions, and what I would not claim | 1:29 | 24:09 |
-| 31 | Thank you | 0:05 | 24:14 |
+| 30 | Contributions | 1:12 | 23:52 |
+| 31 | Thank you | 0:05 | 23:57 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
@@ -548,7 +548,7 @@ seen from the other side.
 
 ---
 
-## 30 — Contributions, and what I would not claim *(1:29)*
+## 30 — Contributions *(1:12)*
 
 > To summarise. Six contributions, the six the thesis claims in section 1.6.
 > The one I'd underline is stratum-dependent decomposition: the literature
@@ -562,9 +562,7 @@ seen from the other side.
 > has no rate at all — and the same decision is why the output contract cannot
 > be audited from the record.
 >
-> Then: no detectable accuracy gain, and at n around 200 that is "not detected",
-> not "none". Zero ungrounded assertion comes from navigation, not my layer. One
-> environment, one backbone, one annotator. And Think-on-Graph leads where it
+> Then: one environment, one backbone. And Think-on-Graph leads where it
 > finishes, from a narrower candidate set.
 
 ---

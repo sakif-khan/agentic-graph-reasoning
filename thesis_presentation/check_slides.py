@@ -854,7 +854,10 @@ intro = open(INTRO, encoding="utf-8").read()
 start = intro.index(r"\section{Our Contribution}")
 end = intro.index(r"\section", start + 10)
 claimed = re.findall(r"\\subsection\{", intro[start:end])
-contrib = block(r"\textbf{Contributions}", "enumerate").lower()
+# The frame title, not a bold line in the body: slide 30 took slide
+# 7\'s shape, so "Contributions" heads the frame and the six sit
+# under it with no header of their own.
+contrib = block(r"\begin{frame}{Contributions}", "enumerate").lower()
 # \itemsep is not an \item. Counting it made a six-item list read as seven.
 listed = re.findall(r"\\item(?![a-zA-Z])", contrib)
 
@@ -870,11 +873,35 @@ for label, keys in CONTRIB_KEYS:
 # and is not one of them; the thesis's item is the candidate-width
 # confound, which is the caveat on that disclosure.
 print("\n== the deck's limitations are the thesis's ==")
-LIMIT_KEYS = ("rejects", "detectable accuracy", "navigation",
-              "candidate set", "one environment")
-limits = block(r"\textbf{Limitations I state plainly}", "itemize").lower()
+LIMIT_KEYS = ("rejects", "candidate set", "one environment")
+limits = block(r"\begin{block}{What I would not claim}",
+              "itemize").lower()
 for key in LIMIT_KEYS:
     ck(f"limitation present: {key}", key in limits)
+
+# Two of the thesis's limitations left this list without leaving the deck.
+#
+# The underpowered ablations are the whole of slide 24 and the
+# structural-grounding one is slide 23's takeaway, so a third statement
+# in the closing summary was repetition -- but LIMIT_KEYS was the ONLY
+# rule that named either, and removing them from it would have made the
+# deck free to lose them outright. Pinned to the slide that now carries
+# each instead: the summary may drop them, the argument may not.
+MOVED = (
+    ("the ablation is underpowered",
+     r"RQ2: What verification does \emph{not} do",
+     ("do not detectably change", r"$p = 1.0$ on \emph{both} datasets")),
+    ("zero ungrounded is navigation, not the layer",
+     "RQ2: What does pre-generation verification contribute beyond "
+     "graph navigation?",
+     (r"property of \emph{graph navigation}, not of the verification "
+      r"layer",)),
+)
+for _label, _title, _needles in MOVED:
+    _scope = frame(_title)
+    ck(f"still in the deck, on its own slide: {_label}", bool(_scope))
+    for _needle in _needles:
+        ck(f"  says {_needle[:46]!r}", _needle in _scope)
 ck("the first-ranked limitation leads the list",
    limits.find("rejects") >= 0
    and all(limits.find("rejects") < limits.find(k)
@@ -1689,8 +1716,6 @@ else:
 # this until the slide follows.
 print("\n== the deck's limitations keep the thesis's order ==")
 RANKED = (("rejects", "wrongful acceptance"),
-          ("detectable accuracy", "underpowered"),
-          ("navigation", "structural grounding"),
           ("one environment", "single-environment"),
           ("candidate set", "narrower candidate set"))
 order = []

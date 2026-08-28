@@ -998,9 +998,15 @@
 \end{frame}
 
 % ===================== 30 =====================
-\begin{frame}{Contributions, and what I would not claim}
+\begin{frame}{Contributions}
+  % Slide 7's structure: the frame title heads the slide, and the second
+  % half is a titled block rather than a second bold line. Two column
+  % headers of equal weight left the right one floating above a list a
+  % third the length of the left one, and no amount of positioning fixed
+  % that -- a block's title sits on its contents, so there is nothing to
+  % position. The widths are slide 7's too.
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.50\textwidth}
       % THESE ARE THE THESIS'S SIX, IN ITS ORDER (sec:contribution, one
       % \subsection each). They were a different six: this slide had split
       % the framework and its verification layer into two items, promoted
@@ -1015,15 +1021,13 @@
       % filed with a registry. That correction is the standing rule
       % recorded in thesis_paper/sections/setup.tex, and it is not a
       % divergence to reconcile back the other way.
-      \textbf{Contributions}
+      % Six contributions beside five limitations overran beamer's default
+      % list spacing by 19pt, and itemsep is what cleared it. The list is
+      % no longer under a bold header of its own -- the frame title says
+      % "Contributions" -- so the -1.5mm that used to close the gap under
+      % that header went with it. itemsep stays: this column is still six
+      % items and still the one that sets the slide's depth.
       \small
-      % Six contributions beside five limitations overruns beamer's default
-      % list spacing by 19pt. Tightened rather than cut: every item here is
-      % one of the thesis's, and dropping one is the defect this slide is
-      % being fixed for. itemsep clears most of it; the last 0.8pt is the
-      % gap under these headers, which no amount of rewording touched --
-      % three separate trims left the overfull at exactly 0.76761pt.
-      \vspace{-1.5mm}
       \begin{enumerate}\setlength{\itemsep}{0pt}
         \item AGR and its \alert{Structural Verification Layer}
         \item A \alert{component-level ablation} of four mechanisms
@@ -1039,36 +1043,46 @@
         \item \alert{Pre-specified} thresholds, fixed in advance
       \end{enumerate}
     \end{column}
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.46\textwidth}
       % Each of these maps to a heading in sec:limitations-final, in its
       % severity order -- the order of the \textbf{} headings in that
-      % section, which check_slides.py reads and holds this list to. Items
-      % 4 and 5 were swapped against it: the thesis ranks the environment
-      % scoping above the candidate-width confound.
+      % section, which check_slides.py reads and holds this list to.
       % "ToG leads on the questions it finishes" stood here
       % alone and is an honest disclosure, but it is not one of the
       % thesis's limitations; the thesis's item is the candidate-width
       % confound, which is the caveat ON that disclosure, so the two are
       % now one bullet. The widths come from agr/baselines/tog.py and
       % agr/kg_tools.py, and check_slides.py reads them from there.
-      \textbf{Limitations I state plainly}
-      \small
-      \vspace{-1.5mm}
-      \begin{itemize}\setlength{\itemsep}{0pt}
-        \item The verifier logs only what it \alert{rejects}: wrongful
-          acceptance is unmeasured, and the evidence is not persisted
-        \item \alert{No} detectable accuracy gain --- and at $n \approx 200$
-          that is ``not detected'', not ``none''
-        \item Zero ungrounded assertion is \alert{navigation}, not the layer
-        % "one annotator" left the obvious question unanswered on a slide
-        % about what I would not claim. It is me; the judge was validated
-        % against my labels, which is agreement with one reader, not
-        % inter-annotator agreement.
-        \item One environment, one backbone, and \alert{I am} the one
-          annotator
-        \item ToG leads where it finishes, from a \alert{narrower
-          candidate set}: $40$/$20$ vs $300$/$200$
-      \end{itemize}
+      %
+      % Thesis limitations 2 and 3 -- the underpowered ablations, and
+      % structural grounding not being answer adequacy -- were carried
+      % here as well and are now dropped from this list. They are NOT
+      % dropped from the deck: 2 is the whole of slide 24, and 3 is slide
+      % 23's takeaway, both in alert. Saying them a third time in a
+      % summary is repetition; losing them from the deck is not the same
+      % thing, and nothing was holding them anywhere else, so
+      % check_slides.py now pins each to the slide that carries it.
+      %
+      % The single-annotator clause left with them. It is thesis
+      % limitation 4, whose heading reads "single-environment,
+      % single-backbone, and single-annotator", so this bullet is now
+      % narrower than the heading it answers to, and the deck no longer
+      % says anywhere that the judge was validated against one reader's
+      % labels. sec:judge still does.
+      % Three bullets spread to the left column's depth read as
+      % padding, and centred in a measured box they left their own
+      % header stranded 46pt above them. Neither is a problem a block
+      % has: it is as tall as what it holds, and its title is attached.
+      \begin{block}{What I would not claim}
+        \small
+        \begin{itemize}\setlength{\itemsep}{0pt}
+          \item The verifier logs only what it \alert{rejects}: wrongful
+            acceptance is unmeasured, and the evidence is not persisted
+          \item One environment, one backbone
+          \item ToG leads where it finishes, from a \alert{narrower
+            candidate set}: $40$/$20$ vs $300$/$200$
+        \end{itemize}
+      \end{block}
     \end{column}
   \end{columns}
   \centrebody
