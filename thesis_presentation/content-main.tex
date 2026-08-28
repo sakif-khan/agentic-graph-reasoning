@@ -634,11 +634,28 @@
 \begin{frame}{Main results}
   \begin{table}
     \small
-    \begin{tabular}{@{}lrrrrrr@{}}
+    % The two @{\hspace} separators mark the group boundaries -- WebQSP |
+    % CWQ and CWQ | cost -- so the eye pairs the right columns without
+    % having to read the spanning headers. Everything else keeps the
+    % uniform \tabcolsep.
+    %
+    % "CWQ" rather than "ComplexWebQuestions" is not only brevity: as a
+    % spanning header the long name was wider than the two columns beneath
+    % it, so LaTeX stretched them to fit and left a 55pt hole in front of
+    % every CWQ F1 value -- four times the 14pt gap in the WebQSP pair
+    % beside it. Slide 17 and this slide's own footnote already say CWQ.
+    %
+    % "Cost / q" is the same problem in the third group: at "Cost /
+    % question" the span was wider than Tokens+Calls and stretched them
+    % apart by 20pt. The unit cannot move to the footnote instead -- that
+    % line already measures 378pt of the 397 available, and "per question"
+    % takes it onto a second line, which the note below it exists to
+    % prevent.
+    \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{\hspace{7mm}}rr@{}}
       \toprule
       & \multicolumn{2}{c}{\textbf{WebQSP}}
-      & \multicolumn{2}{c}{\textbf{ComplexWebQuestions}}
-      & \multicolumn{2}{c}{\textbf{Cost / question}} \\
+      & \multicolumn{2}{c}{\textbf{CWQ}}
+      & \multicolumn{2}{c}{\textbf{Cost / q}} \\
       \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
       \textbf{System} & \textbf{Hits@1} & \textbf{F1}
                       & \textbf{Hits@1} & \textbf{F1}
@@ -678,10 +695,16 @@
 \begin{frame}{The caveat I want to raise myself}
   \begin{table}
     \small
-    \begin{tabular}{@{}lrrrr@{}}
+    % Grouped like slide 20's table, and for the same reason: the long
+    % spanning header was wider than the two columns under it, so LaTeX
+    % stretched the CWQ pair to 66pt while the boundary between the two
+    % datasets sat at 14pt -- the widest gap fell inside a pair and the
+    % narrowest between them, which is backwards. The clip-rate row's own
+    % \multicolumn spans still stretch both pairs a little, equally.
+    \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{}}
       \toprule
       & \multicolumn{2}{c}{\textbf{WebQSP}}
-      & \multicolumn{2}{c}{\textbf{ComplexWebQuestions}} \\
+      & \multicolumn{2}{c}{\textbf{CWQ}} \\
       \cmidrule(lr){2-3}\cmidrule(lr){4-5}
       \textbf{Hits@1 on\ldots} & \textbf{ToG} & \textbf{AGR}
                                & \textbf{ToG} & \textbf{AGR} \\
@@ -691,14 +714,20 @@
       questions ToG is \emph{clipped} on & 0.197 & \textbf{0.675}
                                     & 0.188 & \textbf{0.415} \\
       \midrule
-      clip rate & \multicolumn{2}{c}{$29.2\%$ ($117/400$)}
-                & \multicolumn{2}{c}{$44.0\%$ ($176/400$)} \\
+      % The denominators moved to the note. At "($117/400$)" this row was
+      % 79pt against the 67pt the pair beneath it is worth, and a
+      % \multicolumn wider than the columns it spans widens the last of
+      % them: the CWQ pair opened to 36pt while the WebQSP pair, whose
+      % overflow had the group separator to spill into, stayed at 12pt.
+      % Both datasets are 400 questions, said on slide 17 and again below.
+      clip rate & \multicolumn{2}{c}{$29.2\%$ ($117$)}
+                & \multicolumn{2}{c}{$44.0\%$ ($176$)} \\
       \bottomrule
     \end{tabular}
   \end{table}
   {\small Where Think-on-Graph finishes inside the shared $25$-call cap, it is
   \textbf{ahead of AGR on both datasets}. The entire aggregate margin comes
-  from the questions it cannot finish.}
+  from the questions it cannot finish --- $117$ and $176$ of $400$.}
   \takeaway{The claim is efficiency under a fixed budget --- not that AGR
     reasons better per step.}
 \end{frame}
@@ -707,9 +736,21 @@
 \begin{frame}{RQ2: does anything ungrounded get asserted?}
   \begin{table}
     \small
+    % No spanning headers here, so the unevenness had a different cause:
+    % "Entities asserted" is 90pt of header over a column of 28pt numbers,
+    % and a right-aligned column is as wide as its header, so every count
+    % sat 95pt clear of the system name. "Asserted" is the same word doing
+    % the work, and it is parallel with "Ungrounded" beside it. The one
+    % separator groups the finding -- how many were ungrounded, and at what
+    % rate -- away from the base it is measured against. Measured, that
+    % separator was wrong here: with the header shortened the first two
+    % gaps land at 55.7 and 56.2pt on their own, and adding 7mm to the
+    % second pushed it to 64 and reintroduced the unevenness it was meant
+    % to remove. This table has no groups to mark, so it keeps the uniform
+    % spacing.
     \begin{tabular}{@{}lrrr@{}}
       \toprule
-      \textbf{System} & \textbf{Entities asserted}
+      \textbf{System} & \textbf{Asserted}
                       & \textbf{Ungrounded} & \textbf{Rate} \\
       \midrule
       No-retrieval    & $1{,}001$ & $221$ & $22.1\%$ \\
@@ -781,14 +822,21 @@
 \begin{frame}{RQ3: what each component earns}
   \begin{table}
     \small
-    \begin{tabular}{@{}lrrrrr@{}}
+    % Three groups, separated like slide 20's: the two datasets and the
+    % token column. Before this the CWQ pair was stretched to 65pt by the
+    % long spanning header while the dataset boundary sat at 12pt.
+    \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{\hspace{7mm}}r@{}}
       \toprule
       & \multicolumn{2}{c}{\textbf{WebQSP}}
-      & \multicolumn{2}{c}{\textbf{ComplexWebQuestions}} & \\
+      & \multicolumn{2}{c}{\textbf{CWQ}} & \\
       \cmidrule(lr){2-3}\cmidrule(lr){4-5}
       \textbf{Condition} & \textbf{F1} & \textbf{$p$}
                          & \textbf{F1} & \textbf{$p$}
-                         & \textbf{Tokens (WQ)} \\
+                         % "(WQ)" made this header 85pt over a column of
+                         % 25pt numbers, so every token figure sat 60pt
+                         % clear of the p column beside it. The note below
+                         % says which dataset instead.
+                         & \textbf{Tokens} \\
       \midrule
       Full system     & 0.659 & ---   & 0.445 & ---   & 4{,}562 \\
       No planner      & \textbf{0.742} & \alert{\textbf{0.006}}
@@ -799,7 +847,7 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  {\small Paired McNemar, halves of $200$ and $198$.}
+  {\small Paired McNemar, halves of $200$ and $198$. Tokens are WebQSP.}
   \takeaway{Three of the four change nothing detectable. The fourth is on
     the next slide, and its sign is backwards.}
 \end{frame}
