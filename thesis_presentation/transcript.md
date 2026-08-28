@@ -8,7 +8,7 @@ The six backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 23 min 56 s of speaking against a 25-minute limit.** That leaves
+**Budget: 24 min 9 s of speaking against a 25-minute limit.** That leaves
 just over a minute, and every row below is set to exactly what its own words
 take at 93 wpm — so the minute is the whole of the slack, and no individual
 slide holds any.
@@ -61,14 +61,14 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 21 | **RQ1: accuracy against hop count** | 1:02 | 16:02 |
 | 22 | The caveat I want to raise myself | 1:05 | 17:07 |
 | 23 | RQ2: does anything ungrounded get asserted? | 1:03 | 18:10 |
-| 24 | RQ2: what verification does *not* do | 0:45 | 18:55 |
-| 25 | RQ2: so what does it do? | 0:41 | 19:36 |
-| 26 | **RQ3: what each component earns** | 0:22 | 19:58 |
-| 27 | **RQ3: one effect, and its sign is backwards** | 0:48 | 20:46 |
-| 28 | Every failure, read and labelled | 0:24 | 21:10 |
-| 29 | The echo attractor | 1:12 | 22:22 |
-| 30 | Contributions, and what I would not claim | 1:29 | 23:51 |
-| 31 | Thank you | 0:05 | 23:56 |
+| 24 | RQ2: what verification does *not* do | 0:53 | 19:03 |
+| 25 | RQ2: so what does it do? | 0:41 | 19:44 |
+| 26 | **RQ3: what each component earns** | 0:22 | 20:06 |
+| 27 | **RQ3: one effect, and its sign is backwards** | 0:48 | 20:54 |
+| 28 | Every failure, read and labelled | 0:29 | 21:23 |
+| 29 | The echo attractor | 1:12 | 22:35 |
+| 30 | Contributions, and what I would not claim | 1:29 | 24:04 |
+| 31 | Thank you | 0:05 | 24:09 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
@@ -450,15 +450,19 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 24 — RQ2: what verification does *not* do *(0:45)*
+## 24 — RQ2: what verification does *not* do *(0:53)*
 
-> Which leaves the real question. The negative half first: removing the layer
-> changes accuracy by an amount I cannot detect — p equals 1.0 on both datasets.
-> I report that as a negative result.
+> The negative half first: removing the layer changes accuracy by an amount I
+> cannot detect — p equals 1.0 on both datasets. And its evidence does not
+> outlive the run: the logger keeps the count of supporting triples and drops
+> the list.
 >
-> And the record does not survive the run: the logger writes the count of
-> supporting triples and drops the list. You can confirm the system tracked its
-> evidence; you cannot open the record and inspect it.
+> This is not a retraction of slide 20. That was AGR against four baselines;
+> this is AGR against itself with one part removed. The lead came from
+> navigating the graph and finishing inside the budget — never from this layer.
+
+*Say the last paragraph. It is the objection the slide invites, and answering
+it before it is asked costs eight seconds.*
 
 ---
 
@@ -499,22 +503,23 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 28 — Every failure, read and labelled *(0:24)*
+## 28 — Every failure, read and labelled *(0:29)*
 
-> I read all 259 remaining failures and labelled them by hand. Top categories,
-> pooled across both datasets.
+> Two hundred and fifty-nine failures, read and labelled by hand: every AGR
+> failure over the 800 test questions, less the adjudicated benchmark defects.
 >
-> The largest is relation selection — the agent taking the wrong edge, not
-> inventing one. That shape is the finding.
+> The largest category is relation selection — the agent taking the wrong edge,
+> not inventing one. That shape is the finding.
 
 **The table is pooled, and the slide says so.** Wrong and hedge are never
 pooled in the thesis — sec:taxonomy: "a pooled percentage would describe
 neither" — and pooling also hides the shape flip: `composite_claim` is 1 on
-WebQSP against 46 on CWQ. The caption carries both facts and points at backup
-page 4, so the split census is something you offer rather than something you
-are corrected with.
+WebQSP against 46 on CWQ. The block on the slide carries both facts, so the
+split census is something you offer rather than something you are corrected
+with.
 
-**The full 12-category histogram is backup page 4 if anyone wants it.**
+**The full 12-category histogram is backup page 4 if anyone wants it** — the
+slides no longer advertise it, so it is yours to offer, not theirs to spot.
 
 ---
 

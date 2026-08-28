@@ -369,8 +369,14 @@
       % search_entity runs a resolver. app:toolapi puts it correctly --
       % "Two limits appear throughout", max_relations and max_fanout.
       % check_slides.py holds this header against the rows beneath it.
+      % "Why it is bounded" asked a question the cells did not answer:
+      % two of them named a numeric cap and two described a mechanism, so
+      % the column read as four unrelated remarks. What it is actually
+      % for is the takeaway below -- no operation can hand the agent an
+      % unbounded result -- so it now says how much comes back, in the
+      % same form for every row.
       \textbf{Operation} & \textbf{Node} & \textbf{Returns} &
-      \textbf{Why it is bounded} \\
+      \textbf{At most} \\
       \midrule
       % Run order, so the column reads as the path through the machine
       % rather than as an alphabetised API listing.
@@ -380,7 +386,7 @@
       % appears nowhere else in the repository reads as the literal API.
       % Every name in this column is checked against a def in kg_tools.py.
       \texttt{search\_entity}  & Planner  & Surface form $\rightarrow$ node
-                               & Three-stage resolver \\
+                               & $3$ candidates \\
       % "offered to the scorer" was the widest cell in the table and the
       % Node column cost more than the slide had spare: 4.73pt overfull,
       % which is what that hbox warning is for.
@@ -389,7 +395,7 @@
       \texttt{get\_neighbors}  & Explorer & Neighbours of an entity
                                & $\leq 200$ per expansion \\
       \texttt{verify\_connection} & Verifier & Adjacency, full graph
-                               & Boolean; uncapped \\
+                               & one boolean \\
       \bottomrule
     \end{tabular}
   \end{table}
@@ -736,28 +742,30 @@
 \begin{frame}{RQ2: does anything ungrounded get asserted?}
   \begin{table}
     \small
-    % No spanning headers here, so the unevenness had a different cause:
-    % "Entities asserted" is 90pt of header over a column of 28pt numbers,
-    % and a right-aligned column is as wide as its header, so every count
-    % sat 95pt clear of the system name. "Asserted" is the same word doing
-    % the work, and it is parallel with "Ungrounded" beside it. The one
-    % separator groups the finding -- how many were ungrounded, and at what
-    % rate -- away from the base it is measured against. Measured, that
-    % separator was wrong here: with the header shortened the first two
-    % gaps land at 55.7 and 56.2pt on their own, and adding 7mm to the
-    % second pushed it to 64 and reintroduced the unevenness it was meant
-    % to remove. This table has no groups to mark, so it keeps the uniform
-    % spacing.
-    \begin{tabular}{@{}lrrr@{}}
+    % A right-aligned column is as wide as its widest cell, and here that
+    % was always the HEADER: "Ungrounded" is 60pt over counts of 19pt and
+    % "Rate" sits over five short percentages. So each number was pushed
+    % to the right-hand end of a column two or three times its own width,
+    % and the values ended up 56pt apart with nothing in between. Nothing
+    % about the column spec caused it and no separator could fix it.
+    %
+    % Merging the count with its rate is what closes the gap: "221
+    % ($22.1\%$)" is wider than the word above it, so the column is sized
+    % by the data again and the white disappears. It also puts the two
+    % numbers a reader compares into one place instead of either side of
+    % a 56pt gap.
+    \begin{tabular}{@{}lrr@{}}
       \toprule
-      \textbf{System} & \textbf{Asserted}
-                      & \textbf{Ungrounded} & \textbf{Rate} \\
+      % "Entities asserted" is 90pt over a column of 28pt counts and put
+      % the first number 95pt from the system name. The frame title
+      % already says what is asserted.
+      \textbf{System} & \textbf{Asserted} & \textbf{Ungrounded} \\
       \midrule
-      No-retrieval    & $1{,}001$ & $221$ & $22.1\%$ \\
-      Vector RAG      & $1{,}329$ & $45$  & $3.4\%$ \\
-      Static GraphRAG & $1{,}024$ & $8$   & $0.8\%$ \\
-      Think-on-Graph  & $1{,}265$ & $0$   & $\mathbf{0.0\%}$ \\
-      \textbf{AGR}    & $1{,}709$ & $0$   & $\mathbf{0.0\%}$ \\
+      No-retrieval    & $1{,}001$ & $221$ ($22.1\%$) \\
+      Vector RAG      & $1{,}329$ & $45$ ($3.4\%$) \\
+      Static GraphRAG & $1{,}024$ & $8$ ($0.8\%$) \\
+      Think-on-Graph  & $1{,}265$ & $\mathbf{0}$ ($\mathbf{0.0\%}$) \\
+      \textbf{AGR}    & $1{,}709$ & $\mathbf{0}$ ($\mathbf{0.0\%}$) \\
       \bottomrule
     \end{tabular}
   \end{table}
@@ -770,25 +778,32 @@
 
 % ===================== 24 =====================
 \begin{frame}{RQ2: what verification does \emph{not} do}
+  % The obvious objection to this slide is that it looks like a retraction
+  % of slide 20, and the slide used to leave the audience to resolve that
+  % on their own. It does not contradict it: slide 20's lead is AGR
+  % against four baselines, and this is AGR against itself with one
+  % component removed. Saying so is now the whole of the closing line,
+  % which also replaced three sentences that said "negative result" three
+  % different ways.
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.48\textwidth}
       \begin{block}{It does not move accuracy}
-        Removing it changes accuracy by an amount we cannot detect:
-        $p = 1.0$ on \emph{both} datasets. It does not earn its place on
-        Hits@1 or F1.
+        Remove it and Hits@1 and F1 do not detectably change ---
+        $p = 1.0$ on \emph{both} datasets.
       \end{block}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      \begin{block}{The record does not survive the run}
-        The log keeps the \alert{count} of supporting triples and discards
-        the list. \emph{Auditable in the run, not from the record.}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Its evidence does not outlive the run}
+        The log keeps the \alert{count} of supporting triples and drops
+        the list itself.
       \end{block}
     \end{column}
   \end{columns}
   \vspace{2mm}\sinkfoot
-  This is a negative result reported as one. The layer's case rests on
-  auditability, and the thesis bounds that too rather than claiming an
-  accuracy benefit the measurement does not support.
+  Not a retraction of slide 20. That was AGR against four baselines; this
+  is AGR against \emph{itself} with one part removed. The lead came from
+  navigating the graph and finishing inside the budget --- never from this
+  layer. \alert{What it does buy is the next slide.}
 \end{frame}
 
 % ===================== 25 =====================
@@ -847,7 +862,16 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  {\small Paired McNemar, halves of $200$ and $198$. Tokens are WebQSP.}
+  % "p" alone was read as precision. It is the McNemar p-value, and
+  % "Embedding-only" named a condition the slide never defined.
+  % Explaining p and "embedding-only" took the note from one line to two,
+  % and the frame was 1.7pt short of holding it. 2mm off the skip under
+  % the table covers it with 4pt to spare; the overprint rule in
+  % check_slides.py is what stands behind a negative vspace here.
+  \vspace{-2mm}
+  {\small $p$: a paired McNemar \emph{$p$-value}, $n = 200$/$198$.
+  \emph{Embedding-only} drops the model term from the scorer. Tokens:
+  WebQSP.}
   \takeaway{Three of the four change nothing detectable. The fourth is on
     the next slide, and its sign is backwards.}
 \end{frame}
@@ -885,8 +909,13 @@
 \begin{frame}{Every failure, read and labelled}
   \begin{columns}[T]
     \begin{column}{0.44\textwidth}
-      All $259$ remaining failures were read and labelled by hand, both
-      datasets pooled:
+      % "All 259 remaining failures" never said remaining after WHAT, and
+      % the number matches neither 400+400 nor the ablation's 200+198.
+      % Provenance, from sec:taxonomy: AGR fails on 98 of 400 WebQSP and
+      % 191 of 400 CWQ questions; 33 and 34 of those are set aside as
+      % adjudicated benchmark defects or near-misses; a separate reading
+      % of the 36 planner-discordant questions is added back. 86 + 173.
+      All $259$, read and labelled by hand:
 
       % A tabular is an inline box in the current paragraph. Without the
       % blank line above, "pooled:" stays on the line the table then sets
@@ -918,12 +947,10 @@
       % to badness 2503 against this deck's ceiling of 2000. The table beside
       % it spells the category the same way.
       \begin{block}{These are totals, and totals hide things}
-        Wrong and hedge are \emph{never pooled} in the thesis, and the shape
-        flips across datasets: composite claim is $1$ on WebQSP against $46$
-        on CWQ.
-        \smallskip
-
-        Split census: backup page $4$.
+        The $259$ are AGR's failures over the $800$ test questions, less
+        adjudicated benchmark defects. Wrong and hedge are \emph{never
+        pooled} in the thesis, and the shape flips: composite claim is
+        $1$ on WebQSP against $46$ on CWQ.
       \end{block}
       \vspace{1mm}
       The largest category is \alert{relation selection} --- the agent
@@ -1004,8 +1031,14 @@
         \item A \alert{component-level ablation} of four mechanisms
         \item \alert{Stratum-dependent decomposition} --- planning hurts
         \item The \emph{\alert{echo attractor}}, named
-        \item \alert{Benchmark-defect rates} for WebQSP and CWQ ($57$)
-        \item \alert{Pre-specified} evaluation thresholds
+        % Both of these named an artefact without saying what it was.
+        % 57 is the count of questions whose gold labels were adjudicated
+        % wrong or ambiguous; the thresholds are the scoring rules fixed
+        % in writing before any test run, so no cut-off was chosen after
+        % seeing the numbers.
+        \item \alert{Benchmark-defect rates}: $57$ questions whose gold
+          labels are wrong or ambiguous
+        \item \alert{Pre-specified} thresholds, fixed in advance
       \end{enumerate}
     \end{column}
     \begin{column}{0.48\textwidth}
@@ -1029,7 +1062,12 @@
         \item \alert{No} detectable accuracy gain --- and at $n \approx 200$
           that is ``not detected'', not ``none''
         \item Zero ungrounded assertion is \alert{navigation}, not the layer
-        \item One environment, one backbone, one annotator
+        % "one annotator" left the obvious question unanswered on a slide
+        % about what I would not claim. It is me; the judge was validated
+        % against my labels, which is agreement with one reader, not
+        % inter-annotator agreement.
+        \item One environment, one backbone, and \alert{I am} the one
+          annotator
         \item ToG leads where it finishes, from a \alert{narrower
           candidate set}: $40$/$20$ vs $300$/$200$
       \end{itemize}

@@ -1494,8 +1494,22 @@ ck(f"and gives the shape flip, {split['webqsp']} against {split['cwq']}",
    re.search(rf"\${split['webqsp']}\$ on WebQSP against \${split['cwq']}\$ "
              rf"on CWQ", census) is not None,
    f"composite_claim is {split['webqsp']}/{split['cwq']}")
-ck("and points at the split census",
-   re.search(r"backup page \$?\d", census) is not None)
+# The split census used to be offered here as "backup page 4". The main
+# deck now names no backup page at all -- a slide that sends the audience
+# to a file they cannot see reads as an admission, and the six backup
+# slides are for answering questions, not for being advertised. Inverted
+# into a rule so the reference cannot creep back: the split is still
+# stated above, as the shape flip, which is the part that matters.
+#
+# content-main.tex alone, not FLAT: FLAT concatenates all three sources,
+# and every frame in the backup deck is titled "Backup: ...", so the rule
+# would fail on the file it is not about.
+MAINONLY = " ".join(uncomment(
+    open(os.path.join(HERE, "content-main.tex"), encoding="utf-8").read()
+).split())
+_bk = re.search(r".{0,40}backup.{0,40}", MAINONLY, re.I)
+ck("the main deck sends nobody to a backup page", _bk is None,
+   _bk.group(0) if _bk else "")
 
 # ---------------------------------------------------------------------
 # ...and the typeset transcript has to be the same script.
@@ -1519,6 +1533,31 @@ else:
     ck("transcript.tex matches transcript.md", r.returncode == 0,
        (r.stdout + r.stderr).strip().splitlines()[-1]
        if (r.stdout + r.stderr).strip() else "")
+
+# ...and so does the speaking copy, which is the one that will be in your
+# hand. Two renderings of one script is exactly the arrangement that let
+# transcript.tex fall nine sections behind; the second one is checked from
+# the day it exists rather than after it has drifted.
+MIN = os.path.join(HERE, "build_min.py")
+if not os.path.exists(MIN):
+    print("  [   ] build_min.py absent")
+else:
+    r = subprocess.run([sys.executable, MIN, "--check"],
+                       capture_output=True, text=True, cwd=HERE)
+    ck("transcript-min.tex matches transcript.md", r.returncode == 0,
+       (r.stdout + r.stderr).strip().splitlines()[-1]
+       if (r.stdout + r.stderr).strip() else "")
+# Both PDFs exist and are newer than the script they render. A .tex that
+# matches while the PDF beside it was built two edits ago is the same
+# staleness one level down, and the speaking copy is printed, not read
+# from the source.
+for pdf in ("transcript.pdf", "transcript-min.pdf"):
+    p = os.path.join(HERE, pdf)
+    ck(f"{pdf} is built and not older than transcript.md",
+       os.path.exists(p) and
+       os.path.getmtime(p) >= os.path.getmtime(os.path.join(
+           HERE, "transcript.md")),
+       "rebuild it" if os.path.exists(p) else "missing")
 
 # ---------------------------------------------------------------------
 # The rehearsal transcript's timing table has to add up.
