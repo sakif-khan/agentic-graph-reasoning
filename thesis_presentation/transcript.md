@@ -177,14 +177,18 @@ verification layer's honest limit.*
 
 > Five systems, and the column that matters is the last one.
 >
-> They differ in how they explore — a fixed radius, generated paths, beam
-> search, adaptive planning. Some decompose the question, two can backtrack.
-> None checks what its own answer asserts against what it retrieved, before
-> answering. That empty column is where this thesis sits.
+> The four prior systems differ in how they explore — a fixed radius,
+> generated paths, beam search, adaptive planning. Some decompose the question,
+> one backtracks. None checks what its own answer asserts against what it
+> retrieved, before answering. That empty column is where this thesis sits.
 >
 > One caution. Their published accuracies are higher than anything I am about
-> to show, and they are not comparable: different backbones, different subsets,
-> and full Freebase rather than the environment I built.
+> to show, and not comparable: different backbones, different subsets, and full
+> Freebase rather than the environment I built.
+
+*Scope every count to the four prior systems. Backtracking is PoG's alone
+among them; "two can backtrack" counted AGR in one breath and "none checks"
+counted it out in the next, and the table on screen shows both columns.*
 
 *If a committee member knows these papers, this is where they will ask about
 the numbers. The environment slide answers it.*
