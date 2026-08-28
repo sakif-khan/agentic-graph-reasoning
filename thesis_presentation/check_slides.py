@@ -1330,7 +1330,7 @@ for what, on_slide, in_script in (
 # evaluator to backtracker to explorer". A listener can count the arrows
 # while the word is being said, so the deck is where it costs.
 print("\n== the cycle count is what the diagram draws ==")
-SM = frame("AGR: an explicit state machine")
+SM = frame("AGR: An explicit state machine")
 
 # The node count, from the same diagram. START is a terminal, not a node
 # of the machine, which is why box and vbox are counted and term is not.
@@ -1753,7 +1753,8 @@ else:
 # other systems that no rule read at all.
 print("\n== the hop curve is the strata ==")
 TR = J["main_results"]["hop_trends"]["cwq"]
-HOP = frame("RQ1: accuracy against hop count")
+HOP = frame("RQ1: Does agentic navigation improve multi-hop factual "
+            "accuracy --- and does the advantage grow with hop count?")
 s21 = spoken(21)
 agr = TR["agr"]["hits_at_1"]
 arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)

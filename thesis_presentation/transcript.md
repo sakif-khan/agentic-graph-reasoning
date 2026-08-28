@@ -8,7 +8,7 @@ The six backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 24 min 9 s of speaking against a 25-minute limit.** That leaves
+**Budget: 24 min 14 s of speaking against a 25-minute limit.** That leaves
 just over a minute, and every row below is set to exactly what its own words
 take at 93 wpm — so the minute is the whole of the slack, and no individual
 slide holds any.
@@ -44,11 +44,11 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 4 | Where it comes from | 0:31 | 2:00 |
 | 5 | Which of the three can we act on? | 0:32 | 2:32 |
 | 6 | What a knowledge graph is | 0:37 | 3:09 |
-| 7 | The complication: mediator nodes | 0:34 | 3:43 |
+| 7 | The complication: Mediator nodes | 0:34 | 3:43 |
 | 8 | Where existing approaches stop | 0:41 | 4:24 |
 | 9 | What everyone else does | 0:56 | 5:20 |
 | 10 | Research questions | 0:53 | 6:13 |
-| 11 | AGR: an explicit state machine | 1:08 | 7:21 |
+| 11 | AGR: An explicit state machine | 1:08 | 7:21 |
 | 12 | Constrained tools | 0:37 | 7:58 |
 | 13 | The Structural Verification Layer | 0:32 | 8:30 |
 | 14 | What *structural* means — and what it does not | 0:58 | 9:28 |
@@ -58,17 +58,17 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 18 | Making the comparison fair | 0:32 | 13:07 |
 | 19 | What is *not* held equal | 0:43 | 13:50 |
 | 20 | **Main results** | 1:10 | 15:00 |
-| 21 | **RQ1: accuracy against hop count** | 1:02 | 16:02 |
+| 21 | **RQ1: Does agentic navigation improve multi-hop factual accuracy — and does the advantage grow with hop count?** | 1:02 | 16:02 |
 | 22 | The caveat I want to raise myself | 1:05 | 17:07 |
-| 23 | RQ2: does anything ungrounded get asserted? | 1:03 | 18:10 |
-| 24 | RQ2: what verification does *not* do | 0:53 | 19:03 |
-| 25 | RQ2: so what does it do? | 0:41 | 19:44 |
-| 26 | **RQ3: what each component earns** | 0:22 | 20:06 |
-| 27 | **RQ3: one effect, and its sign is backwards** | 0:48 | 20:54 |
-| 28 | Every failure, read and labelled | 0:29 | 21:23 |
-| 29 | The echo attractor | 1:12 | 22:35 |
-| 30 | Contributions, and what I would not claim | 1:29 | 24:04 |
-| 31 | Thank you | 0:05 | 24:09 |
+| 23 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 1:08 | 18:15 |
+| 24 | RQ2: What verification does *not* do | 0:53 | 19:08 |
+| 25 | RQ2: So what does it do? | 0:41 | 19:49 |
+| 26 | **RQ3: Which components contribute what, at what token cost?** | 0:22 | 20:11 |
+| 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 20:59 |
+| 28 | Every failure, read and labelled | 0:29 | 21:28 |
+| 29 | The echo attractor | 1:12 | 22:40 |
+| 30 | Contributions, and what I would not claim | 1:29 | 24:09 |
+| 31 | Thank you | 0:05 | 24:14 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
@@ -145,7 +145,7 @@ last sentence is a scope limit, not modesty. Say it at normal pace.*
 
 ---
 
-## 7 — The complication: mediator nodes *(0:34)*
+## 7 — The complication: Mediator nodes *(0:34)*
 
 > Freebase stores any fact with more than two participants as a node rather than
 > an edge. "Rainn Wilson played Dwight in The Office" is one node joining three
@@ -213,7 +213,7 @@ the numbers. The environment slide answers it.*
 
 ---
 
-## 11 — AGR: an explicit state machine *(1:08)*
+## 11 — AGR: An explicit state machine *(1:08)*
 
 > AGR is an explicit state machine — not a prompt loop. Six nodes.
 >
@@ -395,7 +395,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 21 — RQ1: accuracy against hop count *(1:02)* ★
+## 21 — RQ1: Does agentic navigation improve multi-hop factual accuracy — and does the advantage grow with hop count? *(1:02)* ★
 
 > The direct answer to RQ1, and it is a shape rather than a difference of means.
 >
@@ -433,9 +433,10 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 23 — RQ2: does anything ungrounded get asserted? *(1:03)*
+## 23 — RQ2: What does pre-generation verification contribute beyond graph navigation? *(1:08)*
 
-> RQ2. Does anything ungrounded get asserted?
+> RQ2. Start with the narrowest form of it: does anything ungrounded get
+> asserted?
 >
 > Pooling both datasets: AGR asserts 1,709 entities and zero are absent from the
 > graph. The parametric control asserts 1,001 and 22.1 percent don't exist.
@@ -450,7 +451,7 @@ they press on GraphRAG, the answer below has the strata.
 
 ---
 
-## 24 — RQ2: what verification does *not* do *(0:53)*
+## 24 — RQ2: What verification does *not* do *(0:53)*
 
 > The negative half first: removing the layer changes accuracy by an amount I
 > cannot detect — p equals 1.0 on both datasets. And its evidence does not
@@ -466,7 +467,7 @@ it before it is asked costs eight seconds.*
 
 ---
 
-## 25 — RQ2: so what does it do? *(0:41)*
+## 25 — RQ2: So what does it do? *(0:41)*
 
 > What it does do is withhold what it cannot ground. Removing the layer drops the
 > CWQ hedge rate from 23.2 to 20.2 percent — direction only, six questions. A
@@ -478,7 +479,7 @@ it before it is asked costs eight seconds.*
 
 ---
 
-## 26 — RQ3: what each component earns *(0:22)* ★
+## 26 — RQ3: Which components contribute what, at what token cost? *(0:22)* ★
 
 > RQ3: which components earn their cost.
 >
@@ -488,7 +489,7 @@ it before it is asked costs eight seconds.*
 
 ---
 
-## 27 — RQ3: one effect, and its sign is backwards *(0:48)* ★
+## 27 — RQ3: One effect, and its sign is backwards *(0:48)* ★
 
 > The one that does is the planner, and the sign is backwards. Removing it
 > *improves* WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31 percent.

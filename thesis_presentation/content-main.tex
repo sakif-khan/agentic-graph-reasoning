@@ -156,7 +156,7 @@
 \end{frame}
 
 % ===================== 7 =====================
-\begin{frame}{The complication: mediator nodes}
+\begin{frame}{The complication: Mediator nodes}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
       Freebase stores any fact with more than two participants as a
@@ -272,7 +272,7 @@
 \end{frame}
 
 % ===================== 11 =====================
-\begin{frame}{AGR: an explicit state machine}
+\begin{frame}{AGR: An explicit state machine}
   \begin{columns}[T]
     \begin{column}{0.46\textwidth}
       \small
@@ -686,11 +686,10 @@
 \end{frame}
 
 % ===================== 21 =====================
-\begin{frame}{RQ1: accuracy against hop count}
+\begin{frame}{RQ1: Does agentic navigation improve multi-hop factual accuracy --- and does the advantage grow with hop count?}
   \centering
-  \input{figures/fig_hop_strata.tex}
+  \scalebox{0.95}{\input{figures/fig_hop_strata.tex}}
 
-  \vspace{1mm}
   {\small On CWQ, AGR goes $0.46 \to 0.55 \to 0.57$ --- the \textbf{only} system
   that ends above where it started. Three of the other four decay
   monotonically.}
@@ -739,7 +738,7 @@
 \end{frame}
 
 % ===================== 23 =====================
-\begin{frame}{RQ2: does anything ungrounded get asserted?}
+\begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}
   \begin{table}
     \small
     % A right-aligned column is as wide as its widest cell, and here that
@@ -757,8 +756,8 @@
     \begin{tabular}{@{}lrr@{}}
       \toprule
       % "Entities asserted" is 90pt over a column of 28pt counts and put
-      % the first number 95pt from the system name. The frame title
-      % already says what is asserted.
+      % the first number 95pt from the system name. What is being
+      % counted is said by the note under the table.
       \textbf{System} & \textbf{Asserted} & \textbf{Ungrounded} \\
       \midrule
       No-retrieval    & $1{,}001$ & $221$ ($22.1\%$) \\
@@ -769,7 +768,6 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  \vspace{1mm}
   {\small Both datasets pooled. AGR asserts no entity that does not exist in
   the graph, across $1{,}709$ assertions.}
   \takeaway{\alert{But Think-on-Graph reaches $0.0\%$ too} --- so this is a
@@ -777,7 +775,7 @@
 \end{frame}
 
 % ===================== 24 =====================
-\begin{frame}{RQ2: what verification does \emph{not} do}
+\begin{frame}{RQ2: What verification does \emph{not} do}
   % The obvious objection to this slide is that it looks like a retraction
   % of slide 20, and the slide used to leave the audience to resolve that
   % on their own. It does not contradict it: slide 20's lead is AGR
@@ -807,7 +805,7 @@
 \end{frame}
 
 % ===================== 25 =====================
-\begin{frame}{RQ2: so what does it do?}
+\begin{frame}{RQ2: So what does it do?}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
       \begin{block}{It withholds what it cannot ground}
@@ -834,7 +832,7 @@
 \end{frame}
 
 % ===================== 26 =====================
-\begin{frame}{RQ3: what each component earns}
+\begin{frame}{RQ3: Which components contribute what, at what token cost?}
   \begin{table}
     \small
     % Three groups, separated like slide 20's: the two datasets and the
@@ -883,7 +881,7 @@
 % log-reading rule this deck relies on saw nothing; the geometric check
 % added to check_slides.py is what would have caught it, and the table
 % having a slide to itself is what makes it unnecessary.
-\begin{frame}{RQ3: one effect, and its sign is backwards}
+\begin{frame}{RQ3: One effect, and its sign is backwards}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
       \begin{block}{Removing the planner \emph{improves} WebQSP}

@@ -115,7 +115,7 @@ birth, London. A question needing two of those chained is multi-hop. The
 point of a graph is that every fact has an address, so a claim can be
 checked by looking for an edge.
 
-\slidehead{7}{The complication: mediator nodes}{0:34}
+\slidehead{7}{The complication: Mediator nodes}{0:34}
 Freebase stores any fact with more than two participants as a node rather
 than an edge. "Rainn Wilson played Dwight in The Office" is one node joining
 three things. Nearly two thirds of this graph's nodes are that kind, and
@@ -160,7 +160,7 @@ One framing note. RQ2 asks what verification \textit{contributes}, not
 whether it reduces hallucination. That's deliberate. The answer has several
 parts, and a yes-or-no question would have hidden most of them.
 
-\slidehead{11}{AGR: an explicit state machine}{1:08}
+\slidehead{11}{AGR: An explicit state machine}{1:08}
 AGR is an explicit state machine --- not a prompt loop. Six nodes.
 
 The planner decomposes the question into ordered sub-objectives. The
@@ -276,7 +276,7 @@ Second, the cost columns: 4,511 tokens and 6.2 calls against
 Think-on-Graph's 3,615 and 12.8. More tokens, half the calls --- and calls
 are what the budget meters.
 
-\slidehead{21}{RQ1: accuracy against hop count}{1:02}
+\slidehead{21}{RQ1: Does agentic navigation improve multi-hop factual accuracy --- and does the advantage grow with hop count?}{1:02}
 The direct answer to RQ1, and it is a shape rather than a difference of
 means.
 
@@ -305,8 +305,9 @@ So the honest claim is not that AGR reasons better per step. It is that AGR
 completes its reasoning inside a fixed budget and Think-on-Graph frequently
 does not.
 
-\slidehead{23}{RQ2: does anything ungrounded get asserted?}{1:03}
-RQ2. Does anything ungrounded get asserted?
+\slidehead{23}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{1:08}
+RQ2. Start with the narrowest form of it: does anything ungrounded get
+asserted?
 
 Pooling both datasets: AGR asserts 1,709 entities and zero are absent from
 the graph. The parametric control asserts 1,001 and 22.1 percent don't
@@ -320,7 +321,7 @@ So zero ungrounded assertion is a property of \textit{navigating a graph}
 --- you can only name what you visited. It is not a property of my layer,
 and I don't claim it as one.
 
-\slidehead{24}{RQ2: what verification does \textit{not} do}{0:53}
+\slidehead{24}{RQ2: What verification does \textit{not} do}{0:53}
 The negative half first: removing the layer changes accuracy by an amount I
 cannot detect --- p equals 1.0 on both datasets. And its evidence does not
 outlive the run: the logger keeps the count of supporting triples and drops
@@ -331,7 +332,7 @@ this is AGR against itself with one part removed. The lead came from
 navigating the graph and finishing inside the budget --- never from this
 layer.
 
-\slidehead{25}{RQ2: so what does it do?}{0:41}
+\slidehead{25}{RQ2: So what does it do?}{0:41}
 What it does do is withhold what it cannot ground. Removing the layer drops
 the CWQ hedge rate from 23.2 to 20.2 percent --- direction only, six
 questions. A hedge is a calibrated non-assertion, not a refusal.
@@ -340,14 +341,14 @@ It attaches supporting triples, from one route of three, and pairs the
 answer with its evidence inside the run. So the case rests on auditability,
 not accuracy.
 
-\slidehead{26}{RQ3: what each component earns}{0:22}
+\slidehead{26}{RQ3: Which components contribute what, at what token cost?}{0:22}
 RQ3: which components earn their cost.
 
 Four ablations, paired McNemar against the full system. Three of the four
 change nothing I can detect --- backtracking, the verifier, and the learned
 half of the scorer.
 
-\slidehead{27}{RQ3: one effect, and its sign is backwards}{0:48}
+\slidehead{27}{RQ3: One effect, and its sign is backwards}{0:48}
 The one that does is the planner, and the sign is backwards. Removing it
 \textit{improves} WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by
 31 percent. On ComplexWebQuestions it trends the other way.
