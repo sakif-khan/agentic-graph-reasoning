@@ -141,8 +141,25 @@
 % asked to hold both. Ragged right hid that -- an infinitely stretchable
 % \rightskip absorbs any measure -- and justifying the deck made it three
 % overfull \hbox warnings.
+% The \vfill anchors the bar to the foot of the text block instead of
+% letting it ride up under whatever happens to be above it. Measured
+% across the deck, the bar's lower edge sat anywhere from 16pt to 69pt
+% off the bottom -- the thin slides looked top-heavy and the bar moved
+% from slide to slide, which is exactly the element that should not.
+% The glue has no natural size, so a frame that is already full does not
+% grow; it only distributes slack that was going to sit at the bottom
+% anyway, and the 1mm stays as the minimum separation.
+%
+% `filll' rather than \vfill: beamer puts its own fill glue around a
+% frame's body, so a \vfill here only splits the slack with it -- the
+% thinnest slide came down from 69pt to 53pt and stopped. filll is the
+% higher order and takes all of it.
+% Same anchoring for the two slides whose closing line is plain prose
+% rather than the bar, so the foot of a slide sits at one height whichever
+% form it takes.
+\newcommand{\sinkfoot}{\par\vskip 0pt plus 1filll\relax}
 \newcommand{\takeaway}[1]{%
-  \par\vspace{1mm}%
+  \par\vspace{1mm}\vskip 0pt plus 1filll\relax%
   \begin{beamercolorbox}[wd=\dimexpr\textwidth-3.6mm\relax,sep=1.8mm,
     rounded=true]{takeawaybar}%
     \small\raggedright\textbf{#1}%

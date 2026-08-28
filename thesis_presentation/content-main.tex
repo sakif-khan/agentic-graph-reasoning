@@ -95,7 +95,15 @@
       \end{block}
     \end{column}
   \end{columns}
-  \takeaway{Generating text and recalling a fact are the same operation.}
+  % "Generating text and recalling a fact are the same operation" claimed
+  % more than Sec 1.1.1 does. The book says the model holds no reliable
+  % internal *signal* separating the two; interpretability work on
+  % fact-recall circuits can be read against the stronger form, and this
+  % slide does not need it. Same machinery, identical output -- which is
+  % the part the thesis actually relies on, since the output is all a
+  % downstream system sees.
+  \takeaway{Recalling a fact and inventing one run through the same
+    machinery --- and the output looks identical either way.}
 \end{frame}
 
 % ===================== 5 =====================
@@ -179,6 +187,13 @@
   % 78mm on its own -- but at 45mm no row orphans one word onto a second line,
   % which was the actual defect. 56mm takes every "What it does" cell onto one
   % line. The tighter \tabcolsep is what pays for those widths inside 140mm.
+  %
+  % Rules between the rows rather than wider columns: three of the four
+  % "Where it stops" cells run to two lines, and the arithmetic says they
+  % always will -- col 2 can give up 1.4mm before its own cells wrap and
+  % col 1 1mm, so the widest col 3 reachable is 47mm against the 74mm that
+  % row needs. Widening cannot remove the wrap, so the fix has to be the
+  % row boundary, which is what was actually missing.
   \begin{table}
     \small
     \setlength{\tabcolsep}{4pt}
@@ -188,10 +203,13 @@
       \midrule
       Parametric        & Answers from weights
                         & No external evidence at all \\
+      \midrule
       Vector RAG        & Retrieves text once, then reasons
                         & Retrieval happens \emph{before} reasoning begins \\
+      \midrule
       Static GraphRAG   & Retrieves a fixed neighbourhood
                         & Radius fixed before the question is understood \\
+      \midrule
       Agentic navigation & Interleaves retrieval and reasoning
                         & Emits whatever the last generation call produces \\
       \bottomrule
@@ -220,8 +238,12 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  {\small Their published Hits@1 runs higher than anything here and is
-  \emph{not} comparable: other backbones, other subsets, full Freebase.}
+  % One line, and it has to stay one line: 397pt of measure at this size,
+  % against 387pt of glyphs. "published" is what came out -- the spoken
+  % script says "their published accuracies", so the word is not lost, and
+  % the three reasons are what the committee would actually ask about.
+  {\small Their Hits@1 is higher and \emph{not} comparable: other
+  backbones, subsets, full Freebase.}
   \takeaway{No prior system checks its \emph{answer's} claims against what it
     retrieved, before answering.}
 \end{frame}
@@ -238,7 +260,7 @@
     \item[\textbf{RQ3}] Which components earn their cost, in accuracy and in
       \alert{tokens}?
   \end{enumerate}
-  \vspace{3mm}
+  \vspace{3mm}\sinkfoot
   {\small RQ2 is posed as \emph{what does it contribute}, not \emph{does it
     reduce hallucination}. The answer has several parts, and a yes/no framing
     would hide them.}
@@ -687,7 +709,7 @@
       \end{block}
     \end{column}
   \end{columns}
-  \vspace{2mm}
+  \vspace{2mm}\sinkfoot
   This is a negative result reported as one. The layer's case rests on
   auditability, and the thesis bounds that too rather than claiming an
   accuracy benefit the measurement does not support.
