@@ -12,7 +12,7 @@ traversed. Claims it cannot ground are dropped, so the system hedges instead of
 asserting something the graph does not support.
 
 The accompanying M.Sc. Engg. thesis is in this repository at
-[thesis_book/buetcsepgthesis.pdf](thesis_book/buetcsepgthesis.pdf).
+[thesis_book/thesis_book_0421052099.pdf](thesis_book/thesis_book_0421052099.pdf).
 
 ---
 
@@ -519,7 +519,7 @@ frozen from the development sweep and not revisited.
 
 ## Thesis
 
-[thesis_book/buetcsepgthesis.pdf](thesis_book/buetcsepgthesis.pdf) — *Agentic
+[thesis_book/thesis_book_0421052099.pdf](thesis_book/thesis_book_0421052099.pdf) — *Agentic
 Graph Reasoning: Autonomous Knowledge Graph Navigation for Fact Verification and
 Hallucination Mitigation in Large Language Models*, M.Sc. Engg. (CSE),
 Bangladesh University of Engineering and Technology. §1.7 reads the title's terms
@@ -529,7 +529,7 @@ To rebuild it you need a TeX distribution with `latexmk`:
 
 ```bash
 cd thesis_book
-latexmk -pdf buetcsepgthesis.tex
+latexmk -pdf thesis_book_0421052099.tex
 ```
 
 The slide decks are in [thesis_presentation/](thesis_presentation/) and the
@@ -541,9 +541,11 @@ through `scripts/build_figures.py`, which emits one target per document because
 a thesis column, a 16:9 slide and a journal measure are different shapes. Re-run
 the experiments and all three move together.
 
-**Five files here are documents and forty-four are not.**
-`thesis_book/buetcsepgthesis.tex`, the two `thesis_presentation/pre-defense-*.tex`,
-`thesis_presentation/transcript.tex` and `thesis_paper/agr-paper.tex` carry `\begin{document}`. Everything else — every
+**Seven files here are documents and forty-four are not.**
+`thesis_book/thesis_book_0421052099.tex`,
+`thesis_presentation/thesis_defense_0421052099.tex`,
+`thesis_paper/agr-paper.tex` and the four archived under
+`thesis_presentation/pre-defense-frozen-2026-08-29/` carry `\begin{document}`. Everything else — every
 chapter, appendix, section, figure, table and preamble — is a fragment that stops
 with *Missing `\begin{document}`* if you build it on its own. Each fragment names its document in a `% !TEX root`
 line on its first line, so an editor's build button compiles the right thing

@@ -40,7 +40,7 @@ it is stated: §8.1's development sweep, from the archived phase-3 runs; §7.4.3
 GraphRAG's logged facts, from that baseline's run records; §7.2's $11.13 API spend, a
 billing record; and §7.3.1's determinism rounds two through four, from console tables that
 were never committed. The last two are the only reported numbers in the thesis the
-repository cannot reproduce. The root preamble of `buetcsepgthesis.tex` carries the same
+repository cannot reproduce. The root preamble of `thesis_book_0421052099.tex` carries the same
 map, and Chapter 7's opening states it to the reader.
 
 Chapters 5 and 6 are development-set chapters and sit outside that scope: they quote the
