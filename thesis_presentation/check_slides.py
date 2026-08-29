@@ -17,10 +17,12 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 NUMS = os.path.join(ROOT, "results", "phase4", "thesis_numbers.json")
-# Both decks share a preamble, so all three files are read together: a figure
-# quoted on a backup slide is as much a transcription as one on a main slide.
-SOURCES = ["preamble.tex", "content-main.tex", "content-backup.tex"]
-DRIVERS = ["pre-defense-0421052099.tex", "pre-defense-0421052099-backup.tex"]
+# One deck now. The backup frames used to live in content-backup.tex and
+# build into a second PDF; they are the tail of content-main.tex since the
+# pre-defense, so a figure quoted on one is read from the same file as one
+# on a main slide -- and checked identically.
+SOURCES = ["preamble.tex", "content-main.tex"]
+DRIVERS = ["thesis_defense_0421052099.tex"]
 
 J = json.load(open(NUMS, encoding="utf-8"))
 TEX = "\n".join(open(os.path.join(HERE, f), encoding="utf-8").read()
@@ -519,10 +521,8 @@ if n_mods in NUM:
        f"it covers {n_mods}")
 
 main_src = open(os.path.join(HERE, "content-main.tex"), encoding="utf-8").read()
-back_src = open(os.path.join(HERE, "content-backup.tex"),
-                encoding="utf-8").read()
 claim = re.search(r"\\input\{([^}]*fig_claim_path[^}]*)\}", main_src)
-ck("the presented deck inputs fig_claim_path", claim is not None)
+ck("the deck inputs fig_claim_path", claim is not None)
 if claim:
     # Whether the README should describe a cross-directory reach or a local
     # copy is decided by which one the deck actually does.
@@ -530,10 +530,6 @@ if claim:
     ck("the README describes where the figure comes from",
        ("across the directory boundary" in RM) == crosses,
        f"deck inputs {claim.group(1)!r}")
-ck("the backup deck does not use it, and the README says so",
-   ("fig_claim_path" in back_src)
-   == ("backup deck does not use it" not in RM),
-   "the README must match which decks input the figure")
 
 # ---------------------------------------------------------------------
 # The hedge-difference answer, recomputed from the paired records.
@@ -700,9 +696,17 @@ for drv in DRIVERS:
        os.path.exists(os.path.join(HERE, drv))
        and r"\input{preamble}" in open(os.path.join(HERE, drv),
                                        encoding="utf-8").read())
-ck("no backup slide leaked into the presented deck",
-   "Backup:" not in open(os.path.join(HERE, "content-main.tex"),
-                         encoding="utf-8").read())
+# "No backup slide leaked into the presented deck" was the rule while the
+# two were separate documents. They are one file now, so the invariant is
+# no longer that the backup frames are absent -- it is that they all sit
+# AFTER the closing slide, where paging reaches them only deliberately.
+# Interleaving one into the narrative is the defect this now catches.
+_close = main_src.find(r"{\Large\bfseries\color{agrdark} Thank you}")
+_backups = [m.start() for m in
+            re.finditer(r"\\begin\{frame\}\{Backup:", main_src)]
+ck("the closing slide is in the deck", _close >= 0)
+ck(f"all {len(_backups)} backup frames follow it, none before",
+   bool(_backups) and _close >= 0 and min(_backups) > _close)
 
 # The three data figures have slide-geometry variants under figures/; the claim
 # path is hand-drawn and shared with the thesis, so it is read from there.
@@ -1462,9 +1466,12 @@ for label, path in (("deck", os.path.join(HERE, "content-main.tex")),
 # lands on hedging rather than the census. That is a note consulted under
 # pressure, which is when the wrong slide costs most.
 print("\n== the script's own internals agree ==")
-BACKUP = os.path.join(HERE, "content-backup.tex")
-backup_titles = re.findall(r"\\begin\{frame\}\{Backup: ([^}]*)\}",
-                           open(BACKUP, encoding="utf-8").read())
+# The backup frames are the tail of content-main.tex now, not a file (and
+# a PDF) of their own. The rules below still describe how a transcript
+# addresses them, and that addressing scheme is the transcript's to
+# settle when one is next written -- these pages are no longer a separate
+# document, so "page 2 onwards" is not automatically what it should say.
+backup_titles = re.findall(r"\\begin\{frame\}\{Backup: ([^}]*)\}", main_src)
 rows = re.findall(r"^\| (\d+) \| ([^|]+?) \| \"", MD, re.M)
 ck(f"the backup table has a row per backup slide ({len(backup_titles)})",
    len(rows) == len(backup_titles), f"{len(rows)} rows")
@@ -1525,22 +1532,13 @@ ck(f"and gives the shape flip, {split['webqsp']} against {split['cwq']}",
    re.search(rf"\${split['webqsp']}\$ on WebQSP against \${split['cwq']}\$ "
              rf"on CWQ", census) is not None,
    f"composite_claim is {split['webqsp']}/{split['cwq']}")
-# The split census used to be offered here as "backup page 4". The main
-# deck now names no backup page at all -- a slide that sends the audience
-# to a file they cannot see reads as an admission, and the six backup
-# slides are for answering questions, not for being advertised. Inverted
-# into a rule so the reference cannot creep back: the split is still
-# stated above, as the shape flip, which is the part that matters.
-#
-# content-main.tex alone, not FLAT: FLAT concatenates all three sources,
-# and every frame in the backup deck is titled "Backup: ...", so the rule
-# would fail on the file it is not about.
-MAINONLY = " ".join(uncomment(
-    open(os.path.join(HERE, "content-main.tex"), encoding="utf-8").read()
-).split())
-_bk = re.search(r".{0,40}backup.{0,40}", MAINONLY, re.I)
-ck("the main deck sends nobody to a backup page", _bk is None,
-   _bk.group(0) if _bk else "")
+# "The main deck sends nobody to a backup page" was the rule here. Its
+# reason was that a slide pointing at a second PDF the audience cannot
+# see reads as an admission -- which stopped being true when the backup
+# frames moved into this same file, reachable by paging past the close.
+# The rule is retired rather than rewritten: the split census it was
+# guarding is still stated above as the shape flip, which is the part
+# that mattered.
 
 # ---------------------------------------------------------------------
 # ...and the typeset transcript has to be the same script.

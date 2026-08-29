@@ -178,10 +178,8 @@ TARGETS = {
     ),
     "presentation": dict(
         outdir=Path("thesis_presentation/figures"),
-        # The deck has two documents; the presented one is the default the
-        # same way preamble.tex points at it, and the backup deck shares no
-        # generated figure with a different geometry.
-        root="../pre-defense-0421052099.tex",
+        # One deck, one driver -- the same root preamble.tex points at.
+        root="../thesis_defense_0421052099.tex",
         width="52mm", height="34mm", gutter="18mm",
         legend_drop=-0.70, strata_legend_drop=-0.86,
         mark_size=3.0, line_mark=2.6,

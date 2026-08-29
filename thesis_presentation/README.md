@@ -1,62 +1,54 @@
 # thesis_presentation
 
-Pre-defense slide decks for the thesis in `thesis_book/`.
+The defense slide deck for the thesis in `thesis_book/`.
 
 | File | What it is |
 | --- | --- |
-| `pre-defense-0421052099.tex` / `.pdf` | **The deck that is presented.** 23 pages |
-| `pre-defense-0421052099-backup.tex` / `.pdf` | Backup slides for questions only. 5 pages |
+| `thesis_defense_0421052099.tex` / `.pdf` | **The deck.** 36 pages |
 | `preamble.tex` | Shared preamble — 16:9, 12 pt, palette, styles |
-| `content-main.tex` | Title, 20 body slides, closing slide |
-| `content-backup.tex` | The 4 backup slides |
+| `content-main.tex` | Every frame: title, body slides, closing slide, then the backup slides |
 | `figures/` | Slide-geometry figures, generated |
-| `transcript.md` | Rehearsal script with per-slide timings |
-| `transcript.tex` / `.pdf` | Typeset rendering of `transcript.md`, for printing or reading on a second screen |
-| `check_slides.py` | Verifies every number in both decks against its source |
+| `check_slides.py` | Verifies every number in the deck against its source |
+| `pre-defense-frozen-2026-08-29/` | The pre-defense as delivered — its two decks, its rehearsal transcript, and the scripts that built them. Frozen; not expected to build from here. |
 
 ## Build
 
 ```bash
 cd thesis_presentation
-latexmk -pdf pre-defense-0421052099.tex
-latexmk -pdf pre-defense-0421052099-backup.tex
-latexmk -pdf transcript.tex
+latexmk -pdf thesis_defense_0421052099.tex
 ```
 
-`latexmk -C` cleans. Both slide drivers `\input{preamble}`, so a change to the
-look applies to both — edit the preamble and you must rebuild **both** decks.
-`transcript.tex` carries its own preamble instead (see below) and is
-unaffected by either.
+`latexmk -C` cleans.
 
-**Only the two `pre-defense-*.tex` files and `transcript.tex` are documents.**
-`preamble.tex`, `content-main.tex` and `content-backup.tex` have no
-`\begin{document}` and stop with `Emergency stop ... no legal \end found` if
-you build them directly. Each carries a `% !TEX root` line so an editor's
-build button compiles the right driver instead; `preamble.tex` points at the
-main deck, which leaves the backup deck to rebuild by hand. The figures under
-`figures/` are generated, so their directive comes from
+**Only `thesis_defense_0421052099.tex` is a document.** `preamble.tex` and
+`content-main.tex` have no `\begin{document}` and stop with `Emergency stop
+... no legal \end found` if you build them directly. Each carries a `% !TEX
+root` line so an editor's build button compiles the driver instead. The figures
+under `figures/` are generated, so their directive comes from
 `scripts/build_figures.py` — editing it into the files themselves would last
-until the next regeneration. `transcript.tex` is the odd one out: it is a
-plain working document (portrait, article class, no beamer), not a slide, and
-it does not `\input{preamble}` — it duplicates the handful of preamble
-settings it actually needs (palette, base size, hyphenation list) so that it
-still builds standalone if this file is ever the only one that travels,
-matching how `thesis_paper` keeps its own copy of shared material rather than
-reaching across a directory boundary. Regenerate it by hand after editing
-`transcript.md`; there is no automated `.md` → `.tex` build step.
+until the next regeneration.
 `python scripts/check_tex_roots.py` checks all three modules — this one, the
-book, and the paper — and confirms `transcript.tex` is correctly seen as its
-own document rather than a fragment.
+book, and the paper.
 
-## Why two documents
+## One document, not two
 
-The presented deck contains nothing you have to skip past on the day. The
-backup slides are a separate PDF you open alongside it and jump into when a
-question calls for one; `transcript.md` maps each to the question it answers.
-`check_slides.py` fails if a backup slide ever leaks into the presented deck.
+Through the pre-defense this module built two PDFs: a presented deck, and a
+separate backup deck opened alongside it and jumped into when a question called
+for one. They are one file now — the backup frames are the tail of
+`content-main.tex`, after the closing slide, reached by paging past it rather
+than by switching windows. `check_slides.py` holds them there: a backup frame
+appearing *before* the close is the defect it now looks for.
 
-Budgeted at 24 min 26 s of speaking against a 25-minute limit; `check_slides.py`
-holds that figure to the transcript's own timing table.
+## The transcript
+
+There is none in this folder, deliberately. The pre-defense rehearsal script
+and both its renderings are in `pre-defense-frozen-2026-08-29/`, along with
+`build_transcript.py` and `build_min.py`, which generated them. A new one gets
+written before the final defense.
+
+Until then `check_slides.py` reports its script-facing rules as failures rather
+than skipping them — roughly fifty checks that read `transcript.md`. That is
+expected, and it is the list of what a new transcript has to satisfy.
 
 ## Figures
 
@@ -78,9 +70,8 @@ the hop tick labels over two lines, drop the redundant *Hop stratum* axis label,
 and use a deeper legend offset. Getting that offset wrong prints the legend on
 top of the x-axis label, which is what the first version of this deck did.
 
-`fig_claim_path.tex` is hand-drawn and has no slide variant. The presented deck
-`\input`s it across the directory boundary, from `thesis_book/figures/`; the
-backup deck does not use it at all.
+`fig_claim_path.tex` is hand-drawn and has no slide variant. The deck
+`\input`s it across the directory boundary, from `thesis_book/figures/`.
 
 That reach is harmless here — the two modules are always checked out together
 — but it does mean `thesis_presentation/` is the one module that will not build

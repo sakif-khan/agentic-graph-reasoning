@@ -1,4 +1,4 @@
-% !TEX root = pre-defense-0421052099.tex
+% !TEX root = thesis_defense_0421052099.tex
 % Frames only -- no \documentclass and no \begin{document}. Build the root
 % named above; this file on its own stops with "Emergency stop".
 
@@ -1146,3 +1146,96 @@
   {\large Questions}
   \vfill
 \end{frame}}
+
+% ===================== BACKUP =====================
+% Not presented. These five follow the closing slide so a question can be
+% answered by paging past it, rather than by switching to a second PDF --
+% which is what this deck did through the pre-defense.
+\begin{frame}{Backup: budget configuration}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrL{52mm}@{}}
+      \toprule
+      \textbf{Parameter} & \textbf{Value} & \textbf{Enforced in} \\
+      \midrule
+      \texttt{max\_depth}        & 4 & both routers \\
+      \texttt{beam\_width}       & 3 & explorer (slice) \\
+      \texttt{max\_anchors}      & 5 & explorer \emph{and} evaluator \\
+      \texttt{max\_backtracks}   & 3 & post-evaluation router \\
+      \texttt{max\_llm\_calls}   & 25 & LLM client \\
+      \texttt{max\_verify\_iters}& 2 & post-verification router, verifier \\
+      \texttt{max\_seconds}      & 300 & both routers \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small Termination does not depend on model behaviour: every cycle passes
+  through a router that checks a monotone counter.}
+\end{frame}
+
+\begin{frame}{Backup: which budgets actually bind}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrrr@{}}
+      \toprule
+      \textbf{Budget} & \textbf{WebQSP} & \textbf{CWQ} & \textbf{Pooled} \\
+      \midrule
+      Depth cap        & $16.5\%$ & $34.8\%$ & $25.6\%$ \\
+      Backtrack cap    & $3.2\%$  & $9.2\%$  & $6.2\%$ \\
+      Verify-iteration cap & $1.0\%$ & $2.8\%$ & $1.9\%$ \\
+      \textbf{Call cap} & $\mathbf{0.0\%}$ & $\mathbf{0.0\%}$
+                        & $\mathbf{0.0\%}$ \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small Percentage of questions on which each budget refused a request.
+  AGR never reaches the $25$-call cap --- which is what makes the comparison
+  against a clipped Think-on-Graph meaningful.}
+\end{frame}
+
+\begin{frame}{Backup: the full failure census}
+  \centering
+  \resizebox{\textwidth}{!}{%
+    \input{figures/fig_failure_histogram.tex}}
+\end{frame}
+
+\begin{frame}{Backup: accuracy against cost}
+  \centering
+  \input{figures/fig_accuracy_cost.tex}
+
+  \vspace{1mm}
+  {\small On \emph{tokens} Think-on-Graph is \textbf{not} dominated --- it buys
+  lower accuracy at a lower token price. On \emph{calls}, which the budget
+  meters, it is.}
+  \takeaway{The frontier depends on which cost you charge.}
+\end{frame}
+
+\begin{frame}{Backup: the benchmark was wrong $57$ times}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \small
+      % "Reading every failure also found..." presented this as a second,
+      % unrelated finding. sec:benchmark-defects makes them one: "The gap
+      % between those figures is not measurement noise --- it is the echo
+      % attractor of sec:echo, operating across systems." 105 is 58 + 47
+      % flagged, 41 is 22 + 19 adjudicated; both are in gold_adjudication.
+      The same cross-system agreement is also a \alert{\mbox{detector}}:
+      consensus flagged $105$ questions, adjudication confirmed $41$, and the
+      gap is the attractor above rather than label noise.
+      \begin{itemize}
+        \item $41$ excluded before the census
+        \item $17$ found inside the census
+        \item $1$ counted in both
+        \item[$\Rightarrow$] \textbf{$57$ distinct questions}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Why report it}
+        \small
+        Reported defect rates for these two standard benchmarks are rare and
+        usually anecdotal. This is a counted rate with a documented
+        adjudication procedure and per-question provenance.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{A contribution that outlives this particular system.}
+\end{frame}
