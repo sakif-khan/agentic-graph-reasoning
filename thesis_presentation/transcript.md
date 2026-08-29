@@ -8,7 +8,7 @@ The five backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 24 min 47 s of speaking against a 25-minute limit.** That leaves
+**Budget: 24 min 49 s of speaking against a 25-minute limit.** That leaves
 just over a minute, and every row below is set to exactly what its own words
 take at 93 wpm — so the minute is the whole of the slack, and no individual
 slide holds any.
@@ -53,22 +53,22 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 13 | The Structural Verification Layer | 0:32 | 8:30 |
 | 14 | What *structural* means — and what it does not | 0:58 | 9:28 |
 | 15 | One claim, three routes | 1:00 | 10:28 |
-| 16 | One question, end to end | 1:08 | 11:36 |
-| 17 | The environment and the question sets | 0:59 | 12:35 |
-| 18 | Making the comparison fair | 1:14 | 13:49 |
-| 19 | **Main results** | 1:10 | 14:59 |
-| 20 | **RQ1: Does agentic navigation improve multi-hop factual accuracy — and does the advantage grow with hop count?** | 1:02 | 16:01 |
-| 21 | The caveat I want to raise myself | 1:05 | 17:06 |
-| 22 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 1:08 | 18:14 |
-| 23 | RQ2: What verification does *not* do | 0:53 | 19:07 |
-| 24 | RQ2: So what does it do? | 0:41 | 19:48 |
-| 25 | Does it just refuse more often? | 0:43 | 20:31 |
-| 26 | **RQ3: Which components contribute what, at what token cost?** | 0:30 | 21:01 |
-| 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 21:49 |
-| 28 | Every failure, read and labelled | 0:29 | 22:18 |
-| 29 | The echo attractor | 1:12 | 23:30 |
-| 30 | Contributions | 1:12 | 24:42 |
-| 31 | Thank you | 0:05 | 24:47 |
+| 16 | One question, end to end | 1:10 | 11:38 |
+| 17 | The environment and the question sets | 0:59 | 12:37 |
+| 18 | Making the comparison fair | 1:14 | 13:51 |
+| 19 | **Main results** | 1:10 | 15:01 |
+| 20 | **RQ1: Does agentic navigation improve multi-hop factual accuracy — and does the advantage grow with hop count?** | 1:02 | 16:03 |
+| 21 | The caveat I want to raise myself | 1:05 | 17:08 |
+| 22 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 1:08 | 18:16 |
+| 23 | RQ2: What verification does *not* do | 0:53 | 19:09 |
+| 24 | RQ2: So what does it do? | 0:41 | 19:50 |
+| 25 | Does it just refuse more often? | 0:43 | 20:33 |
+| 26 | **RQ3: Which components contribute what, at what token cost?** | 0:30 | 21:03 |
+| 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 21:51 |
+| 28 | Every failure, read and labelled | 0:29 | 22:20 |
+| 29 | The echo attractor | 1:12 | 23:32 |
+| 30 | Contributions | 1:12 | 24:44 |
+| 31 | Thank you | 0:05 | 24:49 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
@@ -304,7 +304,7 @@ the Answerer, retry goes back to the Explorer.*
 
 ---
 
-## 16 — One question, end to end *(1:08)*
+## 16 — One question, end to end *(1:10)*
 
 > One real question, all the way through — a run out of the committed records.
 >
@@ -316,8 +316,17 @@ the Answerer, retry goes back to the Explorer.*
 >
 > Six model calls, depth two, eighteen supporting triples.
 >
-> And look at that second relation: the path runs *through* a mediator, which is
-> why it is named for the appearance rather than for "plays".
+> And the relation names: both hops run *through* a mediator, so the name is the
+> edge into the appearance record, not the one that lands on the entity.
+
+**If the relation names are challenged.** They read backwards until you say
+the walk is two edges. `tv.tv_program.regular_cast` has 42 direct edges out of
+The Office and `get_neighbors` returned 200, because every one of them lands on
+an unnamed appearance record the tool expands one edge further
+(`kg_tools.py:68`). That expansion reaches the actor *and* the character, which
+is how hop 1 resolves Dwight Schrute. Hop 2 is the same shape: 1 direct edge
+into Dwight, 12 returned, the actor among them. Both counts are in the
+committed tool log.
 
 *If you are behind, cut everything after "decides to answer."*
 
@@ -834,7 +843,7 @@ pulled directly from the thesis's own generated sources.
 
 ## Recovery notes
 
-If you hit **14:59 (the end of slide 19) more than 40 seconds late**, compress
+If you hit **15:01 (the end of slide 19) more than 40 seconds late**, compress
 as follows.
 
 - Slides 23 and 24 — take them as one: *"It doesn't improve accuracy. It
