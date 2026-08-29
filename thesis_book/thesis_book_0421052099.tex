@@ -67,6 +67,18 @@
 % by name, so adding a dedication page means copying that file back into
 % inputs/ first. Calling the macro without it would fail the build.
 
+% The board's objection was to the CONTENTS, not to the writing: at the
+% report class's default tocdepth of 2 the table of contents listed all
+% 105 sections and all 143 subsections and ran to eight pages (iv-xi) for
+% a 185-page book. Listing sections only takes it to 129 entries.
+%
+% secnumdepth is deliberately NOT lowered with it. Subsections keep their
+% numbers and their headings on the page, and every \Cref to one still
+% resolves -- the thesis cross-references subsections heavily, and the
+% deck and the checker cite them by number. Only the front-matter listing
+% gets shorter; nothing is removed from the body.
+\setcounter{tocdepth}{1}
+
 % For index creation, comment this out if you do not want to create an
 % index
 \makeindex[intoc]
