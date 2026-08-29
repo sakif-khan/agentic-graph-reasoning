@@ -1475,9 +1475,17 @@ backup_titles = re.findall(r"\\begin\{frame\}\{Backup: ([^}]*)\}", main_src)
 rows = re.findall(r"^\| (\d+) \| ([^|]+?) \| \"", MD, re.M)
 ck(f"the backup table has a row per backup slide ({len(backup_titles)})",
    len(rows) == len(backup_titles), f"{len(rows)} rows")
-ck("and the pages start at 2, after the title page",
-   [int(p) for p, _ in rows] == list(range(2, len(backup_titles) + 2)),
-   str([p for p, _ in rows]))
+# The numbers were pages 2..6 of a second PDF. They are slide numbers in
+# the one deck now, so they are read off the deck rather than assumed:
+# whichever frames are titled "Backup: ...", at whatever position they
+# sit. Moving one, or adding a sixth, fails this until the table follows.
+_frames = [m.start() for m in re.finditer(r"\\begin\{frame\}", main_src)]
+_backup_nums = [n for n, i in enumerate(_frames, 1)
+                if re.match(r"\\begin\{frame\}(?:\[[^\]]*\])?\{Backup:",
+                            main_src[i:])]
+ck("and they are the deck's own backup slide numbers",
+   [int(p) for p, _ in rows] == _backup_nums,
+   f"table says {[p for p, _ in rows]}, deck has {_backup_nums}")
 
 
 def stems(text):
@@ -1580,7 +1588,16 @@ else:
 # matches while the PDF beside it was built two edits ago is the same
 # staleness one level down, and the speaking copy is printed, not read
 # from the source.
-for pdf in ("transcript.pdf", "transcript-min.pdf"):
+#
+# Gated on the generator, like the two rules above it. transcript.md is
+# authored here well before it is typeset -- the builders are frozen with
+# the pre-defense -- and a rendering that does not exist yet is not a
+# stale rendering. Restore a builder and its PDF becomes required again.
+for pdf, gen in (("transcript.pdf", GEN), ("transcript-min.pdf", MIN)):
+    if not os.path.exists(gen):
+        print(f"  [   ] {pdf}: {os.path.basename(gen)} absent, "
+              f"nothing renders it here")
+        continue
     p = os.path.join(HERE, pdf)
     ck(f"{pdf} is built and not older than transcript.md",
        os.path.exists(p) and

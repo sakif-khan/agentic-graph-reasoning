@@ -48,6 +48,22 @@ PROSE = [
     ROOT / "thesis_presentation" / "transcript.tex",
 ]
 
+# transcript.tex is a *rendering* of transcript.md, produced by
+# build_transcript.py -- which is frozen with the pre-defense, so between
+# defenses the script is authored here and typeset later. A rendering that
+# does not exist yet cannot state the interval wrongly; the .md beside it
+# is checked either way, and restoring the builder restores this file to
+# the list with no edit here. Only these two may go missing: a chapter of
+# the thesis or a section of the paper disappearing is a real failure.
+OPTIONAL = {ROOT / "thesis_presentation" / "transcript.tex"}
+
+
+def require(path):
+    if path in OPTIONAL and not path.exists():
+        pytest.skip(f"{path.name} not generated yet "
+                    f"(build_transcript.py is frozen with the pre-defense)")
+    return " ".join(path.read_text(encoding="utf-8").split())
+
 
 def forms(n):
     """Every spelling of n these documents use, longest first.
@@ -123,7 +139,7 @@ def test_prose_quoting_the_joint_total_says_it_is_a_bound(path, block):
     relation-blind acceptances it is the inverted inequality, in prose.
     """
     joint = block["total"]["adjacency_or_entailment_accepted"]
-    text = " ".join(path.read_text(encoding="utf-8").split())
+    text = require(path)
     for form in forms(joint).split("|"):
         for m in re.finditer(form, text):
             window = text[m.start(): m.end() + 220]
@@ -137,7 +153,7 @@ def test_prose_quoting_the_joint_total_says_it_is_a_bound(path, block):
 def test_prose_naming_the_exposure_gives_both_endpoints(path, block):
     """Wherever the exposure is characterised, both ends of the interval appear."""
     t = block["total"]
-    text = " ".join(path.read_text(encoding="utf-8").split())
+    text = require(path)
     # Three vocabularies reach the same claim, and a file using any of them is
     # characterising the exposure. Matching only "relation-blind" left
     # verification.tex -- which states the interval but phrases the mechanism as
