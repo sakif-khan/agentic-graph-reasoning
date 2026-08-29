@@ -8,7 +8,7 @@ The five backup slides are a **separate file**,
 the main deck and jump to a slide when a question calls for one; the table near
 the end of this file maps each to its question.
 
-**Budget: 24 min 39 s of speaking against a 25-minute limit.** That leaves
+**Budget: 24 min 47 s of speaking against a 25-minute limit.** That leaves
 just over a minute, and every row below is set to exactly what its own words
 take at 93 wpm — so the minute is the whole of the slack, and no individual
 slide holds any.
@@ -63,12 +63,12 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 23 | RQ2: What verification does *not* do | 0:53 | 19:07 |
 | 24 | RQ2: So what does it do? | 0:41 | 19:48 |
 | 25 | Does it just refuse more often? | 0:43 | 20:31 |
-| 26 | **RQ3: Which components contribute what, at what token cost?** | 0:22 | 20:53 |
-| 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 21:41 |
-| 28 | Every failure, read and labelled | 0:29 | 22:10 |
-| 29 | The echo attractor | 1:12 | 23:22 |
-| 30 | Contributions | 1:12 | 24:34 |
-| 31 | Thank you | 0:05 | 24:39 |
+| 26 | **RQ3: Which components contribute what, at what token cost?** | 0:30 | 21:01 |
+| 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 21:49 |
+| 28 | Every failure, read and labelled | 0:29 | 22:18 |
+| 29 | The echo attractor | 1:12 | 23:30 |
+| 30 | Contributions | 1:12 | 24:42 |
+| 31 | Thank you | 0:05 | 24:47 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
@@ -498,13 +498,28 @@ more than the agentic baseline and scores above it.
 
 ---
 
-## 26 — RQ3: Which components contribute what, at what token cost? *(0:22)* ★
+## 26 — RQ3: Which components contribute what, at what token cost? *(0:30)* ★
 
 > RQ3: which components earn their cost.
 >
-> Four ablations, paired McNemar against the full system. Three of the four
-> change nothing I can detect — backtracking, the verifier, and the learned half
-> of the scorer.
+> Four ablations, paired McNemar against the full system. The p asks how often
+> chance alone would produce a gap this big. Three of the four change nothing I
+> can detect — backtracking, the verifier, and the learned half of the scorer.
+
+**What the p column is, if you are asked.** McNemar throws away every question
+both systems get right and every question both get wrong, and reads only the
+ones they disagree on. On WebQSP no-planner that is 27 questions: 21 the
+ablation got and the full system missed, 6 the other way. Under "no difference"
+that split is a coin toss, and 21–6 gives p = 0.006.
+
+**The verifier rows are the ones to understand before you are asked.** p = 1.000
+there rests on **one** discordant question on each dataset. That is "the test had
+no information", not "there is no effect" — which is exactly why slide 30 says
+*not detected* rather than *none*.
+
+**The p is on Hits@1, not on the F1 beside it.** Correctness per question is
+binary, so the test runs on that; F1 is the effect size printed next to it. The
+slide footnote now says so.
 
 ---
 
@@ -657,6 +672,23 @@ no ordering imposed, and on 72.5 percent of questions at least one topic entity
 exceeds that degree, so on those it answers from an arbitrary sample. Vector RAG
 carries the paradigm claim, because one verbalised triple cannot contain a chain
 at any radius.
+
+**"What exactly does that p-value test?"** *(Slide 26 prints five of
+them. Expect it from anyone who reads tables.)*
+An exact paired McNemar test on per-question correctness, full system against
+one ablation, over the same questions. It uses only the discordant pairs — the
+questions the two disagree on — because a question they both get right or both
+get wrong says nothing about a difference between them. Under the null each
+discordant question is a coin flip, so the p is the exact two-sided binomial
+tail: how often chance alone would split them at least this unevenly. Exact
+binomial rather than the chi-square approximation, because most of these counts
+are single digits. The planner condition on WebQSP splits 21–6 out of 27 and
+gives 0.006; the verifier splits 0–1 and 1–0, one discordant question on each
+dataset, which is why its p is 1.000 and why I report it as no *detected*
+effect rather than no effect. The power limit is arithmetic: at n around 200 a
+component that moves five questions in a hundred produces roughly ten discordant
+pairs, and ten pairs cannot reject at conventional levels. Doubling the
+half-samples is the remedy, and it is named as future work.
 
 **"Did both systems see the same candidate sets?"** *(The sharper form of the
 cap question. Slide 19 raises it deliberately — answer it, don't deflect.)*

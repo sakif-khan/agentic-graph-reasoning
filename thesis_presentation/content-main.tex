@@ -898,7 +898,13 @@
   % the table covers it with 4pt to spare; the overprint rule in
   % check_slides.py is what stands behind a negative vspace here.
   \vspace{-2mm}
-  {\small $p$: a paired McNemar \emph{$p$-value}, $n = 200$/$198$.
+  % "on Hits@1" is not padding. The test is on per-question correctness
+  % -- score_test_ablations.py:55 reads r["hit"] -- and the column sits
+  % against F1, so the natural reading of the table is that the p tests
+  % the number beside it. F1 is the effect size here and Hits@1 is what
+  % the test is run on; saying so costs four words and removes the one
+  % misreading this table invites.
+  {\small $p$: a paired McNemar \emph{$p$-value} on Hits@1, $n = 200$/$198$.
   \emph{Embedding-only} drops the model term from the scorer. Tokens:
   WebQSP.}
   \takeaway{Three of the four change nothing detectable. The fourth is on
