@@ -44,7 +44,29 @@ The environment is therefore assembled exclusively from curated Freebase
 triples. Language models are used to \emph{navigate} the graph and to
 \emph{judge} answers, never to populate it.
 
-\section{Source Data}\label{sec:source-data}
+\section{Source Datasets}\label{sec:source-data}
+
+Every dataset this thesis consumes is public, standard, and third-party. None
+of it was collected, authored, or annotated here. Three artifacts are used, and
+the subsections below describe each in turn: a Freebase\index{dataset} snapshot
+as the knowledge source, and the WebQSP and ComplexWebQuestions question sets
+as the benchmarks. All three arrive through one distribution --- the
+per-question subgraphs published with
+Reasoning-on-Graphs~\cite{luo2024reasoning}, released as
+\textsf{rmanluo/RoG-webqsp} and \textsf{rmanluo/RoG-cwq} --- so the
+graph and the questions evaluated over it are guaranteed to be mutually
+consistent, and any system that has been measured on those benchmarks has been
+measured on these questions.
+
+What \emph{is} built here is the knowledge environment derived from them: the
+union graph of \Cref{sec:graph-construction}, its property-graph store, and its
+vector index. That derivation is deterministic and scripted, and the environment
+it produces is recorded in \Cref{tab:graphstats}. The distinction is worth
+stating plainly, because the two are easily conflated: the datasets are
+standard and unmodified, the environment assembled from them is this thesis's
+own, and \Cref{sec:validation-gate} measures what the assembly costs. Which
+questions are actually scored, and how they are sampled from these datasets, is
+a separate matter specified in \Cref{sec:test-sets}.
 
 \subsection{The Freebase Snapshot}
 

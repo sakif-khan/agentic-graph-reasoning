@@ -209,7 +209,7 @@ baseline selection in §7.4)*
 &nbsp;&nbsp;&nbsp;&nbsp;4.1.1 Decoupling the Graph Source from the Question Sets
 &nbsp;&nbsp;&nbsp;&nbsp;4.1.2 Why a Curated Subgraph Rather Than LLM-Extracted Triples
 
-4.2 Source Data
+4.2 Source Datasets
 &nbsp;&nbsp;&nbsp;&nbsp;4.2.1 The Freebase Snapshot
 &nbsp;&nbsp;&nbsp;&nbsp;4.2.2 WebQSP and ComplexWebQuestions as Question Sets
 
@@ -331,7 +331,7 @@ name-keyed triples do not carry them, so reconstructing the chains fell outside 
 budget. §10.3.1 then picks it up as future work without relitigating. Two mentions, one
 reason, no defensiveness.)*
 
-7.2 Test Sets
+7.2 Evaluation Datasets and Test Sets
 &nbsp;&nbsp;&nbsp;&nbsp;7.2.1 WebQSP
 &nbsp;&nbsp;&nbsp;&nbsp;7.2.2 ComplexWebQuestions
 &nbsp;&nbsp;&nbsp;&nbsp;7.2.3 Stratified Sampling, Seeds, and Published Question IDs

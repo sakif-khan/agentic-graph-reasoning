@@ -8,10 +8,11 @@ you reach them by paging past "Thank you" when a question calls for one, not
 by switching to a second file. They are timed 0:00 below because none of them
 is spoken; the table near the end of this file maps each to its question.
 
-**Budget: 24 min 49 s of speaking against a 25-minute limit.** That leaves
-just over a minute, and every row below is set to exactly what its own words
-take at 93 wpm — so the minute is the whole of the slack, and no individual
-slide holds any.
+**Budget: 24 min 53 s of speaking against a 25-minute limit.** That leaves
+seven seconds, and every row below is set to exactly what its own words take
+at 93 wpm — so there is no slack anywhere, and no individual slide holds any.
+Going long is a cut from the recovery notes, not a borrow from a later
+slide.
 
 The table read 24:26 until its rows were checked against the words above
 them, and fourteen of the rows demanded a faster rate than this script's
@@ -54,27 +55,27 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 14 | What *structural* means — and what it does not | 0:58 | 9:28 |
 | 15 | One claim, three routes | 1:00 | 10:28 |
 | 16 | One question, end to end | 1:10 | 11:38 |
-| 17 | The environment and the question sets | 0:59 | 12:37 |
-| 18 | Making the comparison fair | 1:14 | 13:51 |
-| 19 | **Main results** | 1:10 | 15:01 |
-| 20 | **RQ1: Does agentic navigation improve multi-hop factual accuracy — and does the advantage grow with hop count?** | 1:02 | 16:03 |
-| 21 | The caveat I want to raise myself | 1:05 | 17:08 |
-| 22 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 1:08 | 18:16 |
-| 23 | RQ2: What verification does *not* do | 0:53 | 19:09 |
-| 24 | RQ2: So what does it do? | 0:41 | 19:50 |
-| 25 | Does it just refuse more often? | 0:43 | 20:33 |
-| 26 | **RQ3: Which components contribute what, at what token cost?** | 0:30 | 21:03 |
-| 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 21:51 |
-| 28 | Every failure, read and labelled | 0:29 | 22:20 |
-| 29 | The echo attractor | 1:12 | 23:32 |
-| 30 | Contributions | 1:12 | 24:44 |
-| 31 | Thank you | 0:05 | 24:49 |
-| 32 | *Backup:* budget configuration | 0:00 | 24:49 |
-| 33 | *Backup:* which budgets actually bind | 0:00 | 24:49 |
-| 34 | *Backup:* the full failure census | 0:00 | 24:49 |
-| 35 | *Backup:* accuracy against cost | 0:00 | 24:49 |
-| 36 | *Backup:* the benchmark was wrong 57 times | 0:00 | 24:49 |
-| 37 | *Backup:* AGR against RoG | 0:00 | 24:49 |
+| 17 | The environment and the question sets | 1:03 | 12:41 |
+| 18 | Making the comparison fair | 1:14 | 13:55 |
+| 19 | **Main results** | 1:10 | 15:05 |
+| 20 | **RQ1: Does agentic navigation improve multi-hop factual accuracy — and does the advantage grow with hop count?** | 1:02 | 16:07 |
+| 21 | The caveat I want to raise myself | 1:05 | 17:12 |
+| 22 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 1:08 | 18:20 |
+| 23 | RQ2: What verification does *not* do | 0:53 | 19:13 |
+| 24 | RQ2: So what does it do? | 0:41 | 19:54 |
+| 25 | Does it just refuse more often? | 0:43 | 20:37 |
+| 26 | **RQ3: Which components contribute what, at what token cost?** | 0:30 | 21:07 |
+| 27 | **RQ3: One effect, and its sign is backwards** | 0:48 | 21:55 |
+| 28 | Every failure, read and labelled | 0:29 | 22:24 |
+| 29 | The echo attractor | 1:12 | 23:36 |
+| 30 | Contributions | 1:12 | 24:48 |
+| 31 | Thank you | 0:05 | 24:53 |
+| 32 | *Backup:* budget configuration | 0:00 | 24:53 |
+| 33 | *Backup:* which budgets actually bind | 0:00 | 24:53 |
+| 34 | *Backup:* the full failure census | 0:00 | 24:53 |
+| 35 | *Backup:* accuracy against cost | 0:00 | 24:53 |
+| 36 | *Backup:* the benchmark was wrong 57 times | 0:00 | 24:53 |
+| 37 | *Backup:* AGR against RoG | 0:00 | 24:53 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
@@ -338,14 +339,15 @@ committed tool log.
 
 ---
 
-## 17 — The environment and the question sets *(0:59)*
+## 17 — The environment and the question sets *(1:03)*
 
 > The environment is a Freebase-derived graph: 2.6 million entities, 8.3
 > million triples, seven thousand distinct relations, importing in 36 seconds.
 >
-> Questions: 400 each from WebQSP and ComplexWebQuestions. The important column
-> is reachability — for every question I verified the gold answer is actually
-> reachable here. 97 percent on WebQSP, 99.2 on CWQ.
+> Questions: 400 each from WebQSP and ComplexWebQuestions — standard public
+> benchmarks, used unmodified. The important column is reachability — for every
+> question I verified the gold answer is actually reachable here. 97 percent on
+> WebQSP, 99.2 on CWQ.
 >
 > That is the *ceiling* on every accuracy figure I'm about to show. It is also
 > the answer to the caution two slides back: an environment this reachable is
@@ -840,6 +842,21 @@ instruction to the claim decomposer, not an architecture change, and it is the
 first of the three repairs the census earned. The category split is backup
 slide 34.
 
+**"Is that a standard dataset, or one you built yourself?"**
+*(Asked at the pre-defense. Section 4.2 of the thesis is “Source Datasets”.)*
+Standard, and public. WebQSP and ComplexWebQuestions, both unmodified, taken
+from the per-question subgraph distribution the Reasoning-on-Graphs paper
+released — rmanluo/RoG-webqsp and rmanluo/RoG-cwq on HuggingFace. I collected
+nothing and annotated nothing, which is also why every system on slide 19 is
+measured on the questions those benchmarks define. What I did build is the
+knowledge environment derived from them: the union of every per-question
+subgraph into one graph, plus its store and its vector index. That union is
+deliberate — a per-question subgraph in isolation is a near-oracle, extracted
+to contain its own answer, so merging all of them back together is what
+restores the distractors. Section 4.2 gives the provenance, section 7.2 gives
+the sampling: 400 per dataset, stratified at seed 42, every question ID listed
+in the appendix.
+
 **"You used RoG’s data. How does AGR compare to RoG itself?"**
 *(Asked at the pre-defense. Backup slide 37 has the table — put it up.)*
 Directly, and RoG is ahead: 85.7 and 70.8 on WebQSP, 62.6 and 56.2 on CWQ,
@@ -868,7 +885,7 @@ pulled directly from the thesis's own generated sources.
 
 ## Recovery notes
 
-If you hit **15:01 (the end of slide 19) more than 40 seconds late**, compress
+If you hit **15:05 (the end of slide 19) more than 40 seconds late**, compress
 as follows.
 
 - Slides 23 and 24 — take them as one: *"It doesn't improve accuracy. It
