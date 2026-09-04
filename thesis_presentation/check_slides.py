@@ -2017,6 +2017,47 @@ else:
            "questions" in line and "answers" not in line, line[:70])
 
 
+# ---------------------------------------------------------------------
+# The RoG comparison exists twice: Chapter 8's tab:rog and backup slide
+# 37. Eight figures, two documents, one of them cited from a paper that
+# cannot be re-measured -- which is the exact shape of every drift this
+# file was written to catch. AGR's half is bound to thesis_numbers.json;
+# RoG's half is bound to the thesis, so the deck cannot disagree with the
+# document it summarises even though neither can be recomputed here.
+print("\n== the RoG comparison agrees across deck and thesis ==")
+ROGFRAME = frame("Backup: AGR against RoG")
+ck("the RoG backup slide is in the deck", bool(ROGFRAME))
+RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
+_res = " ".join(uncomment(open(RES, encoding="utf-8").read()).split())
+_tab = re.search(r"\\label\{tab:rog\}(.*?)\\end\{tabular\}", _res)
+ck("the thesis carries tab:rog", _tab is not None)
+
+# AGR's row is the deck's own main table, in points rather than
+# proportions -- so it is checked against the JSON, not against itself.
+B = J["main_results"]["by_system"]
+agr_pts = [f'{B["webqsp/agr"]["hits_at_1"] * 100:.1f}',
+           f'{B["webqsp/agr"]["f1"] * 100:.1f}',
+           f'{B["cwq/agr"]["hits_at_1"] * 100:.1f}',
+           f'{B["cwq/agr"]["f1"] * 100:.1f}']
+for v in agr_pts:
+    ck(f"slide 37 gives AGR {v}", f"${v}$" in ROGFRAME)
+    if _tab:
+        ck(f"  and tab:rog gives AGR {v}", f"${v}$" in _tab.group(1))
+
+# RoG's row is a published figure. Neither document may drift from the
+# other; the paper is the source for both.
+ROG_PUBLISHED = ["85.7", "70.8", "62.6", "56.2"]
+for v in ROG_PUBLISHED:
+    ck(f"slide 37 gives RoG {v}", f"${v}$" in ROGFRAME)
+    if _tab:
+        ck(f"  and tab:rog gives RoG {v}", f"${v}$" in _tab.group(1))
+
+# The comparison may not be presented as a like-for-like one. Both
+# documents have to name the training asymmetry wherever they show it.
+for label, text in (("slide 37", ROGFRAME), ("the thesis section", _res)):
+    ck(f"{label} says RoG is fine-tuned", "fine-tun" in text.lower())
+
+
 print("\n" + ("ALL SLIDE NUMBERS MATCH THEIR SOURCE"
               if ok else "SOMETHING DOES NOT MATCH"))
 sys.exit(0 if ok else 1)

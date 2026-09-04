@@ -336,6 +336,100 @@ precision. Breadth bought without accuracy would show up as precision falling
 while the entity count rose, and it does not. This is the same reason F1 is
 reported beside Hits@1 throughout (\Cref{sec:metrics}).
 
+\section{Positioning Against Published RoG
+Results}\label{sec:rog-comparison}
+
+Two facts in this thesis oblige a direct comparison. The knowledge
+environment of \Cref{sec:source-data} is built from the per-question
+subgraphs\index{RoG} the RoG distribution publishes, and
+\Cref{sec:path-kgqa} surveys RoG~\cite{luo2024reasoning} as the closest
+published system in the path-retrieval family. A reader who notices both is
+entitled to ask how the two systems compare, and the aggregate answer does
+not favour this work.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption[AGR against RoG's published figures]{AGR against RoG's
+    published figures, in points. RoG's row is Table~1 of
+    \cite{luo2024reasoning}, measured over the full test splits
+    ($1{,}628$ and $3{,}531$ questions). AGR's row is \Cref{tab:main},
+    measured over the certified $400$-question samples of
+    \Cref{tab:testsets}, which are stratified draws from those same
+    splits. The two rows are therefore computed over nested populations
+    but under different protocols; the paragraphs below state what that
+    permits and what it forbids.}
+    \label{tab:rog}
+    \small
+    \begin{tabular}{|l|c|c|c|c|}
+      \hline
+      & \multicolumn{2}{c|}{\textbf{WebQSP}}
+      & \multicolumn{2}{c|}{\textbf{CWQ}} \\
+      \cline{2-5}
+      \textbf{System} & \textbf{Hits@1} & \textbf{F1}
+                      & \textbf{Hits@1} & \textbf{F1} \\
+      \hline
+      RoG (published)  & $85.7$ & $70.8$ & $62.6$ & $56.2$ \\
+      \hline
+      AGR (this work)  & $75.5$ & $64.2$ & $52.2$ & $46.9$ \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\textbf{RoG leads on all four figures, and the margin is not sampling
+noise.} AGR's $95\%$ confidence intervals on Hits@1 are $[71.3, 79.7]$ on
+WebQSP and $[47.5, 57.0]$ on CWQ; RoG's $85.7$ and $62.6$ fall outside
+both. That is stated before the qualifications because the qualifications
+do not reverse it, and a comparison offered only with its excuses attached
+is not a comparison.
+
+Three differences bound what \Cref{tab:rog} establishes. The first is
+decisive and the other two are ordinary.
+
+\textbf{RoG is trained on these benchmarks; AGR is trained on nothing.}
+Section~5.1 of \cite{luo2024reasoning} states that its backbone is
+``instruction finetuned on the training split of WebQSP and CWQ as well as
+Freebase for 3 epochs''. In the distribution this thesis also uses, those
+training splits hold $2{,}830$ and $16{,}900$ questions. AGR performs no
+training of any kind: the backbone is frozen, prompted at temperature $0$
+(\Cref{sec:backbone}), and the system has seen no question from either
+benchmark before it is evaluated. The comparison is therefore between a
+supervised system and a zero-shot one, which is a difference in kind rather
+than in degree --- and it is the same objection \Cref{tab:reported} already
+raises against every fine-tuned entry in the surveyed literature.
+
+\textbf{The backbones differ.} RoG fine-tunes LLaMA2-Chat-7B; AGR prompts
+the model named in \Cref{sec:backbone}. \Cref{sec:comparison-table} argues
+that backbone accounts for much of the spread in cross-paper tables, which
+is precisely why \Cref{ch:setup} holds it constant across the five systems
+it measures. It cannot be held constant against a system whose contribution
+\emph{is} its fine-tuned weights, so no protocol available here would make
+this row comparable in the sense \Cref{tab:main} uses the word.
+
+\textbf{The evaluation populations differ.} RoG reports over the full test
+splits; the figures here are over stratified $400$-question samples of the
+same splits (\Cref{sec:test-sets}). The samples preserve the hop-stratum
+proportions of their populations, so they estimate the same quantity, and
+the intervals quoted above are the estimate's uncertainty. RoG publishes no
+interval, so the gap can be bounded from one side only.
+
+What the comparison does settle is worth stating positively. It fixes AGR's
+place in the published landscape: a training-free system reaching $75.5$ and
+$52.2$ against a supervised system's $85.7$ and $62.6$, on the same data,
+with no in-domain examples. And it locates this thesis's contribution
+somewhere other than the accuracy column. RoG's answers are read off
+retrieved paths, so they are faithful by construction and the
+pre-generation verification question of \Cref{ch:verification} does not
+arise for them (\Cref{sec:path-kgqa}); the price is that the plan is
+generated once, before retrieval, with no mechanism to revise it when it
+fails to instantiate. AGR's claims are the opposite shape: generated freely
+and then checked against the graph the agent actually walked, which is what
+makes an unsupported assertion detectable at all. Neither the
+component-level ablation of \Cref{sec:ablations}, with the
+stratum-dependent decomposition finding it produced, nor the failure census
+of \Cref{ch:erroranalysis} has a counterpart in RoG's evaluation, and none
+of them would be settled by closing the gap in \Cref{tab:rog}.
+
 \section{Accuracy Broken Down by Hop Count}\label{sec:hop-results}
 
 \begin{table}[!tb]

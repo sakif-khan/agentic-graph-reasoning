@@ -1,9 +1,9 @@
 # Defense transcript
 
-Rehearsal script for **`thesis_defense_0421052099.pdf`** — 36 pages: a title,
-thirty-four body slides, a closing slide.
+Rehearsal script for **`thesis_defense_0421052099.pdf`** — 37 pages: a title,
+thirty-five body slides, a closing slide.
 
-You present slides 1 to 31. The five after the closing slide are **backup**:
+You present slides 1 to 31. The six after the closing slide are **backup**:
 you reach them by paging past "Thank you" when a question calls for one, not
 by switching to a second file. They are timed 0:00 below because none of them
 is spoken; the table near the end of this file maps each to its question.
@@ -74,6 +74,7 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 34 | *Backup:* the full failure census | 0:00 | 24:49 |
 | 35 | *Backup:* accuracy against cost | 0:00 | 24:49 |
 | 36 | *Backup:* the benchmark was wrong 57 times | 0:00 | 24:49 |
+| 37 | *Backup:* AGR against RoG | 0:00 | 24:49 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 8, 12, and 15 —
@@ -637,6 +638,7 @@ prints, so there is nothing to convert under pressure. Page forward from
 | 34 | Full 12-category failure histogram | "What were the other failure modes?" |
 | 35 | Accuracy against cost, both metrics | "Is it cheaper, or just better?" |
 | 36 | The benchmark was wrong 57 times | "How good is the gold?" |
+| 37 | AGR against RoG, side by side | "How does this compare to RoG?" |
 
 **Slide 33 is the important one.** It shows AGR never reaches the call cap —
 0.0 percent on both datasets — which is precisely what makes the comparison
@@ -837,6 +839,25 @@ headline numbers are a floor rather than an estimate. The fix is an
 instruction to the claim decomposer, not an architecture change, and it is the
 first of the three repairs the census earned. The category split is backup
 slide 34.
+
+**"You used RoG’s data. How does AGR compare to RoG itself?"**
+*(Asked at the pre-defense. Backup slide 37 has the table — put it up.)*
+Directly, and RoG is ahead: 85.7 and 70.8 on WebQSP, 62.6 and 56.2 on CWQ,
+against my 75.5 and 64.2, and 52.2 and 46.9. The gap is outside my confidence
+intervals, so it is real and not sampling. The reason is not subtle. RoG
+fine-tunes LLaMA2-Chat-7B on the training splits of both benchmarks — 2,830
+WebQSP and 16,900 CWQ questions — for three epochs. AGR does no training at
+all: the backbone is frozen and has seen no question from either benchmark
+before it is evaluated. So it is a supervised system against a zero-shot one on
+the same data, which is a difference in kind. I could not hold the backbone
+constant against RoG the way I do across my five systems, because RoG’s
+contribution *is* its fine-tuned weights — that is the same objection my
+Chapter 3 table already makes against every fine-tuned entry in the literature.
+What I would not do is claim parity. Section 8.5 of the thesis states the
+numbers, states that RoG leads, and separates what the comparison settles from
+what it cannot. The verification layer, the ablation and the failure census
+have no counterpart in RoG’s evaluation, and closing that accuracy gap would
+not settle any of them.
 
 **"Is this reproducible?"**
 Every number in the thesis is generated from frozen run records by a script;

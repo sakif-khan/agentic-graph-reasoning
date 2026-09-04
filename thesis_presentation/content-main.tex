@@ -1239,3 +1239,36 @@
   \end{columns}
   \takeaway{A contribution that outlives this particular system.}
 \end{frame}
+
+% ===================== 37 =====================
+% The board asked for this at the pre-defense: the environment is built
+% from RoG's published subgraphs, so a direct comparison is owed. It is a
+% backup slide because the honest answer is that RoG leads and the
+% comparison does not settle an architectural question -- which is an
+% answer to a question, not a step in the argument. Figures are
+% Chapter 8's tab:rog; do not let the two drift.
+\begin{frame}{Backup: AGR against RoG}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{}}
+      \toprule
+      & \multicolumn{2}{c}{\textbf{WebQSP}}
+      & \multicolumn{2}{c}{\textbf{CWQ}} \\
+      \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+      \textbf{System} & \textbf{Hits@1} & \textbf{F1}
+                      & \textbf{Hits@1} & \textbf{F1} \\
+      \midrule
+      RoG (published) & $85.7$ & $70.8$ & $62.6$ & $56.2$ \\
+      \textbf{AGR} (this work) & $75.5$ & $64.2$ & $52.2$ & $46.9$ \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small\agrraggedright \alert{RoG leads on all four}, and the gap is
+  outside AGR's confidence intervals. But RoG is \alert{fine-tuned} on the
+  training splits of both benchmarks --- $2{,}830$ and $16{,}900$ questions
+  --- while AGR trains on \alert{nothing}. RoG reports over the full test
+  splits; AGR over the certified $400$-question samples of those splits.\par}
+  \takeaway{Same data, different \textbf{class} of system: supervised
+    against zero-shot. Worth stating --- but it is not an architecture
+    comparison, and no protocol here could make it one.}
+\end{frame}
