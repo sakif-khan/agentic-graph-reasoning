@@ -231,7 +231,7 @@ for s, label in NAME.items():
         ck(f"{label:15s} {ds:6s} hedge {v}", has(v))
 
 # A hedge rate is a refusal to assert. Presence alone does not say the deck
-# calls it that, and for one release it did not: slide 15 read "AGR hedges
+# calls it that, and for one release it did not: slide 16 read "AGR hedges
 # on 8.2% of WebQSP against no-retrieval's 12.2% error rate". 12.2 is
 # no-retrieval's hedge_pct -- backup slide 5 prints it under "WebQSP hedge
 # %" -- and its error rate is 170 wrong out of the 351 it asserts on. The
@@ -257,7 +257,7 @@ for s, label in NAME.items():
 # The one comparison that isolates the verification layer, quoted on slide
 # 15. Bound to the sentence rather than to the four values appearing
 # somewhere: each is also a cell in the ablation table on another slide.
-print("\n== verifier hedge deltas (slide 15) ==")
+print("\n== verifier hedge deltas (slide 16) ==")
 AB = J["ablations"]["by_condition"]
 for ds, name in (("cwq", "CWQ"), ("webqsp", "WebQSP")):
     full = f"{AB[f'{ds}/half_abl_full']['hedge_pct']:.1f}"
@@ -830,7 +830,7 @@ if pymupdf is not None:
 # seventh contribution to sec:contribution fails this until the deck says
 # so. The keys are alternatives per contribution, not a spelling test, and
 # they are matched inside the contributions block alone -- "echo attractor"
-# also appears on slide 19, and matching the whole deck would pass a slide
+# also appears on slide 20, and matching the whole deck would pass a slide
 # that had dropped it.
 print("\n== the deck's contributions are the thesis's ==")
 INTRO = os.path.join(ROOT, "thesis_book", "chapters", "introduction.tex")
@@ -858,7 +858,7 @@ intro = open(INTRO, encoding="utf-8").read()
 start = intro.index(r"\section{Our Contribution}")
 end = intro.index(r"\section", start + 10)
 claimed = re.findall(r"\\subsection\{", intro[start:end])
-# The frame title, not a bold line in the body: slide 30 took slide
+# The frame title, not a bold line in the body: slide 31 took slide
 # 7\'s shape, so "Contributions" heads the frame and the six sit
 # under it with no header of their own.
 contrib = block(r"\begin{frame}{Contributions}", "enumerate").lower()
@@ -1070,16 +1070,16 @@ for label, text in (("deck", plain(FLAT)), ("transcript", plain(MDF))):
 # to each other, so the script has to say which baseline carries the claim
 # and why the other does not, or the audience pools them anyway.
 #
-# Bound to what is actually said on slide 12, not to the whole file. The
+# Bound to what is actually said on slide 13, not to the whole file. The
 # first version searched the transcript and passed while section 20 had
 # been stripped of it, because the speaker note below the section quotes
 # the same phrase -- a second home, again.
-s19 = spoken(19)
-ck("section 20 is in the transcript", bool(s19))
+s20 = spoken(20)
+ck("section 20 is in the transcript", bool(s20))
 ck("section 20 names the baseline the claim rests on",
-   re.search(r"claim rests on vector RAG", s19, re.I) is not None)
+   re.search(r"claim rests on vector RAG", s20, re.I) is not None)
 ck("and says why GraphRAG's number does not carry it",
-   re.search(r"radius confounds", s19, re.I) is not None)
+   re.search(r"radius confounds", s20, re.I) is not None)
 
 # The deck's caveat is correct only while the thesis holds that position.
 RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
@@ -1150,7 +1150,7 @@ bench = frame(r"Backup: the benchmark was wrong $57$ times")
 # The census and the attractor are two sections now, and the framing
 # rules below are about the pair: the deflection this bans could be
 # reintroduced in either one.
-said = spoken(28) + " " + spoken(29)
+said = spoken(29) + " " + spoken(30)
 ck("both frames are in the deck", bool(echo) and bool(bench))
 
 RETRACTED = re.compile(r"propert\w+ of the task|across unrelated systems"
@@ -1326,7 +1326,7 @@ ck("and the slide names each of them", not missing, str(missing))
 print("\n== the structural bounds are stated, not just implied ==")
 BOUNDS = frame(r"What \emph{structural} means --- and what it does not")
 ck("the bounds frame is in the deck", bool(BOUNDS))
-SAID = spoken(14)
+SAID = spoken(15)
 for what, on_slide, in_script in (
         # Relation-blindness: supervisor issue 1. The mother/child pair is
         # the example the supervisor used and book Sec 6.8 repeats, so it
@@ -1375,7 +1375,7 @@ if nodes in NUM:
     ck(f"the slide says {NUM[nodes]} nodes", f"{NUM[nodes]} nodes" in SM,
        f"diagram draws {nodes}")
     ck(f"the script says {NUM[nodes].lower()} nodes",
-       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(11), re.I) is not None)
+       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(12), re.I) is not None)
 
 
 def target(edge):
@@ -1408,12 +1408,12 @@ if m and len(back) in NUM:
     ck("and every name is a label on the diagram",
        set(listed) <= labels, f"{sorted(set(listed) - labels)} not labelled")
 
-s11 = spoken(11)
+s12 = spoken(12)
 ck("the script does not harden the old count",
-   re.search(r"exactly (?:one|two|three|four|five) cycles", s11, re.I) is None)
+   re.search(r"exactly (?:one|two|three|four|five) cycles", s12, re.I) is None)
 if len(back) in NUM:
     ck(f"the script also says {NUM[len(back)].lower()} cycles",
-       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s11, re.I)
+       re.search(rf"\b{NUM[len(back)].lower()} cycles\b", s12, re.I)
        is not None)
 
 # The same diagram is drawn three times, and each copy's prose has to
@@ -1675,7 +1675,7 @@ else:
     # itself. This is the rule the table lacked: its arithmetic was
     # checked three ways and never against the words, so a section could
     # grow by fifty words and stay green as long as the columns still
-    # summed. Slide 19 reached 125 wpm against a stated 93 that way.
+    # summed. Slide 20 reached 125 wpm against a stated 93 that way.
     #
     # The rate is read from the script rather than written down here, so
     # rehearsing at a different measured pace re-times the whole table
@@ -1719,10 +1719,20 @@ else:
            f"{cum.get(mk.group(3), 0) % 60:02d}")
 
     # The point of the budget is the limit it sits under.
-    lim = re.search(r"against a (\d+)-minute limit", md)
-    ck("the talk fits the limit it names",
-       lim is not None and run <= int(lim.group(1)) * 60,
-       f"{run}s vs {lim.group(1) if lim else '?'} min")
+    # \s+ because that line wraps, and the talk may now sit over
+    # its limit on purpose -- so the script either fits, or says
+    # by how much it does not. A stale overage fails this exactly
+    # as a stale cumulative does: the arithmetic has to be redone,
+    # not reworded.
+    lim = re.search(r"against a (\d+)-minute\s+limit", md)
+    over = re.search(r"limit — (\d+) s over", md)
+    slack = run - int(lim.group(1)) * 60 if lim else None
+    ck("the talk fits the limit it names, or states the overage",
+       lim is not None and (slack <= 0 or
+                            (over is not None
+                             and int(over.group(1)) == slack)),
+       f"{run}s vs {lim.group(1) if lim else '?'} min, script "
+       f"says {over.group(1) if over else 'nothing'}")
 
 # ---------------------------------------------------------------------
 # The deck's limitations are the thesis's, IN the thesis's order.
@@ -1777,17 +1787,17 @@ ck("the deck never writes pre-registered",
    "thesis_paper/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
 if "pre-registered" in thesis_six:
-    s30 = spoken(30)
-    ck("the script names the thesis's word", "pre-registered" in s30.lower())
-    ck("and the word the slide uses", "pre-specified" in s30.lower())
+    s31 = spoken(31)
+    ck("the script names the thesis's word", "pre-registered" in s31.lower())
+    ck("and the word the slide uses", "pre-specified" in s31.lower())
     ck("and gives the reason the slide diverges",
-       re.search(r"registr(y|ies)", s30, re.I) is not None)
+       re.search(r"registr(y|ies)", s31, re.I) is not None)
 else:
     ck("the two documents still differ on this word", True,
        "reconciled -- rule retired")
 
 # ---------------------------------------------------------------------
-# Slide 13's hop curve, from the strata rather than from the figure.
+# Slide 14's hop curve, from the strata rather than from the figure.
 #
 # This was the last transcription in the deck bound to nothing. The
 # numbers sit as prose beside a generated figure, so 0.46/0.55/0.57 could
@@ -1799,13 +1809,13 @@ print("\n== the hop curve is the strata ==")
 TR = J["main_results"]["hop_trends"]["cwq"]
 HOP = frame("RQ1: Does agentic navigation improve multi-hop factual "
             "accuracy --- and does the advantage grow with hop count?")
-s20 = spoken(20)
+s21 = spoken(21)
 agr = TR["agr"]["hits_at_1"]
 arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)
 ck("the hop slide is in the deck", bool(HOP))
 ck(f"the slide quotes AGR's CWQ curve {agr}",
    re.search(arrow, HOP) is not None, "in that order")
-ck("the script quotes the same three", re.search(arrow, s20) is not None)
+ck("the script quotes the same three", re.search(arrow, s21) is not None)
 
 rising = TR["_systems_monotone_rising"]
 ck("AGR is the only CWQ system that rises", rising == ["agr"], str(rising))
@@ -1813,7 +1823,7 @@ below = TR["_systems_ending_below_h1"]
 ck(f"the other {len(below)} end below their one-hop score",
    sorted(below) == sorted(k for k in TR
                            if not k.startswith("_") and k != "agr"))
-for label, text in (("slide", HOP), ("script", s20)):
+for label, text in (("slide", HOP), ("script", s21)):
     ck(f"the {label} says AGR alone ends above where it started",
        re.search(r"only\b[^.]*\bend(?:s|ing)? above where it started",
                  plain(text)) is not None)
@@ -1822,7 +1832,7 @@ falling = TR["_systems_monotone_falling"]
 ck(f"{len(falling)} of the other four decay monotonically",
    len(falling) in NUM, str(sorted(falling)))
 decay = re.compile(NUM[len(falling)] + r" of the other (\w+) decay", re.I)
-for label, text in (("slide", HOP), ("script", s20)):
+for label, text in (("slide", HOP), ("script", s21)):
     m = decay.search(plain(text))
     ck(f"the {label} says {NUM[len(falling)].lower()} of the others decay",
        m is not None)
@@ -1836,7 +1846,7 @@ ck("ToG's CWQ curve is neither rising nor falling throughout",
    not TR["tog"]["monotone_falling"] and not TR["tog"]["monotone_rising"])
 ck(f"the script says it ends {abs(net)} below its one-hop score",
    re.search(r"(?<![\d.])" + re.escape(str(abs(net)))
-             + r"(?![\d.])[^.]*below its own one-hop", s20) is not None,
+             + r"(?![\d.])[^.]*below its own one-hop", s21) is not None,
    f"hop_trends gives {net}")
 
 # The strata the answer rests on, from the stratum table.
@@ -1995,7 +2005,7 @@ else:
     # spoken(8) until now, which is the state-machine section and has
     # never made this claim -- an earlier bulk renumber moved the
     # number without moving the rule. Section 12 is the tools section.
-    for label, text in (("card", CARD), ("script", spoken(12))):
+    for label, text in (("card", CARD), ("script", spoken(13))):
         ck(f"the {label} does not claim a cap on all of them",
            allcaps.search(text) is None,
            f"only {len(capped)} of {len(named)} cap anything")
@@ -2040,7 +2050,7 @@ agr_pts = [f'{B["webqsp/agr"]["hits_at_1"] * 100:.1f}',
            f'{B["cwq/agr"]["hits_at_1"] * 100:.1f}',
            f'{B["cwq/agr"]["f1"] * 100:.1f}']
 for v in agr_pts:
-    ck(f"slide 37 gives AGR {v}", f"${v}$" in ROGFRAME)
+    ck(f"slide 38 gives AGR {v}", f"${v}$" in ROGFRAME)
     if _tab:
         ck(f"  and tab:rog gives AGR {v}", f"${v}$" in _tab.group(1))
 
@@ -2048,13 +2058,13 @@ for v in agr_pts:
 # other; the paper is the source for both.
 ROG_PUBLISHED = ["85.7", "70.8", "62.6", "56.2"]
 for v in ROG_PUBLISHED:
-    ck(f"slide 37 gives RoG {v}", f"${v}$" in ROGFRAME)
+    ck(f"slide 38 gives RoG {v}", f"${v}$" in ROGFRAME)
     if _tab:
         ck(f"  and tab:rog gives RoG {v}", f"${v}$" in _tab.group(1))
 
 # The comparison may not be presented as a like-for-like one. Both
 # documents have to name the training asymmetry wherever they show it.
-for label, text in (("slide 37", ROGFRAME), ("the thesis section", _res)):
+for label, text in (("slide 38", ROGFRAME), ("the thesis section", _res)):
     ck(f"{label} says RoG is fine-tuned", "fine-tun" in text.lower())
 
 

@@ -220,6 +220,39 @@
 \end{frame}
 
 % ===================== 9 =====================
+% "Beam search" arrives on the next slide as ToG's row, and until this
+% frame existed it was never defined -- so saying "guided beam search"
+% in the room left the committee asking which part of AGR it described.
+% Defined here, before first use. The takeaway plants the limitation
+% that slide 12's Backtracker answers, so the two frames argue together.
+\begin{frame}{What guided beam search is}
+  \begin{columns}[T]
+    \begin{column}{0.56\textwidth}
+      \small
+      A search that keeps only its most promising branches:
+      \begin{enumerate}\itemsep2pt
+        \item List every edge out of the current \alert{frontier}.
+        \item \alert{Score} each for how likely it is to help.
+        \item Keep the best $b$ --- the \alert{beam width}.
+        \item Expand those; repeat to a depth cap.
+      \end{enumerate}
+      \vspace{1mm}
+      \emph{Guided} means step 2 is a judgement, not a fixed rule.
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \begin{block}{Why bound it}
+        \small
+        Entities carry hundreds of relations, so three unbounded hops is
+        millions of paths. When the scorer is a \alert{model call}, the
+        width \emph{is} the cost.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{Everything outside the beam is discarded unseen --- and a plain
+    beam has no way back for it.}
+\end{frame}
+
+% ===================== 10 =====================
 \begin{frame}{What everyone else does}
   \begin{table}
     \small
@@ -227,7 +260,7 @@
     % 48mm was sized for the AGR row, whose cell was set bold: "Guided
     % beam, backtracking" measures 136pt = 48mm in bold, and 42mm was the
     % one width in this table that wrapped. That row is gone -- AGR is
-    % introduced on slide 11, after the research questions -- and the
+    % introduced on slide 12, after the research questions -- and the
     % widest remaining cell is "Generated relation paths" at regular
     % weight, so the column goes back to 42mm.
     \begin{tabular}{@{}lL{42mm}ccc@{}}
@@ -252,7 +285,7 @@
     retrieved, before answering.}
 \end{frame}
 
-% ===================== 10 =====================
+% ===================== 11 =====================
 \begin{frame}{Research questions}
   \begin{enumerate}
     \item[\textbf{RQ1}] Does agentic navigation improve multi-hop factual
@@ -270,7 +303,7 @@
     would hide them.}
 \end{frame}
 
-% ===================== 11 =====================
+% ===================== 12 =====================
 \begin{frame}{AGR: An explicit state machine}
   \begin{columns}[T]
     \begin{column}{0.46\textwidth}
@@ -278,7 +311,7 @@
       Six nodes; the model is consulted only at decision points.
       \begin{itemize}
         \item \textbf{Planner} --- sub-objectives
-        \item \textbf{Explorer} --- expands the frontier
+        \item \textbf{Explorer} --- guided beam, width 3
         \item \textbf{Evaluator} --- objective met?
         \item \textbf{Backtracker} --- undo + ban list
         \item \textbf{Verifier} --- \alert{the contribution}
@@ -344,7 +377,7 @@
   \centrebody
 \end{frame}
 
-% ===================== 12 =====================
+% ===================== 13 =====================
 \begin{frame}{Constrained tools, not free-form queries}
   % "The agent" was the only noun on this slide, on a deck whose previous
   % slide draws six named boxes -- so the slide invited the question of how
@@ -404,7 +437,7 @@
     possible.}
 \end{frame}
 
-% ===================== 13 =====================
+% ===================== 14 =====================
 \begin{frame}{The Structural Verification Layer}
   \begin{columns}[T]
     \begin{column}{0.55\textwidth}
@@ -430,7 +463,7 @@
     \emph{not} do.}
 \end{frame}
 
-% ===================== 14 =====================
+% ===================== 15 =====================
 % The bound used to sit in a block on the same slide as the four steps,
 % under a heading that read as a footnote to them. It is not a footnote:
 % it is the property the supervisor's first issue is about, and it is now
@@ -438,7 +471,7 @@
 \begin{frame}{What \emph{structural} means --- and what it does not}
   % Three blocks, not four. The fourth was titled "What it means" and
   % said the check is against the graph the agent walked -- which is step
-  % 2 of slide 13, one slide earlier, in the same words. It is now the
+  % 2 of slide 14, one slide earlier, in the same words. It is now the
   % lead-in line, where it still separates structural checking from the
   % model judging its own output without spending a block on it.
   %
@@ -462,7 +495,7 @@
       \vspace{2mm}
       \begin{block}{What it cannot catch}
         A claim can be \emph{true} and still be the wrong answer --- the
-        echo attractor, slide 29.
+        echo attractor, slide 30.
       \end{block}
     \end{column}
     \begin{column}{0.48\textwidth}
@@ -481,7 +514,7 @@
   \centrebody
 \end{frame}
 
-% ===================== 15 =====================
+% ===================== 16 =====================
 \begin{frame}{One claim, three routes}
   \centering
   % Height-constrained, so the caption below it decides how big the diagram
@@ -494,7 +527,7 @@
   \centrebody
 \end{frame}
 
-% ===================== 16 =====================
+% ===================== 17 =====================
 \begin{frame}{One question, end to end}
   \small
   \textsf{WebQTest-960} --- ``who plays dwight in the office''
@@ -535,7 +568,7 @@
   \centrebody
 \end{frame}
 
-% ===================== 17 =====================
+% ===================== 18 =====================
 \begin{frame}{The environment and the question sets}
   \begin{columns}[T]
     \begin{column}{0.45\textwidth}
@@ -580,7 +613,7 @@
     known.}
 \end{frame}
 
-% ===================== 18 =====================
+% ===================== 19 =====================
 % "What is not held equal" was the next slide and is now the second block
 % here. It carried one disclosure -- the candidate widths -- and one
 % justification -- why a parametric control -- and this frame's takeaway
@@ -628,7 +661,7 @@
     thesis, said here rather than found later.}
 \end{frame}
 
-% ===================== 19 =====================
+% ===================== 20 =====================
 \begin{frame}{Main results}
   \begin{table}
     \small
@@ -641,7 +674,7 @@
     % spanning header the long name was wider than the two columns beneath
     % it, so LaTeX stretched them to fit and left a 55pt hole in front of
     % every CWQ F1 value -- four times the 14pt gap in the WebQSP pair
-    % beside it. Slide 17 and this slide's own footnote already say CWQ.
+    % beside it. Slide 18 and this slide's own footnote already say CWQ.
     %
     % "Cost / q" is the same problem in the third group: at "Cost /
     % question" the span was wider than Tokens+Calls and stretched them
@@ -677,7 +710,7 @@
     of the other agentic system.}
 \end{frame}
 
-% ===================== 20 =====================
+% ===================== 21 =====================
 \begin{frame}{RQ1: Does agentic navigation improve multi-hop factual accuracy --- and does the advantage grow with hop count?}
   \centering
   \scalebox{0.95}{\input{figures/fig_hop_strata.tex}}
@@ -688,11 +721,11 @@
   \takeaway{RQ1 is answered by a shape, not a difference of means.}
 \end{frame}
 
-% ===================== 21 =====================
+% ===================== 22 =====================
 \begin{frame}{The caveat I want to raise myself}
   \begin{table}
     \small
-    % Grouped like slide 19's table, and for the same reason: the long
+    % Grouped like slide 20's table, and for the same reason: the long
     % spanning header was wider than the two columns under it, so LaTeX
     % stretched the CWQ pair to 66pt while the boundary between the two
     % datasets sat at 14pt -- the widest gap fell inside a pair and the
@@ -716,7 +749,7 @@
       % \multicolumn wider than the columns it spans widens the last of
       % them: the CWQ pair opened to 36pt while the WebQSP pair, whose
       % overflow had the group separator to spill into, stayed at 12pt.
-      % Both datasets are 400 questions, said on slide 17 and again below.
+      % Both datasets are 400 questions, said on slide 18 and again below.
       clip rate & \multicolumn{2}{c}{$29.2\%$ ($117$)}
                 & \multicolumn{2}{c}{$44.0\%$ ($176$)} \\
       \bottomrule
@@ -729,7 +762,7 @@
     reasons better per step.}
 \end{frame}
 
-% ===================== 22 =====================
+% ===================== 23 =====================
 \begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}
   \begin{table}
     \small
@@ -766,11 +799,11 @@
     property of \emph{graph navigation}, not of the verification layer.}
 \end{frame}
 
-% ===================== 23 =====================
+% ===================== 24 =====================
 \begin{frame}{RQ2: What verification does \emph{not} do}
   % The obvious objection to this slide is that it looks like a retraction
-  % of slide 19, and the slide used to leave the audience to resolve that
-  % on their own. It does not contradict it: slide 19's lead is AGR
+  % of slide 20, and the slide used to leave the audience to resolve that
+  % on their own. It does not contradict it: slide 20's lead is AGR
   % against four baselines, and this is AGR against itself with one
   % component removed. Saying so is now the whole of the closing line,
   % which also replaced three sentences that said "negative result" three
@@ -790,13 +823,13 @@
     \end{column}
   \end{columns}
   \vspace{2mm}\sinkfoot
-  Not a retraction of slide 19. That was AGR against four baselines; this
+  Not a retraction of slide 20. That was AGR against four baselines; this
   is AGR against \emph{itself} with one part removed. The lead came from
   navigating the graph and finishing inside the budget --- never from this
   layer. \alert{What it does buy is the next slide.}
 \end{frame}
 
-% ===================== 24 =====================
+% ===================== 25 =====================
 \begin{frame}{RQ2: So what does it do?}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
@@ -823,7 +856,7 @@
     it is the whole of it.}
 \end{frame}
 
-% ===================== 25 =====================
+% ===================== 26 =====================
 % Promoted from the backup deck. The previous slide claims a hedge is a
 % calibrated non-assertion; this is the between-system evidence for it,
 % and it is also the answer to the objection the failure census invites
@@ -864,11 +897,11 @@
     point of Think-on-Graph on CWQ --- while scoring above both.}
 \end{frame}
 
-% ===================== 26 =====================
+% ===================== 27 =====================
 \begin{frame}{RQ3: Which components contribute what, at what token cost?}
   \begin{table}
     \small
-    % Three groups, separated like slide 19's: the two datasets and the
+    % Three groups, separated like slide 20's: the two datasets and the
     % token column. Before this the CWQ pair was stretched to 65pt by the
     % long spanning header while the dataset boundary sat at 12pt.
     \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{\hspace{7mm}}r@{}}
@@ -913,7 +946,7 @@
     the next slide, and its sign is backwards.}
 \end{frame}
 
-% ===================== 27 =====================
+% ===================== 28 =====================
 % The interpretation used to sit under the table with \vspace{-5mm} in
 % front of it, which is how the block titles came to overprint the
 % table's bottom rule. Negative vspace produces no overfull box, so the
@@ -953,7 +986,7 @@
     measurement forced, not one it confirmed.}
 \end{frame}
 
-% ===================== 28 =====================
+% ===================== 29 =====================
 \begin{frame}{Every failure, read and labelled}
   \begin{columns}[T]
     \begin{column}{0.44\textwidth}
@@ -1009,7 +1042,7 @@
     invention.}
 \end{frame}
 
-% ===================== 29 =====================
+% ===================== 30 =====================
 \begin{frame}{The echo attractor}
   \begin{columns}[T]
     \begin{column}{0.5\textwidth}
@@ -1047,7 +1080,7 @@
   \takeaway{The contribution is the mechanism, named, not the count.}
 \end{frame}
 
-% ===================== 30 =====================
+% ===================== 31 =====================
 \begin{frame}{Contributions}
   % Slide 7's structure: the frame title heads the slide, and the second
   % half is a titled block rather than a second bold line. Two column
@@ -1107,7 +1140,7 @@
       % Thesis limitations 2 and 3 -- the underpowered ablations, and
       % structural grounding not being answer adequacy -- were carried
       % here as well and are now dropped from this list. They are NOT
-      % dropped from the deck: 2 is the whole of slide 23, and 3 is slide
+      % dropped from the deck: 2 is the whole of slide 24, and 3 is slide
       % 23's takeaway, both in alert. Saying them a third time in a
       % summary is repetition; losing them from the deck is not the same
       % thing, and nothing was holding them anywhere else, so
@@ -1241,7 +1274,7 @@
   \takeaway{A contribution that outlives this particular system.}
 \end{frame}
 
-% ===================== 37 =====================
+% ===================== 38 =====================
 % The board asked for this at the pre-defense: the environment is built
 % from RoG's published subgraphs, so a direct comparison is owed. It is a
 % backup slide because the honest answer is that RoG leads and the
