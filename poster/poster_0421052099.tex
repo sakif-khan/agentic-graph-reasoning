@@ -1,0 +1,356 @@
+% Postgraduate Research Poster Exhibition 2026, CSE BUET.
+%
+% Build:  latexmk -pdf poster_0421052099.tex
+% Check:  python check_poster.py
+%
+% 36 x 24 inches (3 x 2 feet), the size the call for posters fixes. Laid
+% out after Template-2 -- CSE-BUET green header band with the department
+% logo, four columns of green-barred sections -- but set in LaTeX rather
+% than PowerPoint so that every rule, glyph and plot is vector. The call
+% asks for a 300% zoom test; vector output passes it by construction, and
+% the one raster asset (the logo, 1184 px square) prints at ~340 dpi at
+% the width used here.
+%
+% Every number comes from results/phase4/thesis_numbers.json, the same
+% artifact the thesis book and the defense deck read. check_poster.py
+% holds the poster to it -- do not retype a figure from memory.
+\documentclass[final]{beamer}
+\usepackage[size=custom, width=91.44, height=60.96, scale=1.12]{beamerposter}
+\usetheme{default}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, positioning, fit, backgrounds}
+
+% ---------------------------------------------------------------------
+% Template-2's palette, read out of its own slide XML rather than
+% eyeballed: 028260 is the header band, 03AD80 the section bars.
+\definecolor{cseGreen}{HTML}{028260}
+\definecolor{cseGreenLight}{HTML}{03AD80}
+\definecolor{cseInk}{HTML}{1A1A1A}
+\definecolor{cseRule}{HTML}{D8D8D8}
+% The five-system colours the thesis figures use, so a reader who has
+% seen the book meets the same encoding here.
+\definecolor{agrNoRet}{HTML}{6E6E6E}
+\definecolor{agrVector}{HTML}{E69F00}
+\definecolor{agrGraph}{HTML}{CC79A7}
+\definecolor{agrToG}{HTML}{009E73}
+\definecolor{agrAGR}{HTML}{0072B2}
+
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{fg=cseInk}
+\setbeamercolor{block title}{bg=cseGreenLight, fg=white}
+\setbeamercolor{block body}{bg=white, fg=cseInk}
+\setbeamerfont{block title}{size=\large, series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\raisebox{0.15ex}{\scriptsize$\blacksquare$}}
+
+% Square block corners, flush green bar, no shadow -- Template-2's look.
+% No fixed height on the title box: a two-line block title has to wrap
+% rather than spill out of its bar, which is what clipped "The
+% contribution: Structural Verification" on the first draft.
+\setbeamertemplate{block begin}{%
+  \setlength{\parskip}{0pt}%
+  \begin{beamercolorbox}[colsep*=0ex, leftskip=0.55em, rightskip=0.55em]{block title}%
+    \vskip0.3em\usebeamerfont{block title}\insertblocktitle\vskip0.3em%
+  \end{beamercolorbox}%
+  \vskip0.45em%
+  \begin{beamercolorbox}[colsep*=0ex, leftskip=0.15em, rightskip=0.15em]{block body}%
+  \begin{minipage}{0.98\textwidth}%
+}
+\setbeamertemplate{block end}{%
+  \end{minipage}\vskip0.35em%
+  \end{beamercolorbox}%
+  \vskip1.15em%
+}
+
+% A number set big enough to read from across the room, with its label
+% underneath. Posters are read at three metres before they are read at one.
+\newcommand{\stat}[2]{%
+  \begin{minipage}[t]{\linewidth}\centering
+    {\fontsize{50}{54}\selectfont\bfseries\color{cseGreen}#1}\\[0.12em]
+    {\small #2}
+  \end{minipage}}
+
+\newcommand{\lead}[1]{\textbf{\color{cseGreen}#1}}
+
+\begin{document}
+\begin{frame}[t]
+
+% =====================================================================
+% Header band. The fill is drawn to the same height the minipages are
+% set to, so the band always contains the type rather than being sized
+% by guess.
+% =====================================================================
+\newlength{\bandht}\setlength{\bandht}{11.4cm}
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[cseGreen] (current page.north west)
+    rectangle ([yshift=-\bandht] current page.north east);
+\end{tikzpicture}%
+\vspace*{-1.1cm}%
+\hspace*{-1.0cm}%
+\begin{minipage}[c][\bandht][c]{0.145\paperwidth}
+  \centering
+  \includegraphics[height=7.4cm]{cse-buet-logo.png}
+\end{minipage}%
+\begin{minipage}[c][\bandht][c]{0.845\paperwidth}
+  \centering
+  {\fontsize{40}{47}\selectfont\bfseries\color{white}%
+    Agentic Graph Reasoning: Autonomous Knowledge Graph Navigation for\\
+    Fact Verification and Hallucination Mitigation in Large Language Models\par}
+  \vskip0.45em
+  {\fontsize{24}{28}\selectfont\color{white}%
+    \textbf{Md.\ Sakif Khan} (0421052099)\ \ \textbullet\ \
+    Supervisor: \textbf{Dr.\ Sadia Sharmin}, Associate Professor\par}
+  \vskip0.12em
+  {\fontsize{21}{25}\selectfont\color{white}%
+    Department of Computer Science and Engineering, BUET\par}
+\end{minipage}
+
+\vskip1.35cm
+
+% =====================================================================
+\begin{columns}[t]
+
+% ------------------------------- 1 -----------------------------------
+\begin{column}{0.229\paperwidth}
+
+\begin{block}{Problem}
+Large language models answer factual questions fluently --- and sound just
+as fluent when they do not hold the fact.
+\vskip0.45em
+\lead{Retrieval-Augmented Generation} retrieves \emph{once}, before any
+reasoning starts, so a multi-hop question must be answered from whatever
+that first query returned. Graph-navigating systems do better by
+interleaving retrieval with reasoning.
+\vskip0.45em
+But all of them emit whatever the final generation call produces.
+\lead{Nothing checks what the answer asserts before the user sees it.}
+\end{block}
+
+\begin{block}{The gap, measured}
+A parametric LLM control, on the same questions, asserted entities that
+\emph{do not exist anywhere in the graph}:
+\vskip0.55em
+\stat{22.1\,\%}{$221$ of $1{,}001$ asserted entities ungrounded ---
+  and stated without a hedge}
+\vskip0.55em
+Retrieval reduces this without closing it. Only a system that checks its
+own claims against what it actually traversed can.
+\end{block}
+
+\begin{block}{Research questions}
+\begin{itemize}\setlength\itemsep{0.4em}
+  \item[\textbf{RQ1}] Does agentic navigation improve multi-hop accuracy
+    --- and does the advantage \emph{grow} with hop count?
+  \item[\textbf{RQ2}] What does pre-generation verification contribute
+    beyond navigation alone?
+  \item[\textbf{RQ3}] Which components earn their cost, in accuracy and
+    in tokens?
+\end{itemize}
+\end{block}
+
+\end{column}
+
+% ------------------------------- 2 -----------------------------------
+\begin{column}{0.229\paperwidth}
+
+\begin{block}{Method: AGR}
+An \lead{explicit state machine}, not a prompt loop. Six nodes; the model
+is consulted only at decision points, and every cycle passes a router
+checking a monotone counter --- so termination never depends on the model
+cooperating.
+\vskip0.7em
+\centering
+% Node width is set from the widest label: "Backtracker" in bold at this
+% size needs 44mm, and 38mm overran it by 18.5pt -- which is what put the
+% word on top of the Evaluator box on the first pass. The left-hand loops
+% are run out far enough that their labels clear the boxes rather than
+% sitting against them.
+\begin{tikzpicture}[
+  node distance=15mm,
+  box/.style={draw=cseGreen, very thick, rounded corners=2pt,
+    minimum height=14mm, fill=cseGreen!8, text width=46mm,
+    align=center, font=\small\bfseries},
+  vbox/.style={box, draw=agrAGR, fill=agrAGR!14},
+  term/.style={draw=black!45, circle, inner sep=2pt, font=\scriptsize,
+    fill=black!6},
+  flow/.style={-{Stealth[length=3mm]}, thick, draw=black!62},
+  lbl/.style={font=\scriptsize, inner sep=1.5pt, fill=white}]
+  \node[term]                     (start) {START};
+  \node[box, below=9mm of start]  (plan)  {Planner};
+  \node[box, below=of plan]       (expl)  {Explorer};
+  \node[box, below=of expl]       (eval)  {Evaluator};
+  \node[vbox, below=of eval]      (ver)   {Verifier};
+  \node[box, below=of ver]        (ans)   {Answerer};
+  \node[box, right=30mm of eval]  (back)  {Backtracker};
+  \draw[flow] (start) -- (plan);
+  \draw[flow] (plan)  -- (expl);
+  \draw[flow] (expl)  -- (eval);
+  \draw[flow] (eval)  -- node[lbl] {answer} (ver);
+  \draw[flow] (ver)   -- node[lbl] {grounded} (ans);
+  \draw[flow] (eval.east) -- node[lbl] {backtrack} (back.west);
+  \draw[flow] (back.north) |- (expl.east);
+  \draw[flow] (eval.west) -- ++(-17mm,0)
+    node[lbl, above, pos=0.62] {continue} |- (expl.west);
+  \draw[flow] (ver.west) -- ++(-28mm,0)
+    node[lbl, below, pos=0.62] {retry} |- ([yshift=-3mm] expl.west);
+  \begin{scope}[on background layer]
+    \node[draw=black!35, dashed, thick, rounded corners, inner sep=2.5mm,
+          fit=(expl)(eval)] {};
+  \end{scope}
+\end{tikzpicture}
+\vskip0.5em
+{\small The dashed box is the search loop: a \lead{guided beam} of width~3
+over candidate edges, scored by embedding similarity blended with a model
+judgement of the active sub-objective.\par}
+\end{block}
+
+\begin{block}{Contribution: Structural Verification}
+Before the answer is emitted, the draft is split into \lead{atomic claims}
+and each is checked against \emph{the triples the agent actually
+traversed} --- not against the model's own belief.
+\vskip0.45em
+\begin{itemize}\setlength\itemsep{0.32em}
+  \item Grounded claims return \textbf{paired with their supporting
+    triples}.
+  \item Claims that cannot be grounded are re-explored, then withdrawn.
+  \item The system therefore \textbf{hedges rather than asserts} when the
+    graph does not support it.
+\end{itemize}
+\end{block}
+
+\end{column}
+
+% ------------------------------- 3 -----------------------------------
+\begin{column}{0.229\paperwidth}
+
+\begin{block}{Results}
+Five systems, \lead{one frozen backbone}, one shared call budget, one
+environment of $2.59$M entities and $8.31$M triples --- so any difference
+is architecture, not model capacity. $400$ certified questions per
+dataset.
+\vskip0.6em
+\centering
+{\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{WebQSP}} & \multicolumn{2}{c}{\textbf{CWQ}}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{System} & \textbf{H@1} & \textbf{F1} & \textbf{H@1} & \textbf{F1}\\
+\midrule
+No-retrieval    & $0.453$ & $0.305$ & $0.307$ & $0.279$\\
+Vector-RAG      & $0.568$ & $0.432$ & $0.203$ & $0.168$\\
+Static GraphRAG & $0.340$ & $0.262$ & $0.205$ & $0.183$\\
+Think-on-Graph  & $0.660$ & $0.477$ & $0.435$ & $0.378$\\
+\textbf{AGR (ours)} & $\mathbf{0.755}$ & $\mathbf{0.642}$
+                & $\mathbf{0.522}$ & $\mathbf{0.469}$\\
+\bottomrule
+\end{tabular}\par}
+\vskip0.55em
+{\small \lead{Ahead of every baseline on both datasets}, at $6.2$ and
+$8.9$ model calls against Think-on-Graph's $12.8$ and $18.2$ --- about
+half the calls.\par}
+\end{block}
+
+\begin{block}{RQ1: the advantage grows with hops}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.99\linewidth, height=13.6cm,
+  % No xlabel: the tick labels already say "1 hop / 2 hops / 3+ hops"
+  % and the block title names the dataset, so the slot below the axis
+  % belongs to the legend, which collided with the label when both
+  % wanted it.
+  ylabel={Hits@1},
+  xtick={0,1,2},
+  xticklabels={{1 hop\\$n{=}137$}, {2 hops\\$n{=}211$}, {3+ hops\\$n{=}49$}},
+  xticklabel style={align=center, font=\scriptsize},
+  yticklabel style={font=\scriptsize},
+  label style={font=\scriptsize},
+  ytick={0,0.1,0.2,0.3,0.4,0.5,0.6},
+  xmin=-0.28, xmax=2.28, ymin=0, ymax=0.66,
+  grid=major, grid style={cseRule},
+  legend style={at={(0.5,-0.20)}, anchor=north, legend columns=3,
+    font=\scriptsize, draw=cseRule, column sep=1.2mm},
+  legend cell align=left,
+  axis line style={black!55}, tick style={black!55},
+]
+\addplot[mark=o, mark size=3pt, color=agrNoRet, thick, dashed]
+  coordinates {(0,0.38) (1,0.30) (2,0.14)};   \addlegendentry{No-retrieval}
+\addplot[mark=square, mark size=3pt, color=agrVector, thick, dashed]
+  coordinates {(0,0.33) (1,0.14) (2,0.10)};   \addlegendentry{Vector-RAG}
+\addplot[mark=triangle, mark size=4pt, color=agrGraph, thick, dashed]
+  coordinates {(0,0.34) (1,0.16) (2,0.02)};   \addlegendentry{GraphRAG}
+\addplot[mark=diamond, mark size=4pt, color=agrToG, thick, dashed]
+  coordinates {(0,0.53) (1,0.37) (2,0.45)};   \addlegendentry{Think-on-Graph}
+\addplot[mark=*, mark size=3.5pt, color=agrAGR, ultra thick]
+  coordinates {(0,0.46) (1,0.55) (2,0.57)};   \addlegendentry{\textbf{AGR}}
+\end{axis}
+\end{tikzpicture}
+\vskip0.35em
+{\small \lead{AGR alone ends above where it started.} Every other system
+decays as the questions deepen; AGR rises from $0.46$ to $0.57$.\par}
+\end{block}
+
+\end{column}
+
+% ------------------------------- 4 -----------------------------------
+\begin{column}{0.229\paperwidth}
+
+\begin{block}{Key findings}
+\vskip0.15em
+\stat{0 / 1{,}709}{asserted entities ungrounded, both datasets pooled ---
+  AGR never names an entity absent from the graph}
+\vskip0.85em
+\stat{29\,\% / 44\,\%}{of questions on which the agentic baseline exhausts
+  the shared call budget. AGR's call budget \emph{never} binds}
+\vskip0.8em
+{\small \lead{An honest caveat.} On the questions Think-on-Graph does
+finish, it leads AGR. The whole aggregate margin comes from the ones it
+cannot afford to finish --- which is the finding, not a footnote.\par}
+\vskip0.4em
+{\small \lead{Verification does not raise accuracy.} It converts silent
+error into an explicit hedge and attaches evidence. Its contribution is
+auditability, and this poster says so because that is what was
+measured.\par}
+\end{block}
+
+\begin{block}{Conclusion}
+\begin{itemize}\setlength\itemsep{0.35em}
+  \item Interleaving retrieval with reasoning, under \emph{explicit
+    budgets}, beats both one-shot retrieval and unbounded beam search.
+  \item Checking claims against the traversed subgraph before emitting
+    gives an answer that arrives \textbf{with its evidence}.
+  \item Everything here is \lead{training-free}: one frozen backbone, no
+    fine-tuning, no gradient step.
+  \item Every reported number is regenerated from committed run records,
+    and every question identifier is published.
+\end{itemize}
+\end{block}
+
+\begin{block}{Acknowledgements}
+{\small I thank my supervisor, Dr.\ Sadia Sharmin, and the Department of
+CSE, BUET. The environment is built from the public Reasoning-on-Graphs
+subgraph release over WebQSP and CWQ.\par}
+\end{block}
+
+\end{column}
+
+\end{columns}
+
+% =====================================================================
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[cseGreen] ([yshift=2.4cm] current page.south west)
+    rectangle (current page.south east);
+  \node[white, font=\normalsize] at ([yshift=1.2cm] current page.south)
+    {Postgraduate Research Poster Exhibition 2026 \textbullet\
+     Department of Computer Science and Engineering, BUET};
+\end{tikzpicture}
+
+\end{frame}
+\end{document}

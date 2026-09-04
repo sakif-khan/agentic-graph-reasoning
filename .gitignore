@@ -152,3 +152,20 @@ thesis_templates/brainstorming/
 # ==========================================
 .DS_Store
 Thumbs.db
+
+# LaTeX build artifacts (poster). Same rule as the thesis modules:
+# the built poster PDF is tracked, everything latexmk regenerates is not.
+# The poster is a beamer document, so it drops .nav/.snm/.toc/.vrb even
+# though it has exactly one frame and no navigation to speak of.
+poster/*.aux
+poster/*.fdb_latexmk
+poster/*.fls
+poster/*.log
+poster/*.nav
+poster/*.out
+poster/*.snm
+poster/*.toc
+poster/*.vrb
+poster/*.synctex.gz
+poster/*.synctex(busy)
+poster/*~
