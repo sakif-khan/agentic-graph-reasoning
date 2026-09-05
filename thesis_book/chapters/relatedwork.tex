@@ -69,13 +69,13 @@ and all, in \Cref{sec:rog-comparison}.
 StructGPT~\cite{jiang2023structgpt} provides a general interface for reasoning
 over structured data --- knowledge graphs, tables, and databases --- through an
 invoke--linearise--generate loop. Specialised interfaces extract evidence that
-is linearised into text for the model. It is deliberately general rather than
-graph-specific, and it performs no open-ended graph search.
+is linearised into text for the model. StructGPT is deliberately general rather
+than graph-specific, and it performs no open-ended graph search.
 
 KG-Agent~\cite{jiang2024kgagent} is closer to the agentic setting: a
 multifunctional toolbox, a knowledge-graph executor, and a dynamic memory,
 driven by an instruction-tuned model that autonomously selects tools across
-iterations. It demonstrates that a small fine-tuned model with good tool
+iterations. KG-Agent demonstrates that a small fine-tuned model with good tool
 abstractions is competitive with much larger prompted ones. It plans implicitly
 through tool selection rather than committing to explicit sub-objectives. It
 provides no backtracking mechanism. And it performs no verification of the
@@ -107,8 +107,8 @@ Plan-on-Graph (PoG)~\cite{chen2024plan} is the closest system to AGR in
 ambition. It decomposes the question into sub-objectives, including constraint
 conditions. It explores adaptively, with a breadth that varies by sub-objective.
 And it adds Guidance, Memory, and Reflection mechanisms. Reflection decides
-both whether to self-correct and which entity to backtrack to. This makes PoG
-the one surveyed system with genuine backtracking.
+both whether to self-correct and which entity to backtrack to. That dual role
+makes PoG the one surveyed system with genuine backtracking.
 
 PoG's self-correction operates on the \emph{search process}: it reconsiders
 where to explore. It does not decompose the draft answer into claims and check
@@ -133,8 +133,8 @@ model-generated facts into the evidence, whereas AGR admits only graph triples.
 
 Reasoning with Trees~\cite{shen2025reasoning} applies explicit tree search to
 knowledge graph question answering. It is cited in \Cref{sec:mcts-clarification}
-as an example of genuine tree-search machinery. This contrasts with the guided
-best-first search implemented here.
+as an example of genuine tree-search machinery. That machinery contrasts with
+the guided best-first search implemented here.
 
 \subsection{KBQA-o1 and Genuine Tree Search}\label{sec:kbqao1}
 
@@ -158,8 +158,8 @@ Second, its ablation is directly relevant to the methodological argument of
 component intact drops overall GrailQA F1 from 78.5 to 48.5: a thirty-point
 attribution to a single mechanism, obtained precisely because the authors
 ablated components rather than reporting the assembly as a whole. That is the
-same instrument this thesis applies in \Cref{sec:ablations}. It is evidence
-that the instrument is informative.
+same instrument this thesis applies in \Cref{sec:ablations}. The agreement
+between the two is evidence that the instrument is informative.
 
 KBQA-o1 is not a baseline here. It is fine-tuned rather than prompted. It
 evaluates under a low-resource few-shot protocol. And it does not report
@@ -184,7 +184,7 @@ This distinction matters given evidence that language models cannot reliably
 self-correct reasoning without external feedback~\cite{huang2024selfcorrect}. A
 verification step whose ground truth is the same model that produced the error
 is limited by construction. AGR's verification is grounded in traversed
-triples. This makes the check external to the generator.
+triples. That grounding makes the check external to the generator.
 
 \subsection{Self-Correcting Graph RAG}
 
@@ -326,9 +326,9 @@ and published accuracy.
     as a comparison is visible inside the table: PoG's paper reproduces
     Think-on-Graph and measures it at $57.1$ and $67.6$ on CWQ, against the
     $58.9$ and $69.5$ Think-on-Graph reports for itself. Two published papers
-    disagree by $1.8$ and $1.9$ points on the same system and benchmark. This is
-    the order of many claimed improvements in this literature, and it is the
-    reason \Cref{ch:setup} reimplements its baseline rather than citing a
+    disagree by $1.8$ and $1.9$ points on the same system and benchmark. That
+    gap is the order of many claimed improvements in this literature, and it is
+    the reason \Cref{ch:setup} reimplements its baseline rather than citing a
     number.}
   \end{center}
 \end{table}
@@ -340,9 +340,9 @@ First, the figures are drawn from the original publications and reflect
 different backbones. RoG and KG-Agent are fine-tuned. Their numbers are not
 comparable with prompting methods at all. Among the prompting methods, the
 backbone accounts for much of the spread: the same methods drop sharply when
-run on smaller open-weight models. This is the direct motivation for holding
-the backbone constant across every system in \Cref{ch:setup}. The literature
-does not hold it constant, so a cross-paper table cannot settle which
+run on smaller open-weight models. That sensitivity is the direct motivation
+for holding the backbone constant across every system in \Cref{ch:setup}. The
+literature does not hold it constant, so a cross-paper table cannot settle which
 architecture is better.
 
 Second, evaluation protocols differ. Some papers evaluate on sampled test
@@ -352,8 +352,8 @@ implementations.
 Third, and most concretely, two papers disagree about a third. Plan-on-Graph's
 own comparison table measures Think-on-Graph at $57.1$ and $67.6$ on CWQ, while
 Think-on-Graph reports $58.9$ and $69.5$ for itself. Neither is wrong: one is an
-original result and the other a reimplementation. This is exactly the situation
-this thesis is in with respect to its own agentic baseline
+original result and the other a reimplementation. This thesis is in exactly
+that situation with respect to its own agentic baseline
 (\Cref{sec:baseline-tog}). The gap is $1.8$ and $1.9$ points, the same order as
 many improvements claimed in this literature. A cross-paper table cannot
 distinguish a real advance from a reproduction difference of that size. That is
@@ -379,11 +379,11 @@ specifies it. The measurement is part of the contribution rather than a caveat
 on it, because the answer is not the expected one. Removing the layer changes
 the correctness of two questions in $398$ (\Cref{sec:ablations}). The zero
 structural-hallucination result is reached by the agentic baseline as well.
-This attributes the result to graph navigation rather than to this layer
-(\Cref{sec:groundedness-results}). The system's precision advantage over that
-baseline survives. But the ablation does not attribute it to this layer either
-(\Cref{sec:findings}). What the layer demonstrably provides is an auditable
-answer contract, not accuracy. A component filling an open slot in the
+That agreement attributes the result to graph navigation rather than to this
+layer (\Cref{sec:groundedness-results}). The system's precision advantage over
+that baseline survives. But the ablation does not attribute it to this layer
+either (\Cref{sec:findings}). What the layer demonstrably provides is an
+auditable answer contract, not accuracy. A component filling an open slot in the
 literature, specified, implemented, and then measured to be narrower than its
 designers expected, is a more useful result than the same component asserted to
 work.
@@ -392,7 +392,7 @@ The \textbf{second} contribution is a systematic component ablation quantifying
 what each agentic mechanism actually contributes, in accuracy and in tokens. As
 \Cref{tab:mechanisms} shows, these mechanisms are typically reported as
 bundles. Which of them earns its cost is not established in this literature.
-This is where the negative result above comes from. It is also where the
+That gap is where the negative result above comes from. It is also where the
 planner's stratum dependence appears.
 
 The \textbf{third} contribution is the controlled agentic comparison itself:

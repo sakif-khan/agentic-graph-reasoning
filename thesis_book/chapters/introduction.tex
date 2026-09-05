@@ -43,8 +43,8 @@ it has memorised from a plausible continuation it is simply constructing.
 Intervening here means changing the architecture or the training objective.
 That, again, is largely out of reach.
 
-The third is the \emph{prompt}. This is the one this thesis takes on. When the
-context supplied alongside a question already carries the facts needed to
+The third is the \emph{prompt}. The prompt is the one this thesis takes on. When
+the context supplied alongside a question already carries the facts needed to
 answer it, the model does not have to fall back on parametric recall.
 Structured context can override defects inherited from the training data
 without touching the model at all.
@@ -63,9 +63,9 @@ Each step depends on the result of the last. Two things make them the genuinely
 hard case. The first is that errors compound: a wrong resolution at the first
 hop rarely surfaces downstream, and the rest of the chain then proceeds
 confidently from a false premise. The second is that a question-level
-correctness check never sees the intermediate results at all. This leaves a
-system that answers correctly by accident indistinguishable from one that
-answers correctly by sound reasoning.
+correctness check never sees the intermediate results at all. That blindness
+leaves a system that answers correctly by accident indistinguishable from one
+that answers correctly by sound reasoning.
 
 These questions also tend to carry temporal, categorical, or ordinal
 \emph{constraints} that have to be satisfied together rather than one at a time.
@@ -192,12 +192,12 @@ reaching $A$.
 
 Three properties set this apart from standard knowledge graph question
 answering. The output is a \emph{pair}, not an answer on its own: the supporting
-triples are part of the contract. This makes the reasoning auditable rather
-than merely asserted. That support also has to be \emph{traversed}, not just
-retrievable after the fact. This closes off the possibility of justifying, post
-hoc, an answer the system reached some other way. And the system checks the
-justification \emph{before} it emits the answer. So it can drop or hedge
-unsupported content instead of merely flagging it.
+triples are part of the contract. That inclusion makes the reasoning auditable
+rather than merely asserted. That support also has to be \emph{traversed}, not
+just retrievable after the fact. That requirement closes off the possibility
+of justifying, post hoc, an answer the system reached some other way. And the
+system checks the justification \emph{before} it emits the answer. So it can
+drop or hedge unsupported content instead of merely flagging it.
 
 \section{Research Questions}\label{sec:rqs}
 

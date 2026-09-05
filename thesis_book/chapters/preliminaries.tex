@@ -21,8 +21,8 @@ Two properties matter for what follows. Triples are \emph{atomic}: each asserts
 exactly one fact. So a claim can be checked against the graph by testing for the
 existence of specific edges. They are also \emph{composable}: a chain $(e_0,
 r_1, e_1), (e_1, r_2, e_2), \dots$ expresses a multi-step relationship that no
-single triple states. This is what makes a knowledge graph the natural
-substrate for multi-hop questions.
+single triple states. That composability is what makes a knowledge graph the
+natural substrate for multi-hop questions.
 
 \subsection{Freebase: MIDs, Schema, and Mediator Nodes}
 
@@ -55,14 +55,14 @@ encode~\cite{xu2024generate}.
 
 The triple model above is the RDF view. An alternative is the \emph{property
 graph}\index{property graph} model, in which nodes and edges are both typed and
-may carry arbitrary key--value properties. This is the model implemented by
-Neo4j~\cite{robinson2015graph} and queried by Cypher~\cite{francis2018cypher}, a
-declarative language whose \textsf{MATCH} clause expresses graph patterns
-directly. A triple store maps onto it naturally: entities become nodes carrying
-their MID and name, and relations become typed edges. Traversal patterns that
-would require recursive joins in a relational schema are instead expressed as
-literal path patterns. That is the practical reason for choosing a graph store
-here.
+may carry arbitrary key--value properties. The property graph model is
+implemented by Neo4j~\cite{robinson2015graph} and queried by
+Cypher~\cite{francis2018cypher}, a declarative language whose \textsf{MATCH}
+clause expresses graph patterns directly. A triple store maps onto it naturally:
+entities become nodes carrying their MID and name, and relations become typed
+edges. Traversal patterns that would require recursive joins in a relational
+schema are instead expressed as literal path patterns. That is the practical
+reason for choosing a graph store here.
 
 \section{Knowledge Graph Question Answering}\label{sec:kgqa}
 
@@ -123,7 +123,7 @@ goes unmeasured when only Hits@1 is reported.
 \subsection{In-Context Learning and Chain-of-Thought Prompting}
 
 Sufficiently large language models perform tasks specified entirely in their
-prompt, without gradient updates. This is \emph{in-context
+prompt, without gradient updates. That capability is \emph{in-context
 learning}\index{in-context learning}~\cite{brown2020language}. Prompting the
 model to produce intermediate reasoning steps before its final answer,
 \emph{chain-of-thought} prompting~\cite{wei2022chain}, substantially improves
@@ -139,10 +139,10 @@ A language model can be given \emph{tools}: named operations it may invoke,
 whose results re-enter its context~\cite{schick2023toolformer}. The
 \emph{ReAct}\index{ReAct} pattern~\cite{yao2023react} interleaves reasoning and
 action in a loop: the model reasons about what to do, acts, observes the
-result, and reasons again. This is the control structure underlying agentic
-graph navigation. Where the tools are graph operations, each iteration extends a
-traversal. And the sequence of tool calls is a complete record of how the
-answer was reached.
+result, and reasons again. That loop is the control structure underlying
+agentic graph navigation. Where the tools are graph operations, each iteration
+extends a traversal. And the sequence of tool calls is a complete record of how
+the answer was reached.
 
 \subsection{A Working Definition of Hallucination for This
 Thesis}\label{sec:hallucination-def}
@@ -154,12 +154,12 @@ graph, or exists but is not reachable from the question's topic entities within
 the traversal budget. A claim is \emph{unsupported} if the traversed triples do
 not entail it.
 
-Two consequences of this definition should be stated plainly. It is relative to
-the environment: an entity absent from the graph is ungrounded even if true in
-the world. And groundedness is not correctness --- an answer can be perfectly
-grounded, every entity real and reachable, and still be the wrong answer to the
-question. \Cref{ch:results} shows that this gap is not hypothetical.
-\Cref{sec:limitations} is built on it.
+Two consequences of this definition should be stated plainly. The definition is
+relative to the environment: an entity absent from the graph is ungrounded even
+if true in the world. And groundedness is not correctness --- an answer can be
+perfectly grounded, every entity real and reachable, and still be the wrong
+answer to the question. \Cref{ch:results} shows that this gap is not
+hypothetical. \Cref{sec:limitations} is built on it.
 
 \section{Retrieval-Augmented Generation}\label{sec:rag}
 
@@ -242,7 +242,8 @@ data.\index{McNemar}\index{bootstrap}\index{Cohen's kappa}
 \emph{Bootstrap confidence intervals}~\cite{efron1979bootstrap} quantify
 sampling uncertainty by resampling the evaluated questions with replacement and
 recomputing the metric. The $2.5$th and $97.5$th percentiles of the resulting
-distribution give a 95\% interval. This is the \emph{percentile} method, used
+distribution give a 95\% interval. That resampling procedure is the
+\emph{percentile} method, used
 here in preference to bias-corrected variants, because the intervals are read
 as a scale on the reported difference rather than as a hypothesis test. The
 paired comparisons are instead made by the second tool below. Bootstrap
@@ -261,8 +262,8 @@ and lose power.
 two annotators on a categorical judgement, correcting for agreement expected by
 chance: \[ \kappa = \frac{p_o - p_e}{1 - p_e}, \] where $p_o$ is observed
 agreement and $p_e$ is the agreement expected if both annotators labelled
-independently at their observed marginal rates. It is used to validate the
-automatic groundedness judge against human annotation. Conventional
+independently at their observed marginal rates. Cohen's $\kappa$ is used to
+validate the automatic groundedness judge against human annotation. Conventional
 interpretation follows Landis and Koch~\cite{landis1977measurement}, on whose
 scale values between $0.61$ and $0.80$ denote substantial agreement.
 
