@@ -2,7 +2,7 @@
 \chapter{The Knowledge Environment}\label{ch:environment}
 
 Everything the agent can know, it knows from the graph. The environment
-therefore bounds the accuracy any system in this thesis can attain, and a result
+therefore bounds the accuracy any system in this thesis can attain. A result
 reported without that bound is uninterpretable. This chapter describes how the
 environment was built, what it contains, and --- equally important --- what it
 cannot express.
@@ -12,33 +12,33 @@ cannot express.
 \subsection{Decoupling the Graph Source from the Question Sets}
 
 The original proposal for this work described ingesting WebQSP and FactBench
-into a graph database. That description conflated two distinct roles, and the
-correction is worth stating because it shaped everything downstream.
+into a graph database. That description conflated two distinct roles. The
+correction is worth stating, because it shaped everything downstream.
 
 WebQSP~\cite{yih2016value} is not a knowledge graph. It is a set of questions
-annotated with semantic parses over Freebase~\cite{bollacker2008freebase}; the
-graph is Freebase, and WebQSP supplies questions and gold answers against it.
-The two roles are kept strictly separate here: Freebase-derived triples
-constitute the environment, while WebQSP and
-ComplexWebQuestions~\cite{talmor2018web} supply questions and gold answers and
-contribute no facts to it.
+annotated with semantic parses over Freebase~\cite{bollacker2008freebase}. The
+graph is Freebase. WebQSP supplies questions and gold answers against it. The
+two roles are kept strictly separate here: Freebase-derived triples constitute
+the environment, while WebQSP and ComplexWebQuestions~\cite{talmor2018web}
+supply questions and gold answers and contribute no facts to it.
 
 FactBench~\cite{bayat2025factbench} was removed entirely. It had been intended
-both as a source of graph content and as the hallucination evaluator, which is
-circular: if the evaluator's facts are inside the graph the system retrieves
-from, a low hallucination rate follows by construction. Groundedness is instead
-measured against the graph by an independent judge, as described in
+both as a source of graph content and as the hallucination evaluator. That dual
+role is circular: if the evaluator's facts are inside the graph the system
+retrieves from, a low hallucination rate follows by construction. Groundedness
+is instead measured against the graph by an independent judge, as described in
 \Cref{sec:judge}.
 
 \subsection{Why a Curated Subgraph Rather Than LLM-Extracted Triples}
 
 The proposal also specified a language-model entity-relationship extractor to
-build the graph. This is appropriate when the source is unstructured text, and
-it is what GraphRAG does~\cite{edge2024local}. It is self-defeating here. The
-graph is the reference against which model output is verified; building that
-reference with a language model would introduce the very error class the thesis
-measures, and no claim about hallucination reduction would survive the
-observation that the ground truth was itself generated.
+build the graph. That approach is appropriate when the source is unstructured
+text, and it is what GraphRAG does~\cite{edge2024local}. Using an extractor
+here would be self-defeating. The graph is the reference against which model
+output is verified. Building that reference with a language model would
+introduce the very error class the thesis measures. And no claim about
+hallucination reduction would survive the observation that the ground truth
+was itself generated.
 
 The environment is therefore assembled exclusively from curated Freebase
 triples. Language models are used to \emph{navigate} the graph and to
@@ -47,33 +47,32 @@ triples. Language models are used to \emph{navigate} the graph and to
 \section{Source Datasets}\label{sec:source-data}
 
 Every dataset this thesis consumes is public, standard, and third-party. None
-of it was collected, authored, or annotated here. Three artifacts are used, and
-the subsections below describe each in turn: a Freebase\index{dataset} snapshot
-as the knowledge source, and the WebQSP and ComplexWebQuestions question sets
-as the benchmarks. All three arrive through one distribution --- the
-per-question subgraphs published with
-Reasoning-on-Graphs~\cite{luo2024reasoning}, released as
-\textsf{rmanluo/RoG-webqsp} and \textsf{rmanluo/RoG-cwq} --- so the
-graph and the questions evaluated over it are guaranteed to be mutually
-consistent, and any system that has been measured on those benchmarks has been
-measured on these questions.
+of it was collected, authored, or annotated here. Three artifacts are used. The
+subsections below describe each in turn: a Freebase\index{dataset} snapshot as
+the knowledge source, and the WebQSP and ComplexWebQuestions question sets as
+the benchmarks. All three arrive through one distribution: the per-question
+subgraphs published with Reasoning-on-Graphs~\cite{luo2024reasoning}, released
+as \textsf{rmanluo/RoG-webqsp} and \textsf{rmanluo/RoG-cwq}. So the graph and
+the questions evaluated over it are guaranteed to be mutually consistent. And
+any system that has been measured on those benchmarks has been measured on
+these questions.
 
 What \emph{is} built here is the knowledge environment derived from them: the
 union graph of \Cref{sec:graph-construction}, its property-graph store, and its
-vector index. That derivation is deterministic and scripted, and the environment
-it produces is recorded in \Cref{tab:graphstats}. The distinction is worth
-stating plainly, because the two are easily conflated: the datasets are
-standard and unmodified, the environment assembled from them is this thesis's
-own, and \Cref{sec:validation-gate} measures what the assembly costs. Which
-questions are actually scored, and how they are sampled from these datasets, is
-a separate matter specified in \Cref{sec:test-sets}.
+vector index. That derivation is deterministic and scripted. The environment it
+produces is recorded in \Cref{tab:graphstats}. The distinction is worth stating
+plainly, because the two are easily conflated: the datasets are standard and
+unmodified, the environment assembled from them is this thesis's own, and
+\Cref{sec:validation-gate} measures what the assembly costs. Which questions
+are actually scored, and how they are sampled from these datasets, is a
+separate matter specified in \Cref{sec:test-sets}.
 
 \subsection{The Freebase Snapshot}
 
-Freebase has been frozen since 2016, which makes it stable and reproducible
-while\index{MID}\index{Freebase} also dating it --- a property that cuts both
-ways and motivates the no-retrieval control in \Cref{sec:baselines}. Two routes
-to a working Freebase environment were considered.
+Freebase has been frozen since 2016.\index{MID}\index{Freebase} That freeze
+makes it stable and reproducible, but it also dates it: a property that cuts
+both ways and motivates the no-retrieval control in \Cref{sec:baselines}. Two
+routes to a working Freebase environment were considered.
 
 The first is a full SPARQL endpoint: the community-standard preprocessed
 Virtuoso image, which ships a database of over 53\,GB and whose maintainers
@@ -88,19 +87,19 @@ neighbourhood around those topic entities.
 
 The second route was chosen, for a reason that should be recorded plainly: the
 hardware for the first was not available. The consequence is a scoped
-environment rather than all of Freebase, and \Cref{sec:validation-gate}
-quantifies what that costs.
+environment rather than all of Freebase. \Cref{sec:validation-gate} quantifies
+what that costs.
 
 \subsection{WebQSP and ComplexWebQuestions as Question Sets}
 
 WebQSP~\cite{yih2016value} contains questions whose answers lie predominantly
-one\index{WebQSP}\index{ComplexWebQuestions} or two hops from the topic entity;
-it descends from WebQuestions~\cite{berant2013semantic}.
+one\index{WebQSP}\index{ComplexWebQuestions} or two hops from the topic entity.
+WebQSP descends from WebQuestions~\cite{berant2013semantic}.
 ComplexWebQuestions~\cite{talmor2018web} is constructed by composing WebQSP
-queries into deeper chains with conjunctions, superlatives, and comparatives,
-and is the genuine multi-hop benchmark of the two. Reporting both is deliberate:
-WebQSP establishes comparability with prior work, and CWQ is where the multi-hop
-claim is actually tested.
+queries into deeper chains with conjunctions, superlatives, and comparatives.
+CWQ is the genuine multi-hop benchmark of the two. Reporting both is
+deliberate: WebQSP establishes comparability with prior work, and CWQ is where
+the multi-hop claim is actually tested.
 
 \section{Graph Construction}\label{sec:graph-construction}
 
@@ -109,31 +108,31 @@ claim is actually tested.
 The environment is the \emph{union} of every per-question subgraph in the
 RoG\index{knowledge graph} distribution, across both datasets and all three
 splits. Each record's triple list is read, whitespace-normalised, and inserted
-into a global deduplicated set; entity and relation strings are interned to
-integers so that the union and its adjacency structure fit in memory.
+into a global deduplicated set. Entity and relation strings are interned to
+integers, so that the union and its adjacency structure fit in memory.
 
 Unioning is not incidental. A per-question subgraph in isolation is a
 near-oracle: it was extracted to contain the answer, so an agent searching it
 faces almost no distractors. Merging every question's neighbourhood into one
 global graph restores distractor mass, since the agent exploring one question's
 topic entity encounters edges contributed by unrelated questions. WebQSP
-contributes 3{,}791{,}302 unique triples over 1{,}298{,}304 entities; adding CWQ
+contributes 3{,}791{,}302 unique triples over 1{,}298{,}304 entities. Adding CWQ
 brings the union to 8{,}309{,}194 triples over 2{,}592{,}892 entities.
 
 Two consequences must be disclosed. First, the RoG subgraphs were pre-extracted
-so as to guarantee answer reachability, which makes the resulting environment
-friendlier than raw Freebase --- fewer irrelevant hub explosions, and a higher
-answer-reachability rate than a BFS extraction from the full store would
-produce. This is a threat to external validity, revisited in \Cref{sec:threats}.
-The mitigating argument is that \emph{every system compared in this thesis
-navigates this identical environment}, so relative comparisons remain sound even
-where absolute numbers are optimistic.
+so as to guarantee answer reachability. That guarantee makes the resulting
+environment friendlier than raw Freebase: fewer irrelevant hub explosions, and a
+higher answer-reachability rate than a BFS extraction from the full store would
+produce. That friendliness is a threat to external validity, revisited in
+\Cref{sec:threats}. The mitigating argument is that \emph{every system compared
+in this thesis navigates this identical environment}. Relative comparisons
+therefore remain sound even where absolute numbers are optimistic.
 
 Second, the distribution's triples are keyed by human-readable entity names
 rather than by Freebase machine identifiers. The node identifier is therefore
-the name string, which means distinct real-world entities sharing a surface form
-are merged into a single node. This is inherent to name-keying and is also
-revisited in \Cref{sec:threats}.
+the name string. As a result, distinct real-world entities sharing a surface
+form are merged into a single node. That merging is inherent to name-keying and
+is also revisited in \Cref{sec:threats}.
 
 \subsection{Relation Filtering and Noise Removal}
 
@@ -143,14 +142,14 @@ administrative namespaces, type and key predicates, and above all
 Degree capping would likewise be mandatory, since uncapped breadth-first
 expansion from a hub entity explodes at the second hop.
 
-No such filtering was applied here, and the reason is structural rather than an
+No such filtering was applied here. The reason is structural rather than an
 oversight: the RoG distribution ships subgraphs that have already been scoped
 around topic entities, so the administrative predicates and hub explosions that
 filtering exists to remove are largely absent from the source. The only
 transformation applied to relation names is sanitisation into Cypher-legal
 identifiers, described in \Cref{sec:graph-store}. What survives is a vocabulary
-of 7{,}058 distinct relation types, which is the relation search space the agent
-faces at every exploration step.
+of 7{,}058 distinct relation types. That vocabulary is the relation search
+space the agent faces at every exploration step.
 
 \subsection{Treatment of Mediator Nodes and Its Effect on Hop Counts}
 
@@ -159,8 +158,7 @@ in\index{mediator node}\index{mediator traversal} \Cref{sec:kgs}. In the
 name-keyed distribution these surface distinctively: named entities appear as
 their names, while unnamed mediators survive as raw machine identifiers of the
 form \textsf{m.0d05w3} or \textsf{g.11b62t84jq}. Nodes are flagged as mediators
-by matching that pattern, and the flag is stored as an \textsf{is\_cvt}
-property.
+by matching that pattern. The flag is stored as an \textsf{is\_cvt} property.
 
 Mediators are \emph{retained}, not collapsed into hyper-edges. Retaining them
 preserves the facts they encode --- systems that skip mediators lose exactly
@@ -175,15 +173,15 @@ path-length bounds quoted anywhere in this thesis --- is in \emph{raw} hops,
 because that is what the graph actually contains. The agent's depth budget is
 not: \textsf{max\_depth} counts explorer expansions, and one expansion crosses a
 mediator transparently, so it may consume two raw edges while costing one unit
-of depth. This is deliberate --- the agent should not be charged twice for an
-artifact of the encoding (\Cref{sec:tool-adjacency}) --- but it means
-\textsf{max\_depth}${}=4$ does not bound the search at four raw hops, and the
-two numbers should not be compared without the conversion.
+of depth. That discount is deliberate --- the agent should not be charged twice
+for an artifact of the encoding (\Cref{sec:tool-adjacency}) --- but the
+discount also means \textsf{max\_depth}${}=4$ does not bound the search at four
+raw hops, and the two numbers should not be compared without the conversion.
 
 The scale of this decision is easy to understand: \textbf{1{,}652{,}618 of the
 2{,}592{,}892 nodes --- 63.7\% --- are mediator-form nodes carrying no
 human-readable name.} Nearly two thirds of the environment is connective tissue
-rather than nameable entities, which is why the tool layer in
+rather than nameable entities. That imbalance is why the tool layer in
 \Cref{sec:tool-api} must traverse through mediators transparently rather than
 present them to the agent as candidate answers.
 
@@ -199,8 +197,8 @@ contain dots that are illegal in unquoted Cypher relationship types --- with the
 original dotted string retained as an \textsf{fb\_name} property.
 
 Native relationship types were chosen over a single generic type carrying a name
-property. The alternative simplifies import but slows filtered expansion, and
-filtered expansion is the agent's hottest operation: every exploration step
+property. The alternative simplifies import but slows filtered expansion.
+Filtered expansion is the agent's hottest operation: every exploration step
 retrieves the relations of an entity and then the neighbours along one of them.
 
 Integer identifiers were chosen over names as the import key. Entity names
@@ -216,8 +214,8 @@ loading at this scale. Duplicate nodes and bad relationships were configured to
 be skipped rather than to abort the import.
 
 After import, a uniqueness constraint on \textsf{Entity.id} and a full-text
-index on \textsf{Entity.name} were created; the latter is what the resolver's
-lexical stage queries.
+index on \textsf{Entity.name} were created. The full-text index is what the
+resolver's lexical stage queries.
 
 \subsection{Graph Statistics}
 
@@ -264,10 +262,10 @@ the CSV row counts exactly, so the count-reconciliation check of
 Entity names were embedded with \textsf{all-MiniLM-L6-v2}, a 384-dimensional
 sentence encoder~\cite{reimers2019sentence} chosen for CPU throughput at this
 node count. Mediator nodes were skipped: embedding a string such as
-\textsf{m.0y5k79m} produces noise, and by \Cref{sec:graph-construction} that is
-almost two thirds of the graph, so skipping them is also the difference between
-a tractable and an intractable embedding job. Vectors were written back into
-Neo4j and indexed with a cosine-similarity vector index.
+\textsf{m.0y5k79m} produces noise. By \Cref{sec:graph-construction}, mediators
+make up almost two thirds of the graph, so skipping them is also the
+difference between a tractable and an intractable embedding job. Vectors were
+written back into Neo4j and indexed with a cosine-similarity vector index.
 
 \subsection{Relation-Vocabulary Embeddings}
 
@@ -278,8 +276,8 @@ embedded once and held in memory rather than embedded per step.
 Two details make this work. Relation names are \emph{verbalised} before
 encoding: \textsf{people.\allowbreak person.\allowbreak place\_of\_birth}
 becomes ``people person place of birth'', with consecutive duplicate tokens
-removed. The encoder was trained on natural language, and the verbalised phrase
-lands near a question like ``where was X born'' in embedding space where the raw
+removed. The encoder was trained on natural language. So the verbalised phrase lands
+near a question like ``where was X born'' in embedding space, where the raw
 dotted path does not. And relations are embedded with the \emph{same} model as
 entities and sub-objectives, since vectors from different models occupy
 unrelated spaces and their cosine similarity is meaningless.
@@ -328,25 +326,25 @@ query.
 \emph{Vector} matching encodes the mention and queries the entity vector index,
 handling paraphrases and misspellings that survive the first two stages.
 
-The cascade is referred to by these names throughout, never as ``tiers'', which
-this thesis reserves for the two-tier groundedness metric of
-\Cref{sec:groundedness-metric}. That is a rule about this prose and not about
-the code, which does call them tiers: the resolver returns a \textsf{tier} field
-taking the values $1$, $2$ and $3$, and a reader moving between the two will
-meet the collision. \Cref{app:toolapi} declares it where the field is specified,
-rather than leaving the disclaimer above to look like a claim about the
-implementation.
+The cascade is referred to by these names throughout, never as ``tiers''. This
+thesis reserves ``tiers'' for the two-tier groundedness metric of
+\Cref{sec:groundedness-metric}. That naming rule is about this prose, not about
+the code. The code does call them tiers: the resolver returns a \textsf{tier}
+field taking the values $1$, $2$ and $3$, and a reader moving between the two
+will meet the collision. \Cref{app:toolapi} declares it where the field is
+specified, rather than leaving the disclaimer above to look like a claim about
+the implementation.
 
 \subsection{Threshold Selection on Development Data}
 
 The lexical stage accepts its top hit only when the full-text score exceeds
 $1.0$, falling through to vector matching otherwise. The threshold exists
 because the full-text index returns a ranked list for almost any input,
-including inputs that match nothing meaningfully; without a floor, the lexical
-stage would confidently return the least-bad token overlap and the vector stage
-would never be reached.
+including inputs that match nothing meaningfully. Without a floor, the lexical
+stage would confidently return the least-bad token overlap, and the vector
+stage would never be reached.
 
-Resolution was measured over every topic-entity mention in both test sets, and
+Resolution was measured over every topic-entity mention in both test sets.
 \Cref{tab:linking} reports the outcome.
 
 \begin{table}[!tb]
@@ -372,12 +370,13 @@ Resolution was measured over every topic-entity mention in both test sets, and
 
 Surface forms supplied by the benchmarks therefore resolve to nodes in this
 environment essentially without loss. The limits of that measurement should be
-read with it: the graph is keyed on the same name strings the benchmarks supply,
-both coming from the same RoG distribution, so this establishes that the
-\emph{resolver} does not lose entities the environment contains --- not that
-entity linking would be easy against an independently-built graph, and not that
-linking from free text would work at all. Topic entities are given rather than
-linked throughout (\Cref{sec:threats}). What follows for the error analysis of
+read alongside it: the graph is keyed on the same name strings the benchmarks
+supply, both coming from the same RoG distribution. The measurement therefore
+establishes only that the \emph{resolver} does not lose entities the
+environment contains --- not that entity linking would be easy against an
+independently-built graph, and not that linking from free text would work at
+all. Topic entities are given rather than linked throughout
+(\Cref{sec:threats}). What follows for the error analysis of
 \Cref{ch:erroranalysis} is the narrow version: a failure in this environment
 cannot be attributed to the resolver having failed to find the question's topic.
 
@@ -396,10 +395,10 @@ least one topic entity within a bounded number of hops.
 Reachability is computed by breadth-first search treating edges as
 \emph{undirected}, because the agent's neighbour-retrieval tool looks in both
 directions and the gate must model the agent's actual traversal semantics. The
-bound is four raw hops, which by \Cref{sec:graph-construction} is approximately
-two logical hops through mediators --- enough for all of WebQSP and most of CWQ.
-A question whose topic entity is itself a gold answer counts as reachable at
-zero hops.
+bound is four raw hops. By \Cref{sec:graph-construction}, that bound is
+approximately two logical hops through mediators: enough for all of WebQSP and
+most of CWQ. A question whose topic entity is itself a gold answer counts as
+reachable at zero hops.
 
 This number is the \textbf{accuracy ceiling}: if a gold answer is unreachable,
 no navigating system can find it, however well designed.
@@ -435,24 +434,26 @@ topic entity present in the graph, so no question is lost at the entry point.
 More strikingly, \emph{existence and reachability are identical} in the $\geq 1$
 column --- 1{,}584 of 1{,}628 for WebQSP and 3{,}519 of 3{,}531 for CWQ. Every
 question with at least one gold answer present in this environment has at least
-one reachable within four hops; the two columns agree question for question, not
-merely in total. The claim is deliberately the weaker of the two available: the
-\emph{all answers exist} column is lower --- $94.7\%$ against $97.3\%$ on WebQSP
---- so on $42$ WebQSP questions some but not all gold entities are present, on
-top of the $44$ where none are, and this measurement says nothing about whether
-the ones present are all reachable. What it does say is that reachability is
-never the binding constraint on \emph{answerability}; when a question is
-unanswerable here it is because entities are absent altogether. This is a direct
-consequence of the construction in \Cref{sec:graph-construction}: the subgraphs
-were extracted around topic entities precisely to guarantee reachability, and
-the measurement confirms that the property survived unioning.
+one reachable within four hops. The two columns agree question for question,
+not merely in total. The claim is deliberately the weaker of the two available:
+the \emph{all answers exist} column is lower --- $94.7\%$ against $97.3\%$ on
+WebQSP. So on $42$ WebQSP questions some but not all gold entities are present,
+on top of the $44$ where none are. And this measurement says nothing about
+whether the ones present are all reachable. What the measurement does say is
+that reachability is never the binding constraint on \emph{answerability}. When
+a question is unanswerable here, it is because entities are absent altogether.
+That pattern is a direct consequence of the construction in
+\Cref{sec:graph-construction}: the subgraphs were extracted around topic
+entities precisely to guarantee reachability, and the measurement confirms that
+the property survived unioning.
 
-Finally, CWQ's coverage exceeds WebQSP's, which inverts the expected ordering
---- the deeper benchmark has the better-covered answers. Two things account for
-it and they are not competing. The larger is constructional: CWQ contributes far
-more questions and therefore far more subgraphs to the union, so its own answers
-are better represented. What that leaves --- the residual WebQSP shortfall ---
-is semantic, and dominated by answers that are not entities at all, which
+Finally, CWQ's coverage exceeds WebQSP's. That result inverts the expected
+ordering: the deeper benchmark has the better-covered answers. Two things
+account for this inversion, and they are not competing. The larger is
+constructional: CWQ contributes far more questions and therefore far more
+subgraphs to the union, so its own answers are better represented. What that
+leaves --- the residual WebQSP shortfall --- is semantic. The residual
+shortfall is dominated by answers that are not entities at all, a gap
 \Cref{sec:unanswerable} takes up.
 
 \subsection{Analysis of Linking Misses and Gate Failures}
@@ -461,7 +462,7 @@ The ten unresolved mentions of \Cref{tab:linking} are not a random residue.
 Every one is a bare machine identifier of the form \textsf{g.123852dg} appearing
 as a CWQ topic entity --- an unnamed mediator node that the benchmark supplies
 where a named entity was expected. Exact matching fails because no node carries
-that string as a \emph{name}, and the lexical stage then returns a meaningless
+that string as a \emph{name}. The lexical stage then returns a meaningless
 single-character match. The correct characterisation is that these questions are
 anchored on nodes with no surface form, not that resolution is unreliable.
 
@@ -471,15 +472,15 @@ the imported graph. A random sample of 400 questions flagged reachable, drawn
 under a fixed seed, was re-tested with a shortest-path query in Neo4j. The pass
 criterion
 is strict --- these were already known to be reachable, so anything below 100\%
-would indicate dropped edges. \textbf{All 400 verified; the failure set is
+would indicate dropped edges. \textbf{All 400 verified. The failure set is
 empty.} Together with the zero skipped import rows and the exact count
 reconciliation, the environment is certified.
 
 \subsection{What the Environment Cannot Express}\label{sec:unanswerable}
 
 Certifying reachability establishes that answers which \emph{are} entities can
-be found. It says nothing about answers that are not entities, and this is where
-the environment's real limits lie.
+be found. That certification says nothing about answers that are not entities,
+and this is where the environment's real limits lie.
 
 The import schema of \Cref{sec:graph-store} gives every node a single
 \textsf{:Entity} label. There is no typed literal node, no datatype, and no
@@ -492,32 +493,32 @@ be a numeric string. Measured over all 2{,}592{,}892 nodes by
 \begin{itemize}
   \item \textbf{Dates} are effectively absent. Only 77 nodes carry a full
   \textsf{YYYY-MM-DD} name and 175 a bare four-digit year --- together under
-  $0.01\%$ of the graph, and untyped, so they cannot be compared, ordered, or
-  filtered by range.
+  $0.01\%$ of the graph, and untyped. So these dates cannot be compared,
+  ordered, or filtered by range.
   \item \textbf{Numeric values} appear on 12{,}799 nodes ($0.49\%$) under the
   strict rule that the entire name is a single number, but the population is
   dominated by identifiers such as ISBNs rather than by measurable quantities.
-  That count is sensitive to its own definition, which is why the definition is
-  committed alongside it: admitting names that merely carry no letters
-  (\textsf{``(1955)''}, \textsf{``12-4''}) raises it to 13{,}888. The argument
-  does not turn on which is used --- both are under $0.6\%$ --- but the figure
-  should not be read as a property of the graph independent of how it was
-  counted.
-  \item \textbf{Ordinals and superlatives} are not expressible at all. This is a
-  property of the tool layer rather than the data: \Cref{sec:tool-api} exposes
-  no aggregation, sorting, or comparison operator, so ``the smallest'' or ``the
-  earliest'' cannot be computed even when every candidate is present in the
-  graph.
+  That count is sensitive to its own definition. That sensitivity is why the
+  definition is committed alongside it: admitting names that merely carry no
+  letters (\textsf{``(1955)''}, \textsf{``12-4''}) raises it to 13{,}888. The
+  argument does not turn on which is used --- both are under $0.6\%$ --- but
+  the figure should not be read as a property of the graph independent of how
+  it was counted.
+  \item \textbf{Ordinals and superlatives} are not expressible at all. That gap
+  is a property of the tool layer rather than the data: \Cref{sec:tool-api}
+  exposes no aggregation, sorting, or comparison operator, so ``the smallest''
+  or ``the earliest'' cannot be computed even when every candidate is present
+  in the graph.
 \end{itemize}
 
-This defines a class of questions that is \emph{unanswerable in this
-environment}: any question whose gold answer is a date, a measured quantity, or
-a superlative selection over candidates. Such a question is not a reasoning
-failure when the system misses it --- the environment could not have supplied
-the answer. The class is referenced by name in \Cref{sec:kg-gaps}, where it
-accounts for a substantial share of the residual failures, and it is a known
-consequence of a design decision: modelling literals as typed nodes was
-considered and not adopted, in exchange for a uniform schema and a simpler tool
-API.
+Together, these three gaps define a class of questions that is
+\emph{unanswerable in this environment}: any question whose gold answer is a
+date, a measured quantity, or a superlative selection over candidates. Such a
+question is not a reasoning failure when the system misses it --- the
+environment could not have supplied the answer. The class is referenced by
+name in \Cref{sec:kg-gaps}, where it accounts for a substantial share of the
+residual failures. The class is also a known consequence of a design decision:
+modelling literals as typed nodes was considered and not adopted, in exchange
+for a uniform schema and a simpler tool API.
 
 \endinput
