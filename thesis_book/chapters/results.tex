@@ -9,11 +9,11 @@ than expected, the semantic groundedness result is underpowered, and three of
 the four ablations detect nothing. All four outcomes are reported at the same
 volume.
 
-Every test-set number comes from \textsf{results/phase4/thesis\_numbers.json};
+Every test-set number comes from \textsf{results/phase4/thesis\_numbers.json}.
 \Cref{sec:dev-tuning} reports the development sweep and reads the archived
 phase-3 runs directly, as \Cref{ch:framework} and \Cref{ch:verification} do.
 Confidence intervals are $95\%$ bootstrap intervals over questions with
-$10{,}000$ resamples at seed~$42$~\cite{efron1979bootstrap}; paired comparisons
+$10{,}000$ resamples at seed~$42$~\cite{efron1979bootstrap}. Paired comparisons
 use the exact-binomial form of McNemar's test~\cite{mcnemar1947note} on
 per-question correctness.
 
@@ -28,9 +28,9 @@ that price the verification layer.
   \begin{center}
     \caption[The development-set sweep]{The development-set sweep, $n = 80$.
     Hits, hedges, and wrong answers partition the set. \textsf{Verify} indicates
-    claim verification enabled; the two draft-only rows disable it. All rows are
+    claim verification enabled. The two draft-only rows disable it. All rows are
     from the sweep as run, before the answer-entity filter of
-    \Cref{sec:entity-filtering} was corrected; the frozen condition's
+    \Cref{sec:entity-filtering} was corrected. The frozen condition's
     post-correction figures are given in the text.}
     \label{tab:sweep}
     \small
@@ -59,42 +59,42 @@ that price the verification layer.
 
 Three readings, of which only the first is the one the sweep was run to obtain.
 
-\textbf{$\alpha = 0.7$ is the maximum, and the curve is not clean.} Hits and F1
-rise from $\alpha = 0.3$ to $\alpha = 0.7$ and fall sharply at $\alpha = 1.0$,
-which is the expected shape: embedding similarity alone ($\alpha = 1.0$) is a
+\textbf{$\alpha = 0.7$ is the maximum. The curve is not clean.} Hits and F1
+rise from $\alpha = 0.3$ to $\alpha = 0.7$ and fall sharply at $\alpha = 1.0$.
+That is the expected shape: embedding similarity alone ($\alpha = 1.0$) is a
 weaker guide than the blend, and weighting the language-model judgement too
 heavily ($\alpha = 0.3$) makes the score noisy. But the wrong-answer column does
 not follow the hits column. It reads $7, 8, 5, 6$ across the four $\alpha$
 values, peaking at $\alpha = 0.5$ --- the condition that also has the fewest
 hedges of the verified rows. At $\alpha = 0.5$ the system commits more often and
-is wrong more often, and that irregularity is reported rather than smoothed
+is wrong more often. That irregularity is reported rather than smoothed
 away, because a presented curve that hides a known kink is exactly what a
-defence finds. It is one sample of $80$ questions and the difference is three
-questions wide; it is noted, not interpreted.
+defence finds. It is one sample of $80$ questions, and the difference is three
+questions wide. It is noted, not interpreted.
 
-\textbf{$\tau$ does almost nothing on this set, and that is consistent with its
+\textbf{$\tau$ does almost nothing on this set. That is consistent with its
 design.} At $\alpha = 0.7$ and $\alpha = 0.5$ the two $\tau$ values produce
 identical hits, hedges, and wrong counts. At $\alpha = 0.3$ they differ only in
-backtrack count ($16$ against $18$); at $\alpha = 1.0$, one wrong answer becomes
+backtrack count ($16$ against $18$). At $\alpha = 1.0$, one wrong answer becomes
 a hedge and backtracks rise from $22$ to $26$. This is what the signal-maximum
 formulation of \Cref{sec:backtracking} predicts: the trigger fires only when the
 blended score, the embedding maximum, \emph{and} the language-model maximum are
-all below threshold, which is rare when the language-model term is contributing.
-The $\alpha = 1.0$ row is where it has the most to do, and it is exactly there
-that its effect is visible. The value $\tau = 0.20$ was frozen on the basis of a
-sweep in which it changed almost nothing; that is stated plainly rather than
-presented as a tuned choice.
+all below threshold. That conjunction is rare when the language-model term is
+contributing. The $\alpha = 1.0$ row is where it has the most to do. It is
+exactly there that its effect is visible. The value $\tau = 0.20$ was frozen on
+the basis of a sweep in which it changed almost nothing. That is stated plainly
+rather than presented as a tuned choice.
 
 \textbf{Verification costs accuracy on this set.} Against the frozen condition,
 the draft-only row scores $66$ hits to $64$ and F1 $0.797$ to $0.769$. After the
 answer-entity filter of \Cref{sec:entity-filtering} was corrected --- a change
 made on development data before any test question ran --- the frozen condition
 scores $65$ hits, $11$ hedges, $4$ wrong, F1 $0.785$. Across those two rows the
-layer costs one correct answer and removes no wrong ones on this set of $80$ ---
-a comparison that spans the correction, since the draft-only condition was never
+layer costs one correct answer and removes no wrong ones on this set of $80$.
+That comparison spans the correction, since the draft-only condition was never
 re-run after it, and is therefore the closest available reading rather than a
 matched pair. \Cref{sec:ablations} finds the same thing at $n \approx 200$ on
-test data, and \Cref{sec:findings} explains why that is the expected result
+test data. \Cref{sec:findings} explains why that is the expected result
 rather than a disappointing one.
 
 One reproducibility note belongs with this table. Only the frozen condition was
@@ -111,11 +111,11 @@ are authoritative.
   \begin{center}
     \caption[Main results on both test sets]{Main results, $n = 400$ per
     dataset. Brackets are $95\%$ bootstrap intervals. \textbf{P} and \textbf{R}
-    are mean per-question precision and recall; \textbf{Hedge} is the share of
+    are mean per-question precision and recall. \textbf{Hedge} is the share of
     questions on which the system asserted nothing. The Hits@1 ceilings are
     $97.0\%$ and $99.2\%$ (\Cref{tab:testsets}). Every figure here is measured
     inside the environment of \Cref{ch:environment}, whose per-question
-    construction is what puts those ceilings so high; the levels are therefore
+    construction is what puts those ceilings so high. The levels are therefore
     not comparable with published results over full Freebase, and
     \Cref{sec:threats} states why.}
     \label{tab:main}
@@ -159,13 +159,13 @@ are authoritative.
 On WebQSP, AGR answers $302$ of $400$ questions correctly: $75.5\%$ against
 a\index{Hits"@1}\index{WebQSP} reachability ceiling of $97.0\%$, $+9.5$ points
 over Think-on-Graph and $+30.2$ over the parametric floor. The floor matters.
-WebQSP is a decade old and plausibly in the backbone's pretraining data, and the
+WebQSP is a decade old and plausibly in the backbone's pretraining data. The
 no-retrieval control confirms it: $45.3\%$ of these questions are answerable
 from memory alone. Any claim about what retrieval contributes has to be read
 against $0.453$, not against zero.
 
 \textbf{F1 widens the margin that Hits@1 understates.} Against Think-on-Graph
-the Hits@1 gap is $+9.5$ points; the F1 gap is $+16.5$ ($0.642$ against
+the Hits@1 gap is $+9.5$ points. The F1 gap is $+16.5$ ($0.642$ against
 $0.477$), and the precision column shows where it comes from ($0.697$ against
 $0.571$). WebQSP's questions have a mean of seven gold answers, so a system that
 asserts a long list collects Hits@1 credit for the one entity that matches and
@@ -174,48 +174,48 @@ together support the sentence this thesis leads with: AGR answers more questions
 and asserts fewer falsehoods, at an $8.2\%$ hedge rate --- the lowest of the
 five systems, so the precision is not bought with abstention.
 
-\textbf{Raw hits mislead on the retrieval baselines, and the correction is a
-finding.} GraphRAG scores $0.340$, below the no-retrieval control's $0.453$,
-which invites the conclusion that the implementation is broken. Put the
+\textbf{Raw hits mislead on the retrieval baselines. The correction is a
+finding.} GraphRAG scores $0.340$, below the no-retrieval control's $0.453$.
+That gap invites the conclusion that the implementation is broken. Put the
 wrong-answer counts beside the hits and the picture inverts. No-retrieval
 asserts on $351$ of $400$ questions and is wrong on $170$ of them --- $51.6\%$
 \emph{assertion precision}\index{assertion precision}, the share of the
 questions a system commits on that it answers correctly. It is a per-question
-measure, and distinct from the per-entity precision of \Cref{tab:main}, which is
-averaged over all $400$ questions whether the system committed on them or not.
-GraphRAG asserts on $177$ and is wrong on $41$ --- $76.8\%$. The mechanism is
-the prompt: the retrieval baselines are instructed to answer only from the facts
-given and to return nothing otherwise, so when retrieval misses they abstain,
-while the no-retrieval control has no such constraint and guesses from memory.
-On a memorised benchmark, guessing pays. \emph{A grounded system scoring below
-an ungrounded one on raw hits while committing four times fewer falsehoods} is
-the contamination story the control was built to expose, and it is reported as a
-result rather than as an anomaly.
+measure. It is also distinct from the per-entity precision of \Cref{tab:main},
+which is averaged over all $400$ questions whether the system committed on them
+or not. GraphRAG asserts on $177$ and is wrong on $41$ --- $76.8\%$. The
+mechanism is the prompt: the retrieval baselines are instructed to answer only
+from the facts given and to return nothing otherwise. When retrieval misses,
+they therefore abstain, while the no-retrieval control has no such constraint
+and guesses from memory. On a memorised benchmark, guessing pays. \emph{A
+grounded system scoring below an ungrounded one on raw hits while committing
+four times fewer falsehoods} is the contamination story the control was built
+to expose. It is reported as a result rather than as an anomaly.
 
 \section{Main Results on ComplexWebQuestions}\label{sec:cwq-results}
 
 On CWQ, AGR answers $209$ of $400$: $52.2\%$ against a $99.2\%$ ceiling,
 $+8.7$\index{ComplexWebQuestions}\index{precision} over Think-on-Graph and
-$+21.5$ over the floor. Every system scores lower here, and the ordering changes
+$+21.5$ over the floor. Every system scores lower here. The ordering changes
 in one important way: \emph{both} static retrieval baselines fall below the
 parametric control. Vector-RAG drops from $0.568$ on WebQSP to $0.203$, GraphRAG
 from $0.340$ to $0.205$, while no-retrieval falls only from $0.453$ to $0.307$.
 
-The reason is structural rather than incidental, and the two baselines earn that
+The reason is structural rather than incidental. The two baselines earn that
 description to different degrees. Vector-RAG's context is a single verbalised
-triple, and one triple cannot contain a chain at any retrieval quality or any
-radius; that is a paradigm limit \Cref{sec:baselines} predicted at
+triple. One triple cannot contain a chain at any retrieval quality or any
+radius. That is a paradigm limit \Cref{sec:baselines} predicted at
 implementation time and \Cref{sec:hop-results} demonstrates per stratum.
 GraphRAG's context is a one-logical-hop neighbourhood
-(\Cref{sec:baseline-graphrag}), so its CWQ number is the weaker evidence of the
-two: it confounds the paradigm with the radius, and part of the fall is
+(\Cref{sec:baseline-graphrag}). Its CWQ number is therefore the weaker evidence
+of the two: it confounds the paradigm with the radius, and part of the fall is
 attributable to a boundary chosen in advance rather than to static retrieval as
 such. The claim rests on the first baseline.
 
 The number worth leading with on this dataset is assertion precision. AGR and
-Think-on-Graph commit at effectively the same rate --- $308$ and $310$ of $400$
-questions answered rather than hedged --- and out of those near-identical
-commitments AGR is right $209$ times and wrong $99$, against $174$ and $136$.
+Think-on-Graph commit at effectively the same rate: $308$ and $310$ of $400$
+questions answered rather than hedged. Out of those near-identical
+commitments, AGR is right $209$ times and wrong $99$, against $174$ and $136$.
 That is $67.9\%$ assertion precision against $56.1\%$: on the harder, deeper
 benchmark, the system with an explicit plan, a guided scorer, and a claim check
 finds $35$ more answers and asserts $37$ fewer falsehoods than beam search on
@@ -255,12 +255,12 @@ table where both systems navigate the same graph, with the same model, under the
 same call budget. The discordant counts make the margin concrete rather than
 distributional: on CWQ, AGR uniquely solves $86$ questions Think-on-Graph misses
 against $51$ the other way. What that budget does to the comparison is the
-subject of the next section, and it changes what the margin means.
+subject of the next section. It changes what the margin means.
 
 \section{Where the Margin Over the Agentic Baseline Comes
 From}\label{sec:tog-split}
 
-The shared budget is a control, and like any control it is doing something.
+The shared budget is a control. Like any control, it is doing something.
 The\index{Think-on-Graph} call cap binds on Think-on-Graph far more often than
 on AGR --- beam search costs width times depth, and \Cref{sec:efficiency}
 records the clip rates --- so ``same budget'' does not mean ``same freedom to
@@ -288,7 +288,7 @@ to completion.
 \textbf{On the questions it is allowed to finish, Think-on-Graph is ahead on
 both datasets.} It scores $0.852$ against AGR's $0.788$ on WebQSP and $0.629$
 against $0.607$ on CWQ. The entire aggregate margin comes from the $29.2\%$ and
-$44.0\%$ of questions where the cap truncates it, and there its accuracy falls
+$44.0\%$ of questions where the cap truncates it. There its accuracy falls
 to $0.197$ and $0.188$ while AGR's holds at $0.675$ and $0.415$. This is stated
 plainly because it is the first thing an unsympathetic reading of
 \Cref{tab:mcnemar} should look for, and because burying it would misrepresent
@@ -300,37 +300,37 @@ language-model-pruned beam search --- on the evidence here it does not, and the
 unclipped subset is the fairest available estimate of that. The finding is that
 \emph{beam search cannot afford to finish under a budget a deployed system would
 actually impose, and guided search can}. Width times depth is multiplicative and
-paid on every question; a plan plus a scored frontier is not. A comparison run
-without a cap would measure search quality in the abstract, which is a
-legitimate experiment and a different one; this thesis fixed the budget in
+paid on every question. A plan plus a scored frontier is not. A comparison run
+without a cap would measure search quality in the abstract. That would be a
+legitimate experiment, and a different one. This thesis fixed the budget in
 advance (\Cref{sec:baselines}) because cost is a property of the method rather
 than a nuisance to be controlled away. On that reading the clip rate is not an
 artefact of the setup, it is the result --- and \Cref{sec:efficiency} prices the
 same finding in tokens.
 
 Three qualifications keep the claim honest. The cap of $25$ calls is itself a
-choice, and a larger one would move the split; the clip rates are reported so a
+choice. A larger one would move the split. The clip rates are reported so a
 reader can see how far. The reimplementation's beam width and depth follow the
 original paper, so its cost profile is the published algorithm's rather than a
-weakened variant --- which is what makes the cost finding meaningful instead of
-circular. But the candidate widths \emph{beneath} the beam do not come from the
-paper, and they are narrower than AGR's by factors of seven-and-a-half and ten
-(\Cref{sec:baseline-tog}): the baseline prunes from $40$ relations and $20$
-neighbours where AGR prunes from $300$ and $200$, and those cuts bind on about a
-third of its expansions against almost none of AGR's. That asymmetry cannot
-explain the clipping --- a thinner candidate set makes a step cheaper, not
-dearer --- so the affordability finding stands. It does bear on the sentence
-before it: $0.852$ and $0.629$ on the unclipped subset are a \emph{lower bound}
-on what this baseline's search could resolve given AGR's candidate widths, not
-an estimate of it, and the claim that guided search does not out-resolve beam
-search is correspondingly the weaker one.
+weakened variant. That fidelity is what makes the cost finding meaningful
+instead of circular. But the candidate widths \emph{beneath} the beam do not
+come from the paper. They are narrower than AGR's by factors of
+seven-and-a-half and ten (\Cref{sec:baseline-tog}): the baseline prunes from
+$40$ relations and $20$ neighbours where AGR prunes from $300$ and $200$, and
+those cuts bind on about a third of its expansions against almost none of
+AGR's. That asymmetry cannot explain the clipping --- a thinner candidate set
+makes a step cheaper, not dearer --- so the affordability finding stands. It
+does bear on the sentence before it: $0.852$ and $0.629$ on the unclipped
+subset are a \emph{lower bound} on what this baseline's search could resolve
+given AGR's candidate widths, not an estimate of it. The claim that guided
+search does not out-resolve beam search is correspondingly the weaker one.
 
 \textbf{The breadth of AGR's answers is checked rather than assumed.} On
 answered WebQSP questions AGR names $3.37$ entities against Think-on-Graph's
-$2.56$, and a metric scoring a hit on any match rewards naming more. The check
+$2.56$. A metric scoring a hit on any match rewards naming more. The check
 is entity precision over those same answered questions --- \Cref{tab:main}'s
 measure restricted to the answered subset, not the per-question assertion
-precision of \Cref{sec:cwq-results} --- where AGR leads $0.760$ to $0.703$; on
+precision of \Cref{sec:cwq-results} --- where AGR leads $0.760$ to $0.703$. On
 CWQ the figures are $1.54$ against $1.40$ entities and $0.629$ against $0.520$
 precision. Breadth bought without accuracy would show up as precision falling
 while the entity count rose, and it does not. This is the same reason F1 is
@@ -341,11 +341,10 @@ Results}\label{sec:rog-comparison}
 
 Two facts in this thesis oblige a direct comparison. The knowledge
 environment of \Cref{sec:source-data} is built from the per-question
-subgraphs\index{RoG} the RoG distribution publishes, and
-\Cref{sec:path-kgqa} surveys RoG~\cite{luo2024reasoning} as the closest
-published system in the path-retrieval family. A reader who notices both is
-entitled to ask how the two systems compare, and the aggregate answer does
-not favour this work.
+subgraphs\index{RoG} the RoG distribution publishes. \Cref{sec:path-kgqa}
+surveys RoG~\cite{luo2024reasoning} as the closest published system in the
+path-retrieval family. A reader who notices both is entitled to ask how the
+two systems compare. The aggregate answer does not favour this work.
 
 \begin{table}[!tb]
   \begin{center}
@@ -354,9 +353,9 @@ not favour this work.
     \cite{luo2024reasoning}, measured over the full test splits
     ($1{,}628$ and $3{,}531$ questions). AGR's row is \Cref{tab:main},
     measured over the certified $400$-question samples of
-    \Cref{tab:testsets}, which are stratified draws from those same
+    \Cref{tab:testsets}. Those samples are stratified draws from those same
     splits. The two rows are therefore computed over nested populations
-    but under different protocols; the paragraphs below state what that
+    but under different protocols. The paragraphs below state what that
     permits and what it forbids.}
     \label{tab:rog}
     \small
@@ -376,9 +375,9 @@ not favour this work.
   \end{center}
 \end{table}
 
-\textbf{RoG leads on all four figures, and the margin is not sampling
+\textbf{RoG leads on all four figures. The margin is not sampling
 noise.} AGR's $95\%$ confidence intervals on Hits@1 are $[71.3, 79.7]$ on
-WebQSP and $[47.5, 57.0]$ on CWQ; RoG's $85.7$ and $62.6$ fall outside
+WebQSP and $[47.5, 57.0]$ on CWQ. RoG's $85.7$ and $62.6$ fall outside
 both. That is stated before the qualifications because the qualifications
 do not reverse it, and a comparison offered only with its excuses attached
 is not a comparison.
@@ -386,7 +385,7 @@ is not a comparison.
 Three differences bound what \Cref{tab:rog} establishes. The first is
 decisive and the other two are ordinary.
 
-\textbf{RoG is trained on these benchmarks; AGR is trained on nothing.}
+\textbf{RoG is trained on these benchmarks. AGR is trained on nothing.}
 Section~5.1 of \cite{luo2024reasoning} states that its backbone is
 ``instruction finetuned on the training split of WebQSP and CWQ as well as
 Freebase for 3 epochs''. In the distribution this thesis also uses, those
@@ -394,20 +393,20 @@ training splits hold $2{,}830$ and $16{,}900$ questions. AGR performs no
 training of any kind: the backbone is frozen, prompted at temperature $0$
 (\Cref{sec:backbone}), and the system has seen no question from either
 benchmark before it is evaluated. The comparison is therefore between a
-supervised system and a zero-shot one, which is a difference in kind rather
-than in degree --- and it is the same objection \Cref{tab:reported} already
+supervised system and a zero-shot one. That is a difference in kind rather
+than in degree, and it is the same objection \Cref{tab:reported} already
 raises against every fine-tuned entry in the surveyed literature.
 
-\textbf{The backbones differ.} RoG fine-tunes LLaMA2-Chat-7B; AGR prompts
+\textbf{The backbones differ.} RoG fine-tunes LLaMA2-Chat-7B. AGR prompts
 the model named in \Cref{sec:backbone}. \Cref{sec:comparison-table} argues
-that backbone accounts for much of the spread in cross-paper tables, which
-is precisely why \Cref{ch:setup} holds it constant across the five systems
+that backbone accounts for much of the spread in cross-paper tables. That is
+precisely why \Cref{ch:setup} holds it constant across the five systems
 it measures. It cannot be held constant against a system whose contribution
 \emph{is} its fine-tuned weights, so no protocol available here would make
 this row comparable in the sense \Cref{tab:main} uses the word.
 
 \textbf{The evaluation populations differ.} RoG reports over the full test
-splits; the figures here are over stratified $400$-question samples of the
+splits. The figures here are over stratified $400$-question samples of the
 same splits (\Cref{sec:test-sets}). The samples preserve the hop-stratum
 proportions of their populations, so they estimate the same quantity, and
 the intervals quoted above are the estimate's uncertainty. RoG publishes no
@@ -418,16 +417,16 @@ place in the published landscape: a training-free system reaching $75.5$ and
 $52.2$ against a supervised system's $85.7$ and $62.6$, on the same data,
 with no in-domain examples. And it locates this thesis's contribution
 somewhere other than the accuracy column. RoG's answers are read off
-retrieved paths, so they are faithful by construction and the
+retrieved paths, so they are faithful by construction, and the
 pre-generation verification question of \Cref{ch:verification} does not
-arise for them (\Cref{sec:path-kgqa}); the price is that the plan is
+arise for them (\Cref{sec:path-kgqa}). The price is that the plan is
 generated once, before retrieval, with no mechanism to revise it when it
 fails to instantiate. AGR's claims are the opposite shape: generated freely
-and then checked against the graph the agent actually walked, which is what
-makes an unsupported assertion detectable at all. Neither the
+and then checked against the graph the agent actually walked. That check is
+what makes an unsupported assertion detectable at all. Neither the
 component-level ablation of \Cref{sec:ablations}, with the
 stratum-dependent decomposition finding it produced, nor the failure census
-of \Cref{ch:erroranalysis} has a counterpart in RoG's evaluation, and none
+of \Cref{ch:erroranalysis} has a counterpart in RoG's evaluation. None
 of them would be settled by closing the gap in \Cref{tab:rog}.
 
 \section{Accuracy Broken Down by Hop Count}\label{sec:hop-results}
@@ -476,24 +475,24 @@ of them would be settled by closing the gap in \Cref{tab:rog}.
   \end{center}
   \caption[Hits@1 across hop strata]{Hits@1 across hop strata. The shape is the
   finding: on ComplexWebQuestions AGR is the only system whose accuracy rises
-  with hop count, and every other profile ends below where it started --- three
+  with hop count. Every other profile ends below where it started --- three
   of them monotonically, Think-on-Graph by falling and partly recovering. WebQSP
   is drawn dashed because its \textsf{h3plus} stratum holds four questions and
-  cannot carry a trend; the stratum sizes are printed on the axis for that
+  cannot carry a trend. The stratum sizes are printed on the axis for that
   reason. The \textsf{unreachable} stratum is omitted here and discussed below,
   since by construction it measures assertion rather than accuracy. Generated
   from \textsf{results/phase4/thesis\_numbers.json}.}
   \label{fig:hop-strata}
 \end{figure}
 
-\Cref{tab:strata} is the direct answer to RQ1, and it answers it with a shape
+\Cref{tab:strata} is the direct answer to RQ1. It answers it with a shape
 rather than with a difference of means --- \Cref{fig:hop-strata} is that
 shape.\index{hop stratum}
 
 \textbf{On CWQ, AGR's accuracy rises with hop count.} Hits@1 goes $0.46 \to 0.55
 \to 0.57$ across \textsf{h1}, \textsf{h2}, \textsf{h3plus}, and F1 goes $0.42
 \to 0.49 \to 0.50$. It is the only system on that dataset that ends above where
-it started; the other four all end below. Three of them decay monotonically:
+it started. The other four all end below. Three of them decay monotonically:
 No-retrieval $0.38 \to 0.30 \to 0.14$, Vector-RAG $0.33 \to 0.14 \to 0.10$, and
 GraphRAG $0.34 \to 0.16 \to 0.02$, though that last row is radius-limited and is
 read with the qualification given below. Think-on-Graph is the exception to the
@@ -501,13 +500,13 @@ monotonicity but not to the direction: it falls from $0.53$ to $0.37$ and
 partially recovers to $0.45$, still $0.08$ below its own one-hop score. The
 distinction is worth keeping --- ``every other system decays'' would be the
 tidier sentence and it is not what the table says. A system that gets
-\emph{better} as the required chain gets longer is not merely ahead on average
---- it is the only one in the table whose profile is consistent with actually
-traversing the chain, and that monotonicity is a stronger form of the multi-hop
+\emph{better} as the required chain gets longer is not merely ahead on average:
+it is the only one in the table whose profile is consistent with actually
+traversing the chain. That monotonicity is a stronger form of the multi-hop
 claim than any aggregate could carry.
 
 \textbf{Think-on-Graph beats AGR on CWQ's one-hop stratum} ($0.53$ against
-$0.46$, $n = 137$), and this is reported rather than buried because it makes the
+$0.46$, $n = 137$). This is reported rather than buried because it makes the
 rest of the story more credible, not less. \Cref{sec:ablations} identifies the
 mechanism: decomposition costs accuracy on questions that do not need
 decomposing, and CWQ's \textsf{h1} stratum is full of them.
@@ -515,12 +514,12 @@ decomposing, and CWQ's \textsf{h1} stratum is full of them.
 \textbf{Vector-RAG's WebQSP profile is the paradigm in two cells.} It scores
 $0.82$ at one hop --- the best single-hop number anywhere in the table, better
 than AGR's $0.75$ --- and $0.12$ at two. When one triple suffices, dense
-retrieval over verbalised triples is excellent; when a chain is required, it has
+retrieval over verbalised triples is excellent. When a chain is required, it has
 nothing to offer. This is the cell the multi-hop argument rests on, because a
 one-triple context is chain-incapable by construction rather than by
 configuration.
 
-\textbf{GraphRAG's WebQSP inversion has two causes, and only one of them was
+\textbf{GraphRAG's WebQSP inversion has two causes. Only one of them was
 originally named.} It scores $0.30$ at \textsf{h1} against $0.44$ at
 \textsf{h2}. Part of that is hub noise: popular one-hop entities have large
 neighbourhoods, and the answer is drowned in the reranked window --- or, more
@@ -528,13 +527,13 @@ exactly, drowned \emph{or absent}, since the retrieval step samples at most
 $100$ edges per topic entity without an ordering, and $55.1\%$ of its topic
 entities carry more edges than that (\Cref{sec:baseline-graphrag}). Which of the
 two applies to any given question is not recoverable from the run records. But
-the inversion also marks the edge of the retrieval radius, which the same
-section scopes as a bound on this implementation rather than on static retrieval
-as such. WebQSP's \textsf{h2} stratum is largely mediator paths, which a one-hop
-expansion reaches by hopping through the mediator, whereas CWQ's \textsf{h2} is
-genuine composition, which it cannot reach --- $0.44$ against $0.16$ on
-nominally the same stratum depth. Read GraphRAG's per-stratum row as measuring
-what its radius covers, not how far static retrieval can see.
+the inversion also marks the edge of the retrieval radius. The same
+section scopes that as a bound on this implementation rather than on static
+retrieval as such. WebQSP's \textsf{h2} stratum is largely mediator paths, which
+a one-hop expansion reaches by hopping through the mediator. CWQ's \textsf{h2},
+by contrast, is genuine composition, which it cannot reach at all: $0.44$
+against $0.16$ on nominally the same stratum depth. Read GraphRAG's per-stratum
+row as measuring what its radius covers, not how far static retrieval can see.
 
 \textbf{The unreachable stratum is a hallucination probe, not an accuracy
 measurement.} By construction no path to gold exists within the hop bound for
@@ -551,9 +550,9 @@ Systems}\label{sec:groundedness-results}
 \begin{table}[!tb]
   \begin{center}
     \caption[Two-tier groundedness]{Two-tier groundedness. Tier~1 is
-    deterministic over every asserted entity in all $4{,}000$ records; Tier~2 is
+    deterministic over every asserted entity in all $4{,}000$ records. Tier~2 is
     a language-model entailment judgement over a stratified sample of $60$
-    assertions per system per dataset; the judge itself was validated
+    assertions per system per dataset. The judge itself was validated
     separately, at $\kappa = 0.6995$ over $100$ paired annotations
     (\Cref{sec:judge}).}
     \label{tab:groundedness}
@@ -589,14 +588,14 @@ Systems}\label{sec:groundedness-results}
 \subsection{Tier 1: Structural Hallucination Is a Property of the Paradigm}
 
 The differential is emphatic. The parametric control asserts $661$ entities
-on\index{hallucination}\index{groundedness} WebQSP of which $179$ --- $27.1\%$
---- have no basis in the knowledge environment, and $37.6\%$ of the questions it
+on\index{hallucination}\index{groundedness} WebQSP, of which $179$ --- $27.1\%$
+--- have no basis in the knowledge environment. And $37.6\%$ of the questions it
 answers contain at least one such entity. Both navigating systems sit at exactly
 zero, over $1{,}235$ and $832$ asserted entities. Parametric answering
-hallucinates structurally at double-digit rates; graph-navigated answering
+hallucinates structurally at double-digit rates. Graph-navigated answering
 eliminates structural hallucination outright.
 
-\textbf{But Think-on-Graph reaches zero as well, and that changes the
+\textbf{But Think-on-Graph reaches zero as well. That changes the
 attribution.} Structural groundedness is a property of the \emph{navigation
 paradigm} --- any system that copies its answer entities out of triples it
 actually traversed inherits it --- not of this thesis's verification layer
@@ -611,40 +610,40 @@ the answer. \Cref{sec:limitations} builds on exactly this gap.
 Two readings of the middle band belong on the record. The no-retrieval control's
 CWQ rate ($12.4\%$) is less than half its WebQSP rate ($27.1\%$) not because it
 fabricates less on harder questions but because it hedges more --- $38.0\%$
-against $12.2\%$ --- and abstention suppresses the measured hallucination rate.
+against $12.2\%$. Abstention suppresses the measured hallucination rate.
 That is the abstention trade appearing in a third metric. And Vector-RAG's $38$
 ungrounded entities are mostly not fabrications: its index is global, so
 retrieval can surface facts about a similarly-named subject that exists in the
-graph but has no connection to the question's topics, and the model copies
+graph but has no connection to the question's topics. The model then copies
 faithfully from them. The metric correctly flags those as unanchored to the
 question, but the mechanism is retrieval error rather than generation error.
-Structural ungroundedness conflates the two, and the distinction is recoverable
+Structural ungroundedness conflates the two. The distinction is recoverable
 from whether the entity appears in the system's own retrieved facts.
 
 \subsection{Tier 2: A Narrow Band and an Underpowered Comparison}
 
-Tier~2 asks whether the asserted entity is supported \emph{as the answer},
-and\index{Cohen's kappa} under the instruction that mere connectedness is not
-support, every system lands in a $36.7$--$66.7\%$ band. AGR is highest on WebQSP
-at $66.7\%$. On CWQ it is second: $5.0$ points ahead of Think-on-Graph, which is
-the comparison the rest of this chapter makes, but $1.7$ behind Vector-RAG's
-$50.0\%$. Its margin over the agentic baseline is $5.0$ points on both datasets;
-its lead over \emph{every} system is a WebQSP result only.
+Tier~2 asks whether the asserted entity is supported \emph{as the
+answer}.\index{Cohen's kappa} Under the instruction that mere connectedness is
+not support, every system lands in a $36.7$--$66.7\%$ band. AGR is highest on
+WebQSP at $66.7\%$. On CWQ it is second: $5.0$ points ahead of Think-on-Graph,
+which is the comparison the rest of this chapter makes, but $1.7$ behind
+Vector-RAG's $50.0\%$. Its margin over the agentic baseline is $5.0$ points on
+both datasets. Its lead over \emph{every} system is a WebQSP result only.
 
 Neither gap is resolvable at this sample size. With $n = 60$ per cell the $95\%$
 binomial interval has a half-width of roughly $12$--$13$ points, so a $5$-point
-difference is inside the noise --- as is Vector-RAG's $1.7$ --- and no
+difference is inside the noise --- as is Vector-RAG's $1.7$. No
 conclusion in this thesis rests on either. What the tier does establish is the
 level: semantic support is \emph{hard} for every system, including the two that
 are structurally perfect. Zero structural hallucination coexists with roughly a
-third to a half of assertions failing a strict semantic-support test --- which
-is the single most useful thing the metric says, and it says it about the
-paradigm rather than about any one system.
+third to a half of assertions failing a strict semantic-support test. That
+coexistence is the single most useful thing the metric says, and it says it
+about the paradigm rather than about any one system.
 
 Two properties of the measurement bound its interpretation, both pre-registered.
 Path retrieval takes the three shortest connecting paths, so a genuinely
-supporting chain can lose to shorter irrelevant ones; the rates are conservative
-lower bounds, depressed uniformly across systems, which preserves the
+supporting chain can lose to shorter irrelevant ones. The rates are conservative
+lower bounds, depressed uniformly across systems. That uniformity preserves the
 between-system comparison while making the absolute levels untrustworthy. And
 the judge was validated at $\kappa = 0.6995$ against a pre-registered bar of
 $0.7$ (\Cref{sec:judge}) --- substantial agreement, marginally short of the
@@ -685,8 +684,8 @@ decisive.
 
 Agency costs roughly an order of magnitude over one-shot retrieval: $4{,}511$
 and\index{budget} $6{,}818$ tokens per question against $\sim 500$, and
-$11$--$17$ seconds against one to two. That is the price of RQ1's accuracy, and
-it is stated as a price.
+$11$--$17$ seconds against one to two. That is the price of RQ1's accuracy. It
+is stated as a price.
 
 The comparison that carries information is against the other agentic system,
 since the two run under an identical $25$-call cap. AGR uses \emph{half} the
@@ -699,13 +698,13 @@ The clip column is the sharpest form of that. Beam search costs are
 multiplicative in width and depth, so under the shared budget Think-on-Graph
 exhausts its calls before finishing on $29.2\%$ of WebQSP questions and $44.0\%$
 of CWQ questions, while AGR never does. On nearly half the multi-hop benchmark
-the baseline is answering from a truncated search. This is a fair constraint ---
+the baseline is answering from a truncated search. This is a fair constraint:
 both systems live under the same cap, and a clipped run still answers from what
-it gathered by the same graceful degradation --- and it is the efficiency
+it gathered by the same graceful degradation. It is the efficiency
 finding rather than a caveat on it: under an identical budget, AGR converts its
 calls into correct answers at roughly twice the rate.
 
-Never reaching the call cap is not the same as running unbounded, and the
+Never reaching the call cap is not the same as running unbounded. The
 distinction matters because the rest of this thesis restates this result. AGR's
 own budgets bind, the depth cap of \Cref{tab:budget} hardest: the meter refuses
 a deeper expansion on $25.6\%$ of test questions, against $6.2\%$ for backtracks
@@ -726,7 +725,7 @@ them.
   roughly an order of magnitude more than the one-shot ones, and a linear axis
   would compress every non-agentic system into a single column. Read this figure
   for the token frontier only. Think-on-Graph sits below \emph{and} to the left
-  of AGR, so it is a frontier point on this axis, not a dominated one; the
+  of AGR, so it is a frontier point on this axis, not a dominated one. The
   domination claim holds on calls, which are not plotted and are given in
   \Cref{tab:efficiency}. Generated from
   \textsf{results/phase4/thesis\_numbers.json}.}
@@ -735,20 +734,20 @@ them.
 
 Reading \Cref{tab:main} against \Cref{tab:efficiency}, and plotted
 as\index{budget} \Cref{fig:accuracy-cost}, the frontier depends on which cost is
-charged, and the two costs this thesis records do not agree. Stating it on one
+charged. The two costs this thesis records do not agree. Stating it on one
 of them alone would overclaim.
 
 \textbf{On tokens, the axis of \Cref{fig:accuracy-cost}, Think-on-Graph is not
 dominated.} The Pareto set on WebQSP holds four systems --- no-retrieval at
-$113$ tokens, Vector-RAG at $527$, Think-on-Graph at $3{,}615$, AGR at $4{,}511$
---- and the interior point is static GraphRAG, which the parametric control
+$113$ tokens, Vector-RAG at $527$, Think-on-Graph at $3{,}615$, AGR at
+$4{,}511$. The interior point is static GraphRAG, which the parametric control
 beats on both axes at once. On CWQ the Pareto set holds three, no-retrieval,
 Think-on-Graph and AGR, with \emph{both} static retrievers interior for that
 same reason. Think-on-Graph buys its lower accuracy at a genuinely lower token
-price on both datasets, and any claim that it is dominated has to name an axis
+price on both datasets. Any claim that it is dominated has to name an axis
 on which that is true.
 
-\textbf{On calls it is dominated, and calls are what the budget meters}
+\textbf{On calls it is dominated. Calls are what the budget meters}
 (\Cref{sec:budgets}). Think-on-Graph spends $12.8$ and $18.2$ calls against
 AGR's $6.2$ and $8.9$ --- lower Hits@1 at roughly double the call cost, on both
 datasets, with no interior ambiguity. The two costs diverge because AGR spends
@@ -759,13 +758,13 @@ separates them by a factor of two --- and it is the call budget that clips
 Think-on-Graph on $29\%$ and $44\%$ of questions (\Cref{sec:tog-split}).
 
 Around that, the corners are unchanged. Vector-RAG on WebQSP is the cheap
-corner: $0.568$ Hits@1 for $527$ tokens, and $0.82$ on the one-hop stratum,
-which makes it the right choice for shallow questions and useless for deep ones.
-AGR is the accurate corner on both datasets. The no-retrieval control holds the
-cheap end of the token frontier while being off any accuracy-worthy frontier
-once precision is counted --- it remains the cheapest way to be right about half
-the time on WebQSP, which is the contamination point restated as an economic
-one.
+corner: $0.568$ Hits@1 for $527$ tokens, and $0.82$ on the one-hop stratum. That
+combination makes it the right choice for shallow questions and useless for
+deep ones. AGR is the accurate corner on both datasets. The no-retrieval
+control holds the cheap end of the token frontier while being off any
+accuracy-worthy frontier once precision is counted. It remains the cheapest way
+to be right about half the time on WebQSP, which is the contamination point
+restated as an economic one.
 
 \section{Ablation Study}\label{sec:ablations}
 
@@ -781,7 +780,7 @@ so a positive $\Delta$ means removing the component \emph{improved} the metric.
     stratified halves. The reference row is the frozen system restricted to the
     same questions, at zero additional cost. P and R are the per-question means
     defined in \Cref{sec:metrics} and reported for the full systems in
-    \Cref{tab:main}; they are carried here so that the precision effect of each
+    \Cref{tab:main}. They are carried here so that the precision effect of each
     condition can be read off directly rather than taken on trust from the
     surrounding prose. Cost is reported in tokens and calls only: latency is
     omitted because every record in the \textsf{no-verifier} condition is a full
@@ -828,7 +827,7 @@ so a positive $\Delta$ means removing the component \emph{improved} the metric.
 
 \subsection{Without the Planner: A Stratum-Dependent Effect}
 
-This is the one condition that reaches significance, and it points the
+This is the one condition that reaches significance. It points the
 opposite\index{planner} way to the design intent.
 
 On WebQSP, \emph{removing} the planner improves every axis at once: Hits@1
@@ -838,14 +837,14 @@ $4{,}562 \to 3{,}159$, calls $6.2 \to 4.0$. McNemar gives $p = 5.9 \times
 the damage precisely: \textsf{h1} rises $0.75 \to 0.85$ and \textsf{h2} rises
 $0.84 \to 0.89$, so decomposition is hurting simple \emph{and} two-hop questions
 on this dataset. The planner prompt's first worked example instructs the model
-not to decompose single-hop questions; the ablation proves that instruction
+not to decompose single-hop questions. The ablation proves that instruction
 under-triggers, with a $p$-value.
 
 On CWQ the sign reverses and significance is not reached: Hits@1 $0.495 \to
 0.434$, $27$ against $15$ discordant pairs, $p = 0.088$. The stratum table shows
-a coherent mechanism rather than noise --- \textsf{h1} \emph{improves} ($0.49
+a coherent mechanism rather than noise: \textsf{h1} \emph{improves} ($0.49
 \to 0.54$) while \textsf{h2} collapses ($0.48 \to 0.34$) and \textsf{h3plus}
-moves little ($0.62 \to 0.54$) --- which is precisely ``decomposition helps
+moves little ($0.62 \to 0.54$). That pattern is precisely ``decomposition helps
 genuine composition and hurts questions that do not need it''. But it does not
 clear $\alpha = 0.05$ at $n = 198$, and the honest statement carries both
 halves: \emph{the planner's benefit is stratum-conditional and significant on
@@ -856,12 +855,12 @@ The finding is therefore not ``the planner helps'' or ``the planner hurts'' but
 that its value is conditional on question structure, and that applying
 decomposition unconditionally is the defect. \Cref{sec:decomposition-errors}
 reads the $21$ and $15$ questions where removing the planner flipped a failure
-into a success and names the mechanisms; \Cref{sec:future} turns them into an
+into a success and names the mechanisms. \Cref{sec:future} turns them into an
 adaptive gating proposal that this ablation earned rather than motivated.
 
 \subsection{Without Backtracking}
 
-Hits@1 moves $-0.010$ on WebQSP and $-0.005$ on CWQ; F1 $-0.013$ and
+Hits@1 moves $-0.010$ on WebQSP and $-0.005$ on CWQ. F1 moves $-0.013$ and
 $0.000$.\index{backtracking} Discordant pairs are $5$ against $3$ and $6$
 against $5$, giving $p = 0.73$ and $p = 1.00$. There is no detectable effect at
 this sample size.
@@ -880,27 +879,27 @@ removes real activity whose accuracy consequence this experiment cannot measure.
 The cleanest null in the table, and the most informative one. Discordant pairs
 are\index{verification layer} $0$ against $1$ on WebQSP and $1$ against $0$ on
 CWQ: across $398$ paired questions, removing claim verification changed the
-correctness of exactly two. Hits@1 moves $+0.005$ and $-0.005$; F1 $+0.004$ and
-$-0.009$. Both $p = 1.00$.
+correctness of exactly two. Hits@1 moves $+0.005$ and $-0.005$. F1 moves
+$+0.004$ and $-0.009$. Both $p = 1.00$.
 
-This reproduces the development-set result of \Cref{sec:dev-tuning} exactly, and
-it is what \Cref{ch:verification} predicted by construction: on $77$ of $80$
+This reproduces the development-set result of \Cref{sec:dev-tuning} exactly. It
+is also what \Cref{ch:verification} predicted by construction: on $77$ of $80$
 development questions the layer certified the draft and changed nothing, and the
 repair path never executed. A mechanism that mostly passes cannot move an
 accuracy metric.
 
 The conclusion this licenses is narrower and sharper than ``the verifier
-helps'', and it is the one \Cref{sec:findings} adopts: \emph{claim verification
+helps''. It is the one \Cref{sec:findings} adopts: \emph{claim verification
 does not measurably change how often AGR is right; it changes how often AGR is
-right for a reason it can exhibit}. Hits@1 cannot see that distinction; what
+right for a reason it can exhibit}. Hits@1 cannot see that distinction. What
 makes it checkable is the supporting-triple output contract of
 \Cref{sec:output-contract}. The evidence for the layer is that contract and the
 specimen analyses of \Cref{sec:verifier-errors} --- and it is neither of the two
 aggregate results it would be natural to reach for instead.
-\Cref{tab:groundedness} is reached by the agentic baseline as well, which is why
-\Cref{sec:findings} attributes it to graph navigation; and the precision column
+\Cref{tab:groundedness} is reached by the agentic baseline as well. That is why
+\Cref{sec:findings} attributes it to graph navigation. And the precision column
 of \Cref{tab:main} does not move when the layer is removed, as the P column of
-\Cref{tab:ablation} shows directly. It is not this row either, and this row is
+\Cref{tab:ablation} shows directly. It is not this row either. This row is
 reported at full length rather than omitted.
 
 \subsection{Embedding-Only Scoring}\label{sec:abl-embonly}
@@ -922,11 +921,11 @@ reference's $38$ and $108$.
 That second detail was originally read as the $\tau$ mechanism of
 \Cref{sec:backtracking} visible in the logs: with the language-model term
 removed, the signal maximum clears $\tau$ less often and the search works harder
-to compensate. The reading survives, but only partly, and the qualification is
+to compensate. The reading survives, but only partly. The qualification is
 recorded because the run logs contain the evidence against the stronger version.
 Every backtrack stores its trigger, so the increase can be decomposed rather
 than attributed. On WebQSP the $+19$ additional backtracks are $+14$
-\textsf{low\_score}, $+5$ \textsf{evaluator}, and no additional dead ends; on
+\textsf{low\_score}, $+5$ \textsf{evaluator}, and no additional dead ends. On
 CWQ the $+35$ are $+16$ \textsf{low\_score}, $+13$ \textsf{evaluator}, and $+6$
 dead ends. The \textsf{low\_score} trigger --- the one $\tau$ governs ---
 roughly triples in both datasets, from $7$ to $21$ and from $8$ to $24$, and
@@ -938,8 +937,8 @@ it thresholds is not computed identically in the two conditions, for the reason
 \Cref{sec:backtracking} records: at $\alpha = 1$ the two auxiliary maxima are
 never taken, so $\sigma$ is a maximum over beam-selected, non-banned edges
 rather than over every candidate offered. After a backtrack has banned the best
-relation, $\sigma$ falls in this condition and holds steady in the reference,
-which produces additional \textsf{low\_score} backtracks through an
+relation, $\sigma$ falls in this condition and holds steady in the reference.
+That divergence produces additional \textsf{low\_score} backtracks through an
 implementation asymmetry rather than through the scoring change under test. The
 two effects push the same way and cannot be separated without re-running the
 condition with the auxiliary terms restored, which would no longer be the frozen
@@ -956,8 +955,8 @@ than the null. Nothing in \Cref{tab:rq3} depends on it: the accuracy and F1
 deltas are computed from answers, not from backtracks, and they are unaffected.
 The primary evidence for $\alpha = 0.7$ remains the development sweep of
 \Cref{tab:sweep}, where the $\alpha = 1.0$ condition lost five hits on $80$
-questions; this ablation corroborates it at test scale rather than independently
-establishing it.
+questions. This ablation corroborates it at test scale rather than
+independently establishing it.
 
 \subsection{Paired Significance Testing and Statistical Power}
 
@@ -986,7 +985,7 @@ establishing it.
 \end{table}
 
 One of four conditions reaches significance. That is the correct outcome to
-report\index{McNemar} for four components tested on half-samples, and it is
+report\index{McNemar} for four components tested on half-samples. It is
 reported as such rather than rewritten into four confident claims.
 
 A correction for multiple comparisons was not among the decisions fixed in
@@ -997,9 +996,9 @@ above. Within the ablation family the one significant result survives correction
 --- the planner effect on WebQSP is $p = 0.00592$ against a Bonferroni threshold
 of $0.05/8 = 0.00625$, and being the smallest of the eight it clears the first
 step of Holm's procedure at that same threshold. Nothing else in the family is
-near the bar under any correction; the next smallest is $p = 0.088$. The eight
+near the bar under any correction. The next smallest is $p = 0.088$. The eight
 baseline comparisons clear $0.05/8$ as well, the largest of them at $p =
-0.0035$. Correction therefore changes no claim made here, which is the only
+0.0035$. Correction therefore changes no claim made here. That is the only
 circumstance in which reporting it after the fact is worth anything.
 
 The power limitation is arithmetic, not rhetorical. McNemar's test reads only
@@ -1009,8 +1008,8 @@ order of ten discordant pairs --- not enough to reject at conventional levels.
 The planner condition cleared the bar on WebQSP because its effect is large
 ($21$ against $6$), not because that comparison was better powered than the
 others. The halves were adopted as the pre-registered response to the
-benchmark's cost coming in above projection (\Cref{sec:ablation-conditions});
-doubling them is the straightforward remedy and is named in
+benchmark's cost coming in above projection (\Cref{sec:ablation-conditions}).
+Doubling them is the straightforward remedy and is named in
 \Cref{sec:limitations-final}.
 
 Three conditions are therefore reported as ``no detectable effect at this sample
@@ -1018,23 +1017,24 @@ size''. That phrase is not a hedge for ``no effect'': for the verifier the point
 estimates are near zero \emph{and} the mechanism's contribution was never
 expected to appear in accuracy, whereas for backtracking and the $\alpha$-blend
 the point estimates are consistently signed and the mechanism is visibly active
-in the logs. Those are different epistemic situations, and collapsing them into
+in the logs. Those are different epistemic situations. Collapsing them into
 one word would lose the distinction.
 
 \section{Findings Against RQ1, RQ2, and RQ3}\label{sec:findings}
 
 \textbf{RQ1 --- does agentic navigation improve multi-hop factual accuracy?}
-Yes, and the multi-hop qualifier is doing real work. AGR leads every accuracy
-cell of \Cref{tab:main}, and all eight paired comparisons reject, including both
+Yes. The multi-hop qualifier is doing real work. AGR leads every accuracy
+cell of \Cref{tab:main}. All eight paired comparisons reject, including both
 against the agentic baseline running on the same graph with the same model under
 the same budget. The stratum profile is the substance of the answer: on CWQ,
-AGR's accuracy \emph{rises} with hop count ($0.46 \to 0.55 \to 0.57$) and it is
-the only system that ends above where it started, and Vector-RAG collapses from
-$0.33$ to $0.10$ on a context that cannot hold a chain at any radius.
+AGR's accuracy \emph{rises} with hop count ($0.46 \to 0.55 \to 0.57$), and it is
+the only system that ends above where it started. Vector-RAG, by contrast,
+collapses from $0.33$ to $0.10$ on a context that cannot hold a chain at any
+radius.
 
 Four boundaries are reported with it rather than left for a reader to find.
-Think-on-Graph hedges marginally less on CWQ --- $22.5\%$ against $23.0\%$ ---
-which is the one cell of \Cref{tab:main} AGR does not lead, and the reason the
+Think-on-Graph hedges marginally less on CWQ --- $22.5\%$ against $23.0\%$.
+That is the one cell of \Cref{tab:main} AGR does not lead, and the reason the
 claim above is about the accuracy columns rather than the whole table.
 Think-on-Graph is also better on CWQ's one-hop stratum. Vector-RAG is better
 than everything on WebQSP's. And the margin over Think-on-Graph is located in
@@ -1046,10 +1046,10 @@ retrieval radius confounds it (\Cref{sec:baseline-graphrag}).
 
 One further bound belongs with the headline rather than only with the baseline
 description. Think-on-Graph prunes to the widths of the algorithm as published,
-$40$ relations and $20$ neighbours against AGR's $300$ and $200$, which binds on
-roughly a third of its expansions and on almost none of AGR's
+$40$ relations and $20$ neighbours against AGR's $300$ and $200$. That narrower
+pruning binds on roughly a third of its expansions and on almost none of AGR's
 (\Cref{sec:baseline-tog}). The agentic comparison is therefore against a
-systematically narrower baseline, and the margin should be read as a lower bound
+systematically narrower baseline. The margin should be read as a lower bound
 on what an equal-width reimplementation would show ---
 \Cref{sec:future-baselines} names the equal-width re-run as the way to close it.
 Nor is the baseline certified on the retrieval-echo diagnostic: its $0\%$ there
@@ -1058,17 +1058,17 @@ diagnostic to read (\Cref{sec:baseline-constants}).
 
 \textbf{RQ2 --- what does pre-generation verification contribute beyond
 navigation?} The answer has three parts that a yes-or-no question would have
-merged, which is why it was not asked as one.
+merged. That is why it was not asked as one.
 
-\emph{First, navigation eliminates structural hallucination, and the verifier is
+\emph{First, navigation eliminates structural hallucination. The verifier is
 not what does it.} Both navigating systems assert zero ungrounded entities on
 WebQSP --- over $1{,}235$ assertions for AGR and $832$ for Think-on-Graph ---
 against $27.1\%$ for parametric answering on the same set. Any system that
-copies its answer entities out of triples it traversed inherits this;
-attributing it to the verification layer would be wrong, and
+copies its answer entities out of triples it traversed inherits this.
+Attributing it to the verification layer would be wrong, and
 \Cref{tab:groundedness} is the evidence that it would be wrong.
 
-\emph{Second, the precision advantage belongs to the architecture, and this
+\emph{Second, the precision advantage belongs to the architecture. This
 experiment cannot award any of it to the layer.} AGR's assertion precision
 exceeds Think-on-Graph's by $11.8$ points on CWQ ($67.9\%$ against $56.1\%$) and
 its per-question precision by $0.13$ and $0.08$, at a lower hedge rate on WebQSP
@@ -1079,32 +1079,32 @@ by $+0.001$ on WebQSP and $-0.010$ on CWQ (\Cref{tab:ablation}), a sign flip an
 order of magnitude below the gap it would have to account for. The mechanism
 cannot carry the attribution either. Entity filtering runs only on the give-up
 path (\Cref{sec:entity-filtering}), which $10$ of $400$ WebQSP and $29$ of $400$
-CWQ questions entered; a filter that touches $2.5\%$ of a test set cannot
+CWQ questions entered. A filter that touches $2.5\%$ of a test set cannot
 produce a $0.13$ precision margin on it. Where it does fire it removes a false
 assertion at almost no cost in recall, and \Cref{sec:verification-tradeoff}
-shows that happening case by case --- but a case-level effect on ten questions
+shows that happening case by case. But a case-level effect on ten questions
 and an aggregate margin over a different system are different claims, and only
 the first of them is established here.
 
 Two differences that the ablation holds fixed remain live as explanations of
-that margin, and neither is the claim check. The groundedness filter on
+that margin. Neither is the claim check. The groundedness filter on
 evaluator resolutions (\Cref{sec:groundedness-filter}) discards resolutions no
-retrieved triple supports; it is navigation rather than verification, and it
+retrieved triple supports. It is navigation rather than verification, and it
 runs in every ablation condition. And the drafting prompt carries the
 anti-vacuity and grounding provisions that the baselines' plain answering prompt
 does not (\Cref{sec:baseline-constants}) --- a difference between AGR and
 Think-on-Graph, but not between the reference and no-verifier conditions, so
 nothing reported here separates it from the architecture it is bundled with.
 Some share of the precision margin over the agentic baseline may be prompt
-rather than structure, and this work cannot say how large that share is.
+rather than structure. This work cannot say how large that share is.
 
 \emph{Third, verification shows no measurable Hits@1 effect.} Two questions out
 of $398$ change when it is removed. This is not a failure of the layer but a
 statement about what Hits@1 measures: a metric satisfied by one correct entity
 among several cannot see a mechanism that operates on the others. The layer's
 value proposition is that an answer arrives with the triples that support it
-(\Cref{sec:output-contract}) --- an auditability claim, not an accuracy claim
---- and the honest formulation is that \emph{claim verification does not change
+(\Cref{sec:output-contract}) --- an auditability claim, not an accuracy claim.
+The honest formulation is that \emph{claim verification does not change
 how often the system is right; it changes how often the system is right for a
 reason it can exhibit}.
 
@@ -1112,7 +1112,7 @@ reason it can exhibit}.
 four reaches significance. The planner is stratum-dependent: removing it
 improves WebQSP by $0.083$ F1 at $p = 0.006$ while saving $31\%$ of tokens and
 $35\%$ of calls, and costs CWQ $0.047$ F1 at $p = 0.088$. That asymmetry, not a
-pooled average, is the result --- and it is a finding about how decomposition
+pooled average, is the result. It is a finding about how decomposition
 should be \emph{applied} rather than about whether it works. Backtracking,
 verification, and the $\alpha$-blend show no detectable effect at $n \approx
 200$, for the different reasons \Cref{sec:ablations} separates. On cost, the
@@ -1120,7 +1120,7 @@ whole apparatus runs at half the language-model calls of the agentic baseline
 and never exhausts the call budget that clips the baseline on $44\%$ of CWQ
 questions.
 
-The three answers do not point the same way, and the chapter does not force them
+The three answers do not point the same way. The chapter does not force them
 to. Navigation is where the accuracy comes from; verification is where the
 auditability comes from, the precision margin belonging to the architecture as a
 whole rather than to any one component this ablation could isolate; and
