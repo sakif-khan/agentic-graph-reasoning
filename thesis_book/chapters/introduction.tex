@@ -78,50 +78,49 @@ Grounding}\label{sec:rag-to-graph}
 \subsection{Vector Retrieval and Its Structural Blind Spot}
 
 Retrieval-Augmented Generation~\cite{lewis2020retrieval} attaches the model to
-an external corpus. The system embeds the question, retrieves passages that are
-semantically similar to it, and lets the model answer from those. Where the
+an external corpus. The system embeds the question and retrieves passages that
+are semantically similar to it. It lets the model answer from those. Where the
 answer lives in a single retrievable passage, this works well.
 
 Its weakness, though, is structural. Vector retrieval treats a corpus as flat
-chunks of text and ranks them by similarity to the question, and for a multi-hop
-question that signal is actively misleading. The passage holding the
+chunks of text and ranks them by similarity to the question. For a multi-hop
+question, that signal is actively misleading. The passage holding the
 \emph{intermediate} entity may bear little lexical or semantic resemblance to
 the original question, and at that point the system does not yet know which
 entity to look for. Flat retrieval also has no way to represent the
-relationships between entities; they survive, at best, as adjacency inside a
-retrieved chunk, and relationships are exactly what a compositional question has
-to traverse. Surveys of the intersection between graphs and language models
+relationships between entities. They survive, at best, as adjacency inside a
+retrieved chunk. But relationships are exactly what a compositional question
+has to traverse. Surveys of the intersection between graphs and language models
 single this out as the central limitation of flat retrieval~\cite{li2023survey}.
 
 \subsection{Knowledge Graphs and Static GraphRAG}
 
 A \emph{knowledge graph}\index{knowledge graph} makes those
 relationships\index{GraphRAG} explicit. It stores facts as typed edges between
-identified entities, so composing two facts becomes a traversal rather than an
-inference over prose. GraphRAG~\cite{edge2024local} exploits exactly this,
-building a graph over a corpus and retrieving structured context in place of raw
-passages, and related systems carry the idea into long-term
+identified entities. So composing two facts becomes a traversal rather than an
+inference over prose. GraphRAG~\cite{edge2024local} exploits exactly this: it
+builds a graph over a corpus and retrieves structured context in place of raw
+passages. Related systems carry the idea into long-term
 memory~\cite{gutierrez2024hipporag} and temporally-qualified
 facts~\cite{li2025tgrag}.
 
 What these systems still do is retrieve \emph{statically}: they fetch a subgraph
-around the linked entities in one shot and hand it to the model. Because
-retrieval runs first and runs only once, it cannot know what the next reasoning
-step will need. Take a question whose second hop depends on the answer to its
-first. A fixed-radius neighbourhood is then either too small to contain that
-answer, or so large that the relevant edges are buried among thousands of
-irrelevant ones.
+around the linked entities in one shot and hand it to the model. Retrieval runs
+first and runs only once. So it cannot know what the next reasoning step will
+need. Take a question whose second hop depends on the answer to its first. A
+fixed-radius neighbourhood is then either too small to contain that answer, or
+so large that the relevant edges are buried among thousands of irrelevant ones.
 
 \subsection{Agentic Retrieval: Reasoning as Navigation}
 
 The natural response is to interleave retrieval with reasoning: let the model
 take one step, look at what it found, and decide where to look next. Retrieval
-then turns into \emph{navigation}, and the system becomes an agent operating on
-the graph rather than a pipeline reading from it.
+then turns into \emph{navigation}. The system becomes an agent operating on the
+graph rather than a pipeline reading from it.
 
 Think-on-Graph~\cite{sun2024think} set the pattern with LLM-guided beam search
 over the graph. Plan-on-Graph~\cite{chen2024plan} added sub-objective
-decomposition and reflection-driven backtracking, and
+decomposition and reflection-driven backtracking.
 Reasoning-on-Graphs~\cite{luo2024reasoning} generates grounded relation paths as
 explicit plans. Other systems add tool abstractions~\cite{jiang2024kgagent},
 cope with incomplete graphs~\cite{xu2024generate}, or generalise across
@@ -129,59 +128,58 @@ structured sources~\cite{jiang2023structgpt}. Recent surveys treat this meeting
 of language models and knowledge graphs as a research programme in its own
 right~\cite{pan2024unifying,ma2025unifying}.
 
-Agentic navigation is the right shape for the problem, and this thesis adopts
-it. What remains open is what it still leaves unsolved.
+Agentic navigation is the right shape for the problem. This thesis adopts it.
+What remains open is what it still leaves unsolved.
 
 \section{Limitations of Existing Agentic KGQA Systems}\label{sec:limitations}
 
 \subsection{No Check on What the Final Answer Asserts}
 
-Agentic systems ground their answers in the subgraph they traverse, and our own
+Agentic systems ground their answers in the subgraph they traverse. Our own
 measurements confirm that they do this effectively: the entities they assert
 really do exist in the graph, and they are reachable along the paths the systems
 walked (\Cref{sec:groundedness-results}). Fabrication is not the deficit here.
 
 The deficit is \emph{precision}. Every system we survey in \Cref{ch:related}
-emits whatever its final generation call produces from the traversed context,
-and nothing checks that each asserted entity actually answers the question that
-was asked. An entity can sit in the retrieved subgraph, have been retrieved
-correctly, and still be the wrong answer, whether it is an intermediate node
-from the reasoning chain, a container where the question asked for a member, or
-one of several plausible neighbours picked more or less at random. A system can
-equally well assert a crowd of entities where the question admits only a few,
-which inflates recall at the cost of precision. A system that verifies retrieval
-but never verifies assertion cannot catch either failure, and both show up as a
+emits whatever its final generation call produces from the traversed context.
+Nothing checks that each asserted entity actually answers the question that was
+asked. An entity can sit in the retrieved subgraph, have been retrieved
+correctly, and still be the wrong answer. It might be an intermediate node from
+the reasoning chain, a container where the question asked for a member, or one
+of several plausible neighbours picked more or less at random. A system can
+equally well assert a crowd of entities where the question admits only a few.
+This inflates recall at the cost of precision. A system that verifies retrieval
+but never verifies assertion cannot catch either failure. Both show up as a
 measurable precision gap between systems (\Cref{sec:webqsp-results}). That gap
-is what motivates a check in the first place. It is not, on its own, evidence
-that the check works, and \Cref{sec:ablations} is where this thesis asks whether
-the check proposed here is actually what produces it.
+is what motivates a check in the first place. But it is not, on its own,
+evidence that the check works. \Cref{sec:ablations} is where this thesis asks
+whether the check proposed here is actually what produces it.
 
 Chain-of-Verification~\cite{dhuliawala2024chain} and multi-agent
 debate~\cite{du2024improving} show that post-hoc self-checking reduces factual
-error in free-form generation, and Hu et al.~\cite{hu2025selfcorrecting}
-demonstrate a self-correcting agentic graph pipeline in a clinical setting. What
-none of them provides is a claim-level check against the retrieved triples,
-carried out \emph{before} the answer is emitted, inside a graph-navigating
-agent.
+error in free-form generation. Hu et al.~\cite{hu2025selfcorrecting} demonstrate
+a self-correcting agentic graph pipeline in a clinical setting. What none of
+them provides is a claim-level check against the retrieved triples, carried out
+\emph{before} the answer is emitted, inside a graph-navigating agent.
 
 \subsection{Unquantified Contribution of Individual Agentic Mechanisms}
 
 Agentic systems are assemblies of mechanisms, things like decomposition,
-scoring, backtracking, and self-correction, and the literature tends to report
+scoring, backtracking, and self-correction. But the literature tends to report
 them as wholes. When one of these systems beats a static baseline, the published
 work rarely establishes which mechanism actually produced the gain, or whether
 some of them contribute nothing at all. Without that attribution, later work
 inherits the entire assembly on faith, along with its cost. Component-level
-ablation is the standard remedy, and this literature conspicuously underuses it.
+ablation is the standard remedy. This literature conspicuously underuses it.
 
 \subsection{Accuracy Reported Without Cost}
 
-Navigation is expensive. Every exploration step costs at least one model call,
-and agentic systems routinely burn an order of magnitude more tokens per
-question than a single-shot baseline. An accuracy table that leaves this out
-makes agentic methods look uniformly preferable, when the honest picture is a
-trade-off, and that trade-off is exactly what a practitioner needs to see before
-deciding whether to deploy such a system.
+Navigation is expensive. Every exploration step costs at least one model call.
+Agentic systems routinely burn an order of magnitude more tokens per question
+than a single-shot baseline. An accuracy table that leaves this out makes
+agentic methods look uniformly preferable. But the honest picture is a
+trade-off, and that trade-off is exactly what a practitioner needs to see
+before deciding whether to deploy such a system.
 
 \section{Problem Statement}\label{sec:problem}
 
@@ -194,11 +192,11 @@ reaching $A$.
 
 Three properties set this apart from standard knowledge graph question
 answering. The output is a \emph{pair}, not an answer on its own: the supporting
-triples are part of the contract, which makes the reasoning auditable rather
+triples are part of the contract. This makes the reasoning auditable rather
 than merely asserted. That support also has to be \emph{traversed}, not just
-retrievable after the fact, which closes off the possibility of justifying, post
+retrievable after the fact. This closes off the possibility of justifying, post
 hoc, an answer the system reached some other way. And the system checks the
-justification \emph{before} it emits the answer, so it can drop or hedge
+justification \emph{before} it emits the answer. So it can drop or hedge
 unsupported content instead of merely flagging it.
 
 \section{Research Questions}\label{sec:rqs}
@@ -208,17 +206,17 @@ unsupported content instead of merely flagging it.
 Does interleaving retrieval with reasoning over a knowledge graph actually yield
 more accurate answers than static retrieval, and does the advantage grow with
 the number of hops a question requires? Answering this calls for a no-retrieval
-control, because the standard benchmarks predate current models and may be
-partly memorised.
+control. This is because the standard benchmarks predate current models and may
+be partly memorised.
 
 \subsection{RQ2: What Does Pre-Generation Verification Contribute Beyond Graph
 Navigation?}
 
 Given a system that already navigates the graph, what does a claim-level check
 against the traversed triples add? We pose this as \emph{what does it
-contribute} rather than \emph{does it reduce hallucination}, because the answer
-turns out to have several parts that a yes-or-no framing would only obscure
-(\Cref{sec:findings}).
+contribute} rather than \emph{does it reduce hallucination}. This is because
+the answer turns out to have several parts that a yes-or-no framing would only
+obscure (\Cref{sec:findings}).
 
 \subsection{RQ3: Which Components Contribute What, at What Token Cost?}
 
@@ -237,38 +235,38 @@ decomposes the draft answer into atomic claims and checks each one against the
 traversed subgraph before the system emits anything. \emph{Structural} names
 what that check establishes and, in the same word, bounds it: the two graph
 routes ask whether an edge joins a claim's endpoints, not whether it is the edge
-the claim names, and not in which direction, so a claim that X is Y's mother is
+the claim names, and not in which direction. So a claim that X is Y's mother is
 certified by an edge recording that X is Y's child. That is the price of
-admitting free-text relations, and \Cref{sec:verify-failure-modes} reports both
-the reason and the exposure. Where a claim is unsupported, the design either
-routes to targeted re-exploration or drops the claim from the answer, and AGR
-returns what survives paired with the triples that support it.
+admitting free-text relations. \Cref{sec:verify-failure-modes} reports both the
+reason and the exposure. Where a claim is unsupported, the design either routes
+to targeted re-exploration or drops the claim from the answer. AGR returns what
+survives paired with the triples that support it.
 
 Both repair routes are specified, implemented, and reported at the frequency we
 actually measured rather than the one we intended. That measured frequency is
-low: the re-exploration route never fired on the development set, because the
-depth budget is already exhausted by the time the verifier is reached, and the
+low. The re-exploration route never fired on the development set, because the
+depth budget is already exhausted by the time the verifier is reached. The
 entity filter ran on only three of eighty questions (\Cref{ch:verification}). On
 the vast majority of questions the layer simply passes through and certifies a
 draft at no extra model call. That is a finding about when verification can act,
-not a defect in it, and \Cref{sec:findings} treats it as one.
+not a defect in it. \Cref{sec:findings} treats it as one.
 
 \subsection{A Component-Level Ablation of Agentic Mechanisms}
 
-We ablate four components, namely the planner, the backtracking mechanism, the
-verification layer, and the learned component of candidate scoring, and report
-accuracy, groundedness, and token cost for each condition, complete with paired
-significance testing. For one architecture, at least, this closes the
+We ablate four components: the planner, the backtracking mechanism, the
+verification layer, and the learned component of candidate scoring. For each
+condition we report accuracy, groundedness, and token cost, complete with
+paired significance testing. For one architecture, at least, this closes the
 attribution gap we identify in \Cref{sec:limitations}.
 
 \subsection{Stratum-Dependent Decomposition: When Planning Hurts}
 
 The literature treats question decomposition as straightforwardly beneficial. We
 find that it is not. Removing the planner \emph{improves} accuracy on the
-shallower benchmark while trending toward harming it on the deeper one, and the
+shallower benchmark, while trending toward harming it on the deeper one. The
 asymmetry, not the pooled average, is the real result. Only the improving arm
-reaches significance ($p = 0.006$); the harming arm does not ($p = 0.088$), and
-we report it as a direction rather than as an effect.
+reaches significance ($p = 0.006$); the harming arm does not ($p = 0.088$). We
+report it as a direction rather than as an effect.
 
 \subsection{The Echo Attractor as a Named Failure Mode}
 
@@ -278,15 +276,15 @@ typically the question's own topic entity, an intermediate node from the
 reasoning chain, or a coarser-granularity container. Because the systems share
 it, no evaluation that treats them as independent can even see it. It accounts
 for $13$ of the $259$ failures read in \Cref{sec:echo}, which is where the
-evidence for it lives; the contribution is the named mechanism itself and what
-it means for consensus-based evaluation, not the frequency.
+evidence for it lives. But the contribution is the named mechanism itself and
+what it means for consensus-based evaluation, not the frequency.
 
 \subsection{Quantified Benchmark Defect Rates for WebQSP and CWQ}
 
 We quantify label defects in the two standard benchmarks through a
 consensus\index{benchmark defect} pre-pass followed by per-item adjudication. We
-separate two kinds of label error because they carry opposite evidence
-signatures, and we report results both with and without the affected items.
+separate two kinds of label error, because they carry opposite evidence
+signatures. We report results both with and without the affected items.
 
 \subsection{An Evaluation Protocol with Pre-Registered Thresholds}
 
@@ -300,41 +298,41 @@ one we narrowly missed.
 Our knowledge environment is a static, curated subset of
 Freebase~\cite{bollacker2008freebase}, specifically the union of per-question
 subgraphs, each pre-extracted so as to contain its own question's answer. That
-makes it a friendlier place to search than the full knowledge base, and it puts
+makes it a friendlier place to search than the full knowledge base. It also puts
 answer reachability above $97\%$ by construction (\Cref{sec:validation-gate}).
 The absolute accuracies we report are therefore not comparable to evaluations
 over full Freebase, though the comparisons between systems are, because every
 system navigates the very same environment; \Cref{sec:threats} states the limit
 in full. We do not take on graph construction from unstructured text,
-knowledge-base completion, or the temporal evolution of facts, and we draw only
+knowledge-base completion, or the temporal evolution of facts. And we draw only
 English factoid questions, from WebQSP~\cite{yih2016value} and
 ComplexWebQuestions~\cite{talmor2018web}. Long-form generation and
 conversational settings are outside our scope.
 
-All systems share one backbone model, which we hold constant so that none of the
+All systems share one backbone model. We hold it constant so that none of the
 differences we report can be credited to model capability rather than to
 architecture. What we establish, then, is how these architectures compare on a
 single backbone, not how they scale across backbones. Finally, AGR is a research
-prototype that we evaluate offline, and we treat latency as a cost measure
-rather than as evidence of production readiness.
+prototype that we evaluate offline. We treat latency as a cost measure rather
+than as evidence of production readiness.
 
 \textbf{How to read the title.} This thesis is submitted under the title
-registered with CASR at the proposal stage, which is fixed at registration and
-is not revised here. Three of its terms are broader than what the chapters below
-actually establish, and they are better read against the findings than taken as
-claims in their own right. \emph{Hallucination mitigation} does occur, but it is
-not this work's contribution: \Cref{sec:groundedness-results} attributes the
+registered with CASR at the proposal stage. That title is fixed at registration
+and is not revised here. Three of its terms are broader than what the chapters
+below actually establish. They are better read against the findings than taken
+as claims in their own right. \emph{Hallucination mitigation} does occur, but it
+is not this work's contribution: \Cref{sec:groundedness-results} attributes the
 elimination of structural hallucination to graph navigation, with the agentic
 baseline reaching the same zero without any verification layer at all.
-\emph{Autonomous} names a design this thesis argues against; under the control
-pattern of \Cref{sec:architecture} the program orchestrates the loop and the
+\emph{Autonomous} names a design this thesis argues against. Under the control
+pattern of \Cref{sec:architecture}, the program orchestrates the loop, and the
 model is consulted only at constrained decision points. And \emph{fact
-verification} is narrower here than the phrase suggests, since the check
-establishes structural adjacency rather than the relation a claim asserts, and
-never reaches answer relevance (\Cref{sec:verify-failure-modes}). Put in the
-terms the measurements actually support, what follows is a claim-level
-structural check placed before emission, together with a component-level
-attribution of the mechanisms around it.
+verification} is narrower here than the phrase suggests: the check establishes
+structural adjacency rather than the relation a claim asserts, and it never
+reaches answer relevance (\Cref{sec:verify-failure-modes}). Put in the terms
+the measurements actually support, what follows is a claim-level structural
+check placed before emission, together with a component-level attribution of
+the mechanisms around it.
 
 \section{Thesis Organization}\label{sec:organization}
 
@@ -343,7 +341,7 @@ covers knowledge graphs and their Freebase-specific idiosyncrasies, knowledge
 graph question answering and its evaluation conventions, language models as
 reasoning engines, retrieval augmentation, graph search, and the statistical
 tools we use throughout. \Cref{ch:related} surveys prior work and positions AGR
-against it, ending with a comparison of agentic knowledge graph question
+against it. It ends with a comparison of agentic knowledge graph question
 answering systems that pinpoints the gap this thesis addresses and justifies our
 choice of baselines.
 
@@ -352,8 +350,8 @@ environment, including the answer-reachability gate that bounds the accuracy
 attainable inside it. \Cref{ch:framework} specifies the AGR framework: the tool
 API, the state machine, the planner, the scoring function, the backtracking
 policy, and the budgets that guarantee termination. \Cref{ch:verification}
-treats the Structural Verification Layer in detail, which is the component this
-work set out to contribute and, as it happens, the one whose measured effect
+treats the Structural Verification Layer in detail. This is the component this
+work set out to contribute, and, as it happens, the one whose measured effect
 turns out to be the narrowest of the three reported in \Cref{sec:findings}.
 
 \Cref{ch:setup} lays out the experimental design: test sets, baselines, metrics,
