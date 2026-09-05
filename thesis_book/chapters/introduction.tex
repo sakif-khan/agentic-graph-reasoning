@@ -1,14 +1,14 @@
 % !TEX root = ../thesis_book_0421052099.tex
 \chapter{Introduction}\label{ch:intro}
 
-Large language models answer factual questions fluently, and often enough they
-get them wrong. The errors are not random; they come out systematic and
-confident, and they are notoriously hard to catch from the output alone, because
-a fabricated answer reads in exactly the same register as a correct one. They
-also get worse, and quickly, once an answer calls for composing several facts
-rather than recalling a single one. This thesis takes on that gap in two steps.
-First, we give the model a symbolic knowledge graph to walk through. Then,
-before it asserts anything, we check what it is about to say.
+Large language models answer factual questions fluently. But often enough they
+get them wrong. The errors are not random. They are systematic and confident,
+and are notoriously hard to catch from the output alone. This is because a
+fabricated answer reads in exactly the same register as a correct one. The
+responses get worse when an answer calls for composing several facts rather
+than recalling a single one. This thesis takes on that gap in two steps. First,
+we give the model a symbolic knowledge graph to walk through. Then, before it
+asserts anything, we check what it is about to say.
 
 The rest of this chapter motivates the problem and explains why the obvious
 remedies still fall short. From there it states the problem and the research
