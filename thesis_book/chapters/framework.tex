@@ -232,9 +232,8 @@ Three design decisions inside these operations are load-bearing.
 count is free signal: a relation with a fanout of forty thousand is almost never
 the edge that answers a specific question. The scorer can use this signal
 without an extra query. Retrieving incoming as well as outgoing edges matters
-because
-Freebase's relation direction is a modelling artefact --- a question about where
-someone was born may be answerable through
+because Freebase's relation direction is a modelling artefact --- a question
+about where someone was born may be answerable through
 \textsf{people.person.place\_of\_birth} outward or
 \textsf{location.location.people\_born\_here} inward.
 
@@ -791,11 +790,10 @@ keeps it auditable, but the mapping is not one site per budget, and the
 exceptions are the interesting part. The model-call budget is checked inside
 the client before every call, so no node can bypass it. Exceeding it raises an
 exception that each node catches into a degraded path rather than a crash. The
-backtrack budget is
-checked in the post-evaluation router alone. Beam width and anchor cap are not
-checks at all but slices: beam width in the explorer, the anchor cap in the
-explorer and again in the evaluator, where resolved entities become the next
-frontier.
+backtrack budget is checked in the post-evaluation router alone. Beam width and
+anchor cap are not checks at all but slices: beam width in the explorer, the
+anchor cap in the explorer and again in the evaluator, where resolved entities
+become the next frontier.
 
 The remaining three are each checked in two places. In every case the second
 site exists because the first does not cover the verify--explore cycle.
@@ -971,10 +969,9 @@ it actually found.
 how many banned expansions had been skipped was computing the number of anchors
 instead. The counter was reporting a plausible-looking number that was
 unrelated to what it claimed to measure. It was corrected rather than deleted,
-but the episode
-motivates a standing rule adopted for the remainder of the work: a metric that
-has never been checked against a case where its correct value is known
-independently should not be trusted, and should not be analysed.
+but the episode motivates a standing rule adopted for the remainder of the work:
+a metric that has never been checked against a case where its correct value is
+known independently should not be trusted, and should not be analysed.
 
 \section{The Complete Navigation Algorithm}\label{sec:navigation-algorithm}
 

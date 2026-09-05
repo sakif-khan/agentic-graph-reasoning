@@ -276,10 +276,10 @@ embedded once and held in memory rather than embedded per step.
 Two details make this work. Relation names are \emph{verbalised} before
 encoding: \textsf{people.\allowbreak person.\allowbreak place\_of\_birth}
 becomes ``people person place of birth'', with consecutive duplicate tokens
-removed. The encoder was trained on natural language. So the verbalised phrase lands
-near a question like ``where was X born'' in embedding space, where the raw
-dotted path does not. And relations are embedded with the \emph{same} model as
-entities and sub-objectives, since vectors from different models occupy
+removed. The encoder was trained on natural language. So the verbalised phrase
+lands near a question like ``where was X born'' in embedding space, where the
+raw dotted path does not. And relations are embedded with the \emph{same} model
+as entities and sub-objectives, since vectors from different models occupy
 unrelated spaces and their cosine similarity is meaningless.
 
 The resulting artefact is a $7058 \times 384$ float32 matrix with a parallel

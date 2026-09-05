@@ -14,10 +14,10 @@ asserting things with no basis in the knowledge the system was given, and the
 standard evaluation convention --- Hits@1 over a multi-valued gold set ---
 cannot see the difference. \Cref{ch:prelim} fixed the vocabulary the technical
 chapters assume, including the operational definition of ungroundedness this
-thesis measures against, and withdrew the proposal's characterisation of the
-navigation strategy as MCTS-inspired: what the method is, is guided best-first
-search with a bounded beam and backtracking, and it is described that way
-throughout.
+thesis measures against. It also withdrew the proposal's characterisation of
+the navigation strategy as MCTS-inspired: what the method is, is guided
+best-first search with a bounded beam and backtracking, and it is described
+that way throughout.
 
 \Cref{ch:related} positioned the work against the agentic KGQA literature and
 identified the attribution gap it addresses: published systems bundle
@@ -41,15 +41,15 @@ against a batched language-model judgement, a signal-maximum backtracking
 trigger that fires only when every available signal is weak, and an explicit
 budget meter that makes cost a first-class, logged quantity.
 
-\Cref{ch:verification} specified the Structural Verification Layer, and reported
-its behaviour honestly enough to bound its own claims: a draft is decomposed
-into atomic claims, each checked first against traversed adjacency and then, if
-necessary, by batched entailment, with unsupported claims triggering targeted
-re-exploration or deterministic removal from the answer. The chapter also
-records that the repair path never executed on the development set, that ten of
-eighty answers were certified with no claims at all, and that entities appearing
-in no claim are never checked --- the layer's guarantees stated as they are
-rather than as designed.
+\Cref{ch:verification} specified the Structural Verification Layer. It also
+reported its behaviour honestly enough to bound its own claims: a draft is
+decomposed into atomic claims, each checked first against traversed adjacency
+and then, if necessary, by batched entailment, with unsupported claims
+triggering targeted re-exploration or deterministic removal from the answer. The
+chapter also records that the repair path never executed on the development set,
+that ten of eighty answers were certified with no claims at all, and that
+entities appearing in no claim are never checked --- the layer's guarantees
+stated as they are rather than as designed.
 
 \Cref{ch:setup} fixed the experimental design in advance and reports the
 decisions that went the other way: a backbone selected, reversed, and reselected
@@ -60,27 +60,27 @@ missed by $0.0005$ and reported as missed.
 
 \Cref{ch:results} reported the measurements. AGR leads every accuracy cell of
 the main matrix --- the agentic baseline hedges marginally less on CWQ, which
-\Cref{sec:findings} reports as the one cell it does not lead --- and every one
+\Cref{sec:findings} reports as the one cell it does not lead. Every one
 of the eight paired comparisons rejects, including both against a
 reimplementation of the agentic baseline running on the same graph with the same
 model under the same budget. That last margin is located rather than merely
 claimed: on the questions where the shared cap lets the baseline finish, the
-baseline is slightly ahead, and the whole margin comes from the $29\%$ and
+baseline is slightly ahead. The whole margin comes from the $29\%$ and
 $44\%$ of questions where the cap truncates it (\Cref{sec:tog-split}). The
 finding is therefore about affordability rather than about resolution quality
 --- beam search cannot complete under a budget a deployed system would impose,
 and guided search can. On ComplexWebQuestions AGR is the only system whose
-accuracy \emph{rises} with hop count, and every other system ends below where it
+accuracy \emph{rises} with hop count. Every other system ends below where it
 started --- the strongest available form of the multi-hop claim. The agentic
 baseline is the one that does not simply decay: it falls and then partially
-recovers, which is weaker than a rise and is reported as such in
-\Cref{sec:hop-results}. It runs at half the language-model calls of the agentic
+recovers. That recovery is weaker than a rise and is reported as such in
+\Cref{sec:hop-results}. AGR runs at half the language-model calls of the agentic
 baseline and never exhausts the call budget that clips that baseline on $44\%$
 of multi-hop questions. Structural hallucination is eliminated: over both
 datasets, zero ungrounded assertions in $1{,}709$ asserted entities, against
 $22.1\%$ of the $1{,}001$ the parametric control asserts. And three of four
-ablations detect nothing, which is reported at the same length as the one that
-does.
+ablations detect nothing. That null result is reported at the same length as
+the one that does.
 
 \Cref{ch:erroranalysis} read all $259$ remaining failures and named each
 mechanism. The findings that generalise beyond this system are three.
@@ -91,14 +91,14 @@ in the strongest specimen, decomposition actively suppressed the one anchor that
 could have discriminated, driving its score to the noise floor. \emph{The echo
 attractor}: the most common failure of a graph-navigating system is not to
 invent an entity but to surface a real, well-grounded, verifiably-true entity
-that sits one node away from the answer, which the verifier passes because it
+that sits one node away from the answer. The verifier passes it because it
 genuinely is grounded. And \emph{shared attractors break consensus-based
 evaluation}: five independent systems converge on the same wrong answer often
 enough that a policy of rescoring on majority agreement would have converted
 this failure mode into apparent correctness.
 
 Four contributions follow from that body of work. \Cref{sec:contribution}
-claimed six; the other two are stated above rather than repeated as items here
+claimed six. The other two are stated above rather than repeated as items here
 --- the echo attractor is the second of the three findings just given, and the
 pre-registered evaluation protocol is reported in the \Cref{ch:setup} paragraph,
 including the threshold it missed.
@@ -116,8 +116,8 @@ detectable accuracy effect.
 \textbf{Stratum-dependent decomposition.} The literature treats decomposition as
 straightforwardly beneficial. It is not: removing the planner \emph{improves}
 WebQSP accuracy by $0.083$ F1 at $p = 0.006$ while cutting tokens by $31\%$, and
-trends toward harming CWQ. The asymmetry, not the pooled average, is the result,
-and it says that decomposition should be gated on question structure rather than
+trends toward harming CWQ. The asymmetry, not the pooled average, is the result.
+It says that decomposition should be gated on question structure rather than
 applied unconditionally.
 
 \textbf{Quantified benchmark defect rates.} Fifty-seven questions across the two
@@ -131,7 +131,7 @@ class of them comes from.
 The limitations that most constrain what may be concluded are, in order of
 severity:
 
-\textbf{Wrongful acceptance is unmeasured, and the evidence is not persisted.}
+\textbf{Wrongful acceptance is unmeasured. The evidence is not persisted.}
 The verifier persists only the claims it rejects. One polarity of its error is
 therefore reported at census scale and the other from a single specimen that
 surfaced by manual trace reconstruction, and no rate exists for the polarity
@@ -140,7 +140,7 @@ contract its auditability: run records store the \emph{count} of supporting
 triples rather than the triples themselves (\Cref{sec:output-contract}), so an
 examiner can verify that the answers came from an evidence-tracking system but
 cannot inspect the evidence. This is an instrumentation decision constraining a
-scientific conclusion, and it is the first item in \Cref{sec:future}.
+scientific conclusion. It is the first item in \Cref{sec:future}.
 
 \textbf{Three of four ablations are underpowered.} At $n \approx 200$, a
 component that changes five questions in a hundred cannot be resolved. ``No
@@ -149,11 +149,11 @@ the same statement as ``no effect''.
 
 \textbf{Structural grounding is not answer adequacy.} Both navigating systems
 reach zero structural hallucination, so that property belongs to the navigation
-paradigm rather than to this thesis's verification layer, and the
+paradigm rather than to this thesis's verification layer. The
 semantic-support metric that would separate them runs on samples of $60$
 asserted answers per system per dataset, which is underpowered for the $5$-point
 gap it measures. Its agreement with the author was validated separately, at
-$\kappa = 0.6995$ over $100$ paired annotations; the two are different
+$\kappa = 0.6995$ over $100$ paired annotations. The two are different
 quantities over different populations, and neither rescues the other. The
 strongest evidence for the layer is therefore the case-level analyses --- not a
 groundedness differential against the agentic baseline, and not the precision
@@ -178,7 +178,7 @@ resolve at equal width. Equalising the widths is specified in
 
 \textbf{The static graph baseline retrieves one logical hop, and samples it.}
 Its decay across hop strata is therefore partly a property of its retrieval
-radius and not only of static retrieval as a paradigm, and
+radius and not only of static retrieval as a paradigm.
 \Cref{sec:baseline-graphrag} scopes what may be concluded from it accordingly. A
 second bound compounds the first: it takes at most $100$ edges per topic entity
 with no ordering imposed, and on $72.5\%$ of the questions at least one topic
@@ -200,8 +200,8 @@ question shape. The headline numbers are a floor for that shape.
 \section{Future Work}\label{sec:future}
 
 The census makes it possible to separate proposals that are backed by a counted,
-repeated pattern from proposals that are backed by an argument. Both are listed;
-they are not the same kind of claim.
+repeated pattern from proposals that are backed by an argument. Both are listed.
+They are not the same kind of claim.
 
 \subsection{Repairs the Census Earned}
 
@@ -262,9 +262,9 @@ would recover those answers. The relation-path formulation of
 RoG~\cite{luo2024reasoning} is the natural source for what such a chain may look
 like, and using it as an acceptance criterion rather than as a retrieval plan is
 the change being proposed. The Tier-2 judge of \Cref{sec:groundedness-metric} is
-a prototype of exactly this judgement, which suggests folding a bounded form of
-it into the loop; the $\kappa$ of $0.6995$ is also a caution about how reliable
-such a check would be.
+a prototype of exactly this judgement. That resemblance suggests folding a
+bounded form of it into the loop. The $\kappa$ of $0.6995$ is also a caution
+about how reliable such a check would be.
 
 \subsection{A Set-Intersection Operator for Compound Questions}
 
@@ -335,9 +335,9 @@ hub noise, the paradigm claim is strengthened by an experiment rather than by an
 implementation detail. The same pass should impose an ordering on the fanout cap
 --- descending fanout, or an embedding pre-rank --- so that the $100$ edges kept
 per topic entity are a stated selection rather than an arbitrary one
-(\Cref{sec:baseline-graphrag}); until then, the two limits are confounded and
+(\Cref{sec:baseline-graphrag}). Until then, the two limits are confounded and
 only their sum is measured. Running it costs one pass over $800$ questions at
-baseline rates; not running it is the reason the claim is stated narrowly here.
+baseline rates. Not running it is the reason the claim is stated narrowly here.
 
 \subsection{Beyond This Environment}
 
