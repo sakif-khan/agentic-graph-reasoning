@@ -18,52 +18,52 @@ document is organised.
 \section{Hallucination in Large Language Models}\label{sec:hallucination}
 
 A \emph{hallucination}\index{hallucination} is a generated statement that is
-fluent and syntactically well formed but backed by no source the model can point
-to; very often it is simply false. Huang et al.~\cite{huang2025survey} survey
-the phenomenon at length and argue that it is an intrinsic consequence of how
-these models are built, not an incidental defect to be patched away. That
-framing matters here, because it determines what kind of remedy is on the table
-at all. If hallucination were a bug, we would fix it. Because it is structural,
-the response has to be architectural.
+fluent and syntactically well formed but backed by no source the model can
+point to. Very often it is simply false. Huang et al.~\cite{huang2025survey}
+survey the phenomenon at length. They argue that it is an intrinsic consequence
+of how these models are built, not an incidental defect to be patched away. That
+framing matters here. This is because it determines what kind of remedy is on
+the table at all. If hallucination were a bug, we would fix it. But it is
+structural, so the response has to be architectural.
 
 \subsection{Where Hallucination Originates: Training Data, Model, and Prompt}
 
-Hallucinations arise at three distinct points, and it is worth separating them
+Hallucinations arise at three distinct points. It is worth separating them,
 because each calls for a very different kind of intervention.
 
 One is the \emph{training data}. A model trained on a corpus that carries
 errors, staleness, or thin coverage of a domain will reproduce those defects
-faithfully. Fixing them means curating the corpus and retraining, something only
-the model's producer can do.
+faithfully. Fixing them means curating the corpus and retraining. That is
+something only the model's producer can do.
 
 A second is the \emph{model} itself: its parameterisation and its decoding
 procedure. What a model knows is stored diffusely across its weights, with no
-explicit index, so it holds no reliable internal signal that separates a fact it
-has memorised from a plausible continuation it is simply constructing.
-Intervening here means changing the architecture or the training objective,
-which is again largely out of reach.
+explicit index. So it holds no reliable internal signal that separates a fact
+it has memorised from a plausible continuation it is simply constructing.
+Intervening here means changing the architecture or the training objective.
+That, again, is largely out of reach.
 
-The third is the \emph{prompt}, and this is the one this thesis takes on. When
-the context supplied alongside a question already carries the facts needed to
-answer it, the model does not have to fall back on parametric recall, and
-structured context can override defects inherited from the training data without
-touching the model at all. Retrieval augmentation~\cite{lewis2020retrieval}
-rests on that premise, and so does this work. Our contribution is in \emph{how}
-that context is assembled, and in \emph{what gets checked} before the answer
-goes out.
+The third is the \emph{prompt}. This is the one this thesis takes on. When the
+context supplied alongside a question already carries the facts needed to
+answer it, the model does not have to fall back on parametric recall.
+Structured context can override defects inherited from the training data
+without touching the model at all.
+Retrieval augmentation~\cite{lewis2020retrieval} rests on that premise, and so
+does this work. Our contribution is in \emph{how} that context is assembled,
+and in \emph{what gets checked} before the answer goes out.
 
 \subsection{Why Multi-Hop Questions Are the Hard Case}
 
 Single-fact questions are comparatively benign. ``Where was Ada Lovelace born?''
-takes one lookup, and the model either knows it or it does not.
+takes one lookup. The model either knows it or it does not.
 
 \emph{Multi-hop}\index{multi-hop question} questions, such as ``Who directed the
-film that won Best Picture in 1998?'', call for an ordered chain of lookups in
-which each step depends on the result of the last. Two things make them the
-genuinely hard case. The first is that errors compound: a wrong resolution at
-the first hop rarely surfaces downstream, so the rest of the chain proceeds
+film that won Best Picture in 1998?'', call for an ordered chain of lookups.
+Each step depends on the result of the last. Two things make them the genuinely
+hard case. The first is that errors compound: a wrong resolution at the first
+hop rarely surfaces downstream, and the rest of the chain then proceeds
 confidently from a false premise. The second is that a question-level
-correctness check never sees the intermediate results at all, which leaves a
+correctness check never sees the intermediate results at all. This leaves a
 system that answers correctly by accident indistinguishable from one that
 answers correctly by sound reasoning.
 
