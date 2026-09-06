@@ -140,7 +140,7 @@ measurements confirm that they do this effectively: the entities they assert
 really do exist in the graph, and they are reachable along the paths the systems
 walked (\Cref{sec:groundedness-results}). Fabrication is not the deficit here.
 
-The deficit is \emph{precision}. Every system we survey in \Cref{ch:related}
+The deficit is \emph{precision}. Every system we survey in \Cref{ch:background}
 emits whatever its final generation call produces from the traversed context.
 Nothing checks that each asserted entity actually answers the question that was
 asked. An entity can sit in the retrieved subgraph, have been retrieved
@@ -336,14 +336,14 @@ the mechanisms around it.
 
 \section{Thesis Organization}\label{sec:organization}
 
-\Cref{ch:prelim} establishes the background the technical chapters assume. It
-covers knowledge graphs and their Freebase-specific idiosyncrasies, knowledge
-graph question answering and its evaluation conventions, language models as
-reasoning engines, retrieval augmentation, graph search, and the statistical
-tools we use throughout. \Cref{ch:related} surveys prior work and positions AGR
-against it. It ends with a comparison of agentic knowledge graph question
-answering systems that pinpoints the gap this thesis addresses and justifies our
-choice of baselines.
+\Cref{ch:background} establishes the background the technical chapters
+assume and positions AGR against prior work. It covers knowledge graphs and
+their Freebase-specific idiosyncrasies, knowledge graph question answering
+and its evaluation conventions, language models as reasoning engines,
+retrieval augmentation, graph search, and the statistical tools we use
+throughout. It ends with a comparison of agentic knowledge graph question
+answering systems that pinpoints the gap this thesis addresses and justifies
+our choice of baselines.
 
 \Cref{ch:environment} describes how we build and validate the knowledge
 environment, including the answer-reachability gate that bounds the accuracy

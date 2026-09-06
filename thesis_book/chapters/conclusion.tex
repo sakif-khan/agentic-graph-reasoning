@@ -12,17 +12,17 @@ lies partly in where they diverge.
 question answering is not merely a matter of asserting false things but of
 asserting things with no basis in the knowledge the system was given, and the
 standard evaluation convention --- Hits@1 over a multi-valued gold set ---
-cannot see the difference. \Cref{ch:prelim} fixed the vocabulary the technical
-chapters assume, including the operational definition of ungroundedness this
-thesis measures against. It also withdrew the proposal's characterisation of
-the navigation strategy as MCTS-inspired: what the method is, is guided
-best-first search with a bounded beam and backtracking, and it is described
-that way throughout.
+cannot see the difference. \Cref{ch:background} fixed the vocabulary the
+technical chapters assume, including the operational definition of
+ungroundedness this thesis measures against. It also withdrew the proposal's
+characterisation of the navigation strategy as MCTS-inspired: what the method
+is, is guided best-first search with a bounded beam and backtracking, and it is
+described that way throughout.
 
-\Cref{ch:related} positioned the work against the agentic KGQA literature and
-identified the attribution gap it addresses: published systems bundle
-decomposition, search, and verification into single reported numbers, so the
-field has no evidence about which component earns its cost.
+\Cref{sec:positioning} positioned the work against the agentic KGQA
+literature and identified the attribution gap it addresses: published systems
+bundle decomposition, search, and verification into single reported numbers,
+so the field has no evidence about which component earns its cost.
 
 \Cref{ch:environment} built the knowledge environment and, more importantly,
 \emph{certified} it: $2.59$ million entities and $8.31$ million triples with a
@@ -109,9 +109,9 @@ supporting evidence is a byproduct of the control flow rather than a post-hoc
 reconstruction.
 
 \textbf{A component-level ablation.} Four single-deviation conditions with
-paired significance testing, closing the attribution gap of \Cref{ch:related}
-for this architecture --- and finding that only one of the four components has a
-detectable accuracy effect.
+paired significance testing, closing the attribution gap of
+\Cref{sec:positioning} for this architecture --- and finding that only one of
+the four components has a detectable accuracy effect.
 
 \textbf{Stratum-dependent decomposition.} The literature treats decomposition as
 straightforwardly beneficial. It is not: removing the planner \emph{improves}
