@@ -7,7 +7,7 @@ structured, what operations it may perform on the graph, how it decides where to
 look next, how it recovers from wrong turns, and what guarantees bound its cost.
 The verification layer is specified in \Cref{sec:verification-layer}. Everything
 before it is the machinery that produces the traversal it verifies. That layer
-is the component this thesis set out to contribute. \Cref{ch:results} measures
+is the component this thesis set out to contribute. \Cref{sec:results} measures
 its contribution as narrower than intended: auditability rather than accuracy,
 with even the precision advantage over the agentic baseline belonging to the
 architecture as a whole rather than to the layer. So the layer is introduced
@@ -717,7 +717,7 @@ its own check. It gets the same answer, though --- every one of the $3{,}690$
 committed records that ran this graph carries a non-empty draft. Every
 degraded path described in this section is therefore specified and never
 exercised. That is also why its fact window is described here and nowhere in
-\Cref{ch:results}.
+\Cref{sec:results}.
 
 \section{Budgets and Termination Guarantees}\label{sec:budgets}
 
@@ -1043,7 +1043,7 @@ handful of questions rather than a distribution, the count is given in the
 sentence that makes the claim. The exceptions are in \Cref{sec:repair}, where
 what the development set showed and what the $800$ test questions show are not
 the same thing. Reporting only the first would leave this account contradicting
-\Cref{ch:erroranalysis}.
+\Cref{sec:erroranalysis}.
 
 \section{Motivation: Verifying Before Emitting, Not
 After}\label{sec:verify-motivation}
@@ -1154,7 +1154,7 @@ means for the outcome label they received.
 \section{Two-Stage Claim Checking}\label{sec:two-stage}
 % Terminology: these are the structural check and the entailment check, not
 % "Tier 1 / Tier 2". The word "tier" is reserved for the groundedness metric in
-% Chapter~\ref{ch:setup}.
+% Section~\ref{sec:setup}.
 
 Each claim is routed through at most three tests: two structural, one
 model-based. \Cref{alg:verify} states the procedure, and \Cref{fig:claim-path}
@@ -1546,7 +1546,7 @@ verified scores 65\,/\,11\,/\,4 against draft-only's 66\,/\,10\,/\,4. The wrong
 count is identical. The layer cost one correct answer and removed none. Its
 case therefore cannot be made on development-set accuracy. This thesis does
 not attempt to make it there. Neither of the two aggregate measurements that
-might seem to carry it survives \Cref{ch:results} either. The groundedness
+might seem to carry it survives \Cref{sec:results} either. The groundedness
 result of \Cref{sec:groundedness-results} is reached by the agentic baseline
 as well. That result makes it a property of graph navigation rather than of
 this layer. Removing the layer, in turn, does not move per-question precision,
@@ -1563,7 +1563,7 @@ involves a label changed after the fact.} The sole remaining diff is Harbaugh,
 where draft-only's ``hit'' asserts Baltimore Ravens --- supported by no
 traversed triple, and not a team Jim Harbaugh played for --- alongside an
 unverifiable founding-date filter. Set-intersection Hits@1 scores that as a
-clean hit. Per-question F1 in \Cref{ch:results} does not. The question was
+clean hit. Per-question F1 in \Cref{sec:results} does not. The question was
 additionally relabelled from \textsf{cvt\_heavy} to \textsf{unanswerable\_env}
 after this analysis, on the grounds that it carries a date constraint the
 environment cannot express (\Cref{sec:unanswerable}). The relabelling is
@@ -1671,7 +1671,7 @@ opportunity. A duplicate needs two claims matched by the \emph{adjacency} route,
 which is the only route that appends anything --- \textsf{verify\_connection}
 records no evidence and the entailment call appends nothing. Over the $80$
 development records this section reports and the $800$ test questions of
-\Cref{ch:results} --- $908$ verifier firings between them --- $378$ report two
+\Cref{sec:results} --- $908$ verifier firings between them --- $378$ report two
 or more supported claims --- read, under the exception stated above, from the
 fenced \textsf{n\_structural} counter. That $378$ is an over-count of the
 exposure rather than a measure of it, and knowably so in that direction: the
@@ -1843,7 +1843,7 @@ does not establish that the claimed relation is the one the edge records, that
 an entity absent from every claim was grounded at all, that the answer is
 responsive to the question, or that a claim it could not check is false. Those
 boundaries are properties of the design rather than defects discovered in it.
-\Cref{ch:erroranalysis} reports how much of the residual error they account
+\Cref{sec:erroranalysis} reports how much of the residual error they account
 for.
 
 \endinput

@@ -166,7 +166,7 @@ Two consequences of this definition should be stated plainly. The definition is
 relative to the environment: an entity absent from the graph is ungrounded even
 if true in the world. And groundedness is not correctness --- an answer can be
 perfectly grounded, every entity real and reachable, and still be the wrong
-answer to the question. \Cref{ch:results} shows that this gap is not
+answer to the question. \Cref{sec:results} shows that this gap is not
 hypothetical. \Cref{sec:limitations} is built on it.
 
 \section{Retrieval-Augmented Generation}\label{sec:rag}
@@ -483,7 +483,7 @@ both as a source for the knowledge environment and as the hallucination
 evaluator. That plan was abandoned. The reason is methodological rather than
 practical: if the evaluator's facts are contained in the graph the system
 retrieves from, a low hallucination rate follows by construction rather than by
-merit. The evaluation in \Cref{ch:setup} therefore measures claim grounding
+merit. The evaluation in \Cref{sec:setup} therefore measures claim grounding
 against the graph with a human-validated judge. This keeps the evaluator's
 ground truth outside the system's evidence.
 
@@ -595,7 +595,7 @@ and published accuracy.
     $58.9$ and $69.5$ Think-on-Graph reports for itself. Two published papers
     disagree by $1.8$ and $1.9$ points on the same system and benchmark. That
     gap is the order of many claimed improvements in this literature, and it is
-    the reason \Cref{ch:setup} reimplements its baseline rather than citing a
+    the reason \Cref{sec:setup} reimplements its baseline rather than citing a
     number.}
   \end{center}
 \end{table}
@@ -608,7 +608,7 @@ different backbones. RoG and KG-Agent are fine-tuned. Their numbers are not
 comparable with prompting methods at all. Among the prompting methods, the
 backbone accounts for much of the spread: the same methods drop sharply when
 run on smaller open-weight models. That sensitivity is the direct motivation
-for holding the backbone constant across every system in \Cref{ch:setup}. The
+for holding the backbone constant across every system in \Cref{sec:setup}. The
 literature does not hold it constant, so a cross-paper table cannot settle which
 architecture is better.
 

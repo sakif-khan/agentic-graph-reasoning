@@ -30,7 +30,7 @@ its cost.
 measured answer-reachability ceiling of $97.3\%$ and $99.7\%$ over the full test
 splits; a three-stage entity resolver; and an explicit inventory of what it
 cannot express --- no date literals, no numeric literals, no ordinals --- which
-\Cref{ch:erroranalysis} later shows accounts for the third-largest failure
+\Cref{sec:erroranalysis} later shows accounts for the third-largest failure
 category in the census. Certifying the environment before measuring on it is
 what allows a failure to be attributed to the system rather than to the
 substrate.
@@ -52,14 +52,14 @@ that ten of eighty answers were certified with no claims at all, and that
 entities appearing in no claim are never checked --- the layer's guarantees
 stated as they are rather than as designed.
 
-\Cref{ch:setup} fixed the experimental design in advance and reports the
+\Cref{sec:setup} fixed the experimental design in advance and reports the
 decisions that went the other way: a backbone selected, reversed, and reselected
 under a pre-registered tiebreaker after the first determinism estimate proved to
 be noise; a test-set build that read the wrong split and was caught by a
 contamination guard before any system ran; and a judge-validation threshold
 missed by $0.0005$ and reported as missed.
 
-\Cref{ch:results} reported the measurements. AGR leads every accuracy cell of
+\Cref{sec:results} reported the measurements. AGR leads every accuracy cell of
 the main matrix --- the agentic baseline hedges marginally less on CWQ, which
 \Cref{sec:findings} reports as the one cell it does not lead. Every one
 of the eight paired comparisons rejects, including both against a
@@ -83,7 +83,7 @@ $22.1\%$ of the $1{,}001$ the parametric control asserts. And three of four
 ablations detect nothing. That null result is reported at the same length as
 the one that does.
 
-\Cref{ch:erroranalysis} read all $259$ remaining failures and named each
+\Cref{sec:erroranalysis} read all $259$ remaining failures and named each
 mechanism. The findings that generalise beyond this system are three.
 \emph{Context-stripping}: decomposing a question can discard a qualifier that
 appears only in a later clause, so an early sub-objective resolves the wrong
@@ -101,8 +101,8 @@ this failure mode into apparent correctness.
 Four contributions follow from that body of work. \Cref{sec:contribution}
 claimed six. The other two are stated above rather than repeated as items here
 --- the echo attractor is the second of the three findings just given, and the
-pre-registered evaluation protocol is reported in the \Cref{ch:setup} paragraph,
-including the threshold it missed.
+pre-registered evaluation protocol is reported in the \Cref{sec:setup}
+paragraph, including the threshold it missed.
 
 \textbf{The framework and its verification layer.} An agentic KGQA system that
 returns its answer paired with the triples supporting it, built so that the
@@ -351,7 +351,7 @@ fixed while varying the substrate's provenance and noise profile.
 each candidate once and never revises it in light of what is found later, and
 genuine tree search over this same tool API is a well-defined next system rather
 than a rebranding of this one. \emph{Temporal and multi-source environments}
-address the failure family that recurs throughout \Cref{ch:erroranalysis} ---
+address the failure family that recurs throughout \Cref{sec:erroranalysis} ---
 questions with a time qualifier the graph cannot express --- and raise the
 question of what a claim check means when sources disagree. And \emph{transfer
 to high-stakes domains} is where the auditability property, rather than the
