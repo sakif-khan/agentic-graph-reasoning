@@ -175,16 +175,9 @@ pre-registered fallback --- stratified samples of $400$ per dataset
 points on Hits@1 --- was therefore adopted, with the arithmetic recorded before
 the runs fired. The whole benchmark, including the ablations, ultimately cost
 \$11.13 in API spend. That figure is read from the provider's billing record
-rather than derived from the run artifacts. It is one of the two
-\emph{reported} numbers in this thesis a reader cannot recompute from the
-repository. The other is the determinism count of \Cref{sec:backbone}, whose
-later rounds were read from console tables that were never committed. Two
-further figures are unreproducible and are not reported ones:
-\Cref{sec:design-validation} read the first smoke run from a console log that
-was never committed, and \Cref{sec:output-contract} quotes a pre-fix support
-count from a development trace that was not kept. Each says so where it quotes
-it. The reproducible proxy is the token and call accounting of
-\Cref{sec:efficiency}, which is recorded per question in every run record.
+rather than derived from the run artifacts. The reproducible proxy is the token
+and call accounting of \Cref{sec:efficiency}, which is recorded per question in
+every run record.
 
 Sampling is proportional within hop strata at seed~$42$, and the resulting
 question sets are committed as immutable artifacts
@@ -323,10 +316,7 @@ One provenance limit belongs with those numbers: only the first round survives
 as per-question artifacts, because the qualification script writes its detail
 file in truncating mode and later rounds overwrote it. The tool logs accumulated
 across all four rounds, and the console tables for rounds two through four exist
-in the project record rather than as committed artifacts. Those three rounds are
-therefore reported numbers the repository cannot reproduce. That property is one
-they share with the API spend of \Cref{sec:test-sets} and with nothing else in
-this thesis.
+in the project record rather than as committed artifacts.
 
 Two observations from those four runs matter more to this thesis than the choice
 they settled. First, each candidate carried a \emph{persistent} ungrounded
@@ -342,37 +332,23 @@ measured over four runs and two frontier-family models. It is also the reason
 
 \subsection{Response Caching as the Reproducibility Backstop}
 
-Reproducibility here rests on the cache, not on the model. Every completion is
-stored keyed on model string, temperature, reasoning effort, prompt, and schema
-hint. The detail that makes it work: the original token usage is stored
-alongside and \emph{replayed into the budget meter} on a hit. The budget check
-still runs and the call counter still increments. A fully cached rerun
-reproduces the original run's budget snapshot rather than approximating it, with
-one field's worth of care. The replay restores prompt and completion tokens but
-not the \textsf{reasoning\_tokens} counter. That counter is one the cache stores
-and does not add back. The backbone runs at reasoning effort \textsf{none}, and
-that field is zero in every one of the $6{,}960$ agent runs committed for this
-work --- the development sweep, the main matrix, the ablations and the smoke
-baselines together. The snapshots therefore do reproduce exactly here. Under a
-reasoning-effort setting they would not. The defect is recorded rather than
+Reproducibility here rests on the cache, not on the model. Its mechanism is
+specified in \Cref{sec:instrumentation}, and \Cref{app:cache-identity} gives the
+identity check it supports: a hit is indistinguishable from a live call, so a
+fully cached rerun reproduces the original run's budget snapshot rather than
+approximating it. One defect qualifies that. The replay restores prompt and
+completion tokens but not the \textsf{reasoning\_tokens} counter, which the
+cache stores and does not add back. It does not bite here: the backbone runs at
+reasoning effort \textsf{none}, and that field is zero in every one of the
+$6{,}960$ agent runs committed for this work. The defect is recorded rather than
 repaired, for the reason \Cref{sec:pre-registration} gives. Every table in
 \Cref{sec:results} comes from one recorded run per condition. That run replays
 byte-identically for as long as the cache survives, independent of API weather
 or model retirement.
 
-Fresh-run variance is a different problem. It is \emph{not} measured here.
-The bootstrap intervals and paired tests specified in \Cref{sec:metrics}
-resample \emph{questions}, so they bound how far a number would move on a
-different draw of questions from the same pool. They say nothing about how far
-it would move on a rerun of the \emph{same} questions. That is a property of
-decoding rather than of sampling, and they cannot measure it: both treat each
-system's answer set as fixed. That second quantity is not negligible:
-\Cref{sec:backbone} puts trajectory stability at $\approx 67\%$ for the frozen
-backbone, so roughly one trajectory in three diverges on a rerun. Every
-table in \Cref{sec:results} rests on a single run per condition. Repeating even
-the two agentic conditions would have bounded it. At \$11.13 against a
-\$15--20 ceiling, it was affordable. It was not done. \Cref{sec:threats} carries
-this as a limitation rather than this section carrying it as a solution.
+Fresh-run variance is a different problem, and it is \emph{not} measured here.
+\Cref{sec:threats} carries it as a limitation, with the reason the bootstrap
+intervals cannot bound it, rather than this section carrying it as a solution.
 
 The cache leaves one artifact in the record. The WebQSP run of the full system
 was started, interrupted after seventeen questions, and restarted. The restart
@@ -755,22 +731,13 @@ Blinding is what makes the resulting statistic a validity check rather than a
 measure of anchoring.
 
 A written annotation guideline was fixed during calibration and is reproduced in
-full in \Cref{app:judge-rules}. Each of its eight rules was forced by a case:
-judge the asked relationship \emph{under the graph's vocabulary}; treat a
-mediator-bridged pair of edges as one relation; label supported if \emph{any}
-single path supports; judge relations by \emph{role, not type}, so a
-normally-generic relation counts when it is itself what the question asks; for
-conjunctions require every asked relationship covered by some specific path,
-jointly rather than in one chain; judge each entity independently of answer-set
-completeness, which is recall and is measured elsewhere; ignore superlative and
-temporal filters the graph cannot express, judging only the base relation; and
-treat a path expressing only a question's identifying descriptor, rather than
-its actual ask, as unsupported.
+full in \Cref{app:judge-rules}. Each of its eight rules was forced by a case.
 
-That last rule is the \emph{composition-echo} case. It is the same
-phenomenon the failure census later finds at scale (\Cref{sec:echo}): the
-annotation task and the error taxonomy converging on one mechanism from opposite
-directions.
+The last of them --- treat a path expressing only a question's identifying
+descriptor, rather than its actual ask, as unsupported --- is the
+\emph{composition-echo} case. It is the same phenomenon the failure census later
+finds at scale (\Cref{sec:echo}): the annotation task and the error taxonomy
+converging on one mechanism from opposite directions.
 
 \subsection{Agreement Between Judge and Human Annotator}
 
@@ -1731,11 +1698,10 @@ The clip column is the sharpest form of that. Beam search costs are
 multiplicative in width and depth, so under the shared budget Think-on-Graph
 exhausts its calls before finishing on $29.2\%$ of WebQSP questions and $44.0\%$
 of CWQ questions, while AGR never does. On nearly half the multi-hop benchmark
-the baseline is answering from a truncated search. This is a fair constraint:
-both systems live under the same cap, and a clipped run still answers from what
-it gathered by the same graceful degradation. It is the efficiency
-finding rather than a caveat on it: under an identical budget, AGR converts its
-calls into correct answers at roughly twice the rate.
+the baseline is answering from a truncated search. This is a fair constraint
+(\Cref{sec:baseline-tog}): both systems live under the same cap. It is the
+efficiency finding rather than a caveat on it: under an identical budget, AGR
+converts its calls into correct answers at roughly twice the rate.
 
 Never reaching the call cap is not the same as running unbounded. The
 distinction matters because the rest of this thesis restates this result. AGR's
@@ -2292,10 +2258,9 @@ An earlier plan drew a stratified $40 + 20$ sample from CWQ's failures. The
 census was read to completion instead, so there is no sampling-bias caveat on
 any number in this census. What does remain is a \emph{composition} caveat:
 wrong answers and hedges are reported separately throughout and never pooled.
-They are different failure semantics --- a wrong answer is a reasoning error
-that committed, a hedge is usually a coverage gap that never produced a
-committal claim. Their proportions differ sharply between the two
-datasets, too, so a pooled percentage would describe neither.
+They are different failure semantics (\Cref{sec:hedge-accounting}). Their
+proportions differ sharply between the two datasets, too, so a pooled
+percentage would describe neither.
 
 \section{Distribution of Failure Categories Across
 Datasets}\label{sec:failure-distribution}
@@ -3049,11 +3014,9 @@ temperature $0.0$ --- \Cref{sec:backbone} measures the frozen model's trajectory
 stability at $8$ of $12$ probes, or $\approx 67\%$, so about one trajectory in
 three diverges on a rerun. A divergent trajectory can change an answer, a hedge,
 a token count and a call count at once. That figure is itself only partly
-auditable, and the limit is recorded rather than hidden: the qualification
-script wrote its per-question detail file in truncating mode, so only the first
-of the four rounds survives as a committed artifact and the remaining three
-exist as console tables in the project record. The pooled $9/12$ against $8/12$
-therefore cannot be recomputed from this repository. A reader who declines to
+auditable, and the limit is recorded rather than hidden: only the first of the
+four rounds survives as a committed artifact, so the pooled $9/12$ against
+$8/12$ cannot be recomputed from this repository. A reader who declines to
 take those three rounds on trust should read the stability figure as
 unquantified rather than as $67\%$. That substitution makes this threat larger,
 not smaller. The margins this thesis defends are large relative to their

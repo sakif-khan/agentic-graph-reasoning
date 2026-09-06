@@ -832,9 +832,9 @@ current git commit.
 
 The response cache deserves separate description: it underwrites the thesis's
 reproducibility claims. Every model call is keyed by a hash over the model
-identifier, temperature, reasoning-effort setting, and the full prompt text.
-Hits are served from disk. The subtle part is that a cache hit must be
-\emph{indistinguishable} from a live call inside the agent: the budget check
+identifier, temperature, reasoning-effort setting, the full prompt text, and the
+schema hint. Hits are served from disk. The subtle part is that a cache hit must
+be \emph{indistinguishable} from a live call inside the agent: the budget check
 still runs, the call counter still increments, and the original token counts are
 replayed into the meter from the stored record. A fully cached rerun therefore
 reproduces the original run's budget snapshots exactly, rather than reporting
