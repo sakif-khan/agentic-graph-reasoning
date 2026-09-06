@@ -19,10 +19,11 @@ characterisation of the navigation strategy as MCTS-inspired: what the method
 is, is guided best-first search with a bounded beam and backtracking, and it is
 described that way throughout.
 
-\Cref{sec:positioning} positioned the work against the agentic KGQA
-literature and identified the attribution gap it addresses: published systems
-bundle decomposition, search, and verification into single reported numbers,
-so the field has no evidence about which component earns its cost.
+The same chapter positioned the work against the agentic KGQA literature and
+identified the attribution gap it addresses (\Cref{sec:positioning}):
+published systems bundle decomposition, search, and verification into single
+reported numbers, so the field has no evidence about which component earns
+its cost.
 
 \Cref{ch:environment} built the knowledge environment and, more importantly,
 \emph{certified} it: $2.59$ million entities and $8.31$ million triples with a
@@ -41,7 +42,7 @@ against a batched language-model judgement, a signal-maximum backtracking
 trigger that fires only when every available signal is weak, and an explicit
 budget meter that makes cost a first-class, logged quantity.
 
-\Cref{ch:verification} specified the Structural Verification Layer. It also
+The same chapter specified the Structural Verification Layer. It also
 reported its behaviour honestly enough to bound its own claims: a draft is
 decomposed into atomic claims, each checked first against traversed adjacency
 and then, if necessary, by batched entailment, with unsupported claims
@@ -232,8 +233,8 @@ Persist each accepted claim together with the triples that matched it. This
 converts\index{verification layer} the wrongly-accepted class from an anecdote
 into a rate with a denominator, makes grounded-but-wrong answers self-diagnosing
 from the logs rather than by manual trace reconstruction, and would let the
-entity-level and claim-level guarantees of \Cref{ch:verification} be audited
-rather than argued. The same change closes a second gap: the run record
+entity-level and claim-level guarantees of \Cref{sec:verification-layer} be
+audited rather than argued. The same change closes a second gap: the run record
 currently stores the \emph{number} of supporting triples rather than the triples
 (\Cref{sec:output-contract}), so the thesis's own output contract --- answer
 paired with its evidence --- holds inside the run but cannot be checked

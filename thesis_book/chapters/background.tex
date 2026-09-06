@@ -6,11 +6,12 @@ assume, and surveys the work AGR builds on and competes with. It is
 deliberately compact. Only material actually used later is included. Standard
 results are stated rather than derived. The background comes first: knowledge
 graphs, question answering over them, language models as reasoning engines,
-and search. The survey follows, from static graph-augmented generation,
-through path-retrieval and agentic exploration, to verification and factuality
-measurement. It closes with a structured comparison of the seven closest
-systems. That comparison serves two purposes. It locates the gap this thesis
-addresses. And it justifies the choice of baselines in \Cref{sec:baselines}.
+retrieval augmentation, and search. The survey follows, from static
+graph-augmented generation, through path-retrieval and agentic exploration, to
+verification and factuality measurement. It closes with a structured comparison
+of the seven closest systems. That comparison serves two purposes. It locates
+the gap this thesis addresses. And it justifies the choice of baselines in
+\Cref{sec:baselines}.
 
 \section{Knowledge Graphs}\label{sec:kgs}
 
@@ -107,9 +108,13 @@ $1$\index{F1} if any entity the system asserts is in the gold answer set, and
 $0$ otherwise. It is a per-question binary correctness measure and the headline
 number in most of this literature.
 
-This thesis uses the set-intersection form throughout, because that is what
-the systems it compares against report. \Cref{sec:metrics} fixes the
-string-matching rule exactly.
+The name is historical and slightly misleading. The metric was defined for
+systems that emitted a \emph{ranked} list, where only the top entry counted. It
+has since been carried over to systems that emit an unordered set, where it
+becomes the set-intersection test just stated. This thesis uses the
+set-intersection form throughout, because that is what the systems it compares
+against report. \Cref{sec:metrics} fixes the string-matching rule exactly. The
+looseness is not incidental. It is precisely why F1 is reported alongside.
 
 Because many questions admit multiple correct answers, Hits@1 alone rewards a
 system that names one correct entity and ignores the rest. \emph{F1} therefore
@@ -133,8 +138,8 @@ model to produce intermediate reasoning steps before its final answer,
 performance on multi-step problems. Both are used here: the agent's planner,
 scorer, evaluator, and verifier are all prompted components of a single frozen
 model. No component is fine-tuned. This matters for comparability, since
-several systems surveyed in \Cref{sec:comparison-table} are fine-tuned and not
-directly comparable to prompting methods.
+several systems surveyed in \Cref{sec:comparison-table} are fine-tuned and
+therefore not directly comparable to prompting methods.
 
 \subsection{Tool Use and the ReAct Loop}
 
@@ -166,6 +171,8 @@ hypothetical. \Cref{sec:limitations} is built on it.
 
 \section{Retrieval-Augmented Generation}\label{sec:rag}
 
+\subsection{Dense Retrieval and Sentence Embeddings}
+
 Dense retrieval encodes queries and documents into a shared vector space and
 retrieves by nearest neighbour. This captures semantic similarity where lexical
 matching fails~\cite{karpukhin2020dense}. Sentence-level encoders such as
@@ -174,6 +181,15 @@ cosine comparison. In this thesis, embeddings serve two bounded purposes:
 linking question phrases to graph entities, and pre-ranking relation candidates
 during exploration. They never establish that a fact is true. That role
 belongs exclusively to the symbolic triples.
+
+\subsection{Graph-Based Retrieval}
+
+Graph-based retrieval replaces flat passages with structured
+context~\cite{edge2024local,gutierrez2024hipporag}. The retrieved unit is a
+subgraph rather than a document. This preserves relationships explicitly. The
+distinction that matters for this thesis is not graph versus vector but
+\emph{static versus interleaved}: whether retrieval happens once before
+reasoning begins, or repeatedly as reasoning proceeds.
 
 \section{Search over Graphs}\label{sec:search}
 
@@ -217,6 +233,15 @@ That score is never revised in light of what is found later. What the method
 is, is \emph{guided best-first search with a bounded beam and backtracking}. It
 is described that way throughout.
 
+The contrast is not hypothetical. Genuine tree search has been applied to this
+exact task. KBQA-o1~\cite{luo2025kbqao1} drives an agentic knowledge base
+question answering process with full MCTS --- policy and reward models,
+rollouts, and value backpropagation --- over Freebase. Reasoning with
+Trees~\cite{shen2025reasoning} likewise builds an explicit search tree. That
+those systems exist is precisely why the terminology matters here: describing a
+single-pass scoring heuristic as MCTS-inspired would invite comparison with
+machinery this framework does not implement.
+
 \section{Statistical Tools Used in This Thesis}\label{sec:stats}
 
 Three tools recur, each chosen for a specific property of the
@@ -243,16 +268,14 @@ and lose power.
 
 \emph{Cohen's $\kappa$}~\cite{cohen1960coefficient} measures agreement between
 two annotators on a categorical judgement, correcting for agreement expected by
-chance. It is used to validate the automatic groundedness judge against
-human annotation. Conventional interpretation follows Landis and
-Koch~\cite{landis1977measurement}, on whose scale values between $0.61$ and
-$0.80$ denote substantial agreement.
+chance: \[ \kappa = \frac{p_o - p_e}{1 - p_e}, \] where $p_o$ is observed
+agreement and $p_e$ is the agreement expected if both annotators labelled
+independently at their observed marginal rates. Cohen's $\kappa$ is used to
+validate the automatic groundedness judge against human annotation. Conventional
+interpretation follows Landis and Koch~\cite{landis1977measurement}, on whose
+scale values between $0.61$ and $0.80$ denote substantial agreement.
 
 \section{Static Graph-Augmented Generation}\label{sec:static-graphrag}
-
-The distinction that matters for this thesis is not graph versus vector but
-\emph{static versus interleaved}: whether retrieval happens once before
-reasoning begins, or repeatedly as reasoning proceeds.
 
 \subsection{GraphRAG and Query-Focused Summarization}
 
@@ -376,8 +399,9 @@ The trade-off is directly opposed to this thesis's: GoG deliberately admits
 model-generated facts into the evidence, whereas AGR admits only graph triples.
 
 Reasoning with Trees~\cite{shen2025reasoning} applies explicit tree search to
-knowledge graph question answering. That machinery contrasts with the guided
-best-first search implemented here (\Cref{sec:mcts-clarification}).
+knowledge graph question answering. It is cited in \Cref{sec:mcts-clarification}
+as an example of genuine tree-search machinery. That machinery contrasts with
+the guided best-first search implemented here.
 
 \subsection{KBQA-o1 and Genuine Tree Search}\label{sec:kbqao1}
 
@@ -617,7 +641,7 @@ AGR's contribution is therefore positioned as follows.
 The \textbf{first} contribution is the Structural Verification Layer together
 with a measurement of what it buys: a claim-level check against traversed
 triples, executed before the answer is emitted, with repair policies that either
-resume exploration or remove unsupported content. \Cref{ch:verification}
+resume exploration or remove unsupported content. \Cref{sec:verification-layer}
 specifies it. The measurement is part of the contribution rather than a caveat
 on it, because the answer is not the expected one. Removing the layer changes
 the correctness of two questions in $398$ (\Cref{sec:ablations}). The zero

@@ -246,10 +246,11 @@ Both repair routes are specified, implemented, and reported at the frequency we
 actually measured rather than the one we intended. That measured frequency is
 low. The re-exploration route never fired on the development set, because the
 depth budget is already exhausted by the time the verifier is reached. The
-entity filter ran on only three of eighty questions (\Cref{ch:verification}). On
-the vast majority of questions the layer simply passes through and certifies a
-draft at no extra model call. That is a finding about when verification can act,
-not a defect in it. \Cref{sec:findings} treats it as one.
+entity filter ran on only three of eighty questions
+(\Cref{sec:entity-filtering}). On the vast majority of questions the layer
+simply passes through and certifies a draft at no extra model call. That is a
+finding about when verification can act, not a defect in it. \Cref{sec:findings}
+treats it as one.
 
 \subsection{A Component-Level Ablation of Agentic Mechanisms}
 
@@ -337,11 +338,11 @@ the mechanisms around it.
 \section{Thesis Organization}\label{sec:organization}
 
 \Cref{ch:background} establishes the background the technical chapters
-assume and positions AGR against prior work. It covers knowledge graphs and
-their Freebase-specific idiosyncrasies, knowledge graph question answering
-and its evaluation conventions, language models as reasoning engines,
-retrieval augmentation, graph search, and the statistical tools we use
-throughout. It ends with a comparison of agentic knowledge graph question
+assume, surveys prior work, and positions AGR against it. It covers knowledge
+graphs and their Freebase-specific idiosyncrasies, knowledge graph question
+answering and its evaluation conventions, language models as reasoning
+engines, retrieval augmentation, graph search, and the statistical tools we
+use throughout. It ends with a comparison of agentic knowledge graph question
 answering systems that pinpoints the gap this thesis addresses and justifies
 our choice of baselines.
 
@@ -349,10 +350,11 @@ our choice of baselines.
 environment, including the answer-reachability gate that bounds the accuracy
 attainable inside it. \Cref{ch:framework} specifies the AGR framework: the tool
 API, the state machine, the planner, the scoring function, the backtracking
-policy, and the budgets that guarantee termination. \Cref{ch:verification}
-treats the Structural Verification Layer in detail. This is the component this
-work set out to contribute, and, as it happens, the one whose measured effect
-turns out to be the narrowest of the three reported in \Cref{sec:findings}.
+policy, and the budgets that guarantee termination.
+\Cref{sec:verification-layer} treats the Structural Verification Layer in
+detail. This is the component this work set out to contribute, and, as it
+happens, the one whose measured effect turns out to be the narrowest of the
+three reported in \Cref{sec:findings}.
 
 \Cref{ch:setup} lays out the experimental design: test sets, baselines, metrics,
 judge validation, gold-answer quality control, and the pre-registration policy.

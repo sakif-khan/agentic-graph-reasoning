@@ -11,11 +11,10 @@ volume.
 
 Every test-set number comes from \textsf{results/phase4/thesis\_numbers.json}.
 \Cref{sec:dev-tuning} reports the development sweep and reads the archived
-phase-3 runs directly, as \Cref{ch:framework} and \Cref{ch:verification} do.
-Confidence intervals are $95\%$ bootstrap intervals over questions with
-$10{,}000$ resamples at seed~$42$~\cite{efron1979bootstrap}. Paired comparisons
-use the exact-binomial form of McNemar's test~\cite{mcnemar1947note} on
-per-question correctness.
+phase-3 runs directly, as \Cref{ch:framework} does. Confidence intervals are
+$95\%$ bootstrap intervals over questions with $10{,}000$ resamples at
+seed~$42$~\cite{efron1979bootstrap}. Paired comparisons use the exact-binomial
+form of McNemar's test~\cite{mcnemar1947note} on per-question correctness.
 
 \section{Development-Set Tuning Outcomes}\label{sec:dev-tuning}
 
@@ -418,7 +417,7 @@ $52.2$ against a supervised system's $85.7$ and $62.6$, on the same data,
 with no in-domain examples. And it locates this thesis's contribution
 somewhere other than the accuracy column. RoG's answers are read off
 retrieved paths, so they are faithful by construction, and the
-pre-generation verification question of \Cref{ch:verification} does not
+pre-generation verification question of \Cref{sec:verification-layer} does not
 arise for them (\Cref{sec:path-kgqa}). The price is that the plan is
 generated once, before retrieval, with no mechanism to revise it when it
 fails to instantiate. AGR's claims are the opposite shape: generated freely
@@ -883,10 +882,10 @@ correctness of exactly two. Hits@1 moves $+0.005$ and $-0.005$. F1 moves
 $+0.004$ and $-0.009$. Both $p = 1.00$.
 
 This reproduces the development-set result of \Cref{sec:dev-tuning} exactly. It
-is also what \Cref{ch:verification} predicted by construction: on $77$ of $80$
-development questions the layer certified the draft and changed nothing, and the
-repair path never executed. A mechanism that mostly passes cannot move an
-accuracy metric.
+is also what \Cref{sec:verification-layer} predicted by construction: on $77$ of
+$80$ development questions the layer certified the draft and changed nothing,
+and the repair path never executed. A mechanism that mostly passes cannot move
+an accuracy metric.
 
 The conclusion this licenses is narrower and sharper than ``the verifier
 helps''. It is the one \Cref{sec:findings} adopts: \emph{claim verification

@@ -168,7 +168,7 @@ RETURN EXISTS { MATCH (a)-[]-(b) } AS direct,
 
 This is the fifth operation, and the one not in the original design.
 \Cref{sec:tool-api} records that it was added when the verification layer of
-\Cref{ch:verification} needed a relation-agnostic adjacency test. Its
+\Cref{sec:verification-layer} needed a relation-agnostic adjacency test. Its
 permissiveness is deliberate and is also its weakness:
 \Cref{sec:verify-failure-modes} analyses wrongful acceptance as a direct
 consequence of asking whether two entities are connected at all rather than
