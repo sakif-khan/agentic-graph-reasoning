@@ -176,8 +176,8 @@ points on Hits@1 --- was therefore adopted, with the arithmetic recorded before
 the runs fired. The whole benchmark, including the ablations, ultimately cost
 \$11.13 in API spend. That figure is read from the provider's billing record
 rather than derived from the run artifacts. The reproducible proxy is the token
-and call accounting of \Cref{sec:efficiency}, which is recorded per question in
-every run record.
+and call accounting of \Cref{sec:efficiency}. That accounting is recorded per
+question in every run record.
 
 Sampling is proportional within hop strata at seed~$42$, and the resulting
 question sets are committed as immutable artifacts
@@ -333,22 +333,22 @@ measured over four runs and two frontier-family models. It is also the reason
 \subsection{Response Caching as the Reproducibility Backstop}
 
 Reproducibility here rests on the cache, not on the model. Its mechanism is
-specified in \Cref{sec:instrumentation}, and \Cref{app:cache-identity} gives the
-identity check it supports: a hit is indistinguishable from a live call, so a
+specified in \Cref{sec:instrumentation}. \Cref{app:cache-identity} gives the
+identity check it supports: a hit is indistinguishable from a live call. So a
 fully cached rerun reproduces the original run's budget snapshot rather than
 approximating it. One defect qualifies that. The replay restores prompt and
-completion tokens but not the \textsf{reasoning\_tokens} counter, which the
-cache stores and does not add back. It does not bite here: the backbone runs at
-reasoning effort \textsf{none}, and that field is zero in every one of the
-$6{,}960$ agent runs committed for this work. The defect is recorded rather than
-repaired, for the reason \Cref{sec:pre-registration} gives. Every table in
-\Cref{sec:results} comes from one recorded run per condition. That run replays
-byte-identically for as long as the cache survives, independent of API weather
-or model retirement.
+completion tokens but not the \textsf{reasoning\_tokens} counter. The cache
+stores that counter and does not add it back. It does not bite here: the
+backbone runs at reasoning effort \textsf{none}. That field is zero in every one
+of the $6{,}960$ agent runs committed for this work. The defect is recorded
+rather than repaired, for the reason \Cref{sec:pre-registration} gives. Every
+table in \Cref{sec:results} comes from one recorded run per condition. That run
+replays byte-identically for as long as the cache survives, independent of API
+weather or model retirement.
 
-Fresh-run variance is a different problem, and it is \emph{not} measured here.
-\Cref{sec:threats} carries it as a limitation, with the reason the bootstrap
-intervals cannot bound it, rather than this section carrying it as a solution.
+Fresh-run variance is a different problem. It is \emph{not} measured here.
+The bootstrap intervals cannot bound it. \Cref{sec:threats} therefore carries
+it as a limitation, not as something this section solves.
 
 The cache leaves one artifact in the record. The WebQSP run of the full system
 was started, interrupted after seventeen questions, and restarted. The restart
@@ -2259,7 +2259,7 @@ census was read to completion instead, so there is no sampling-bias caveat on
 any number in this census. What does remain is a \emph{composition} caveat:
 wrong answers and hedges are reported separately throughout and never pooled.
 They are different failure semantics (\Cref{sec:hedge-accounting}). Their
-proportions differ sharply between the two datasets, too, so a pooled
+proportions differ sharply between the two datasets, too. So a pooled
 percentage would describe neither.
 
 \section{Distribution of Failure Categories Across
@@ -3015,7 +3015,7 @@ stability at $8$ of $12$ probes, or $\approx 67\%$, so about one trajectory in
 three diverges on a rerun. A divergent trajectory can change an answer, a hedge,
 a token count and a call count at once. That figure is itself only partly
 auditable, and the limit is recorded rather than hidden: only the first of the
-four rounds survives as a committed artifact, so the pooled $9/12$ against
+four rounds survives as a committed artifact. So the pooled $9/12$ against
 $8/12$ cannot be recomputed from this repository. A reader who declines to
 take those three rounds on trust should read the stability figure as
 unquantified rather than as $67\%$. That substitution makes this threat larger,
