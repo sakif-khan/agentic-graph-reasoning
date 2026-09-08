@@ -39,11 +39,15 @@
 %              7.2 each name the other gaps; 7.3.1 names only 7.2, and 6.6
 %              names only 5.10, for its standing rule.
 %
-% BUDGET     : 131 body pages (1--131; References at 132) against a 60--90
-%              target. The overrun was accepted deliberately at 104 pages and
-%              has grown since through review corrections, not new material.
-%              Re-confirm the department's cap before submission. Chapter 9 is
-%              not a compression target; cut Chapters 2--3 first.
+% BUDGET     : 103 body pages (1--103), against a cap of 100. The book was cut
+%              from 134 to reach that. Whole sections were removed or merged
+%              into neighbours, and the evidence behind the ones that stayed
+%              was moved into the appendix volume rather than deleted, which
+%              is what that volume's 53 pages are. The cap is on the body
+%              alone: References, the Index and the appendix volume sit
+%              outside it. Chapters 4 and 5 are separately held to fifteen
+%              sections each and are exactly at fifteen, so a new section in
+%              either has to displace one.
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[12pt,notitlepage,oneside]{report}
@@ -83,6 +87,89 @@
 % index
 \makeindex[intoc]
 
+% The appendices are bound as a separate volume,
+% thesis_book_0421052099_appendices.tex, and are read here for their labels
+% only: nothing of that file is typeset in this one. The two documents each
+% read the other's .aux, so no appendix number is transcribed by hand and none
+% can go stale, but the pair has to be built twice over to settle --
+% scripts/build_thesis.py does that. A reference printing as "??" means the
+% appendix volume has not been built since its last structural change.
+% The second optional argument, "nocite", is what keeps the import to labels.
+% Without it xr also replays the other document's \bibcite lines, and the two
+% volumes cite two works in common -- the sentence-encoder paper and the
+% hallucination survey -- so both keys would be defined twice and a \cite here
+% could pick up the appendix volume's numbering for them. The first optional
+% argument is the label prefix, left empty on purpose: with it empty every
+% \Cref{app:...} already written in these chapters keeps working untouched.
+\usepackage{xr}
+\externaldocument[][nocite]{thesis_book_0421052099_appendices}
+
+% Every appendix reference is now a reference out of this document. Two
+% consequences are handled here.
+%
+% It must not be a hyperlink. The destination is in a different PDF, so
+% hyperref would colour it like a live link and do nothing on click, and
+% pdfTeX would warn once per reference about the missing destination.
+% cleveref passes the hyperlink's open and close as #2 and #3; a format that
+% omits them keeps the number and drops the link.
+%
+% And it must read as an appendix. The companion volume puts its sections
+% under the "appendix" type as well as its chapters, so a label from it
+% renders "Appendix E.3" where one from this volume renders "Section 5.3".
+% The reference alone therefore says which volume it lands in. Two references
+% escape the scheme because they name appendix TABLES, a type this volume also
+% uses: \Cref{tab:census} and \Cref{tab:census-pop} are written \Cref* at the
+% site instead, and their lettered numbers do the same work.
+% \crefname first and \crefformat second, in that order and not the reverse:
+% \crefname sets every form of the name at once, the plural and range forms
+% included, and would put the hyperlink back if it ran last. This document has
+% no grouped appendix reference today, so only the single forms are stripped;
+% a grouped one added later would be typeset as a live link and pdfTeX would
+% say so, which is the failure this ordering leaves visible rather than
+% silent.
+\crefname{appendix}{Appendix}{Appendices}
+\crefformat{appendix}{Appendix~#1}
+\Crefformat{appendix}{Appendix~#1}
+
+% A reader who reaches the end of this volume finds the Index where the
+% appendices used to be, so the appendices are announced before the body
+% rather than after it. The note goes in the front matter, appended to the
+% template's own starting materials, which puts it on the last roman-numbered
+% page -- immediately before Chapter 1, where a reader learns the shape of
+% the document, and outside the page count the body is held to.
+\makeatletter
+\apptocmd{\st@rtingm@teri@ls}{%
+  \cleardoublepage
+  \section*{\centering Note on the Appendices}
+  \phantomsection\addcontentsline{toc}{chapter}{Note on the Appendices}
+  % \begin{quotation}, not the bare \quotation the style file uses for the
+  % abstract: \begin is what opens the group, and the abstract gets one only
+  % because it is entered as an environment. Called bare here the list's
+  % margins would never be restored, and the whole book would be typeset to a
+  % measure a centimetre narrower -- which it was, silently, until the
+  % reference list was found wrapping early against an identical .bbl.
+  \begin{quotation}
+
+  The five appendices are bound as a separate volume,
+  \textsf{thesis\_book\_\allowbreak 0421052099\_\allowbreak appendices.pdf},
+  which carries the prompt templates, the tool API specification, the sampled
+  question identifiers and run manifests, the annotation instructions and
+  label schema, and the implementation and measurement notes. Nothing was
+  discarded to shorten this volume: the appendices were moved, not cut, and
+  are reproduced there in full.
+
+  The two volumes cross-reference each other, and their numbering is what
+  tells them apart. A reference naming a letter --- Appendix~B, Appendix~E.3,
+  Table~E.2 --- points into the appendix volume. A reference naming a digit
+  --- Chapter~4, Section~5.3, Table~7.2 --- points within this one. A
+  reference that crosses between the volumes is not a live hyperlink, since
+  its destination is in the other file; one that stays within a volume is.
+
+  Both volumes are generated from one source tree, so every number either of
+  them states about the other is read from that build rather than typed in.
+  \end{quotation}}{}{}
+\makeatother
+
 \begin{document}
 
 % Edit as needed below this line
@@ -106,21 +193,9 @@
 % Bibliography
 \input{buetcsepgthesisbibliography.tex}
 
-% Index, comment this out if you do not want to create an index
+% Index, comment this out if you do not want to create an index. The book ends
+% here: the appendices are a separate volume, built from
+% thesis_book_0421052099_appendices.tex out of the same appendices/ directory.
 \printindex
-
-\appendix
-% After \appendix the chapter counter still calls itself a chapter, so cleveref
-% renders \Cref{app:...} as "Chapter B" in a document whose own title pages and
-% contents say "Appendix B". Six cross-references in Chapters 4, 5, 7 and 9 read
-% that way. cleveref binds a label's type when the label is DEFINED, so this has
-% to sit above the \input lines below, not in the preamble. Section-level labels
-% inside the appendices are unaffected and still render as "Section E.1".
-\crefalias{chapter}{appendix}
-\input{appendices/prompts.tex}
-\input{appendices/toolapi.tex}
-\input{appendices/samples.tex}
-\input{appendices/annotation.tex}
-\input{appendices/implementation.tex}
 
 \end{document}

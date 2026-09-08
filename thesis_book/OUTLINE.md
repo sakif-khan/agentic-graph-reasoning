@@ -6,9 +6,11 @@ Verification and Hallucination Mitigation in Large Language Models
 *(As registered with CASR. A narrower title was drafted in review and not approved,
 so the registered one stands; §1.7 reads its terms against the findings.)*
 
-**Target:** 60–90 pages of body text — self-imposed here at planning time, not a
-departmental rule; see the Page Budget section. The per-chapter estimates below total
-**87 pages** (front matter is roman-numbered and does not count against the budget).
+**Target:** 100 pages of body text, set by the supervisor in September 2026 and not
+negotiable; the book stands at 103. The 60–90 range this file planned against was
+self-imposed and is superseded — see the Page Budget section, which also records where
+the remaining three pages could come from. Front matter is roman-numbered and does not
+count, and neither does the appendix volume, which is a separate document.
 
 > **Status: planning record, not a specification.** This file was the plan the book was
 > written against, and the framing directives in it are still the reason many sections are
@@ -775,72 +777,56 @@ wrongful-acceptance class from anecdote to rate)*
 
 ## Page Budget
 
-| Chapter | Budget | Round 1 | Current |
-| --- | ---: | ---: | ---: |
-| 1 Introduction | 8 | 7 | 8 |
-| 2 Background and Preliminaries | 5 | 6 | 6 |
-| 3 Related Work | 7 | 8 | 8 |
-| 4 The Knowledge Environment | 10 | 9 | 10 |
-| 5 The AGR Framework | 11 | 13 | 18 |
-| 6 The Structural Verification Layer | 8 | 13 | 16 |
-| 7 Experimental Setup | 11 | 15 | 20 |
-| 8 Results | 12 | 12 | 18 |
-| 9 Error Analysis and Discussion | 10 | 15 | 19 |
-| 10 Conclusion | 5 | 6 | 8 |
-| **Body total** | **87** | **104** | **132** |
-| References + Index + Appendices | ~12 | 6 + appendices | 6 + 29 |
+**The cap is 100 body pages and it is a real one.** The supervisor set it in
+September 2026, replacing the position recorded here earlier — that no
+departmental limit existed and the question was closed. That position was
+correct about the departmental template, which states no page rule anywhere,
+and wrong about what would be accepted. The 60–90 range this file set for
+itself is superseded: 100 is the number to build against.
 
-**The body is 132 pages, against the 60–90 target this file set for itself.** Body runs
-pages 1–132; References begin on 133, the index on 138; the document is 185 pages
-including front matter and five appendices — a title page, xvii of roman front
-matter, and 167 arabic-numbered ones. The figure read 183 while the title page
-went uncounted, and 184 until the introduction, the abstract and Table 8.2's
-caption took on the relation-agnostic bound and the full-Freebase caveat.
+| Chapter | File | Pages |
+| --- | --- | ---: |
+| 1 Introduction | `chapters/introduction.tex` | 7 |
+| 2 Background and Related Work | `chapters/background.tex` | 12 |
+| 3 The Knowledge Environment | `chapters/environment.tex` | 9 |
+| 4 The AGR Framework | `chapters/framework.tex` | 25 |
+| 5 Evaluation | `chapters/evaluation.tex` | 45 |
+| 6 Conclusion | `chapters/conclusion.tex` | 5 |
+| **Body total** | | **103** |
+| References + Index | | 6 |
+| **Main volume** | `thesis_book_0421052099.pdf` | **123** |
+| **Appendix volume** | `thesis_book_0421052099_appendices.pdf` | **63** |
 
-**There is no departmental page limit, and this question is closed.** The supervisor
-confirmed it verbally on 13 August 2026. The 60–90 range was this outline's own
-planning estimate and was never a requirement: no page rule appears anywhere in the
-departmental template package, its README, the CASR presentation or the proposal. The
-overrun is against a self-set number. Earlier revisions of this section read as though
-a departmental cap existed and instructed that it be re-confirmed before submission;
-that instruction was self-authored and is withdrawn.
+The body is **103 pages against the 100-page cap** — three over. The book was
+134 when the cap arrived, so the reduction is 31 pages, and it came from three
+different levers in this order: sentence-level compression, which is exhausted
+and only ever yielded about 12% on prose this dense; whole-section removal and
+merging, which is where the ten-chapter structure became six; and relocation of
+evidence into the appendix volume, which is where the rest came from. The last
+of those is why the appendices grew from 29 pages to 53.
 
-The decision to cross the self-set ceiling was taken at 104 pages and recorded so it
-would not be revisited by accident: *cross the ceiling if needed.* The 27 pages added
-since fall in Chapter 5 (+5), Chapters 7 and 8 (+5 and +6), Chapters 6 and 9 (+3 and
-+4), Chapter 10 (+2), and one page each in 1 and 4 — corrections, scoping notes and
-disclosure statements added in review, not new material. The per-chapter reasoning
-below is kept as a record of where the length went and why each chapter earns it, not
-as compression work to be done.
+**The appendices are a separate document and are outside the cap.** They are
+built from `thesis_book_0421052099_appendices.tex` out of the same
+`appendices/` directory, and the main volume now ends with its Index. The two
+documents cross-reference each other through `xr`, so the pair has to be built
+together — `python scripts/build_thesis.py` does that and refuses to report
+success until the numbers have settled. Nothing was deleted to make the split:
+every page that left the body is in the companion volume.
 
-Where the 44 pages over budget went, and why each is defensible if questioned.
-The `r1` column is the round-1 overrun measured at 104 pages; `now` is measured at
-131. The difference between the two columns is review work — corrections, scoping
-notes, and baseline-configuration disclosures — not new material.
+**Chapters 4 and 5 are capped at fifteen sections each** and are at exactly
+fifteen. That constraint was met by demoting headings rather than deleting
+them — a `\section` became a `\subsection` and its subsections became run-in
+`\paragraph` headings — so a new section in either chapter has to displace an
+existing one.
 
-| Chapter | r1 | now | Reason |
-| --- | ---: | ---: | --- |
-| 9 Error Analysis | +5 | **+9** | The census is a population of 259, not a sample; three named mechanism findings, three counted defect families, the benchmark-defect provenance argument. Grew by the union-of-subgraphs and name-keying threats, the Phoenician case, the corrected 57-question exclusion arithmetic, and the verifier-unit restatement in §9.5.4. |
-| 7 Setup | +4 | **+9** | Ten sections averaging 1.5 pages, all pre-registered method or verified numbers. Grew by the GraphRAG one-hop scoping note, the hedge-counting convention, the two baseline candidate-width disclosures (§7.4.3 fanout cap, §7.4.4 relation/neighbour caps), and the reconciliation of the sample ceiling against the validation gate's population ceiling (§7.2.3). |
-| 6 Verification | +5 | **+8** | Algorithm, attribution-census table, worked example, by-construction failure analysis. Grew by Figure 6.1, the post-hoc-verification positioning, the supporting-triples persistence gap, the test-set correction to the repair-route claim, and §6.5's restatement of what the layer's case can rest on once Chapter 8 declines to award it groundedness or precision. |
-| 8 Results | +0 | **+6** | Grew entirely in review: §8.4, the clipped/unclipped split of the agentic-baseline margin, the per-stratum radius qualification, the token-vs-call frontier correction, and the withdrawal of the verifier's precision attribution — precision and recall columns in Table 8.8 plus the multiple-comparison policy in §8.8.5. |
-| 5 Framework | +2 | **+7** | τ signal-maximum derivation and the design-validation table. Grew by the state-machine figure, `verify_triple`'s real status, the three implementation deviations (two σ, one ban-list), §5.10's provenance disclosure, and the corrected account of which budgets are enforced where. |
-| 10 Conclusion | +1 | **+3** | Future work is two-tiered (earned repairs vs. architectural), which the census made possible; plus the equal-width and two-hop baseline experiments and two added limitations. |
-| 2, 3 | +1, +1 | **+1, +1** | Unchanged since round 1. |
-| 1, 4 | −1, −1 | **+0, +0** | Each gained a page in review — §1.7's environment scoping and §4.3.3's two hop conventions — bringing both back to budget. |
+**If a further page cut is forced**, the three remaining candidates, in the
+order they should be taken: the related-work survey's per-system descriptions
+in Chapter 2 (about 2 pages), the accuracy–cost figure in Chapter 5 (about half
+a page, and the table beside it already carries the numbers the prose quotes),
+and further thinning of the failure census. **The error census and the
+verification specification stay off the table** — they are what distinguish
+this from a system report, and that decision predates the cap.
 
-**If a page cut is ever forced**, the order is unchanged: §2.6, §3.1, §3.4 first
-(background the committee already has), then Chapter 7's §7.4 and §7.6 enumerations
-into the appendices. **Chapters 6 and 9 stay off the table** — the verification
-specification and the error census are what distinguish this from a system report.
-
-**Chapter 9 is not a compression target** — decided deliberately, not under page
-pressure. It now carries three families in §9.3, four subsections in §9.5, and a
-provenance subsection in §9.8, which does not fit in eight pages. It is budgeted at **10**,
-with the two pages taken from Chapters 2 and 3, where the material is background the
-committee already has. The error analysis and benchmark-defect work are what distinguish
-this thesis from a system report; if the count still runs long, cut §2.6, §3.1, and §3.4
-further before touching Chapter 9.
 
 ---
 

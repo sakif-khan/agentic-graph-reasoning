@@ -1,0 +1,169 @@
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Agentic Graph Reasoning --- appendices, bound as a separate volume
+%
+% WHY TWO FILES : the thesis is held to 100 body pages. The appendices carry
+%                 evidence the body cites but does not need to reproduce --
+%                 prompt texts, run manifests, case listings, measurement
+%                 detail -- so they are built as a companion volume rather
+%                 than deleted. The main book now ends with its Index.
+%
+% CROSS-REFS    : the two documents reference each other through xr, which
+%                 reads the other document's .aux. No number is transcribed by
+%                 hand and none can go stale, but the pair has to be built
+%                 twice over to settle. scripts/build_thesis.py does that. A
+%                 reference rendering as "??" means the other document's .aux
+%                 is missing or predates its last structural change.
+%
+% NAMING        : everything in this volume is an Appendix -- Appendix B,
+%                 Appendix E.3 -- and everything in the main volume keeps a
+%                 numeric label: Chapter 4, Section 5.3, Table 7.2. The
+%                 reference alone therefore says which volume it points into,
+%                 which is what the \crefalias lines below buy and why they
+%                 are worth the two of them. About This Volume states the
+%                 convention for the reader.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt,notitlepage,oneside]{report}
+
+\usepackage{buetcsepgthesis}
+
+% This volume has tables and one algorithm but no figures, so the list of
+% figures would print a heading over an empty page.
+\suppresslistoffigures
+
+% Sections only, as in the main volume.
+\setcounter{tocdepth}{1}
+
+\makeindex[intoc]
+
+% The main volume, read for its labels only. Nothing of it is typeset here.
+% The second optional argument, "nocite", keeps the import to labels: without
+% it xr also replays the main volume's \bibcite lines, and the two documents
+% cite two works in common, so both keys would be defined twice. The first
+% optional argument is the label prefix, left empty so that every \Cref
+% already written in the appendices keeps working untouched.
+\usepackage{xr}
+\externaldocument[][nocite]{thesis_book_0421052099}
+
+% References into the main volume must not be hyperlinks: their destinations
+% live in a different PDF, so hyperref would colour them like live links and
+% then do nothing on click, and pdfTeX would warn once per reference about the
+% missing destination. Dropping #2 and #3 from the format -- cleveref's
+% hyperlink open and close -- leaves the number and takes the link. Only
+% chapter and section are treated this way, because the \crefalias lines below
+% put every heading of this volume under "appendix", leaving those two types
+% used by the main volume alone. The handful of references to main-volume
+% tables and to its algorithm cannot be separated by type and are written
+% \Cref* at the site instead.
+\crefformat{chapter}{Chapter~#1}
+\Crefformat{chapter}{Chapter~#1}
+\crefformat{section}{Section~#1}
+\Crefformat{section}{Section~#1}
+
+% The thesis template opens with a title page, the candidate's declaration,
+% the board's acceptance page, the acknowledgement and the abstract. None of
+% that belongs in a companion volume, which is signed and accepted through the
+% book it accompanies, so the starting materials are replaced rather than
+% repeated. \listsandtoc, the contents and the two lists, is kept.
+\makeatletter
+\def\st@rtingm@teri@ls{%
+  \appendixvolumetitlep@ge
+
+  \cleardoublepage
+  \pagenumbering{roman}
+  \listsandtoc}
+
+\def\appendixvolumetitlep@ge{
+  \thispagestyle{empty}
+  \pagenumbering{Alph}
+  \begin{center}
+    {\large \degreeshortname Thesis --- Appendices}\\
+    \vspace*{\stretch{2}}
+    {\fontsize{18.0}{17.0}\selectfont\bfseries\thesistitle\par}
+    \vspace*{\stretch{2}}
+    {\large\bfseries Supplementary Appendices}\\
+    \bigskip
+    {Companion volume to the thesis of the same title}\\
+    \vspace*{\stretch{4}}
+    Submitted by\\
+    {\large\CandidateName\\\CandidateID\\}
+    \vspace*{\stretch{3}}
+    {Supervised by}\\
+    {\large\SupervisorName}\\
+    \vspace*{\stretch{2}}
+    \includegraphics[width=30mm]{figures/buetlogo}\\
+    \vspace*{\stretch{2}}
+    \textbf{\cse}\\
+    \textbf{\buet}\\
+    Dhaka, Bangladesh\\
+    \vspace*{\stretch{1}} \thesisshortdate
+  \end{center}}
+\makeatother
+
+\begin{document}
+
+\chapter*{About This Volume}
+\phantomsection\addcontentsline{toc}{chapter}{About This Volume}
+\markboth{About This Volume}{About This Volume}
+
+This volume holds the five appendices of the thesis named on the title page.
+They were bound separately so that the thesis itself could be read at the
+length its argument needs, and nothing that a sceptical reader might want to
+check has been dropped to achieve that: the prompt texts, the tool
+specification, the question samples and run manifests, the annotation
+instructions and label schema, and the implementation and measurement notes
+are all reproduced here in full.
+
+The two volumes cross-reference each other, and their numbering is what tells
+them apart. \emph{Everything in this volume is lettered}: Appendix~B is a
+chapter of it, Appendix~E.3 a section, Table~E.2 a table, Algorithm~E.1 an
+algorithm. \emph{Everything in the main volume is numbered}: Chapter~4,
+Section~5.3, Table~7.2, Algorithm~1. So a reference naming a letter points
+here and a reference naming a digit points into the thesis, wherever it
+appears and whatever it names. A reference that crosses between the volumes
+is not a live hyperlink, since its destination is in the other file; one that
+stays within a volume is.
+
+Both volumes are generated from one source tree, and every number either of
+them states about the other is read from that build rather than typed in. A
+reference that prints as \textsf{??} means the volumes were built out of step,
+not that the target is missing.
+
+% Everything below is an appendix. cleveref binds a label's type where the
+% label is DEFINED, so these have to sit above the \input lines rather than in
+% the preamble. The chapter alias is what the main volume needed too: after
+% \appendix the counter still calls itself a chapter, so \Cref would render
+% "Chapter B" in a document whose contents page says "Appendix B". The section
+% alias goes further than the main volume ever did, and deliberately: it makes
+% "Appendix E.3" the reading of a section label as well, so that no reference
+% crossing between the volumes is ambiguous about which one it lands in.
+\appendix
+\crefalias{chapter}{appendix}
+\crefalias{section}{appendix}
+
+% Tables here are already lettered by their chapter -- Table E.1 -- but the
+% algorithm environment carries a flat counter, so this volume's one algorithm
+% came out "Algorithm 1" and so does the main volume's. Two different
+% algorithms, in two different documents, printing the same name: the one
+% place the letter-against-digit rule stated in About This Volume did not
+% actually hold. Numbering it by chapter makes it Algorithm E.1 and makes the
+% rule true.
+\counterwithin{algorithm}{chapter}
+\input{appendices/prompts.tex}
+\input{appendices/toolapi.tex}
+\input{appendices/samples.tex}
+\input{appendices/annotation.tex}
+\input{appendices/implementation.tex}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Back matter
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Two works are cited here. The full reference list is the main volume's; this
+% one carries only what this volume names, so that a reader who has only this
+% file can still identify them.
+\input{buetcsepgthesisbibliography.tex}
+
+\printindex
+
+\end{document}

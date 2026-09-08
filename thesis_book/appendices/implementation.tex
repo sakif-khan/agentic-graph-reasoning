@@ -1,4 +1,4 @@
-% !TEX root = ../thesis_book_0421052099.tex
+% !TEX root = ../thesis_book_0421052099_appendices.tex
 \chapter{Implementation Notes}\label{app:implementation}
 
 % The four techniques Section~\ref{sec:implementation} points here for. Written
@@ -508,7 +508,7 @@ indistinguishable from a rule applied selectively --- the third defect reads the
 counter once, to bound how often a duplicate could arise, which is admissible
 only because the direction of its error is known.
 
-\emph{Third}, a mismatch between \Cref{alg:verify} and the code it describes.
+\emph{Third}, a mismatch between \Cref*{alg:verify} and the code it describes.
 The algorithm accumulated $E$ by set union; the implementation appends. Two
 claims in one draft sharing an endpoint pair --- ``X was born in Y'' and ``X
 died in Y'', decomposed separately but resolving to the same two identifiers ---
@@ -643,7 +643,7 @@ test data. \Cref{sec:findings} explains why that is the expected result
 rather than a disappointing one.
 
 One reproducibility note belongs with this table. Only the frozen condition was
-re-run after the filter correction, so \Cref{tab:sweep} is the pre-correction
+re-run after the filter correction, so \Cref*{tab:sweep} is the pre-correction
 sweep throughout --- internally consistent, since all eight conditions ran under
 the same code. The committed summary file for that directory also predates the
 correction, so rescoring the archived runs yields $65/11/4$ for the frozen
@@ -870,7 +870,7 @@ resolver's lexical stage queries.
 truncate the returned candidate sets at different widths: Think-on-Graph keeps
 the first $40$ relations per entity and the first $20$ neighbours per relation,
 the pruning widths of the reimplemented algorithm, against AGR's $300$ and $200$
-(\Cref{tab:budget}). Because \textsf{get\_relations} returns rows sorted by
+(\Cref*{tab:budget}). Because \textsf{get\_relations} returns rows sorted by
 \emph{descending} fanout (\Cref{sec:tool-api}), a binding cut discards the
 low-fanout tail --- precisely the material \Cref{sec:tool-api} reports raising
 AGR's own cap from $80$ to $300$ to stop discarding. Think-on-Graph therefore
@@ -996,7 +996,7 @@ the first, which is not.
 
 \section{Linking Misses and Gate Checks}\label{app:linking-misses}
 
-The ten unresolved mentions of \Cref{tab:linking} are not a random residue.
+The ten unresolved mentions of \Cref*{tab:linking} are not a random residue.
 Every one is a bare machine identifier of the form \textsf{g.123852dg} appearing
 as a CWQ topic entity --- an unnamed mediator node that the benchmark supplies
 where a named entity was expected. Exact matching fails because no node carries
@@ -1020,7 +1020,7 @@ Measurements}\label{app:ceiling-reconciliation}
 
 These ceilings are not the ones the validation gate reported. That difference
 is worth naming rather than leaving for a reader to reconcile.
-\Cref{tab:coverage} measured the full test splits --- $1{,}628$ and $3{,}531$
+\Cref*{tab:coverage} measured the full test splits --- $1{,}628$ and $3{,}531$
 questions --- and found $97.3\%$ and $99.7\%$ reachable. The figures above are
 the same quantity measured over the $400$ questions actually evaluated, and they
 come out at $97.0\%$ and $99.2\%$. Neither corrects the other: one bounds what
@@ -1103,7 +1103,7 @@ proved optimum, and no experiment in this thesis isolates it.
 
 \section{Why verify\_triple Is Not Used}\label{app:verify-triple}
 
-\Cref{tab:tools} lists the operations. There are five, not the four originally
+\Cref*{tab:tools} lists the operations. There are five, not the four originally
 planned. Only four of the five are reachable from a node in the final design.
 Both facts are consequences of the same episode and are recorded rather than
 tidied away.
