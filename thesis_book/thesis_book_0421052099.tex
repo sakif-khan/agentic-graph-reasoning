@@ -131,44 +131,14 @@
 \crefformat{appendix}{Appendix~#1}
 \Crefformat{appendix}{Appendix~#1}
 
-% A reader who reaches the end of this volume finds the Index where the
-% appendices used to be, so the appendices are announced before the body
-% rather than after it. The note goes in the front matter, appended to the
-% template's own starting materials, which puts it on the last roman-numbered
-% page -- immediately before Chapter 1, where a reader learns the shape of
-% the document, and outside the page count the body is held to.
-\makeatletter
-\apptocmd{\st@rtingm@teri@ls}{%
-  \cleardoublepage
-  \section*{\centering Note on the Appendices}
-  \phantomsection\addcontentsline{toc}{chapter}{Note on the Appendices}
-  % \begin{quotation}, not the bare \quotation the style file uses for the
-  % abstract: \begin is what opens the group, and the abstract gets one only
-  % because it is entered as an environment. Called bare here the list's
-  % margins would never be restored, and the whole book would be typeset to a
-  % measure a centimetre narrower -- which it was, silently, until the
-  % reference list was found wrapping early against an identical .bbl.
-  \begin{quotation}
-
-  The five appendices are bound as a separate volume,
-  \textsf{thesis\_book\_\allowbreak 0421052099\_\allowbreak appendices.pdf},
-  which carries the prompt templates, the tool API specification, the sampled
-  question identifiers and run manifests, the annotation instructions and
-  label schema, and the implementation and measurement notes. Nothing was
-  discarded to shorten this volume: the appendices were moved, not cut, and
-  are reproduced there in full.
-
-  The two volumes cross-reference each other, and their numbering is what
-  tells them apart. A reference naming a letter --- Appendix~B, Appendix~E.3,
-  Table~E.2 --- points into the appendix volume. A reference naming a digit
-  --- Chapter~4, Section~5.3, Table~7.2 --- points within this one. A
-  reference that crosses between the volumes is not a live hyperlink, since
-  its destination is in the other file; one that stays within a volume is.
-
-  Both volumes are generated from one source tree, so every number either of
-  them states about the other is read from that build rather than typed in.
-  \end{quotation}}{}{}
-\makeatother
+% This document says nothing about the appendix volume, deliberately. A
+% front-matter note explaining the split was written and then removed: the
+% candidate introduces the appendices in person, and a page of apparatus
+% justifying the binding is not what a board should meet before Chapter 1.
+% The convention it stated survives where it is needed -- About This Volume
+% in the appendix volume, for a reader holding that file, and the Page Budget
+% section of OUTLINE.md, for whoever next maintains this one. Do not add it
+% back here without a reason that outlives this submission.
 
 \begin{document}
 

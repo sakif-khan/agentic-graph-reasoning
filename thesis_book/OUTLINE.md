@@ -813,6 +813,30 @@ together — `python scripts/build_thesis.py` does that and refuses to report
 success until the numbers have settled. Nothing was deleted to make the split:
 every page that left the body is in the companion volume.
 
+**The cross-reference convention, which the book itself does not state.** A
+front-matter note explaining it was written and removed: the candidate
+introduces the appendices verbally, and the board should not meet a page of
+binding apparatus before Chapter 1. The convention still has to hold, because
+without it a reader of the book meets "Appendix E.3" with no Appendix E in
+front of them, so it is recorded here and in the appendix volume's *About This
+Volume* page.
+
+*Everything in the appendix volume is lettered* — Appendix B is a chapter of
+it, Appendix E.3 a section, Table E.2 a table, Algorithm E.1 an algorithm.
+*Everything in the book is numbered* — Chapter 4, Section 5.3, Table 7.2,
+Algorithm 1. A reference naming a letter therefore points out of the book and
+one naming a digit points within it, wherever it appears and whatever it
+names. Three mechanisms hold that up and all three are load-bearing: the two
+`\crefalias` lines in the appendix volume, which put its sections under the
+appendix type alongside its chapters; `\counterwithin{algorithm}{chapter}`
+there, without which both volumes call their algorithm "Algorithm 1"; and the
+`\crefformat` lines in each master, which strip the hyperlink from references
+that cross between the volumes so a reader is not invited to click into a file
+they do not have open. A fourth case cannot be separated by type — appendix
+tables cited from the book, and book tables and the book's algorithm cited
+from the appendices — and those eleven sites are written `\Cref*` where they
+stand.
+
 **Chapters 4 and 5 are capped at fifteen sections each** and are at exactly
 fifteen. That constraint was met by demoting headings rather than deleting
 them — a `\section` became a `\subsection` and its subsections became run-in
@@ -826,7 +850,6 @@ a page, and the table beside it already carries the numbers the prose quotes),
 and further thinning of the failure census. **The error census and the
 verification specification stay off the table** — they are what distinguish
 this from a system report, and that decision predates the cap.
-
 
 ---
 
