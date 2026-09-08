@@ -167,27 +167,17 @@ appended to a JSONL log with its arguments, result, and latency.
 Live}\label{sec:five-operations}
 
 \Cref{tab:tools} lists the operations. There are five, not the four originally
-planned. Only four of the five are reachable from a node in the final design.
-Both facts are consequences of the same episode and are recorded rather than
-tidied away.
-
-\textsf{verify\_triple} was built first, as the claim checker: given a claim
-$\langle h, r, t\rangle$ it asked whether that relation held between those
-entities. It did not survive contact with generated text. Claim decomposition
-produces relations phrased in English --- ``played for'', ``is the capital
-of''. Freebase predicates are neither phrased that way nor reliably one edge
-long. So requiring the relation to match rejected claims that were true.
-\textsf{verify\_connection}\index{verify connection@\textsf{verify\_connection}}
-was added in response. It drops the relation entirely and asks only about
-adjacency. This version answered the question the verifier actually needed
-answered, and it superseded rather than complemented its predecessor.
-\Cref{sec:structural-check} describes the two routes the verifier ended up
-with. \textsf{verify\_triple} is not one of them.
-
-The operation is left in the API because it is exercised by the tool
-integration tests and remains the natural primitive for a relation-aware
-check. \Cref{sec:future} proposes exactly that check. But nothing in the
-running loop calls it. The table says so.
+planned, and only four are reachable from a node in the final design.
+\textsf{verify\_triple} was built first as the claim checker and did not survive
+contact with generated text, since claim decomposition produces relations
+phrased in English while Freebase predicates are neither phrased that way nor
+reliably one edge long, so requiring the relation to match rejected claims that
+were true. \textsf{verify\_connection}\index{verify
+connection@\textsf{verify\_connection}} was added in response, dropping the
+relation and asking only about adjacency, and superseded rather than
+complemented it (\Cref{app:verify-triple}). It is left in the API as the natural
+primitive for the relation-aware check \Cref{sec:future} proposes, but nothing
+in the running loop calls it.
 
 \begin{table}[!tb]
   \begin{center}
@@ -287,7 +277,7 @@ dropping the relation is stated there and not here: an adjacency test cannot
 tell a true claim from a false one that happens to join the same two entities.
 That gap is the boundary case \Cref{sec:verifier-errors} analyses.
 
-\section{Agent State}\label{sec:state}
+\subsection{Agent State}\label{sec:state}
 
 The state is a typed dictionary threaded through every node. \Cref{tab:state}
 groups its fields by purpose.
@@ -525,25 +515,11 @@ countries that appeared in no retrieved triple. The filter rejected all
 nine --- costing a point on that question while preserving the property that
 every entity the system proposes came from the graph.
 
-\textbf{The table is built from tail names only, and the verifier's is not.} A
-traversed triple contributes its tail to this lookup and not its head, so an
-entity the search \emph{departed from} --- a topic entity, or any intermediate
-the agent has since moved past --- cannot be resolved as an answer by the
-evaluator, however the model phrases it. The structural check of
-\Cref{sec:structural-check} takes the opposite convention: it collapses
-traversed triples into undirected endpoint pairs, so heads and tails are
-interchangeable there.
-
-The asymmetry is deliberate in the evaluator and worth naming because it is not
-obviously so. A topic entity is exactly what an echoing model reaches for
-(\Cref{sec:echo}). Refusing to resolve it is a cheap structural defence against
-the most common degenerate answer. The cost is that a question whose gold
-answer genuinely \emph{is} a topic entity, or an intermediate the plan has
-passed through, cannot be answered through this path at all. Those cases
-exist --- \Cref{sec:echo} counts $13$ \textsf{echo} failures, and the filter is
-what prevents them from being far more numerous. But the two layers
-disagreeing about what counts as a reachable entity is a design seam, not a
-proved optimum, and no experiment in this thesis isolates it.
+\textbf{The table is built from tail names only.} An entity that appeared solely
+as the head of a retrieved triple is therefore not in it, and a resolution
+naming one is dropped even though the traversal did reach it.
+\Cref{app:filter-asymmetry} explains why that asymmetry is deliberate in the
+evaluator and where it is compensated for elsewhere.
 
 Resolutions that survive the filter are accumulated into
 \textsf{candidate\_answers} on \emph{every} evaluation, whether or not the
@@ -582,125 +558,42 @@ s_{\mathrm{LLM}}(c, o)}_{\text{model, rated candidates}}\bigr), \] the largest
 of three signals: the best blended score among the edges actually expanded, the
 best raw embedding similarity over every candidate relation the anchors offered,
 and the best model score over the top-$K$ candidates the model was asked to
-rate. The trigger therefore fires only when \emph{all three} signals are weak. A
-frontier where the blend is depressed --- because $\alpha$ happens to discount
-whichever signal is confident here --- does not backtrack if either underlying
-signal still points somewhere. That three-way requirement makes the trigger
-deliberately conservative: it abandons a branch only on unanimous evidence of
-hopelessness. \Cref{sec:dev-tuning} shows the consequence: $\tau$ barely fires
-at the values swept.
+rate. The trigger therefore fires only when \emph{all three} signals are weak,
+which makes it deliberately conservative: it abandons a branch only on unanimous
+evidence of hopelessness. \Cref{sec:dev-tuning} shows the consequence, that
+$\tau$ barely fires at the values swept.
+
+The backtracker then does three things. It pops the \emph{highest-scoring}
+snapshot from the stack --- not the most recent one, which would make
+backtracking a simple undo. It restores that snapshot's anchors and depth. And,
+critically, it adds \textsf{(anchor, relation, direction)} triples to a
+\textbf{ban list} that the explorer consults on its next pass. The ban list is
+what makes backtracking a search operation rather than a loop: without it, a
+deterministic scorer facing an identical restored frontier selects identical
+edges, producing identical facts and an identical decision to backtrack until
+the budget is exhausted. \Cref{sec:design-validation} shows both behaviours in
+the logs.
 
 \textbf{The implementation departs from what this section specifies in three
 places, and all three are recorded rather than repaired}, under the standing
-rule of \Cref{sec:design-validation}. Repairing them would change the frozen
-results this thesis reports. That is a larger claim than any of the three
-warrants. The first two concern the $\sigma$ formula above. The third, which
-comes with the backtracker below, concerns the ban list and is the only one of
-the three whose effect is visible in the run records.
+rule of \Cref{sec:design-validation}, since repairing them would change the
+frozen results this thesis reports. \Cref{app:backtrack-deviations} gives all
+three: two concern the $\sigma$ formula and are masked in practice by the
+dead-end trigger being evaluated first, and the third is the one with a
+measurable consequence.
 
-\emph{First, $\sigma = 0$ is read as ``no signal recorded''.} The comparison is
-written so that a missing signal defaults to a value above any usable $\tau$.
-That default is right when no expansion has run yet. But $0.0$ is falsy in
-Python, so a genuine signal maximum of exactly zero takes the same branch. The
-trigger therefore does not fire at the one point where the formula says it
-most clearly should. This defect is the same falsy-empty trap that
-\Cref{sec:output-contract} records in the answerer, found in a second place.
-Its practical reach is narrow: a signal maximum of exactly zero means nothing
-was expanded at all. And the \textbf{dead end} trigger --- evaluated
-first --- fires on that same condition. The order of the triggers is what
-masks the defect. That masking is a weak reason for the behaviour to be
-correct.
-
-\emph{Second, at $\alpha \geq 1$ only the first term is computed.} The scorer
-takes an early return when the model term is disabled. The two auxiliary
-maxima are never recorded, so $\sigma$ collapses to the blended maximum over
-expanded edges. The same early return is taken whenever the candidate list is
-empty. There the consequence is worse than a collapse: the maxima are not
-merely unrecorded but \emph{stale}, left holding whatever the last pass to set
-them wrote. The stale values live on the scorer instance. The runtime
-memoises one instance per $\alpha$ for the process, so the values persist not
-just across a question's passes but across every question in the run. The
-practical reach is again narrow --- an empty candidate list trips the
-dead-end trigger, which is evaluated first. The masking is again the order of
-the triggers rather than anything about the values. Since $\alpha = 1$ makes
-the blend the embedding score, the effect is not that $\sigma$ is measured on
-a different scale but that it is measured over a \emph{smaller set}: the
-beam-selected, non-banned edges rather than every candidate the anchors
-offered. After a backtrack has banned the best relation, $\sigma$ falls in
-this condition where it would have held steady in the reference. That is
-exactly the embedding-only ablation. \Cref{sec:abl-embonly} reports what it
-does to that condition's backtrack count instead of attributing the
-difference wholly to $\tau$.
-
-The backtracker does three things. It pops the \emph{highest-scoring} snapshot
-from the stack --- not the most recent one, which would make backtracking a
-simple undo. It restores that snapshot's anchors and depth. And, critically, it
-adds \textsf{(anchor, relation, direction)} triples to a \textbf{ban list} that
-the explorer consults on its next pass.
-
-The ban list is what makes backtracking a search operation rather than a loop.
-Without it, restoring a frontier is pointless: a deterministic scorer facing an
-identical frontier selects identical edges, producing identical facts and an
-identical decision to backtrack, until the backtrack budget is exhausted. With
-it, a backtrack forces the scorer to its next-best alternatives. That forcing
-is what ``exploring an alternative branch'' actually requires.
-\Cref{sec:design-validation} shows both behaviours in the logs.
-
-\emph{Third, the ban list is narrower than the jump it has to cover.} That gap
-is the deviation with a measurable consequence. What the backtracker bans is
-the \emph{most recent} explorer pass. What it restores is the
-\emph{highest-scoring} snapshot --- frequently older than that pass.
-Everything expanded between the restored snapshot and the current one
-therefore stays unbanned. On exactly those backtracks the argument of the
-preceding paragraph does not hold: the explorer can be handed back a frontier
-with all of its previously selected edges still available. It then re-selects
-them, because the scorer is deterministic. Over the main matrix, $53$ explorer
-passes --- $15$ on WebQSP and $38$ on CWQ --- expanded an \textsf{(anchor,
-relation)} set identical to one the same question had already expanded. That
-is exactly the repetition the ban list exists to prevent, occurring anyway.
-The misalignment that produces it is visible in at least $65$ of the $262$
-backtracks, where the restored depth is not the depth the most recent
-snapshot carried, so the popped snapshot provably was not the most recent
-one.\footnote{A lower bound rather than a count. Identifying the popped
-snapshot exactly would need the scores, which the trace does not carry. Depth
-it does carry, and the depth series reconstructs exactly against the budget
-snapshot on all $800$ records. A pop that restores an older snapshot sitting
-at the same depth is indistinguishable from a most-recent pop and is counted
-as one here.}
-
-The unit test that should have caught this compares the first expansion set
-against the second, so it is structurally incapable of observing a gap that
-opens only when the stack is popped out of order. Naming that is part of
-recording the deviation: the test passes, and what it establishes is narrower
-than its name suggests.
-
-\subsection{Routing}
-
-\textsf{route\_after\_eval} is pure Python and enforces budgets before
-preferences. Wall-clock and depth are checked first. If either is exhausted,
-the agent is routed to answer with whatever it has. If a backtrack trigger
-fired, the agent backtracks if the backtrack budget permits and otherwise
-answers. Only then is the evaluator's own decision honoured. Routers are
-deterministic by construction: no adversarial model output can change what they
-do.
-
-\section{The Answerer}\label{sec:answerer}
-
-The answerer\index{answerer} is a finalizer rather than a generator. Which of
-its three paths runs is decided entirely by what the verification layer left
-in state. Two of the three are specified in \Cref{sec:verification-layer}: the
-\emph{verified} path, where no claim was unsupported and the draft is emitted
-with no further model call, and the \emph{repair} path, where unsupported claims
-remain and one rewrite call restates the answer around a deterministically
-filtered entity list (\Cref{sec:entity-filtering}). On the development set the
-verified path handled 77 of 80 questions at zero additional cost.
-
-The third path exists for the case where the verifier raised before producing a
-draft at all. It makes one model call over the traversed facts and the
-accumulated candidates. If the model budget is exhausted it falls back without a
-call to the resolved entities of completed plan steps, or failing that to the
-accumulated candidates, producing a degraded but non-empty answer. If the call
-raises for any other reason, the error is recorded in the trace and the answer
+That third is a misalignment between what the backtracker bans and what it
+restores. It bans the \emph{most recent} explorer pass; it restores the
+\emph{highest-scoring} snapshot, frequently older than that pass, so everything
+expanded in between stays unbanned and the explorer can be handed back a
+frontier with all of its previously selected edges still available. It then
+re-selects them, because the scorer is deterministic. Over the main matrix, $53$
+explorer passes --- $15$ on WebQSP and $38$ on CWQ --- expanded an
+\textsf{(anchor, relation)} set identical to one the same question had already
+expanded, which is exactly the repetition the ban list exists to prevent. The
+misalignment that produces it is visible in at least $65$ of the $262$
+backtracks, where the restored depth is not the depth the most recent snapshot
+carried.
 is an explicit failure string.
 
 That last distinction is deliberate. An earlier version caught all exceptions
@@ -718,6 +611,35 @@ committed records that ran this graph carries a non-empty draft. Every
 degraded path described in this section is therefore specified and never
 exercised. That is also why its fact window is described here and nowhere in
 \Cref{sec:results}.
+
+\section{The Answerer}\label{sec:answerer}
+
+The answerer\index{answerer} is a finalizer rather than a generator, and which
+of its three paths runs is decided entirely by what the verification layer left
+in state. Two of the three are specified in \Cref{sec:verification-layer}: the
+\emph{verified} path, where no claim was unsupported and the draft is emitted
+with no further model call, and the \emph{repair} path, where unsupported claims
+remain and one rewrite call restates the answer around a deterministically
+filtered entity list (\Cref{sec:entity-filtering}). On the development set the
+verified path handled $77$ of $80$ questions at zero additional cost.
+
+The third path exists for the case where the verifier raised before producing a
+draft at all. It makes one model call over the traversed facts and the
+accumulated candidates; if the model budget is exhausted it falls back without a
+call to the resolved entities of completed plan steps, or failing that to the
+accumulated candidates, producing a degraded but non-empty answer. If the call
+raises for any other reason, the error is recorded in the trace and the answer
+is an explicit failure string --- a distinction that matters, because an earlier
+version caught all exceptions as budget exhaustion and so misreported genuine
+errors as expected behaviour.
+
+Every degraded path described here is specified and never exercised. Across all
+$6{,}960$ committed runs no handler of this kind fired once, and every one of
+the $3{,}690$ committed records that ran this graph carries a non-empty draft,
+so the third path is never entered either. That is also why its fact window is
+described here and nowhere in \Cref{sec:results}, and
+\Cref{app:answerer-handler} records what the untested handler actually
+distinguishes.
 
 \section{Budgets and Termination Guarantees}\label{sec:budgets}
 
@@ -763,53 +685,31 @@ termination, and they produce the efficiency data of \Cref{sec:efficiency}.
 \end{table}
 
 The two tool-layer caps deserve a sentence of their own, because they bound
-recall rather than cost and a reader could otherwise take the budget table for a
-complete account of what limits the search. \textsf{max\_fanout} caps neighbours
-returned from a single expansion at $200$. On a high-degree entity --- a
-country, a large film franchise, a prolific author --- the true neighbour set
-exceeds that. The frontier then sees a truncated view, and an answer sitting
-outside the first $200$ is unreachable through that edge no matter how well
-the scorer ranks the relation. The hub-noise failures of \Cref{sec:echo} are
-the place this would be expected to matter.
+recall rather than cost. \textsf{max\_fanout} caps neighbours returned from a
+single expansion at $200$, and on a high-degree entity the true neighbour set
+exceeds that: the frontier sees a truncated view, and an answer sitting outside
+the first $200$ is unreachable through that edge no matter how well the scorer
+ranks the relation. The hub-noise failures of \Cref{sec:echo} are where this
+would be expected to matter. The tool returns a \textsf{truncated} flag
+alongside the neighbours, and two defects in it are recorded rather than
+repaired, under the rule of \Cref{sec:design-validation}: the flag does not
+reach the tool log, which records the returned neighbour count instead and
+cannot distinguish a capped expansion from one that returned exactly $200$; and
+it is computed before mediator traversal, on the raw row count, while the final
+list is truncated after mediators have been expanded into it, so an expansion
+returning few raw rows but many entities through their mediators is cut without
+the flag being set. Both make it a lower bound on truncation rather than a
+record of it, and no analysis in this thesis reads it --- the cap's effect is
+measured from the returned counts instead, as in \Cref{sec:baseline-tog}.
 
-The tool returns a \textsf{truncated} flag alongside the neighbours. Two
-defects in it are recorded rather than repaired, under the rule of
-\Cref{sec:design-validation}. First, the flag does not reach the tool log: the
-logger records the returned neighbour count and not the flag. The condition is
-in fact \emph{not} visible in the log, and the count alone cannot distinguish a
-capped expansion from one that happened to return exactly $200$. Second, the
-flag is computed before mediator traversal, on the raw row count, while the
-final list is truncated after mediators have been expanded into it. An
-expansion that returns few raw rows but many entities through those rows'
-mediators is therefore cut without the flag being set. Both mean the flag is a
-lower bound on truncation, not a record of it. No analysis in this thesis
-reads it --- the cap's effect is measured instead from the returned counts, as
-in \Cref{sec:baseline-tog}.
-
-Enforcement is confined to routers and the client. That confinement is what
-keeps it auditable, but the mapping is not one site per budget, and the
-exceptions are the interesting part. The model-call budget is checked inside
-the client before every call, so no node can bypass it. Exceeding it raises an
-exception that each node catches into a degraded path rather than a crash. The
-backtrack budget is checked in the post-evaluation router alone. Beam width and
-anchor cap are not checks at all but slices: beam width in the explorer, the
-anchor cap in the explorer and again in the evaluator, where resolved entities
-become the next frontier.
-
-The remaining three are each checked in two places. In every case the second
-site exists because the first does not cover the verify--explore cycle.
-\emph{Depth} and \emph{wall-clock} are checked in the post-evaluation router and
-again in the post-verification router: the retry edge re-enters the explorer
-without passing through the first, so without the second a repair would silently
-buy an expansion past the depth budget. \Cref{sec:repair} records the
-development trace that exposed exactly that. Closing it there rather than
-documenting it as an exception is why \Cref{sec:budgets} can call budgets
-guarantees at all. \emph{Verification iterations} are checked in the
-post-verification router and again inside the verifier. The verifier will not
-append a repair objective it has no budget to pursue. The duplication is
-deliberate. The two sites read the same counter through the same predicate, so
-neither can drift from the other. What it costs is the simpler sentence, and
-the simpler sentence would be false.
+Enforcement is confined to routers and the client, which is what keeps it
+auditable, though the mapping is not one site per budget:
+\Cref{app:budget-sites} gives it. Three of the budgets are checked in two places
+rather than one, and in every case the second site exists because the first does
+not cover the verify--explore cycle --- the retry edge re-enters the explorer
+without passing through the post-evaluation router, so without a second check a
+repair would silently buy an expansion past the depth budget. \Cref{sec:repair}
+records the development trace that exposed exactly that.
 
 Together these give a termination guarantee that does not depend on model
 behaviour: every cycle in \Cref{fig:statemachine} passes through a router that
@@ -830,205 +730,55 @@ the budget snapshot, wall-clock time, and --- for provenance --- the backbone
 description, the budget configuration hash, the run configuration, and the
 current git commit.
 
-The response cache deserves separate description: it underwrites the thesis's
-reproducibility claims. Every model call is keyed by a hash over the model
-identifier, temperature, reasoning-effort setting, the full prompt text, and the
-schema hint. Hits are served from disk. The subtle part is that a cache hit must
-be \emph{indistinguishable} from a live call inside the agent: the budget check
-still runs, the call counter still increments, and the original token counts are
-replayed into the meter from the stored record. A fully cached rerun therefore
-reproduces the original run's budget snapshots exactly, rather than reporting
-zero tokens --- with one exception, stated here because it is a property of the
-technique and not of this run: the replay restores prompt and completion tokens
-but not \textsf{reasoning\_tokens}, which the cache stores and does not add
-back. That field is zero throughout this thesis, since the backbone runs at
-reasoning effort \textsf{none} (\Cref{sec:backbone}), so the snapshots do
-reproduce exactly here. Anyone reusing the design under a reasoning-effort
+The response cache underwrites the thesis's reproducibility claims. Every model
+call is keyed by a hash over the model identifier, temperature, reasoning-effort
+setting, the full prompt text, and the schema hint, and hits are served from
+disk. The subtle part is that a cache hit must be \emph{indistinguishable} from
+a live call inside the agent: the budget check still runs, the call counter
+still increments, and the original token counts are replayed into the meter from
+the stored record, so a fully cached rerun reproduces the original run's budget
+snapshots exactly rather than reporting zero tokens. One exception is a property
+of the technique rather than of this run --- the replay restores prompt and
+completion tokens but not \textsf{reasoning\_tokens}, which the cache stores and
+does not add back. That field is zero throughout this thesis, since the backbone
+runs at reasoning effort \textsf{none} (\Cref{sec:backbone}), so the snapshots
+do reproduce exactly here; anyone reusing the design under a reasoning-effort
 setting would find they do not. A separate counter records cache hits so that
-live and replayed runs can still be told apart in analysis.
-
-The response cache has three consequences. Repeated experiments cost nothing. A
-code change that is not supposed to alter behaviour can be verified by
-confirming that a rerun is served entirely from cache. And because the key
-includes the model string, and the backbone configured here is a dated snapshot
-rather than an alias, a silent server-side change cannot poison previously
-cached results --- a property of the configuration and not of the cache, since
-an alias would hash identically across the substitution it hides.
+live and replayed runs can be told apart, repeated experiments cost nothing, and
+a code change that is not supposed to alter behaviour can be verified by
+confirming that a rerun is served entirely from cache. Because the key includes
+the model string, and the backbone configured here is a dated snapshot rather
+than an alias, a silent server-side change cannot poison previously cached
+results.
 
 \section{Design Validation on the Smoke Set}\label{sec:design-validation}
 
-Two tuning sets appear in this thesis and they are not the same set. This
-section uses the \emph{smoke set}: twenty questions, drawn from the training
-splits, used once to validate the assembled framework's mechanics. The
-$80$-question \emph{development set} of \Cref{sec:dev-construction}, on which
-the hyperparameters were swept, is a separate and larger construction. Both are
-disjoint from test. Only the second carries any reported number.
+Two tuning sets appear in this thesis and they are not the same. This section
+uses the \emph{smoke set}: twenty questions drawn from the training and
+validation splits, never from test, used once to validate the assembled
+framework's mechanics. The $80$-question \emph{development set} of
+\Cref{sec:dev-construction}, on which the hyperparameters were swept, is a
+separate and larger construction, and only it carries any reported number.
 
-The first end-to-end run of the assembled framework over the smoke set answered
-roughly three to four questions correctly. The final configuration answers
-thirteen to fourteen. The interval between those numbers is not incidental
-tuning. That interval is where several of the mechanisms described above were
-shown to be necessary. It is documented here because each fix is evidence that
-a component earns its place.
+The first end-to-end run answered roughly three to four questions correctly; the
+final configuration answers thirteen to fourteen. That interval is not
+incidental tuning --- it is where several of the mechanisms described above were
+shown to be necessary. \Cref{app:smoke} gives the record: the five systematic
+root causes the first run's failures collapsed into, the mechanism each one
+motivated, and three episodes that bear on later chapters. Two of those episodes
+are the evidence \Cref{sec:verify-motivation} rests on --- a confident answer no
+retrieved triple supported, and nine entities the evaluator asserted without
+retrieving --- and the third is where the standing rule against analysing an
+unchecked metric comes from.
 
-\textbf{This section is the one place in the thesis whose \emph{evidence} is not
-fully archived, and the reader should treat it accordingly.} The three other
-provenance gaps are single numbers rather than bodies of evidence --- the API
-spend of \Cref{sec:test-sets}, which is a billing record, the later determinism
-rounds of \Cref{sec:backbone}, read from console tables, and the pre-fix support
-count of \Cref{sec:output-contract}, read from a development trace. What
-survives is one smoke-set record file,
-\textsf{results/phase3/smoke20\_a0.5\_t0.2.jsonl}, which scores thirteen
-correct, six hedged and one wrong --- the lower end of the after-state quoted
-above, at $\alpha = 0.5$ rather than the frozen $0.7$, since it was written
-during the sweep. What does not survive is the before-state: the first run was
-read from a console log and never committed, so the three-to-four figure and the
-root causes of \Cref{tab:rootcauses} rest on that reading alone and cannot be
-recomputed. Neither number enters any result. That is why the omission was
-tolerable, and the ranges are given as ranges for the same reason. This gap is
-stated here rather than left to be discovered, because every other provenance
-gap in this thesis is flagged where it occurs, and an unflagged one reads as an
-oversight rather than a limit.
-
-The smoke set was constructed to exercise specific machinery rather than to
-sample the benchmark distribution: six single-hop questions, eight two-hop
-compositions, three conjunctions, two whose shortest path traverses a mediator,
-and one question about a deliberately non-existent entity whose correct answer
-is a refusal. Questions were drawn from the training and validation splits only,
-never from test, so that everything tuned against them remains outside the
-evaluation.
-
-The first run produced no crashes, terminated cleanly on every question, and
-abstained rather than confabulated in almost every failure. That combination
-was the actual exit criterion for the framework's mechanics. But its sixteen
-or seventeen failures collapsed into just five systematic causes, summarised
-in \Cref{tab:rootcauses}.
-
-\begin{table}[!tb]
-  \begin{center}
-    \caption[Root causes of failure in the first end-to-end run]{Root causes of
-    failure in the first end-to-end run, and the mechanism each one motivated.
-    Every fix is described in the section indicated.}
-    \label{tab:rootcauses}
-    \footnotesize
-    \begin{tabular}{|L{52mm}|L{52mm}|l|}
-      \hline
-      \textbf{Observed failure} & \textbf{Mechanism introduced} &
-      \textbf{Section} \\
-      \hline
-      Backtracking was a deterministic no-op: the restored frontier produced
-      identical scores, facts, and decisions until the budget drained &
-      Ban list on abandoned \textsf{(anchor, relation, direction)} triples &
-      \Cref{sec:backtracking} \\
-      \hline
-      The evaluator's fact window showed the most recent thirty triples, so a
-      large successful expansion pushed the answer out of view &
-      Relevance-ranked fact window & \Cref{sec:evaluator} \\
-      \hline
-      The relation list, capped at 80 by descending fanout, hid low-fanout
-      precise relations behind hub relations &
-      Cap raised to 300, plus the administrative-predicate blocklist &
-      \Cref{sec:tool-api} \\
-      \hline
-      Entities resolved while an objective was still incomplete were discarded &
-      \textsf{candidate\_answers} accumulated on every evaluation &
-      \Cref{sec:evaluator} \\
-      \hline
-      The frontier was truncated in insertion order, so the agent drifted away
-      from the anchor that mattered & Frontier sorted by edge score before
-      truncation & \Cref{sec:explorer} \\
-      \hline
-    \end{tabular}
-  \end{center}
-\end{table}
-
-Three observations from this exercise are worth carrying forward, because they
-bear directly on later chapters.
-
-\textbf{The two confabulations in the first run were caused by a retrieval
-defect, not a generation defect.} Two questions about national currencies
-produced a confident ``United States Dollar''. The relation cap had hidden the
-\textsf{currency\_used} relation. The beam surfaced triples about GNI per capita
-denominated in dollars. And the answerer pattern-matched. No retrieved triple
-supported the answer. After the cap was raised both questions resolved correctly
---- and at roughly a third of the token cost. These two traces are the
-motivating example for \Cref{sec:verification-layer}: a claim-level check
-against the traversed triples would have caught them regardless of the retrieval
-defect. That is precisely the argument for verifying before emitting.
-
-\textbf{The groundedness filter on resolutions was validated by a failure.} On
-one question the evaluator listed nine correct countries. None appeared in any
-retrieved triple, because the beam had gone down an unrelated branch. The
-filter rejected all nine, and the system abstained. This cost a point. The
-rejection also demonstrated, one layer earlier than intended, that a language
-model inside an agentic scaffold will assert entities it never retrieved ---
-and that catching this requires an explicit check, because nothing about the
-model's confidence distinguishes the nine countries it recalled from entities
-it actually found.
-
-\textbf{One instrumentation defect was found and removed.} A counter reporting
-how many banned expansions had been skipped was computing the number of anchors
-instead. The counter was reporting a plausible-looking number that was
-unrelated to what it claimed to measure. It was corrected rather than deleted,
-but the episode motivates a standing rule adopted for the remainder of the work:
-a metric that has never been checked against a case where its correct value is
-known independently should not be trusted, and should not be analysed.
-
-\section{The Complete Navigation Algorithm}\label{sec:navigation-algorithm}
-
-\Cref{alg:agr} states the loop.
-
-\begin{algorithm}[!tb]
-  \caption[AGR navigation]{AGR navigation (verification layer abstracted; see
-    \Cref{sec:verification-layer})}
-  \label{alg:agr}
-  \begin{algorithmic}[1]
-    \REQUIRE question $q$, graph $G$, budgets $B$, blend $\alpha$, threshold
-      $\tau$
-    \ENSURE answer $A$ with supporting triples $S$
-    \STATE $P \gets \textsc{Plan}(q)$; \textbf{if} invalid \textbf{then}
-      $P \gets [\,q\,]$
-    \STATE $F \gets \textsc{SeedAnchors}(P)$;\quad
-      $T \gets \emptyset$;\quad $C \gets \emptyset$;\quad
-      $\mathit{stack} \gets \emptyset$;\quad $\mathit{ban} \gets \emptyset$
-    \WHILE{budgets permit}
-      \STATE push $(F, \mathit{depth}, \sigma)$ onto $\mathit{stack}$
-        \COMMENT{$\sigma$ from the previous pass; $0$ initially}
-      \STATE $R \gets \bigcup_{e \in F} \textsc{GetRelations}(e)$
-      \STATE $\mathit{scored} \gets \alpha\cos(\cdot) + (1-\alpha)\mathrm{LLM}
-        (\cdot)$ over $R$ against the active objective
-      \STATE $E \gets$ top-$\beta$ of $\mathit{scored}$ per anchor, excluding
-        $\mathit{ban}$
-      \STATE $T \gets T \cup \textsc{GetNeighbors}(E)$;\quad
-        $F \gets$ top-$m$ new entities by score, \textbf{or} $F$ unchanged if
-        that set is empty \COMMENT{the dead-end trigger fires on the same
-        condition and routes away before $F$ is reused}
-      \STATE $\sigma \gets \max(\max_{c \in E}\mathit{scored}(c),\;
-        \max_{c \in R}\cos(\cdot),\; \max_{c \in R_K}\mathrm{LLM}(\cdot))$
-        \COMMENT{signal maximum}
-      \STATE $(d, \mathit{done}, \rho) \gets \textsc{Evaluate}
-        (\text{objective}, \textsc{TopFacts}(T))$
-      \STATE $\rho \gets \{x \in \rho : x \text{ appears in } T\}$;\quad
-        $C \gets C \cup \rho$
-        \COMMENT{groundedness filter}
-      \IF{$\mathit{done}$}
-        \STATE advance $P$; \textbf{if} no objective remains \textbf{then}
-          $d \gets \textsf{answer}$ \textbf{else} $F \gets \rho$
-      \ENDIF
-      \IF{$|T_{\mathrm{new}}| = 0$ \OR $\sigma < \tau$ \OR
-          $d = \textsf{backtrack}$}
-        \STATE $\mathit{ban} \gets \mathit{ban} \cup E$;\quad
-          $(F, \mathit{depth}) \gets$ pop highest-scoring snapshot
-      \ELSIF{$d = \textsf{answer}$}
-        \STATE \textbf{break}
-      \ENDIF
-    \ENDWHILE
-    \STATE $(A, S) \gets \textsc{VerifyAndAnswer}(q, T, C)$
-      \COMMENT{\Cref{sec:verification-layer}}
-    \RETURN $(A, S)$
-  \end{algorithmic}
-\end{algorithm}
-
+This is also the one place in this thesis whose \emph{evidence} is not fully
+archived. What survives is one record file,
+\textsf{results/phase3/smoke20\_a0.5\_t0.2.jsonl}, scoring thirteen correct, six
+hedged and one wrong at $\alpha = 0.5$ rather than the frozen $0.7$. What does
+not is the before-state, read from a console log and never committed, so the
+three-to-four figure and the root causes rest on that reading alone. Neither
+number enters any result, which is why the omission was tolerable and why the
+figures are given as ranges.
 \section{The Structural Verification Layer}\label{sec:verification-layer}
 
 \Cref{sec:architecture} described a navigation loop that ends with a set of
@@ -1045,50 +795,39 @@ what the development set showed and what the $800$ test questions show are not
 the same thing. Reporting only the first would leave this account contradicting
 \Cref{sec:erroranalysis}.
 
-\section{Motivation: Verifying Before Emitting, Not
+\subsection{Motivation: Verifying Before Emitting, Not
 After}\label{sec:verify-motivation}
 
 \Cref{sec:limitations} argued that agentic KGQA systems are typically evaluated
 on whether the correct answer is \emph{among} what they assert, leaving
-the\index{verification layer} precision of the assertion unmeasured and
-unconstrained. The navigation loop makes that concrete: its final act is a
-language-model call over a fact window and a candidate list. The model is free
-to name an entity that appeared in neither, and no downstream component objects.
-
-Two episodes from the first end-to-end run over the smoke set
-(\Cref{sec:design-validation}) sharpen the point. In one, a retrieval defect hid
-the \textsf{currency\_used} relation. The beam surfaced triples about income
-denominated in dollars. The answerer confidently asserted ``United States
-Dollar'' for two different countries --- an assertion no retrieved triple
-supported. In another, the evaluator listed nine countries that appeared in no
-retrieved triple at all. The first was caught only by fixing the retrieval
-defect. The second was caught by the groundedness filter on resolutions
-(\Cref{sec:groundedness-filter}), one layer earlier than intended. Neither was
+the\index{verification layer} precision of the assertion unmeasured. The
+navigation loop makes that concrete: its final act is a language-model call over
+a fact window and a candidate list, and the model is free to name an entity that
+appeared in neither, with no downstream component to object. The first
+end-to-end run over the smoke set (\Cref{sec:design-validation}) produced both
+shapes of that failure --- an answer no retrieved triple supported, and a list
+of nine entities that appeared in no retrieved triple at all --- and neither was
 caught by anything examining the answer.
 
 The design response is to check the draft against the environment \emph{before}
-it is emitted, rather than to fact-check an emitted answer afterwards. That
+it is emitted, rather than to fact-check an emitted answer afterwards, and that
 ordering is where the layer parts company with the post-hoc verification
-literature. Chain-of-Verification~\cite{dhuliawala2024chain} improves a
-response by drafting it, planning verification questions, answering them, and
-revising. FActScore~\cite{min2023factscore} decomposes generated text into
-atomic facts and scores each against a corpus. Both are placed after
-generation, and both take the model's own answers to the verification
-questions as evidence. The layer specified here borrows their decomposition
-step --- \Cref{sec:claim-decomposition} extracts atomic claims in much the
-same spirit --- and rejects their placement and their evidence source: the
-check runs before emission and adjudicates against traversed triples rather
-than against further generation. That matters because a model asked to check
-its own output is a weak detector of its own errors~\cite{huang2024selfcorrect}.
-That weakness is precisely the failure mode a symbolic environment can avoid.
-
-Three properties follow from placing the check inside the loop. The checker sees
-the same retrieved evidence the drafter saw, so a disagreement between them is
+literature. Chain-of-Verification~\cite{dhuliawala2024chain} improves a response
+by drafting it, planning verification questions, answering them, and revising;
+FActScore~\cite{min2023factscore} decomposes generated text into atomic facts
+and scores each against a corpus. Both are placed after generation, and both
+take the model's own answers to the verification questions as evidence. The
+layer specified here borrows their decomposition step
+(\Cref{sec:claim-decomposition}) and rejects their placement and their evidence
+source: the check runs before emission and adjudicates against traversed triples
+rather than against further generation, because a model asked to check its own
+output is a weak detector of its own errors~\cite{huang2024selfcorrect}. Three
+properties follow from placing the check inside the loop. The checker sees the
+same retrieved evidence the drafter saw, so a disagreement between them is
 informative rather than an artifact of differing context. The check happens
 while budget remains, so a rejected claim can trigger further exploration rather
-than only a retraction. And the check is symbolic where the graph can answer, so
-the arbiter of whether a fact holds is the environment and not a second opinion
-from the model that produced the draft.
+than only a retraction. And the arbiter of whether a fact holds is the
+environment, not a second opinion from the model that produced the draft.
 
 What the layer promises should be stated precisely, because the terms are easy
 to inflate. It certifies that the atomic claims a draft asserts are
@@ -1096,7 +835,7 @@ to inflate. It certifies that the atomic claims a draft asserts are
 \Cref{sec:hallucination-def}: the traversed triples, or the graph in the
 retrieved neighbourhood, exhibit a connection consistent with the claim. It does
 not certify that the answer is correct. An answer every one of whose claims is
-supported can still be the wrong answer to the question.
+supported can still be the wrong answer to the question, and
 \Cref{sec:verify-failure-modes} shows that this is a structural gap rather than
 a hypothetical one.
 
@@ -1255,42 +994,20 @@ because the first route tests the \emph{traversal}, not the graph: the agent may
 have reached both endpoints along different branches without ever walking the
 edge between them.
 
-Both routes are relation-agnostic. Since $r$ is free text with no correspondence
-to a Freebase predicate, matching on it would reject true claims wholesale ---
-``X played for Y'' is realised through a roster mediator carrying no predicate
-named for playing. The design intent is a division of labour: the structural
-routes provide high recall for ``some supporting edge exists,'' and semantic
-precision is delegated to the entailment check. \Cref{sec:verify-failure-modes}
-examines what that division actually buys and what it lets through.
+Both routes are relation-agnostic. Since $r$ is free text with no reliable
+mapping onto a Freebase predicate, neither asks whether the edge it finds is the
+edge the claim names, and neither asks about direction. That is the price of
+admitting free-text relations, and it is the layer's principal acceptance risk
+rather than an incidental looseness.
 
-On the development set the second route was consulted five times, across five
-distinct questions --- four per cent of the 121 claims. All five returned
-connected, and all five had a mediator path. In three of them there was no
-direct edge at all, so a mediator-blind adjacency test would have rejected them.
-Two were direct edges the traversal had simply never walked. Query latency
-across those same five calls ranged from 1.9 to 75.7\,ms. With $n = 5$, that
-range is a record of what happened rather than a latency distribution. The
-route is therefore cheap and, on this evidence, correct --- but it is also rare.
-
-Rare at test scale too. There the counts are large enough to carry weight.
-Across the $800$ test questions the verifier decomposed $2{,}110$ claims over
-$828$ firings, accepted $2{,}008$ of them and rejected $102$. The second route
-was consulted on $100$ of those claims --- $4.7\%$, the same order as the
-development set's four per cent --- and accepted $39$. Both figures are exact:
-the first from the verifier's own trace entries, the second from the tool log,
-which records one \textsf{verify\_connection} call per claim reaching that
-branch because the code issues exactly one there.
-
-What the record cannot say is how the remaining $1{,}969$ acceptances divide
-between traversed adjacency and the entailment check. A claim routed to
-entailment leaves no per-claim trace. The \textsf{n\_structural} counter that
-\Cref{sec:output-contract} fences counts entailment-accepted claims alongside
-structural ones, so it cannot separate them either. The traversed-adjacency
-share is bounded above by $1{,}969$ and below by nothing at all. That is the
-instrumentation gap of \Cref{sec:threats} in a third form. It is why this
-paragraph reports the share of \emph{claims} that reached the second route,
-which is measured, and not the share of \emph{acceptances} that came through
-the first, which is not.
+\Cref{app:route-frequencies} records how often each route fires. Two figures
+from it are quoted later. The second route is rare --- consulted five times on
+the development set and on a small minority of test claims --- so the first
+route carries almost all of the checking. And the record cannot say how many of
+the $2{,}008$ accepted claims were certified by a relation-blind test rather
+than by entailment: the answer lies somewhere in $[39, 2{,}008]$, which is the
+interval \Cref{sec:verify-failure-modes} and \Cref{sec:threats} both read
+against, and which \Cref{sec:future-logging} is the change that would narrow.
 
 \subsection{The Entailment Check}\label{sec:entailment-check}
 
@@ -1358,44 +1075,12 @@ chosen is first by position in the draft's decomposition rather than by
 importance to the answer. Both keep the repair path cheap. Neither was
 revisited, because the path was rarely exercised.
 
-The retry route requires verify, depth, \emph{and} time budget. The depth
-condition was added after a development trace showed a question completing with
-depth 5 against a maximum of 4: the retry edge re-enters the explorer without
-passing through the post-evaluation router, which is where the depth check
-lives, so each retry silently granted one expansion beyond budget. Since
-\Cref{sec:budgets} claims budgets are hard guarantees, the hole was closed in
-the router rather than documented as an exception.
-
-That condition turns out to be decisive on the development set, where
-\textbf{the route never executed}. On all three development questions that
-produced an unsupported claim, the depth budget was already exhausted when the
-verifier ran, so the router took \textsf{give\_up} in every case and no repair
-exploration occurred. That pattern is not a coincidence of small numbers so
-much as a structural correlation: the verifier is reached either because the
-plan completed or because a budget ran out, and all three firings came from
-the fourteen questions that exhausted depth, none from the sixty-six that
-finished with search budget in hand.
-
-\textbf{That correlation does not survive the move to test, and the route
-executes there.} Across the $800$ test questions the verifier asks for a
-repair on $52$ --- $16$ on WebQSP and $36$ on CWQ. Exploration actually
-resumes on $28$ of them, $10$ and $18$ respectively. So the development
-observation was about a sample of three. Generalising it would have been
-wrong: the depth condition blocks the retry about half the time rather than
-always. What this chapter cannot answer is whether the route \emph{helps}.
-The census answers that in the direction the design did not intend ---
-\Cref{sec:verifier-errors} reads four of the five wrongly-rejected specimens
-as retries that ran and lost the answer, which is where the recall cost
-\Cref{sec:verification-tradeoff} attributes to this layer is actually paid.
-What the development set establishes is therefore narrower than it looked:
-that the route contributed nothing \emph{there}, not that nothing in this
-thesis depends on it.
-
-One instrumentation consequence follows, and matters when reading run records.
-The verifier increments \textsf{verify\_iters} and appends the repair objective
-\emph{before} the router decides, so a record showing \textsf{verify\_iters:\,1}
-records the verifier's intent to repair, not an executed repair. Whether
-exploration actually resumed is visible only in the node sequence of the trace.
+The retry route requires verify, depth, \emph{and} time budget together, and
+that conjunction is why it almost never fires: by the time the verifier is
+reached the depth budget is typically already spent. \Cref{app:retry-budget}
+measures it --- the development-set condition under which the route could have
+run, why that correlation does not survive the move to test, and the
+instrumentation consequence that follows for reading the repair counts.
 
 \subsection{Answer Rewriting and Hedging}
 
@@ -1433,7 +1118,7 @@ selects it dynamically. A third path, the legacy answerer of
 \Cref{sec:answerer}, runs only when the verifier raised before producing a draft
 at all.
 
-\section{Entity Filtering of the Final Answer}\label{sec:entity-filtering}
+\subsection{Entity Filtering of the Final Answer}\label{sec:entity-filtering}
 
 The rule is one line and its justification is the most instructive result
 in\index{answerer} this chapter.
@@ -1462,75 +1147,17 @@ an unsupported lucky hit into an honest hedge --- from a mechanism misfiring, so
 the two runs were diffed per question. Exactly three questions differed.
 \Cref{tab:census} gives all three.
 
-\begin{table}[!tb]
-  \begin{center}
-    \caption[The complete attribution census]{The complete attribution census:
-    every development-set question whose answer differed between claim checking
-    and its ablation, at $\alpha = 0.7$, $\tau = 0.20$. Three questions, one run
-    per condition. ``Pre-fix'' is the original design in which the rewrite call
-    regenerated the entity list. ``Post-fix'' is deterministic filtering. Per
-    \Cref{sec:hedge-accounting}, the three fabricated-entity questions --- the
-    \textsf{unanswerable\_fake} bucket, whose correct answer is a refusal ---
-    hedge in every condition and are counted as hedges rather than excluded, so
-    the totals are over all $80$. These are not the unanswerable-in-environment
-    class of \Cref{sec:unanswerable}, which is a separate bucket of four whose
-    questions do have true answers.}
-    \label{tab:census}
-    \footnotesize
-    \begin{tabular}{|L{29mm}|L{35mm}|L{35mm}|L{29mm}|}
-      \hline
-      \textbf{Question} & \textbf{Draft-only} & \textbf{Verified, pre-fix} &
-      \textbf{Verified, post-fix} \\
-      \hline
-      Harbaugh's teams founded before 1996
-      \newline \emph{gold:} 4 teams &
-      4 gold teams \emph{plus} Baltimore Ravens; scores as a hit &
-      \textsf{[\,]} --- hedge &
-      \textsf{[\,]} --- hedge \\
-      \hline
-      Party of Hitler and Carl Voss
-      \newline \emph{gold:} Nazi Party &
-      \textsf{Nazi Party} --- hit &
-      \textsf{Adolf Hitler}, \textsf{Nazi Party}; hit, but asserts the
-      question's subject &
-      \textsf{Nazi Party} --- hit \\
-      \hline
-      Franco's university, founded 1701
-      \newline \emph{gold:} University Yale &
-      \textsf{University Yale} --- hit &
-      \textsf{Yale University} --- \textbf{wrong} &
-      \textsf{University Yale} --- hit \\
-      \hline
-      \multicolumn{4}{|l|}{\textbf{Whole run} --- all 80 questions; the three
-        counts partition the set} \\
-      \hline
-      hits / hedges / wrong & 66 / 10 / 4 & 64 / 11 / 5 & 65 / 11 / 4 \\
-      \hline
-    \end{tabular}
-  \end{center}
-\end{table}
-
-The classification is unambiguous. \emph{No entailment verdict was wrong}. No
-repair exploration was involved --- as \Cref{sec:repair} records, none ran.
-All three differences trace to one component: the rewrite call, failing three
-different ways. On Harbaugh it over-deleted, discarding four grounded-correct
-team names along with the unsupported one. On Hitler/Voss it laundered the
-question's subject into the answer list --- an entity the draft never asserted.
-On Franco it silently respelled the graph's \textsf{University Yale} as the
-parametric \textsf{Yale University}, converting a defensible qualified answer
-into a scored error.
-
-The finding is worth stating in one sentence, because it is the conclusion this
-chapter's design rests on:
+The classification is unambiguous. \emph{No entailment verdict was involved in
+any of the three}, and \Cref{app:filter-census} gives them question by question.
+The finding is worth stating in one sentence, because it is the conclusion the
+whole subsection exists to support:
 
 \begin{quote}
-The verification logic was sound; its repair path free-generates entities from a
-language model, which reintroduces exactly the ungroundedness the layer exists
-to prevent.
+The verification logic was sound; its repair path frequently was not.
 \end{quote}
 
 Replacing generation with deterministic filtering removed two of the three
-regressions, exactly as predicted: Hitler/Voss and Franco left the diff.
+failures, and left the third, which is a different defect.
 
 \subsection*{What the Census Does and Does Not Establish}
 
@@ -1575,275 +1202,93 @@ account of it.
 \section{Output Contract: Answer Paired with Supporting
 Triples}\label{sec:output-contract}
 
-The system pairs each answer with the triples that support it. That pairing is
-the explainability deliverable named in \Cref{sec:contribution}. Its actual
-coverage is narrower than the phrase suggests in two independent ways: one
-route of three attaches no evidence, and what the run record keeps is a count
-rather than the triples.
+The system pairs each answer with the triples that support it, which is the
+explainability deliverable named in \Cref{sec:contribution}. Its actual coverage
+is narrower than the phrase suggests in two independent ways.
 
 \textbf{Only one of the three routes records evidence.} Supporting triples are
 collected in the traversed-adjacency branch alone. A claim certified by
 \textsf{verify\_connection} is accepted with nothing attached, and so is a claim
-certified by entailment. The output contract is therefore ``answer paired with
-whatever traversed triples happened to justify it'', not ``answer paired with
+certified by entailment. The contract is therefore ``answer paired with whatever
+traversed triples happened to justify it'', not ``answer paired with
 justification for every claim''.
 
 \textbf{What survives in the log is the count, not the evidence.} The pairing
-holds inside the run: the answerer receives the verifier's triple list and emits
-against it. But \textsf{RunLogger} writes \textsf{n\_supporting\_triples}, an
-integer, and drops the list. So no committed artifact in this work contains a
-single supporting triple, and every statistic in this section is computed from
-that counter. An examiner can confirm that these answers came from a system
-which tracked its evidence. They cannot inspect the evidence. That gap bounds
-the auditability the section claims, and it is the same defect approached from
-the other side by \Cref{sec:future-logging}, which asks for accepted claims to
-be persisted with their matching triples --- one logging change repairs both.
-That gap is recorded here rather than repaired late, under the standing rule
-of \Cref{sec:design-validation}, because repairing it now would separate the
-code from the results already frozen against it.
+holds inside the run --- the answerer receives the verifier's triple list and
+emits against it --- but \textsf{RunLogger} writes
+\textsf{n\_supporting\_triples}, an integer, and drops the list. No committed
+artifact in this work contains a single supporting triple, and every statistic
+in this section is computed from that counter. An examiner can confirm that
+these answers came from a system which tracked its evidence; they cannot inspect
+the evidence. That bounds the auditability this section claims, and it is the
+same gap \Cref{sec:future-logging} approaches from the other side --- one
+logging change repairs both. It is recorded rather than repaired late, under the
+standing rule of \Cref{sec:design-validation}, because repairing it now would
+separate the code from the results already frozen against it.
 
-The measured consequence on the development set: 13 of 80 answers carry no
+The measured consequence on the development set: $13$ of $80$ answers carry no
 supporting triples at all. Ten of those asserted no claims --- they are hedges,
 and zero is the honest number. Of the remaining three, one had every claim
-rejected, so there was nothing to record. The other two had their single
-claim certified by \textsf{verify\_connection}, which records no evidence.
-Across all 80 records the median is 3 and the mean 4.1, with a maximum of 16 ---
-read from the persisted \textsf{n\_supporting\_triples} counter, since the
-triples themselves are exactly what the log does not keep.
+rejected and two had their single claim certified by
+\textsf{verify\_connection}, which records no evidence. Across all $80$ records
+the median is $3$ and the mean $4.1$, with a maximum of $16$, read from the
+persisted counter since the triples themselves are exactly what the log does not
+keep.
 
 Three instrumentation defects in this area are recorded rather than quietly
-fixed, in keeping with the standing rule adopted in
-\Cref{sec:design-validation}.
+fixed, in keeping with the same standing rule, and \Cref{app:contract-defects}
+gives them: a falsy-empty-list trap in the answerer, since repaired; an
+unrepaired counter whose name misdescribes what it counts, and which is
+therefore fenced off from every reported result; and a mismatch between
+\Cref{alg:verify} and the code, the algorithm accumulating $E$ by set union
+where the implementation appends. The third bears on the figures above, since
+two claims sharing an endpoint pair each append the same matching triples, so
+\textsf{n\_supporting\_triples} counts matches rather than distinct triples. The
+exposure is bounded at $378$ of the $908$ verifier firings, itself an
+over-count, which makes that counter an \emph{upper} bound on distinct
+supporting triples --- as the median of $3$ and mean of $4.1$ above inherit.
 
-The first was a Python falsy-empty-list trap. The answerer substituted the
-entire traversed set for the supporting triples whenever the verifier's list was
-empty --- treating ``the verifier ran and matched nothing'' identically to ``the
-verifier never ran''. A development trace consequently recorded 1{,}927
-supporting triples for an answer that asserted nothing whatsoever. That trace
-was read before the fix and never committed, so the figure cannot be recomputed
-from this repository. The largest support count in any committed record is
-$133$. It illustrates the defect and enters no result. The fix tests for
-\textsf{None} rather than for falsity, so an empty list is reported as the zero
-support it is.
+\subsection{A Worked Example}\label{sec:verify-example}
 
-The repair is effective but its stated rationale was wider than the code. The
-intent was a three-way distinction --- absent means the verifier never ran,
-empty means it ran and matched nothing. The second half is what the system
-delivers. The first half is unreachable: the state initialiser seeds
-\textsf{supporting\_triples} to an empty list, so the key is never absent and
-the fallback branch never executes. Every answer therefore reports the
-verifier's own list, which is the correct behaviour and the one the results
-depend on. What does not exist is the legacy path the description implies. The
-branch is dead code guarding a state the initialiser rules out, and saying so is
-cheaper than leaving a reader to reconcile the two files.
+\Cref{app:verify-walkthrough} walks one question end to end --- \emph{which
+university, founded in 1701, did actor James Franco attend?} --- through
+drafting, claim decomposition, both structural routes, and the entity filter,
+showing where each mechanism specified above fires on a single trajectory. Its
+instructive part is the counterfactual: before deterministic filtering replaced
+a second generation call, the same trajectory emitted an entity the traversal
+had never supported. Replacing generation with filtering is what removed it.
 
-The second is unrepaired and therefore fenced off. A counter in the verifier's
-trace named \textsf{n\_structural} counts every supported claim, including those
-certified by the entailment call, so its name misdescribes it. Under the
-standing rule --- a metric that has never been checked against a case whose
-correct value is known independently should not be analysed --- no table, figure
-or reported result derives from it. The route-by-route counts of
-\Cref{sec:structural-check} come from the tool invocation log, which records
-each \textsf{verify\_connection} call with its arguments and result.
+\section{What the Verification Layer Establishes, and What It Does
+Not}\label{sec:verify-failure-modes}
 
-The fence has exactly one exception. That exception is worth naming, because a
-rule applied silently is indistinguishable from a rule applied selectively. The
-third defect below reads this counter once, to bound how often a duplicate could
-arise. The counter can only be read there because the direction of its error is
-known: counting too many supported claims can only over-state that bound, never
-under-state it. That is the whole of what a fenced metric may be used for: an
-inequality in the safe direction. It is why the figure appears there as an upper
-bound rather than as a measurement.
+The ways this layer can be wrong follow from its design, independently of how
+often they occur. \Cref{app:failure-modes} enumerates them: five mechanisms of
+wrongful rejection, led by the composite claim whose unverifiable component
+drags down its verifiable one, and four of wrongful acceptance, led by
+relation-agnostic adjacency. \Cref{sec:verifier-errors} reports which of them
+actually fired. In the vocabulary of \Cref{sec:polarities}, a claim is
+\emph{wrongly rejected} when the layer withholds support the environment would
+in fact provide, and \emph{wrongly accepted} when it certifies a claim the
+environment does not support.
 
-The third is a mismatch between \Cref{alg:verify} and the code it describes.
-The counter above carries the consequence. The algorithm accumulated $E$ by
-set union. The implementation appends. Two claims in one draft that share an
-endpoint pair --- ``X was born in Y'' and ``X died in Y'', decomposed
-separately but resolving to the same two identifiers --- therefore each append
-the same matching triples. \textsf{n\_supporting\_triples} counts matches
-rather than distinct triples. The algorithm is corrected here to say what the
-code does, since the code is what produced the results.
+One of those mechanisms bounds the layer's principal risk and belongs here
+rather than behind the body. Both structural routes ignore the relation and
+ignore direction, so any edge between the endpoints certifies any claimed
+relation between them: a claim that X is Y's mother is accepted on an edge
+recording that X is Y's child. The population exposed is therefore not the rare
+second route but every claim the two of them accept between them, which on test
+is somewhere in $[39, 2{,}008]$ of the $2{,}008$ accepted claims --- the lower
+end what the log pins down, the upper end what the mechanism permits. Nothing
+measured in this thesis narrows that interval, and \Cref{sec:future-logging} is
+the change that would.
 
-How often this bites cannot be recovered. The reason is the defect two
-paragraphs above: the claim endpoints are not persisted either, so there is no
-committed artifact against which to pair them. What can be bounded is the
-opportunity. A duplicate needs two claims matched by the \emph{adjacency} route,
-which is the only route that appends anything --- \textsf{verify\_connection}
-records no evidence and the entailment call appends nothing. Over the $80$
-development records this section reports and the $800$ test questions of
-\Cref{sec:results} --- $908$ verifier firings between them --- $378$ report two
-or more supported claims --- read, under the exception stated above, from the
-fenced \textsf{n\_structural} counter. That $378$ is an over-count of the
-exposure rather than a measure of it, and knowably so in that direction: the
-counter includes claims certified by the other two routes, neither of which
-appends anything. So the honest statement is that
-\textsf{n\_supporting\_triples} is an \emph{upper} bound on distinct supporting
-triples, and that the median of $3$ and mean of $4.1$ above inherit that.
-
-\section{A Worked Example}\label{sec:verify-example}
-
-\emph{Which university, founded in 1701, did actor James Franco attend?} Gold:
-\textsf{University Yale}.
-
-% TeX stops hyphenating a word at its first non-letter, so a dotted relation
-% name can only ever break inside its first segment -- and it does, inserting a
-% hyphen into the name. \allowbreak offers the dots as break points instead.
-Navigation resolves \textsf{James Franco} as the anchor and expands along
-\textsf{education.\allowbreak education.\allowbreak student} and
-\textsf{people.\allowbreak person.\allowbreak education}. The plan's first
-objective --- find the university founded in 1701 --- is never satisfied,
-because the environment holds essentially no date literals
-(\Cref{sec:unanswerable}). Three evaluator-triggered backtracks follow. The
-run terminates on the depth budget with 18 model calls, 17 of them cache
-replays.
-
-The verifier drafts: \emph{``James Franco attended University Yale, which was
-founded in 1701.''} Its entity list is \textsf{[University Yale]} --- copied
-from the fact window, in the graph's spelling. It decomposes the draft into an
-attendance claim and a founding claim.
-
-The attendance claim resolves both endpoints in $\mu$, and its endpoint pair
-is in the traversed adjacency set. It is supported. Four traversed triples
-joining the pair are recorded as evidence. The founding claim names
-\textsf{1701}, which no traversed triple mentions, so it cannot resolve and
-falls to the entailment check --- which correctly reports it unsupported,
-because the fact is genuinely absent from the environment rather than merely
-unretrieved. The verifier prepares a repair objective anchored on
-\textsf{University Yale}, but the depth budget is already spent, so the router
-takes \textsf{give\_up} and the exploration never resumes. There was in any
-case nothing to find.
-
-The answerer now filters. \textsf{University Yale} appears in a supported claim,
-so it is kept, verbatim. The rewrite call produces prose that asserts the
-attendance and hedges the founding date. Its own opinion about entities is
-discarded. Final answer entities: \textsf{[University Yale]} --- a hit.
-
-The instructive part is the counterfactual. Before deterministic filtering, this
-identical trace --- same draft, same claims, same verdicts --- ended with
-\textsf{[Yale University]}. The rewrite call, asked to restate the answer,
-restated it in the model's own spelling rather than the graph's. The answer
-was scored wrong. Nothing about the verification was different. The claim-level
-machinery had worked perfectly. The layer still emitted an entity string that
-appears nowhere in the environment. That outcome is the precise thing it
-exists to prevent.
-
-\section{Failure Modes by Construction: Wrongful Rejection and Wrongful
-Acceptance}\label{sec:verify-failure-modes}
-% Analytical section, derived from the design rather than from the data.
-% Section~\ref{sec:verifier-errors} carries empirical specimens of both
-% polarities; each mechanism named here forward-references them. Uses the
-% polarity vocabulary fixed in Section~\ref{sec:polarities} rather than fn/fp.
-
-This section is analytical. It enumerates the ways the layer can be wrong that
-follow from its design, independently of how often they occur. Which of these
-mechanisms actually fired, and how often, is reported in
-\Cref{sec:verifier-errors}. The vocabulary for the two polarities is fixed in
-\Cref{sec:polarities} and used here. A claim is \emph{wrongly rejected} when the
-layer withholds support the environment would in fact provide, and \emph{wrongly
-accepted} when it certifies a claim the environment does not actually support.
-
-\subsection*{Mechanisms of Wrongful Rejection}
-
-\textbf{Composite claims.} The decomposer emits claims corresponding to what the
-draft asserts, not to every relationship the draft relies on. When a draft
-asserts a filtered set --- ``these teams were founded before 1996'' --- the
-decomposition is about the founding. The membership relation that makes each
-team a candidate may never be claimed at all. Every team's only claim is then
-the unverifiable one. The filter drops every entity, and a draft containing
-four correct answers becomes a hedge. This pattern is the Harbaugh question of
-\Cref{tab:census}, and the mechanism is worth naming: \emph{a composite
-assertion whose unverifiable component drags down its verifiable component}. The
-conservative rule is defensible for a hallucination-mitigation system, and it is
-also the layer's most expensive single behaviour on the development set.
-
-\textbf{Endpoints outside the traversal.} $\mu$ is built from traversed triples
-only, so a claim about an entity the agent never walked to skips both structural
-routes regardless of what the graph contains. It is judged solely by a model,
-against a fact window that by construction does not mention it.
-
-\textbf{A question-ranked window for a claim-level judgement.} The entailment
-check's evidence is ranked for relevance to the question, not to the claim under
-test. Peripheral claims are systematically disadvantaged.
-
-\textbf{Conservative failure.} Any exception in the entailment call marks all
-pending claims unsupported. Infrastructure failure is recorded as rejection.
-
-\textbf{Name collisions in $\mu$.} The mapping keeps the first identifier seen
-for a name. Two distinct graph entities sharing a surface form collapse to one,
-and adjacency is then tested for the wrong node.
-
-\subsection*{Mechanisms of Wrongful Acceptance}
-
-\textbf{Relation-agnostic adjacency.} Both structural routes ignore $r$ and
-ignore direction. Any edge between the endpoints certifies any claimed relation
-between them. A claim that X is Y's mother is accepted on an edge recording that
-X is Y's child. A claim that a film was directed by a person is accepted on an
-acting credit. That symmetry is the direct cost of allowing free-text
-relations, and it is not a small one --- it is the layer's principal
-acceptance risk.
-
-That risk should be stated at the scale it actually has, because
-\Cref{sec:structural-check}'s development-set figure invites a smaller reading.
-Neither structural route matches on the relation, so the population exposed is
-not the rare second route but every claim the two of them accept between them.
-On test that is somewhere in $[39, 2{,}008]$ of the $2{,}008$ accepted
-claims --- an interval, for the reason that section gives, rather than a number.
-The lower end is what the log pins down, and it is small. The upper end is
-what the mechanism permits, and it is very nearly all of them. Nothing
-measured in this thesis narrows the interval. \Cref{sec:future-logging} is the
-change that would.
-
-\textbf{The mediator hop.} \textsf{verify\_connection} accepts a path through
-one mediator node. Because a Freebase mediator encodes a single $n$-ary fact,
-the endpoints of such a path are genuinely co-participants in one fact --- but
-which role each plays is exactly what the mediator encodes and the test
-discards. An actor, a film, a character, and a period are mutually ``connected''
-through one performance node, and any claim relating any two of them is
-certified.
-
-\textbf{Vacuous certification of empty decompositions.} A draft with no claims
-has no unsupported claims, so it is routed \textsf{grounded}. On the development
-set this describes 10 of 80 questions. The label is not false --- an answer that
-asserts nothing asserts nothing unsupported --- but it must not be read as a
-positive verification, and any statistic computed over \textsf{grounded}
-outcomes inherits this.
-
-\textbf{Entities that appear in no claim are never checked.} This mechanism is
-the broadest of those listed here and deserves to be stated without
-softening. Verification operates on claims. The answer's entity list is a
-separate output of the same call. An entity the drafter named but the decomposer
-never wrote into a claim passes through untouched on the grounded path, and is
-deliberately retained by the permissive branch of the filter on the repair path
-(\Cref{sec:entity-filtering}). Since 77 of 80 development questions took the
-grounded path, the layer's guarantee over emitted entities is in practice
-mediated entirely by decomposition recall --- and decomposition recall is itself
-a language-model output, subject to no check.
-
-\textbf{Grounded-but-vacuous answers.} This failure mode is the boundary of
-what triple-level verification can do, and it deserves to be stated as such.
-An answer whose every claim is supported can still fail to answer the question:
-``the senators from New Jersey are the United States Senate members associated
-with New Jersey'' decomposes into claims the graph genuinely supports, and is
-certified. No claim-level check can catch this, because the defect is not in any
-claim --- it is in the relationship between the claims and the question. The
-anti-vacuity provision of \Cref{sec:claim-decomposition} addresses it at
-drafting, which is mitigation, not verification.
-
-\textbf{Structural acceptance is final.} A claim accepted by adjacency is never
-examined semantically. The entailment check, which is the only component that
-looks at meaning, sees only what the structural routes could not resolve.
-
-\subsection*{What the Layer Is}
-
-Stated at the level of precision the preceding list requires: the layer
-establishes that the entity pairs a draft's claims relate are connected in the
-environment, and on the repair path it makes the emitted entity list a
-deterministic function of those verdicts rather than a second generation. It
-does not establish that the claimed relation is the one the edge records, that
-an entity absent from every claim was grounded at all, that the answer is
-responsive to the question, or that a claim it could not check is false. Those
-boundaries are properties of the design rather than defects discovered in it.
-\Cref{sec:erroranalysis} reports how much of the residual error they account
-for.
-
+Stated at the level of precision that catalogue requires: the layer establishes
+that the entity pairs a draft's claims relate are connected in the environment,
+and on the repair path it makes the emitted entity list a deterministic function
+of those verdicts rather than a second generation. It does not establish that
+the claimed relation is the one the edge records, that an entity absent from
+every claim was grounded at all, that the answer is responsive to the question,
+or that a claim it could not check is false. Those boundaries are properties of
+the design rather than defects discovered in it, and \Cref{sec:erroranalysis}
+reports how much of the residual error they account for.
 \endinput

@@ -8,57 +8,6 @@ than retrieving from it, and what a claim-level check against the traversed
 subgraph adds on top. The answers are not uniform, and the value of the work
 lies partly in where they diverge.
 
-\Cref{ch:intro} located the problem: hallucination in knowledge-grounded
-question answering is not merely a matter of asserting false things but of
-asserting things with no basis in the knowledge the system was given, and the
-standard evaluation convention --- Hits@1 over a multi-valued gold set ---
-cannot see the difference. \Cref{ch:background} fixed the vocabulary the
-technical chapters assume, including the operational definition of
-ungroundedness this thesis measures against. It also withdrew the proposal's
-characterisation of the navigation strategy as MCTS-inspired: what the method
-is, is guided best-first search with a bounded beam and backtracking, and it is
-described that way throughout.
-
-The same chapter positioned the work against the agentic KGQA literature and
-identified the attribution gap it addresses (\Cref{sec:positioning}):
-published systems bundle decomposition, search, and verification into single
-reported numbers, so the field has no evidence about which component earns
-its cost.
-
-\Cref{ch:environment} built the knowledge environment and, more importantly,
-\emph{certified} it: $2.59$ million entities and $8.31$ million triples with a
-measured answer-reachability ceiling of $97.3\%$ and $99.7\%$ over the full test
-splits; a three-stage entity resolver; and an explicit inventory of what it
-cannot express --- no date literals, no numeric literals, no ordinals --- which
-\Cref{sec:erroranalysis} later shows accounts for the third-largest failure
-category in the census. Certifying the environment before measuring on it is
-what allows a failure to be attributed to the system rather than to the
-substrate.
-
-\Cref{ch:framework} specified the framework: a state machine over a constrained,
-deterministic graph tool API in which the program orchestrates and the language
-model only decides, with a hybrid scoring function blending embedding similarity
-against a batched language-model judgement, a signal-maximum backtracking
-trigger that fires only when every available signal is weak, and an explicit
-budget meter that makes cost a first-class, logged quantity.
-
-The same chapter specified the Structural Verification Layer. It also
-reported its behaviour honestly enough to bound its own claims: a draft is
-decomposed into atomic claims, each checked first against traversed adjacency
-and then, if necessary, by batched entailment, with unsupported claims
-triggering targeted re-exploration or deterministic removal from the answer. The
-chapter also records that the repair path never executed on the development set,
-that ten of eighty answers were certified with no claims at all, and that
-entities appearing in no claim are never checked --- the layer's guarantees
-stated as they are rather than as designed.
-
-\Cref{sec:setup} fixed the experimental design in advance and reports the
-decisions that went the other way: a backbone selected, reversed, and reselected
-under a pre-registered tiebreaker after the first determinism estimate proved to
-be noise; a test-set build that read the wrong split and was caught by a
-contamination guard before any system ran; and a judge-validation threshold
-missed by $0.0005$ and reported as missed.
-
 \Cref{sec:results} reported the measurements. AGR leads every accuracy cell of
 the main matrix --- the agentic baseline hedges marginally less on CWQ, which
 \Cref{sec:findings} reports as the one cell it does not lead. Every one
@@ -129,98 +78,52 @@ class of them comes from.
 
 \section{Limitations}\label{sec:limitations-final}
 
-The limitations that most constrain what may be concluded are, in order of
-severity:
+\Cref{sec:threats} states the threats to validity in full, against the
+measurements they bear on. Four of them constrain what may be concluded here
+more than the rest, and are repeated for that reason.
 
-\textbf{Wrongful acceptance is unmeasured. The evidence is not persisted.}
-The verifier persists only the claims it rejects. One polarity of its error is
-therefore reported at census scale and the other from a single specimen that
-surfaced by manual trace reconstruction, and no rate exists for the polarity
-that matters most to a hallucination claim. The same decision costs the output
-contract its auditability: run records store the \emph{count} of supporting
-triples rather than the triples themselves (\Cref{sec:output-contract}), so an
-examiner can verify that the answers came from an evidence-tracking system but
-cannot inspect the evidence. This is an instrumentation decision constraining a
-scientific conclusion. It is the first item in \Cref{sec:future}.
-
-\textbf{Three of four ablations are underpowered.} At $n \approx 200$, a
-component that changes five questions in a hundred cannot be resolved. ``No
-detectable effect at this sample size'' is what the data supports, and it is not
-the same statement as ``no effect''.
+\textbf{Wrongful acceptance is unmeasured.} The verifier logs the claims it
+rejects and not the ones it accepts, so one polarity of its error is reported at
+census scale and the other from a single manually reconstructed specimen. The
+exposed population is bounded only as $[39, 2{,}008]$ of $2{,}008$ accepted
+claims (\Cref{sec:verify-failure-modes}), and nothing measured here narrows it.
 
 \textbf{Structural grounding is not answer adequacy.} Both navigating systems
-reach zero structural hallucination, so that property belongs to the navigation
-paradigm rather than to this thesis's verification layer. The
-semantic-support metric that would separate them runs on samples of $60$
-asserted answers per system per dataset, which is underpowered for the $5$-point
-gap it measures. Its agreement with the author was validated separately, at
-$\kappa = 0.6995$ over $100$ paired annotations. The two are different
-quantities over different populations, and neither rescues the other. The
-strongest evidence for the layer is therefore the case-level analyses --- not a
-groundedness differential against the agentic baseline, and not the precision
-column of the main matrix either, since removing the layer does not move that
-column (\Cref{sec:findings}).
+assert zero ungrounded entities on WebQSP, which says the answers are made of
+the graph's own material; it does not say they answer the question. The echo
+attractor (\Cref{sec:echo}) is the counter-example, and it is the failure this
+census finds most often.
 
-\textbf{The evaluation is single-environment, single-backbone, and
-single-annotator.} One knowledge graph built from one distribution, one frozen
-backbone at $\approx 67\%$ trajectory stability, two benchmarks sharing a
-lineage, and a failure census and benchmark-defect adjudication performed by the
-author. Each of those is a defensible scoping decision and each bounds
-generality.
+\textbf{The evaluation is single-environment, single-backbone, and single-run.}
+Absolute levels are bounded by an environment built from answer-containing
+subgraphs, and run-to-run variance is unmeasured against a backbone that repeats
+a trajectory on about two probes in three.
 
-\textbf{The agentic baseline prunes from a narrower candidate set.} It considers
-$40$ relations and $20$ neighbours per step against AGR's $300$ and $200$, cuts
-that bind on roughly a third of its expansions and on almost none of AGR's
-(\Cref{sec:baseline-tog}). This cannot account for the budget clipping on which
-\Cref{sec:tog-split} rests, since a narrower set is cheaper rather than dearer,
-but it does mean the unclipped subset understates what that baseline could
-resolve at equal width. Equalising the widths is specified in
-\Cref{sec:future-baselines}.
-
-\textbf{The static graph baseline retrieves one logical hop, and samples it.}
-Its decay across hop strata is therefore partly a property of its retrieval
-radius and not only of static retrieval as a paradigm.
-\Cref{sec:baseline-graphrag} scopes what may be concluded from it accordingly. A
-second bound compounds the first: it takes at most $100$ edges per topic entity
-with no ordering imposed, and on $72.5\%$ of the questions at least one topic
-entity exceeds that degree, so on those it answers from an arbitrary sample of
-the neighbourhood. Both bounds depress it, and neither is a property of static
-retrieval as such. The per-stratum argument does not rest on it: the comparator
-that cannot represent a chain \emph{at any radius} is Vector-RAG, whose context
-is a single verbalised triple.
-
-\textbf{Entity linking is assumed.} Topic entities are given by the datasets, so
-the reported accuracies presume a linking step a deployed system would have to
-perform.
-
-\textbf{One measured defect depresses the reported accuracy.} The
-entity-extraction bug of \Cref{sec:decomposition-errors} converts complete,
-verifier-certified reasoning into an empty or wrong entity list on a specific
-question shape. The headline numbers are a floor for that shape.
+\textbf{The baseline comparisons are bounded in the baselines' favour, and
+against them.} The agentic baseline prunes from a narrower candidate set than
+AGR and the static one retrieves a single logical hop with an unordered fanout
+cap, so the reported margins are lower bounds on what equal-width, equal-radius
+reimplementations would show (\Cref{sec:future-baselines}). Entity linking is
+assumed throughout, topic entities being given by the benchmarks.
 
 \section{Future Work}\label{sec:future}
 
-The census makes it possible to separate proposals that are backed by a counted,
-repeated pattern from proposals that are backed by an argument. Both are listed.
-They are not the same kind of claim.
+The census makes it possible to separate proposals backed by a counted, repeated
+pattern from proposals backed by an argument. Both are listed. They are not the
+same kind of claim.
 
 \subsection{Repairs the Census Earned}
 
 Three defects each recur with a uniform mechanism across unrelated questions,
-and each is small.
-
-\emph{Entity extraction} (nine instances): the step converting drafted answer
-text into the scored entity list defaults to the sentence's grammatical subject
-rather than its predicate values. Fixing it requires the claim decomposer to be
-told which argument of the drafted sentence is the answer --- an instruction,
-not an architecture.
-
-\emph{Evaluator abandonment} (five instances): relations scoring as high as
-$0.73$ are explored and then backtracked away from, never revisited, across four
-unrelated domains. This reads as a threshold or backtracking-policy defect and
-would be diagnosed by logging the evaluator's decision against the score of the
-relation it discards.
-
+and each is small. \emph{Entity extraction} (nine instances): the step
+converting drafted answer text into the scored entity list defaults to the
+sentence's grammatical subject rather than its predicate values, and fixing it
+requires telling the claim decomposer which argument of the drafted sentence is
+the answer --- an instruction, not an architecture. \emph{Evaluator abandonment}
+(five instances): relations scoring as high as $0.73$ are explored, backtracked
+away from, and never revisited, across four unrelated domains, which reads as a
+threshold or backtracking-policy defect and would be diagnosed by logging the
+evaluator's decision against the score of the relation it discards.
 \emph{Drafting commitment} (six instances, all six of the \textsf{other}
 category): when the evaluator has resolved the exact gold value and the verifier
 has returned \textsf{grounded}, the drafter should commit to it rather than
@@ -231,114 +134,72 @@ Measurable}\label{sec:future-logging}
 
 Persist each accepted claim together with the triples that matched it. This
 converts\index{verification layer} the wrongly-accepted class from an anecdote
-into a rate with a denominator, makes grounded-but-wrong answers self-diagnosing
-from the logs rather than by manual trace reconstruction, and would let the
-entity-level and claim-level guarantees of \Cref{sec:verification-layer} be
-audited rather than argued. The same change closes a second gap: the run record
-currently stores the \emph{number} of supporting triples rather than the triples
-(\Cref{sec:output-contract}), so the thesis's own output contract --- answer
-paired with its evidence --- holds inside the run but cannot be checked
-afterwards from any committed file. It is the highest-value change in this list
-relative to its cost, and it is a logging change.
+into a rate with a denominator, and makes grounded-but-wrong answers
+self-diagnosing from the logs rather than by manual trace reconstruction. The
+same change closes a second gap: the run record currently stores the
+\emph{number} of supporting triples rather than the triples
+(\Cref{sec:output-contract}), so the output contract holds inside the run but
+cannot be checked afterwards from any committed file. It is the highest-value
+change in this list relative to its cost, and it is a logging change.
 
-\subsection{Adaptive Decomposition Gating}
+\subsection{Operators the Failure Categories Specify}
 
-The planner ablation and the context-stripping cases together specify the fix
-rather than merely motivating it. A decomposition step should be gated on two
-checks: does the rewritten sub-objective preserve the question's actual
+Three additions are specified by categories rather than motivated by them.
+\emph{Adaptive decomposition gating}: a decomposition step should be gated on
+whether the rewritten sub-objective preserves the question's actual
 interrogative --- the Phoenician case of \Cref{sec:decomposition-errors} lost
-the word ``where'' entirely --- and does the step resolve an entity that was
-already unambiguous, which is what over-decomposition does. A third check falls
-out of the strongest specimen: sub-objectives that carry no reference to each
-other are descriptors of one entity rather than a chain, and should not be
-sequenced as one.
+the word ``where'' entirely --- on whether the step resolves an entity that was
+already unambiguous, and on whether the sub-objectives reference each other at
+all, since ones that do not are descriptors of a single entity rather than a
+chain. \emph{A set-intersection operator}: \textsf{composite\_claim} is $47$
+cases and CWQ's largest category at $46$ of them, and its
+\textsf{no\_set\_intersection} subtype names the gap precisely --- the
+architecture has no AND-join primitive, so a ``find the overlap'' sub-objective
+degrades into another relation-scoring pass over an incomplete first-hop set.
+\emph{Ordinal and literal-value support}: \textsf{kg\_gap} is $44$ cases and
+CWQ's largest hedge category at $24$, and two of its subtypes need a
+minimum-or-maximum-by-value operation and a literal-extraction path rather than
+a bigger graph.
 
 \subsection{Semantic-Level Verification}
 
 All five wrongly-rejected cases share one mechanism: the structural check
 requires a single edge asserting the drafted claim, and a transitively-true
 multi-hop fact does not present one. A check that accepts a bounded relation
-chain expressing the claim --- rather than requiring one literal triple ---
-would recover those answers. The relation-path formulation of
-RoG~\cite{luo2024reasoning} is the natural source for what such a chain may look
-like, and using it as an acceptance criterion rather than as a retrieval plan is
-the change being proposed. The Tier-2 judge of \Cref{sec:groundedness-metric} is
-a prototype of exactly this judgement. That resemblance suggests folding a
-bounded form of it into the loop. The $\kappa$ of $0.6995$ is also a caution
-about how reliable such a check would be.
+chain expressing the claim would recover those answers. The relation-path
+formulation of RoG~\cite{luo2024reasoning} is the natural source for what such a
+chain may look like, and using it as an acceptance criterion rather than as a
+retrieval plan is the change proposed. The Tier-2 judge of
+\Cref{sec:groundedness-metric} is a prototype of exactly this judgement, which
+suggests folding a bounded form of it into the loop; its $\kappa$ of $0.6995$ is
+also a caution about how reliable such a check would be.
 
-\subsection{A Set-Intersection Operator for Compound Questions}
+\subsection{Measurements This Thesis Could Not
+Make}\label{sec:future-baselines}
 
-\textsf{composite\_claim} is $47$ cases across the census and CWQ's largest
-category at $46$ of them. Its \textsf{no\_set\_intersection} subtype names the
-gap precisely: the architecture has no AND-join primitive, so a ``find the
-overlap'' sub-objective degrades into another single relation-scoring pass over
-an incomplete first-hop set. An explicit operator that resolves each clause of a
-compound question into a candidate set and intersects them is a well-specified
-addition to the tool API rather than a change to the agent.
+\label{sec:future-path-fidelity}%
+\emph{Path fidelity} is the third evaluation criterion of the approved proposal,
+deferred for the reason given in \Cref{sec:metrics-not-run}: it needs the
+benchmarks' gold SPARQL relation chains, which the distribution used here does
+not carry. Reconstructing them would measure whether the system reaches the
+right answer \emph{by the right path} --- a question the groundedness metrics
+can only approximate, and one that bears directly on the echo attractor.
 
-\subsection{Ordinal and Literal-Value Support}
-
-\textsf{kg\_gap} is $44$ cases across the census, and CWQ's single largest hedge
-category at $24$ of them. Two of its subtypes need an operator rather than a
-bigger graph: a minimum-or-maximum-by-value operation for superlatives, and a
-literal-extraction path for numeric identifiers, ISO codes, and dates that the
-environment exposes as event or entity nodes rather than as plain values.
-Neither exists in the current tool API, and every instance in the census fails
-for that reason alone.
-
-\subsection{Path Fidelity Against Gold SPARQL Relation
-Chains}\label{sec:future-path-fidelity}
-
-The third evaluation criterion of the approved proposal, deferred for the reason
-given in \Cref{sec:metrics-not-run}: it needs the benchmarks' gold SPARQL
-relation chains, which the distribution used here does not carry. Reconstructing
-them from the upstream releases and aligning them to this environment's relation
-vocabulary would measure whether the system reaches the right answer \emph{by
-the right path} --- a question this thesis's groundedness metrics can only
-approximate, and one that bears directly on the echo attractor, where a
-right-looking answer is reached by a path one hop short of the correct one.
-
-\subsection{Baselines at Equal Width and Equal
-Radius}\label{sec:future-baselines}
-
-Two of the three baseline bounds named in \Cref{sec:limitations-final} are cheap
-to lift, and both are re-runs rather than redesigns.
-
-\textbf{Equalise the candidate widths.} Re-run the agentic baseline with $300$
-relations and $200$ neighbours per step --- AGR's widths --- leaving beam width,
-depth, budget, prompts, and scoring untouched. This is the experiment that
-decides whether the unclipped-subset comparison of \Cref{sec:tog-split} was
-measuring search strategy or candidate supply, and it is the more informative of
-the two because that subset is the only place the thesis compares the two
-agentic methods at parity. Both outcomes are usable: if the baseline improves on
-the unclipped subset, the honest reading is that the affordability finding is
-the whole finding and the resolution comparison was never fair; if it does not,
-the resolution comparison stands at equal width, which is a stronger statement
-than the thesis can currently make. Note that it will also raise the clip rate,
-because wider candidate sets make each pruning call dearer, so the two effects
-have to be read apart --- report the split as \Cref{sec:tog-split} does rather
-than the aggregate.
-
-\textbf{Widen the static retriever's radius, and order its fanout.} The static
-graph baseline follows GraphRAG~\cite{edge2024local} in retrieving structured
-context in one shot, and expands one logical hop (\Cref{sec:baseline-graphrag}),
-so the cleanest reading of its collapse on deep CWQ questions --- that a fixed
-radius cannot hold a chain --- is confounded with the particular radius chosen.
-The experiment that separates them is cheap and specified: re-run the same
-baseline with neighbours expanded a second time, everything else frozen, and
-report the same strata. Two outcomes are informative and neither is bad for this
-thesis. If CWQ \textsf{h2} recovers substantially, the honest conclusion is that
-the reported gap over static retrieval on that stratum was partly a radius
-artefact, and the paradigm claim narrows to what that section already states. If
-it does not recover, or recovers while precision falls as the window fills with
-hub noise, the paradigm claim is strengthened by an experiment rather than by an
-implementation detail. The same pass should impose an ordering on the fanout cap
---- descending fanout, or an embedding pre-rank --- so that the $100$ edges kept
-per topic entity are a stated selection rather than an arbitrary one
-(\Cref{sec:baseline-graphrag}). Until then, the two limits are confounded and
-only their sum is measured. Running it costs one pass over $800$ questions at
-baseline rates. Not running it is the reason the claim is stated narrowly here.
+Two baseline bounds are cheap to lift, and both are re-runs rather than
+redesigns. \emph{Equalise the candidate widths}: re-run the agentic baseline at
+AGR's $300$ relations and $200$ neighbours, leaving beam width, depth, budget,
+prompts, and scoring untouched. That decides whether the unclipped-subset
+comparison of \Cref{sec:tog-split} measured search strategy or candidate supply,
+and both outcomes are usable --- though it will also raise the clip rate,
+because wider candidate sets make each pruning call dearer, so the split must be
+reported rather than the aggregate. \emph{Widen the static retriever's radius,
+and order its fanout}: re-run it with neighbours expanded a second time,
+everything else frozen, and report the same strata, so that its collapse on deep
+CWQ questions can be attributed to the paradigm rather than to the particular
+radius chosen. The same pass should impose an ordering on the fanout cap, so
+that the $100$ edges kept per topic entity are a stated selection rather than an
+arbitrary one (\Cref{sec:baseline-graphrag}). Until then those two limits are
+confounded and only their sum is measured.
 
 \subsection{Beyond This Environment}
 
@@ -358,7 +219,6 @@ to high-stakes domains} is where the auditability property, rather than the
 accuracy, is the point: an answer paired with the triples supporting it is worth
 more in a setting where a reader must be able to check it than in one where the
 reader only wants the answer.
-
 \section{Closing Remark}
 
 The result this work would most want carried forward is not the accuracy margin.

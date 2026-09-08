@@ -7,7 +7,7 @@ reported without that bound is uninterpretable. This chapter describes how the
 environment was built, what it contains, and --- equally important --- what it
 cannot express.
 
-\section{Design Goals}\label{sec:env-goals}
+\section{Design Goals and Source Data}\label{sec:env-goals}
 
 \subsection{Decoupling the Graph Source from the Question Sets}
 
@@ -44,7 +44,7 @@ The environment is therefore assembled exclusively from curated Freebase
 triples. Language models are used to \emph{navigate} the graph and to
 \emph{judge} answers, never to populate it.
 
-\section{Source Datasets}\label{sec:source-data}
+\subsection{Source Datasets}\label{sec:source-data}
 
 Every dataset this thesis consumes is public, standard, and third-party. None
 of it was collected, authored, or annotated here. Three artifacts are used. The
@@ -67,7 +67,7 @@ unmodified, the environment assembled from them is this thesis's own, and
 are actually scored, and how they are sampled from these datasets, is a
 separate matter specified in \Cref{sec:test-sets}.
 
-\subsection{The Freebase Snapshot}
+\paragraph{The Freebase Snapshot}
 
 Freebase has been frozen since 2016.\index{MID}\index{Freebase} That freeze
 makes it stable and reproducible, but it also dates it: a property that cuts
@@ -90,7 +90,7 @@ hardware for the first was not available. The consequence is a scoped
 environment rather than all of Freebase. \Cref{sec:validation-gate} quantifies
 what that costs.
 
-\subsection{WebQSP and ComplexWebQuestions as Question Sets}
+\paragraph{WebQSP and ComplexWebQuestions as Question Sets}
 
 WebQSP~\cite{yih2016value} contains questions whose answers lie predominantly
 one\index{WebQSP}\index{ComplexWebQuestions} or two hops from the topic entity.
@@ -185,9 +185,9 @@ rather than nameable entities. That imbalance is why the tool layer in
 \Cref{sec:tool-api} must traverse through mediators transparently rather than
 present them to the agent as candidate answers.
 
-\section{Graph Store Construction}\label{sec:graph-store}
+\subsection{Graph Store Construction}\label{sec:graph-store}
 
-\subsection{Property-Graph Schema}
+\paragraph{Property-Graph Schema}
 
 Entities become \textsf{:Entity} nodes carrying an integer \textsf{id}, the
 \textsf{name} string, and the boolean \textsf{is\_cvt} flag. Triples become
@@ -206,18 +206,12 @@ contain commas, quotation marks, and unicode, all of which invite escaping bugs
 and silent collisions in bulk-import CSVs. The name survives as an ordinary
 property and is what the entity resolver matches against.
 
-\subsection{Bulk Import into Neo4j}
 
-Import used the offline bulk importer of Neo4j Community 5.26.28, which operates
-on a stopped database and is orders of magnitude faster than transactional
-loading at this scale. Duplicate nodes and bad relationships were configured to
-be skipped rather than to abort the import.
+Import used Neo4j's offline bulk importer, with the uniqueness and index
+constraints created afterwards; \Cref{app:bulk-import} records the versions and
+the constraint set.
 
-After import, a uniqueness constraint on \textsf{Entity.id} and a full-text
-index on \textsf{Entity.name} were created. The full-text index is what the
-resolver's lexical stage queries.
-
-\subsection{Graph Statistics}
+\paragraph{Graph Statistics}
 
 \Cref{tab:graphstats} records the environment as built. These figures, together
 with the dataset versions and the hop cap, constitute the reproducibility record
@@ -255,60 +249,27 @@ configured to tolerate skips. Node and relationship counts in the database match
 the CSV row counts exactly, so the count-reconciliation check of
 \Cref{sec:validation-gate} passes without any unexplained gap to account for.
 
-\section{The Vector Index}\label{sec:vector-index}
+\subsection{The Vector Index}\label{sec:vector-index}
 
-\subsection{Entity Embeddings}
+Entity names and the relation vocabulary are both embedded with
+\textsf{all-MiniLM-L6-v2}~\cite{reimers2019sentence}, a 384-dimensional sentence
+encoder, and \Cref{app:index-build} records how the two indexes were built and
+checked. One property of the relation index is load-bearing for
+\Cref{sec:explorer}: relation names are \emph{verbalised} before embedding, so
+\textsf{people.person.place\_of\_birth} is encoded as the phrase it means rather
+than as a namespaced path, which is what lets a question phrase score against a
+schema identifier at all.
 
-Entity names were embedded with \textsf{all-MiniLM-L6-v2}, a 384-dimensional
-sentence encoder~\cite{reimers2019sentence} chosen for CPU throughput at this
-node count. Mediator nodes were skipped: embedding a string such as
-\textsf{m.0y5k79m} produces noise. By \Cref{sec:graph-construction}, mediators
-make up almost two thirds of the graph, so skipping them is also the
-difference between a tractable and an intractable embedding job. Vectors were
-written back into Neo4j and indexed with a cosine-similarity vector index.
+The role of embeddings in this thesis is deliberately narrow. They link question
+phrases to graph entities and pre-rank relation candidates during exploration.
+They never establish that a fact is true --- that role belongs exclusively to
+the symbolic triples, and every claim the verification layer certifies is
+certified against an edge, not against a cosine.
 
-\subsection{Relation-Vocabulary Embeddings}
-
-The scoring function of \Cref{sec:explorer} compares candidate relations against
-the current sub-objective in embedding space, so the 7{,}058 relation names are
-embedded once and held in memory rather than embedded per step.
-
-Two details make this work. Relation names are \emph{verbalised} before
-encoding: \textsf{people.\allowbreak person.\allowbreak place\_of\_birth}
-becomes ``people person place of birth'', with consecutive duplicate tokens
-removed. The encoder was trained on natural language. So the verbalised phrase
-lands near a question like ``where was X born'' in embedding space, where the
-raw dotted path does not. And relations are embedded with the \emph{same} model
-as entities and sub-objectives, since vectors from different models occupy
-unrelated spaces and their cosine similarity is meaningless.
-
-The resulting artefact is a $7058 \times 384$ float32 matrix with a parallel
-name list. Because vectors are L2-normalised at encoding time, similarity
-against the whole vocabulary is a single matrix--vector product.
-
-A functional check confirms the verbalisation is doing its job. Encoding the
-probe ``where was the person born'' and ranking the vocabulary against it
-returns \textsf{people.person.place\_of\_birth} first at cosine $0.709$ and
-\textsf{location.location.people\_born\_here} --- the inverse relation ---
-second at $0.675$, with the remaining top-five entries plausible near-misses
-drawn from birth-related and fictional-character namespaces. A degenerate
-verbaliser would have produced an unordered top five here.
-
-\subsection{Scope: Linking and Candidate Ranking, Never Ground
-Truth}\label{sec:embedding-scope}
-
-The role of embeddings in this thesis is deliberately narrow. They resolve
-question phrases to graph entities, and they pre-rank relation candidates so the
-language-model scorer can be applied to a short list rather than to thousands of
-relations. They never establish that a fact holds. Every factual check ---
-whether a triple exists, whether an entity is reachable, whether a claim is
-supported --- is answered by symbolic graph queries. Nothing in the verification
-layer of \Cref{sec:verification-layer} consults an embedding.
-
-\section{Entity Resolution and Surface-Form
+\subsection{Entity Resolution and Surface-Form
 Linking}\label{sec:entity-resolution}
 
-\subsection{The Exact, Lexical, and Vector Cascade}
+\paragraph{The Exact, Lexical, and Vector Cascade}
 
 Mapping a question's surface mention to a graph node uses a three-stage cascade,
 each stage attempted only if the previous one fails.
@@ -335,7 +296,7 @@ will meet the collision. \Cref{app:toolapi} declares it where the field is
 specified, rather than leaving the disclaimer above to look like a claim about
 the implementation.
 
-\subsection{Threshold Selection on Development Data}
+\paragraph{Threshold Selection on Development Data}
 
 The lexical stage accepts its top hit only when the full-text score exceeds
 $1.0$, falling through to vector matching otherwise. The threshold exists
@@ -456,25 +417,13 @@ leaves --- the residual WebQSP shortfall --- is semantic. The residual
 shortfall is dominated by answers that are not entities at all, a gap
 \Cref{sec:unanswerable} takes up.
 
-\subsection{Analysis of Linking Misses and Gate Failures}
-
 The ten unresolved mentions of \Cref{tab:linking} are not a random residue.
-Every one is a bare machine identifier of the form \textsf{g.123852dg} appearing
-as a CWQ topic entity --- an unnamed mediator node that the benchmark supplies
-where a named entity was expected. Exact matching fails because no node carries
-that string as a \emph{name}. The lexical stage then returns a meaningless
-single-character match. The correct characterisation is that these questions are
-anchored on nodes with no surface form, not that resolution is unreliable.
-
-The strongest gate check re-verifies the Python-computed reachability against
-the live database, confirming that nothing was lost between the CSV files and
-the imported graph. A random sample of 400 questions flagged reachable, drawn
-under a fixed seed, was re-tested with a shortest-path query in Neo4j. The pass
-criterion
-is strict --- these were already known to be reachable, so anything below 100\%
-would indicate dropped edges. \textbf{All 400 verified. The failure set is
-empty.} Together with the zero skipped import rows and the exact count
-reconciliation, the environment is certified.
+Every one is a bare machine identifier of the form \textsf{g.123852dg} that the
+benchmark carries in place of a name, so no surface form exists for the resolver
+to match; \Cref{app:linking-misses} reads them. The strongest check the gate
+makes is not the linking rate but the re-verification of reachability directly
+in Cypher, independently of the Python that computed it, which is what makes
+\Cref{tab:coverage} a certification rather than a self-report.
 
 \subsection{What the Environment Cannot Express}\label{sec:unanswerable}
 
