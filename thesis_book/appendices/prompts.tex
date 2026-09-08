@@ -11,37 +11,38 @@ more serve the baselines: two shared by the three static baselines, and four
 belonging to the reimplemented agentic baseline. All thirteen are reproduced
 here verbatim from the source that sends them, in the order a question
 encounters them. The agentic baseline's four matter more to a sceptical reader
-than any of AGR's own, because \Cref{sec:baseline-tog} rests the central
-comparison on a reimplementation rather than on the authors' code, and these
+than any of AGR's own. \Cref{sec:baseline-tog} rests the central
+comparison on a reimplementation rather than on the authors' code. These
 prompts are what that reimplementation actually is. Braces written
-\verb|{like this}| are Python format fields; doubled braces \verb|{{...}}| are
+\verb|{like this}| are Python format fields. Doubled braces \verb|{{...}}| are
 literal braces in the emitted text.
 
 This appendix carries a checker rather than a promise.
 \textsf{scripts/\allowbreak check\_appendix\_prompts.py} extracts each constant
 from the source and asserts that it still appears here. Nothing in the LaTeX
-build could detect the divergence on its own, and the reproducibility argument
+build could detect the divergence on its own. The reproducibility argument
 of \Cref{sec:implementation} depends on the two not diverging: the response
-cache keys on prompt text, so a prompt edited in one place and not the other
+cache keys on prompt text. So a prompt edited in one place and not the other
 invalidates every cached run as well as this appendix.
 
 Two properties of this set matter more than any individual wording. First, no
 template carries a configuration constant: neither $\alpha$ nor $\tau$ reaches
-the model in any prompt, which is what allows one cached response to be shared
-across every condition of the $\alpha$--$\tau$ sweep (\Cref{sec:dev-tuning}).
-Second, budgets are counters in code (\Cref{sec:budgets}) rather than
-instructions: no prompt tells the model to stop, and stopping does not depend on
-its cooperation. One template qualifies that second property without breaking it
---- the evaluator of \Cref{app:prompt-evaluator} is passed the remaining depth
-and backtracks as decision context, the only budget figures any prompt carries,
-substituted at send time rather than written into the template, and the note
-there records why a model that ignores them changes nothing.
+the model in any prompt. That omission is what allows one cached response to be
+shared across every condition of the $\alpha$--$\tau$ sweep
+(\Cref{sec:dev-tuning}). Second, budgets are counters in code
+(\Cref{sec:budgets}) rather than instructions: no prompt tells the model to
+stop. Stopping does not depend on its cooperation. One template qualifies that
+second property without breaking it. The evaluator of \Cref{app:prompt-evaluator}
+is passed the remaining depth and backtracks as decision context --- the only
+budget figures any prompt carries --- substituted at send time rather than
+written into the template. The note there records why a model that ignores them
+changes nothing.
 
 \section{Planner}\label{app:prompt-planner}
 
 Sent once per question, unless the planner is ablated. \Cref{sec:planner}
-describes the four-archetype few-shot design and the topic-mention restriction;
-this is the template that implements both. The instruction to use as few
+describes the four-archetype few-shot design and the topic-mention restriction.
+This is the template that implements both. The instruction to use as few
 sub-objectives as possible is the provision \Cref{sec:findings} finds to have
 been insufficient on the shallower benchmark.
 
@@ -84,7 +85,7 @@ Question: "{question}"
 \end{lstlisting}
 
 The plan this returns is validated rather than trusted. Four checks run before
-it is accepted, and any failure installs the single-objective fallback described
+it is accepted. Any failure installs the single-objective fallback described
 in \Cref{sec:planner}: the sub-objective list must be non-empty, it must hold no
 more than four entries, every \verb|#N| reference must point strictly backwards,
 and at least one topic mention must be present.
@@ -93,7 +94,7 @@ and at least one topic mention must be present.
 
 Sent once per expansion step, scoring all candidate edges across all anchors in
 a single call. This is the prompt that carries the property discussed in
-\Cref{sec:scoring}: it mentions neither $\alpha$ nor the anchor ordering, so its
+\Cref{sec:scoring}: it mentions neither $\alpha$ nor the anchor ordering. So its
 response is reusable across every sweep condition.
 
 \begin{lstlisting}[style=verbatimblock]
@@ -109,8 +110,8 @@ anchor, not surface word overlap.
 \end{lstlisting}
 
 The final instruction exists because of the failure it names. Judging surface
-word overlap is what an embedding does, and the blend of \Cref{sec:scoring}
-already supplies that signal; the model is asked for the part the embedding
+word overlap is what an embedding does. The blend of \Cref{sec:scoring}
+already supplies that signal. The model is asked for the part the embedding
 cannot give.
 
 \section{Evaluator}\label{app:prompt-evaluator}
@@ -141,10 +142,10 @@ regardless of what the evaluator decides.
 One call produces the draft answer, its asserted entity list, and the atomic
 claims the verification layer will check. \Cref{sec:claim-decomposition}
 explains why these are one call rather than three: a draft and a claim set
-produced separately can disagree about what was asserted, and the layer would
+produced separately can disagree about what was asserted. The layer would
 then verify something the reader never sees.
 
-Four provisions here are load-bearing, and \Cref{sec:claim-decomposition} gives
+Four provisions here are load-bearing. \Cref{sec:claim-decomposition} gives
 the case that forced each. Copying entity names exactly is what keeps the
 graph's spelling --- \textsf{University Yale} rather than \textsf{Yale
 University} --- in the answer. The distinction between entities the draft
@@ -182,8 +183,8 @@ Entities identified as promising during exploration:
 \section{Entailment Check}\label{app:prompt-entail}
 
 Sent only for claims that the two structural routes of
-\Cref{sec:structural-check} could not settle. It is the semantic fallback, and
-the definition of \emph{unsupported} is given explicitly because the default
+\Cref{sec:structural-check} could not settle. It is the semantic fallback. The
+definition of \emph{unsupported} is given explicitly because the default
 reading of the word is too permissive: a model asked merely whether a claim is
 supported will accept anything it believes to be true.
 
@@ -227,15 +228,15 @@ graph. Respond with prose only.
 
 The kept list is computed in code by the deterministic filter of
 \Cref{sec:entity-filtering}, not proposed by the model. The rewrite call may
-reword the answer but cannot change which entities it asserts, and
+reword the answer but cannot change which entities it asserts.
 \Cref{sec:verify-example} reads the case in which that separation decided
 whether a question was scored correct.
 
 \section{Answerer}\label{app:prompt-answer}
 
-Sent on the path where verification is skipped, which is the draft-only ablation
-of \Cref{sec:ablations}, and on the give-up path where the budget drained before
-a draft existed.
+Sent on the path where verification is skipped --- the draft-only ablation
+of \Cref{sec:ablations} --- and on the give-up path where the budget drained
+before a draft existed.
 
 \begin{lstlisting}[style=verbatimblock]
 Question: {question}
@@ -253,7 +254,7 @@ asserts (exactly as named above); [] if it asserts nothing.
 \end{lstlisting}
 
 Comparing this against the drafter of \Cref{app:prompt-draft} shows what the
-draft-only ablation removes. The anti-vacuity provision is absent here, and
+draft-only ablation removes. The anti-vacuity provision is absent here.
 \Cref{sec:ablations} reports the hedge-rate consequence.
 
 \section{Baseline Prompts}\label{app:prompt-baselines}
@@ -264,7 +265,7 @@ format. All three emit \verb|{"answer": "...", "answer_entities": ["..."]}|.
 
 \subsection*{No-retrieval}
 
-The parametric control. It receives the question and nothing else, which is what
+The parametric control. It receives the question and nothing else. That restriction is what
 makes it a measurement of memorisation rather than of retrieval
 (\Cref{sec:baselines}).
 
@@ -277,11 +278,11 @@ Question: {question}
 
 \subsection*{Vector-RAG and GraphRAG}
 
-Both use the template below; GraphRAG imports it from the Vector-RAG module
+Both use the template below. GraphRAG imports it from the Vector-RAG module
 precisely so that the two differ only in how \verb|{facts}| was retrieved.
 \Cref{sec:baselines} records the consequence noted in
 \Cref{sec:baseline-constants}: this prompt is more abstinent than the full
-system's drafter, and the resulting hedge rates are a property of the prompt as
+system's drafter. The resulting hedge rates are a property of the prompt as
 much as of the retrieval.
 
 \begin{lstlisting}[style=verbatimblock]
@@ -298,16 +299,16 @@ facts. If the facts are insufficient, say so and return [].
 Four prompts implement the reimplementation of \Cref{sec:baseline-tog}, at beam
 width $3$ and depth $3$. They are given in full because the thesis's central
 comparison is against this code rather than against published numbers
-(\Cref{sec:tog-split}), and a reader who wants to challenge that comparison
+(\Cref{sec:tog-split}). A reader who wants to challenge that comparison
 should be able to read what was actually run. The structure follows the
 original: prune relations, expand, prune entities, ask whether what has been
 gathered suffices, and answer if it does.
 
 The contrast with AGR's scorer is worth noting while reading the first of them.
-This prompt \emph{selects} a set of relations; AGR's scores every candidate on
+This prompt \emph{selects} a set of relations. AGR's scores every candidate on
 $[0,1]$ and blends that with an embedding similarity (\Cref{sec:scoring}).
-Selection cannot express ``all of these are poor'', which is what the low-signal
-backtrack trigger needs to fire on.
+Selection cannot express ``all of these are poor''. That omission is what the
+low-signal backtrack trigger needs to fire on.
 
 \subsection*{Relation pruning}
 
@@ -333,7 +334,7 @@ Return {{"entities": ["..."]}}.
 \subsection*{Sufficiency check}
 
 This is the prompt the call budget most often interrupts. It runs once per
-depth, and a run clipped before it returns \textsf{true} answers from whatever
+depth. A run clipped before it returns \textsf{true} answers from whatever
 the beam has gathered --- the mechanism behind the clipped-subset accuracies of
 \Cref*{tab:tog-split}.
 
