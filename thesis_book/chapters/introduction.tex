@@ -242,22 +242,22 @@ accuracy, groundedness, and token cost for each with paired significance
 testing, closing for one architecture the attribution gap of
 \Cref{sec:limitations}. \textbf{Stratum-dependent decomposition} is what that
 ablation finds: the literature treats question decomposition as
-straightforwardly beneficial. Removing the planner \emph{improves} accuracy
-on the shallower benchmark while trending toward harming it on the deeper one.
-The asymmetry, not the pooled average, is the result. Only the improving arm
-reaches significance ($p = 0.006$). The harming arm does not ($p = 0.088$).
-So it is reported as a direction rather than an effect. \textbf{The echo
-attractor} names a recurring failure in which several independent\index{echo
-attractor} systems converge on the same wrong answer --- typically the
-question's own topic entity, an intermediate node from the reasoning chain, or a
-coarser-granularity container. No evaluation treating those systems as
-independent can see that convergence. It accounts for $13$ of the $259$ failures read in
-\Cref{sec:echo}, though the contribution is the named mechanism and what it
-means for consensus-based evaluation rather than the frequency. And
-\textbf{quantified benchmark defect rates} for WebQSP and CWQ come from a
-consensus\index{benchmark defect} pre-pass followed by per-item adjudication,
-separating the two kinds of label error by their opposite evidence signatures
-and reporting results both with and without the affected items.
+straightforwardly beneficial. Removing the planner \emph{improves} accuracy on
+the shallower benchmark while trending toward harming it on the deeper one. The
+asymmetry, not the pooled average, is the result. Only the improving arm reaches
+significance ($p = 0.006$). The harming arm does not ($p = 0.088$). So it is
+reported as a direction rather than an effect. \textbf{The echo attractor} names
+a recurring failure in which several independent\index{echo attractor} systems
+converge on the same wrong answer --- typically the question's own topic entity,
+an intermediate node from the reasoning chain, or a coarser-granularity
+container. No evaluation treating those systems as independent can see that
+convergence. It accounts for $13$ of the $259$ failures read in \Cref{sec:echo},
+though the contribution is the named mechanism and what it means for
+consensus-based evaluation rather than the frequency. And \textbf{quantified
+benchmark defect rates} for WebQSP and CWQ come from a consensus\index{benchmark
+defect} pre-pass followed by per-item adjudication, separating the two kinds of
+label error by their opposite evidence signatures and reporting results both
+with and without the affected items.
 
 The evaluation protocol itself fixed four decisions before any test data was
 touched --- the scoring hyperparameters, the sample size, the

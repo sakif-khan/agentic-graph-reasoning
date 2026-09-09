@@ -169,15 +169,15 @@ Live}\label{sec:five-operations}
 \Cref{tab:tools} lists the operations. There are five, not the four originally
 planned. Only four are reachable from a node in the final design.
 \textsf{verify\_triple} was built first as the claim checker. It did not survive
-contact with generated text. Claim decomposition produces relations
-phrased in English, while Freebase predicates are neither phrased that way nor
-reliably one edge long. So requiring the relation to match rejected claims that
-were true. \textsf{verify\_connection}\index{verify
-connection@\textsf{verify\_connection}} was added in response. It drops the
-relation, asking only about adjacency. It superseded \textsf{verify\_triple} rather than
-complementing it (\Cref{app:verify-triple}). It is left in the API as the natural
-primitive for the relation-aware check \Cref{sec:future} proposes. But nothing
-in the running loop calls it.
+contact with generated text. Claim decomposition produces relations phrased in
+English, while Freebase predicates are neither phrased that way nor reliably one
+edge long. So requiring the relation to match rejected claims that were true.
+\textsf{verify\_connection}\index{verify connection@\textsf{verify\_connection}}
+was added in response. It drops the relation, asking only about adjacency. It
+superseded \textsf{verify\_triple} rather than complementing it
+(\Cref{app:verify-triple}). It is left in the API as the natural primitive for
+the relation-aware check \Cref{sec:future} proposes. But nothing in the running
+loop calls it.
 
 \begin{table}[!tb]
   \begin{center}
@@ -473,12 +473,12 @@ If the model call fails or the budget is exhausted, the scorer treats every
 model score as zero rather than aborting the expansion. So each candidate scores
 $\alpha \cdot \mathrm{emb}$. That is the embedding ordering scaled by $\alpha$,
 not the embedding score itself. The distinction is worth stating precisely. It
-does not matter here, though it could be assumed to: $\alpha > 0$ is a
-positive scaling, so the ranking is identical. The backtracking trigger
-compares $\tau$ against $\sigma$. That threshold takes the unscaled embedding maximum as
-one of its terms (\Cref{sec:backtracking}). No reported number changes on this
-path. Setting $\alpha = 1$ disables the model term entirely. That configuration
-is the embedding-only ablation.
+does not matter here, though it could be assumed to: $\alpha > 0$ is a positive
+scaling, so the ranking is identical. The backtracking trigger compares $\tau$
+against $\sigma$. That threshold takes the unscaled embedding maximum as one of
+its terms (\Cref{sec:backtracking}). No reported number changes on this path.
+Setting $\alpha = 1$ disables the model term entirely. That configuration is the
+embedding-only ablation.
 
 \section{The Evaluator and Routing Policy}\label{sec:evaluator}
 
@@ -624,13 +624,13 @@ verified path handled $77$ of $80$ questions at zero additional cost.
 
 The third path exists for the case where the verifier raised before producing a
 draft at all. It makes one model call over the traversed facts and the
-accumulated candidates. If the model budget is exhausted, it falls back without a
-call to the resolved entities of completed plan steps, or failing that to the
+accumulated candidates. If the model budget is exhausted, it falls back without
+a call to the resolved entities of completed plan steps, or failing that to the
 accumulated candidates, producing a degraded but non-empty answer. If the call
-raises for any other reason, the error is recorded in the trace. The answer
-is an explicit failure string --- a distinction that matters: an earlier
-version caught all exceptions as budget exhaustion and so misreported genuine
-errors as expected behaviour.
+raises for any other reason, the error is recorded in the trace. The answer is
+an explicit failure string --- a distinction that matters: an earlier version
+caught all exceptions as budget exhaustion and so misreported genuine errors as
+expected behaviour.
 
 Every degraded path described here is specified and never exercised. Across all
 $6{,}960$ committed runs no handler of this kind fired once. Every one of
@@ -683,29 +683,29 @@ termination, and they produce the efficiency data of \Cref{sec:efficiency}.
   \end{center}
 \end{table}
 
-The two tool-layer caps deserve a sentence of their own. They bound
-recall rather than cost. \textsf{max\_fanout} caps neighbours returned from a
-single expansion at $200$. On a high-degree entity the true neighbour set
-exceeds that: the frontier sees a truncated view. An answer sitting outside
-the first $200$ is unreachable through that edge no matter how well the scorer
-ranks the relation. The hub-noise failures of \Cref{sec:echo} are where this
-would be expected to matter. The tool returns a \textsf{truncated} flag
-alongside the neighbours. Two defects in it are recorded rather than
-repaired, under the rule of \Cref{sec:design-validation}. First, the flag does not
-reach the tool log. That log records the returned neighbour count instead, and
-cannot distinguish a capped expansion from one that returned exactly $200$.
-Second, it is computed before mediator traversal, on the raw row count, while
-the final list is truncated after mediators have been expanded into it. So an
-expansion returning few raw rows but many entities through their mediators is
-cut without the flag being set. Both make it a lower bound on truncation
-rather than a record of it. No analysis in this thesis reads it --- the cap's
-effect is measured from the returned counts instead, as in \Cref{sec:baseline-tog}.
+The two tool-layer caps deserve a sentence of their own. They bound recall
+rather than cost. \textsf{max\_fanout} caps neighbours returned from a single
+expansion at $200$. On a high-degree entity the true neighbour set exceeds that:
+the frontier sees a truncated view. An answer sitting outside the first $200$ is
+unreachable through that edge no matter how well the scorer ranks the relation.
+The hub-noise failures of \Cref{sec:echo} are where this would be expected to
+matter. The tool returns a \textsf{truncated} flag alongside the neighbours. Two
+defects in it are recorded rather than repaired, under the rule of
+\Cref{sec:design-validation}. First, the flag does not reach the tool log. That
+log records the returned neighbour count instead, and cannot distinguish a
+capped expansion from one that returned exactly $200$. Second, it is computed
+before mediator traversal, on the raw row count, while the final list is
+truncated after mediators have been expanded into it. So an expansion returning
+few raw rows but many entities through their mediators is cut without the flag
+being set. Both make it a lower bound on truncation rather than a record of it.
+No analysis in this thesis reads it --- the cap's effect is measured from the
+returned counts instead, as in \Cref{sec:baseline-tog}.
 
-Enforcement is confined to routers and the client. That confinement is what keeps it
-auditable, though the mapping is not one site per budget:
+Enforcement is confined to routers and the client. That confinement is what
+keeps it auditable, though the mapping is not one site per budget:
 \Cref{app:budget-sites} gives it. Three of the budgets are checked in two places
-rather than one. In every case the second site exists because the first does
-not cover the verify--explore cycle --- the retry edge re-enters the explorer
+rather than one. In every case the second site exists because the first does not
+cover the verify--explore cycle --- the retry edge re-enters the explorer
 without passing through the post-evaluation router. So without a second check a
 repair would silently buy an expansion past the depth budget. \Cref{sec:repair}
 records the development trace that exposed exactly that.
@@ -715,8 +715,8 @@ behaviour: every cycle in \Cref{fig:statemachine} passes through a router that
 decrements or checks a monotone counter. So no sequence of model outputs,
 however adversarial, can produce a non-terminating run. That guarantee is
 verified directly by the mechanics tests of \Cref{sec:implementation}. Those
-tests script an evaluator that always says \textsf{continue} and assert that the depth
-budget halts it.
+tests script an evaluator that always says \textsf{continue} and assert that the
+depth budget halts it.
 
 \section{Instrumentation and Reproducibility}\label{sec:instrumentation}
 
@@ -731,24 +731,24 @@ current git commit.
 
 The response cache underwrites the thesis's reproducibility claims. Every model
 call is keyed by a hash over the model identifier, temperature, reasoning-effort
-setting, the full prompt text, and the schema hint. Hits are served from
-disk. The subtle part is that a cache hit must be \emph{indistinguishable} from
-a live call inside the agent: the budget check still runs, the call counter
-still increments, and the original token counts are replayed into the meter from
-the stored record. So a fully cached rerun reproduces the original run's budget
+setting, the full prompt text, and the schema hint. Hits are served from disk.
+The subtle part is that a cache hit must be \emph{indistinguishable} from a live
+call inside the agent: the budget check still runs, the call counter still
+increments, and the original token counts are replayed into the meter from the
+stored record. So a fully cached rerun reproduces the original run's budget
 snapshots exactly rather than reporting zero tokens. One exception is a property
 of the technique rather than of this run --- the replay restores prompt and
 completion tokens but not \textsf{reasoning\_tokens}. The cache stores that
-field and does not add it back. That field is zero throughout this thesis,
-since the backbone runs at reasoning effort \textsf{none} (\Cref{sec:backbone}).
-So the snapshots do reproduce exactly here. Anyone reusing the design under a
-reasoning-effort setting would find they do not. A separate counter records cache hits so that
-live and replayed runs can be told apart, repeated experiments cost nothing, and
-a code change that is not supposed to alter behaviour can be verified by
-confirming that a rerun is served entirely from cache. Because the key includes
-the model string, and the backbone configured here is a dated snapshot rather
-than an alias, a silent server-side change cannot poison previously cached
-results.
+field and does not add it back. That field is zero throughout this thesis, since
+the backbone runs at reasoning effort \textsf{none} (\Cref{sec:backbone}). So
+the snapshots do reproduce exactly here. Anyone reusing the design under a
+reasoning-effort setting would find they do not. A separate counter records
+cache hits so that live and replayed runs can be told apart, repeated
+experiments cost nothing, and a code change that is not supposed to alter
+behaviour can be verified by confirming that a rerun is served entirely from
+cache. Because the key includes the model string, and the backbone configured
+here is a dated snapshot rather than an alias, a silent server-side change
+cannot poison previously cached results.
 
 \section{Design Validation on the Smoke Set}\label{sec:design-validation}
 
@@ -989,9 +989,9 @@ The second route is the \textsf{verify\_connection}\index{verify
 connection@\textsf{verify\_connection}} tool (\Cref{sec:tool-adjacency}), a
 single Cypher query asking whether the two entities are adjacent in the
 \emph{full} graph, either directly or through one mediator node. It exists
-because the first route tests only the \emph{traversal}, not the graph. The agent may
-have reached both endpoints along different branches without ever walking the
-edge between them.
+because the first route tests only the \emph{traversal}, not the graph. The
+agent may have reached both endpoints along different branches without ever
+walking the edge between them.
 
 Both routes are relation-agnostic. Since $r$ is free text with no reliable
 mapping onto a Freebase predicate, neither asks whether the edge it finds is the
@@ -1001,12 +1001,12 @@ rather than an incidental looseness.
 
 \Cref{app:route-frequencies} records how often each route fires. Two figures
 from it are quoted later. The second route is rare --- consulted five times on
-the development set and on a small minority of test claims. So the first
-route carries almost all of the checking. And the record cannot say how many of
-the $2{,}008$ accepted claims were certified by a relation-blind test rather
-than by entailment: the answer lies somewhere in $[39, 2{,}008]$. That
-interval is what \Cref{sec:verify-failure-modes} and \Cref{sec:threats} both read
-against. \Cref{sec:future-logging} is the change that would narrow it.
+the development set and on a small minority of test claims. So the first route
+carries almost all of the checking. And the record cannot say how many of the
+$2{,}008$ accepted claims were certified by a relation-blind test rather than by
+entailment: the answer lies somewhere in $[39, 2{,}008]$. That interval is what
+\Cref{sec:verify-failure-modes} and \Cref{sec:threats} both read against.
+\Cref{sec:future-logging} is the change that would narrow it.
 
 \subsection{The Entailment Check}\label{sec:entailment-check}
 
@@ -1202,8 +1202,8 @@ account of it.
 Triples}\label{sec:output-contract}
 
 The system pairs each answer with the triples that support it. That pairing is
-the explainability deliverable named in \Cref{sec:contribution}. Its actual coverage
-is narrower than the phrase suggests in two independent ways.
+the explainability deliverable named in \Cref{sec:contribution}. Its actual
+coverage is narrower than the phrase suggests in two independent ways.
 
 \textbf{Only one of the three routes records evidence.} Supporting triples are
 collected in the traversed-adjacency branch alone. A claim certified by
@@ -1284,11 +1284,11 @@ the change that would.
 
 Stated at the level of precision that catalogue requires: the layer establishes
 that the entity pairs a draft's claims relate are connected in the environment.
-On the repair path, it also makes the emitted entity list a deterministic function
-of those verdicts rather than a second generation. It does not establish that
-the claimed relation is the one the edge records, that an entity absent from
-every claim was grounded at all, that the answer is responsive to the question,
-or that a claim it could not check is false. Those boundaries are properties of
-the design rather than defects discovered in it. \Cref{sec:erroranalysis}
-reports how much of the residual error they account for.
-\endinput
+On the repair path, it also makes the emitted entity list a deterministic
+function of those verdicts rather than a second generation. It does not
+establish that the claimed relation is the one the edge records, that an entity
+absent from every claim was grounded at all, that the answer is responsive to
+the question, or that a claim it could not check is false. Those boundaries are
+properties of the design rather than defects discovered in it.
+\Cref{sec:erroranalysis} reports how much of the residual error they account
+for. \endinput

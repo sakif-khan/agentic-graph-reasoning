@@ -796,8 +796,8 @@ size''. That phrase is not a hedge for ``no effect'': for the verifier the point
 estimates are near zero \emph{and} the mechanism's contribution was never
 expected to appear in accuracy. For backtracking and the $\alpha$-blend, by
 contrast, the point estimates are consistently signed and the mechanism is
-visibly active in the logs. Those are different epistemic situations. Collapsing them into
-one word would lose the distinction.
+visibly active in the logs. Those are different epistemic situations. Collapsing
+them into one word would lose the distinction.
 
 
 \section{Building the Entity and Relation Indexes}\label{app:index-build}
@@ -1033,6 +1033,24 @@ the strata proportions.
 
 \section{The Test-Set Build That Read the Wrong
 Split}\label{app:testset-nearmiss}
+
+The glob was \textsf{train-*.parquet} where \textsf{test-*.parquet} was meant.
+It came from the development-set miner, which reads train because it should.
+The build then behaved like any other: eighteen shards resolved, no rows
+skipped, pool sizes printed without complaint.
+
+Two things were suggestive and neither forced the question. The pool sizes
+matched the train splits, and eighteen shards resolved. Both are wrong only
+relative to the test-split figures, and reading them that way means already
+suspecting the split.
+
+What forced it was an assertion rather than an observation. The
+development-overlap guard reported $32$ overlapping questions on WebQSP and
+$45$ on CWQ against a required zero: the development set is mined from the
+train and validation splits (\Cref{sec:dev-construction}), so a pool that
+overlaps it at all is not a test pool. A threshold fires whether or not anyone
+is reading for it, which is why it settled what the two suggestive signals had
+not.
 
 
 \section{When the Retry Route Can Fire}\label{app:retry-budget}

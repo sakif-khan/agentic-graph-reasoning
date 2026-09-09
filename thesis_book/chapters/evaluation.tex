@@ -138,12 +138,12 @@ question sets are committed as immutable artifacts
 \Cref{app:samples}. They were never regenerated after any system ran.
 
 \paragraph{A near miss worth recording.} The first build read the training
-shards rather than the test shards. The development-overlap guard caught it
---- the contamination guard, built for hygiene, is what found the contamination.
-No system had run against the files. They were deleted and rebuilt. The
-rebuilt pools report $1{,}628$ and $3{,}531$ with \textsf{skipped=\{\}}.
-\Cref{app:testset-nearmiss} records how it was diagnosed. That near miss is the reason a
-cheap overlap assertion belongs in every benchmark builder.
+shards rather than the test shards. The development-overlap guard caught it ---
+the contamination guard, built for hygiene, is what found the contamination. No
+system had run against the files. They were deleted and rebuilt. The rebuilt
+pools report $1{,}628$ and $3{,}531$ with \textsf{skipped=\{\}}.
+\Cref{app:testset-nearmiss} records how it was diagnosed. That near miss is the
+reason a cheap overlap assertion belongs in every benchmark builder.
 
 \subsection{Hop-Count Stratification and the Accuracy Ceiling}
 
@@ -309,8 +309,8 @@ Each candidate carried a \emph{persistent} ungrounded answer --- 4.1-mini
 asserted ``United States Dollar'' for a Dominican-peso question in two runs of
 four, 5.4-mini named the wrong Beckham child in all four. Both carried
 \emph{intermittent} ones, too: the same question on the same graph under the
-same budget moved between grounded-correct and ungrounded-wrong as the
-sampling weather changed. Backbone selection does not remove this class of error; it
+same budget moved between grounded-correct and ungrounded-wrong as the sampling
+weather changed. Backbone selection does not remove this class of error; it
 relocates it. That is the premise of this thesis, measured over four runs and
 two frontier-family models. It is the reason \Cref{sec:verification-layer}
 exists.
@@ -343,9 +343,9 @@ instruction to return an empty entity list if the answer is unknown. WebQSP and
 CWQ predate current models and are plausibly memorised. So this system measures
 the floor above which any retrieval result must be read. Its entity strings come
 from parametric memory rather than the graph. So surface forms mismatch gold
-more often than for graph-grounded systems, and its score is a \emph{lower bound}
-on parametric knowledge. That asymmetry is reported rather than corrected.
-Grading one system leniently and another strictly would corrupt the
+more often than for graph-grounded systems, and its score is a \emph{lower
+bound} on parametric knowledge. That asymmetry is reported rather than
+corrected. Grading one system leniently and another strictly would corrupt the
 comparison.
 
 \textbf{Vector-RAG} verbalises every triple into a sentence, embeds it with
@@ -398,12 +398,12 @@ rather than improvements. Neighbourhood expansion initially passed
 \emph{through} ordinary entities and stopped at mediator nodes, exactly inverted
 for Freebase and the reason machine identifiers were reaching answers. And
 retrieved facts are deduplicated by endpoint pair before reranking. Cosine
-similarity favours redundant phrasings of one connection and was crowding
-the informative row out of the top $30$. The rule keeps the shortest rendering.
-That choice resolves systematically towards the direct edge over the mediator-expanded
-path whenever both connect the same pair. That bias runs against this baseline
-on exactly the questions mediator expansion was added to serve. So it is
-disclosed rather than left in the code.
+similarity favours redundant phrasings of one connection and was crowding the
+informative row out of the top $30$. The rule keeps the shortest rendering. That
+choice resolves systematically towards the direct edge over the
+mediator-expanded path whenever both connect the same pair. That bias runs
+against this baseline on exactly the questions mediator expansion was added to
+serve. So it is disclosed rather than left in the code.
 
 \textbf{What this baseline licenses, and what it does not.} A one-hop retriever
 cannot contain a two-hop chain. So its decay across hop strata
@@ -459,15 +459,15 @@ pruning widths of the reimplemented algorithm, against AGR's $300$ and $200$
 (\Cref{tab:budget}). Since \textsf{get\_relations} returns rows by descending
 fanout, a binding cut discards the low-fanout tail --- the material
 \Cref{sec:tool-api} reports raising AGR's own cap from $80$ to $300$ to stop
-discarding. It binds on $31.6\%$ of the entities Think-on-Graph expanded
-against $1$ of AGR's $3{,}097$ (\Cref{app:tog-widths}). The consequence is a
-bound on one specific claim. \Cref{sec:tog-split} concludes that the margin
-over Think-on-Graph is affordability rather than search quality. That
-conclusion is safe in the direction it is stated, since a narrower candidate
-set cannot explain why the baseline runs \emph{out of calls}. But the
-residual gap on unclipped questions is measured against a baseline searching a
-thinner pool. So it is a lower bound on
-that baseline's attainable quality rather than an estimate of it. Equalising the widths is the first item in
+discarding. It binds on $31.6\%$ of the entities Think-on-Graph expanded against
+$1$ of AGR's $3{,}097$ (\Cref{app:tog-widths}). The consequence is a bound on
+one specific claim. \Cref{sec:tog-split} concludes that the margin over
+Think-on-Graph is affordability rather than search quality. That conclusion is
+safe in the direction it is stated, since a narrower candidate set cannot
+explain why the baseline runs \emph{out of calls}. But the residual gap on
+unclipped questions is measured against a baseline searching a thinner pool. So
+it is a lower bound on that baseline's attainable quality rather than an
+estimate of it. Equalising the widths is the first item in
 \Cref{sec:future-baselines}.
 
 \subsection{Variables Held Constant, and
@@ -479,8 +479,8 @@ the budget meter and its $25$-call cap, the output schema so that scoring reads
 one field for all systems, and the record schema so that any record
 self-describes with backbone, budget hash, run configuration, and source commit.
 Both graph-navigating systems seed from the dataset's annotated topic entities.
-That choice removes entity linking as a confound. It is stated as a limitation in
-\Cref{sec:threats}.
+That choice removes entity linking as a confound. It is stated as a limitation
+in \Cref{sec:threats}.
 
 Two things are \emph{not} held constant. Both are named rather than buried.
 The first is deliberate: the baselines get a plain answering prompt while the
@@ -497,18 +497,18 @@ Baselines were debugged exclusively on development data and certified before any
 test question ran. The pre-registered diagnostic targets the one failure mode
 that would be an implementation defect rather than a paradigm limit ---
 \emph{retrieval found the gold answer and the system hedged anyway}. That
-failure mode is checkable, because both retrieval baselines log a sample of what they retrieved.
-The rule, written before the numbers: under $15\%$ of hedges certifies the
-baseline as-is, over $30\%$ means an over-abstinent prompt, to be adjusted
-identically for both baselines with both files re-run. Measured, Vector-RAG
-scored $0\%$ on both datasets and Static GraphRAG $10\%$ and $14\%$. Both
-certified, with two caveats recorded rather than smoothed over. The diagnostic
-samples the top ten of thirty retrieved facts. So it is a lower bound. And
-Think-on-Graph's $0\%$ is \emph{vacuous} rather than clean, since it logs no
-retrieved-fact sample and the diagnostic compared against an empty string. As a
-multi-step navigator it was not the diagnostic's target. But the reading is a
-null, not a pass. All ten test files completed at exactly $400$ records with
-zero failures and zero duplicate question identifiers.
+failure mode is checkable, because both retrieval baselines log a sample of what
+they retrieved. The rule, written before the numbers: under $15\%$ of hedges
+certifies the baseline as-is, over $30\%$ means an over-abstinent prompt, to be
+adjusted identically for both baselines with both files re-run. Measured,
+Vector-RAG scored $0\%$ on both datasets and Static GraphRAG $10\%$ and $14\%$.
+Both certified, with two caveats recorded rather than smoothed over. The
+diagnostic samples the top ten of thirty retrieved facts. So it is a lower
+bound. And Think-on-Graph's $0\%$ is \emph{vacuous} rather than clean, since it
+logs no retrieved-fact sample and the diagnostic compared against an empty
+string. As a multi-step navigator it was not the diagnostic's target. But the
+reading is a null, not a pass. All ten test files completed at exactly $400$
+records with zero failures and zero duplicate question identifiers.
 
 \section{Metrics and the Groundedness Judge}\label{sec:metrics}
 
@@ -518,9 +518,9 @@ Both metrics are computed over \emph{entity sets} after Unicode
 NFKC\index{Hits"@1}\index{F1}\index{precision} normalisation, case folding, and
 whitespace stripping --- no fuzzy matching, no substring containment.
 \emph{Hits@1} is $1$ if any predicted entity matches any gold entity. That is
-the convention in this literature, and it is what makes published numbers comparable
-at all. \emph{F1} is computed per question between the predicted and gold sets
-as defined in \Cref{sec:kgqa}, and averaged over questions.
+the convention in this literature, and it is what makes published numbers
+comparable at all. \emph{F1} is computed per question between the predicted and
+gold sets as defined in \Cref{sec:kgqa}, and averaged over questions.
 
 Reporting both is not redundancy. Hits@1 rewards a system that names one correct
 entity among several wrong ones. On WebQSP the loophole is wide in the tail
@@ -579,25 +579,24 @@ the point of defining hallucination relative to an environment at all.
 \textbf{Tier~2, semantic}, asks the harder question Tier~1 cannot: is the entity
 supported \emph{as the answer}? For a stratified sample of $60$ asserted answers
 per system per dataset ($600$ judgements), the graph's own shortest connecting
-paths between topic and asserted entity are retrieved. A language model
-judges whether any one of them expresses the relationship the question asks
-about. The governing instruction --- that \emph{mere connectedness is not
-support} --- is what separates the two tiers. Two design choices are
-pre-registered and consequential. Judging is against \textbf{the environment}
-rather than each system's own retrieved context. The logs do not
-preserve per-system evidence uniformly, and environment-judging asks every system
-the identical question. The metric therefore applies even to the no-retrieval
-control. And path retrieval takes the three shortest paths. That means a
-supporting chain can lose to shorter irrelevant ones. Tier~2 rates are
-accordingly \emph{conservative lower bounds}, uniformly depressed across all
-systems, and are read as a between-system comparison rather than as absolute
-support rates.
+paths between topic and asserted entity are retrieved. A language model judges
+whether any one of them expresses the relationship the question asks about. The
+governing instruction --- that \emph{mere connectedness is not support} --- is
+what separates the two tiers. Two design choices are pre-registered and
+consequential. Judging is against \textbf{the environment} rather than each
+system's own retrieved context. The logs do not preserve per-system evidence
+uniformly, and environment-judging asks every system the identical question. The
+metric therefore applies even to the no-retrieval control. And path retrieval
+takes the three shortest paths. That means a supporting chain can lose to
+shorter irrelevant ones. Tier~2 rates are accordingly \emph{conservative lower
+bounds}, uniformly depressed across all systems, and are read as a
+between-system comparison rather than as absolute support rates.
 
 \subsection{Efficiency: Tokens, LLM Calls, and Wall-Clock Latency}
 
 Tokens and calls are counted by the shared budget meter, identically for
-every\index{budget} system, and are exact. The cache replays original usage.
-So they are unaffected by which runs were warm. Wall-clock latency is not, and is
+every\index{budget} system, and are exact. The cache replays original usage. So
+they are unaffected by which runs were warm. Wall-clock latency is not, and is
 computed over \textbf{cold-cache records only}. That restriction is repeated
 wherever latency appears, beginning with the seconds column of
 \Cref{tab:efficiency}. Where a condition's records are entirely cache replays
@@ -635,10 +634,10 @@ Cohen's $\kappa$~\cite{cohen1960coefficient} is \[ \kappa = \frac{0.8500 -
 
 The pre-registered threshold was $\kappa \geq 0.7$. Rounded to three decimals
 this reads $0.700$ and appears to clear. It does not: it falls short by
-$0.0005$, and it is reported as short. What follows is a matter of weight rather than of
-discarding. By the conventional bands~\cite{landis1977measurement} a $\kappa$ of
-$0.70$ is substantial agreement. The task is genuinely hard: whether a
-relation chain really expresses an asked relationship has real grey area for a
+$0.0005$, and it is reported as short. What follows is a matter of weight rather
+than of discarding. By the conventional bands~\cite{landis1977measurement} a
+$\kappa$ of $0.70$ is substantial agreement. The task is genuinely hard: whether
+a relation chain really expresses an asked relationship has real grey area for a
 careful human, as the guideline's list of decided edge cases attests. The Tier-2
 numbers are therefore reported with the $\kappa$ beside them and the miss
 stated. No conclusion rests on Tier~2 alone --- where it is load-bearing, in the
@@ -725,14 +724,15 @@ Three practices carry more reproducibility weight than the dependency list.
 \Cref{app:implementation} records them as techniques. \emph{Records
 self-describe}: every record carries the backbone description, a
 budget-configuration hash, the full run configuration, and the source commit.
-That self-description is what made the cache-replay incident of \Cref{sec:backbone} diagnosable.
-\emph{Frozen artifacts are committed and regenerable ones are not}, the question
-sets and result files embodying spent money and non-repeatable runs where the
-graph import and the indexes are deterministic products of committed scripts.
-And \emph{code changes are proved harmless by cache identity} rather than by a
-passing test suite: re-running an answered question and confirming every call is
-a cache hit proves byte-identical prompts and hence an untouched frozen path.
-That proof is the certificate behind the ablation reference row.
+That self-description is what made the cache-replay incident of
+\Cref{sec:backbone} diagnosable. \emph{Frozen artifacts are committed and
+regenerable ones are not}, the question sets and result files embodying spent
+money and non-repeatable runs where the graph import and the indexes are
+deterministic products of committed scripts. And \emph{code changes are proved
+harmless by cache identity} rather than by a passing test suite: re-running an
+answered question and confirming every call is a cache hit proves byte-identical
+prompts and hence an untouched frozen path. That proof is the certificate behind
+the ablation reference row.
 
 Two limits belong here rather than in a footnote. The archived results carry
 neither per-folder documentation nor generated manifests. So file provenance
@@ -1019,30 +1019,30 @@ not that guided best-first search resolves entities better than
 language-model-pruned beam search --- on the evidence here it does not. The
 unclipped subset is the fairest available estimate of that. The finding is that
 \emph{beam search cannot afford to finish under a budget a deployed system would
-actually impose}. \emph{Guided search can.} Width times depth is multiplicative and
-paid on every question. A plan plus a scored frontier is not. A comparison run
-without a cap would measure search quality in the abstract. That would be a
+actually impose}. \emph{Guided search can.} Width times depth is multiplicative
+and paid on every question. A plan plus a scored frontier is not. A comparison
+run without a cap would measure search quality in the abstract. That would be a
 legitimate experiment, and a different one. This thesis fixed the budget in
 advance (\Cref{sec:baselines}) because cost is a property of the method rather
 than a nuisance to be controlled away. On that reading the clip rate is not an
-artefact of the setup. It is the result. \Cref{sec:efficiency} prices the
-same finding in tokens.
+artefact of the setup. It is the result. \Cref{sec:efficiency} prices the same
+finding in tokens.
 
 Three qualifications keep the claim honest. The cap of $25$ calls is itself a
-choice. A larger one would move the split --- the clip rates are reported so
-a reader can see how far. The reimplementation's beam width and depth follow the
+choice. A larger one would move the split --- the clip rates are reported so a
+reader can see how far. The reimplementation's beam width and depth follow the
 original paper. So its cost profile is the published algorithm's rather than a
-weakened variant. That fidelity is what makes the cost finding meaningful instead of
-circular. But the candidate widths \emph{beneath} the beam do not come from the
-paper: the baseline prunes from $40$ relations and $20$ neighbours where AGR
-prunes from $300$ and $200$. Those cuts bind on about a third of its
+weakened variant. That fidelity is what makes the cost finding meaningful
+instead of circular. But the candidate widths \emph{beneath} the beam do not
+come from the paper: the baseline prunes from $40$ relations and $20$ neighbours
+where AGR prunes from $300$ and $200$. Those cuts bind on about a third of its
 expansions against almost none of AGR's (\Cref{sec:baseline-tog}). That
 asymmetry cannot explain the clipping --- a thinner candidate set makes a step
 cheaper, not dearer. So the affordability finding stands. It does bear on the
 sentence before it: $0.852$ and $0.629$ on the unclipped subset are a
 \emph{lower bound} on what this baseline's search could resolve given AGR's
-candidate widths, not an estimate of it. The claim that guided search does
-not out-resolve beam search is correspondingly the weaker one.
+candidate widths, not an estimate of it. The claim that guided search does not
+out-resolve beam search is correspondingly the weaker one.
 
 \textbf{The breadth of AGR's answers is checked rather than assumed.} On
 answered WebQSP questions AGR names $3.37$ entities against Think-on-Graph's
@@ -1847,8 +1847,8 @@ traces.
 \textsf{WebQTest-1215}, ``who was stephen r covey'', gold lists Author, Manager,
 Writer, Consultant, Professor, and Motivational speaker. The drafted answer
 reads \emph{``Stephen Covey was a Writer, Motivational speaker, Author,
-Consultant, Professor, and Manager''} --- all six, correct, in a different order.
-\textsf{answer\_entities} comes back as \textsf{['Stephen Covey']}. The
+Consultant, Professor, and Manager''} --- all six, correct, in a different
+order. \textsf{answer\_entities} comes back as \textsf{['Stephen Covey']}. The
 navigation found the answers. The verifier certified them. The prose reports
 them. What fails is the step that turns answer text into the entity list, which
 consistently reaches for the subject rather than the predicate values.

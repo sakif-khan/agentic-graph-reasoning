@@ -25,26 +25,26 @@ example, \textsf{(Ada Lovelace, place\_of\_birth, London)}. Relations are
 directed and typed. Both directions carry meaning: the inverse of
 \textsf{place\_of\_birth} is a legitimate but distinct relation.
 
-Two properties matter for what follows. Triples are \emph{atomic}. Each
-asserts exactly one fact. So a claim can be checked against the graph by
-testing for the existence of specific edges. They are also \emph{composable}: a
-chain $(e_0, r_1, e_1), (e_1, r_2, e_2), \dots$ expresses a multi-step
-relationship that no single triple states. That composability is what makes a knowledge graph
-the natural substrate for multi-hop questions.
+Two properties matter for what follows. Triples are \emph{atomic}. Each asserts
+exactly one fact. So a claim can be checked against the graph by testing for the
+existence of specific edges. They are also \emph{composable}: a chain $(e_0,
+r_1, e_1), (e_1, r_2, e_2), \dots$ expresses a multi-step relationship that no
+single triple states. That composability is what makes a knowledge graph the
+natural substrate for multi-hop questions.
 
 \subsection{Freebase: MIDs, Schema, and Mediator Nodes}
 
 Freebase~\cite{bollacker2008freebase} is a large, collaboratively-built
-knowledge\index{Freebase} base, frozen since 2016. It is also the substrate for the
-standard knowledge graph question answering benchmarks. Three of its
+knowledge\index{Freebase} base, frozen since 2016. It is also the substrate for
+the standard knowledge graph question answering benchmarks. Three of its
 characteristics affect any system built on it. Entities are identified by opaque
 \emph{machine identifiers}\index{MID} (MIDs) such as \textsf{m.02mjmr}, with
 human-readable names attached as a separate property. Names are neither unique
 nor stable. So entity identity and entity surface form must be handled
 separately. Relations are namespaced paths such as
 \textsf{people.person.place\_of\_birth}, encoding domain, type, and property.
-They are drawn from a vocabulary of tens of thousands that includes many carrying no
-factual content, such as internal type and key predicates.
+They are drawn from a vocabulary of tens of thousands that includes many
+carrying no factual content, such as internal type and key predicates.
 
 Most consequentially, Freebase represents $n$-ary facts through
 \emph{mediator}\index{mediator node} or \emph{compound value type} (CVT) nodes.
@@ -84,27 +84,28 @@ So a system that traverses correctly while silently dropping one returns a
 superset of the answer --- a failure hop-count analysis alone does not expose.
 
 Two families of approach have historically divided this field. \emph{Semantic
-parsing} methods translate the question into a formal query and execute it.
-That approach is exact and interpretable, but it requires the parse to be exactly
+parsing} methods translate the question into a formal query and execute it. That
+approach is exact and interpretable, but it requires the parse to be exactly
 right~\cite{berant2013semantic,yih2016value}. \emph{Information retrieval}
 methods instead retrieve a relevant subgraph and rank candidate answers within
 it, degrading more gracefully at the cost of transparency. The agentic systems
-considered here are closer to the second family. But they recover much of the first
-family's transparency by logging the traversal itself.
+considered here are closer to the second family. But they recover much of the
+first family's transparency by logging the traversal itself.
 
 \paragraph{Evaluation Conventions: Hits@1 and F1}
 
 % makeindex reads @ as the sort/actual separator, so an unquoted Hits@1 prints
 % as a bare "1" filed under H. The " quotes the next character.
 Two metrics are conventional. \emph{Hits@1}\index{Hits"@1} scores a question
-$1$\index{F1} if any entity the system asserts is in the gold answer set, and $0$
-otherwise. It is a per-question binary correctness measure. It is also the headline number in
-most of this literature. The name is historical and slightly misleading. It was
-defined for systems that emitted a \emph{ranked} list, where only the top
-entry counted. It has since been carried over to systems that emit an unordered set, where it
-becomes the set-intersection test just stated. This thesis uses the
-set-intersection form throughout, because that is what the systems it compares
-against report. \Cref{sec:metrics} fixes the string-matching rule exactly.
+$1$\index{F1} if any entity the system asserts is in the gold answer set, and
+$0$ otherwise. It is a per-question binary correctness measure. It is also the
+headline number in most of this literature. The name is historical and slightly
+misleading. It was defined for systems that emitted a \emph{ranked} list, where
+only the top entry counted. It has since been carried over to systems that emit
+an unordered set, where it becomes the set-intersection test just stated. This
+thesis uses the set-intersection form throughout, because that is what the
+systems it compares against report. \Cref{sec:metrics} fixes the
+string-matching rule exactly.
 
 Because many questions admit multiple correct answers, Hits@1 alone rewards a
 system that names one correct entity and ignores the rest. \emph{F1} therefore
@@ -181,10 +182,10 @@ search} bounds the frontier to the $b$ highest-scoring candidates at each depth,
 trading completeness for a fixed memory and computation budget. With an
 expensive scoring function --- here, a language model call --- the beam width is
 also the principal cost control. Bounded search commits to choices that may
-prove wrong. \emph{Backtracking}\index{backtracking} recovers by abandoning
-the current branch and resuming from a previously unexplored alternative. That
-recovery requires maintaining a stack of such alternatives and a trigger condition for
-when to pop it. Both are specified in \Cref{sec:evaluator}.
+prove wrong. \emph{Backtracking}\index{backtracking} recovers by abandoning the
+current branch and resuming from a previously unexplored alternative. That
+recovery requires maintaining a stack of such alternatives and a trigger
+condition for when to pop it. Both are specified in \Cref{sec:evaluator}.
 
 \paragraph{Relation to Monte Carlo Tree Search: A Terminological
 Clarification}\label{sec:mcts-clarification}
@@ -222,8 +223,9 @@ data.\index{McNemar}\index{bootstrap}\index{Cohen's kappa}
 sampling uncertainty by resampling the evaluated questions with replacement and
 recomputing the metric. The $2.5$th and $97.5$th percentiles of the resulting
 distribution give a 95\% interval. That is the \emph{percentile} method, used
-here in preference to bias-corrected variants. The intervals are read as
-a scale on the reported difference rather than as a hypothesis test. They also require no distributional assumption about metrics such as per-question F1.
+here in preference to bias-corrected variants. The intervals are read as a scale
+on the reported difference rather than as a hypothesis test. They also require
+no distributional assumption about metrics such as per-question F1.
 
 \emph{McNemar's test}~\cite{mcnemar1947note} assesses whether two systems differ
 in accuracy when both are evaluated on the \emph{same} questions. It considers
@@ -561,8 +563,8 @@ and published accuracy.
     $58.9$ and $69.5$ Think-on-Graph reports for itself. Two published papers
     disagree by $1.8$ and $1.9$ points on the same system and benchmark. That
     gap is the order of many claimed improvements in this literature. It is
-    also the reason \Cref{sec:setup} reimplements its baseline rather than citing a
-    number.}
+    also the reason \Cref{sec:setup} reimplements its baseline rather than
+    citing a number.}
   \end{center}
 \end{table}
 
@@ -618,3 +620,5 @@ That is why \Cref{sec:ablations} rather than \Cref{tab:reported} carries the
 argument. Where AGR is compared against a prior system, that comparison is run
 under controlled conditions in this thesis's own environment rather than quoted
 across papers.
+
+\endinput

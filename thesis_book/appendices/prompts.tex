@@ -32,11 +32,11 @@ shared across every condition of the $\alpha$--$\tau$ sweep
 (\Cref{sec:dev-tuning}). Second, budgets are counters in code
 (\Cref{sec:budgets}) rather than instructions: no prompt tells the model to
 stop. Stopping does not depend on its cooperation. One template qualifies that
-second property without breaking it. The evaluator of \Cref{app:prompt-evaluator}
-is passed the remaining depth and backtracks as decision context --- the only
-budget figures any prompt carries --- substituted at send time rather than
-written into the template. The note there records why a model that ignores them
-changes nothing.
+second property without breaking it. The evaluator of
+\Cref{app:prompt-evaluator} is passed the remaining depth and backtracks as
+decision context --- the only budget figures any prompt carries --- substituted
+at send time rather than written into the template. The note there records why a
+model that ignores them changes nothing.
 
 \section{Planner}\label{app:prompt-planner}
 
@@ -265,9 +265,9 @@ format. All three emit \verb|{"answer": "...", "answer_entities": ["..."]}|.
 
 \subsection*{No-retrieval}
 
-The parametric control. It receives the question and nothing else. That restriction is what
-makes it a measurement of memorisation rather than of retrieval
-(\Cref{sec:baselines}).
+The parametric control. It receives the question and nothing else. That
+restriction is what makes it a measurement of memorisation rather than of
+retrieval (\Cref{sec:baselines}).
 
 \begin{lstlisting}[style=verbatimblock]
 Answer this question with the name(s) of the answer entity or
