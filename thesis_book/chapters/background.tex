@@ -1,17 +1,17 @@
 % !TEX root = ../thesis_book_0421052099.tex
 \chapter{Background and Related Work}\label{ch:background}
 
-This chapter establishes the concepts and notation the technical chapters
-assume. It also surveys the work AGR builds on and competes with. It is
-deliberately compact. Only material actually used later is included. Standard
-results are stated rather than derived. The background comes first: knowledge
+This chapter lays out the concepts and notation that the technical chapters rely
+on. It also surveys the work that AGR builds on and competes with. The chapter
+is kept short on purpose. It covers only material that is actually used later.
+Standard results are stated, not derived. The background comes first: knowledge
 graphs, question answering over them, language models as reasoning engines,
-retrieval augmentation, and search. The survey follows, from static
-graph-augmented generation, through path-retrieval and agentic exploration, to
-verification and factuality measurement. It closes with a structured comparison
-of the seven closest systems. That comparison serves two purposes. It locates
-the gap this thesis addresses. And it justifies the choice of baselines in
-\Cref{sec:baselines}.
+retrieval augmentation, and search. The survey follows. It moves from static
+graph-augmented generation, through path retrieval and agentic exploration, to
+verification and factuality measurement. The chapter closes with a structured
+comparison of the seven closest systems. That comparison does two things. It
+points to the gap this thesis addresses. And it justifies the choice of
+baselines in \Cref{sec:baselines}.
 
 \section{Knowledge Graphs}\label{sec:kgs}
 
@@ -52,8 +52,8 @@ A fact with more than two participants --- an actor playing a particular
 character in a particular film --- is not a single edge but an anonymous
 intermediate node linking the participants. So a relationship a user would
 describe as one hop is two edges in the graph. Any system reporting hop counts
-over Freebase must state how it treats these nodes. The choice changes
-every depth measurement. Systems that ignore them lose the facts they
+over Freebase must state how it treats these nodes. The choice changes every
+depth measurement. Systems that ignore them lose the facts they
 encode~\cite{xu2024generate}.
 
 \subsection{Property Graphs, Neo4j, and Cypher}
@@ -61,12 +61,12 @@ encode~\cite{xu2024generate}.
 The triple model above is the RDF view. The alternative is the \emph{property
 graph}\index{property graph} model, in which nodes and edges are both typed and
 may carry arbitrary key--value properties. Neo4j~\cite{robinson2015graph}
-implements it. Cypher~\cite{francis2018cypher} queries it, with a
-\textsf{MATCH} clause that expresses graph patterns directly. A triple store
-maps onto it naturally --- entities become nodes carrying their MID and name,
-relations become typed edges. Traversal patterns that would require
-recursive joins in a relational schema are expressed as literal path patterns
-instead. That is the practical reason for choosing a graph store here.
+implements it. Cypher~\cite{francis2018cypher} queries it, with a \textsf{MATCH}
+clause that expresses graph patterns directly. A triple store maps onto it
+naturally --- entities become nodes carrying their MID and name, relations
+become typed edges. Traversal patterns that would require recursive joins in a
+relational schema are expressed as literal path patterns instead. That is the
+practical reason for choosing a graph store here.
 
 \subsection{Knowledge Graph Question Answering}\label{sec:kgqa}
 
@@ -79,51 +79,53 @@ requires traversing $k$ edges from the entities named in the question --- its
 \emph{topic entities} --- to the answer. Beyond hop count, questions vary in
 \emph{constraints}: conditions that filter candidates rather than extending the
 chain. ``Which of Tolstoy's novels was published after 1875?'' is one hop plus a
-temporal constraint. Constraints must be satisfied jointly with the chain.
-So a system that traverses correctly while silently dropping one returns a
-superset of the answer --- a failure hop-count analysis alone does not expose.
+temporal constraint. A correct answer has to satisfy both at once. A system that
+walks the hop correctly but quietly drops the constraint returns every novel,
+not just the ones published after 1875. The result is a superset of the answer.
+Hop-count analysis alone never exposes that failure.
 
 Two families of approach have historically divided this field. \emph{Semantic
 parsing} methods translate the question into a formal query and execute it. That
 approach is exact and interpretable, but it requires the parse to be exactly
 right~\cite{berant2013semantic,yih2016value}. \emph{Information retrieval}
-methods instead retrieve a relevant subgraph and rank candidate answers within
-it, degrading more gracefully at the cost of transparency. The agentic systems
-considered here are closer to the second family. But they recover much of the
-first family's transparency by logging the traversal itself.
+methods instead pull out a relevant subgraph and rank candidate answers inside
+it. They fail more gently, but they are harder to see into. The agentic systems
+considered here sit closer to the second family. But they get much of the first
+family's transparency back by logging the traversal itself.
 
 \paragraph{Evaluation Conventions: Hits@1 and F1}
 
 % makeindex reads @ as the sort/actual separator, so an unquoted Hits@1 prints
 % as a bare "1" filed under H. The " quotes the next character.
-Two metrics are conventional. \emph{Hits@1}\index{Hits"@1} scores a question
+Two metrics are standard. \emph{Hits@1}\index{Hits"@1} scores a question
 $1$\index{F1} if any entity the system asserts is in the gold answer set, and
-$0$ otherwise. It is a per-question binary correctness measure. It is also the
+$0$ otherwise. It is a simple right-or-wrong score per question. It is also the
 headline number in most of this literature. The name is historical and slightly
-misleading. It was defined for systems that emitted a \emph{ranked} list, where
-only the top entry counted. It has since been carried over to systems that emit
-an unordered set, where it becomes the set-intersection test just stated. This
-thesis uses the set-intersection form throughout, because that is what the
-systems it compares against report. \Cref{sec:metrics} fixes the
+misleading. It was coined for systems that returned a \emph{ranked} list, where
+only the top entry counted. It has since been carried over to systems that
+return an unordered set. There it becomes the set-intersection test just stated.
+This thesis uses the set-intersection form throughout, because that is what the
+systems it compares against report. \Cref{sec:metrics} pins down the
 string-matching rule exactly.
 
-Because many questions admit multiple correct answers, Hits@1 alone rewards a
-system that names one correct entity and ignores the rest. \emph{F1} therefore
-complements it, computed per question between the predicted answer set $A$ and
-the gold set $A^{*}$: \[ P = \frac{|A \cap A^{*}|}{|A|}, \qquad R = \frac{|A
-\cap A^{*}|}{|A^{*}|}, \qquad F_1 = \frac{2PR}{P + R}, \] and then averaged over
-questions. The distinction between $P$ and $R$ is load-bearing in this thesis: a
-system that asserts many entities can achieve high recall while its precision
-falls. \Cref{sec:limitations} argues that precisely this failure goes
+Many questions have more than one correct answer. Hits@1 alone rewards a system
+that names one correct entity and ignores the rest. \emph{F1} fills that gap. It
+is computed per question between the predicted answer set $A$ and the gold set
+$A^{*}$: \[ P = \frac{|A \cap A^{*}|}{|A|}, \qquad R = \frac{|A \cap
+A^{*}|}{|A^{*}|}, \qquad F_1 = \frac{2PR}{P + R}, \] and then averaged over
+questions. The difference between $P$ and $R$ matters a great deal in this
+thesis. A system that asserts many entities can score high recall while its
+precision falls. \Cref{sec:limitations} argues that exactly this failure goes
 unmeasured when only Hits@1 is reported.
+
 \section{Large Language Models as Reasoning Engines}\label{sec:llms}
 
 \subsection{In-Context Learning, Chain-of-Thought, and the ReAct Loop}
 
 Sufficiently large language models perform tasks specified entirely in their
 prompt, without gradient updates --- \emph{in-context learning}\index{in-context
-learning}~\cite{brown2020language}. Prompting the model to produce
-intermediate reasoning steps before its final answer, \emph{chain-of-thought}
+learning}~\cite{brown2020language}. Prompting the model to produce intermediate
+reasoning steps before its final answer, \emph{chain-of-thought}
 prompting~\cite{wei2022chain}, substantially improves performance on multi-step
 problems. Both are used here: the agent's planner, scorer, evaluator, and
 verifier are prompted components of a single frozen model. No component is
@@ -135,16 +137,16 @@ A language model can also be given \emph{tools}: named operations it may invoke,
 whose results re-enter its context~\cite{schick2023toolformer}. The
 \emph{ReAct}\index{ReAct} pattern~\cite{yao2023react} interleaves reasoning and
 action in a loop --- the model reasons about what to do, acts, observes the
-result, and reasons again. That loop is the control structure underlying
-agentic graph navigation. Where the tools are graph operations, each iteration
-extends a traversal. The sequence of tool calls is a complete record of how
-the answer was reached.
+result, and reasons again. That loop is the control structure underlying agentic
+graph navigation. Where the tools are graph operations, each iteration extends a
+traversal. The sequence of tool calls is a complete record of how the answer was
+reached.
 
 \subsection{A Working Definition of Hallucination for This
 Thesis}\label{sec:hallucination-def}
 
-``Hallucination'' is used loosely in the literature. This thesis adopts a
-narrow,\index{hallucination} operational definition tied to the knowledge
+``Hallucination'' means different things in different papers. This thesis adopts
+a narrow,\index{hallucination} operational definition tied to the knowledge
 environment: an asserted entity is \emph{ungrounded} if it does not exist in the
 graph, or exists but is not reachable from the question's topic entities within
 the traversal budget. A claim is \emph{unsupported} if the traversed triples do
@@ -165,27 +167,28 @@ matching fails~\cite{karpukhin2020dense}. Sentence-level encoders such as
 Sentence-BERT~\cite{reimers2019sentence} produce embeddings suitable for direct
 cosine comparison. In this thesis embeddings serve two bounded purposes ---
 linking question phrases to graph entities, and pre-ranking relation candidates
-during exploration. They never establish that a fact is true. That role belongs
-exclusively to the symbolic triples. Graph-based retrieval replaces flat
-passages with structured context~\cite{edge2024local,gutierrez2024hipporag}. The
-retrieved unit is a subgraph rather than a document. That preserves
-relationships explicitly. The distinction that matters here is not graph versus
-vector but \emph{static versus interleaved}: whether retrieval happens once
-before reasoning begins, or repeatedly as reasoning proceeds.
+during exploration. They never establish that a fact is true. That job belongs
+to the symbolic triples alone. Graph-based retrieval swaps flat passages for
+structured context~\cite{edge2024local,gutierrez2024hipporag}. What gets
+retrieved is a subgraph rather than a document. So the relationships between
+facts come along explicitly. The distinction that matters here is not graph
+versus vector. It is \emph{static versus interleaved}: does retrieval happen
+once, before reasoning begins, or again and again as reasoning proceeds?
 
 \subsection{Search over Graphs}\label{sec:search}
 
-\emph{Best-first search}\index{best-first search} maintains a frontier of
-candidate nodes ordered by a heuristic estimate of promise and expands the most
-promising one first~\cite{hart1968formal,pearl1984heuristics}. \emph{Beam
-search} bounds the frontier to the $b$ highest-scoring candidates at each depth,
-trading completeness for a fixed memory and computation budget. With an
-expensive scoring function --- here, a language model call --- the beam width is
-also the principal cost control. Bounded search commits to choices that may
-prove wrong. \emph{Backtracking}\index{backtracking} recovers by abandoning the
-current branch and resuming from a previously unexplored alternative. That
-recovery requires maintaining a stack of such alternatives and a trigger
-condition for when to pop it. Both are specified in \Cref{sec:evaluator}.
+\emph{Best-first search}\index{best-first search} keeps a frontier of candidate
+nodes. A heuristic scores each one by how promising it looks, and the search
+expands the most promising one first~\cite{hart1968formal,pearl1984heuristics}.
+\emph{Beam search} trims the frontier to the $b$ highest-scoring candidates at
+each depth. That gives up completeness in exchange for a fixed memory and
+computation budget. With an expensive scoring function --- here, a language
+model call --- the beam width is also the principal cost control. Bounded search
+commits to choices that may prove wrong. \emph{Backtracking}\index{backtracking}
+recovers by abandoning the current branch and resuming from a previously
+unexplored alternative. That recovery requires maintaining a stack of such
+alternatives and a trigger condition for when to pop it. Both are specified in
+\Cref{sec:evaluator}.
 
 \paragraph{Relation to Monte Carlo Tree Search: A Terminological
 Clarification}\label{sec:mcts-clarification}
@@ -200,12 +203,12 @@ expanded node. The two phases that give MCTS its statistical character are
 simulation and backpropagation. Together, they let node values be estimated from
 sampled outcomes rather than from a fixed heuristic.
 
-The method used in this thesis has neither. There are no rollouts. No value
-is propagated back up the search tree: each candidate is scored once, by a fixed
+The method used in this thesis has neither. There are no rollouts. No value is
+propagated back up the search tree: each candidate is scored once, by a fixed
 function combining embedding similarity with a language-model judgement. That
-score is never revised in light of what is found later. What the method is,
-is \emph{guided best-first search with a bounded beam and backtracking}. It
-is described that way throughout. The contrast is not hypothetical. Genuine tree
+score is never revised in light of what is found later. What the method is, is
+\emph{guided best-first search with a bounded beam and backtracking}. It is
+described that way throughout. The contrast is not hypothetical. Genuine tree
 search has been applied to this exact task: KBQA-o1~\cite{luo2025kbqao1} drives
 an agentic knowledge base question answering process with full MCTS --- policy
 and reward models, rollouts, and value backpropagation --- over Freebase.
@@ -219,21 +222,22 @@ comparison with machinery this framework does not implement.
 Three tools recur, each chosen for a specific property of the
 data.\index{McNemar}\index{bootstrap}\index{Cohen's kappa}
 
-\emph{Bootstrap confidence intervals}~\cite{efron1979bootstrap} quantify
-sampling uncertainty by resampling the evaluated questions with replacement and
-recomputing the metric. The $2.5$th and $97.5$th percentiles of the resulting
-distribution give a 95\% interval. That is the \emph{percentile} method, used
-here in preference to bias-corrected variants. The intervals are read as a scale
-on the reported difference rather than as a hypothesis test. They also require
-no distributional assumption about metrics such as per-question F1.
+\emph{Bootstrap confidence intervals}~\cite{efron1979bootstrap} put a number on
+sampling uncertainty. The evaluated questions are resampled with replacement,
+and the metric is recomputed on each resample. The $2.5$th and $97.5$th
+percentiles of the resulting distribution give a 95\% interval. That is the
+\emph{percentile} method. It is used here rather than the bias-corrected
+variants. The intervals are read as a sense of scale for a reported difference,
+not as a hypothesis test. They also make no distributional assumption about
+metrics such as per-question F1.
 
-\emph{McNemar's test}~\cite{mcnemar1947note} assesses whether two systems differ
-in accuracy when both are evaluated on the \emph{same} questions. It considers
-only the discordant pairs --- questions one system answers correctly and the
-other does not --- and tests whether the split between the two discordant counts
-departs from chance. Paired testing is essential here, because all systems are
-run on identical question samples. An unpaired test would discard the pairing
-and lose power.
+\emph{McNemar's test}~\cite{mcnemar1947note} asks whether two systems differ in
+accuracy when both are run on the \emph{same} questions. It looks only at the
+discordant pairs --- questions that one system gets right and the other gets
+wrong --- and tests whether the split between the two discordant counts is more
+lopsided than chance would produce. Paired testing is essential here, because
+every system is run on the same question samples. An unpaired test would throw
+the pairing away and lose power.
 
 \emph{Cohen's $\kappa$}~\cite{cohen1960coefficient} measures agreement between
 two annotators on a categorical judgement, correcting for agreement expected by
@@ -249,29 +253,29 @@ scale values between $0.61$ and $0.80$ denote substantial agreement.
 
 GraphRAG~\cite{edge2024local} constructs a knowledge graph from a text
 corpus\index{GraphRAG} using a language model. It partitions the graph into
-communities and pre-computes summaries at each level. So a query can be
-answered from structured context rather than retrieved passages. Its strength
-is global questions --- those whose answer depends on the corpus as a whole
-rather than any single passage. Flat retrieval handles these poorly.
+communities and pre-computes summaries at each level. So a query can be answered
+from structured context rather than retrieved passages. Its strength is global
+questions --- those whose answer depends on the corpus as a whole rather than
+any single passage. Flat retrieval handles these poorly.
 
 The relevant limitation is that retrieval remains a single step preceding
-generation. The context is assembled before the model has begun reasoning. So
-it cannot be conditioned on intermediate findings. GraphRAG also builds its
-graph by language-model extraction. This is appropriate for unstructured
-corpora, but it introduces extraction error into the reference itself --- a
-consideration that shapes the environment design in \Cref{sec:env-goals}.
+generation. The context is assembled before the model has begun reasoning. So it
+cannot be conditioned on intermediate findings. GraphRAG also builds its graph
+by language-model extraction. This is appropriate for unstructured corpora, but
+it introduces extraction error into the reference itself --- a consideration
+that shapes the environment design in \Cref{sec:env-goals}.
 
 \subsection{HippoRAG and Memory-Structured Retrieval}
 
 HippoRAG~\cite{gutierrez2024hipporag} draws on the hippocampal indexing theory
 of human memory. It combines a knowledge graph with a personalised PageRank
-retrieval step, so that a single query can integrate evidence distributed
-across many passages. It substantially improves multi-hop retrieval over flat
-baselines at low cost.
+retrieval step, so that a single query can integrate evidence distributed across
+many passages. It substantially improves multi-hop retrieval over flat baselines
+at low cost.
 
 Its retrieval is nonetheless a single graph-propagation step, not an
-agent-directed traversal: the propagation is fixed. The model does not
-choose where to look next. Temporal extensions such as T-GRAG~\cite{li2025tgrag}
+agent-directed traversal: the propagation is fixed. The model does not choose
+where to look next. Temporal extensions such as T-GRAG~\cite{li2025tgrag}
 address a different axis --- conflicting and redundant facts across time. This
 is orthogonal to the navigation question. So it is noted here for completeness
 rather than compared against.
@@ -283,16 +287,16 @@ rather than compared against.
 Reasoning-on-Graphs (RoG)~\cite{luo2024reasoning} adopts a\index{KGQA}
 planning--retrieval--reasoning pipeline. A fine-tuned model generates relation
 paths grounded in the graph schema. Those paths are used to retrieve matching
-instantiations. The model then reasons over the retrieved paths. Because
-answers are produced from retrieved paths, RoG is faithful by construction and
-can present the path as an explanation.
+instantiations. The model then reasons over the retrieved paths. Because answers
+are produced from retrieved paths, RoG is faithful by construction and can
+present the path as an explanation.
 
 Two properties distinguish it from the present work. It is \emph{fine-tuned}.
 This places its reported numbers outside direct comparison with prompting
 methods. And its plan is generated in one shot before retrieval: if the
 generated relation path does not instantiate in the graph, there is no mechanism
-to revise it mid-course. The pre-generation verification question does not
-arise here, because grounding is guaranteed structurally rather than checked.
+to revise it mid-course. The pre-generation verification question does not arise
+here, because grounding is guaranteed structurally rather than checked.
 
 RoG is nonetheless the one surveyed system this thesis shares a data
 distribution with: the knowledge environment of \Cref{sec:source-data} is built
@@ -313,8 +317,8 @@ driven by an instruction-tuned model that autonomously selects tools across
 iterations. KG-Agent demonstrates that a small fine-tuned model with good tool
 abstractions is competitive with much larger prompted ones. It plans implicitly
 through tool selection rather than committing to explicit sub-objectives. It
-provides no backtracking mechanism. And it performs no verification of the
-final answer.
+provides no backtracking mechanism. And it performs no verification of the final
+answer.
 
 \section{Agentic Graph Exploration}\label{sec:agentic-exploration}
 
@@ -341,20 +345,20 @@ nothing checks the answer that follows.
 Plan-on-Graph (PoG)~\cite{chen2024plan} is the closest system to AGR in
 ambition. It decomposes the question into sub-objectives, including constraint
 conditions. It explores adaptively, with a breadth that varies by sub-objective.
-And it adds Guidance, Memory, and Reflection mechanisms. Reflection decides
-both whether to self-correct and which entity to backtrack to. That dual role
-makes PoG the one surveyed system with genuine backtracking.
+And it adds Guidance, Memory, and Reflection mechanisms. Reflection decides both
+whether to self-correct and which entity to backtrack to. That dual role makes
+PoG the one surveyed system with genuine backtracking.
 
 PoG's self-correction operates on the \emph{search process}: it reconsiders
 where to explore. It does not decompose the draft answer into claims and check
-each against the retrieved triples before responding. The distinction is the
-gap this thesis occupies. It is stated precisely in \Cref{sec:positioning}.
+each against the retrieved triples before responding. That difference is exactly
+the gap this thesis addresses. \Cref{sec:positioning} states it precisely.
 
-A naming hazard must be recorded here. A second, unrelated system is also
-abbreviated PoG: Paths-over-Graph~\cite{tan2024paths}. It reports considerably
-higher figures. Survey tables that cite ``PoG'' without disambiguation are a
-known source of contaminated comparisons. This thesis therefore always writes
-Plan-on-Graph or Paths-over-Graph in full.
+One naming hazard needs a warning here. A second, unrelated system also goes by
+PoG: Paths-over-Graph~\cite{tan2024paths}. It reports considerably higher
+numbers. Survey tables that cite ``PoG'' without saying which one are a known
+source of muddled comparisons. This thesis therefore always writes Plan-on-Graph
+or Paths-over-Graph in full.
 
 \subsection{Generate-on-Graph and Reasoning with Trees}
 
@@ -362,8 +366,8 @@ Generate-on-Graph (GoG)~\cite{xu2024generate} targets the incomplete-graph
 setting through a thinking--searching--generating loop: when the graph lacks a
 required fact, the model generates candidate triples from its parametric
 knowledge and continues. It also expands subgraphs dynamically to handle the
-mediator nodes described in \Cref{sec:kgs}. ToG tends to skip these.
-The trade-off is directly opposed to this thesis's: GoG deliberately admits
+mediator nodes described in \Cref{sec:kgs}. ToG tends to skip these. The
+trade-off is directly opposed to this thesis's: GoG deliberately admits
 model-generated facts into the evidence, whereas AGR admits only graph triples.
 
 Reasoning with Trees~\cite{shen2025reasoning} applies explicit tree search to
@@ -376,30 +380,31 @@ the guided best-first search implemented here.
 KBQA-o1~\cite{luo2025kbqao1} is the closest system to the search strategy the
 present work's proposal originally described, and therefore the most important
 one to distinguish from it. It performs agentic knowledge base question
-answering with full Monte Carlo Tree Search --- a policy model
-proposing actions, a reward model scoring them, and rollouts whose values
-propagate back through the tree --- wrapped around a ReAct-style agent that
-generates logical forms step by step against a Freebase environment. The
-exploration additionally generates annotations used for incremental
-fine-tuning. So the search improves the model that drives it.
+answering with full Monte Carlo Tree Search --- a policy model proposing
+actions, a reward model scoring them, and rollouts whose values propagate back
+through the tree --- wrapped around a ReAct-style agent that generates logical
+forms step by step against a Freebase environment. The exploration additionally
+generates annotations used for incremental fine-tuning. So the search improves
+the model that drives it.
 
 Two aspects bear on this thesis. First, KBQA-o1 is what the withdrawn
 ``MCTS-inspired'' description of \Cref{sec:mcts-clarification} would have
-claimed: it has the rollouts and value backpropagation that AGR does not.
-Naming the difference honestly is what keeps the two separable.
+claimed: it has the rollouts and value backpropagation that AGR does not. Saying
+so plainly is what keeps the two from being confused.
 
-Second, its ablation is directly relevant to the methodological argument of
-\Cref{sec:positioning}. Removing MCTS from KBQA-o1 while leaving every other
-component intact drops overall GrailQA F1 from 78.5 to 48.5: a thirty-point
-attribution to a single mechanism, obtained precisely because the authors
-ablated components rather than reporting the assembly as a whole. That is the
-same instrument this thesis applies in \Cref{sec:ablations}. The agreement
-between the two is evidence that the instrument is informative.
+Second, its ablation speaks directly to the methodological argument of
+\Cref{sec:positioning}. Removing MCTS from KBQA-o1, with every other component
+left in place, drops overall GrailQA F1 from 78.5 to 48.5. That is thirty points
+attributed to a single mechanism. The authors could make that attribution only
+because they ablated components rather than reporting the whole assembly as one
+number. This thesis applies the same instrument in \Cref{sec:ablations}. That
+the two studies agree here is evidence that the instrument tells us something
+real.
 
-KBQA-o1 is not a baseline here. It is fine-tuned rather than prompted. It
-evaluates under a low-resource few-shot protocol. And it does not report
-ComplexWebQuestions. So no controlled comparison against it is available in
-this environment.
+KBQA-o1 is not a baseline here, for three reasons. It is fine-tuned rather than
+prompted. It is evaluated under a low-resource few-shot protocol. And it does
+not report results on ComplexWebQuestions. So there is no way to run a
+controlled comparison against it in this environment.
 
 \subsection{Verification and Self-Correction in Language
 Models}\label{sec:verification-related}
@@ -407,53 +412,54 @@ Models}\label{sec:verification-related}
 \paragraph{Chain-of-Verification}
 
 Chain-of-Verification (CoVe)~\cite{dhuliawala2024chain} has the model draft a
-response, plan verification questions about it, answer those independently, and
-regenerate a corrected response. It establishes the core premise of this
-thesis's verification layer: that decomposing a draft and checking its parts
-reduces factual error. But it performs the checks against the model's own
-knowledge rather than an external symbolic source. Multi-agent
-debate~\cite{du2024improving} achieves a related effect by having several model
+response, plan verification questions about it, answer those on their own, and
+then regenerate a corrected response. It establishes the core premise behind
+this thesis's verification layer: break a draft into parts, check each one, and
+factual errors go down. But CoVe runs its checks against the model's own
+knowledge, not against an external symbolic source. Multi-agent
+debate~\cite{du2024improving} gets a related effect by having several model
 instances critique one another.
 
-This distinction matters given evidence that language models cannot reliably
-self-correct reasoning without external feedback~\cite{huang2024selfcorrect}. A
-verification step whose ground truth is the same model that produced the error
-is limited by construction. AGR's verification is grounded in traversed
-triples. That grounding makes the check external to the generator.
+That distinction matters. There is evidence that language models cannot reliably
+correct their own reasoning without outside
+feedback~\cite{huang2024selfcorrect}. A verification step whose ground truth is
+the very model that made the error is limited by construction. AGR's
+verification is grounded in traversed triples. That puts the check outside the
+generator.
 
 \paragraph{Self-Correcting Graph RAG}
 
 A self-correcting agentic graph RAG system for clinical decision support in
-hepatology~\cite{hu2025selfcorrecting} demonstrates the combination of agentic
-retrieval with a correction loop in a high-stakes domain. It substantiates the
-practical motivation for verification, though in a domain-specific setting
-rather than on the open-domain benchmarks used here. Reflexion-style verbal
-self-improvement~\cite{shinn2023reflexion} provides the general agentic pattern
-of which it is a graph-specific instance.
+hepatology~\cite{hu2025selfcorrecting} shows agentic retrieval and a correction
+loop working together in a high-stakes domain. It backs up the practical case
+for verification, though in one specialised domain rather than on the
+open-domain benchmarks used here. Reflexion-style verbal
+self-improvement~\cite{shinn2023reflexion} is the general agentic pattern. The
+hepatology system is a graph-specific instance of it.
 
 \subsection{Measuring Factuality}\label{sec:factuality-related}
 
 \paragraph{Claim-Decomposition Metrics}
 
 FActScore~\cite{min2023factscore} evaluates long-form generation by
-decomposing\index{claim extraction} text into atomic facts and verifying each
-against a reference source. It reports the supported proportion. This
-decomposition-then-verify protocol is the basis for the groundedness metric in
-\Cref{sec:groundedness-metric}, with the knowledge graph serving as the
-reference. The essential methodological requirement, adopted here, is that the
-verifying judge must be independent of the system that produced the text.
+breaking\index{claim extraction} the text into atomic facts and checking each
+one against a reference source. It reports the proportion that are supported.
+This decompose-then-verify protocol is the basis for the groundedness metric in
+\Cref{sec:groundedness-metric}, with the knowledge graph as the reference. The
+one methodological requirement that carries over is that the judge doing the
+checking must be independent of the system that wrote the text.
 
 \paragraph{Factuality Benchmarks and Their Limits}
 
-FactBench~\cite{bayat2025factbench} provides a dynamic benchmark for in-the-wild
-factuality evaluation. The original proposal for this thesis intended to use it
-both as a source for the knowledge environment and as the hallucination
-evaluator. That plan was abandoned. The reason is methodological rather than
-practical: if the evaluator's facts are contained in the graph the system
-retrieves from, a low hallucination rate follows by construction rather than by
-merit. The evaluation in \Cref{sec:setup} therefore measures claim grounding
-against the graph with a human-validated judge. This keeps the evaluator's
-ground truth outside the system's evidence.
+FactBench~\cite{bayat2025factbench} is a dynamic benchmark for factuality
+evaluation in the wild. The original proposal for this thesis meant to use it
+twice: as a source for the knowledge environment and as the hallucination
+evaluator. That plan was dropped. The reason is methodological, not practical.
+If the evaluator's facts sit inside the graph the system retrieves from, a low
+hallucination rate follows automatically. It says nothing about merit. The
+evaluation in \Cref{sec:setup} therefore measures claim grounding against the
+graph with a human-validated judge. That keeps the evaluator's ground truth
+outside the system's evidence.
 
 \section{Comparative Summary of Agentic KGQA
 Systems}\label{sec:comparison-table}
@@ -485,9 +491,8 @@ and published accuracy.
       search, not the answer \\
       \hline
       RoG~\cite{luo2024reasoning} & Planning--retrieval--reasoning over
-      generated relation paths & Partial --- relation-path plans & No &
-      Faithful by
-      construction; no explicit check \\
+      generated relation paths & Partial --- relation-path plans & No & Faithful
+      by construction; no explicit check \\
       \hline
       KG-Agent~\cite{jiang2024kgagent} & Toolbox with KG executor and dynamic
       memory; autonomous tool selection & Implicit, via tool calls & No & No \\
@@ -521,8 +526,8 @@ and published accuracy.
     \footnotesize
     \begin{tabular}{|l|l|L{45mm}|c|c|}
       \hline
-      \textbf{System} & \textbf{Backbone} & \textbf{Datasets} &
-      \textbf{WebQSP} & \textbf{CWQ} \\
+      \textbf{System} & \textbf{Backbone} & \textbf{Datasets} & \textbf{WebQSP}
+      & \textbf{CWQ} \\
       \hline
       ToG & GPT-3.5 & CWQ, WebQSP, GrailQA~\cite{gu2021beyond}, QALD10-en,
       SimpleQuestions, WebQuestions, T-REx, Zero-Shot RE, Creak & 76.2 & 58.9 \\
@@ -562,9 +567,9 @@ and published accuracy.
     Think-on-Graph and measures it at $57.1$ and $67.6$ on CWQ, against the
     $58.9$ and $69.5$ Think-on-Graph reports for itself. Two published papers
     disagree by $1.8$ and $1.9$ points on the same system and benchmark. That
-    gap is the order of many claimed improvements in this literature. It is
-    also the reason \Cref{sec:setup} reimplements its baseline rather than
-    citing a number.}
+    gap is the order of many claimed improvements in this literature. It is also
+    the reason \Cref{sec:setup} reimplements its baseline rather than citing a
+    number.}
   \end{center}
 \end{table}
 
@@ -574,25 +579,24 @@ comparison in this thesis.
 First, the figures are drawn from the original publications and reflect
 different backbones. RoG and KG-Agent are fine-tuned. Their numbers are not
 comparable with prompting methods at all. Among the prompting methods, the
-backbone accounts for much of the spread: the same methods drop sharply when
-run on smaller open-weight models. That sensitivity is the direct motivation
-for holding the backbone constant across every system in \Cref{sec:setup}. The
+backbone accounts for much of the spread: the same methods drop sharply when run
+on smaller open-weight models. That sensitivity is the direct motivation for
+holding the backbone constant across every system in \Cref{sec:setup}. The
 literature does not hold it constant. So a cross-paper table cannot settle which
 architecture is better.
 
 Second, evaluation protocols differ. Some papers evaluate on sampled test
-subsets. And answer-matching conventions are not uniform across
-implementations.
+subsets. And answer-matching conventions are not uniform across implementations.
 
 Third, and most concretely, two papers disagree about a third. Plan-on-Graph's
 own comparison table measures Think-on-Graph at $57.1$ and $67.6$ on CWQ, while
 Think-on-Graph reports $58.9$ and $69.5$ for itself. Neither is wrong: one is an
-original result and the other a reimplementation. This thesis is in exactly
-that situation with respect to its own agentic baseline
-(\Cref{sec:baseline-tog}). The gap is $1.8$ and $1.9$ points, the same order as
-many improvements claimed in this literature. A cross-paper table cannot
-distinguish a real advance from a reproduction difference of that size. That is
-why no claim in this thesis rests on one.
+original result and the other a reimplementation. This thesis is in exactly that
+situation with respect to its own agentic baseline (\Cref{sec:baseline-tog}).
+The gap is $1.8$ and $1.9$ points, the same order as many improvements claimed
+in this literature. A cross-paper table cannot distinguish a real advance from a
+reproduction difference of that size. That is why no claim in this thesis rests
+on one.
 
 \subsection{Positioning of This Work}\label{sec:positioning}
 
@@ -602,23 +606,23 @@ construction exists, in RoG. But in the final column, \emph{no surveyed system
 decomposes its draft answer into atomic claims and checks each against the
 retrieved triples before responding}. PoG's Reflection corrects the search while
 it is running. RoG's answers are grounded because of how they are produced, not
-because anything examined them. The slot is open. \Cref{sec:contribution}
-states what this thesis puts in it: the Structural Verification Layer
+because anything examined them. The slot is open. \Cref{sec:contribution} states
+what this thesis puts in it: the Structural Verification Layer
 (\Cref{sec:verification-layer}) together with a measurement of what it buys, a
 component ablation pricing each agentic mechanism in accuracy and tokens
 (\Cref{sec:ablations}), and the controlled agentic comparison itself
 (\Cref{sec:findings}).
 
-Two features of that positioning belong here rather than there. Both are
-claims about the literature. The first is that these mechanisms are typically
-reported as bundles. So which of them earns its cost is not established.
-That is the gap the ablation fills, and where the planner's stratum dependence
-appears. The second is that the thesis does not depend on beating prior systems
-on raw Hits@1. The comparison that matters is against the same architecture with
-the verification layer removed, on the same graph, with the same backbone.
-That is why \Cref{sec:ablations} rather than \Cref{tab:reported} carries the
-argument. Where AGR is compared against a prior system, that comparison is run
-under controlled conditions in this thesis's own environment rather than quoted
-across papers.
+Two features of that positioning belong here rather than there. Both are claims
+about the literature. The first is that these mechanisms are typically reported
+as bundles. So which of them earns its cost is not established. That is the gap
+the ablation fills, and where the planner's stratum dependence appears. The
+second is that the thesis does not depend on beating prior systems on raw
+Hits@1. The comparison that matters is against the same architecture with the
+verification layer removed, on the same graph, with the same backbone. That is
+why \Cref{sec:ablations} rather than \Cref{tab:reported} carries the argument.
+Where AGR is compared against a prior system, that comparison is run under
+controlled conditions in this thesis's own environment rather than quoted across
+papers.
 
 \endinput
