@@ -1,6 +1,5 @@
 % !TEX root = ../thesis_book_0421052099.tex
-\chapter{Evaluation: Setup, Results, and Error
-Analysis}\label{ch:evaluation}
+\chapter{Evaluation: Setup, Results, and Error Analysis}\label{ch:evaluation}
 
 The evaluation is reported in three parts: the experimental design fixed before
 any test question was answered (\Cref{sec:setup}), the measurements it produced
@@ -28,17 +27,16 @@ determinism rounds of \Cref{sec:backbone}, read from console tables that were
 never committed. Most tables are hand copies checked against that JSON rather
 than emitted from it. That is the weaker guarantee.
 
-\subsection{Mapping Experiments to Research
-Questions}\label{sec:experiment-map}
+\subsection{Mapping Experiments to Research Questions}\label{sec:experiment-map}
 
 Each research question of \Cref{sec:rqs} is answered by a distinct experiment
 rather than by one table read three ways. \textbf{RQ1} is answered by the main
-matrix of five systems on two datasets, scored with Hits@1 and F1 and broken
-down by hop stratum with paired significance tests
-(\Cref{sec:webqsp-results,sec:cwq-results,sec:hop-results}). The per-stratum
-breakdown, not the aggregate, is what makes the claim about \emph{multi-hop}
-accuracy. \textbf{RQ2} is answered by three measurements that do not agree with
-one another. That disagreement is itself the finding: the two-tier
+matrix: five systems on two datasets, scored with Hits@1 and F1, broken down by
+hop stratum, with paired significance tests
+(\Cref{sec:webqsp-results,sec:cwq-results,sec:hop-results}). The claim about
+\emph{multi-hop} accuracy rests on the per-stratum breakdown, not on the
+aggregate. \textbf{RQ2} is answered by three measurements that disagree with one
+another. That disagreement is itself the finding. The three are the two-tier
 groundedness metric (\Cref{sec:groundedness-results}), the precision and F1
 columns of the main matrix, and the verifier ablation (\Cref{sec:ablations}).
 \textbf{RQ3} is answered by four single-deviation ablations on stratified
@@ -61,8 +59,8 @@ baseline hedges with the gold answer visible in its own retrieved facts on fewer
 than 15\% of its hedges (\Cref{sec:baselines}); and the judge validation
 threshold of Cohen's $\kappa \geq 0.7$ against blind human annotation
 (\Cref{sec:judge}). The last was missed, by $0.0005$, and is reported as missed.
-A threshold that is only pre-registered when it is met is not
-pre-registered at all.
+A threshold that is only pre-registered when it is met is not pre-registered at
+all.
 
 The single code change Phase~4 required --- a \textsf{use\_planner} flag to
 disable decomposition --- was certified as a no-op on the frozen path by
@@ -73,21 +71,20 @@ table is therefore provably the same system that produced the main matrix.
 \label{sec:metrics-not-run}%
 Path fidelity --- agreement between the relation chain the system traversed and
 the chain the benchmark's gold SPARQL query specifies --- was the third
-criterion named in the approved proposal. It is not reported. It requires
-the gold relation chains. The RoG distribution (\Cref{sec:source-data})
-publishes name-keyed triples without the originating SPARQL. So the chains would
-have to be reconstructed from the upstream releases and re-aligned to this
-environment's relation vocabulary. That was outside the project's remaining
-budget. \Cref{sec:future-path-fidelity} treats it as future work.
+criterion named in the approved proposal. It is not reported. It requires the
+gold relation chains. The RoG distribution (\Cref{sec:source-data}) publishes
+name-keyed triples without the originating SPARQL. So the chains would have to
+be reconstructed from the upstream releases and re-aligned to this environment's
+relation vocabulary. That was outside the project's remaining budget.
+\Cref{sec:future-path-fidelity} treats it as future work.
 
 \section{Evaluation Datasets and Test Sets}\label{sec:test-sets}
 
 \subsection{WebQSP and ComplexWebQuestions}
 
 Two benchmarks are used, in the RoG distribution~\cite{luo2024reasoning}
-whose\index{WebQSP}\index{ComplexWebQuestions}\index{dataset}
-per-question subgraphs also form the knowledge environment
-(\Cref{sec:source-data}).
+whose\index{WebQSP}\index{ComplexWebQuestions}\index{dataset} per-question
+subgraphs also form the knowledge environment (\Cref{sec:source-data}).
 \textbf{WebQSP}~\cite{yih2016value} is the semantic parses of WebQuestions:
 natural questions from search logs, mostly one or two hops, with multi-valued
 answers common. \textbf{ComplexWebQuestions} (CWQ)~\cite{talmor2018web} is built
@@ -100,39 +97,38 @@ The distinction that matters operationally is visible in the gold answer sets.
 Counted as the metrics count them --- over distinct answer strings, since
 \Cref{sec:kgqa} defines precision and recall over sets --- WebQSP averages
 $7.15$ gold entities per question. But its median is $1.5$. Exactly $200$ of its
-$400$ questions carry a single gold answer. The mean is pulled up by a long
-tail whose largest question lists $237$. CWQ averages $1.75$ with a median of
+$400$ questions carry a single gold answer. The mean is pulled up by a long tail
+whose largest question lists $237$. CWQ averages $1.75$ with a median of
 $1$.\footnote{The distinction is not decorative. The raw answer lists repeat a
 string on $4$ WebQSP and $6$ CWQ questions. Those repeats sit in the tail.
-Counting them takes the WebQSP mean to $7.98$ and its largest question to
-$382$. Nothing scored in this thesis sees the repeats: the scorer
-deduplicates before matching. Quoting the raw counts would therefore describe a
-population no reported number was computed over.} So the two benchmarks differ
-less in the typical question than the means suggest, and more in the tail. That
-tail is what decides how a metric rewarding one correct entity
-behaves. This is one of the reasons F1 is reported alongside Hits@1
-(\Cref{sec:metrics}).
+Counting them takes the WebQSP mean to $7.98$ and its largest question to $382$.
+Nothing scored in this thesis sees the repeats, because the scorer deduplicates
+before matching. So quoting the raw counts would describe a population that no
+reported number was computed over.} So the two benchmarks differ less in the
+typical question than the means suggest, and more in the tail. That tail is what
+decides how a metric that rewards one correct entity behaves. It is one of the
+reasons F1 is reported alongside Hits@1 (\Cref{sec:metrics}).
 
 \subsection{Stratified Sampling, Seeds, and Published Question IDs}
 
 Only the \emph{test} splits are used. The development set of
-\Cref{sec:hyperparams} was mined from train and validation. The builder
-asserts zero overlap between the two pools.
+\Cref{sec:hyperparams} was mined from train and validation. The builder asserts
+that the two pools do not overlap.
 
 Sampling was a budget decision. The full test splits hold $1{,}628$ and
-$3{,}531$ questions. Five systems over both, at the measured token rates,
-projected to roughly \$45--55, against a stated ceiling of \$15--20. The
-pre-registered fallback --- stratified samples of $400$ per dataset
-(\Cref{tab:testsets}), giving bootstrap confidence intervals of roughly $\pm 5$
-points on Hits@1 --- was therefore adopted, with the arithmetic recorded before
-the runs fired. The whole benchmark, including the ablations, ultimately cost
-\$11.13 in API spend. That figure is read from the provider's billing record
-rather than derived from the run artifacts. The reproducible proxy is the token
-and call accounting of \Cref{sec:efficiency}. That accounting is recorded per
-question in every run record.
+$3{,}531$ questions. Running five systems over both, at the measured token
+rates, projected to roughly \$45--55. The stated ceiling was \$15--20. So the
+pre-registered fallback was adopted: stratified samples of $400$ per dataset
+(\Cref{tab:testsets}), which give bootstrap confidence intervals of roughly $\pm
+5$ points on Hits@1. The arithmetic was recorded before the runs fired. The
+whole benchmark, including the ablations, ultimately cost \$11.13 in API spend.
+That figure is read from the provider's billing record rather than derived from
+the run artifacts. The reproducible proxy is the token and call accounting of
+\Cref{sec:efficiency}. That accounting is recorded per question in every run
+record.
 
-Sampling is proportional within hop strata at seed~$42$. The resulting
-question sets are committed as immutable artifacts
+Sampling is proportional within hop strata at seed~$42$. The resulting question
+sets are committed as immutable artifacts
 (\textsf{results/phase4/test\_webqsp.json},
 \textsf{results/phase4/test\_cwq.json}). Every question identifier is listed in
 \Cref{app:samples}. They were never regenerated after any system ran.
@@ -142,25 +138,25 @@ shards rather than the test shards. The development-overlap guard caught it ---
 the contamination guard, built for hygiene, is what found the contamination. No
 system had run against the files. They were deleted and rebuilt. The rebuilt
 pools report $1{,}628$ and $3{,}531$ with \textsf{skipped=\{\}}.
-\Cref{app:testset-nearmiss} records how it was diagnosed. That near miss is the
-reason a cheap overlap assertion belongs in every benchmark builder.
+\Cref{app:testset-nearmiss} records how it was diagnosed. That near miss is why
+a cheap overlap assertion belongs in every benchmark builder.
 
 \subsection{Hop-Count Stratification and the Accuracy Ceiling}
 
 The stratification variable\index{hop stratum} is the length of the shortest
-path in \emph{this} environment between any question topic entity and any gold
-answer entity, bounded at four raw hops. That is the same machinery used to
-certify the development set, so that mediator nodes are counted consistently as
-the two edges they are (\Cref{sec:tool-adjacency}). Questions fall into
-\textsf{h1}, \textsf{h2}, \textsf{h3plus}, or \textsf{unreachable}.
+path, in \emph{this} environment, between any topic entity of the question and
+any gold answer entity. It is capped at four raw hops. The same machinery
+certified the development set, so mediator nodes are counted the same way
+throughout: as the two edges they are (\Cref{sec:tool-adjacency}). Questions
+fall into \textsf{h1}, \textsf{h2}, \textsf{h3plus}, or \textsf{unreachable}.
 
 \begin{table}[!tb]
   \begin{center}
     \caption[The two certified test samples]{The two certified test samples. The
-    unreachable stratum is retained deliberately. The ceiling is the share of
+    unreachable stratum is kept on purpose. The ceiling is the share of
     questions with at least one gold answer reachable within four hops, measured
-    over these $400$ questions, and is the upper bound on Hits@1 for every
-    result reported in \Cref{sec:results}.}
+    over these $400$ questions. It is the upper bound on Hits@1 for every result
+    reported in \Cref{sec:results}.}
     \label{tab:testsets}
     \begin{tabular}{|l|r|r|r|r|r|r|}
       \hline
@@ -174,40 +170,39 @@ the two edges they are (\Cref{sec:tool-adjacency}). Questions fall into
   \end{center}
 \end{table}
 
-\Cref{tab:testsets} carries two facts the results chapter leans on repeatedly.
-WebQSP is $64\%$ one-hop with a four-question \textsf{h3plus} tail --- too small
-to interpret, and labelled as such wherever it appears. CWQ is majority two-hop
-with a genuine deep tail of $49$. The samples preserve the strata proportions of
-their parent pools. Per-stratum numbers therefore describe the benchmark rather
-than the sample.
+\Cref{tab:testsets} carries two facts the results chapter leans on again and
+again. WebQSP is $64\%$ one-hop, with a four-question \textsf{h3plus} tail. That
+tail is too small to interpret, and it is labelled as such wherever it appears.
+CWQ is mostly two-hop, with a real deep tail of $49$. The samples keep the
+strata proportions of their parent pools. So per-stratum numbers describe the
+benchmark, not just the sample.
 
-These ceilings are not the ones the validation gate reported. The difference
-is worth naming rather than leaving for a reader to reconcile.
+These ceilings are not the ones the validation gate reported. The difference is
+worth explaining here rather than leaving for a reader to reconcile.
 \Cref{tab:coverage} measured the full test splits and found $97.3\%$ and
 $99.7\%$ reachable. The figures above are the same quantity over the $400$
-questions actually evaluated, at $97.0\%$ and $99.2\%$. Neither corrects the
-other --- one bounds what the environment could support across the whole
-benchmark, the other bounds what any system in \Cref{sec:results} could have
-scored. It is the second that every accuracy in this thesis is read
-against. The gap is sampling. It stays under a point on both datasets
-because the draw preserved the strata proportions
-(\Cref{app:ceiling-reconciliation}).
+questions actually evaluated: $97.0\%$ and $99.2\%$. Neither corrects the other.
+The first bounds what the environment could support across the whole benchmark.
+The second bounds what any system in \Cref{sec:results} could have scored. Every
+accuracy in this thesis is read against the second. The gap between them is
+sampling. It stays under a point on both datasets because the draw kept the
+strata proportions (\Cref{app:ceiling-reconciliation}).
 
 The \textsf{unreachable} stratum was kept rather than dropped. Dropping it would
 raise every system's score by the same amount and misdescribe the environment.
-Keeping it means the ceiling is reported honestly and, as
+Keeping it means the ceiling is reported honestly. It also means, as
 \Cref{sec:groundedness-results} shows, that these questions become the sharpest
-available probe of parametric leakage: any ``hit'' on a question with no
-graph path to gold is an assertion the environment cannot support.
+available probe of parametric leakage. Any ``hit'' on a question with no graph
+path to gold is an assertion the environment cannot support.
 
 \subsection{Gold-Answer Quality Control}\label{sec:gold-quality}
 
-Both benchmarks carry label defects, CWQ more. Its questions\index{gold
-noise} and answers are generated by SPARQL templates over the knowledge base
-rather than written by hand. A question whose gold answer is wrong is not a
-system failure. Counting it as one corrupts both the accuracy tables and the
-error taxonomy. Some detection procedure was therefore necessary --- though a
-naive one is worse than none, as the results below show.
+Both benchmarks carry label defects, CWQ more. Its questions\index{gold noise}
+and answers are generated by SPARQL templates over the knowledge base rather
+than written by hand. A question whose gold answer is wrong is not a system
+failure. Counting it as one corrupts both the accuracy tables and the error
+taxonomy. Some detection procedure was therefore necessary --- though a naive
+one is worse than none, as the results below show.
 
 The detection principle is \textbf{independent multi-system consensus against
 gold}: when at least three of the five systems of the main matrix assert the
@@ -243,19 +238,19 @@ WebQSP & 89 & 58 & 12 & 10 & 22 (5.5\%) \\ CWQ & 59 & 47 & 17 & 2 & 19 (4.8\%)
   \end{center}
 \end{table}
 
-Two numbers must not be conflated. \Cref{tab:goldnoise} separates them: $58$
-and $47$ questions were \emph{flagged} by the consensus pass, while $22$ and
-$19$ were \emph{adjudicated} as defective. The gap is not noise. Most flagged
+Two numbers must not be conflated. \Cref{tab:goldnoise} separates them: $58$ and
+$47$ questions were \emph{flagged} by the consensus pass, while $22$ and $19$
+were \emph{adjudicated} as defective. The gap is not noise. Most flagged
 questions are all five systems converging on the same wrong answer. That
 convergence is a finding about the systems rather than the labels, and it is
 treated as one in \Cref{sec:echo}. A policy of rescoring on consensus alone
 would have corrupted the results with exactly those cases. The excluded
 questions are removed from the failure census of \Cref{sec:erroranalysis} as
-benchmark artifacts rather than system failures, \textsf{ambiguous\_question}
-on the same logic, an underdetermined question being no more a system failure
-than a broken label. Of those excluded, $12$ of $22$ (WebQSP) and $15$ of $19$
-(CWQ) were failures of the full system. Those are the ones that shrink the
-census pool.
+benchmark artifacts rather than system failures, \textsf{ambiguous\_question} on
+the same logic, an underdetermined question being no more a system failure than
+a broken label. Of those excluded, $12$ of $22$ (WebQSP) and $15$ of $19$ (CWQ)
+were failures of the full system. Those are the ones that shrink the census
+pool.
 
 \textbf{The accuracy tables are not rescored.} They are reported exactly as
 measured, with this section as the footnote, for two reasons. Rescoring on
@@ -263,26 +258,26 @@ self-adjudicated labels would substitute one contestable ground truth for
 another. And the errors cut both ways: the remaining $10$ and $4$ excluded
 questions are ones the full system scored as \emph{hits} against labels now
 judged broken or ambiguous. That symmetry is what makes the footnote credible
-rather than defensive. It also means the direction of the net bias is
-unknown rather than conveniently favourable. Two scope limits belong on the
-record. The rule that automatically assigned \textsf{gold\_wrong} to questions
-with implausibly long gold lists is a heuristic whose outputs were spot-checked
-rather than individually verified. And the manual adjudication covered every
-mixed-evidence flag plus every graph-only flag that was not a topic echo ---
-broad, but not the complete flag population.
+rather than defensive. It also means the direction of the net bias is unknown
+rather than conveniently favourable. Two scope limits belong on the record. The
+rule that automatically assigned \textsf{gold\_wrong} to questions with
+implausibly long gold lists is a heuristic. Its outputs were spot-checked, not
+verified one by one. And the manual adjudication covered every mixed-evidence
+flag plus every graph-only flag that was not a topic echo. That is broad, but it
+is not the complete flag population.
 
 \section{Backbone Model Selection and Qualification}\label{sec:backbone}
 
 All systems share one frozen backbone: \textsf{gpt-5.4-mini-2026-03-17} at
-temperature $0.0$, with \textsf{reasoning\_effort} explicitly set to
-\textsf{"none"} and the response cache enabled. The model string, both sampling
-parameters, and the cache mode are stamped into every one of the $4{,}000$
-test-matrix records and every ablation record. So any record found anywhere
-states what produced it. A non-reasoning model was chosen so that sampling
-parameters remain available and no hidden reasoning tokens contaminate the cost
-metric. The second was verified rather than assumed, by a check that logs the
-reasoning-token count on every call and read zero across every run in this
-thesis.
+temperature $0.0$, with \textsf{reasoning\_effort} set explicitly to
+\textsf{``none''} and the response cache enabled. The model string, both
+sampling parameters, and the cache mode are stamped into every one of the
+$4{,}000$ test-matrix records and every ablation record. So any record found
+anywhere states what produced it. A non-reasoning model was chosen so that
+sampling parameters remain available and no hidden reasoning tokens contaminate
+the cost metric. The second was verified rather than assumed, by a check that
+logs the reasoning-token count on every call and read zero across every run in
+this thesis.
 
 Selection between \textsf{gpt-4.1-mini-2025-04-14} and
 \textsf{gpt-5.4-mini-2026-03-17} was settled by four rounds of a determinism
@@ -292,8 +287,8 @@ across reruns of the same questions. The rounds disagreed with one another,
 because temperature-zero decoding on a hosted API is greedy rather than
 deterministic and a sequential agent amplifies a single divergent token.
 \Cref{app:backbone} gives the four rounds, that mechanism, and the tiebreaker
-pre-registered before rounds three and four. That tiebreaker decided the
-choice on longevity grounds.
+pre-registered before rounds three and four. That tiebreaker decided the choice
+on longevity grounds.
 
 \textbf{The stability figure that belongs to this thesis is the frozen model's,
 which is the lower of the two.} \textsf{gpt-5.4-mini} repeated its decision
@@ -301,94 +296,96 @@ signature on $8$ of $12$ probes, or $\approx 67\%$: roughly one trajectory in
 three diverging on a rerun. The $9/12$ that would read as $\approx 75\%$ is the
 runner-up's. None of these rates is measured tightly enough to separate from the
 others at $n = 12$. The thesis claims determinism at none of them. Only the
-first round survives as per-question artifacts, because the qualification script
-writes its detail file in truncating mode and later rounds overwrote it.
+first round survives as per-question artifacts. The qualification script writes
+its detail file in truncating mode, so later rounds overwrote it.
 
 Two observations from those four runs matter more than the choice they settled.
-Each candidate carried a \emph{persistent} ungrounded answer --- 4.1-mini
-asserted ``United States Dollar'' for a Dominican-peso question in two runs of
-four, 5.4-mini named the wrong Beckham child in all four. Both carried
-\emph{intermittent} ones, too: the same question on the same graph under the
-same budget moved between grounded-correct and ungrounded-wrong as the sampling
-weather changed. Backbone selection does not remove this class of error; it
-relocates it. That is the premise of this thesis, measured over four runs and
+Each candidate carried a \emph{persistent} ungrounded answer. 4.1-mini asserted
+``United States Dollar'' for a Dominican-peso question in two runs out of four.
+5.4-mini named the wrong Beckham child in all four. Both carried
+\emph{intermittent} ones, too. The same question, on the same graph, under the
+same budget, moved between grounded-correct and ungrounded-wrong as the sampling
+weather changed. Choosing a backbone does not remove this class of error. It
+moves it around. That is the premise of this thesis, measured over four runs and
 two frontier-family models. It is the reason \Cref{sec:verification-layer}
 exists.
 
-Reproducibility here therefore rests on the cache, not on the model. Its
-mechanism is specified in \Cref{sec:instrumentation}. \Cref{app:cache-identity}
-gives the identity check it supports: a hit is
-indistinguishable from a live call. So a fully cached rerun reproduces the
-original run's budget snapshot rather than approximating it. One defect
-qualifies that --- the replay restores prompt and completion tokens but not the
-\textsf{reasoning\_tokens} counter. It does not bite here: that field
-is zero in every one of the $6{,}960$ agent runs committed for this work. It
-is recorded rather than repaired, for the reason \Cref{sec:pre-registration}
-gives. Every table in \Cref{sec:results} comes from one recorded run per
-condition. That run replays byte-identically for as long as the cache survives.
-Fresh-run variance is a different problem. It is \emph{not} measured here. It
-cannot be bounded by the bootstrap intervals. \Cref{sec:threats} carries it as a
-limitation. Latency is computed over cold-cache records only. That restriction
-is what keeps that column honest where a run was interrupted and restarted.
+So reproducibility here rests on the cache, not on the model.
+\Cref{sec:instrumentation} specifies the mechanism. \Cref{app:cache-identity}
+gives the identity check it supports: a hit is indistinguishable from a live
+call. So a fully cached rerun reproduces the original run's budget snapshot
+exactly rather than approximately. One defect qualifies that. The replay
+restores prompt and completion tokens but not the \textsf{reasoning\_tokens}
+counter. It does not bite here, because that field is zero in every one of the
+$6{,}960$ agent runs committed for this work. It is recorded rather than
+repaired, for the reason \Cref{sec:pre-registration} gives. Every table in
+\Cref{sec:results} comes from one recorded run per condition. That run replays
+byte for byte for as long as the cache survives. Fresh-run variance is a
+different problem. It is \emph{not} measured here, and the bootstrap intervals
+cannot bound it. \Cref{sec:threats} carries it as a limitation. Latency is
+computed over cold-cache records only. That restriction is what keeps the
+latency column honest where a run was interrupted and restarted.
 
 \section{Baseline Systems}\label{sec:baselines}
 
-Four baselines span the space between no retrieval and agentic navigation, all
-implemented against the same tools, the same graph, and the same backbone.
+Four baselines span the space between no retrieval and agentic navigation. All
+of them are implemented against the same tools, the same graph, and the same
+backbone.
 
 \subsection{The Two Non-Graph Baselines}
 
-The \textbf{no-retrieval LLM} takes one call, the question, no facts, and an
-instruction to return an empty entity list if the answer is unknown. WebQSP and
-CWQ predate current models and are plausibly memorised. So this system measures
-the floor above which any retrieval result must be read. Its entity strings come
-from parametric memory rather than the graph. So surface forms mismatch gold
-more often than for graph-grounded systems, and its score is a \emph{lower
-bound} on parametric knowledge. That asymmetry is reported rather than
-corrected. Grading one system leniently and another strictly would corrupt the
-comparison.
+The \textbf{no-retrieval LLM} makes one call. It gets the question, no facts,
+and an instruction to return an empty entity list if it does not know the
+answer. WebQSP and CWQ predate current models and may well have been memorised.
+So this system measures the floor that any retrieval result has to be read
+against. Its entity strings come from parametric memory, not from the graph. So
+its surface forms mismatch gold more often than those of graph-grounded systems,
+and its score is a \emph{lower bound} on parametric knowledge. That asymmetry is
+reported, not corrected. Grading one system leniently and another strictly would
+corrupt the comparison.
 
-\textbf{Vector-RAG} verbalises every triple into a sentence, embeds it with
+\textbf{Vector-RAG} turns every triple into a sentence, embeds it with
 MiniLM~\cite{reimers2019sentence}, and indexes it. The question retrieves the
-top $30$ by exact inner product, and one call answers from them --- dense
+top $30$ by exact inner product, and one call answers from them. That is dense
 retrieval~\cite{karpukhin2020dense} applied to a graph. Its limitation is
-structural rather than incidental: a mediator-reified fact, a marriage or a film
-role, has no single triple expressing it. So no single retrieved sentence can
-express it either. Triples with a mediator endpoint are filtered at build time,
-since a verbalised half-edge is meaningless and leaks raw machine identifiers
-into answers. Filtering the noise does not repair the paradigm. Both facts
-are reported.
+structural, not incidental. A fact stored through a mediator --- a marriage, a
+film role --- has no single triple that expresses it. So no single retrieved
+sentence can express it either. Triples with a mediator endpoint are filtered
+out at build time. A verbalised half-edge is meaningless, and it leaks raw
+machine identifiers into answers. Filtering that noise out does not repair the
+paradigm. Both facts are reported.
 
 \subsection{Static GraphRAG}\label{sec:baseline-graphrag}
 
-The structure-without-navigation comparison~\cite{edge2024local}: resolve
-the\index{GraphRAG} question's topic entities, expand a \emph{one-logical-hop}
-neighbourhood under the same relation blocklist and mediator pass-through
-contract every other graph-touching system uses, rerank by embedding similarity
-to the question, and answer from the top $30$ facts in one call. It shares
-Vector-RAG's answering prompt and cutoff exactly. So the difference between the
-two isolates retrieval strategy and nothing else.
+This is the structure-without-navigation comparison~\cite{edge2024local}. It
+resolves the\index{GraphRAG} question's topic entities. It expands a
+\emph{one-logical-hop} neighbourhood under the same relation blocklist and
+mediator pass-through contract that every other graph-touching system uses. It
+reranks the result by embedding similarity to the question, and answers from the
+top $30$ facts in one call. It shares Vector-RAG's answering prompt and cutoff
+exactly. So the difference between the two isolates retrieval strategy and
+nothing else.
 
 The radius deserves a precise statement. An earlier draft and the
 implementation's own docstring both described it as two hops. It is not.
-Expansion runs once from each topic entity. A mediator node is hopped through
-and its two relations concatenated. So a mediator path costs two graph edges
-while remaining one logical hop. An ordinary neighbour is emitted and never
-expanded again. The run records settle it: every fact is rendered as
-\textsf{topic\ relation\ endpoint}, a genuine second hop would be anchored at an
-intermediate entity, and all $7{,}431$ logged facts begin with a topic entity.
+Expansion runs once from each topic entity. A mediator node is hopped through,
+and its two relations are concatenated. So a mediator path costs two graph edges
+but stays one logical hop. An ordinary neighbour is emitted and never expanded
+again. The run records settle it. Every fact is rendered as \textsf{topic\
+relation\ endpoint}. A genuine second hop would be anchored at an intermediate
+entity. All $7{,}431$ logged facts begin with a topic entity.
 
 \textbf{The radius is not the only thing that bounds this baseline. The fanout
 is, and it binds harder.} Expansion retrieves at most $100$ edges per topic
-entity under a Cypher query with no \textsf{ORDER BY}. So on a higher-degree
+entity, under a Cypher query with no \textsf{ORDER BY}. So on a higher-degree
 entity the $100$ retrieved are an arbitrary sample of the neighbourhood rather
 than its best or its first. Measured over the $711$ distinct entities the $800$
 test questions resolve to, $55.1\%$ carry more edges than the cap retains. At
 least one topic entity is truncated on $72.5\%$ of questions
 (\Cref{app:fanout}). So for a hub topic the baseline answers from a small
-fraction of the neighbourhood, chosen without a stated criterion. The
-hub-noise diagnosis of \Cref{sec:hop-results} has to allow that the answer may
-never have entered the sample the reranker saw. The full system's own
+fraction of the neighbourhood, chosen without a stated criterion. The hub-noise
+diagnosis of \Cref{sec:hop-results} has to allow that the answer may never have
+entered the sample the reranker saw. The full system's own
 \textsf{get\_neighbors} shares the property (\Cref{app:tool-neighbors}) but not
 the exposure: its cap is $200$ and applies per relation rather than per entity,
 binding on $3.3\%$ of its $16{,}301$ neighbour calls.
@@ -408,22 +405,22 @@ serve. So it is disclosed rather than left in the code.
 \textbf{What this baseline licenses, and what it does not.} A one-hop retriever
 cannot contain a two-hop chain. So its decay across hop strata
 (\Cref{sec:hop-results}) is partly a property of the radius and not only of the
-paradigm --- a distinction that has to be drawn. The alternative is to
-read an implementation limit as a result. The evidence that it is a radius
-effect is visible in the strata: this baseline scores $0.44$ on WebQSP's
-\textsf{h2}, where two-hop questions are largely mediator paths a one-hop
-expansion \emph{does} reach, against $0.16$ on CWQ's \textsf{h2}, where the
-chains are genuine compositions it cannot reach at all. A retriever failing
-uniformly on depth would not show that gap. The claim this thesis therefore
-makes on the strength of this baseline is the narrow one: \emph{retrieval fixed
-before reasoning must commit to a radius in advance, and any fixed radius is
-wrong for some question in the set.} It does \emph{not} claim that a two-hop
-static retriever would score as this one does. That experiment was not run. The
-honest expectation is that it would recover much of the CWQ \textsf{h2} gap
-while losing precision to a larger and noisier window. Re-running it is the
-first item in \Cref{sec:future-baselines}. Where the per-stratum argument needs
-a static comparator that is definitely not radius-limited, it uses Vector-RAG,
-whose one-triple context cannot represent a chain at any radius.
+paradigm --- a distinction that has to be drawn. The alternative is to read an
+implementation limit as a result. The evidence that it is a radius effect is
+visible in the strata: this baseline scores $0.44$ on WebQSP's \textsf{h2},
+where two-hop questions are largely mediator paths a one-hop expansion
+\emph{does} reach, against $0.16$ on CWQ's \textsf{h2}, where the chains are
+genuine compositions it cannot reach at all. A retriever failing uniformly on
+depth would not show that gap. The claim this thesis therefore makes on the
+strength of this baseline is the narrow one: \emph{retrieval fixed before
+reasoning must commit to a radius in advance, and any fixed radius is wrong for
+some question in the set.} It does \emph{not} claim that a two-hop static
+retriever would score as this one does. That experiment was not run. The honest
+expectation is that it would recover much of the CWQ \textsf{h2} gap while
+losing precision to a larger and noisier window. Re-running it is the first item
+in \Cref{sec:future-baselines}. Where the per-stratum argument needs a static
+comparator that is definitely not radius-limited, it uses Vector-RAG, whose
+one-triple context cannot represent a chain at any radius.
 
 \subsection{Think-on-Graph (Agentic Baseline)}\label{sec:baseline-tog}
 
@@ -433,23 +430,23 @@ $3$, depth $3$, language-model relation pruning, language-model entity pruning,
 and a sufficiency check at each depth. It is a reimplementation rather than the
 authors' code, running on this graph with this backbone. That makes it a
 \emph{stronger} comparison than citing published numbers --- graph, model,
-budget, and scoring rule are held constant, and the algorithm is what varies.
-It correspondingly means its numbers are not comparable to the published ones
-and are not presented as such.
+budget, and scoring rule are held constant, and the algorithm is what varies. It
+correspondingly means its numbers are not comparable to the published ones and
+are not presented as such.
 
 Holding the budget constant is not the same as making it irrelevant. A fixed cap
-binds harder on a method whose cost grows multiplicatively. So the comparison
-measures search quality and affordability together. \Cref{sec:tog-split}
-separates them by splitting the results on whether the cap actually truncated
-the baseline. The answer changes what the aggregate margin should be taken
-to mean. Under the same $25$-call cap the full system operates under,
-Think-on-Graph is clipped on $117/400$ WebQSP questions ($29.2\%$) and $176/400$
-CWQ questions ($44.0\%$). A clipped run still answers, from whatever it
-gathered, by the same graceful degradation the full system uses. One asymmetry
-there favours the baseline and is stated so the clip rates are not mistaken for
-a count of runs that returned nothing: the baseline stops its search one call
-\emph{before} the shared limit, reserving that call for the answer it then has
-to compose, where AGR makes no such reservation.
+bites harder on a method whose cost multiplies with every step. So the
+comparison measures search quality and affordability together.
+\Cref{sec:tog-split} separates them by splitting the results on whether the cap
+actually truncated the baseline. The answer changes what the aggregate margin
+should be taken to mean. Under the same $25$-call cap the full system operates
+under, Think-on-Graph is clipped on $117/400$ WebQSP questions ($29.2\%$) and
+$176/400$ CWQ questions ($44.0\%$). A clipped run still answers, from whatever
+it gathered, by the same graceful degradation the full system uses. One
+asymmetry there favours the baseline and is stated so the clip rates are not
+mistaken for a count of runs that returned nothing: the baseline stops its
+search one call \emph{before} the shared limit, reserving that call for the
+answer it then has to compose, where AGR makes no such reservation.
 
 \textbf{A second asymmetry is not in the baseline's favour, and it bears on how
 \Cref{sec:tog-split} should be read.} Both systems call the same tools but
@@ -482,14 +479,14 @@ Both graph-navigating systems seed from the dataset's annotated topic entities.
 That choice removes entity linking as a confound. It is stated as a limitation
 in \Cref{sec:threats}.
 
-Two things are \emph{not} held constant. Both are named rather than buried.
-The first is deliberate: the baselines get a plain answering prompt while the
-full system's drafting prompt carries the anti-vacuity and grounding provisions
-of \Cref{sec:claim-decomposition}, which are part of the system under test
-rather than of the shared harness. The second is a property of the algorithms
-and is where a reader should look first for a confound --- the width of the
-candidate set each system considers per step, with the measured binding rates
-and the bound they place on \Cref{sec:tog-split} given in
+Two things are \emph{not} held constant. Both are named here rather than left
+buried. The first is deliberate: the baselines get a plain answering prompt
+while the full system's drafting prompt carries the anti-vacuity and grounding
+provisions of \Cref{sec:claim-decomposition}, which are part of the system under
+test rather than of the shared harness. The second is a property of the
+algorithms and is where a reader should look first for a confound --- the width
+of the candidate set each system considers per step, with the measured binding
+rates and the bound they place on \Cref{sec:tog-split} given in
 \Cref{sec:baseline-tog}, and the static baseline's own fanout cap in
 \Cref{sec:baseline-graphrag}.
 
@@ -522,40 +519,40 @@ the convention in this literature, and it is what makes published numbers
 comparable at all. \emph{F1} is computed per question between the predicted and
 gold sets as defined in \Cref{sec:kgqa}, and averaged over questions.
 
-Reporting both is not redundancy. Hits@1 rewards a system that names one correct
-entity among several wrong ones. On WebQSP the loophole is wide in the tail
-if not on the typical question: the median question has $1.5$ gold answers, but
-the mean is $7.15$ and the largest lists $237$. The precision component of F1 is
-what closes it. \Cref{sec:webqsp-results} shows how far apart the two
-metrics can sit for one system. That gap is a property of the answer sets a
-system emits rather than a measurement of any component inside it: removing the
-verification layer moves F1 by $+0.004$ on WebQSP and $-0.009$ on CWQ, neither
+Reporting both is not redundant. Hits@1 rewards a system that names one correct
+entity among several wrong ones. On WebQSP that loophole is wide in the tail, if
+not on the typical question: the median question has $1.5$ gold answers, but the
+mean is $7.15$ and the largest lists $237$. The precision component of F1 is
+what closes it. \Cref{sec:webqsp-results} shows how far apart the two metrics
+can sit for one system. That gap is a property of the answer sets a system
+emits, not a measurement of any component inside it. Removing the verification
+layer moves F1 by $+0.004$ on WebQSP and $-0.009$ on CWQ. Neither is
 distinguishable from zero (\Cref{sec:ablations}).
 
-Strict matching raises the obvious worry that ``St.~Petersburg'' versus ``Saint
-Petersburg'' is manufacturing failures. It was measured rather than assumed: of
-the full system's wrong answers, $1$ of $65$ ($2\%$) on WebQSP and $6$ of $99$
-($6\%$) on CWQ are surface-form near-misses under aggressive normalisation. The
-failure census of \Cref{sec:erroranalysis} is therefore reading real errors.
+Strict matching raises an obvious worry: that ``St.~Petersburg'' versus ``Saint
+Petersburg'' is manufacturing failures. That was measured rather than assumed.
+Of the full system's wrong answers, $1$ of $65$ ($2\%$) on WebQSP and $6$ of
+$99$ ($6\%$) on CWQ are surface-form near-misses under aggressive normalisation.
+So the failure census of \Cref{sec:erroranalysis} is reading real errors.
 
 \subsection{Accounting for Hedges and Abstentions}\label{sec:hedge-accounting}
 
 A \emph{hedge}\index{hedge} is an empty predicted entity set: the system
 declined to assert. Hedges score zero on both accuracy metrics. But hedge rate
-is reported as its own column. So the abstention--accuracy trade is visible
-rather than buried --- a system can buy precision with abstention, and the
-reader is given both numbers to see it happen. Hedges are also not epistemically
-uniform. That is why \Cref{sec:erroranalysis} keeps them separate from wrong
-answers throughout: a wrong answer is a reasoning error, whereas a hedge is
-usually a coverage gap that never produced a committal claim.
+is reported as its own column. So the trade between abstention and accuracy
+stays visible rather than buried. A system can buy precision with abstention,
+and the reader gets both numbers to see it happen. Hedges are also not all
+alike. That is why \Cref{sec:erroranalysis} keeps them separate from wrong
+answers throughout. A wrong answer is a reasoning error. A hedge is usually a
+coverage gap that never produced a committal claim.
 
-One counting convention follows, and governs every hits/hedges/wrong triple in
-the thesis. \emph{The three counts always partition the whole set.} Nothing is
-dropped from the denominator. In particular, questions the environment provably
-cannot answer (\Cref{sec:unanswerable}) are counted as hedges rather than
+One counting convention follows, and it governs every hits/hedges/wrong triple
+in the thesis. \emph{The three counts always partition the whole set.} Nothing
+is dropped from the denominator. In particular, questions the environment
+provably cannot answer (\Cref{sec:unanswerable}) are counted as hedges, not
 excluded, even though the system had no route to a correct answer. Excluding
-them would flatter every condition equally and make the counts incomparable with
-the accuracy figures, which do include them.
+them would flatter every condition equally. It would also make the counts
+incomparable with the accuracy figures, which do include them.
 
 \subsection{Two-Tier Groundedness and Hallucination
 Rate}\label{sec:groundedness-metric}
@@ -573,8 +570,8 @@ hops.} The entity-level ungrounded rate is the fraction of asserted entities
 failing this test. The question-level rate is the fraction of answered questions
 containing at least one such entity. The test is deliberately strict about
 surface form --- a parametric spelling that does not exist as a node is
-ungrounded \emph{by definition of the environment}. That strictness is
-the point of defining hallucination relative to an environment at all.
+ungrounded \emph{by definition of the environment}. That strictness is the point
+of defining hallucination relative to an environment at all.
 
 \textbf{Tier~2, semantic}, asks the harder question Tier~1 cannot: is the entity
 supported \emph{as the answer}? For a stratified sample of $60$ asserted answers
@@ -607,23 +604,24 @@ seconds column rather than carry one measured on four conditions of five.
 
 The Tier-2 judge sees a question, one asserted entity, and up to three
 connecting paths rendered as relation chains with mediator nodes masked. It does
-not see which system produced the assertion, whether the assertion was scored a
-hit, the gold answer, or the system's own reasoning. Its prompt was fixed
-before any per-system result was inspected. It runs on the same backbone as the
-systems it judges, an overlap stated as a limitation in \Cref{sec:threats}
-rather than claimed as independence from the model family.
+not see which system produced the assertion. It does not see whether the
+assertion was scored a hit, what the gold answer is, or what the system's own
+reasoning was. Its prompt was fixed before any per-system result was inspected.
+It runs on the same backbone as the systems it judges. That overlap is stated as
+a limitation in \Cref{sec:threats}, not claimed as independence from the model
+family.
 
-One hundred judged items were drawn and written to a sheet stripped of the
-judge's verdicts, then labelled by the author \emph{blind}: neither the judge's
-output file nor the answer key was opened until the sheet was saved. Blinding is
-what makes the resulting statistic a validity check rather than a measure of
-anchoring. The written annotation guideline fixed during calibration is
-reproduced in \Cref{app:judge-rules}. \Cref{app:judge-protocol} records how
-the sample was drawn and labelled. Each of the guideline's eight rules was
-forced by a case. The last of them --- treat a path expressing only a
-question's identifying descriptor, rather than its actual ask, as unsupported
---- is the \emph{composition-echo} case that the failure census later finds at
-scale (\Cref{sec:echo}).
+One hundred judged items were drawn and written to a sheet with the judge's
+verdicts stripped out. The author then labelled them \emph{blind}: neither the
+judge's output file nor the answer key was opened until the sheet was saved.
+Blinding is what makes the resulting statistic a validity check rather than a
+measure of anchoring. The written annotation guideline fixed during calibration
+is reproduced in \Cref{app:judge-rules}. \Cref{app:judge-protocol} records how
+the sample was drawn and labelled. Every one of the guideline's eight rules was
+forced by a case. The last of them --- treat a path expressing only a question's
+identifying descriptor, rather than its actual ask, as unsupported --- is the
+\emph{composition-echo} case that the failure census later finds at scale
+(\Cref{sec:echo}).
 
 On $n = 100$ items, observed agreement is $85\%$, with near-symmetric
 marginals\index{Cohen's kappa} ($54$ human-supported against $51$
@@ -740,39 +738,39 @@ rests on the self-describing records and on this chapter. And one generated
 summary in the development-set archive predates a fix applied to the runs it
 summarises. So rescoring that directory yields different numbers than the
 committed summary. The discrepancy is stated where those numbers are used
-(\Cref{sec:dev-tuning}) rather than resolved by editing a generated file.
+(\Cref{sec:dev-tuning}). It is not resolved by editing a generated file.
 
 \section{Main Results}\label{sec:results}
 
-This part reports the measurements \Cref{sec:setup} specified. It is organised
-so that the weakest claims are visible next to the strongest: the headline
-accuracy result is large and significant on every comparison, the structural
-groundedness result is emphatic but attributes to a different cause than
-expected, the semantic groundedness result is underpowered, and three of the
+This part reports the measurements that \Cref{sec:setup} specified. It is
+organised so that the weakest claims sit next to the strongest. The headline
+accuracy result is large and significant on every comparison. The structural
+groundedness result is emphatic, but it points to a different cause than
+expected. The semantic groundedness result is underpowered. And three of the
 four ablations detect nothing. All four outcomes are reported at the same
 volume.
 
 Every test-set number comes from \textsf{results/phase4/thesis\_numbers.json}.
-\Cref{sec:dev-tuning} reports the development sweep and reads the archived
+\Cref{sec:dev-tuning} reports the development sweep. It reads the archived
 phase-3 runs directly, as \Cref{ch:framework} does. Confidence intervals are
-$95\%$ bootstrap intervals over questions with $10{,}000$ resamples at
+$95\%$ bootstrap intervals over questions, with $10{,}000$ resamples at
 seed~$42$~\cite{efron1979bootstrap}. Paired comparisons use the exact-binomial
 form of McNemar's test~\cite{mcnemar1947note} on per-question correctness.
 
 \subsection{Development-Set Tuning Outcomes}\label{sec:dev-tuning}
 
 The blend weight $\alpha$ and the low-signal backtracking threshold $\tau$ were
-swept jointly over the $80$-question development set (\Cref{sec:hyperparams}).
-\Cref{tab:sweep} reports all eight conditions plus the two draft-only conditions
-that price the verification layer.
+swept together over the $80$-question development set (\Cref{sec:hyperparams}).
+\Cref{tab:sweep} reports all eight conditions, plus the two draft-only
+conditions that put a price on the verification layer.
 
 \begin{table}[!tb]
   \begin{center}
     \caption[The development-set sweep]{The development-set sweep, $n = 80$.
-    Hits, hedges, and wrong answers partition the set. \textsf{Verify} indicates
-    claim verification enabled. The two draft-only rows disable it. All rows are
-    from the sweep as run, before the answer-entity filter of
-    \Cref{sec:entity-filtering} was corrected. The frozen condition's
+    Hits, hedges, and wrong answers add up to the whole set. \textsf{Verify}
+    means claim verification was enabled. The two draft-only rows disable it.
+    All rows are from the sweep as it was run, before the answer-entity filter
+    of \Cref{sec:entity-filtering} was corrected. The frozen condition's
     post-correction figures are given in the text.}
     \label{tab:sweep}
     \small
@@ -787,8 +785,8 @@ that price the verification layer.
       0.5 & 0.00 & yes & 62 & 10 & 8 & 0.743 & 4{,}874 & 7.2 & 16 \\
       0.5 & 0.20 & yes & 62 & 10 & 8 & 0.743 & 4{,}874 & 7.2 & 16 \\
       \textbf{0.7} & 0.00 & yes & 64 & 11 & 5 & 0.769 & 4{,}925 & 7.3 & 17 \\
-      \textbf{0.7} & \textbf{0.20} & \textbf{yes} & \textbf{64} & 11 & 5 &
-        0.769 & 4{,}925 & 7.3 & 17 \\
+      \textbf{0.7} & \textbf{0.20} & \textbf{yes} & \textbf{64} & 11 & 5 & 0.769
+        & 4{,}925 & 7.3 & 17 \\
       1.0 & 0.00 & yes & 59 & 15 & 6 & 0.713 & 3{,}408 & 4.9 & 22 \\
       1.0 & 0.20 & yes & 59 & 16 & 5 & 0.713 & 3{,}400 & 4.9 & 26 \\
       \hline
@@ -799,15 +797,14 @@ that price the verification layer.
   \end{center}
 \end{table}
 
-Three readings follow, of which only the first is the one the sweep was run to
-obtain. \Cref{app:sweep} gives the other two: that $\alpha = 0.7$ is the maximum
-but the curve is not clean, the wrong-answer column peaking at $\alpha = 0.5$
-where the system commits more often, and that $\tau$ changes almost nothing at
-the values swept. That flatness is what the signal-maximum formulation of
-\Cref{sec:backtracking} predicts. Both are reported rather than smoothed away.
-The value $\tau = 0.20$ was frozen on the basis of a sweep in which it changed
-almost nothing. That is stated plainly rather than presented as a tuned
-choice.
+Three readings follow. Only the first is the one the sweep was run to obtain:
+$\alpha = 0.7$ is the maximum. \Cref{app:sweep} gives the other two. The curve
+is not clean: the wrong-answer column peaks at $\alpha = 0.5$, where the system
+commits more often. And $\tau$ changes almost nothing at the values swept. That
+flatness is what the signal-maximum formulation of \Cref{sec:backtracking}
+predicts. Both are reported rather than smoothed away. The value $\tau = 0.20$
+was frozen on the basis of a sweep in which it changed almost nothing. That is
+stated plainly rather than dressed up as a tuned choice.
 
 \textbf{Verification costs accuracy on this set.} Against the frozen condition,
 the draft-only row scores $66$ hits to $64$ and F1 $0.797$ to $0.769$. After the
@@ -818,12 +815,12 @@ layer costs one correct answer and removes no wrong ones on this set of $80$.
 That comparison spans the correction, since the draft-only condition was never
 re-run after it. It is therefore the closest available reading rather than a
 matched pair. \Cref{sec:ablations} finds the same thing at $n \approx 200$ on
-test data. \Cref{sec:findings} explains why that is the expected result
-rather than a disappointing one. Only the frozen condition was re-run after the
+test data. \Cref{sec:findings} explains why that is the expected result rather
+than a disappointing one. Only the frozen condition was re-run after the
 correction. So \Cref{tab:sweep} is the pre-correction sweep throughout ---
-internally consistent, since all eight conditions ran under the same code. The
-archived per-question records are authoritative where the committed
-summary disagrees.
+internally consistent, since all eight conditions ran under the same code. Where
+the committed summary and the archived per-question records disagree, the
+records are authoritative.
 
 \subsection{Main Results on WebQSP}\label{sec:webqsp-results}
 
@@ -834,9 +831,9 @@ summary disagrees.
     are mean per-question precision and recall. \textbf{Hedge} is the share of
     questions on which the system asserted nothing. The Hits@1 ceilings are
     $97.0\%$ and $99.2\%$ (\Cref{tab:testsets}). Every figure here is measured
-    inside the environment of \Cref{ch:environment}, whose per-question
-    construction is what puts those ceilings so high. The levels are therefore
-    not comparable with published results over full Freebase, and
+    inside the environment of \Cref{ch:environment}. That environment's
+    per-question construction is what puts the ceilings so high. So the levels
+    are not comparable with published results over full Freebase.
     \Cref{sec:threats} states why.}
     \label{tab:main}
     \small
@@ -856,40 +853,38 @@ summary disagrees.
         0.279 & 0.284 & 55.8\% \\
       WebQSP & Think-on-Graph & 0.660 [0.613, 0.705] & 0.477 [0.436, 0.518] &
         0.571 & 0.480 & 18.8\% \\
-      WebQSP & \textbf{AGR}  & \textbf{0.755} [0.713, 0.797] &
-        \textbf{0.642} [0.600, 0.684] & \textbf{0.697} & \textbf{0.653} &
-        \textbf{8.2\%} \\
+      WebQSP & \textbf{AGR}  & \textbf{0.755} [0.713, 0.797] & \textbf{0.642}
+        [0.600, 0.684] & \textbf{0.697} & \textbf{0.653} & \textbf{8.2\%} \\
       \hline
-      CWQ & No-retrieval  & 0.307 [0.263, 0.352] & 0.279 [0.236, 0.323] &
-        0.285 & 0.282 & 38.0\% \\
-      CWQ & Vector-RAG    & 0.203 [0.163, 0.242] & 0.168 [0.133, 0.204] &
-        0.171 & 0.189 & 48.2\% \\
-      CWQ & GraphRAG      & 0.205 [0.168, 0.245] & 0.183 [0.147, 0.222] &
-        0.187 & 0.194 & 60.8\% \\
-      CWQ & Think-on-Graph & 0.435 [0.388, 0.482] & 0.378 [0.332, 0.423] &
-        0.403 & 0.384 & 22.5\% \\
-      CWQ & \textbf{AGR}  & \textbf{0.522} [0.475, 0.570] &
-        \textbf{0.469} [0.423, 0.514] & \textbf{0.484} & \textbf{0.481} &
-        23.0\% \\
+      CWQ & No-retrieval  & 0.307 [0.263, 0.352] & 0.279 [0.236, 0.323] & 0.285
+        & 0.282 & 38.0\% \\
+      CWQ & Vector-RAG    & 0.203 [0.163, 0.242] & 0.168 [0.133, 0.204] & 0.171
+        & 0.189 & 48.2\% \\
+      CWQ & GraphRAG      & 0.205 [0.168, 0.245] & 0.183 [0.147, 0.222] & 0.187
+        & 0.194 & 60.8\% \\
+      CWQ & Think-on-Graph & 0.435 [0.388, 0.482] & 0.378 [0.332, 0.423] & 0.403
+        & 0.384 & 22.5\% \\
+      CWQ & \textbf{AGR}  & \textbf{0.522} [0.475, 0.570] & \textbf{0.469}
+        [0.423, 0.514] & \textbf{0.484} & \textbf{0.481} & 23.0\% \\
       \hline
     \end{tabular}
   \end{center}
 \end{table}
 
-On WebQSP, AGR answers $302$ of $400$ questions correctly: $75.5\%$ against
-a\index{Hits"@1}\index{WebQSP} reachability ceiling of $97.0\%$, $+9.5$ points
-over Think-on-Graph and $+30.2$ over the parametric floor. The floor matters.
-WebQSP is a decade old and plausibly in the backbone's pretraining data. The
-no-retrieval control confirms it: $45.3\%$ of these questions are answerable
-from memory alone. Any claim about what retrieval contributes has to be read
-against $0.453$, not against zero.
+On WebQSP, AGR answers $302$ of $400$ questions correctly. That is $75.5\%$
+against a\index{Hits"@1}\index{WebQSP} reachability ceiling of $97.0\%$, $+9.5$
+points over Think-on-Graph, and $+30.2$ over the parametric floor. The floor
+matters. WebQSP is a decade old and quite possibly in the backbone's pretraining
+data. The no-retrieval control confirms it: $45.3\%$ of these questions can be
+answered from memory alone. So any claim about what retrieval contributes has to
+be read against $0.453$, not against zero.
 
 \textbf{F1 widens the margin that Hits@1 understates.} Against Think-on-Graph
 the Hits@1 gap is $+9.5$ points. The F1 gap is $+16.5$ ($0.642$ against
 $0.477$). The precision column shows where it comes from ($0.697$ against
-$0.571$). WebQSP's questions have a mean of seven gold answers. So a system that
-asserts a long list collects Hits@1 credit for the one entity that matches and
-pays nothing for the rest. Precision is what charges for it. The two columns
+$0.571$). WebQSP's questions have seven gold answers on average. So a system
+that asserts a long list collects Hits@1 credit for the one entity that matches
+and pays nothing for the rest. Precision is what charges for it. The two columns
 together support the sentence this thesis leads with: AGR answers more questions
 and asserts fewer falsehoods, at an $8.2\%$ hedge rate --- the lowest of the
 five systems. So the precision is not bought with abstention.
@@ -909,39 +904,37 @@ from the facts given and to return nothing otherwise. When retrieval misses,
 they therefore abstain, while the no-retrieval control has no such constraint
 and guesses from memory. On a memorised benchmark, guessing pays. \emph{A
 grounded system scoring below an ungrounded one on raw hits while committing
-four times fewer falsehoods} is the contamination story the control was built
-to expose. It is reported as a result rather than as an anomaly.
+four times fewer falsehoods} is the contamination story the control was built to
+expose. It is reported as a result rather than as an anomaly.
 
 \subsection{Main Results on ComplexWebQuestions}\label{sec:cwq-results}
 
 On CWQ, AGR answers $209$ of $400$: $52.2\%$ against a $99.2\%$ ceiling,
 $+8.7$\index{ComplexWebQuestions}\index{precision} over Think-on-Graph and
-$+21.5$ over the floor. Every system scores lower here. The ordering changes
-in one important way: \emph{both} static retrieval baselines fall below the
-parametric control. Vector-RAG drops from $0.568$ on WebQSP to $0.203$, GraphRAG
-from $0.340$ to $0.205$, while no-retrieval falls only from $0.453$ to $0.307$.
+$+21.5$ over the floor. Every system scores lower here. The ordering changes in
+one important way: \emph{both} static retrieval baselines fall below the
+parametric control. Vector-RAG drops from $0.568$ on WebQSP to $0.203$. GraphRAG
+drops from $0.340$ to $0.205$. No-retrieval falls only from $0.453$ to $0.307$.
 
-The reason is structural rather than incidental. The two baselines earn that
+The reason is structural, not incidental. The two baselines earn that
 description to different degrees. Vector-RAG's context is a single verbalised
-triple. One triple cannot contain a chain at any retrieval quality or any
-radius. That is a paradigm limit \Cref{sec:baselines} predicted at
-implementation time. \Cref{sec:hop-results} demonstrates it per stratum.
-GraphRAG's context is a one-logical-hop neighbourhood
-(\Cref{sec:baseline-graphrag}). Its CWQ number is therefore the weaker evidence
-of the two: it confounds the paradigm with the radius. Part of the fall is
-attributable to a boundary chosen in advance rather than to static retrieval as
-such. The claim rests on the first baseline.
+triple. One triple cannot hold a chain, at any retrieval quality or any radius.
+That is a paradigm limit \Cref{sec:baselines} predicted at implementation time.
+\Cref{sec:hop-results} demonstrates it per stratum. GraphRAG's context is a
+one-logical-hop neighbourhood (\Cref{sec:baseline-graphrag}). Its CWQ number is
+therefore the weaker evidence of the two: it confounds the paradigm with the
+radius. Part of the fall is attributable to a boundary chosen in advance rather
+than to static retrieval as such. The claim rests on the first baseline.
 
 The number worth leading with on this dataset is assertion precision. AGR and
 Think-on-Graph commit at effectively the same rate: $308$ and $310$ of $400$
-questions answered rather than hedged. Out of those near-identical
-commitments, AGR is right $209$ times and wrong $99$, against $174$ and $136$.
-That is $67.9\%$ assertion precision against $56.1\%$: on the harder, deeper
-benchmark, the system with an explicit plan, a guided scorer, and a claim check
-finds $35$ more answers and asserts $37$ fewer falsehoods than beam search on
-the same graph with the same model, from the same number of commitments --- a
-margin \Cref{sec:tog-split} attributes to the budget rather than to resolution
-quality.
+questions answered rather than hedged. Out of those near-identical commitments,
+AGR is right $209$ times and wrong $99$, against $174$ and $136$. That is
+$67.9\%$ assertion precision against $56.1\%$: on the harder, deeper benchmark,
+the system with an explicit plan, a guided scorer, and a claim check finds $35$
+more answers and asserts $37$ fewer falsehoods than beam search on the same
+graph with the same model, from the same number of commitments --- a margin
+\Cref{sec:tog-split} attributes to the budget rather than to resolution quality.
 
 \begin{table}[!tb]
   \begin{center}
@@ -982,20 +975,19 @@ From}\label{sec:tog-split}
 
 The shared budget is a control. Like any control, it is doing something.
 The\index{Think-on-Graph} call cap binds on Think-on-Graph far more often than
-on AGR: beam search costs width times depth. \Cref{sec:efficiency}
-records the clip rates. So ``same budget'' does not mean ``same freedom to
-search''. Splitting the $400$ questions of each dataset on whether the cap
-actually cut Think-on-Graph off separates the two things the aggregate
-confounds: how good its search is, and whether it can afford to run that search
-to completion.
+on AGR: beam search costs width times depth. \Cref{sec:efficiency} records the
+clip rates. So ``same budget'' does not mean ``same freedom to search''.
+Splitting the $400$ questions of each dataset on whether the cap actually cut
+Think-on-Graph off separates the two things the aggregate confounds: how good
+its search is, and whether it can afford to run that search to completion.
 
 \begin{table}[!tb]
   \begin{center}
     \caption[The agentic-baseline comparison, split on budget clipping]{The
     comparison against the agentic baseline, split on whether the shared
-    $25$-call cap truncated it. Clipping is read from the per-record
-    \textsf{budget\_exhausted} trace flag rather than from a call count, since a
-    run may spend its last permitted call on the step that finishes it. The
+    $25$-call cap cut it short. Clipping is read from the per-record
+    \textsf{budget\_exhausted} trace flag, not from a call count, because a run
+    may spend its last permitted call on the step that finishes it. The
     \emph{combined} rows reproduce the Hits@1 column of \Cref{tab:main},
     recomputed independently from the raw records. Generated from
     \textsf{results/phase4/thesis\_numbers.json}.}
@@ -1008,25 +1000,25 @@ to completion.
 \textbf{On the questions it is allowed to finish, Think-on-Graph is ahead on
 both datasets.} It scores $0.852$ against AGR's $0.788$ on WebQSP and $0.629$
 against $0.607$ on CWQ. The entire aggregate margin comes from the $29.2\%$ and
-$44.0\%$ of questions where the cap truncates it. There its accuracy falls
-to $0.197$ and $0.188$ while AGR's holds at $0.675$ and $0.415$. This is stated
-plainly because it is the first thing an unsympathetic reading of
-\Cref{tab:mcnemar} should look for, and because burying it would misrepresent
-what was measured.
+$44.0\%$ of questions where the cap truncates it. There its accuracy falls to
+$0.197$ and $0.188$ while AGR's holds at $0.675$ and $0.415$. This is stated
+plainly for two reasons. It is the first thing an unsympathetic reading of
+\Cref{tab:mcnemar} should look for. And burying it would misrepresent what was
+measured.
 
-It does not weaken the result. But it does change its content. The finding is
-not that guided best-first search resolves entities better than
-language-model-pruned beam search --- on the evidence here it does not. The
+It does not weaken the result. But it does change what the result says. The
+finding is not that guided best-first search resolves entities better than
+language-model-pruned beam search. On the evidence here, it does not. The
 unclipped subset is the fairest available estimate of that. The finding is that
 \emph{beam search cannot afford to finish under a budget a deployed system would
-actually impose}. \emph{Guided search can.} Width times depth is multiplicative
-and paid on every question. A plan plus a scored frontier is not. A comparison
+actually impose}. \emph{Guided search can.} Width times depth multiplies, and it
+is paid on every question. A plan plus a scored frontier is not. A comparison
 run without a cap would measure search quality in the abstract. That would be a
 legitimate experiment, and a different one. This thesis fixed the budget in
-advance (\Cref{sec:baselines}) because cost is a property of the method rather
-than a nuisance to be controlled away. On that reading the clip rate is not an
-artefact of the setup. It is the result. \Cref{sec:efficiency} prices the same
-finding in tokens.
+advance (\Cref{sec:baselines}), because cost is a property of the method, not a
+nuisance to be controlled away. On that reading the clip rate is not an artefact
+of the setup. It is the result. \Cref{sec:efficiency} prices the same finding in
+tokens.
 
 Three qualifications keep the claim honest. The cap of $25$ calls is itself a
 choice. A larger one would move the split --- the clip rates are reported so a
@@ -1046,44 +1038,42 @@ out-resolve beam search is correspondingly the weaker one.
 
 \textbf{The breadth of AGR's answers is checked rather than assumed.} On
 answered WebQSP questions AGR names $3.37$ entities against Think-on-Graph's
-$2.56$. A metric scoring a hit on any match rewards naming more. The check
-is entity precision over those same answered questions --- \Cref{tab:main}'s
+$2.56$. A metric scoring a hit on any match rewards naming more. The check is
+entity precision over those same answered questions --- \Cref{tab:main}'s
 measure restricted to the answered subset, not the per-question assertion
 precision of \Cref{sec:cwq-results} --- where AGR leads $0.760$ to $0.703$. On
 CWQ the figures are $1.54$ against $1.40$ entities and $0.629$ against $0.520$
 precision. Breadth bought without accuracy would show up as precision falling
 while the entity count rose. It does not.
 
-\subsection{Positioning Against Published RoG
-Results}\label{sec:rog-comparison}
+\subsection{Positioning Against Published RoG Results}\label{sec:rog-comparison}
 
-Two facts in this thesis oblige a direct comparison. The knowledge
-environment of \Cref{sec:source-data} is built from the per-question
-subgraphs\index{RoG} the RoG distribution publishes. \Cref{sec:path-kgqa}
-surveys RoG~\cite{luo2024reasoning} as the closest published system in the
-path-retrieval family. A reader who notices both is entitled to ask how the
+Two facts in this thesis call for a direct comparison. The knowledge environment
+of \Cref{sec:source-data} is built from the per-question subgraphs\index{RoG}
+that the RoG distribution publishes. \Cref{sec:path-kgqa} surveys
+RoG~\cite{luo2024reasoning} as the closest published system in the
+path-retrieval family. A reader who notices both has every right to ask how the
 two systems compare. The aggregate answer does not favour this work.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption[AGR against RoG's published figures]{AGR against RoG's
-    published figures, in points. RoG's row is Table~1 of
-    \cite{luo2024reasoning}, measured over the full test splits
-    ($1{,}628$ and $3{,}531$ questions). AGR's row is \Cref{tab:main},
-    measured over the certified $400$-question samples of
-    \Cref{tab:testsets}. Those samples are stratified draws from those same
-    splits. The two rows are therefore computed over nested populations
-    but under different protocols. The paragraphs below state what that
-    permits and what it forbids.}
+    \caption[AGR against RoG's published figures]{AGR against RoG's published
+    figures, in points. RoG's row is Table~1 of \cite{luo2024reasoning},
+    measured over the full test splits ($1{,}628$ and $3{,}531$ questions).
+    AGR's row is \Cref{tab:main}, measured over the certified $400$-question
+    samples of \Cref{tab:testsets}. Those samples are stratified draws from
+    those same splits. So the two rows are computed over nested populations, but
+    under different protocols. The paragraphs below say what that permits and
+    what it forbids.}
     \label{tab:rog}
     \small
     \begin{tabular}{|l|c|c|c|c|}
       \hline
-      & \multicolumn{2}{c|}{\textbf{WebQSP}}
-      & \multicolumn{2}{c|}{\textbf{CWQ}} \\
+      & \multicolumn{2}{c|}{\textbf{WebQSP}} & \multicolumn{2}{c|}{\textbf{CWQ}}
+      \\
       \cline{2-5}
-      \textbf{System} & \textbf{Hits@1} & \textbf{F1}
-                      & \textbf{Hits@1} & \textbf{F1} \\
+      \textbf{System} & \textbf{Hits@1} & \textbf{F1} & \textbf{Hits@1} &
+                      \textbf{F1} \\
       \hline
       RoG (published)  & $85.7$ & $70.8$ & $62.6$ & $56.2$ \\
       \hline
@@ -1093,59 +1083,57 @@ two systems compare. The aggregate answer does not favour this work.
   \end{center}
 \end{table}
 
-\textbf{RoG leads on all four figures. The margin is not sampling
-noise.} AGR's $95\%$ confidence intervals on Hits@1 are $[71.3, 79.7]$ on
-WebQSP and $[47.5, 57.0]$ on CWQ. RoG's $85.7$ and $62.6$ fall outside
-both. That is stated before the qualifications. The qualifications
-do not reverse it, and a comparison offered only with its excuses attached
-is not a comparison.
+\textbf{RoG leads on all four figures. The margin is not sampling noise.} AGR's
+$95\%$ confidence intervals on Hits@1 are $[71.3, 79.7]$ on WebQSP and $[47.5,
+57.0]$ on CWQ. RoG's $85.7$ and $62.6$ fall outside both. That is stated before
+the qualifications. The qualifications do not reverse it, and a comparison
+offered only with its excuses attached is not a comparison.
 
-Three differences bound what \Cref{tab:rog} establishes. The first is
-decisive. The other two are ordinary.
+Three differences bound what \Cref{tab:rog} establishes. The first is decisive.
+The other two are ordinary.
 
 \textbf{RoG is trained on these benchmarks. AGR is trained on nothing.}
-Section~5.1 of \cite{luo2024reasoning} states that its backbone is
-``instruction finetuned on the training split of WebQSP and CWQ as well as
-Freebase for 3 epochs''. In the distribution this thesis also uses, those
-training splits hold $2{,}830$ and $16{,}900$ questions. AGR performs no
-training of any kind: the backbone is frozen, prompted at temperature $0$
-(\Cref{sec:backbone}), and the system has seen no question from either
-benchmark before it is evaluated. The comparison is therefore between a
-supervised system and a zero-shot one. That is a difference in kind rather
-than in degree. It is the same objection \Cref{tab:reported} already
-raises against every fine-tuned entry in the surveyed literature.
+Section~5.1 of \cite{luo2024reasoning} states that its backbone is ``instruction
+finetuned on the training split of WebQSP and CWQ as well as Freebase for 3
+epochs''. In the distribution this thesis also uses, those training splits hold
+$2{,}830$ and $16{,}900$ questions. AGR performs no training of any kind: the
+backbone is frozen, prompted at temperature $0$ (\Cref{sec:backbone}), and the
+system has seen no question from either benchmark before it is evaluated. The
+comparison is therefore between a supervised system and a zero-shot one. That is
+a difference in kind rather than in degree. It is the same objection
+\Cref{tab:reported} already raises against every fine-tuned entry in the
+surveyed literature.
 
-\textbf{The backbones differ.} RoG fine-tunes LLaMA2-Chat-7B. AGR prompts
-the model named in \Cref{sec:backbone}. \Cref{sec:comparison-table} argues
-that backbone accounts for much of the spread in cross-paper tables. That is
-precisely why \Cref{sec:setup} holds it constant across the five systems
-it measures. It cannot be held constant against a system whose contribution
-\emph{is} its fine-tuned weights. So no protocol available here would make
-this row comparable in the sense \Cref{tab:main} uses the word.
+\textbf{The backbones differ.} RoG fine-tunes LLaMA2-Chat-7B. AGR prompts the
+model named in \Cref{sec:backbone}. \Cref{sec:comparison-table} argues that
+backbone accounts for much of the spread in cross-paper tables. That is
+precisely why \Cref{sec:setup} holds it constant across the five systems it
+measures. It cannot be held constant against a system whose contribution
+\emph{is} its fine-tuned weights. So no protocol available here would make this
+row comparable in the sense \Cref{tab:main} uses the word.
 
 \textbf{The evaluation populations differ.} RoG reports over the full test
-splits. The figures here are over stratified $400$-question samples of the
-same splits (\Cref{sec:test-sets}). The samples preserve the hop-stratum
-proportions of their populations. So they estimate the same quantity. The
-intervals quoted above are the estimate's uncertainty. RoG publishes no
-interval. So the gap can be bounded from one side only.
+splits. The figures here are over stratified $400$-question samples of the same
+splits (\Cref{sec:test-sets}). The samples preserve the hop-stratum proportions
+of their populations. So they estimate the same quantity. The intervals quoted
+above are the estimate's uncertainty. RoG publishes no interval. So the gap can
+be bounded from one side only.
 
 What the comparison does settle is worth stating positively. It fixes AGR's
 place in the published landscape: a training-free system reaching $75.5$ and
-$52.2$ against a supervised system's $85.7$ and $62.6$, on the same data,
-with no in-domain examples. And it locates this thesis's contribution
-somewhere other than the accuracy column. RoG's answers are read off
-retrieved paths. So they are faithful by construction. The
-pre-generation verification question of \Cref{sec:verification-layer} does not
-arise for them (\Cref{sec:path-kgqa}). The price is that the plan is
-generated once, before retrieval, with no mechanism to revise it when it
-fails to instantiate. AGR's claims are the opposite shape: generated freely
-and then checked against the graph the agent actually walked. That check is
-what makes an unsupported assertion detectable at all. Neither the
-component-level ablation of \Cref{sec:ablations}, with the
-stratum-dependent decomposition finding it produced, nor the failure census
-of \Cref{sec:erroranalysis} has a counterpart in RoG's evaluation. None
-of them would be settled by closing the gap in \Cref{tab:rog}.
+$52.2$ against a supervised system's $85.7$ and $62.6$, on the same data, with
+no in-domain examples. And it locates this thesis's contribution somewhere other
+than the accuracy column. RoG's answers are read off retrieved paths. So they
+are faithful by construction. The pre-generation verification question of
+\Cref{sec:verification-layer} does not arise for them (\Cref{sec:path-kgqa}).
+The price is that the plan is generated once, before retrieval, with no
+mechanism to revise it when it fails to instantiate. AGR's claims are the
+opposite shape: generated freely and then checked against the graph the agent
+actually walked. That check is what makes an unsupported assertion detectable at
+all. Neither the component-level ablation of \Cref{sec:ablations}, with the
+stratum-dependent decomposition finding it produced, nor the failure census of
+\Cref{sec:erroranalysis} has a counterpart in RoG's evaluation. None of them
+would be settled by closing the gap in \Cref{tab:rog}.
 
 \section{Accuracy Broken Down by Hop Count}\label{sec:hop-results}
 
@@ -1161,27 +1149,27 @@ of them would be settled by closing the gap in \Cref{tab:rog}.
       \textbf{Data} & \textbf{System} & \textbf{h1} & \textbf{h2} &
       \textbf{h3plus} & \textbf{unreach.} \\
       \hline
-      WebQSP & No-retrieval   & 0.43 / 0.29 & 0.52 / 0.36 & 0.25 / 0.00 &
-        0.17 / 0.17 \\
-      WebQSP & Vector-RAG     & 0.82 / 0.63 & 0.12 / 0.07 & 0.00 / 0.00 &
-        0.08 / 0.08 \\
-      WebQSP & GraphRAG       & 0.30 / 0.23 & 0.44 / 0.35 & 0.25 / 0.07 &
-        0.08 / 0.08 \\
-      WebQSP & Think-on-Graph & 0.63 / 0.45 & 0.78 / 0.58 & 0.25 / 0.07 &
-        0.17 / 0.17 \\
-      WebQSP & \textbf{AGR}   & 0.75 / 0.64 & \textbf{0.84 / 0.73} &
-        0.00 / 0.00 & 0.08 / 0.08 \\
+      WebQSP & No-retrieval   & 0.43 / 0.29 & 0.52 / 0.36 & 0.25 / 0.00 & 0.17 /
+        0.17 \\
+      WebQSP & Vector-RAG     & 0.82 / 0.63 & 0.12 / 0.07 & 0.00 / 0.00 & 0.08 /
+        0.08 \\
+      WebQSP & GraphRAG       & 0.30 / 0.23 & 0.44 / 0.35 & 0.25 / 0.07 & 0.08 /
+        0.08 \\
+      WebQSP & Think-on-Graph & 0.63 / 0.45 & 0.78 / 0.58 & 0.25 / 0.07 & 0.17 /
+        0.17 \\
+      WebQSP & \textbf{AGR}   & 0.75 / 0.64 & \textbf{0.84 / 0.73} & 0.00 / 0.00
+        & 0.08 / 0.08 \\
       \hline
-      CWQ & No-retrieval   & 0.38 / 0.35 & 0.30 / 0.27 & 0.14 / 0.14 &
-        0.00 / 0.00 \\
-      CWQ & Vector-RAG     & 0.33 / 0.27 & 0.14 / 0.11 & 0.10 / 0.09 &
-        0.67 / 0.67 \\
-      CWQ & GraphRAG       & 0.34 / 0.30 & 0.16 / 0.14 & 0.02 / 0.02 &
-        0.33 / 0.33 \\
+      CWQ & No-retrieval   & 0.38 / 0.35 & 0.30 / 0.27 & 0.14 / 0.14 & 0.00 /
+        0.00 \\
+      CWQ & Vector-RAG     & 0.33 / 0.27 & 0.14 / 0.11 & 0.10 / 0.09 & 0.67 /
+        0.67 \\
+      CWQ & GraphRAG       & 0.34 / 0.30 & 0.16 / 0.14 & 0.02 / 0.02 & 0.33 /
+        0.33 \\
       CWQ & Think-on-Graph & \textbf{0.53} / 0.48 & 0.37 / 0.32 & 0.45 / 0.32 &
         0.33 / 0.33 \\
-      CWQ & \textbf{AGR}   & 0.46 / 0.42 & \textbf{0.55 / 0.49} &
-        \textbf{0.57 / 0.50} & 0.33 / 0.33 \\
+      CWQ & \textbf{AGR}   & 0.46 / 0.42 & \textbf{0.55 / 0.49} & \textbf{0.57 /
+        0.50} & 0.33 / 0.33 \\
       \hline
     \end{tabular}
   \end{center}
@@ -1193,9 +1181,9 @@ of them would be settled by closing the gap in \Cref{tab:rog}.
   \end{center}
   \caption[Hits@1 across hop strata]{Hits@1 across hop strata. The shape is the
   finding: on ComplexWebQuestions AGR is the only system whose accuracy rises
-  with hop count. Every other profile ends below where it started --- three
-  of them monotonically, Think-on-Graph by falling and partly recovering. WebQSP
-  is drawn dashed because its \textsf{h3plus} stratum holds four questions and
+  with hop count. Every other profile ends below where it started --- three of
+  them monotonically, Think-on-Graph by falling and partly recovering. WebQSP is
+  drawn dashed because its \textsf{h3plus} stratum holds four questions and
   cannot carry a trend. The stratum sizes are printed on the axis for that
   reason. The \textsf{unreachable} stratum is omitted here and discussed below,
   since by construction it measures assertion rather than accuracy. Generated
@@ -1203,25 +1191,25 @@ of them would be settled by closing the gap in \Cref{tab:rog}.
   \label{fig:hop-strata}
 \end{figure}
 
-\Cref{tab:strata} is the direct answer to RQ1. It answers it with a shape
-rather than with a difference of means --- \Cref{fig:hop-strata} is that
+\Cref{tab:strata} is the direct answer to RQ1. It answers it with a shape rather
+than with a difference of means --- \Cref{fig:hop-strata} is that
 shape.\index{hop stratum}
 
 \textbf{On CWQ, AGR's accuracy rises with hop count.} Hits@1 goes $0.46 \to 0.55
-\to 0.57$ across \textsf{h1}, \textsf{h2}, \textsf{h3plus}. F1 goes $0.42
-\to 0.49 \to 0.50$. It is the only system on that dataset that ends above where
-it started. The other four all end below. Three of them decay monotonically:
+\to 0.57$ across \textsf{h1}, \textsf{h2}, \textsf{h3plus}. F1 goes $0.42 \to
+0.49 \to 0.50$. It is the only system on that dataset that ends above where it
+started. The other four all end below. Three of them decay monotonically:
 No-retrieval $0.38 \to 0.30 \to 0.14$, Vector-RAG $0.33 \to 0.14 \to 0.10$, and
 GraphRAG $0.34 \to 0.16 \to 0.02$, though that last row is radius-limited and is
 read with the qualification given below. Think-on-Graph is the exception to the
 monotonicity but not to the direction: it falls from $0.53$ to $0.37$ and
 partially recovers to $0.45$, still $0.08$ below its own one-hop score. The
-distinction is worth keeping --- ``every other system decays'' would be the
-tidier sentence. It is not what the table says. A system that gets
-\emph{better} as the required chain gets longer is not merely ahead on average:
-it is the only one in the table whose profile is consistent with actually
-traversing the chain. That monotonicity is a stronger form of the multi-hop
-claim than any aggregate could carry.
+distinction is worth keeping. ``Every other system decays'' would be the tidier
+sentence, but it is not what the table says. A system that gets \emph{better} as
+the required chain gets longer is not just ahead on average. It is the only one
+in the table whose profile fits a system that actually traverses the chain. That
+monotonicity is a stronger form of the multi-hop claim than any aggregate could
+carry.
 
 \textbf{Think-on-Graph beats AGR on CWQ's one-hop stratum} ($0.53$ against
 $0.46$, $n = 137$). This is reported rather than buried because it makes the
@@ -1233,9 +1221,8 @@ decomposing. CWQ's \textsf{h1} stratum is full of them.
 $0.82$ at one hop --- the best single-hop number anywhere in the table, better
 than AGR's $0.75$ --- and $0.12$ at two. When one triple suffices, dense
 retrieval over verbalised triples is excellent. When a chain is required, it has
-nothing to offer. This is the cell the multi-hop argument rests on. A
-one-triple context is chain-incapable by construction rather than by
-configuration.
+nothing to offer. This is the cell the multi-hop argument rests on. A one-triple
+context is chain-incapable by construction rather than by configuration.
 
 \textbf{GraphRAG's WebQSP inversion has two causes. Only one of them was
 originally named.} It scores $0.30$ at \textsf{h1} against $0.44$ at
@@ -1245,22 +1232,22 @@ exactly, drowned \emph{or absent}, since the retrieval step samples at most
 $100$ edges per topic entity without an ordering, and $55.1\%$ of its topic
 entities carry more edges than that (\Cref{sec:baseline-graphrag}). Which of the
 two applies to any given question is not recoverable from the run records. But
-the inversion also marks the edge of the retrieval radius. The same
-section scopes that as a bound on this implementation rather than on static
-retrieval as such. WebQSP's \textsf{h2} stratum is largely mediator paths, which
-a one-hop expansion reaches by hopping through the mediator. CWQ's \textsf{h2},
-by contrast, is genuine composition, which it cannot reach at all: $0.44$
-against $0.16$ on nominally the same stratum depth. Read GraphRAG's per-stratum
-row as measuring what its radius covers, not how far static retrieval can see.
+the inversion also marks the edge of the retrieval radius. The same section
+scopes that as a bound on this implementation rather than on static retrieval as
+such. WebQSP's \textsf{h2} stratum is largely mediator paths, which a one-hop
+expansion reaches by hopping through the mediator. CWQ's \textsf{h2}, by
+contrast, is genuine composition, which it cannot reach at all: $0.44$ against
+$0.16$ on nominally the same stratum depth. Read GraphRAG's per-stratum row as
+measuring what its radius covers, not how far static retrieval can see.
 
 \textbf{The unreachable stratum is a hallucination probe, not an accuracy
-measurement.} By construction no path to gold exists within the hop bound for
-these questions. So every ``hit'' is an assertion the environment cannot support
-that happened to match the label. Vector-RAG scores $0.67$ on CWQ's three
-unreachable questions and no-retrieval $0.17$ on WebQSP's twelve. The counts are
-tiny, and no weight is placed on them. But the direction is exactly what
-\Cref{sec:groundedness-results} measures at scale: Hits@1 will happily reward
-what RQ2 is about the absence of.
+measurement.} For these questions, by construction, no path to gold exists
+within the hop bound. So every ``hit'' is an assertion the environment cannot
+support, one that just happened to match the label. Vector-RAG scores $0.67$ on
+CWQ's three unreachable questions and no-retrieval $0.17$ on WebQSP's twelve.
+The counts are tiny, and no weight is placed on them. But the direction is
+exactly what \Cref{sec:groundedness-results} measures at scale: Hits@1 will
+happily reward what RQ2 is about the absence of.
 
 \section{Groundedness and Hallucination Rate Across
 Systems}\label{sec:groundedness-results}
@@ -1277,11 +1264,10 @@ Systems}\label{sec:groundedness-results}
     \small
     \begin{tabular}{|l|l|r|r|r|r|}
       \hline
-      & & \multicolumn{3}{c|}{\textbf{Tier 1: structural}} &
-      \textbf{Tier 2} \\
+      & & \multicolumn{3}{c|}{\textbf{Tier 1: structural}} & \textbf{Tier 2} \\
       \hline
-      \textbf{Data} & \textbf{System} & \textbf{Entities} &
-      \textbf{Ungrounded} & \textbf{Questions} & \textbf{Supported} \\
+      \textbf{Data} & \textbf{System} & \textbf{Entities} & \textbf{Ungrounded}
+      & \textbf{Questions} & \textbf{Supported} \\
       \hline
       WebQSP & No-retrieval   & 661  & 179 (27.1\%) & 37.6\% & 63.3\% \\
       WebQSP & Vector-RAG     & 1040 & 38 (3.7\%)   & 6.2\%  & 61.7\% \\
@@ -1294,10 +1280,10 @@ Systems}\label{sec:groundedness-results}
       CWQ & No-retrieval   & 340 & 42 (12.4\%) & 13.7\% & 36.7\% \\
       CWQ & Vector-RAG     & 289 & 7 (2.4\%)   & 3.4\%  & \textbf{50.0\%} \\
       CWQ & GraphRAG       & 224 & 2 (0.9\%)   & 1.3\%  & 36.7\% \\
-      CWQ & Think-on-Graph & 433 & \textbf{0 (0.0\%)} & \textbf{0.0\%} &
-        43.3\% \\
-      CWQ & AGR            & 474 & \textbf{0 (0.0\%)} & \textbf{0.0\%} &
-        48.3\% \\
+      CWQ & Think-on-Graph & 433 & \textbf{0 (0.0\%)} & \textbf{0.0\%} & 43.3\%
+        \\
+      CWQ & AGR            & 474 & \textbf{0 (0.0\%)} & \textbf{0.0\%} & 48.3\%
+        \\
       \hline
     \end{tabular}
   \end{center}
@@ -1311,32 +1297,32 @@ on\index{hallucination}\index{groundedness} WebQSP, of which $179$ --- $27.1\%$
 answers contain at least one such entity. Both navigating systems sit at exactly
 zero, over $1{,}235$ and $832$ asserted entities. Parametric answering
 hallucinates structurally at double-digit rates. Graph-navigated answering
-eliminates structural hallucination outright.
+removes structural hallucination outright.
 
-\textbf{But Think-on-Graph reaches zero as well. That changes the
-attribution.} Structural groundedness is a property of the \emph{navigation
-paradigm} --- any system that copies its answer entities out of triples it
-actually traversed inherits it --- not of this thesis's verification layer
-specifically. The honest claim is therefore narrower and more testable than the
-one the work set out to make: \emph{both navigating systems achieve zero
-structural hallucination; they differ at the level of semantic support}, where
-Think-on-Graph's precision of $0.571$ and $0.403$ against AGR's $0.697$ and
-$0.484$ (\Cref{tab:main}) shows it asserting substantially more entities that
-exist, connect to the topic, and were copied from real triples --- and are not
-the answer. \Cref{sec:limitations} builds on exactly this gap.
+\textbf{But Think-on-Graph reaches zero as well. That changes the attribution.}
+Structural groundedness is a property of the \emph{navigation paradigm}. Any
+system that copies its answer entities out of triples it actually traversed
+inherits it. It is not a property of this thesis's verification layer
+specifically. So the honest claim is narrower, and more testable, than the one
+the work set out to make: \emph{both navigating systems achieve zero structural
+hallucination; they differ at the level of semantic support}. Think-on-Graph's
+precision of $0.571$ and $0.403$, against AGR's $0.697$ and $0.484$
+(\Cref{tab:main}), shows it asserting far more entities that exist, connect to
+the topic, were copied from real triples --- and are not the answer.
+\Cref{sec:limitations} builds on exactly this gap.
 
 Two readings of the middle band belong on the record. The no-retrieval control's
-CWQ rate ($12.4\%$) is less than half its WebQSP rate ($27.1\%$) not because it
-fabricates less on harder questions but because it hedges more --- $38.0\%$
-against $12.2\%$. Abstention suppresses the measured hallucination rate.
-That is the abstention trade appearing in a third metric. And Vector-RAG's $38$
-ungrounded entities are mostly not fabrications: its index is global. So
+CWQ rate ($12.4\%$) is less than half its WebQSP rate ($27.1\%$). That is not
+because it fabricates less on harder questions. It is because it hedges more:
+$38.0\%$ against $12.2\%$. Abstention pushes the measured hallucination rate
+down. That is the abstention trade appearing in a third metric. And Vector-RAG's
+$38$ ungrounded entities are mostly not fabrications: its index is global. So
 retrieval can surface facts about a similarly-named subject that exists in the
 graph but has no connection to the question's topics. The model then copies
 faithfully from them. The metric correctly flags those as unanchored to the
 question. But the mechanism is retrieval error rather than generation error.
-Structural ungroundedness conflates the two. The distinction is recoverable
-from whether the entity appears in the system's own retrieved facts.
+Structural ungroundedness conflates the two. The distinction is recoverable from
+whether the entity appears in the system's own retrieved facts.
 
 \subsection{Tier 2: A Narrow Band and an Underpowered Comparison}
 
@@ -1350,21 +1336,21 @@ both datasets. Its lead over \emph{every} system is a WebQSP result only.
 
 Neither gap is resolvable at this sample size. With $n = 60$ per cell the $95\%$
 binomial interval has a half-width of roughly $12$--$13$ points. So a $5$-point
-difference is inside the noise --- as is Vector-RAG's $1.7$. No
-conclusion in this thesis rests on either. What the tier does establish is the
-level: semantic support is \emph{hard} for every system, including the two that
-are structurally perfect. Zero structural hallucination coexists with roughly a
-third to a half of assertions failing a strict semantic-support test. That
-coexistence is the single most useful thing the metric says. It says it
-about the paradigm rather than about any one system.
+difference is inside the noise --- as is Vector-RAG's $1.7$. No conclusion in
+this thesis rests on either. What the tier does establish is the level: semantic
+support is \emph{hard} for every system, including the two that are structurally
+perfect. Zero structural hallucination coexists with roughly a third to a half
+of assertions failing a strict semantic-support test. That coexistence is the
+single most useful thing the metric says. It says it about the paradigm, not
+about any one system.
 
-Two properties of the measurement bound its interpretation, both pre-registered.
-The rates are conservative lower bounds, depressed uniformly across systems.
-That uniformity preserves the between-system comparison while making the
-absolute levels untrustworthy. And the judge was validated at $\kappa = 0.6995$
-against a pre-registered bar of $0.7$ (\Cref{sec:judge}) --- substantial
-agreement, marginally short of the threshold, and a further reason to treat this
-tier as corroborating rather than decisive.
+Two properties of the measurement limit how it can be read. Both were
+pre-registered. The rates are conservative lower bounds, and they are depressed
+by the same amount across systems. That uniformity keeps the between-system
+comparison intact while making the absolute levels untrustworthy. And the judge
+was validated at $\kappa = 0.6995$ against a pre-registered bar of $0.7$
+(\Cref{sec:judge}). That is substantial agreement, just short of the threshold.
+It is one more reason to treat this tier as corroborating rather than decisive.
 
 \section{Efficiency and Cost}\label{sec:efficiency}
 
@@ -1374,7 +1360,7 @@ tier as corroborating rather than decisive.
   \begin{center}
     \caption[Cost per question]{Cost per question. Latency is computed over
     cold-cache records only. Clip rate is the share of questions on which the
-    shared $25$-call budget was exhausted mid-search.}
+    shared $25$-call budget ran out mid-search.}
     \label{tab:efficiency}
     \small
     \begin{tabular}{|l|l|r|r|r|r|}
@@ -1398,7 +1384,7 @@ tier as corroborating rather than decisive.
   \end{center}
 \end{table}
 
-Agency costs roughly an order of magnitude over one-shot retrieval: $4{,}511$
+Agency costs roughly ten times as much as one-shot retrieval: $4{,}511$
 and\index{budget} $6{,}818$ tokens per question against $\sim 500$, and
 $11$--$17$ seconds against one to two. That is the price of RQ1's accuracy. It
 is stated as a price.
@@ -1420,9 +1406,9 @@ efficiency finding rather than a caveat on it: under an identical budget, AGR
 converts its calls into correct answers at roughly twice the rate.
 
 Never reaching the call cap is not the same as running unbounded. The
-distinction matters. The rest of this thesis restates this result. AGR's
-own budgets bind, the depth cap of \Cref{tab:budget} hardest: the meter refuses
-a deeper expansion on $25.6\%$ of test questions, against $6.2\%$ for backtracks
+distinction matters. The rest of this thesis restates this result. AGR's own
+budgets bind, the depth cap of \Cref{tab:budget} hardest: the meter refuses a
+deeper expansion on $25.6\%$ of test questions, against $6.2\%$ for backtracks
 and $1.9\%$ for repair iterations. \Cref{sec:repair} and
 \Cref{sec:verify-example} each narrate a run that ends that way. What the clip
 column establishes is the narrower and more useful thing --- that of the two
@@ -1478,6 +1464,7 @@ cheap end of the token frontier while being off any accuracy-worthy frontier
 once precision is counted: it remains the cheapest way to be right about half
 the time on WebQSP, which is the contamination point restated as an economic
 one.
+
 \section{Ablation Study}\label{sec:ablations}
 
 Four single-deviation conditions on stratified halves ($n = 200$ WebQSP, $n =
@@ -1494,9 +1481,9 @@ So a positive $\Delta$ means removing the component \emph{improved} the metric.
     defined in \Cref{sec:metrics} and reported for the full systems in
     \Cref{tab:main}. They are carried here so that the precision effect of each
     condition can be read off directly rather than taken on trust from the
-    surrounding prose. Cost is reported in tokens and calls only: latency is
-    omitted because every record in the \textsf{no-verifier} condition is a full
-    cache replay. So a seconds column would not be comparable across
+    surrounding prose. Cost is reported in tokens and calls only. Latency is
+    left out because every record in the \textsf{no-verifier} condition is a
+    full cache replay, so a seconds column would not be comparable across
     conditions.}
     \label{tab:ablation}
     % Nine columns: the seven of \Cref{tab:main} plus the two cost columns. Two
@@ -1507,14 +1494,13 @@ So a positive $\Delta$ means removing the component \emph{improved} the metric.
     \begin{tabular}{|l|l|l|l|r|r|r|r|r|}
       \hline
       \textbf{Data} & \textbf{Condition} & \textbf{Hits@1} & \textbf{F1} &
-      \textbf{P} & \textbf{R} & \textbf{Hedge} & \textbf{Tok.} &
-        \textbf{Calls} \\
+      \textbf{P} & \textbf{R} & \textbf{Hedge} & \textbf{Tok.} & \textbf{Calls}
+      \\
       \hline
       WebQSP & reference       & 0.755 [0.695, 0.810] & 0.659 [0.599, 0.717] &
         0.710 & 0.664 & 8.5\%  & 4{,}562 & 6.2 \\
-      WebQSP & no-planner      & \textbf{0.830} [0.775, 0.880] &
-        \textbf{0.742} [0.687, 0.794] & 0.788 & 0.749 & 5.5\%  & 3{,}159 &
-        4.0 \\
+      WebQSP & no-planner      & \textbf{0.830} [0.775, 0.880] & \textbf{0.742}
+        [0.687, 0.794] & 0.788 & 0.749 & 5.5\%  & 3{,}159 & 4.0 \\
       WebQSP & no-backtrack    & 0.745 [0.685, 0.805] & 0.646 [0.586, 0.705] &
         0.704 & 0.649 & 9.5\%  & 4{,}261 & 5.8 \\
       WebQSP & no-verifier     & 0.760 [0.700, 0.820] & 0.663 [0.604, 0.721] &
@@ -1539,36 +1525,36 @@ So a positive $\Delta$ means removing the component \emph{improved} the metric.
 
 \subsection{Without the Planner: A Stratum-Dependent Effect}
 
-This is the one condition that reaches significance. It points the
-opposite\index{planner} way to the design intent.
+This is the one condition that reaches significance. And it points the
+opposite\index{planner} way from what the design intended.
 
 On WebQSP, \emph{removing} the planner improves every axis at once: Hits@1
 $0.755 \to 0.830$, F1 $0.659 \to 0.742$, hedge rate $8.5\% \to 5.5\%$, tokens
 $4{,}562 \to 3{,}159$, calls $6.2 \to 4.0$. McNemar gives $p = 5.9 \times
 10^{-3}$ on $6$ against $21$ discordant pairs. The per-stratum breakdown locates
 the damage precisely: \textsf{h1} rises $0.75 \to 0.85$ and \textsf{h2} rises
-$0.84 \to 0.89$. So decomposition is hurting simple \emph{and} two-hop questions
-on this dataset. The planner prompt's first worked example instructs the model
-not to decompose single-hop questions. The ablation proves that instruction
-under-triggers, with a $p$-value.
+$0.84 \to 0.89$. So on this dataset decomposition hurts simple \emph{and}
+two-hop questions. The planner prompt's first worked example tells the model not
+to decompose single-hop questions. The ablation proves that instruction fires
+too rarely, and it proves it with a $p$-value.
 
-On CWQ the sign reverses. Significance is not reached: Hits@1 $0.495 \to
-0.434$, $27$ against $15$ discordant pairs, $p = 0.088$. The stratum table shows
-a coherent mechanism rather than noise: \textsf{h1} \emph{improves} ($0.49
-\to 0.54$) while \textsf{h2} collapses ($0.48 \to 0.34$) and \textsf{h3plus}
-moves little ($0.62 \to 0.54$). That pattern is precisely ``decomposition helps
-genuine composition and hurts questions that do not need it''. But it does not
-clear $\alpha = 0.05$ at $n = 198$. The honest statement carries both
-halves: \emph{the planner's benefit is stratum-conditional and significant on
-WebQSP ($p = 0.006$); the CWQ pattern points the same way but does not reach
+On CWQ the sign reverses. Significance is not reached: Hits@1 $0.495 \to 0.434$,
+$27$ against $15$ discordant pairs, $p = 0.088$. The stratum table shows a
+coherent mechanism rather than noise: \textsf{h1} \emph{improves} ($0.49 \to
+0.54$) while \textsf{h2} collapses ($0.48 \to 0.34$) and \textsf{h3plus} moves
+little ($0.62 \to 0.54$). That pattern is exactly ``decomposition helps genuine
+composition and hurts questions that do not need it''. But it does not clear
+$\alpha = 0.05$ at $n = 198$. The honest statement carries both halves:
+\emph{the planner's benefit depends on the stratum and is significant on WebQSP
+($p = 0.006$); the CWQ pattern points the same way but does not reach
 significance at this sample size ($p = 0.088$)}.
 
-The finding is therefore not ``the planner helps'' or ``the planner hurts'' but
-that its value is conditional on question structure, and that applying
-decomposition unconditionally is the defect. \Cref{sec:decomposition-errors}
-reads the $21$ and $15$ questions where removing the planner flipped a failure
-into a success and names the mechanisms. \Cref{sec:future} turns them into an
-adaptive gating proposal that this ablation earned rather than motivated.
+So the finding is not ``the planner helps'' or ``the planner hurts''. It is that
+the planner's value depends on question structure. Applying decomposition to
+every question regardless is the defect. \Cref{sec:decomposition-errors} reads
+the $21$ and $15$ questions where removing the planner flipped a failure into a
+success and names the mechanisms. \Cref{sec:future} turns them into an adaptive
+gating proposal that this ablation earned rather than motivated.
 
 \subsection{Without Backtracking}
 
@@ -1583,8 +1569,8 @@ most of the excursions it exists to correct, or $n \approx 200$ may simply be
 too few questions to resolve a small effect. This is reported as ``no detectable
 effect at $n \approx 200$'', never as a confirmed null. The mechanism is not
 idle --- the full runs record $63$ backtracks on WebQSP and $199$ on CWQ,
-dominated by evaluator-triggered ones ($47$ and $170$). So the condition
-removes real activity whose accuracy consequence this experiment cannot measure.
+dominated by evaluator-triggered ones ($47$ and $170$). So the condition removes
+real activity whose accuracy consequence this experiment cannot measure.
 
 \subsection{Without the Verification Layer}
 
@@ -1595,16 +1581,16 @@ correctness of exactly two. Hits@1 moves $+0.005$ and $-0.005$. F1 moves
 $+0.004$ and $-0.009$. Both $p = 1.00$.
 
 This reproduces the development-set result of \Cref{sec:dev-tuning} exactly. It
-is also what \Cref{sec:verification-layer} predicted by construction: on $77$ of
-$80$ development questions the layer certified the draft and changed nothing.
-The repair path never executed. A mechanism that mostly passes cannot move
-an accuracy metric.
+is also what \Cref{sec:verification-layer} predicted, by construction. On $77$
+of $80$ development questions the layer certified the draft and changed nothing.
+The repair path never ran. A mechanism that mostly passes cannot move an
+accuracy metric.
 
 The conclusion this licenses is narrower and sharper than ``the verifier
-helps''. It is the one \Cref{sec:findings} adopts: \emph{claim verification
-does not measurably change how often AGR is right; it changes how often AGR is
-right for a reason it can exhibit}. Hits@1 cannot see that distinction. What
-makes it checkable is the supporting-triple output contract of
+helps''. It is the one \Cref{sec:findings} adopts: \emph{claim verification does
+not measurably change how often AGR is right; it changes how often AGR is right
+for a reason it can exhibit}. Hits@1 cannot see that distinction. What makes it
+checkable is the supporting-triple output contract of
 \Cref{sec:output-contract}. The evidence for the layer is that contract and the
 specimen analyses of \Cref{sec:verifier-errors}. It is neither of the two
 aggregate results it would be natural to reach for instead.
@@ -1632,30 +1618,30 @@ datasets and accounting for about three quarters of the WebQSP increase and
 about half of CWQ's.
 
 That second detail was originally read as the $\tau$ mechanism of
-\Cref{sec:backtracking} visible in the logs. The reading survives only
-partly. The signal $\tau$ thresholds is not computed identically in the two
-conditions, for the reason \Cref{sec:backtracking} records: at $\alpha = 1$ the
-two auxiliary maxima are never taken. So $\sigma$ is a maximum over
-beam-selected, non-banned edges rather than over every candidate offered. After
-a backtrack has banned the best relation, $\sigma$ falls in this condition,
-where it holds steady in the reference. That divergence produces additional
-\textsf{low\_score} backtracks through an implementation asymmetry rather than
-through the scoring change under test. The two effects push the same way and
-cannot be separated without re-running the condition with the auxiliary terms
-restored --- which would no longer be the frozen system.
+\Cref{sec:backtracking} visible in the logs. The reading survives only partly.
+The signal $\tau$ thresholds is not computed identically in the two conditions,
+for the reason \Cref{sec:backtracking} records: at $\alpha = 1$ the two
+auxiliary maxima are never taken. So $\sigma$ is a maximum over beam-selected,
+non-banned edges rather than over every candidate offered. After a backtrack has
+banned the best relation, $\sigma$ falls in this condition, where it holds
+steady in the reference. That divergence produces additional \textsf{low\_score}
+backtracks through an implementation asymmetry rather than through the scoring
+change under test. The two effects push the same way. They cannot be separated
+without re-running the condition with the auxiliary terms restored, and that
+would no longer be the frozen system.
 
-The honest statement is therefore narrower than the original: removing the model
+So the honest statement is narrower than the original one: removing the model
 term raises the backtrack count. An unknown but non-trivial share of that rise
 is an artefact of how $\sigma$ is computed when the term is disabled. The
-backtrack count is consequently corroborating rather than load-bearing. That
-cuts against the ablation's own direction, since extra backtracks make the
-embedding-only condition look busier than the scoring change alone would. So the
-defect flatters the component under test rather than the null. Nothing in
-\Cref{tab:rq3} depends on it: the accuracy and F1 deltas are computed from
-answers, not from backtracks. The primary evidence for $\alpha = 0.7$ remains
-the development sweep of \Cref{tab:sweep}, where the $\alpha = 1.0$ condition
-lost five hits on $80$ questions. This ablation corroborates it at test
-scale rather than independently establishing it.
+backtrack count is therefore corroborating, not load-bearing. That cuts against
+the ablation's own direction. Extra backtracks make the embedding-only condition
+look busier than the scoring change alone would. So the defect flatters the
+component under test, not the null. Nothing in \Cref{tab:rq3} depends on it. The
+accuracy and F1 deltas are computed from answers, not from backtracks. The main
+evidence for $\alpha = 0.7$ is still the development sweep of \Cref{tab:sweep},
+where the $\alpha = 1.0$ condition lost five hits on $80$ questions. This
+ablation corroborates it at test scale rather than independently establishing
+it.
 
 \subsection{Paired Significance Testing and Statistical Power}
 
@@ -1668,16 +1654,16 @@ scale rather than independently establishing it.
     \small
     \begin{tabular}{|l|l|l|l|}
       \hline
-      \textbf{Component} & \textbf{WebQSP $\Delta$F1 ($p$)} &
-      \textbf{CWQ $\Delta$F1 ($p$)} & \textbf{Verdict} \\
+      \textbf{Component} & \textbf{WebQSP $\Delta$F1 ($p$)} & \textbf{CWQ
+      $\Delta$F1 ($p$)} & \textbf{Verdict} \\
       \hline
       Planner & $+0.083$ ($0.006$) & $-0.047$ ($0.088$) & Stratum-dependent \\
-      Backtracking & $-0.013$ ($0.73$) & $0.000$ ($1.00$) &
-        No detectable effect \\
-      Verification & $+0.004$ ($1.00$) & $-0.009$ ($1.00$) &
-        No accuracy effect \\
-      $\alpha$-blend & $-0.016$ ($0.66$) & $-0.008$ ($0.48$) &
-        Directional, underpowered \\
+      Backtracking & $-0.013$ ($0.73$) & $0.000$ ($1.00$) & No detectable effect
+        \\
+      Verification & $+0.004$ ($1.00$) & $-0.009$ ($1.00$) & No accuracy effect
+        \\
+      $\alpha$-blend & $-0.016$ ($0.66$) & $-0.008$ ($0.48$) & Directional,
+        underpowered \\
       \hline
     \end{tabular}
   \end{center}
@@ -1685,8 +1671,8 @@ scale rather than independently establishing it.
 
 One of four conditions reaches significance. That is the correct outcome to
 report, not a disappointing one. A correction for multiple comparisons was not
-among the pre-registered decisions of \Cref{sec:pre-registration}. Applying
-one now would be a choice made after seeing the results. So the uncorrected
+among the pre-registered decisions of \Cref{sec:pre-registration}. Applying one
+now would be a choice made after seeing the results. So the uncorrected
 $p$-values are reported as computed and read as descriptive rather than as a
 family-wise claim. \Cref{app:power} gives the arithmetic behind the second
 qualification: at $n \approx 200$ McNemar's test needs a discordance pattern
@@ -1697,8 +1683,8 @@ rather than as no effect. The distinction is the whole content of
 
 \section{Error Analysis}\label{sec:erroranalysis}
 
-\Cref{sec:results} measured how often each system fails. This analysis reads
-the failures and names the mechanism of each one. It is the part of the work no
+\Cref{sec:results} measured how often each system fails. This analysis reads the
+failures and names the mechanism of each one. It is the part of the work no
 script produced: $259$ failure packets --- question, gold, answer, plan,
 explored relations with their scores, backtrack reasons, verifier outcome ---
 read and labelled by hand, one category and one sentence each.
@@ -1712,15 +1698,14 @@ three categories.
 
 A note on the identifiers used throughout this analysis, because they are meant
 to be looked up. A ComplexWebQuestions identifier is the WebQSP identifier it
-was derived from followed by a thirty-two character hash. The stem alone
-does not identify a question: within these samples one stem covers up to twelve
+was derived from followed by a thirty-two character hash. The stem alone does
+not identify a question: within these samples one stem covers up to twelve
 distinct CWQ questions. Thirteen stems are themselves complete WebQSP
 identifiers naming something else entirely. Cases are therefore cited as stem
 plus the first eight hash characters. That combination is unique within both
 samples. \Cref{app:samples} lists every identifier in full.
 
-\subsection{Annotation Protocol and the Failure
-Taxonomy}\label{sec:taxonomy}
+\subsection{Annotation Protocol and the Failure Taxonomy}\label{sec:taxonomy}
 
 Ten categories carry the census, each naming a distinct architectural locus
 rather than a symptom, so that a count against a category points at the
@@ -1763,12 +1748,11 @@ Datasets}\label{sec:failure-distribution}
 \paragraph{The Shape Flip, and What It Is Not}
 
 The two datasets fail differently, but not in the way a first reading of
-\Cref{tab:histogram} suggests.
-\textsf{relation\_selection} sits at the top on \emph{both} --- $26$ of WebQSP's
-$86$, level there with \textsf{decomposition\_error}, and $39$ of CWQ's $173$,
-behind \textsf{composite\_claim} alone. So it is not what distinguishes them.
-Picking the wrong edge is the base rate of graph navigation. It is
-dataset-independent.
+\Cref{tab:histogram} suggests. \textsf{relation\_selection} sits at the top on
+\emph{both} --- $26$ of WebQSP's $86$, level there with
+\textsf{decomposition\_error}, and $39$ of CWQ's $173$, behind
+\textsf{composite\_claim} alone. So it is not what distinguishes them. Picking
+the wrong edge is the base rate of graph navigation. It is dataset-independent.
 
 What distinguishes them is a pair of categories that are nearly absent from one
 and dominant in the other. \textsf{composite\_claim} is $1$ of $86$ on WebQSP
@@ -1785,9 +1769,9 @@ with exactly the questions that do not need decomposing. That mismatch is also
 the significant ablation result of \Cref{sec:ablations}, appearing here as a
 category count. Second, the expressiveness limits certified in
 \Cref{sec:unanswerable}: the environment carries no date literals, no numeric
-literals, and no ordinals. CWQ's SPARQL templates invoke all three
-constantly, while WebQSP's naturally-occurring questions rarely do. The failure
-profile of a system on a dataset is, to this extent, a property of the dataset's
+literals, and no ordinals. CWQ's SPARQL templates invoke all three constantly,
+while WebQSP's naturally-occurring questions rarely do. The failure profile of a
+system on a dataset is, to this extent, a property of the dataset's
 construction.
 
 \paragraph{Hedging Where It Should}
@@ -1808,24 +1792,23 @@ system cannot succeed.
 Errors}\label{sec:decomposition-errors}
 
 Three families share this section because they share a locus: everything
-downstream of retrieval and upstream of the answer. The reasoning is often
-complete and correct by the time these failures occur. That timing is what
+downstream of retrieval and upstream of the answer. By the time these failures
+happen, the reasoning is often already complete and correct. That timing is what
 makes them both diagnostic and cheap to fix.
 
 \paragraph{The Entity-Extraction Bug}
 
 Nine of the $38$ \textsf{decomposition\_error} cases carry the subtype
-\textsf{extraction\_bug}. They are the most actionable finding in the
-census. On profession-shaped and ``what did $X$ do'' questions, the evaluator
-resolves every correct gold value. The drafted text states them verbatim.
-\textsf{answer\_entities} then collapses to the sentence's grammatical
-\emph{subject}. \Cref{tab:extraction} gives three instances read from the raw
-traces.
+\textsf{extraction\_bug}. They are the most actionable finding in the census. On
+profession-shaped and ``what did $X$ do'' questions, the evaluator resolves
+every correct gold value. The drafted text states them word for word. Then
+\textsf{answer\_entities} collapses to the grammatical \emph{subject} of the
+sentence. \Cref{tab:extraction} gives three instances read from the raw traces.
 
 \begin{table}[!tb]
   \begin{center}
     \caption[The entity-extraction bug]{The entity-extraction bug. In each case
-    the drafted answer text names every gold value correctly and the scored
+    the drafted answer text names every gold value correctly, and the scored
     entity list holds only the sentence's grammatical subject.}
     \label{tab:extraction}
     \small
@@ -1836,8 +1819,8 @@ traces.
       \hline
       WebQTest-1215 & 6 professions & all 6 & \textsf{[Stephen Covey]} \\
       WebQTest-704  & 6 professions & all 6 & \textsf{[Thor Heyerdahl]} \\
-      WebQTrn-124\_0782789f   & 4 films       & all 4 &
-        \textsf{[Angelina Jolie]} \\
+      WebQTrn-124\_0782789f   & 4 films       & all 4 & \textsf{[Angelina
+        Jolie]} \\
       \hline
     \end{tabular}
   \end{center}
@@ -1847,48 +1830,48 @@ traces.
 \textsf{WebQTest-1215}, ``who was stephen r covey'', gold lists Author, Manager,
 Writer, Consultant, Professor, and Motivational speaker. The drafted answer
 reads \emph{``Stephen Covey was a Writer, Motivational speaker, Author,
-Consultant, Professor, and Manager''} --- all six, correct, in a different
+Consultant, Professor, and Manager''}. That is all six, correct, in a different
 order. \textsf{answer\_entities} comes back as \textsf{['Stephen Covey']}. The
 navigation found the answers. The verifier certified them. The prose reports
-them. What fails is the step that turns answer text into the entity list, which
+them. What fails is the step that turns answer text into the entity list. It
 consistently reaches for the subject rather than the predicate values.
 
-The consequence has to be stated as a limitation on \Cref{sec:results}, not
-merely as a bug: scoring reads \textsf{answer\_entities}. So every one of these
-cases is recorded as a wrong answer or a hedge in \Cref{tab:main}. The reported
+The consequence has to be stated as a limitation on \Cref{sec:results}, not just
+as a bug. Scoring reads \textsf{answer\_entities}. So every one of these cases
+is recorded as a wrong answer or a hedge in \Cref{tab:main}. The reported
 accuracy of this system on ``list the professions'' and ``list what $X$ did''
-question shapes is therefore depressed by an extraction defect independent of
-any reasoning quality. Nine cases across $259$ is not enough to move the
-headline numbers appreciably. But the correct reading of them is that the
-measured figure is a floor for that question shape. \Cref{sec:future} lists
-the fix among the repairs the census earned.
+question shapes is therefore pulled down by an extraction defect that has
+nothing to do with reasoning quality. Nine cases across $259$ is not enough to
+move the headline numbers much. But the right way to read them is that the
+measured figure is a floor for that question shape. \Cref{sec:future} lists the
+fix among the repairs the census earned.
 
 \paragraph{Right Candidate Retrieved, Wrong One
 Drafted}\label{sec:answer-selection}
 
 \textsf{answer\_selection} ($15$ cases, $13$ of them on CWQ) is the extraction
-bug's more consequential sibling: the exact gold value demonstrably entered the
-resolved candidate set. The drafter chose something else.
+bug's more serious sibling. Here the exact gold value demonstrably entered the
+resolved candidate set, and the drafter chose something else.
 \textsf{WebQTest-1555} asks what the parliament of Nepal is called. The
-evaluator resolves \textsf{Parliament of Nepal} itself. The draft names its
-two component chambers instead. \textsf{WebQTrn-2784\_abedc8ac} asks which Tupac
+evaluator resolves \textsf{Parliament of Nepal} itself. The draft names its two
+component chambers instead. \textsf{WebQTrn-2784\_abedc8ac} asks which Tupac
 Shakur film Malcolm Campbell edited. The trace records
-\textsf{resolved=['Nothing but Trouble']}, the literal gold value satisfying
-both constraints. The draft substitutes \textsf{Gang Related} and then
+\textsf{resolved=['Nothing but Trouble']}, which is the literal gold value and
+satisfies both constraints. The draft substitutes \textsf{Gang Related} and then
 hedges on it.
 
-One case in this family was originally filed as a verifier error and is worth
-the correction in full. It is the kind of mistake this taxonomy exists
-to prevent. \textsf{WebQTrn-1294\_a4b2006a} was labelled \textsf{verifier\_fn}
-on the theory that the verifier had checked a claim about a different candidate
-than the one the evaluator resolved. The run record refutes that: the draft
-itself reads ``Marlon Brando also played in \emph{Joy}''. The verifier
-rejected exactly what the drafter asserted. Brando was not in \emph{Joy}. De
-Niro was. The evaluator had resolved him. \textbf{The verifier was correct.}
-The error is upstream, in the answerer. The label was corrected to
-\textsf{answer\_selection}. That case is also the clearest positive
-demonstration in the census of the verification layer doing its job.
-\Cref{sec:verifier-errors} opens by pointing back to it.
+One case in this family was first filed as a verifier error. The correction is
+worth giving in full, because it is the kind of mistake this taxonomy exists to
+prevent. \textsf{WebQTrn-1294\_a4b2006a} was labelled \textsf{verifier\_fn} on
+the theory that the verifier had checked a claim about a different candidate
+than the one the evaluator resolved. The run record refutes that. The draft
+itself reads ``Marlon Brando also played in \emph{Joy}''. The verifier rejected
+exactly what the drafter asserted. Brando was not in \emph{Joy}. De Niro was.
+The evaluator had resolved him. \textbf{The verifier was correct.} The error is
+upstream, in the answerer. The label was corrected to
+\textsf{answer\_selection}. That case is also the clearest example in the census
+of the verification layer doing its job. \Cref{sec:verifier-errors} opens by
+pointing back to it.
 
 \paragraph{Failing to Commit: Six Cases of Hedging on a Verified Fact}
 
@@ -1899,33 +1882,32 @@ resolves the exact gold value, the verifier returns} \textsf{grounded},
 \emph{and the drafted text hedges anyway}. No rejection is involved. So it is
 not a verifier error at all.
 
-\textsf{WebQTest-689} states ``Spanish Language was spoken in Spain'' and then
-that the first language spoken in Spain could not be determined, in one answer.
-\textsf{WebQTrn-125\_003c6a04} resolves \textsf{Memphis}, matching gold exactly.
-The draft says the location could not be determined.
+\textsf{WebQTest-689} states ``Spanish Language was spoken in Spain'' and then,
+in the same answer, that the first language spoken in Spain could not be
+determined. \textsf{WebQTrn-125\_003c6a04} resolves \textsf{Memphis}, matching
+gold exactly. The draft says the location could not be determined.
 \textsf{WebQTrn-1392\_d372995c} names both of Eleanor Roosevelt's schools
 correctly and then declares the school undeterminable.
 \textsf{WebQTest-989\_4b6636a0} (Battle of Dunkirk),
 \textsf{WebQTest-1923\_a64ef0f5} (\emph{The Last Song}), and
 \textsf{WebQTrn-2721\_2d207ed9} (\textsf{Alois Hitler}) are the same shape. In
-every case the entity list comes back empty. The question is scored as a
-hedge.
+every case the entity list comes back empty. The question is scored as a hedge.
 
-The contrast with the extraction bug is exact and worth holding: there the text
-is right and the entity list is wrong; here the text contradicts a fact it has
-just stated. Six of six instances share the mechanism. That uniformity makes it
-a defect rather than a distribution.
+The contrast with the extraction bug is exact and worth holding on to. There,
+the text is right and the entity list is wrong. Here, the text contradicts a
+fact it has just stated. Six of six instances share the mechanism. That
+uniformity makes it a defect rather than a distribution.
 
 \paragraph{Context-Stripping: When Decomposition Discards the Question}
 
 Subtyping is thinner in this category than elsewhere. The shortfall is
 worth\index{planner} stating before the cases are read.
-\textsf{decomposition\_error} holds $38$ failures. The four named subtypes
---- \textsf{extraction\_bug} ($9$), \textsf{paraphrase\_drift} ($9$),
+\textsf{decomposition\_error} holds $38$ failures. The four named subtypes ---
+\textsf{extraction\_bug} ($9$), \textsf{paraphrase\_drift} ($9$),
 \textsf{context\_stripping} ($3$), and \textsf{over\_decomposition} ($1$) ---
-cover $22$ of them, the other $16$ being labelled at category level only. The
-mechanisms below are therefore the mechanisms of the $22$, not of all $38$. The
-subtype vocabulary was left open rather than stretched to cover the residue.
+cover $22$ of them. The other $16$ are labelled at category level only. So the
+mechanisms below are the mechanisms of the $22$, not of all $38$. The subtype
+vocabulary was left open rather than stretched to cover the residue.
 
 \textsf{paraphrase\_drift} and \textsf{over\_decomposition} are the expected
 decomposition failures --- a rewritten sub-objective scoring worse against the
@@ -1938,8 +1920,8 @@ and hedges, while the undecomposed run finds the same fact in three calls with
 no backtracks.
 
 \textsf{context\_stripping} ($3$ cases) is the mechanism this analysis would
-feature if it could feature only one. It is a failure of decomposition
-that decomposition's own design cannot see: splitting a question into steps
+feature if it could feature only one. It is a failure of decomposition that
+decomposition's own design cannot see: splitting a question into steps
 \emph{removes} a qualifier that appears only in a later clause. So an early
 sub-objective resolves the wrong sense of an ambiguous term before the
 disambiguating information ever arrives. In \textsf{WebQTest-1367}, which asks
@@ -1963,11 +1945,11 @@ relations score $0.46$--$0.54$: decomposition actively \emph{suppressed} the one
 anchor that could have discriminated. Objective one then never completes
 (\textsf{objective\_done: false} at every round). So objective two never
 activates. The WW2 constraint is never used at any point in the search. The
-agent spends its depth budget wandering the presidency hub and drafts a
-plausible-sounding president: Woodrow Wilson, the 28th, and nowhere near the
-war. The undecomposed run answers Harry S.~Truman correctly in three calls.
-``WW2'' stayed in the scoring context. Two further observations belong
-to that trace. No ordinal relation appears anywhere in it. So the ``33rd''
+agent spends its depth budget wandering around the presidency hub. It then
+drafts a plausible-sounding president: Woodrow Wilson, the 28th, and nowhere
+near the war. The undecomposed run answers Harry S.~Truman correctly in three
+calls. ``WW2'' stayed in the scoring context. Two further observations belong to
+that trace. No ordinal relation appears anywhere in it. So the ``33rd''
 constraint played no part either --- consistent with the environment's lack of
 ordinal encoding (\Cref{sec:kg-gaps}). And the verifier returned
 \textsf{grounded} on the Wilson claim, which \Cref{sec:verifier-errors} takes up
@@ -1975,22 +1957,23 @@ as a boundary case rather than a defect.
 
 Three instances of one mechanism, two of them surfaced by the ablation contrast
 and one by ordinary reading, is what makes context-stripping a named finding
-rather than an anecdote. It is the concrete evidence behind the
-adaptive-gating proposal of \Cref{sec:future}. A fourth case belongs beside them
-and is filed as plain \textsf{decomposition\_error}, since no subtype fits it:
+rather than an anecdote. It is the concrete evidence behind the adaptive-gating
+proposal of \Cref{sec:future}. A fourth case belongs beside them and is filed as
+plain \textsf{decomposition\_error}, since no subtype fits it:
 \textsf{WebQTest-869}, ``where is ancient phoenician'', whose planner rewrote
 the sole sub-objective as \textsf{['find ancient Phoenician']}. So the explorer
-re-identified the topic instead of locating it. The run answered
-``Phoenicia'' --- the question's own subject, grounded, and useless, against an
-undecomposed run that answered ``Ancient Phoenicia was in Lebanon'' in three
-calls. What separates it from the three above is \emph{what} the rewrite
-discarded: they drop a constraint arriving in a later clause, this one drops the
-interrogative, the word that says what is being asked for. The result lands in
-the graph as an \textsf{echo} (\Cref{sec:echo}) --- with the ask removed, the
-nearest well-grounded entity to a topic is the topic. Both losses are visible to
-a planner that compares the rewrite against the original question, which is why
+re-identified the topic instead of locating it. The run answered ``Phoenicia''
+--- the question's own subject, grounded, and useless, against an undecomposed
+run that answered ``Ancient Phoenicia was in Lebanon'' in three calls. What
+separates it from the three above is \emph{what} the rewrite discarded: they
+drop a constraint arriving in a later clause, this one drops the interrogative,
+the word that says what is being asked for. The result lands in the graph as an
+\textsf{echo} (\Cref{sec:echo}) --- with the ask removed, the nearest
+well-grounded entity to a topic is the topic. Both losses are visible to a
+planner that compares the rewrite against the original question, which is why
 the gating proposal checks the rewrite for the interrogative as well as for
 redundancy.
+
 \subsection{Relation-Selection and Navigation Errors}\label{sec:relation-errors}
 
 \textsf{relation\_selection} is the largest category at $65$ and carries no
@@ -2012,20 +1995,21 @@ mechanisms that must not be merged.\index{evaluator} Five carry the
 correct relation is explored with a solid score, as high as $0.731$, and the
 evaluator backtracks away from it and never returns, across entirely unrelated
 domains. A relation scoring $0.73$ being explored and discarded is not a
-reasoning gap. It reads as a threshold or backtracking-policy defect. It is
-one of the most directly fixable findings in the census. The other three carry
+reasoning gap. It reads as a threshold or backtracking-policy defect. It is one
+of the most directly fixable findings in the census. The other three carry
 \textsf{budget} and are genuine exhaustion. \Cref{app:relation-cases} gives all
 thirteen with their scores.
+
 \subsection{Verifier Rejection and Acceptance Errors}\label{sec:verifier-errors}
 
 Before the errors, the correct rejections. \Cref{sec:answer-selection} narrates
 one in full: the verifier rejected a claim the drafter had fabricated about the
-wrong actor. The layer worked exactly as designed. The $52$ questions on
-which the verifier fired \textsf{unsupported} are not a population of mistakes.
+wrong actor. The layer worked exactly as designed. The $52$ questions on which
+the verifier fired \textsf{unsupported} are not a population of mistakes.
 
 The two error polarities are, however, very unevenly evidenced --- five cases
-against one. That imbalance is not a fact about the verifier. It is a
-fact about the instrumentation. It is the finding of this section.
+against one. That imbalance is not a fact about the verifier. It is a fact about
+the instrumentation. It is the finding of this section.
 
 \paragraph{Defining the Error Polarities}\label{sec:polarities}
 
@@ -2044,42 +2028,41 @@ correct. But no single triple states it in the phrasing the drafter used. So a
 transitively-true or differently-anchored fact is rejected, and the retry loses
 the answer. Three of the five had already resolved the exact gold answer before
 the rejection forced the retry. This is the limitation
-\Cref{sec:verify-failure-modes} describes by construction, now observed at
-census scale. \Cref{sec:future} names the semantic-level check that would
-address it.
+\Cref{sec:verify-failure-modes} describes by construction, now seen at census
+scale. \Cref{sec:future} names the semantic-level check that would address it.
 
 Exactly one clean specimen of wrongful acceptance exists in the whole census.
 \textsf{WebQTrn-1597\_8adc06ba} asserts a Seth MacFarlane connection to
 \emph{ThunderCats}. The verifier returns \textsf{grounded}. A direct Cypher
-query confirms no such edge exists in the environment. Its instructive companion
-is \emph{not} a second defect. \textsf{WebQTest-1620} asks when President Wilson
-was in office. The environment exposes inauguration events but no date literal.
-So the system answers with two inauguration mentions whose entities exist and
-whose edges are real. The structural check passed \emph{correctly} while the
-answer is wrong. That contrast is the most useful point in this section:
-structural grounding is a claim about edge existence, not about answer adequacy.
-So a verifier that checks whether a claim is \emph{in} the graph cannot, by
-construction, check whether it is \emph{the answer}. \Cref{tab:groundedness}'s
-Tier-2 column measures that gap. \Cref{app:verifier-cases} gives all seven
-cases with their traces.
+query confirms that no such edge exists in the environment. Its instructive
+companion is \emph{not} a second defect. \textsf{WebQTest-1620} asks when
+President Wilson was in office. The environment exposes inauguration events but
+no date literal. So the system answers with two inauguration mentions whose
+entities exist and whose edges are real. The structural check passed
+\emph{correctly} while the answer is wrong. That contrast is the most useful
+point in this section: structural grounding is a claim about edge existence, not
+about answer adequacy. So a verifier that checks whether a claim is \emph{in}
+the graph cannot, by construction, check whether it is \emph{the answer}.
+\Cref{tab:groundedness}'s Tier-2 column measures that gap.
+\Cref{app:verifier-cases} gives all seven cases with their traces.
 \paragraph{A Rate for One Polarity, and a Blank for the Other}
 
-Three quantities are easy to conflate. Only one is the denominator this
-polarity needs. The verifier is invoked $828$ times over the $800$ questions,
-since a question that repairs is verified again afterwards. Its \emph{first}
-verdict is \textsf{unsupported} on $52$ questions --- $16$ of $400$ on WebQSP
-and $36$ of $400$ on CWQ --- of which $13$ end \textsf{grounded} after a repair,
-leaving $761$ questions answered under a grounded verdict and $39$ under an
-unsupported one. The five wrongly-rejected cases are drawn from the $52$. So
-that polarity has a denominator in the question unit: roughly one rejected
-question in ten cost a correct answer. Even that is a lower bound, since a
-wrongful rejection that did not change the final answer never entered a census
-that reads only failures. The units matter because the run record stores the
-\emph{first} verifier entry. So a question repaired into groundedness is filed
-under \textsf{unsupported} in the committed \textsf{verifier\_outcome} field:
-reading that field as the outcome would put $13$ questions on the wrong side of
-the ledger. Treating the $52$ as firings would credit the verifier with $52$
-of $828$ rather than the $52$ of $800$ the rate is computed against.
+Three quantities are easy to conflate. Only one is the denominator this polarity
+needs. The verifier is invoked $828$ times over the $800$ questions, since a
+question that repairs is verified again afterwards. Its \emph{first} verdict is
+\textsf{unsupported} on $52$ questions --- $16$ of $400$ on WebQSP and $36$ of
+$400$ on CWQ --- of which $13$ end \textsf{grounded} after a repair, leaving
+$761$ questions answered under a grounded verdict and $39$ under an unsupported
+one. The five wrongly-rejected cases are drawn from the $52$. So that polarity
+has a denominator in the question unit: roughly one rejected question in ten
+cost a correct answer. Even that is a lower bound, since a wrongful rejection
+that did not change the final answer never entered a census that reads only
+failures. The units matter because the run record stores the \emph{first}
+verifier entry. So a question repaired into groundedness is filed under
+\textsf{unsupported} in the committed \textsf{verifier\_outcome} field: reading
+that field as the outcome would put $13$ questions on the wrong side of the
+ledger. Treating the $52$ as firings would credit the verifier with $52$ of
+$828$ rather than the $52$ of $800$ the rate is computed against.
 
 Wrongful acceptance has \emph{no logged population at all}. Accepted claims are
 never persisted (\Cref{sec:instrumentation}). So the wrongly-accepted cases sit
@@ -2088,8 +2071,8 @@ with nothing marking them. The single specimen surfaced only because the
 ablation-discordance reading happened to walk that trajectory by hand. What can
 be given is the size of the space they hide in, since a blank invites the
 reading that the space is small. The verifier accepted $2{,}008$ of the
-$2{,}110$ claims it decomposed on test. Neither structural route matches on
-the relation or the direction. So every acceptance that did not come from the
+$2{,}110$ claims it decomposed on test. Neither structural route matches on the
+relation or the direction. So every acceptance that did not come from the
 entailment check was made by a relation-blind test ---
 \Cref{sec:structural-check} shows the record cannot say how many that is beyond
 the interval $[39, 2{,}008]$. The two polarities are therefore reported
@@ -2098,50 +2081,51 @@ acceptance, and no average of the two, since a combined ``verifier error rate''
 computed from these numbers would be an artefact of what the logs happen to
 record. \Cref{sec:threats} treats this as the instrumentation gap it is.
 \Cref{sec:future} gives the one-line fix.
+
 \subsection{Knowledge-Graph Gaps: Literals, Temporal Qualifiers, and
 Ordinals}\label{sec:kg-gaps}
 
 \textsf{kg\_gap} is the third-largest category at $44$ and CWQ's single largest
 hedge category at $24$. It invokes the unanswerable-in-environment class defined
-in \Cref{sec:unanswerable}. Its five subtypes cluster by mechanism. Those
-five account for $39$ of the $44$; \Cref{app:kg-gap-cases} gives them with their
-specimens. The remaining $5$ carry no subtype, because
-the environment gap in each was specific enough that grouping it with anything
-else would have been an invention. They are counted in the category total
-throughout and are not silently dropped.
+in \Cref{sec:unanswerable}. Its five subtypes cluster by mechanism. Those five
+account for $39$ of the $44$; \Cref{app:kg-gap-cases} gives them with their
+specimens. The remaining $5$ carry no subtype, because the environment gap in
+each was specific enough that grouping it with anything else would have been an
+invention. They are counted in the category total throughout. They are not
+silently dropped.
 
-The distinction between the first four subtypes and the last matters for what
+The difference between the first four subtypes and the last matters for what
 follows from them. \textsf{data\_error} is a gap in this particular import.
 \textsf{ordinal}, \textsf{numeric\_literal}, \textsf{date\_literal}, and
 \textsf{temporal\_qualifier} are gaps in what a triple-and-traversal
-architecture can express at all, and no larger graph fixes them. They need an
-operator. That need is why \Cref{sec:future} lists literal and ordinal support
+architecture can express at all. No larger graph fixes them. They need an
+operator. That is why \Cref{sec:future} lists literal and ordinal support
 alongside the architectural items rather than among the repairs.
 
 \subsection{The Echo Attractor: Answering with the Topic or an Intermediate
 Entity}\label{sec:echo}
 
 \textsf{echo} names a mechanism that recurs independently of the two mechanical
-categories above: the system resolves a real, well-grounded entity that
+categories above. The system resolves a real, well-grounded entity that
 sits\index{echo attractor} \emph{near} the correct answer in the graph's
-structure. The verifier passes it because it genuinely is grounded. The fact
-is true. It is not what was asked.
+structure. The verifier passes it, because it genuinely is grounded. The fact is
+true. It is just not what was asked.
 
-Three shapes appear. Their boundary is not always crisp. \textsf{topic} ($6$
-cases) is confusion between entities sharing a name or a tight cluster:
-\textsf{WebQTest-1707} asks who plays Lex Luthor on \emph{Smallville} and
-answers ``John Glover plays Lionel Luthor'' --- a different character in the
-same fictional cluster, with Lionel, Alexander, and Lucas Luthor variants all
-surfacing in the trace before the run gives up. \textsf{granularity} ($7$ cases)
-is the right entity family at the wrong level: \textsf{WebQTest-86} answers
-``Kingdom of Denmark'' where gold is ``Denmark'' --- a genuinely distinct node,
-the formal sovereign-state entity rather than the common-name one.
-\textsf{WebQTrn-1405\_ced20d84} asks which school founded in 1636 President
-Kennedy attended, has \textsf{Harvard College} in its very first candidate list,
-and narrows to \textsf{Harvard University} instead --- whose founding-date claim
-the verifier then correctly rejects. \textsf{intermediate} --- stopping at a hop
-along the way rather than continuing to the target --- has no rows of its own in
-this census. The reading pass filed those cases under
+Three shapes appear. The boundary between them is not always crisp.
+\textsf{topic} ($6$ cases) is confusion between entities that share a name or a
+tight cluster. \textsf{WebQTest-1707} asks who plays Lex Luthor on
+\emph{Smallville} and answers ``John Glover plays Lionel Luthor''. That is a
+different character in the same fictional cluster. Lionel, Alexander, and Lucas
+Luthor variants all surface in the trace before the run gives up.
+\textsf{granularity} ($7$ cases) is the right entity family at the wrong level:
+\textsf{WebQTest-86} answers ``Kingdom of Denmark'' where gold is ``Denmark''
+--- a genuinely distinct node, the formal sovereign-state entity rather than the
+common-name one. \textsf{WebQTrn-1405\_ced20d84} asks which school founded in
+1636 President Kennedy attended, has \textsf{Harvard College} in its very first
+candidate list, and narrows to \textsf{Harvard University} instead --- whose
+founding-date claim the verifier then correctly rejects. \textsf{intermediate}
+--- stopping at a hop along the way rather than continuing to the target --- has
+no rows of its own in this census. The reading pass filed those cases under
 \textsf{granularity}. The two are best treated as one family.
 
 The throughline is what makes this a named mechanism rather than a residue
@@ -2170,18 +2154,18 @@ Read what the flagged consensus answers have in common. Five systems answer
 lists his occupations, ``amelia earhart'' where gold is Pilot and Writer --- the
 topic entity returned as the answer. Five answer ``belgium'' where gold is the
 containing region, ``dominican republic'' where gold is Greater Antilles, ``san
-francisco giants'' where gold is the 2014 World Series --- the composition's
-intermediate rather than its final hop. Five answer ``maryland'' for counties,
-``nevada'' for Las Vegas, ``united arab emirates'' for Dubai --- one level too
-coarse.
+francisco giants'' where gold is the 2014 World Series. Each is the
+composition's intermediate hop rather than its final one. Five answer
+``maryland'' for counties, ``nevada'' for Las Vegas, ``united arab emirates''
+for Dubai. Each is one level too coarse.
 
-\emph{Cross-system consensus against gold is dominated not by label errors but
-by a shared attractor}. That is a finding about evaluation methodology as
-much as about these systems. A policy of rescoring whenever three systems agree
---- which is a natural thing to want --- would have silently converted this
-system's most characteristic failure mode into apparent correctness. The manual
-adjudication step is what stands between the two. It is the reason the pass
-is reported with both numbers rather than one.
+\emph{When systems agree with one another against gold, the usual cause is a
+shared attractor, not a label error}. That is a finding about evaluation
+methodology as much as about these systems. A policy of rescoring whenever three
+systems agree --- which is a natural thing to want --- would have silently
+converted this system's most characteristic failure mode into apparent
+correctness. The manual adjudication step is what stands between the two. It is
+the reason the pass is reported with both numbers rather than one.
 
 \paragraph{The Confirmed Defects}
 
@@ -2196,23 +2180,23 @@ annotation query that traversed one relation too far.
 \subsection{Findings Against RQ1, RQ2, and RQ3}\label{sec:findings}
 
 \textbf{RQ1 --- does agentic navigation improve multi-hop factual accuracy?}
-Yes. The multi-hop qualifier is doing real work. AGR leads every accuracy
-cell of \Cref{tab:main}. All eight paired comparisons reject, including both
-against the agentic baseline running on the same graph with the same model under
-the same budget. The stratum profile is the substance of the answer: on CWQ,
-AGR's accuracy \emph{rises} with hop count ($0.46 \to 0.55 \to 0.57$), the only
-system that ends above where it started, while Vector-RAG collapses from $0.33$
-to $0.10$ on a context that cannot hold a chain at any radius.
+Yes. The multi-hop qualifier is doing real work. AGR leads every accuracy cell
+of \Cref{tab:main}. All eight paired comparisons reject, including both against
+the agentic baseline running on the same graph with the same model under the
+same budget. The stratum profile is the substance of the answer: on CWQ, AGR's
+accuracy \emph{rises} with hop count ($0.46 \to 0.55 \to 0.57$), the only system
+that ends above where it started, while Vector-RAG collapses from $0.33$ to
+$0.10$ on a context that cannot hold a chain at any radius.
 
 Three boundaries are reported with it. Think-on-Graph hedges marginally less on
 CWQ, $22.5\%$ against $23.0\%$ --- the one cell of \Cref{tab:main} AGR does not
 lead, and the reason the claim is about the accuracy columns rather than the
-whole table. It is also better on CWQ's one-hop stratum, as Vector-RAG is
-on WebQSP's. The margin over it is located in the budget: where the shared cap
-lets it finish it is marginally ahead on both datasets. So the claim defended
-here is that guided search completes under a realistic budget where beam search
-does not (\Cref{sec:tog-split}). And that comparison is against a systematically
-narrower baseline, since Think-on-Graph prunes to the published algorithm's $40$
+whole table. It is also better on CWQ's one-hop stratum, as Vector-RAG is on
+WebQSP's. The margin over it is located in the budget: where the shared cap lets
+it finish it is marginally ahead on both datasets. So the claim defended here is
+that guided search completes under a realistic budget where beam search does not
+(\Cref{sec:tog-split}). And that comparison is against a systematically narrower
+baseline, since Think-on-Graph prunes to the published algorithm's $40$
 relations and $20$ neighbours against AGR's $300$ and $200$, binding on roughly
 a third of its expansions and almost none of AGR's (\Cref{sec:baseline-tog}).
 The margin is a lower bound on what an equal-width reimplementation would show.
@@ -2228,54 +2212,54 @@ what does it.} Both navigating systems assert zero ungrounded entities on WebQSP
 --- over $1{,}235$ assertions for AGR and $832$ for Think-on-Graph --- against
 $27.1\%$ for parametric answering on the same set. Any system that copies its
 answer entities out of triples it traversed inherits this. So attributing it to
-the verification layer would be wrong. \Cref{tab:groundedness} is the
-evidence that it would be wrong.
+the verification layer would be wrong. \Cref{tab:groundedness} is the evidence
+that it would be wrong.
 
 \emph{Second, the precision advantage belongs to the architecture. This
 experiment cannot award any of it to the layer.} AGR's assertion precision
 exceeds Think-on-Graph's by $11.8$ points on CWQ ($67.9\%$ against $56.1\%$) and
 its per-question precision by $0.13$ and $0.08$, at a lower hedge rate on
 WebQSP. So it is not bought with abstention. That margin is real. What it is not
-is evidence for the verification layer. The one condition that isolates
-the layer does not reproduce it. Removing the verifier moves per-question
-precision by $+0.001$ on WebQSP and $-0.010$ on CWQ (\Cref{tab:ablation}), a
-sign flip an order of magnitude below the gap it would have to account for. The
-mechanism cannot carry the attribution either: entity filtering runs only on the
-give-up path (\Cref{sec:entity-filtering}), which $10$ of $400$ WebQSP and $29$
-of $400$ CWQ questions entered. A filter touching $2.5\%$ of a test set
-cannot produce a $0.13$ precision margin on it. Two differences the ablation
-holds fixed remain live as explanations. Neither is the claim check --- the
-groundedness filter on evaluator resolutions (\Cref{sec:groundedness-filter}),
-which is navigation rather than verification and runs in every ablation
-condition, and the drafting prompt's anti-vacuity and grounding provisions,
-which the baselines' plain prompt lacks (\Cref{sec:baseline-constants}). Some
-share of the precision margin over the agentic baseline may be prompt rather
-than structure. This work cannot say how large that share is.
+is evidence for the verification layer. The one condition that isolates the
+layer does not reproduce it. Removing the verifier moves per-question precision
+by $+0.001$ on WebQSP and $-0.010$ on CWQ (\Cref{tab:ablation}), a sign flip an
+order of magnitude below the gap it would have to account for. The mechanism
+cannot carry the attribution either: entity filtering runs only on the give-up
+path (\Cref{sec:entity-filtering}), which $10$ of $400$ WebQSP and $29$ of $400$
+CWQ questions entered. A filter touching $2.5\%$ of a test set cannot produce a
+$0.13$ precision margin on it. Two differences the ablation holds fixed remain
+live as explanations. Neither is the claim check --- the groundedness filter on
+evaluator resolutions (\Cref{sec:groundedness-filter}), which is navigation
+rather than verification and runs in every ablation condition, and the drafting
+prompt's anti-vacuity and grounding provisions, which the baselines' plain
+prompt lacks (\Cref{sec:baseline-constants}). Some share of the precision margin
+over the agentic baseline may be prompt rather than structure. This work cannot
+say how large that share is.
 
 \emph{Third, verification shows no measurable Hits@1 effect.} Two questions out
-of $398$ change when it is removed. This is not a failure of the layer but a
-statement about what Hits@1 measures: a metric satisfied by one correct entity
-among several cannot see a mechanism that operates on the others. The layer's
-value proposition is that an answer arrives with the triples that support it
-(\Cref{sec:output-contract}) --- an auditability claim, not an accuracy claim.
-The honest formulation is that \emph{claim verification does not change how
-often the system is right; it changes how often the system is right for a reason
-it can exhibit}.
+of $398$ change when it is removed. That is not a failure of the layer. It is a
+statement about what Hits@1 measures. A metric that is satisfied by one correct
+entity among several cannot see a mechanism that works on the others. What the
+layer offers is that an answer arrives with the triples that support it
+(\Cref{sec:output-contract}). That is an auditability claim, not an accuracy
+claim. The honest formulation is that \emph{claim verification does not change
+how often the system is right; it changes how often the system is right for a
+reason it can show}.
 
 \textbf{RQ3 --- which components contribute what, at what token cost?} One of
-four reaches significance. The planner is stratum-dependent: removing it
-improves WebQSP by $0.083$ F1 at $p = 0.006$ while saving $31\%$ of tokens and
-$35\%$ of calls, and costs CWQ $0.047$ F1 at $p = 0.088$. That asymmetry, not a
-pooled average, is the result. It is a finding about how decomposition
-should be \emph{applied} rather than about whether it works. Backtracking,
-verification, and the $\alpha$-blend show no detectable effect at $n \approx
-200$, for the different reasons \Cref{sec:ablations} separates. On cost, the
-whole apparatus runs at half the language-model calls of the agentic baseline
-and never exhausts the call budget that clips the baseline on $44\%$ of CWQ
+four reaches significance. The planner's effect depends on the stratum. Removing
+it improves WebQSP by $0.083$ F1 at $p = 0.006$, while saving $31\%$ of tokens
+and $35\%$ of calls. It costs CWQ $0.047$ F1 at $p = 0.088$. That asymmetry, not
+a pooled average, is the result. It is a finding about how decomposition should
+be \emph{applied}, not about whether it works. Backtracking, verification, and
+the $\alpha$-blend show no detectable effect at $n \approx 200$, each for a
+different reason that \Cref{sec:ablations} separates out. On cost, the whole
+apparatus runs at half the language-model calls of the agentic baseline and
+never exhausts the call budget that clips the baseline on $44\%$ of CWQ
 questions.
 
-The three answers do not point the same way. The chapter does not force them
-to. Navigation is where the accuracy comes from; verification is where the
+The three answers do not point the same way. The chapter does not force them to.
+Navigation is where the accuracy comes from; verification is where the
 auditability comes from, the precision margin belonging to the architecture as a
 whole rather than to any one component this ablation could isolate; and
 decomposition, the component the literature treats as straightforwardly
@@ -2291,32 +2275,31 @@ calls, never exhausting the call budget that clips the baseline on $44\%$ of
 multi-hop questions --- the difference between a guided search and a blind one,
 priced. What it costs, beyond tokens, is a longer failure surface. Every
 mechanism in this census except \textsf{kg\_gap} and the benchmark defects is a
-failure the static baselines cannot have. They have no plan to
-mis-decompose, no frontier to abandon, and no draft to check.
-\textsf{decomposition\_error} at $38$ cases is the clearest instance: a
-component added to help contributed a failure family of its own.
-\Cref{sec:ablations} shows it is a net negative on the shallower benchmark.
-Agency converts a retrieval problem into a control problem. Control problems
-fail in more ways.
+failure the static baselines cannot have. They have no plan to mis-decompose, no
+frontier to abandon, and no draft to check. \textsf{decomposition\_error} at
+$38$ cases is the clearest instance: a component added to help contributed a
+failure family of its own. \Cref{sec:ablations} shows it is a net negative on
+the shallower benchmark. Agency converts a retrieval problem into a control
+problem. Control problems fail in more ways.
 
 \paragraph{When Verification Helps and When It
 Over-Hedges}\label{sec:verification-tradeoff}
 
 The verification layer's contribution is auditability. Its cost is recall. Both
-directions are visible in this census at case level --- which is the level
-at which they are established, the aggregate effect of removing the layer being
+directions are visible in this census at case level. That is the level at which
+they are established, because the aggregate effect of removing the layer is
 indistinguishable from zero (\Cref{sec:findings}). It helps when a draft asserts
-something the traversal never supported: the De Niro case of
-\Cref{sec:answer-selection}, where a fabricated actor was rejected before it
+something the traversal never supported. Two cases show this: the De Niro case
+of \Cref{sec:answer-selection}, where a fabricated actor was rejected before it
 could be emitted, and the Vicksburg-president case of
-\Cref{sec:benchmark-defects}, where declining to assert was the epistemically
-correct act and the metric scored it as a loss. It over-hedges when a true claim
-has no single edge stating it in the drafted phrasing --- the five
-wrongly-rejected cases of \Cref{sec:verifier-errors}, three of which had already
+\Cref{sec:benchmark-defects}, where declining to assert was the honest thing to
+do and the metric scored it as a loss. It over-hedges when a true claim has no
+single edge that states it in the drafted phrasing. The five wrongly-rejected
+cases of \Cref{sec:verifier-errors} show this. Three of them had already
 resolved the exact gold answer before the rejection forced a retry that lost it.
-That is the same trade the development set measured at \Cref{sec:dev-tuning} and
-the same one the ablation could not detect at $n \approx 200$. So the claim is
-narrow: verification does not make this system more accurate. It makes the
+That is the same trade the development set measured in \Cref{sec:dev-tuning},
+and the same one the ablation could not detect at $n \approx 200$. So the claim
+is narrow: verification does not make this system more accurate. It makes the
 answers it does give attributable, at a small and measurable cost in recall. It
 provides no protection at all against the failure mode this census finds most
 often --- an answer that is grounded, connected, true, and not what was asked.
@@ -2351,48 +2334,47 @@ questions. So they bound the sampling variance of the question draw and nothing
 else. Each system's answer set enters them as fixed. The backbone is not
 deterministic at the trajectory level even at temperature $0.0$ ---
 \Cref{sec:backbone} measures the frozen model at $8$ of $12$ probes, about one
-trajectory in three diverging on a rerun. A divergent trajectory can
-change an answer, a hedge, a token count and a call count at once. That figure
-is itself only partly auditable. Only the first of four rounds survives as a
-committed artifact. So a reader who declines to take the other three on trust
-should read the stability figure as unquantified rather than as $67\%$. That
-substitution makes this threat larger rather than smaller. The margins defended
-here are large relative to their intervals. The paired tests are computed per
-question. Both make a rank reversal from decoding noise alone unlikely. But
-unlikely is the strongest available statement. The experiment that
-would bound it was not run. At \$11.13 against a \$15--20 ceiling it was
-affordable. So this is a gap in the design rather than a budget constraint. A
-repeated matrix reporting across-run spread is the cheapest correction
-available (\Cref{sec:future}).
+trajectory in three diverging on a rerun. A divergent trajectory can change an
+answer, a hedge, a token count and a call count at once. That figure is itself
+only partly auditable. Only the first of four rounds survives as a committed
+artifact. So a reader who declines to take the other three on trust should read
+the stability figure as unquantified, not as $67\%$. That substitution makes
+this threat larger, not smaller. The margins defended here are large relative to
+their intervals. The paired tests are computed per question. Both make a rank
+reversal from decoding noise alone unlikely. But unlikely is the strongest
+statement available. The experiment that would bound it was not run. At \$11.13
+against a \$15--20 ceiling, it was affordable. So this is a gap in the design,
+not a budget constraint. A repeated matrix that reports across-run spread is the
+cheapest correction available (\Cref{sec:future}).
 
 \textbf{Entities are keyed by name, so homonyms are merged.} Distinct real-world
-entities sharing a surface form collapse into one node. Two consequences run in
-opposite directions. Neither is measured here: a merged node can manufacture
-a path between things that are not connected, inflating reachability and letting
-a wrong answer verify as grounded. The same merge can destroy a distinction
-the question depends on. This is inherent to name-keying rather than a defect of
-the construction. But it means structural groundedness is a claim about
-\emph{this} graph's node identity, not about the world.
+entities that share a surface form collapse into one node. Two consequences
+follow, and they run in opposite directions. Neither is measured here. A merged
+node can manufacture a path between things that are not connected. That inflates
+reachability and lets a wrong answer verify as grounded. The same merge can
+destroy a distinction the question depends on. This is inherent to name-keying,
+not a defect of the construction. But it means structural groundedness is a
+claim about \emph{this} graph's node identity, not about the world.
 
 \textbf{The instrumentation gap is the most serious of the remaining items.} The
-verifier logs only the claims it rejects, never the ones it accepts with their
-matching triples. So wrongful acceptance is not self-diagnosing: the single
-specimen in this census surfaced by manual trace reconstruction. There is no
-way to know how many others sit inside the $761$ grounded questions. One
-polarity is reported at census scale, the other anecdotally. That
-asymmetry is a property of the logging decision rather than of the verifier.
-\Cref{sec:future} gives the fix.
+verifier logs only the claims it rejects. It never logs the ones it accepts, or
+the triples that matched them. So wrongful acceptance does not diagnose itself.
+The single specimen in this census surfaced only through manual trace
+reconstruction. There is no way to know how many others sit inside the $761$
+grounded questions. One polarity is reported at census scale, the other
+anecdotally. That asymmetry comes from the logging decision, not from the
+verifier. \Cref{sec:future} gives the fix.
 
 \textbf{The judge fell short of its pre-registered bar.} Cohen's $\kappa =
-0.6995$ against a threshold of $0.7$ (\Cref{sec:judge}). Agreement is
-substantial by conventional reading. The miss is $0.0005$. But the Tier-2
-numbers are reported as corroborating rather than decisive. The judge also
+0.6995$ against a threshold of $0.7$ (\Cref{sec:judge}). By the conventional
+reading, that is substantial agreement. The miss is $0.0005$. But the Tier-2
+numbers are still reported as corroborating rather than decisive. The judge also
 runs on the same backbone as the systems it judges.
 
 \textbf{Topic entities are given, not linked.} Both graph-navigating systems
-seed from the dataset's annotated topic entities. This isolates navigation from
+seed from the dataset's annotated topic entities. That isolates navigation from
 entity linking, which is the intent. But the reported accuracies assume a
-linking step that a deployed system would have to perform and that would
+linking step that a deployed system would have to perform, and that step would
 introduce errors of its own.
 
 \textbf{Ablations are underpowered.} Three of four conditions detect nothing at
@@ -2400,18 +2382,18 @@ $n \approx 200$. ``No detectable effect'' is not ``no effect''
 (\Cref{sec:ablations}).
 
 \textbf{One relabelling was made after seeing the result it affects.} A
-development question originally classified as mediator-heavy was reclassified as
+development question first classified as mediator-heavy was reclassified as
 unanswerable-in-environment after its outcome was known.
 \Cref{sec:verification-layer} flags it in place. The aggregates were not
 rescored.
 
 \textbf{The reported accuracy has an unmeasured floor.} The extraction bug of
-\Cref{sec:decomposition-errors} converts correct reasoning into a wrong entity
-list on a specific question shape. So the measured accuracy on that shape is a
-lower bound rather than an estimate.
+\Cref{sec:decomposition-errors} turns correct reasoning into a wrong entity list
+on one specific question shape. So the measured accuracy on that shape is a
+lower bound, not an estimate.
 
 \textbf{Benchmark defects were adjudicated by the author.} The exclusion set of
-\Cref{sec:gold-quality} rests on single-annotator judgements made with the
+\Cref{sec:gold-quality} rests on single-annotator judgements, made with the
 consensus signal visible. The scope limits are recorded there. The accuracy
 tables are not rescored. The defects run in both directions.
 
