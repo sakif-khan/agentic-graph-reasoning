@@ -5,47 +5,46 @@
 
 This thesis asked what an agent gains by navigating a knowledge graph rather
 than retrieving from it, and what a claim-level check against the traversed
-subgraph adds on top. The answers are not uniform. The value of the work
-lies partly in where they diverge.
+subgraph adds on top. The answers are not uniform. The value of the work lies
+partly in where they diverge.
 
 \Cref{sec:results} reported the measurements. AGR leads every accuracy cell of
 the main matrix --- the agentic baseline hedges marginally less on CWQ.
-\Cref{sec:findings} reports that as the one cell it does not lead. Every one
-of the eight paired comparisons rejects, including both against a
-reimplementation of the agentic baseline running on the same graph with the same
-model under the same budget. That last margin is located rather than merely
-claimed: on the questions where the shared cap lets the baseline finish, the
-baseline is slightly ahead. The whole margin comes from the $29\%$ and
-$44\%$ of questions where the cap truncates it (\Cref{sec:tog-split}). The
-finding is therefore about affordability rather than about resolution quality
---- beam search cannot complete under a budget a deployed system would impose.
-Guided search can. On ComplexWebQuestions AGR is the only system whose
-accuracy \emph{rises} with hop count. Every other system ends below where it
-started --- the strongest available form of the multi-hop claim. The agentic
-baseline is the one that does not simply decay: it falls and then partially
-recovers. That recovery is weaker than a rise and is reported as such in
-\Cref{sec:hop-results}. AGR runs at half the language-model calls of the agentic
-baseline and never exhausts the call budget that clips that baseline on $44\%$
-of multi-hop questions. Structural hallucination is eliminated: over both
-datasets, zero ungrounded assertions in $1{,}709$ asserted entities, against
-$22.1\%$ of the $1{,}001$ the parametric control asserts. And three of four
-ablations detect nothing. That null result is reported at the same length as
-the one that does.
+\Cref{sec:findings} reports that as the one cell it does not lead. Every one of
+the eight paired comparisons rejects, including both against a reimplementation
+of the agentic baseline running on the same graph with the same model under the
+same budget. That last margin is located rather than merely claimed: on the
+questions where the shared cap lets the baseline finish, the baseline is
+slightly ahead. The whole margin comes from the $29\%$ and $44\%$ of questions
+where the cap truncates it (\Cref{sec:tog-split}). The finding is therefore
+about affordability rather than about resolution quality --- beam search cannot
+complete under a budget a deployed system would impose. Guided search can. On
+ComplexWebQuestions AGR is the only system whose accuracy \emph{rises} with hop
+count. Every other system ends below where it started --- the strongest
+available form of the multi-hop claim. The agentic baseline is the one that does
+not simply decay: it falls and then partially recovers. That recovery is weaker
+than a rise and is reported as such in \Cref{sec:hop-results}. AGR runs at half
+the language-model calls of the agentic baseline and never exhausts the call
+budget that clips that baseline on $44\%$ of multi-hop questions. Structural
+hallucination is eliminated: over both datasets, zero ungrounded assertions in
+$1{,}709$ asserted entities, against $22.1\%$ of the $1{,}001$ the parametric
+control asserts. And three of four ablations detect nothing. That null result is
+reported at the same length as the one that does.
 
 \Cref{sec:erroranalysis} read all $259$ remaining failures and named each
 mechanism. The findings that generalise beyond this system are three.
 \emph{Context-stripping}: decomposing a question can discard a qualifier that
 appears only in a later clause. So an early sub-objective resolves the wrong
-sense of an ambiguous term before the disambiguating information arrives. In
-the strongest specimen, decomposition actively suppressed the one anchor that
-could have discriminated, driving its score to the noise floor. \emph{The echo
+sense of an ambiguous term before the disambiguating information arrives. In the
+strongest specimen, decomposition actively pushed down the one anchor that could
+have told the senses apart, driving its score to the noise floor. \emph{The echo
 attractor}: the most common failure of a graph-navigating system is not to
-invent an entity but to surface a real, well-grounded, verifiably-true entity
-that sits one node away from the answer. The verifier passes it because it
+invent an entity. It is to surface a real, well-grounded, verifiably true entity
+that sits one node away from the answer. The verifier passes it, because it
 genuinely is grounded. And \emph{shared attractors break consensus-based
-evaluation}: five independent systems converge on the same wrong answer often
-enough that a policy of rescoring on majority agreement would have converted
-this failure mode into apparent correctness.
+evaluation}: five independent systems land on the same wrong answer often enough
+that rescoring on majority agreement would have turned this failure mode into
+apparent correctness.
 
 Four contributions follow from that body of work. \Cref{sec:contribution}
 claimed six. The other two are stated above rather than repeated as items here
@@ -90,20 +89,20 @@ accepted claims (\Cref{sec:verify-failure-modes}). Nothing measured here narrows
 it.
 
 \textbf{Structural grounding is not answer adequacy.} Both navigating systems
-assert zero ungrounded entities on WebQSP. That says the answers are made of
-the graph's own material. It does not say they answer the question. The echo
+assert zero ungrounded entities on WebQSP. That says the answers are made of the
+graph's own material. It does not say they answer the question. The echo
 attractor (\Cref{sec:echo}) is the counter-example. It is the failure this
 census finds most often.
 
 \textbf{The evaluation is single-environment, single-backbone, and single-run.}
 Absolute levels are bounded by an environment built from answer-containing
-subgraphs. Run-to-run variance is unmeasured against a backbone that repeats
-a trajectory on about two probes in three.
+subgraphs. Run-to-run variance is unmeasured against a backbone that repeats a
+trajectory on about two probes in three.
 
 \textbf{The baseline comparisons are bounded in the baselines' favour, and
 against them.} The agentic baseline prunes from a narrower candidate set than
-AGR. The static one retrieves a single logical hop with an unordered fanout
-cap. So the reported margins are lower bounds on what equal-width, equal-radius
+AGR. The static one retrieves a single logical hop with an unordered fanout cap.
+So the reported margins are lower bounds on what equal-width, equal-radius
 reimplementations would show (\Cref{sec:future-baselines}). Entity linking is
 assumed throughout, topic entities being given by the benchmarks.
 
@@ -116,19 +115,19 @@ same kind of claim.
 \subsection{Repairs the Census Earned}
 
 Three defects each recur with a uniform mechanism across unrelated questions.
-Each is small. \emph{Entity extraction} (nine instances): the step
-converting drafted answer text into the scored entity list defaults to the
-sentence's grammatical subject rather than its predicate values. Fixing it
-requires telling the claim decomposer which argument of the drafted sentence is
-the answer --- an instruction, not an architecture. \emph{Evaluator abandonment}
-(five instances): relations scoring as high as $0.73$ are explored, backtracked
-away from, and never revisited, across four unrelated domains. That reads as a
-threshold or backtracking-policy defect. It would be diagnosed by logging the
-evaluator's decision against the score of the relation it discards.
-\emph{Drafting commitment} (six instances, all six of the \textsf{other}
-category): when the evaluator has resolved the exact gold value and the verifier
-has returned \textsf{grounded}, the drafter should commit to it rather than
-stating the fact and declaring it undeterminable in the same sentence.
+Each is small. \emph{Entity extraction} (nine instances): the step converting
+drafted answer text into the scored entity list defaults to the sentence's
+grammatical subject rather than its predicate values. The fix is to tell the
+claim decomposer which argument of the drafted sentence is the answer. That is
+an instruction, not an architecture. \emph{Evaluator abandonment} (five
+instances): relations scoring as high as $0.73$ are explored, backtracked away
+from, and never visited again, across four unrelated domains. That looks like a
+threshold or backtracking-policy defect. Logging the evaluator's decision next
+to the score of the relation it discards would diagnose it. \emph{Drafting
+commitment} (six instances, all six of the \textsf{other} category): when the
+evaluator has resolved the exact gold value and the verifier has returned
+\textsf{grounded}, the drafter should commit to it rather than stating the fact
+and declaring it undeterminable in the same sentence.
 
 \subsection{Logging Accepted Claims to Make Wrongful Acceptance
 Measurable}\label{sec:future-logging}
@@ -139,8 +138,8 @@ into a rate with a denominator. It also makes grounded-but-wrong answers
 self-diagnosing from the logs rather than by manual trace reconstruction. The
 same change closes a second gap: the run record currently stores the
 \emph{number} of supporting triples rather than the triples
-(\Cref{sec:output-contract}). So the output contract holds inside the run.
-It cannot be checked afterwards from any committed file. It is the highest-value
+(\Cref{sec:output-contract}). So the output contract holds inside the run. It
+cannot be checked afterwards from any committed file. It is the highest-value
 change in this list relative to its cost. It is a logging change.
 
 \subsection{Operators the Failure Categories Specify}
@@ -175,32 +174,31 @@ retrieval plan is the change proposed. The Tier-2 judge of
 resemblance suggests folding a bounded form of it into the loop. Its $\kappa$ of
 $0.6995$ is also a caution about how reliable such a check would be.
 
-\subsection{Measurements This Thesis Could Not
-Make}\label{sec:future-baselines}
+\subsection{Measurements This Thesis Could Not Make}\label{sec:future-baselines}
 
 \label{sec:future-path-fidelity}%
 \emph{Path fidelity} is the third evaluation criterion of the approved proposal,
 deferred for the reason given in \Cref{sec:metrics-not-run}: it needs the
-benchmarks' gold SPARQL relation chains. The distribution used here does
-not carry them. Reconstructing them would measure whether the system reaches the
+benchmarks' gold SPARQL relation chains. The distribution used here does not
+carry them. Reconstructing them would measure whether the system reaches the
 right answer \emph{by the right path} --- a question the groundedness metrics
 can only approximate, and one that bears directly on the echo attractor.
 
-Two baseline bounds are cheap to lift. Both are re-runs rather than
-redesigns. \emph{Equalise the candidate widths}: re-run the agentic baseline at
-AGR's $300$ relations and $200$ neighbours, leaving beam width, depth, budget,
-prompts, and scoring untouched. That decides whether the unclipped-subset
-comparison of \Cref{sec:tog-split} measured search strategy or candidate supply.
-Both outcomes are usable --- though it will also raise the clip rate.
-Wider candidate sets make each pruning call dearer. So the split must be
-reported rather than the aggregate. \emph{Widen the static retriever's radius,
-and order its fanout}: re-run it with neighbours expanded a second time,
-everything else frozen, and report the same strata, so that its collapse on deep
-CWQ questions can be attributed to the paradigm rather than to the particular
-radius chosen. The same pass should impose an ordering on the fanout cap, so
-that the $100$ edges kept per topic entity are a stated selection rather than an
-arbitrary one (\Cref{sec:baseline-graphrag}). Until then those two limits are
-confounded. Only their sum is measured.
+Two baseline bounds are cheap to lift. Both are re-runs rather than redesigns.
+\emph{Equalise the candidate widths}: re-run the agentic baseline at AGR's $300$
+relations and $200$ neighbours, leaving beam width, depth, budget, prompts, and
+scoring untouched. That decides whether the unclipped-subset comparison of
+\Cref{sec:tog-split} measured search strategy or candidate supply. Both outcomes
+are usable --- though it will also raise the clip rate. Wider candidate sets
+make each pruning call dearer. So the split must be reported rather than the
+aggregate. \emph{Widen the static retriever's radius, and order its fanout}:
+re-run it with neighbours expanded a second time, everything else frozen, and
+report the same strata, so that its collapse on deep CWQ questions can be
+attributed to the paradigm rather than to the particular radius chosen. The same
+pass should impose an ordering on the fanout cap, so that the $100$ edges kept
+per topic entity are a stated selection rather than an arbitrary one
+(\Cref{sec:baseline-graphrag}). Until then those two limits are confounded. Only
+their sum is measured.
 
 \subsection{Beyond This Environment}
 
@@ -216,21 +214,21 @@ than a rebranding of this one. \emph{Temporal and multi-source environments}
 address the failure family that recurs throughout \Cref{sec:erroranalysis} ---
 questions with a time qualifier the graph cannot express --- and raise the
 question of what a claim check means when sources disagree. And \emph{transfer
-to high-stakes domains} is where the auditability property, rather than the
-accuracy, is the point: an answer paired with the triples supporting it is worth
-more in a setting where a reader must be able to check it than in one where the
-reader only wants the answer.
+to high-stakes domains} is where the auditability property, not the accuracy, is
+the point. An answer paired with the triples that support it is worth more where
+a reader has to be able to check it than where the reader only wants the answer.
+
 \section{Closing Remark}
 
 The result this work would most want carried forward is not the accuracy margin.
 It is the shape of the gap that remains. A system that traverses a real graph
 and copies its answers out of real triples can be made to assert nothing
-ungrounded --- that problem is solved. It is solved by the navigation
-paradigm rather than by any checking layer built on top of it. What remains is
-an answer that is grounded, connected, and true, and is not the answer to the
-question that was asked. This thesis's census found that failure more often
-than any other mechanism. Fact verification against a knowledge graph turns out
-to be the easier half of the problem; \emph{relevance} verification is the half
-still open.
+ungrounded --- that problem is solved. It is solved by the navigation paradigm
+rather than by any checking layer built on top of it. What remains is an answer
+that is grounded, connected, and true, and is not the answer to the question
+that was asked. This thesis's census found that failure more often than any
+other mechanism. Fact verification against a knowledge graph turns out to be the
+easier half of the problem; \emph{relevance} verification is the half still
+open.
 
 \endinput
