@@ -34,21 +34,23 @@ reported at the same length as the one that does.
 \Cref{sec:erroranalysis} read all $259$ remaining failures and named each
 mechanism. The findings that generalise beyond this system are three.
 \emph{Context-stripping}: decomposing a question can discard a qualifier that
-appears only in a later clause. So an early sub-objective resolves the wrong
-sense of an ambiguous term before the disambiguating information arrives. In the
-strongest specimen, decomposition actively pushed down the one anchor that could
-have told the senses apart, driving its score to the noise floor. \emph{The echo
-attractor}: the most common failure of a graph-navigating system is not to
-invent an entity. It is to surface a real, well-grounded, verifiably true entity
-that sits one node away from the answer. The verifier passes it, because it
-genuinely is grounded. And \emph{shared attractors break consensus-based
-evaluation}: five independent systems land on the same wrong answer often enough
-that rescoring on majority agreement would have turned this failure mode into
-apparent correctness.
+appears only in a later clause. An early sub-objective then resolves the wrong
+sense of an ambiguous term before the disambiguating information ever arrives.
+In the strongest specimen, decomposition actively pushed down the one anchor
+that could have told the senses apart and drove its score to the noise floor.
+
+\emph{The echo attractor}: the most common failure of a graph-navigating system
+is not to invent an entity. It is to surface a real, well-grounded, verifiably
+true entity that sits one node away from the answer. The verifier passes it,
+because it genuinely is grounded.
+
+And \emph{shared attractors break consensus-based evaluation}: five independent
+systems landed on the same wrong answer often enough that rescoring on majority
+agreement would have turned this failure mode into apparent correctness.
 
 Four contributions follow from that body of work. \Cref{sec:contribution}
-claimed six. The other two are stated above rather than repeated as items here
---- the echo attractor is the second of the three findings just given. The
+claimed six. The other two are stated above rather than repeated as items here.
+The echo attractor is the second of the three findings just given. The
 pre-registered evaluation protocol is reported in the \Cref{sec:setup}
 paragraph, including the threshold it missed.
 
@@ -118,16 +120,19 @@ Three defects each recur with a uniform mechanism across unrelated questions.
 Each is small. \emph{Entity extraction} (nine instances): the step converting
 drafted answer text into the scored entity list defaults to the sentence's
 grammatical subject rather than its predicate values. The fix is to tell the
-claim decomposer which argument of the drafted sentence is the answer. That is
-an instruction, not an architecture. \emph{Evaluator abandonment} (five
-instances): relations scoring as high as $0.73$ are explored, backtracked away
-from, and never visited again, across four unrelated domains. That looks like a
-threshold or backtracking-policy defect. Logging the evaluator's decision next
-to the score of the relation it discards would diagnose it. \emph{Drafting
-commitment} (six instances, all six of the \textsf{other} category): when the
-evaluator has resolved the exact gold value and the verifier has returned
-\textsf{grounded}, the drafter should commit to it rather than stating the fact
-and declaring it undeterminable in the same sentence.
+claim decomposer which argument of the drafted sentence is the answer. That is a
+prompt instruction, not an architectural change.
+
+\emph{Evaluator abandonment} (five instances): the explorer visits a relation
+scoring as high as $0.73$, backtracks away from it, and never returns, across
+four unrelated domains. That pattern looks like a threshold or
+backtracking-policy defect. Logging the evaluator's decision beside the score of
+the relation it discards would diagnose it.
+
+\emph{Drafting commitment} (six instances, all six of the \textsf{other}
+category): when the evaluator has resolved the exact gold value and the verifier
+has returned \textsf{grounded}, the drafter should commit to it rather than
+stating the fact and declaring it undeterminable in the same sentence.
 
 \subsection{Logging Accepted Claims to Make Wrongful Acceptance
 Measurable}\label{sec:future-logging}
@@ -206,29 +211,34 @@ Four directions extend the work rather than repairing it. \emph{LLM-constructed
 knowledge graphs} as a controlled comparison would separate what the framework
 contributes from what a curated environment contributes, by holding the agent
 fixed while varying the substrate's provenance and noise profile.
+
 \emph{Rollout-based value estimation} would supply what
 \Cref{sec:mcts-clarification} explicitly disclaims: the current scorer evaluates
 each candidate once and never revises it in light of what is found later.
-Genuine tree search over this same tool API is a well-defined next system rather
-than a rebranding of this one. \emph{Temporal and multi-source environments}
-address the failure family that recurs throughout \Cref{sec:erroranalysis} ---
-questions with a time qualifier the graph cannot express --- and raise the
-question of what a claim check means when sources disagree. And \emph{transfer
-to high-stakes domains} is where the auditability property, not the accuracy, is
-the point. An answer paired with the triples that support it is worth more where
-a reader has to be able to check it than where the reader only wants the answer.
+Genuine tree search over this same tool API would be a well-defined next system,
+not a rebranding of this one.
+
+\emph{Temporal and multi-source environments} address the failure family that
+recurs throughout \Cref{sec:erroranalysis}, questions with a time qualifier the
+graph cannot express. They also raise the question of what a claim check means
+when sources disagree.
+
+And \emph{transfer to high-stakes domains} is where the auditability property
+matters more than the accuracy. An answer paired with the triples that support
+it is worth more to a reader who has to check it than to one who only wants the
+answer.
 
 \section{Closing Remark}
 
 The result this work would most want carried forward is not the accuracy margin.
 It is the shape of the gap that remains. A system that traverses a real graph
 and copies its answers out of real triples can be made to assert nothing
-ungrounded --- that problem is solved. It is solved by the navigation paradigm
-rather than by any checking layer built on top of it. What remains is an answer
-that is grounded, connected, and true, and is not the answer to the question
-that was asked. This thesis's census found that failure more often than any
-other mechanism. Fact verification against a knowledge graph turns out to be the
-easier half of the problem; \emph{relevance} verification is the half still
+ungrounded. That problem is solved, and the navigation paradigm solves it, not
+any checking layer built on top. What remains is an answer that is grounded,
+connected, and true, and is still not the answer to the question that was asked.
+The census in this thesis found that failure more often than any other
+mechanism. Fact verification against a knowledge graph turns out to be the
+easier half of the problem. \emph{Relevance} verification is the half still
 open.
 
 \endinput
