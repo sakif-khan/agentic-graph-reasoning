@@ -1,6 +1,7 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
-% From thesis sec:ablations. ~1,000 words. THE PAPER'S HEADLINE SECTION.
+% From the thesis ablation study. ~1,200 words. THE PAPER'S HEADLINE
+% SECTION.
 %
 % Delta is ablated-minus-reference, so POSITIVE MEANS REMOVING THE
 % COMPONENT IMPROVED THE METRIC. Say that once, plainly, before the
@@ -9,7 +10,10 @@
 % Report the planner asymmetry, never the pooled average -- pooling
 % averages away the entire result. Only the WebQSP arm reaches
 % significance; the CWQ arm is a DIRECTION, not an effect, and must not
-% be called "marginally significant" (p = 0.088).
+% be called "marginally significant" (p = 0.088). The per-stratum
+% breakdown (h1 improves on both datasets, h2 collapses on CWQ) is what
+% turns the asymmetry from a curiosity into a mechanism; it was
+% recomputed from the half-split records before being quoted.
 %
 % The three nulls get the same length as the positive result. That is
 % the methodological argument, not an apology. The verification layer's
@@ -20,7 +24,10 @@
 %
 % Power belongs HERE, not deferred to Discussion: n = 200 / 198, so a
 % null is "no effect detected at this power". A reviewer will ask for
-% the minimum detectable effect; it is computed in the text.
+% the minimum detectable effect; it is computed in the text, and
+% scripts/check_paper_numbers.py recomputes every figure in that
+% subsection and pins each to its own sentence. Do not reword those
+% sentences without re-running the check.
 % ---------------------------------------------------------------------
 
 \section{Component-Level Attribution}\label{sec:attribution}
@@ -30,13 +37,20 @@ This section takes AGR apart. Four conditions each remove exactly one
 component from the unmodified system and re-run the identical questions:
 no planner, no backtracking, no claim verification, and embedding-only
 scoring ($\alpha = 1$, disabling the model term in the edge scorer).
-Each condition is compared against the reference on the same half-split
---- $n = 200$ on WebQSP, $n = 198$ on ComplexWebQuestions --- with
-McNemar's test on the paired per-question outcomes.
+Each condition is compared against the reference on the same half-split,
+$n = 200$ on WebQSP and $n = 198$ on ComplexWebQuestions, with McNemar's
+test on the paired per-question outcomes. The reference row is the
+unmodified system restricted to the same questions, read from the
+main-run records rather than re-run, so it is provably the system that
+produced \Cref{tab:main}.
 
 \textbf{Throughout this section a delta is ablated minus reference, so a
 positive number means removing the component \emph{improved} the
-metric.} \Cref{tab:ablation} gives all four.
+metric.} \Cref{tab:ablation} gives all four. The $p$-values are reported
+as computed. A correction for multiple comparisons was not among the
+pre-specified decisions, and applying one after seeing the results would
+be a choice made on the results, so the four tests are read as
+descriptive rather than as a family-wise claim.
 
 \begin{table}[!tb]
   \begin{center}
@@ -71,114 +85,131 @@ metric.} \Cref{tab:ablation} gives all four.
 One component produced a detectable effect, and it produced it in the
 wrong direction. \textbf{Removing the planner improves WebQSP F1 by
 $0.083$} ($p = 0.006$) while cutting token use by $31\%$. Twenty-one
-questions were answered correctly only without the planner against six
-correct only with it --- the disagreement is not marginal, and the
-cheaper system is the more accurate one.
+questions were answered correctly only without the planner, against six
+correct only with it. The disagreement is not marginal, and the cheaper
+system is the more accurate one.
 
 The mechanism is over-decomposition. WebQSP is predominantly a
 single-hop benchmark: $256$ of its $400$ questions need one hop. Asked
 to decompose a question that has no compositional structure, the planner
-manufactures sub-objectives that are not really separable, and the
-explorer then scores candidate edges against a fragment of the question
-rather than against the question --- discarding exactly the context that
+manufactures sub-objectives that are not really separable. The explorer
+then scores candidate edges against a fragment of the question rather
+than against the question, and it discards exactly the context that
 would have identified the right relation. The planner prompt carries a
-single-hop exemplar precisely to demonstrate that not decomposing is a
-valid output, and it is evidently not enough.
+single-hop exemplar precisely to show that not decomposing is a valid
+output, and that exemplar is evidently not enough. The per-stratum
+breakdown locates the damage. On the WebQSP half-split, removing the
+planner raises one-hop Hits@1 from $0.75$ to $0.85$ and two-hop Hits@1
+from $0.84$ to $0.89$, so decomposition hurts simple and two-hop
+questions alike on that benchmark.
 
 On ComplexWebQuestions the direction reverses, as the mechanism
-predicts: that benchmark is genuinely compositional, only $137$ of $400$
+predicts. That benchmark is genuinely compositional, only $137$ of $400$
 questions are single-hop, and removing the planner costs $0.047$ F1.
-\textbf{That arm does not reach significance} ($p = 0.088$) and is
-reported as a direction rather than an effect. It is not described as
+\textbf{That arm does not reach significance} ($p = 0.088$), and we
+report it as a direction rather than an effect. We do not describe it as
 marginally significant, because at this sample size that phrase would
-assert more than the data carries.
+assert more than the data carries. The strata show a coherent mechanism
+rather than noise. Without the planner, one-hop Hits@1 \emph{improves}
+from $0.49$ to $0.54$, two-hop collapses from $0.48$ to $0.34$, and
+three-hop-plus moves from $0.62$ to $0.54$. That is exactly the pattern
+in which decomposition helps genuine composition and hurts questions
+that do not need it.
 
 Pooling the two datasets would average a significant improvement against
 a non-significant harm and report approximately nothing. The asymmetry
-\emph{is} the result: decomposition is not a general-purpose benefit but
-a mechanism whose value depends on whether the question has
+\emph{is} the result. Decomposition is not a general-purpose benefit. It
+is a mechanism whose value depends on whether the question has
 compositional structure to find. The actionable consequence follows
-directly, and it is the recommendation this paper would most like to see
-adopted --- \textbf{gate decomposition on question structure} rather
-than applying it unconditionally, predicting the number of hops from the
+directly, and it is the recommendation we would most like to see
+adopted: \textbf{gate decomposition on question structure} rather than
+applying it unconditionally, predicting the number of hops from the
 question and invoking the planner only above a threshold. On these
 benchmarks that policy would capture the WebQSP improvement and the
 ComplexWebQuestions capability at once.
 
 \subsection{Three Components with No Detected Effect}\label{sec:nulls}
 
-The remaining three conditions moved nothing detectable, and they are
-reported at the same length as the one that did. A field that reports
-only what moved cannot attribute anything.
+The remaining three conditions moved nothing detectable, and we report
+them at the same length as the one that did. A field that reports only
+what moved cannot attribute anything.
 
-\textbf{Backtracking.} Removing it changes WebQSP F1 by $-0.013$
-($p = 0.727$) and ComplexWebQuestions F1 by $0.000$ ($p = 1.000$), while
-saving $7\%$ and $18\%$ of tokens. The mechanism fires rarely --- $38$
-and $108$ backtracks over the $398$ paired questions --- and on those
-same runs the meter refuses a further attempt on $28$ of them, $7.0\%$.
-A component this
-seldom exercised cannot show a large effect, and the honest summary is
-that the search rarely needs to undo a decision, not that undoing is
-worthless.
+\textbf{Backtracking.} Removing it changes WebQSP F1 by $-0.013$ ($p =
+0.727$) and ComplexWebQuestions F1 by $0.000$ ($p = 1.000$), while
+saving $7\%$ and $18\%$ of tokens. The mechanism fires rarely. The
+reference condition records $38$ and $108$ backtracks over the $398$
+paired questions, and on those same runs the meter refuses a further
+attempt on $28$ of them, $7.0\%$. A component this seldom exercised
+cannot show a large effect. One implementation detail bounds the null
+further, and we record it rather than smooth it over. The backtracker
+bans the edges of the most recent explorer pass but restores the
+highest-scoring snapshot, which is often older, so everything expanded
+in between stays unbanned. Over the main runs, $53$ explorer passes
+re-expanded an anchor-and-relation set the same question had already
+expanded, and at least $65$ of the $262$ backtracks restored a depth
+other than the most recent snapshot's. The null therefore describes
+backtracking as implemented, not backtracking as specified. The accurate
+summary is that the search rarely needs to undo a decision, not that
+undoing is worthless.
 
-\textbf{Model scoring.} Setting $\alpha = 1$ removes the language
-model from edge selection entirely, leaving pure embedding similarity.
-F1 falls by $0.016$ and $0.008$, neither significant, while tokens drop
+\textbf{Model scoring.} Setting $\alpha = 1$ removes the language model
+from edge selection entirely, leaving pure embedding similarity. F1
+falls by $0.016$ and $0.008$, neither significant, while tokens drop
 $25\%$ and $31\%$. The model term is the single most expensive part of
 the navigation loop, and this experiment cannot establish that it earns
-its cost. One confound is recorded rather than smoothed over: at
-$\alpha = 1$ the scorer takes an early return that leaves the
-backtracking trigger's signal maximum computed over a smaller candidate
-set, so this condition's elevated backtrack count is not attributable to
-the scoring change alone.
+its cost. One confound is recorded rather than smoothed over. At $\alpha
+= 1$ the scorer takes an early return that leaves the backtracking
+trigger's signal maximum computed over a smaller candidate set, so this
+condition's elevated backtrack count is not attributable to the scoring
+change alone.
 
 \textbf{Claim verification.} Removing the layer this paper contributes
-changes WebQSP F1 by $+0.004$ and ComplexWebQuestions F1 by $-0.009$,
-$p = 1.000$ on both. Across the half-splits --- $200$ questions on
-WebQSP and $198$ on ComplexWebQuestions --- the two conditions disagreed
-on exactly one question each. \textbf{Claim verification does not
+changes WebQSP F1 by $+0.004$ and ComplexWebQuestions F1 by $-0.009$, $p
+= 1.000$ on both. Across the half-splits --- $200$ questions on WebQSP
+and $198$ on ComplexWebQuestions --- the two conditions disagreed on
+exactly one question each. \textbf{Claim verification does not
 measurably change how often AGR is right.}
 
 The result is expected rather than disappointing, for the reason
-\Cref{sec:verification} gave before any of these numbers appeared: on
+\Cref{sec:verification} gave before any of these numbers appeared. On
 most questions the layer is a pass-through certifying a draft that was
 already grounded. On test it asks for a repair on $52$ of $800$
 questions, exploration actually resumes on $28$, and $13$ end grounded
-that did not start so. A mechanism that alters the output on a few
-per cent of questions cannot move an aggregate accuracy metric, and an
-ablation is the right instrument for establishing that rather than
-assuming it either way.
+that did not start so. A mechanism that alters the output on a few per
+cent of questions cannot move an aggregate accuracy metric. An ablation
+is the right instrument for establishing that, rather than assuming it
+either way.
 
 What the layer delivers is therefore not an accuracy gain but the output
 contract: an answer paired with the traversed triples that support it,
 and an entity list that is a deterministic function of the verdicts
-rather than a second generation. That is an auditability claim, it is
+rather than a second generation. That is an auditability claim. It is
 what \Cref{sec:groundedness} shows the layer cannot claim credit for on
 groundedness, and it is the claim the measurements support.
 
-\subsection*{Power}
+\subsection{Statistical Power}\label{sec:power}
 
 These are nulls at low power, not demonstrations of absence, and the
 arithmetic is worth stating exactly. McNemar's exact test sees only the
-\emph{discordant} pairs --- the questions on which the two conditions
-disagree --- and the null conditions produced very few of them.
+\emph{discordant} pairs, the questions on which the two conditions
+disagree, and the null conditions produced very few of them.
 
 Removing claim verification changed the outcome on exactly one question
 per dataset. With a single discordant pair no split whatsoever can reach
-significance, so that row is not a test that failed to reject; it is the
+significance. So that row is not a test that failed to reject. It is the
 two conditions agreeing on $396$ of the $398$ paired questions, which is
 a statement about how rarely the layer alters an answer rather than
-about statistical power. Backtracking produced $8$ and $11$ discordant pairs,
-and model scoring $21$ and $18$. At those counts the smallest imbalance
-the exact test could have called significant is $8$ and $9$ questions
-for backtracking --- all eight would have had to fall the same way ---
-and $11$ and $10$ for model scoring, which is between $4.0$ and $5.5$
-points of accuracy. Differences below that were undetectable at any
-power, whatever their true size.
+about statistical power. Backtracking produced $8$ and $11$ discordant
+pairs, and model scoring $21$ and $18$. At those counts the smallest
+imbalance the exact test could have called significant is $8$ and $9$
+questions for backtracking, meaning all eight would have had to fall the
+same way, and $11$ and $10$ for model scoring, which is between $4.0$
+and $5.5$ points of accuracy. Differences below that were undetectable
+at any power, whatever their true size.
 
 For calibration: detecting a true $2{:}1$ discordance ratio at $80\%$
 power requires roughly $72$ discordant pairs, and the largest of these
 conditions produced $21$. At that count the smallest ratio detectable at
-$80\%$ power is nearer $4{:}1$ --- a true $2{:}1$ effect would have been
+$80\%$ power is nearer $4{:}1$. A true $2{:}1$ effect would have been
 caught about a quarter of the time. \textbf{Three of four components
 show no effect at this power}; none is shown to have no effect.

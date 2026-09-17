@@ -1,7 +1,7 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
 % AGR-led framing: the system is the contribution, the ablation is
-% validation. ~950 words, compressed from thesis ch:intro (2,978).
+% validation. ~950 words, compressed from the thesis introduction.
 %
 % The one thing this section must not do is promise that the
 % verification layer raises accuracy. It does not -- the precision column
@@ -9,135 +9,144 @@
 % the output contract. Claiming that here, and only that, is what keeps
 % Section 6 from reading as a retraction.
 %
-% And claim the contract at its real width. An earlier version of this
-% comment read "every answer arrives with the traversed triples that
-% support it", which is the phrase the thesis spends its Sec 6.6
-% withdrawing: only the traversed-adjacency route attaches evidence, and
-% the logger keeps the COUNT and discards the list. Both bounds are in
-% this paper already -- Sec 3 for the routes, Sec 7 for the record -- so
-% the introduction must not say anything Sec 7 has to take back. In
-% particular do not write that the reasoning is "auditable" without
-% saying auditable WHERE; Sec 7's heading is that the contract cannot be
-% audited from the run records.
+% And claim the contract at its real width. Only the traversed-adjacency
+% route attaches evidence, and the logger keeps the COUNT and discards
+% the list. Both bounds are in this paper already -- Sec 3 for the
+% routes, Sec 7 for the record -- so the introduction must not say
+% anything Sec 7 has to take back. In particular do not write that the
+% reasoning is "auditable" without saying auditable WHERE; Sec 7's
+% heading is that the contract cannot be audited from the run records.
+%
+% Register, as of the September 2026 pass: short sentences, active voice
+% where it reads at least as well, few em-dashes. The thesis chapters
+% were rewritten to this register first; this file follows them.
 % ---------------------------------------------------------------------
 
 \section{Introduction}\label{sec:intro}
 
-Large language models answer factual questions fluently, and often enough
+Large language models answer factual questions fluently. Often enough,
 they answer them wrongly. The errors are systematic rather than random,
 and they are hard to catch from the output alone, because a fabricated
-answer reads in the same register as a correct one; Huang et
-al.~\cite{huang2025survey} treat this as an intrinsic consequence of how
-the models are built rather than an incidental defect to be patched away.
-The problem sharpens once an answer requires composing several facts
-rather than recalling one. Errors compound, since a wrong resolution at
-the first hop rarely announces itself downstream, and a question-level
-correctness check never sees the intermediate steps at all --- which
-leaves a system that answers correctly by accident indistinguishable from
-one that answers correctly by sound reasoning.
+answer reads in the same register as a correct one. Huang et
+al.~\cite{huang2025survey} treat this as a consequence of how the models
+are built, not as an incidental defect to be patched away. The problem
+sharpens once an answer requires composing several facts rather than
+recalling one. Errors compound: a wrong resolution at the first hop
+rarely announces itself downstream. And a correctness check on the final
+answer never sees the intermediate steps. So a system that answers
+correctly by accident looks the same as one that answers correctly by
+sound reasoning.
 
 Retrieval-augmented generation~\cite{lewis2020retrieval} addresses the
-first half of this by grounding the model in retrieved text. It does not
-address the second. Retrieval runs once, before reasoning begins, so a
-multi-hop question must be answered from whatever that single query
-returned, and the passage holding the \emph{intermediate} entity need not
-resemble the original question --- which is the only signal the retriever
-has to rank on. Representing the corpus as a knowledge
-graph~\cite{bollacker2008freebase} makes composition a traversal rather
-than an inference over prose, and GraphRAG~\cite{edge2024local} exploits
-this, but it still retrieves statically: a neighbourhood fetched in one
-shot cannot know what the next reasoning step will need, and is either
-too small to contain the answer or so large that the relevant edges are
-buried.
+first half of this problem by grounding the model in retrieved text. It
+does not address the second. Retrieval runs once, before reasoning
+begins, so a multi-hop question must be answered from whatever that
+single query returned. The passage holding the \emph{intermediate}
+entity need not resemble the original question at all, and the question
+is the only signal the retriever can rank on. Representing the corpus as
+a knowledge graph~\cite{bollacker2008freebase} turns composition into a
+traversal rather than an inference over prose.
+GraphRAG~\cite{edge2024local} exploits this, but it still retrieves
+statically. A neighbourhood fetched in one shot cannot know what the
+next reasoning step will need. It is either too small to contain the
+answer or so large that the relevant edges are buried.
 
-Agentic systems close that gap by interleaving the two: the model takes
-one step, observes what it found, and decides where to look
-next~\cite{sun2024think,chen2024plan,luo2024reasoning}. Retrieval becomes
-navigation, and the system becomes an agent operating on the graph rather
-than a pipeline reading from it. \Cref{sec:related} traces that line of
-work in detail.
+Agentic systems close that gap by interleaving the two steps. The model
+takes one step, observes what it found, and decides where to look
+next~\cite{sun2024think,chen2024plan,luo2024reasoning}. Retrieval
+becomes navigation, and the system becomes an agent operating on the
+graph rather than a pipeline reading from it. \Cref{sec:related} traces
+that line of work.
 
 One property survives this progression unchanged. Every system named
 above emits whatever its final generation call produces from the
-traversed context, and nothing checks that what the answer \emph{asserts}
-is supported by what the agent actually retrieved. The gap is not
-fabrication --- our measurements confirm that graph-navigating systems
-assert entities that exist in the graph and are reachable along the paths
-they walked (\Cref{sec:groundedness}). It is that an entity can sit in
+traversed context. Nothing checks that what the answer \emph{asserts} is
+supported by what the agent retrieved. The gap is not fabrication. Our
+measurements confirm that graph-navigating systems assert entities that
+exist in the graph and are reachable along the paths they walked
+(\Cref{sec:groundedness}). The gap is precision. An entity can sit in
 the retrieved subgraph, have been retrieved correctly, and still be the
 wrong answer: an intermediate node from the reasoning chain, a container
 where the question asked for a member, or one of several plausible
-neighbours chosen arbitrarily. A system that verifies retrieval but never
-verifies assertion cannot catch either case.
+neighbours chosen arbitrarily. A system that verifies retrieval but
+never verifies assertion cannot catch any of these.
 
 This paper presents \textbf{Agentic Graph Reasoning} (AGR), a
 knowledge-graph question-answering framework built as an explicit state
-machine over a constrained, deterministic graph tool API, in which the
-program orchestrates the loop and the language model is consulted only at
-bounded decision points. Its distinguishing component is a
-\emph{Structural Verification Layer}: before an answer is emitted, the
-draft is decomposed into atomic claims and each is checked against the
-triples the agent actually traversed. \emph{Structural} bounds that check
-as much as it names it: the two graph routes ask whether an edge joins a
-claim's endpoints, not whether it is the edge the claim asserts, so a
-claim that X is Y's mother is certified by an edge recording that X is
-Y's child, and only the entailment fallback reads the relation.
-\Cref{sec:limits-contribution} reports the exposure that follows. Claims
-that cannot be grounded
-trigger targeted re-exploration or are removed, and the claims the
-traversal itself grounds carry those triples back with the answer.
+machine over a constrained, deterministic graph tool API. The program
+orchestrates the loop. The language model is consulted only at bounded
+decision points. AGR's distinguishing component is a \emph{Structural
+Verification Layer}. Before an answer is emitted, the draft is
+decomposed into atomic claims, and each claim is checked against the
+triples the agent actually traversed. The word \emph{structural} bounds
+that check as much as it names it. The two graph routes ask whether an
+edge joins a claim's endpoints, not whether it is the edge the claim
+asserts. So a claim that X is Y's mother is certified by an edge
+recording that X is Y's child, and only the entailment fallback reads
+the relation. \Cref{sec:limits-contribution} reports the exposure that
+follows. Claims that cannot be grounded trigger targeted re-exploration
+or are removed. The claims the traversal itself grounds carry their
+triples back with the answer.
 
 We are precise about what that layer buys, because the ablation of
 \Cref{sec:attribution} is precise about what it does not. Claim
-verification does not measurably change how often AGR is right; it
+verification does not measurably change how often AGR is right. It
 changes how often AGR is right \emph{for a reason it can exhibit}. The
-contribution is the output contract --- an answer together with the
-traversed evidence for it --- rather than an accuracy gain, and
-\Cref{sec:attribution} reports the null that establishes this at the same
-length as the effects it does detect.
+contribution is the output contract, an answer together with the
+traversed evidence for it, rather than an accuracy gain.
+\Cref{sec:attribution} reports the null that establishes this at the
+same length as the effects it does detect.
 
 On $400$ certified questions from each of WebQSP~\cite{yih2016value} and
 ComplexWebQuestions~\cite{talmor2018web}, over a Freebase-derived
 environment of $2.59$ million entities and $8.31$ million triples, AGR
-reaches Hits@1 of $0.755$ and $0.522$ against four baselines sharing one
-frozen backbone and one call budget, and it does so at roughly half the
-language-model calls of the strongest of them. On ComplexWebQuestions it
-is the only system whose accuracy rises with hop count. Its advantage
-over the agentic baseline is located rather than asserted: on the
-questions where the shared cap lets that baseline finish it is slightly
-ahead, and the entire aggregate margin comes from the $29\%$ and $44\%$
-of questions on which the cap truncates it.
+reaches Hits@1 of $0.755$ and $0.522$. Four baselines share one frozen
+backbone and one call budget with it. AGR leads all four, at roughly
+half the language-model calls of the strongest. On ComplexWebQuestions
+it is the only system whose accuracy rises with hop count. Its advantage
+over the agentic baseline is located rather than asserted. On the
+questions where the shared cap lets that baseline finish, the baseline
+is slightly ahead. The entire aggregate margin comes from the $29\%$ and
+$44\%$ of questions on which the cap truncates it.
 
-\paragraph{Contributions.} This paper contributes:
+% elsarticle supplies the period after a \paragraph title; a period
+% inside the braces printed "Contributions.." in every build until
+% September 2026.
+\paragraph{Contributions} This paper contributes:
 
 \begin{enumerate}
   \item \textbf{AGR}, a state-machine agent over a constrained graph tool
     API whose answers carry the traversed triples that support them, so
     the reasoning is auditable at emission rather than merely asserted
-    (\Cref{sec:framework}); \Cref{sec:limits-contribution} bounds how
+    (\Cref{sec:framework}). \Cref{sec:limits-contribution} bounds how
     far that reaches.
   \item A \textbf{Structural Verification Layer} that checks atomic
-    claims against traversed adjacency before emission, with its repair
-    routes and their measured firing rates reported as they behave rather
+    claims against traversed adjacency before emission. Its repair
+    routes and their firing rates are reported as they behave rather
     than as designed (\Cref{sec:verification}).
   \item A \textbf{controlled comparison} against four baselines on one
     frozen backbone under one call budget, so that differences are
     attributable to architecture rather than to model capacity
-    (\Cref{sec:results}).
+    (\Cref{sec:results}). Beside it we report a direct comparison
+    against the published figures of the system whose data distribution
+    we share, and that comparison does not favour this work
+    (\Cref{sec:rog}).
   \item A \textbf{component-level ablation} with paired significance
-    testing, which finds that removing the planner \emph{improves}
-    accuracy on the shallower benchmark while reducing token use, and
-    that three of four components show no detectable effect
+    testing. It finds that removing the planner \emph{improves} accuracy
+    on the shallower benchmark while reducing token use, and that three
+    of four components show no detectable effect
     (\Cref{sec:attribution}).
-  \item A \textbf{hand-read census} of all $259$ remaining failures,
-    naming the \emph{echo attractor} --- a true, grounded entity one hop
-    from the answer that every grounding check passes --- and quantifying
-    label defects in both benchmarks (\Cref{sec:erroranalysis}).
+  \item A \textbf{hand-read census} of all $259$ remaining failures. It
+    names the \emph{echo attractor}, a true, grounded entity one hop
+    from the answer that every grounding check passes, and it
+    quantifies label defects in both benchmarks
+    (\Cref{sec:erroranalysis}).
 \end{enumerate}
 
 \Cref{sec:related} positions AGR against prior work.
-\Cref{sec:framework} specifies the framework and the verification layer,
-\Cref{sec:setup} the environment and experimental protocol, and
-\Cref{sec:results} the measurements. \Cref{sec:attribution} attributes
-them to components, \Cref{sec:erroranalysis} reads what remains, and
-\Cref{sec:discussion} states the limits.
+\Cref{sec:framework} specifies the framework and the verification layer.
+\Cref{sec:setup} describes the environment and the experimental
+protocol, and \Cref{sec:results} reports the measurements.
+\Cref{sec:attribution} attributes them to components,
+\Cref{sec:erroranalysis} reads what remains, and \Cref{sec:discussion}
+states the limits.

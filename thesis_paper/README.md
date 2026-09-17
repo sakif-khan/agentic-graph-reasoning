@@ -43,9 +43,14 @@ Two caveats, because this is guidance about guidance:
 
 - The **KBS** guide for authors specifically is still unread. It returns
   403 to an automated fetch by every route tried: `sciencedirect.com`
-  directly, and `elsevier.com`, which 301s there. A journal may add its
-  own requirement. If you can open that page in a browser, check it and
-  replace this paragraph with what it says.
+  directly, and `elsevier.com`, which 301s there. Re-tried in September
+  2026 through a rendering proxy as well: the page serves a CAPTCHA. What
+  a search engine's summary of the page reports is an abstract of at
+  most 250 words, 1 to 7 keywords, and 3 to 5 highlights of at most 85
+  characters each; the manuscript is inside all three, but a summary is
+  not the page. A journal may add its own requirement. If you can open
+  that page in a browser, check it and replace this paragraph with what
+  it says.
 - An earlier version of this note claimed Editorial Manager builds the
   reviewer PDF itself. That may well be true, but it was never verified
   either, so it is gone rather than repeated.
@@ -148,6 +153,34 @@ that removes the objection is roughly fifty dollars.
 
 ## Editing notes
 
+- **Register (September 2026).** The thesis chapters were rewritten to
+  short, separate sentences, active voice where it reads at least as
+  well, and few em-dashes; the paper follows them. Prose is filled at
+  72 columns, and each file keeps whatever line ending it had. Two
+  em-dashes are pinned by `check_paper_numbers.py` (the half-splits
+  sentence and the census-found-defects sentence) and must stay.
+- **Synchronised with the thesis at `d09866e` (September 2026).** What
+  came across: the RoG comparison (`sec:rog`, Table 4), the dataset
+  provenance (`rmanluo/RoG-webqsp`, `rmanluo/RoG-cwq`, used
+  unmodified), the environment's expressiveness limit (no literals, no
+  ordinals), the dated backbone snapshot, the four pre-specified
+  decisions, CWQ assertion precision, the paired-test counts against
+  the agentic baseline, the breadth check, the depth-cap binding rate,
+  the planner's per-stratum effect, the no-multiple-comparison
+  statement, the ban-list misalignment that bounds the backtracking
+  null, the first-departure reading protocol, and the near-miss
+  measurement. Every new figure is bound to its source in
+  `check_paper_numbers.py`. Two thesis figures were checked and NOT
+  carried: RoG's training-split sizes are 2,826 and 27,639 in the
+  distribution's own parquet files (the thesis says 2,830 and 16,900),
+  and the claim that PoG and ToG disagree about ToG's CWQ score is a
+  misreading -- 58.9 / 69.5 are ToG-R, a variant from the ToG paper
+  itself, and PoG quotes ToG's own 57.1 / 67.6 faithfully.
+- **Figure 3's caption was wrong from the day it was written.** It said AGR sits above
+  and to the *left* of Think-on-Graph. AGR spends more tokens than the
+  baseline on both datasets, so it sits to the right; the halving is in
+  calls, which the figure does not plot. The header comment of
+  `results.tex` now records the geometry.
 - **AGR-led framing, but the verification layer sells auditability, not
   accuracy.** The precision column does not move when the layer is
   removed, so the paper must never promise that it does. What it delivers

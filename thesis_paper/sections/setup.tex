@@ -1,7 +1,7 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
-% Compresses thesis ch:environment (3,653) and ch:setup (9,090) to
-% ~1,200.
+% Compresses the thesis environment chapter and the experimental-setup
+% part of the evaluation chapter to ~1,400 words.
 %
 % TWO RULES THIS SECTION MUST NOT BREAK:
 %
@@ -19,145 +19,194 @@
 % the body, up front, rather than left in a table caption. Same numbers
 % either way; the difference is entirely in who says it first.
 %
+% Added in the September 2026 sync with the thesis: the dataset
+% provenance (RoG's published distribution, used unmodified), the
+% expressiveness limit of the environment (no literals, no ordinals),
+% the dated backbone snapshot, the four pre-specified decisions, and the
+% surface-form near-miss measurement that defends strict matching.
+%
 % CUT: the backbone selection reversal, the wrong-split incident, the
-% judge threshold missed by 0.0005. One sentence points at the
-% repository; they are admirable and they are not what a reviewer reads
-% a setup section for.
+% API spend. One sentence points at the repository; they are admirable
+% and they are not what a reviewer reads a setup section for.
 % ---------------------------------------------------------------------
 
 \section{Experimental Setup}\label{sec:setup}
 
 Everything in this section exists to make one inference safe: that a
-difference between two systems is a difference between architectures.
-The environment all five share is described first, then the benchmarks,
-the four baselines, and the single frozen backbone every one of them
-calls, and finally the metrics and the protocol fixed before any test
-question was run. Where something is \emph{not} held constant, it is
-named here rather than left for a reader to find.
+difference between two systems is a difference between architectures. We
+describe the environment all five systems share first, then the
+benchmarks, the four baselines, and the single frozen backbone every one
+of them calls, and finally the metrics and the protocol fixed before any
+test question was run. Where something is \emph{not} held constant, we
+name it here rather than leave it for a reader to find.
 
 \subsection{Knowledge Environment}\label{sec:environment}
 
-All five systems navigate one shared environment, a property graph of
-$2.59$ million entities and $8.31$ million triples over $7{,}058$
-distinct relation types, built as the union of the per-question
-subgraphs distributed with Reasoning-on-Graphs~\cite{luo2024reasoning}
-and derived from Freebase~\cite{bollacker2008freebase}. Just under
-two-thirds of the nodes --- $63.7\%$ --- are unnamed mediators encoding
-$n$-ary facts, which is why the tool layer traverses them transparently
-rather than exposing them as candidate entities (\Cref{sec:framework}).
+Every dataset this paper consumes is public, standard, and third-party.
+The Freebase~\cite{bollacker2008freebase} snapshot and the two question
+sets all arrive through one distribution: the per-question subgraphs
+published with Reasoning-on-Graphs~\cite{luo2024reasoning}, released as
+\textsf{rmanluo/RoG-webqsp} and \textsf{rmanluo/RoG-cwq}. The datasets
+are used unmodified. What is built here is the environment derived from
+them: a property graph of $2.59$ million entities and $8.31$ million
+triples over $7{,}058$ distinct relation types, assembled as the union
+of every per-question subgraph across both datasets and all three
+splits. All five systems navigate that one graph. Just under two-thirds
+of its nodes ($63.7\%$) are unnamed mediators encoding $n$-ary facts.
+That is why the tool layer traverses them transparently rather than
+exposing them as candidate entities (\Cref{sec:framework}).
 
 An environment assembled this way is friendlier than full Freebase, and
-the paper states the consequence rather than leaving it to be inferred.
-Before any system ran, a validation gate measured what fraction of
-questions have at least one gold answer reachable from a topic entity
-within the four-hop cap: $97.0\%$ on the WebQSP sample and $99.2\%$ on
-the ComplexWebQuestions sample. That ceiling is the reason a failure in
+we state the consequence rather than leave it to be inferred. Before any
+system ran, a validation gate measured what fraction of questions have
+at least one gold answer reachable from a topic entity within the
+four-hop cap: $97.0\%$ on the WebQSP sample and $99.2\%$ on the
+ComplexWebQuestions sample. That ceiling is why a failure in
 \Cref{sec:erroranalysis} can be attributed to the system rather than to
-a missing edge --- almost every question is answerable in principle, so
-a wrong answer is a navigation or selection error, not an absent fact.
-It is equally the reason \textbf{absolute accuracies here do not
-transfer to a full-Freebase setting}. Every comparison in
-\Cref{sec:results} is between systems traversing the identical
-environment, which is what the comparison is for; none of the numbers
-should be read against published figures obtained over a different
-substrate.
+a missing edge. Almost every question is answerable in principle, so a
+wrong answer is a navigation or selection error, not an absent fact. It
+is equally why \textbf{absolute accuracies here do not transfer to a
+full-Freebase setting}. Every comparison in \Cref{sec:results} is
+between systems traversing the identical environment, which is what the
+comparison is for. None of the numbers should be read against published
+figures obtained over a different substrate; \Cref{sec:rog} shows what
+such a reading looks like when it is done with the caveats attached.
+
+One limit of the environment concerns expressiveness rather than
+coverage. Every node carries a single entity label. There is no typed
+literal, so a date or a number exists only incidentally, as an entity
+whose name happens to be a numeric string, and the tool API exposes no
+ordering or aggregation operator. A question whose gold answer is a
+date, a measured quantity, or a superlative over candidates is therefore
+unanswerable in this environment by construction.
+\Cref{sec:erroranalysis} reports how much of the residue that class
+accounts for, and \Cref{sec:discussion} carries it as a scope limit.
 
 \subsection{Benchmarks, Baselines, and Backbone}\label{sec:baselines}
 
 We evaluate on WebQSP~\cite{yih2016value} and
 ComplexWebQuestions~\cite{talmor2018web}, the two standard multi-hop
 KGQA benchmarks over Freebase. \textbf{We sample $400$ questions from
-each} rather than running the full $1{,}628$ and $3{,}531$ splits --- a
-pre-specified fallback adopted when full-split cost was projected at
-roughly three times the budget available for the work. The sample is
-stratified by hop count, and the resulting $95\%$ bootstrap intervals
-are roughly $\pm4$ to $\pm5$ points on Hits@1; \Cref{sec:discussion}
-says which of the paper's claims survive that width and which are
-reported as directions rather than effects.
+each} rather than running the full $1{,}628$ and $3{,}531$ test splits.
+That was a pre-specified fallback, adopted when the full-split cost was
+projected at roughly three times the budget available for the work. The
+sample is stratified by hop count at a fixed seed, and the resulting
+$95\%$ bootstrap intervals are roughly $\pm4$ to $\pm5$ points on
+Hits@1. \Cref{sec:discussion} says which of the paper's claims survive
+that width and which are reported as directions rather than effects. The
+two benchmarks differ less in the typical question than in the tail.
+Exactly half of the WebQSP sample carries a single gold answer, but its
+mean is $7.15$ gold entities per question and its largest question lists
+$237$. ComplexWebQuestions averages $1.75$ with a median of $1$. That
+tail is one reason we report F1 beside Hits@1.
 
-Four baselines span the design space, each a paradigm rather than a
+Four baselines span the design space. Each is a paradigm rather than a
 tuned competitor. A \textbf{no-retrieval} control answers from
 parametric memory alone, establishing what the backbone knows without
 the graph. \textbf{Vector-RAG} retrieves verbalised triples by embedding
 similarity. \textbf{Static GraphRAG}~\cite{edge2024local} fetches a
 fixed-radius neighbourhood around the linked topic entities in one shot,
 reranks it, and answers from the top $30$ facts. Two properties of that
-implementation bound what it licenses and are stated here rather than
-left for a reader to infer from its scores. The radius is \emph{one
-logical hop} --- mediators are traversed transparently, so a mediator
-path costs two graph edges while remaining one hop --- which means a
+implementation bound what it licenses, and we state them here rather
+than leave a reader to infer them from its scores. The radius is
+\emph{one logical hop}. Mediators are traversed transparently, so a
+mediator path costs two graph edges while remaining one hop, and a
 genuine two-hop chain is outside its reach by construction. And
 expansion retrieves at most $100$ edges per topic entity with no
 ordering criterion, so on a high-degree entity the retained edges are an
-arbitrary sample rather than the best or the first: at least one topic
+arbitrary sample rather than the best or the first. At least one topic
 entity is truncated on $72.5\%$ of the $800$ test questions. This
-baseline therefore licenses the narrow claim that \emph{retrieval fixed
+baseline therefore licenses one narrow claim: \emph{retrieval fixed
 before reasoning must commit to a radius in advance, and any fixed
 radius is wrong for some question in the set}. It does not license a
-claim about what a two-hop static retriever would score, which was not
-run.
-\textbf{Think-on-Graph}~\cite{sun2024think} is the agentic comparator,
-performing model-guided beam search over relations and entities, and is
-the system AGR is measured against throughout. Baselines were debugged
-on development data and certified before any test question ran, against
-a pre-specified diagnostic targeting the one failure that would be an
+claim about what a two-hop static retriever would score. That experiment
+was not run.
+
+\textbf{Think-on-Graph}~\cite{sun2024think} is the agentic comparator.
+It performs model-guided beam search over relations and entities, and it
+is the system AGR is measured against throughout. It is a
+reimplementation on this environment's tools, at the published beam
+width and depth, rather than a quoted number. That is a stronger
+comparison than citing the original figures, because graph, model,
+budget, and scoring rule are held constant and only the algorithm
+varies. It also means its numbers are not comparable to the published
+ones, and we do not present them as such. All baselines were debugged on
+development data and certified before any test question ran, against a
+pre-specified diagnostic targeting the one failure that would be an
 implementation defect rather than a paradigm limit: retrieval found the
 gold answer and the system hedged anyway.
 
-Every system shares one frozen backbone --- \textsf{gpt-5.4-mini}, at
-temperature $0.0$ with reasoning effort disabled --- together with the
-entity resolver, the question files, the output schema, and \emph{one
-budget meter with the same $25$-call cap}. Both graph-navigating systems
-seed from the datasets' annotated topic entities, which removes entity
-linking as a confound. Holding all of this constant is what licenses the
-paper's central inference: a difference between two systems is
-attributable to architecture, not to model capacity, retrieval corpus,
-or spend. Two things are deliberately not held constant and are named
-here rather than buried --- the baselines receive a plain answering
-prompt while AGR's drafting prompt carries the grounding provisions that
-are part of the system under test, and the two navigators consider
-candidate sets of different widths, $40$ relations and $20$ neighbours
-for Think-on-Graph against $300$ and $200$ for AGR. The second is where
-a reader should look first for a confound, and \Cref{sec:cost} reports
+Every system shares one frozen backbone,
+\textsf{gpt-5.4-mini-2026-03-17}, a dated snapshot rather than an alias,
+at temperature $0.0$ with reasoning effort disabled. A check that logs
+the reasoning-token count on every call read zero across every run in
+this paper. The systems also share the entity resolver, the question
+files, the output schema, and \emph{one budget meter with the same
+$25$-call cap}. Both graph-navigating systems seed from the datasets'
+annotated topic entities, which removes entity linking as a confound.
+Holding all of this constant is what licenses the paper's central
+inference: a difference between two systems is attributable to
+architecture, not to model capacity, retrieval corpus, or spend. Two
+things are deliberately not held constant, and we name them here rather
+than bury them. The baselines receive a plain answering prompt, while
+AGR's drafting prompt carries the grounding provisions that are part of
+the system under test. And the two navigators consider candidate sets of
+different widths: $40$ relations and $20$ neighbours for Think-on-Graph
+against $300$ and $200$ for AGR (\Cref{tab:budget}). The second is where
+a reader should look first for a confound, and \Cref{sec:margin} reports
 the measurement that bounds it.
 
 \subsection{Metrics and Protocol}\label{sec:protocol}
 
-Accuracy is reported as \textbf{Hits@1} and per-question \textbf{F1}, the
-latter because a system can score a clean hit on set-intersection while
-asserting several wrong entities alongside the right one. A
-\textbf{hedge} is an empty predicted entity set; hedges score zero on
-both metrics and hedge rate is reported as its own column, so a system
-buying precision through abstention is visible rather than flattered.
-Hits, hedges, and wrong answers always partition the whole set: nothing
-is dropped from the denominator, including questions the environment
-provably cannot answer.
+Accuracy is reported as \textbf{Hits@1} and per-question \textbf{F1}. We
+report F1 because a system can score a clean hit on set-intersection
+while asserting several wrong entities alongside the right one. A
+\textbf{hedge} is an empty predicted entity set. Hedges score zero on
+both metrics, and the hedge rate is reported as its own column, so a
+system buying precision through abstention is visible rather than
+flattered. Hits, hedges, and wrong answers always partition the whole
+set. Nothing is dropped from the denominator, including questions the
+environment provably cannot answer. Matching is exact after Unicode
+normalisation, case folding, and whitespace stripping, with no fuzzy or
+substring matching. We measured the obvious worry rather than assumed it
+away: of AGR's wrong answers, $1$ of $65$ on WebQSP and $6$ of $99$ on
+ComplexWebQuestions are surface-form near-misses that aggressive
+normalisation would have scored as hits. The failure census of
+\Cref{sec:erroranalysis} is reading real errors.
 
 \textbf{Groundedness} is measured at two levels. The structural tier is
 deterministic and applies to every asserted entity in all $4{,}000$
 records: an entity is grounded if and only if it exists as a node in the
 environment and connects to a topic entity within four hops. The
-semantic tier asks the harder question --- whether the entity is
-supported \emph{as the answer} --- by retrieving the graph's own
-shortest connecting paths for a stratified sample of $60$ answers per
-system per dataset and having a language model judge whether any path
-expresses the relationship the question asks about, under the governing
-instruction that mere connectedness is not support. That judge was
-validated against a human annotator on $100$ items, reaching $85\%$
-agreement and Cohen's $\kappa = 0.6995$ --- which \emph{misses} the
-$0.70$ we pre-specified, by $0.0005$; \Cref{sec:discussion} treats that
-as a limitation rather than rounding it away. Because path retrieval takes only
-the three shortest paths, semantic-tier rates are conservative lower
-bounds, depressed uniformly across systems and read as a between-system
+semantic tier asks the harder question of whether the entity is
+supported \emph{as the answer}. For a stratified sample of $60$ answers
+per system per dataset, it retrieves the graph's own shortest connecting
+paths and has a language model judge whether any path expresses the
+relationship the question asks about, under the governing instruction
+that mere connectedness is not support. That judge was validated against
+a human annotator on $100$ items, reaching $85\%$ agreement and Cohen's
+$\kappa = 0.6995$. That \emph{misses} the $0.70$ we pre-specified, by
+$0.0005$, and \Cref{sec:discussion} treats the miss as a limitation
+rather than rounding it away. Because path retrieval takes only the
+three shortest paths, semantic-tier rates are conservative lower bounds.
+They are depressed uniformly across systems and read as a between-system
 comparison rather than as absolute support rates. Efficiency is tokens
 and model calls, both exact from the shared meter.
 
-The protocol was \textbf{pre-specified}: research questions, metrics,
+The protocol was \textbf{pre-specified}. Research questions, metrics,
 baseline certification thresholds, and ablation conditions were fixed
 and documented before the test sets were constructed, and no
-hyperparameter was tuned on test. The blend $\alpha = 0.7$ and the
-backtracking threshold $\tau = 0.20$ were selected on a disjoint
-$80$-question development set. Nothing was filed with a public registry,
-so the claim is pre-specification and not pre-registration. Deviations
-encountered during execution --- and there were several --- are recorded
-in the repository rather than narrated here.
+hyperparameter was tuned on test. Four decisions in particular were
+written down before the measurements they govern: the frozen
+configuration $\alpha = 0.7$ and $\tau = 0.20$, selected on a disjoint
+$80$-question development set and never revisited; the sample size of
+$400$ questions per dataset, named as the fallback before the cost was
+known; the baseline certification threshold; and the judge threshold of
+$\kappa \geq 0.7$. The last was missed, and it is reported as missed. A
+threshold that counts only when it is met is not a threshold. Nothing
+was filed with a public registry, so the claim is pre-specification and
+not pre-registration. Confidence intervals are $95\%$ percentile
+bootstrap intervals over questions from $10{,}000$ resamples, and paired
+comparisons use the exact form of McNemar's test on per-question
+correctness. Deviations encountered during execution, and there were
+several, are recorded in the repository rather than narrated here.

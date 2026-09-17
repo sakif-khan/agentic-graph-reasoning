@@ -229,7 +229,8 @@ def main():
         always is. These patterns pin each number to its own sentence.
         """
         m = re.search(pattern.replace(" ", r"\s+"), text)
-        got = tuple(int(g) for g in m.groups()) if m else None
+        got = tuple(float(g) if "." in g else int(g)
+                    for g in m.groups()) if m else None
         ck(label, got == expect, f"paper {got or 'NO MATCH'}, computed {expect}")
 
     says(r"Backtracking produced \$(\d+)\$ and \$(\d+)\$ discordant pairs, "
@@ -272,7 +273,7 @@ def main():
 
     pcts = sorted(rnd(100 * gaps[k] / N_HALF[k[0]], 1)
                   for k in gaps if gaps[k] is not None and k[1] != "noplanner")
-    m = re.search(r"between\s+\$([\d.]+)\$\s+and\s+\$([\d.]+)\$\s+points of accuracy",
+    m = re.search(r"between\s+\$([\d.]+)\$\s+and\s+\$([\d.]+)\$\s+points\s+of\s+accuracy",
                   text)
     got = tuple(float(g) for g in m.groups()) if m else None
     ck("the MDE range endpoints match the computed range",
@@ -294,7 +295,7 @@ def main():
     # was already in the text as an MDE endpoint and round(4.23) == 4 met
     # it by coincidence. A small integer will always find a match somewhere
     # in a paper full of small integers.
-    m = re.search(r"detectable at\s*\$?80\\%\$?\s*power is nearer \$(\d+)\{:\}1\$",
+    m = re.search(r"detectable\s+at\s*\$?80\\%\$?\s*power\s+is\s+nearer\s+\$(\d+)\{:\}1\$",
                   text)
     ck("the detectable-ratio sentence states the computed ratio",
        m is not None and int(m.group(1)) == round(ratio),
@@ -482,8 +483,10 @@ def main():
     # resolved fine, and contained nothing about widths. A dangling promise
     # of this kind is invisible to the build and to a reading that follows
     # the reference forward expecting to find the topic already introduced.
+    # sec:margin was split out of sec:cost in September 2026; the
+    # candidate-width measurement and the equal-width caveat moved with it.
     PROMISES = [
-        ("sec:cost", ("relations per entity",),
+        ("sec:margin", ("relations per entity",),
          "setup names the candidate-width confound and points here"),
         ("sec:nulls", ("detectable",),
          "discussion points here for the minimum detectable effect"),
@@ -514,9 +517,11 @@ def main():
     says(r"against AGR's \$(\d+)\$ and \$(\d+)\$",
          "AGR's candidate widths are stated",
          (cc["agr"]["relation_cap"], cc["agr"]["neighbor_cap"]))
-    m = re.search(r"binds on \$([\d.]+)\\%\$ of the\s+\$1\{,\}(\d+)\$ entities"
-                  r"[\s\S]{0,80}?on\s+\$([\d.]+)\\%\$ of its \$7\{,\}(\d+)\$ "
-                  r"neighbour calls", text)
+    # Whitespace-tolerant throughout: the .tex hard-wraps, and a break
+    # between "binds" and "on" reported the measured rates as missing.
+    m = re.search(r"binds\s+on\s+\$([\d.]+)\\%\$\s+of\s+the\s+\$1\{,\}(\d+)\$"
+                  r"\s+entities[\s\S]{0,80}?on\s+\$([\d.]+)\\%\$\s+of\s+its\s+"
+                  r"\$7\{,\}(\d+)\$\s+neighbour\s+calls", text)
     got = tuple(float(g) for g in m.groups()) if m else None
     want = (cc["tog"]["entities_at_relation_cap_pct"],
             float(str(cc["tog"]["entities_expanded"])[1:]),
@@ -537,7 +542,7 @@ def main():
     # pruning call dearer, so equalising widths ALSO raises the baseline's
     # clip rate and moves the boundary of the very split the comparison is
     # read from. The paper proposed the re-run and dropped the caveat.
-    cost = section_body("sec:cost") or ""
+    cost = section_body("sec:margin") or ""
     ck("the equal-width re-run carries its clip-rate confound",
        "clip rate" in cost and "read apart" in cost,
        "equalising widths also moves the split it would be measured on")
@@ -766,6 +771,211 @@ def main():
     ck("no full-split ceiling quoted where a sample ceiling belongs",
        not any(str(f) in present for f in full),
        f"sample {smp}, full split {full}")
+
+    print("\n== figures carried over from the thesis in September 2026 ==")
+    # Each of these entered the paper when it was re-synchronised with the
+    # thesis chapters. Every one is bound to its own sentence, for the reason
+    # the power block gives: in a paper full of small numbers, presence is
+    # not evidence.
+
+    # CWQ assertion precision: commitments, hits, wrongs and the rate, for
+    # AGR and the agentic baseline. Hits come from the main table; the
+    # commitments from the structural-groundedness log, which counts
+    # answered questions.
+    ap = {}
+    for s in ("agr", "tog"):
+        ans = gnd[f"test_cwq_{s}"]["questions_answered"]
+        hits = round(by[f"cwq/{s}"]["hits_at_1"] * 400)
+        ap[s] = (ans, hits, ans - hits, rnd(100 * hits / ans, 1))
+    says(r"on \$(\d+)\$ and \$(\d+)\$ of \$400\$ questions",
+         "the two systems' CWQ commitment counts are stated",
+         (ap["agr"][0], ap["tog"][0]))
+    says(r"AGR is right \$(\d+)\$ times and wrong \$(\d+)\$, against \$(\d+)\$ "
+         r"and \$(\d+)\$ for Think-on-Graph",
+         "the CWQ hit and wrong counts are stated for both systems",
+         (ap["agr"][1], ap["agr"][2], ap["tog"][1], ap["tog"][2]))
+    m = re.search(r"\$([\d.]+)\\%\$\s+assertion\s+precision\s+against\s+"
+                  r"\$([\d.]+)\\%\$", text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    ck("the CWQ assertion precisions are the computed ones",
+       got == (ap["agr"][3], ap["tog"][3]),
+       f"paper {got or 'NO MATCH'}, computed {(ap['agr'][3], ap['tog'][3])}")
+    says(r"finds \$(\d+)\$ more answers and asserts \$(\d+)\$ fewer falsehoods",
+         "the hit and falsehood margins add up",
+         (ap["agr"][1] - ap["tog"][1], ap["tog"][2] - ap["agr"][2]))
+
+    # AGR against the agentic baseline, paired: discordant counts and the
+    # exact McNemar p, recomputed from the run records.
+    def _hits(ds, s):
+        return {json.loads(l)["qid"]: _hit(json.loads(l)) for l in
+                open(P4 / f"test_{ds}_{s}.jsonl", encoding="utf-8")}
+    disc_tog = {}
+    for ds in ("webqsp", "cwq"):
+        a, t = _hits(ds, "agr"), _hits(ds, "tog")
+        a_only = sum(1 for q in a if a[q] and not t[q])
+        t_only = sum(1 for q in a if t[q] and not a[q])
+        disc_tog[ds] = (a_only, t_only, exact_p(t_only, a_only + t_only))
+    says(r"rest on \$(\d+)\$ questions AGR alone answers against \$(\d+)\$ "
+         r"the other way on WebQSP",
+         "the WebQSP discordant counts against the baseline are stated",
+         disc_tog["webqsp"][:2])
+    says(r"and \$(\d+)\$ against \$(\d+)\$ on ComplexWebQuestions",
+         "the CWQ discordant counts against the baseline are stated",
+         disc_tog["cwq"][:2])
+    for ds, name in (("webqsp", "WebQSP"), ("cwq", "ComplexWebQuestions")):
+        mant, expo = f"{disc_tog[ds][2]:.1e}".split("e")
+        pat = (r"on " + name + r"\s+\(\$p = ([\d.]+) \\times 10\^\{(-?\d+)\}\$\)")
+        m = re.search(pat.replace(" ", r"\s+"), text)
+        got = (float(m.group(1)), int(m.group(2))) if m else None
+        ck(f"the {name} McNemar p against the baseline is stated correctly",
+           got == (float(mant), int(expo)),
+           f"paper {got or 'NO MATCH'}, computed {mant}e{expo}")
+
+    # Breadth check: entities per answered question and entity precision
+    # over the answered subset, both systems, both datasets.
+    bw = tog["webqsp"]
+    bc = tog["cwq"]
+    m = re.search(r"AGR names \$([\d.]+)\$ entities against Think-on-Graph's "
+                  r"\$([\d.]+)\$, and its entity precision over those same "
+                  r"answered questions is \$([\d.]+)\$ against \$([\d.]+)\$"
+                  .replace(" ", r"\s+"), text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    want = (bw["agr_answered"]["entities_per_answer"],
+            bw["tog_answered"]["entities_per_answer"],
+            rnd(bw["agr_answered"]["precision"]),
+            rnd(bw["tog_answered"]["precision"]))
+    ck("the WebQSP breadth check quotes the measured figures",
+       got == want, f"paper {got or 'NO MATCH'}, computed {want}")
+    m = re.search(r"the figures are \$([\d.]+)\$ against \$([\d.]+)\$ entities "
+                  r"and \$([\d.]+)\$ against \$([\d.]+)\$ precision"
+                  .replace(" ", r"\s+"), text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    want = (bc["agr_answered"]["entities_per_answer"],
+            bc["tog_answered"]["entities_per_answer"],
+            rnd(bc["agr_answered"]["precision"]),
+            rnd(bc["tog_answered"]["precision"]))
+    ck("the CWQ breadth check quotes the measured figures",
+       got == want, f"paper {got or 'NO MATCH'}, computed {want}")
+
+    # AGR's own binding budget: the depth cap, over both test sets.
+    says(r"refuses a deeper expansion on \$([\d.]+)\\%\$ of test questions",
+         "the depth-cap refusal rate is the measured one",
+         (d["budget_binding"]["both"]["depth"]["refused_pct"],))
+
+    # The planner's per-stratum effect, recomputed from the half-split
+    # records and the committed test-set strata.
+    def _strata(ds):
+        ts = json.load(open(P4 / f"test_{ds}.json", encoding="utf-8"))
+        qs = ts["questions"] if isinstance(ts, dict) and "questions" in ts else ts
+        return {q.get("qid") or q.get("id"):
+                q.get("stratum") or q.get("hop_stratum") for q in qs}
+    strat_eff = {}
+    for ds in ("webqsp", "cwq"):
+        st = _strata(ds)
+        full = {json.loads(l)["qid"]: _hit(json.loads(l)) for l in open(
+            P4 / "ablations" / f"test_{ds}_half_abl_full.jsonl", encoding="utf-8")}
+        nop = {json.loads(l)["qid"]: _hit(json.loads(l)) for l in open(
+            P4 / "ablations" / f"test_{ds}_half_abl_noplanner.jsonl", encoding="utf-8")}
+        for s in ("h1", "h2", "h3plus"):
+            qs = [q for q in full if st.get(q) == s]
+            # unrounded on purpose; see _near below
+            strat_eff[(ds, s)] = (sum(full[q] for q in qs) / len(qs),
+                                  sum(nop[q] for q in qs) / len(qs))
+    # Within half a unit in the last place of the UNROUNDED fraction, not
+    # equal to a rounded one: CWQ's three-hop reference is 15/24 = 0.625,
+    # an exact tie that the thesis rounds to 0.62 (round-half-even) and
+    # rnd() to 0.63. Both are the same number; a transcription error is
+    # not, and is still caught.
+    def _near(got, want):
+        return got is not None and len(got) == len(want) and all(
+            abs(g - w) <= 0.005 + 1e-9 for g, w in zip(got, want))
+    m = re.search(r"raises one-hop Hits@1 from \$([\d.]+)\$ to \$([\d.]+)\$ and "
+                  r"two-hop Hits@1 from \$([\d.]+)\$ to \$([\d.]+)\$"
+                  .replace(" ", r"\s+"), text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    want = strat_eff[("webqsp", "h1")] + strat_eff[("webqsp", "h2")]
+    ck("the WebQSP per-stratum planner effect is the recomputed one",
+       _near(got, want), f"paper {got or 'NO MATCH'}, computed {want}")
+    m = re.search(r"from \$([\d.]+)\$ to \$([\d.]+)\$, two-hop collapses from "
+                  r"\$([\d.]+)\$ to \$([\d.]+)\$, and three-hop-plus moves from "
+                  r"\$([\d.]+)\$ to \$([\d.]+)\$".replace(" ", r"\s+"), text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    want = (strat_eff[("cwq", "h1")] + strat_eff[("cwq", "h2")]
+            + strat_eff[("cwq", "h3plus")])
+    ck("the CWQ per-stratum planner effect is the recomputed one",
+       _near(got, want), f"paper {got or 'NO MATCH'}, computed {want}")
+
+    # The RoG comparison: AGR's intervals and its own row of tab:rog. RoG's
+    # published row is external and is not bound here.
+    ci = {ds: tuple(rnd(100 * v, 1) for v in by[f"{ds}/agr"]["hits_at_1_ci95"])
+          for ds in ("webqsp", "cwq")}
+    m = re.search(r"\$\[([\d.]+), ([\d.]+)\]\$ on WebQSP and \$\[([\d.]+), "
+                  r"([\d.]+)\]\$ on ComplexWebQuestions".replace(" ", r"\s+"),
+                  text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    ck("the RoG comparison quotes AGR's bootstrap intervals",
+       got == ci["webqsp"] + ci["cwq"],
+       f"paper {got or 'NO MATCH'}, computed {ci['webqsp'] + ci['cwq']}")
+    m = re.search(r"\\agr\{\}\s+\(this work\)\s*&\s*([\d.]+)\s*&\s*([\d.]+)\s*&"
+                  r"\s*([\d.]+)\s*&\s*([\d.]+)\s*\\\\", text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    want = tuple(rnd(100 * by[f"{ds}/agr"][k], 1)
+                 for ds in ("webqsp", "cwq") for k in ("hits_at_1", "f1"))
+    ck("AGR's row of the RoG table is the main table in points",
+       got == want, f"table {got or 'NO ROW'}, computed {want}")
+
+    # Gold-set shape, from the committed test samples.
+    ts = d["test_sets"]
+    says(r"its mean is \$([\d.]+)\$ gold entities per question and its largest "
+         r"question lists \$(\d+)\$",
+         "the WebQSP gold-set shape is the committed one",
+         (ts["webqsp"]["gold_mean"], ts["webqsp"]["gold_max"]))
+    ck("exactly half the WebQSP sample carries one gold answer",
+       ts["webqsp"]["questions_with_one_gold"] * 2 == ts["webqsp"]["n_questions"]
+       and "Exactly half of the WebQSP sample" in text)
+    says(r"ComplexWebQuestions averages \$([\d.]+)\$ with a median of \$(\d+)\$",
+         "the CWQ gold mean and median are the committed ones",
+         (ts["cwq"]["gold_mean"], int(ts["cwq"]["gold_median"])))
+
+    # Surface-form near-misses among AGR's wrong answers, from the
+    # committed pre-pass artifacts.
+    nm = {}
+    for ds in ("webqsp", "cwq"):
+        w = json.load(open(P4 / f"prepass_wrongs_{ds}.json", encoding="utf-8"))
+        nm[ds] = (sum(1 for r in w if r["near_miss"]), len(w))
+    says(r"\$(\d+)\$ of \$(\d+)\$ on WebQSP and \$(\d+)\$ of \$(\d+)\$ on "
+         r"ComplexWebQuestions are surface-form near-misses",
+         "the near-miss counts and wrong-answer denominators are the measured ones",
+         nm["webqsp"] + nm["cwq"])
+
+    # The ban-list misalignment that bounds the backtracking null.
+    bs = d["backtrack_ban_scope"]["total"]
+    says(r"\$(\d+)\$ explorer passes re-expanded",
+         "the repeat-expansion count is the traced one",
+         (bs["repeat_expansion_passes"],))
+    says(r"at least \$(\d+)\$ of the \$(\d+)\$ backtracks restored a depth",
+         "the below-stack-top count and backtrack total are the traced ones",
+         (bs["pops_below_stack_top"], bs["backtracks"]))
+
+    # RoG's training-split sizes are counted from the distribution itself
+    # when it is checked out beside the repository; otherwise reported as
+    # unverified rather than passed silently.
+    rog = ROOT.parent
+    try:
+        import glob as _glob
+        import pyarrow.parquet as _pq
+        counts = tuple(sum(_pq.ParquetFile(f).metadata.num_rows for f in
+                           _glob.glob(str(rog / f"RoG-{ds}" / "data" / "train-*.parquet")))
+                       for ds in ("webqsp", "cwq"))
+        if all(counts):
+            says(r"which hold \$(\d+)\{,\}(\d+)\$ and \$(\d+)\{,\}(\d+)\$ questions",
+                 "RoG's training-split sizes are the distribution's own",
+                 (counts[0] // 1000, counts[0] % 1000, counts[1] // 1000, counts[1] % 1000))
+        else:
+            print("  [SKIP] RoG parquet files not found beside the repository; "
+                  "training-split sizes unverified")
+    except ImportError:
+        print("  [SKIP] pyarrow not installed; RoG training-split sizes unverified")
 
     print("\n== unbound literals in prose (read these) ==")
     accounted = {str(v) for v in bound.values()} | {

@@ -1,10 +1,13 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
-% ~300 words. No new numbers, no new claims.
+% ~350 words. No new numbers, no new claims.
 %
 % Close on the attribution argument, not on the system. A paper whose
 % own headline component produced a null should end on what that null
 % demonstrates about measurement, which outlives any one architecture.
+% The thesis's closing remark -- fact verification is the easier half,
+% relevance verification is the half still open -- sits in the middle
+% paragraph, where it names the gap the attribution argument leaves.
 % ---------------------------------------------------------------------
 
 \section{Conclusion}\label{sec:conclusion}
@@ -16,27 +19,37 @@ four baselines sharing one frozen backbone and one call budget, it leads
 every accuracy cell on both benchmarks at roughly half the model calls
 of the strongest of them, and it is the only system whose accuracy rises
 with hop count on the compositional benchmark. Its advantage is located
-rather than asserted: on the questions where the shared budget lets the
-agentic baseline finish, that baseline is slightly ahead, and the entire
+rather than asserted. On the questions where the shared budget lets the
+agentic baseline finish, that baseline is slightly ahead. The entire
 aggregate margin comes from the questions where the budget truncates it.
 The finding is about affordability under a fixed spend, and we report it
-as such.
+as such. Against the published figures of a system fine-tuned on these
+benchmarks, AGR trails on every number, and we report that too.
 
 The result we consider most useful is the one that did not go our way.
-Agentic systems are assemblies, and the field reports them whole. We took
-this one apart, and three of its four components could not be shown to
-earn their cost --- including the claim-verification layer this work set
-out to contribute, which does not measurably change how often the system
-is right. It changes how often the system is right for a reason it can
-exhibit, which is an auditability claim and not an accuracy one. The
-fourth component was actively harmful on the shallower benchmark:
-removing the planner improved accuracy and cut token use, because
+Agentic systems are assemblies, and the field reports them whole. We
+took this one apart, and three of its four components could not be shown
+to earn their cost. That includes the claim-verification layer this work
+set out to contribute, which does not measurably change how often the
+system is right. It changes how often the system is right for a reason
+it can exhibit, which is an auditability claim and not an accuracy one.
+The fourth component was actively harmful on the shallower benchmark.
+Removing the planner improved accuracy and cut token use, because
 decomposing a question that has no compositional structure discards the
 context that would have answered it.
 
-That pattern is a claim about how this field measures rather than about
-this architecture. A component adopted because the assembly containing it
-performed well may be contributing nothing, or less than nothing, and the
-only way to know is to remove it and test. We would rather report three
-nulls and a harmful component honestly than a system that works for
-reasons nobody has checked.
+The shape of the gap that remains matters as much as the margin. A
+system that traverses a real graph and copies its answers out of real
+triples can be made to assert nothing ungrounded. That problem is
+solved, and the navigation paradigm solves it, not any checking layer
+built on top. What remains is an answer that is grounded, connected, and
+true, and is still not the answer to the question that was asked. Fact
+verification against a knowledge graph turns out to be the easier half
+of the problem. Relevance verification is the half still open.
+
+The attribution result is a claim about how this field measures rather
+than about this architecture. A component adopted because the assembly
+containing it performed well may be contributing nothing, or less than
+nothing, and the only way to know is to remove it and test. We would
+rather report three nulls and a harmful component honestly than a system
+that works for reasons nobody has checked.

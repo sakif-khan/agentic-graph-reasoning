@@ -68,27 +68,30 @@
 % what the paper actually establishes. It must NOT promise that
 % verification raises accuracy -- Section 6 reports the null, and an
 % abstract that oversells it turns that section into a retraction.
-Multi-hop question answering over knowledge graphs composes facts across
-several edges, so systems that retrieve once before reasoning cannot
-know what the second hop will need. Agentic approaches interleave
-retrieval with reasoning, but none checks that what the final answer
-asserts is supported by what the agent retrieved. We present
-Agentic Graph Reasoning (AGR), an explicit state machine over a
-constrained graph tool API whose structural verification layer
-decomposes each draft answer into atomic claims and checks them against
-the traversed triples before emission, attaching those that match as
-evidence. On $400$ certified questions from each of WebQSP and
-ComplexWebQuestions over a Freebase-derived environment, AGR reaches
-Hits@1 of $0.755$ and $0.522$ against four baselines sharing one frozen
-backbone and call budget, using roughly half the language-model calls of
-the strongest. A component-level ablation with paired significance
-testing finds that removing the planner \emph{improves} accuracy on the
-shallower benchmark while cutting tokens by $31\%$, and that three of
-four components --- including claim verification --- show no detectable
-accuracy effect. A hand-read census of all $259$ residual failures
-identifies the \emph{echo attractor}: a true, grounded entity one hop
-from the answer that passes every grounding check and that
-consensus-based evaluation cannot detect.
+%
+% Register, as of the September 2026 pass: short sentences, no em
+% dashes, active voice. Same claims and numbers as before.
+Multi-hop question answering over knowledge graphs composes facts
+across several edges. A system that retrieves once before reasoning
+cannot know what the second hop will need. Agentic approaches
+interleave retrieval with reasoning, but none checks that what the
+final answer asserts is supported by what the agent retrieved. We
+present Agentic Graph Reasoning (AGR), an explicit state machine over
+a constrained graph tool API. Its structural verification layer
+decomposes each draft answer into atomic claims, checks them against
+the traversed triples before emission, and attaches the matching
+triples as evidence. On $400$ certified questions from each of WebQSP
+and ComplexWebQuestions, over a Freebase-derived environment, AGR
+reaches Hits@1 of $0.755$ and $0.522$ against four baselines that
+share one frozen backbone and one call budget, using roughly half the
+language-model calls of the strongest. A component-level ablation with
+paired significance testing finds that removing the planner
+\emph{improves} accuracy on the shallower benchmark while cutting
+tokens by $31\%$. Three of four components, claim verification among
+them, show no detectable accuracy effect. A hand-read census of all
+$259$ residual failures identifies the \emph{echo attractor}: a true,
+grounded entity one hop from the answer that passes every grounding
+check and that consensus-based evaluation cannot detect.
 \end{abstract}
 
 \begin{keyword}
@@ -145,12 +148,15 @@ relationships that could have influenced the work reported here.
 % editor does check this and a reviewer resents finding a 404.
 Code, prompts, per-question run records, and the analysis scripts that
 produce every figure and table in this paper are available at
-\url{https://github.com/sakif-khan/agentic-graph-reasoning} under the MIT
-licence. The knowledge environment is derived from
-Freebase~\cite{bollacker2008freebase} and is rebuilt from its public
-source by the scripts in that repository rather than redistributed; the
-question sets are the public WebQSP~\cite{yih2016value} and
-ComplexWebQuestions~\cite{talmor2018web} releases.
+\url{https://github.com/sakif-khan/agentic-graph-reasoning} under the
+MIT licence. The question sets are the public WebQSP~\cite{yih2016value}
+and ComplexWebQuestions~\cite{talmor2018web} releases, and both they
+and the Freebase-derived~\cite{bollacker2008freebase} subgraphs arrive
+through the public Reasoning-on-Graphs
+distribution~\cite{luo2024reasoning} (\textsf{rmanluo/RoG-webqsp} and
+\textsf{rmanluo/RoG-cwq}), used unmodified. The knowledge environment
+is rebuilt from that distribution by the scripts in the repository
+rather than redistributed.
 
 % Required, and required HERE: Elsevier's policy places this at the end
 % of the manuscript, immediately before the references. It follows their
