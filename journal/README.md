@@ -10,7 +10,7 @@ Journal manuscript drawn from `thesis_book/`. Target: Elsevier —
 | `sections/*.tex` | Nine sections. Undrafted ones carry their source chapter and word budget as comments |
 | `figures/` | Generated. Do not edit |
 | `highlights.txt` | Elsevier highlights, submitted as a separate file |
-| `supplement.tex` + `supplement/` | Supplementary material: the thirteen prompts, generated from the code. Build with `latexmk -pdf supplement.tex` |
+| `appendix/` | Generated: the thirteen prompt templates, verbatim from the code, as Appendix A. Do not edit |
 
 ## Build
 
@@ -85,8 +85,8 @@ spacing is the form reviewers expect and the class provides for that
 reason. Remove the geometry line before switching to
 `1p`/`3p`/`5p`, which load geometry themselves.
 
-Only `journal_0421052099.tex` is a document. `preamble.tex`, the nine sections
-and the figures are fragments and stop with *Missing `\begin{document}`*
+Only `journal_0421052099.tex` is a document. `preamble.tex`, the nine sections,
+the appendix and the figures are fragments and stop with *Missing `\begin{document}`*
 if built directly; each carries a `% !TEX root` line, checked by
 `python scripts/check_tex_roots.py`.
 
@@ -227,10 +227,12 @@ reports the ones that stay inside the thesis's readings:
   the union of the discordant sets, and the development-set α sweep
   (thesis tab:sweep, from `results/phase3/score_run.csv`).
 - A design-space table in §2 (Table 1); the thirteen prompt templates
-  as supplementary material (`supplement.tex`, generated from the code
-  by `scripts/build_paper_supplement.py`, so it cannot drift from the
+  as Appendix A (`appendix/prompts.tex`, generated from the code by
+  `scripts/build_paper_appendix.py`, so it cannot drift from the
   thesis's Appendix A, which `check_appendix_prompts.py` pins to the
-  same code).
+  same code). It was a separate supplementary file until 2026-09-19;
+  folded in because the comparable papers carry their prompts in an
+  appendix and the promise in §4 should be checkable from the PDF.
 
 Not done, because each needs new labels or a colleague rather than a
 script: hand-measuring the verifier's wrongful acceptance and rejection

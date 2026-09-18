@@ -31,7 +31,8 @@ COMMENT = re.compile(r"(?<!\\)%.*")
 
 def _sources():
     return sorted(PAPER.glob("*.tex")) + sorted(PAPER.glob("sections/*.tex")) \
-        + sorted(PAPER.glob("figures/*.tex"))
+        + sorted(PAPER.glob("figures/*.tex")) \
+        + sorted(PAPER.glob("appendix/*.tex"))
 
 
 def test_no_source_reaches_outside_the_manuscript():

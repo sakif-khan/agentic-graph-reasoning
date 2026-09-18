@@ -44,6 +44,27 @@
 % "Algorithm"; both are loaded at the end of this file.
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+% Appendix A sets the thirteen prompt templates verbatim, each in a
+% lstlisting of this style. basicstyle runs at the start of every
+% listing, so \linespread{1}\selectfont there single-spaces the
+% listings under `review' the way framework.tex single-spaces
+% Algorithm 1: a prompt is code, and 1.5-spaced code reads as prose
+% that has lost its paragraphs. The surrounding notes keep the
+% document's spacing. breaklines is what keeps the log clean: the
+% templates carry lines far longer than the measure.
+\usepackage{listings}
+\lstdefinestyle{prompt}{
+  basicstyle=\linespread{1}\selectfont\footnotesize\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  breakindent=0pt,
+  frame=single,
+  framerule=0.3pt,
+  rulecolor=\color{black!40},
+  xleftmargin=4pt,
+  xrightmargin=4pt,
+}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
