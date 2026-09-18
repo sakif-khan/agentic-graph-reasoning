@@ -37,7 +37,7 @@ TEST = "tests/test_claim_route_bound.py"
 FILES = {
     "verification.tex": ROOT / "thesis_book" / "chapters" / "verification.tex",
     "erroranalysis.tex": ROOT / "thesis_book" / "chapters" / "erroranalysis.tex",
-    "discussion.tex": ROOT / "thesis_paper" / "sections" / "discussion.tex",
+    "discussion.tex": ROOT / "journal" / "sections" / "discussion.tex",
     # The rehearsal script answers this question out loud, and it spells
     # thousands the way prose does rather than the way LaTeX does. Both
     # renderings, because nothing derives one from the other.

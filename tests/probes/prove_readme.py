@@ -1,7 +1,7 @@
 """Prove the module README is held to the module it describes.
 
 Cases 1-2 reinstate the shipped sentences. check_tex_roots.py "checks both
-this module and the book" -- it covers three, thesis_paper included since
+this module and the book" -- it covers three, journal included since
 that module was added. And "both documents \\input [fig_claim_path] from
 thesis_book/figures/" -- only the presented deck does; the backup deck does
 not use the figure at all.
@@ -9,7 +9,7 @@ not use the figure at all.
 Prose about the repository goes stale exactly the way a transcribed number
 does, and nothing was reading it. Cases 3-5 move the module under the
 prose instead: a fourth module, the deck switching to a local copy the way
-thesis_paper did, and the backup deck starting to use the figure.
+journal did, and the backup deck starting to use the figure.
 
 README, both decks and check_tex_roots.py are restored in a finally block.
 """
@@ -72,8 +72,8 @@ CASES = [
           "and so does the backup deck.")),
     ("a fourth module is checked and the README does not follow",
      edit(ROOTS, 'MODULES = ("thesis_book", "thesis_presentation", '
-                 '"thesis_paper")',
-          'MODULES = ("thesis_book", "thesis_presentation", "thesis_paper", '
+                 '"journal")',
+          'MODULES = ("thesis_book", "thesis_presentation", "journal", '
           '"thesis_extra")')),
     ("the deck takes a local copy and the README still says it reaches out",
      edit(MAIN, r"\input{../thesis_book/figures/fig_claim_path.tex}",

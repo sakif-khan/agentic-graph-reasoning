@@ -21,7 +21,7 @@ import sys
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-MODULES = ("thesis_book", "thesis_presentation", "thesis_paper")
+MODULES = ("thesis_book", "thesis_presentation", "journal")
 ROOT = re.compile(r"^\s*%\s*!TEX\s+root\s*=\s*(\S+)", re.I | re.M)
 HEAD = 5          # the directive has to be near the top to be honoured
 

@@ -6,7 +6,7 @@ Three cases are shipped defects reinstated verbatim, each rebuilt for real:
      "Package hyperref Warning: Token not allowed in a PDF string", which
      is the miss this checker exists because of;
   2. \\url without xurl -- the unbreakable repository URL that
-     thesis_paper's README records as a 0.68pt overfull box surviving at
+     journal's README records as a 0.68pt overfull box surviving at
      any document length. It reproduces, but as an *underfull* box of
      badness 2564: \\emergencystretch=1em was added to the preamble after
      that note was written, and it now stretches the line rather than
@@ -23,7 +23,7 @@ The other four cases are the ways a log can be clean and still say
 nothing: absent, describing sources that have since changed, dated before
 its sources with no latexmk record to check contents against, truncated.
 
-Every build goes to a temporary directory, so thesis_paper/agr-paper.pdf
+Every build goes to a temporary directory, so journal/journal_0421052099.pdf
 and its log are never touched. The two tracked files this mutates,
 preamble.tex and sections/setup.tex, are restored in a finally -- their
 modification times along with their contents, for the reason given below.
@@ -39,11 +39,11 @@ import tempfile
 
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
-PAPER = ROOT / "thesis_paper"
+PAPER = ROOT / "journal"
 PRE = PAPER / "preamble.tex"
 SETUP = PAPER / "sections" / "setup.tex"
 CHECK = ROOT / "scripts" / "check_paper_log.py"
-LOG = PAPER / "agr-paper.log"
+LOG = PAPER / "journal_0421052099.log"
 
 if not LOG.exists():
     print(f"no log at {LOG} -- build the manuscript first, since half of "
@@ -88,9 +88,9 @@ def build_with(mutate):
         out = tempfile.mkdtemp(prefix="agr-probe-log-")
         try:
             subprocess.run(["latexmk", "-pdf", "-f", "-outdir=" + out,
-                            "agr-paper.tex"], cwd=PAPER,
+                            "journal_0421052099.tex"], cwd=PAPER,
                            capture_output=True, text=True)
-            return check(pathlib.Path(out) / "agr-paper.log")
+            return check(pathlib.Path(out) / "journal_0421052099.log")
         finally:
             restore()
             shutil.rmtree(out, ignore_errors=True)
@@ -129,7 +129,7 @@ def no_record():
     """
     out = tempfile.mkdtemp(prefix="agr-probe-norec-")
     try:
-        copy = pathlib.Path(out) / "agr-paper.log"
+        copy = pathlib.Path(out) / "journal_0421052099.log"
         shutil.copyfile(LOG, copy)
         os.utime(copy, (0, 0))
         return check(copy)

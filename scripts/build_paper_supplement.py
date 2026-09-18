@@ -1,4 +1,4 @@
-"""Write thesis_paper/supplement/prompts.tex: every prompt template the
+"""Write journal/supplement/prompts.tex: every prompt template the
 systems send, verbatim from the source that sends it.
 
 The thesis reproduces the same thirteen templates in its Appendix A, and
@@ -9,7 +9,7 @@ supplement follows. Same constants, same modules, same extraction rule as
 the appendix checker, so the two documents reproduce one set of strings.
 
 Usage: python scripts/build_paper_supplement.py
-Then:  cd thesis_paper && latexmk -pdf supplement.tex
+Then:  cd journal && latexmk -pdf supplement.tex
 """
 import re
 import sys
@@ -17,7 +17,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8")
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "thesis_paper" / "supplement" / "prompts.tex"
+OUT = ROOT / "journal" / "supplement" / "prompts.tex"
 
 # (constant, module, section title, one-line note) in the order a question
 # meets them. Mirrors PROMPTS in scripts/check_appendix_prompts.py.

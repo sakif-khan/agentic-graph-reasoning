@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-E = ROOT / "thesis_paper" / "sections" / "error-analysis.tex"
+E = ROOT / "journal" / "sections" / "error-analysis.tex"
 
 CASES = [
     ("reinstate 'roughly the defect rate'",

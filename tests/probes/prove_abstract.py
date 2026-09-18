@@ -4,7 +4,7 @@ Case 1 restores the shipped abstract verbatim from git -- 215 words with
 the unverified Elsevier attribution in its comment, the state that stood
 because nothing counted it. The rest are targeted corruptions.
 
-agr-paper.tex is restored in a finally block.
+journal_0421052099.tex is restored in a finally block.
 """
 import io
 import pathlib
@@ -13,7 +13,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-MAIN = ROOT / "thesis_paper" / "agr-paper.tex"
+MAIN = ROOT / "journal" / "journal_0421052099.tex"
 orig = io.open(MAIN, encoding="utf-8", newline="").read()
 
 # Pinned, not HEAD: 33dfbde is the last commit carrying the 215-word

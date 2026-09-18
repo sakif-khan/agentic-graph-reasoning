@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-D = ROOT / "thesis_paper" / "sections" / "discussion.tex"
+D = ROOT / "journal" / "sections" / "discussion.tex"
 
 # One distinctive phrase per limitation, mutilated in place.
 PHRASES = [

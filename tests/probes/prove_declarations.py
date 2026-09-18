@@ -6,7 +6,7 @@ near misses -- a corref with no matching cortext, an invented CRediT role,
 an AI declaration that discloses without accepting responsibility, and one
 pushed out of its required position.
 
-agr-paper.tex is restored in a finally block.
+journal_0421052099.tex is restored in a finally block.
 """
 import io
 import pathlib
@@ -15,7 +15,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-MAIN = ROOT / "thesis_paper" / "agr-paper.tex"
+MAIN = ROOT / "journal" / "journal_0421052099.tex"
 orig = io.open(MAIN, encoding="utf-8", newline="").read()
 
 

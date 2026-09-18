@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-R = ROOT / "thesis_paper" / "sections" / "results.tex"
+R = ROOT / "journal" / "sections" / "results.tex"
 orig = io.open(R, encoding="utf-8").read()
 
 SHIPPED = """The semantic tier separates the systems where the structural tier

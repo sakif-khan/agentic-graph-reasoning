@@ -9,8 +9,8 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-R = ROOT / "thesis_paper" / "sections" / "results.tex"
-S = ROOT / "thesis_paper" / "sections" / "setup.tex"
+R = ROOT / "journal" / "sections" / "results.tex"
+S = ROOT / "journal" / "sections" / "setup.tex"
 
 CASES = [
     (R, "reinstate 'actively worse than parametric memory'",

@@ -18,7 +18,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-S = ROOT / "thesis_paper" / "sections" / "setup.tex"
+S = ROOT / "journal" / "sections" / "setup.tex"
 orig = io.open(S, encoding="utf-8").read()
 
 # anchor spans plain prose to plain prose: no LaTeX in the pattern, so

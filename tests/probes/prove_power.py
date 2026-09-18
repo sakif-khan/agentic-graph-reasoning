@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-T = ROOT / "thesis_paper" / "sections" / "attribution.tex"
+T = ROOT / "journal" / "sections" / "attribution.tex"
 
 CASES = [
     ("ratio 4:1 -> 3:1 (the wrong value it shipped with)",

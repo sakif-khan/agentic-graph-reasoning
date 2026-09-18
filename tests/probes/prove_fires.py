@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-TARGET = ROOT / "thesis_paper" / "sections" / "results.tex"
+TARGET = ROOT / "journal" / "sections" / "results.tex"
 
 # graphrag WebQSP hedge_pct, 55.8 -> 55.9. One digit, and 55.9 appears
 # nowhere else in the paper, so only the binding can catch it.

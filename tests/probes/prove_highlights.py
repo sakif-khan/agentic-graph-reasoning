@@ -12,7 +12,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-HL = ROOT / "thesis_paper" / "highlights.txt"
+HL = ROOT / "journal" / "highlights.txt"
 orig = io.open(HL, encoding="utf-8", newline="").read()
 
 SCOPED = ("- Removing the planner improves accuracy on the shallower "

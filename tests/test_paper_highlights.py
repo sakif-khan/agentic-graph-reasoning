@@ -24,7 +24,7 @@ import re
 import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-HL = ROOT / "thesis_paper" / "highlights.txt"
+HL = ROOT / "journal" / "highlights.txt"
 NUMBERS = ROOT / "results" / "phase4" / "thesis_numbers.json"
 
 pytestmark = pytest.mark.skipif(not HL.exists(), reason="highlights absent")
@@ -101,8 +101,8 @@ def test_a_quoted_percentage_appears_in_the_paper():
     """
     body = "\n".join(
         io.open(p, encoding="utf-8").read()
-        for p in sorted((ROOT / "thesis_paper" / "sections").glob("*.tex")))
-    body += io.open(ROOT / "thesis_paper" / "agr-paper.tex", encoding="utf-8").read()
+        for p in sorted((ROOT / "journal" / "sections").glob("*.tex")))
+    body += io.open(ROOT / "journal" / "journal_0421052099.tex", encoding="utf-8").read()
     for b in bullets():
         for pct in re.findall(r"(\d+)%", b):
             assert re.search(rf"{pct}\\?%", body), (

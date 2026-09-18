@@ -37,8 +37,8 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 NUMBERS = ROOT / "results" / "phase4" / "thesis_numbers.json"
-SECTIONS = ROOT / "thesis_paper" / "sections"
-PAPER = ROOT / "thesis_paper" / "agr-paper.tex"
+SECTIONS = ROOT / "journal" / "sections"
+PAPER = ROOT / "journal" / "journal_0421052099.tex"
 
 COMMENT = re.compile(r"(?<!\\)%.*")
 # 0.755, 2.59, 1{,}709, 29\%, 400

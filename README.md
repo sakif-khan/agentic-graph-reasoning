@@ -533,7 +533,7 @@ latexmk -pdf thesis_book_0421052099.tex
 ```
 
 The slide decks are in [thesis_presentation/](thesis_presentation/) and the
-journal manuscript in [thesis_paper/](thesis_paper/); both build the same way,
+journal manuscript in [journal/](journal/); both build the same way,
 and each has its own README.
 
 All three documents draw their figures from `results/phase4/thesis_numbers.json`
@@ -544,7 +544,7 @@ the experiments and all three move together.
 **Seven files here are documents and forty-four are not.**
 `thesis_book/thesis_book_0421052099.tex`,
 `thesis_presentation/thesis_defense_0421052099.tex`,
-`thesis_paper/agr-paper.tex` and the four archived under
+`journal/journal_0421052099.tex` and the four archived under
 `thesis_presentation/pre-defense-frozen-2026-08-29/` carry `\begin{document}`. Everything else — every
 chapter, appendix, section, figure, table and preamble — is a fragment that stops
 with *Missing `\begin{document}`* if you build it on its own. Each fragment names its document in a `% !TEX root`
@@ -574,10 +574,10 @@ same terms.
 the configuration and build files at the root. Use it, modify it, build on it.
 
 **The thesis and the manuscript — © 2026 Md. Sakif Khan, all rights reserved.**
-`thesis_book/`, `thesis_presentation/`, and `thesis_paper/` — their sources,
+`thesis_book/`, `thesis_presentation/`, and `journal/` — their sources,
 figures, and PDFs — are academic writing, not software, and MIT is the wrong
 instrument for them. They are readable here; they are not licensed for reuse or
-redistribution. This matters practically: `thesis_paper/` is prepared for
+redistribution. This matters practically: `journal/` is prepared for
 journal submission, and a publisher's agreement will govern that manuscript on
 acceptance.
 

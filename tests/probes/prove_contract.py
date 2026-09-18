@@ -28,8 +28,8 @@ TEST = "tests/test_output_contract_claims.py"
 DECK = ROOT / "thesis_presentation" / "content-main.tex"
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 TABS = ROOT / "thesis_book" / "inputs" / "buetcsepgthesisabstract.tex"
-PREADME = ROOT / "thesis_paper" / "README.md"
-HIGH = ROOT / "thesis_paper" / "highlights.txt"
+PREADME = ROOT / "journal" / "README.md"
+HIGH = ROOT / "journal" / "highlights.txt"
 CARD = ROOT / "thumbnail" / "thumbnail.tex"
 
 CHECKER = ROOT / TEST

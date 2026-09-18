@@ -14,7 +14,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-SEC = ROOT / "thesis_paper" / "sections"
+SEC = ROOT / "journal" / "sections"
 A, E, R = SEC / "attribution.tex", SEC / "error-analysis.tex", SEC / "results.tex"
 orig = {p: io.open(p, encoding="utf-8").read() for p in (A, E, R)}
 

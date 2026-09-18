@@ -1,6 +1,6 @@
 """The manuscript's build log must be clean, fresh, and complete.
 
-thesis_paper/README.md sets the bar as "0 overfull, 0 underfull, 0 warnings
+journal/README.md sets the bar as "0 overfull, 0 underfull, 0 warnings
 of any class", and that last phrase is the whole point of this script. The
 bar was breached without anyone noticing: adding \\corref to designate the
 corresponding author put elsarticle markup into the string hyperref builds
@@ -32,8 +32,8 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-PAPER = ROOT / "thesis_paper"
-DEFAULT_LOG = PAPER / "agr-paper.log"
+PAPER = ROOT / "journal"
+DEFAULT_LOG = PAPER / "journal_0421052099.log"
 
 # Sources the log is measured against, for the fallback below. Only what
 # TeX actually reads: highlights.txt is submitted separately and compiles
@@ -50,7 +50,7 @@ SOURCES = ("*.tex", "sections/*.tex", "figures/*.tex", "*.bib")
 # question actually being asked.
 #
 # The digest is of the file with CRLF normalised to LF, because latexmk
-# reads in text mode: on this repository, where agr-paper.tex and the
+# reads in text mode: on this repository, where journal_0421052099.tex and the
 # sections flip line endings across a stash or a checkout, hashing the raw
 # bytes disagreed with latexmk about five files whose recorded size it
 # matched exactly. Normalising is also the answer to the right question --
@@ -81,11 +81,11 @@ WRITTEN = re.compile(r"^Output written on .*\((\d+) pages?, \d+ bytes\)")
 
 # TeX hard-wraps the log at max_print_line, which is 79 by default, with no
 # continuation marker: a line of exactly that length is the first half of
-# something. It is not a nicety. "Output written on <path>/agr-paper.pdf"
-# runs past 79 as soon as the output directory is anywhere but here, so the
-# summary above splits mid-word -- which is how the first version of this
-# script declared every out-of-tree build incomplete. The same break can
-# fall inside a warning.
+# something. It is not a nicety. "Output written on
+# <path>/journal_0421052099.pdf" runs past 79 as soon as the output
+# directory is anywhere but here, so the summary above splits mid-word --
+# which is how the first version of this script declared every
+# out-of-tree build incomplete. The same break can fall inside a warning.
 #
 # Joining is the conservative direction for a search: a genuine 79-column
 # line merged with its neighbour still contains everything either of them
@@ -161,7 +161,8 @@ def main(argv):
 
     if not log.exists():
         print(f"no log at {log}")
-        print("  Build it first: cd thesis_paper && latexmk -pdf agr-paper.tex")
+        print("  Build it first: "
+              "cd journal && latexmk -pdf journal_0421052099.tex")
         print("  A missing log is not a clean one.")
         return 1
 
@@ -204,7 +205,7 @@ def main(argv):
         print(f"{len(found)} diagnostic(s) in {log.name}:\n")
         for n, kind, line in found:
             print(f"  {log.name}:{n}  [{kind}] {line}")
-        print("\nthesis_paper/README.md asks for none of any class.")
+        print("\njournal/README.md asks for none of any class.")
         return 1
 
     print(f"{log.name}: {pages} pages, no errors, no warnings of any class, "

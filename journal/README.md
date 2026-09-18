@@ -1,11 +1,11 @@
-# thesis_paper
+# journal
 
 Journal manuscript drawn from `thesis_book/`. Target: Elsevier —
 *Knowledge-Based Systems* or *Information Processing & Management*.
 
 | File | What it is |
 | --- | --- |
-| `agr-paper.tex` | **The document.** `elsarticle`, `preprint,review,12pt` |
+| `journal_0421052099.tex` | **The document.** `elsarticle`, `preprint,review,12pt` |
 | `preamble.tex` | Fonts, figure toolchain, palette, system-name macros |
 | `sections/*.tex` | Nine sections. Undrafted ones carry their source chapter and word budget as comments |
 | `figures/` | Generated. Do not edit |
@@ -15,8 +15,8 @@ Journal manuscript drawn from `thesis_book/`. Target: Elsevier —
 ## Build
 
 ```bash
-cd thesis_paper
-latexmk -pdf agr-paper.tex
+cd journal
+latexmk -pdf journal_0421052099.tex
 python ../scripts/check_paper_log.py
 ```
 
@@ -58,7 +58,7 @@ Two caveats, because this is guidance about guidance:
 
 If a checklist does ask for line numbers, it is two lines:
 `\usepackage{lineno}` in `preamble.tex`, and `\linenumbers` *after*
-`\end{frontmatter}` in `agr-paper.tex` — never in the preamble, which
+`\end{frontmatter}` in `journal_0421052099.tex` — never in the preamble, which
 numbers the title block on its own inconsistent count before the body
 starts.
 
@@ -85,7 +85,7 @@ spacing is the form reviewers expect and the class provides for that
 reason. Remove the geometry line before switching to
 `1p`/`3p`/`5p`, which load geometry themselves.
 
-Only `agr-paper.tex` is a document. `preamble.tex`, the nine sections
+Only `journal_0421052099.tex` is a document. `preamble.tex`, the nine sections
 and the figures are fragments and stop with *Missing `\begin{document}`*
 if built directly; each carries a `% !TEX root` line, checked by
 `python scripts/check_tex_roots.py`.
@@ -110,7 +110,7 @@ generator, and is a copy — see below.
 
 ## The directory has to build on its own
 
-What gets uploaded is `thesis_paper/` and nothing above it, so the
+What gets uploaded is `journal/` and nothing above it, so the
 manuscript must build with no parent directory present. It did not,
 until this was fixed: `\bibliography` and one `\input` reached into
 `../thesis_book/`, which resolved perfectly here and would have failed
@@ -118,13 +118,13 @@ at the publisher. Both are now local copies:
 
 | file | copied from | differs by |
 | --- | --- | --- |
-| `agr-paper.bib` | `thesis_book/buetcsepgthesis.bib` | nothing |
+| `journal.bib` | `thesis_book/buetcsepgthesis.bib` | nothing |
 | `figures/fig_claim_path.tex` | `thesis_book/figures/fig_claim_path.tex` | its `% !TEX root` line |
 
 A copy is a thing that drifts, which is the same hazard the two
 bibliographies already have a test for. `tests/test_paper_self_contained.py`
 pins both against their originals, fails if any source names a path
-outside `thesis_paper/`, and fails if an `\input` names a file that is
+outside `journal/`, and fails if an `\input` names a file that is
 not there.
 
 **The thesis is still the source of truth for references.** Add to

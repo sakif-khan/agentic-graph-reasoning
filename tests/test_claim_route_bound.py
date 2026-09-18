@@ -39,7 +39,7 @@ NUMS = ROOT / "results" / "phase4" / "thesis_numbers.json"
 PROSE = [
     ROOT / "thesis_book" / "chapters" / "verification.tex",
     ROOT / "thesis_book" / "chapters" / "erroranalysis.tex",
-    ROOT / "thesis_paper" / "sections" / "discussion.tex",
+    ROOT / "journal" / "sections" / "discussion.tex",
     # The deck's own answer to "your verifier doesn't check the relation",
     # in both renderings. It is the shortest statement of the interval in the
     # project and the one delivered under questioning, which is the worst

@@ -23,7 +23,7 @@ import re
 import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-MAIN = ROOT / "thesis_paper" / "agr-paper.tex"
+MAIN = ROOT / "journal" / "journal_0421052099.tex"
 
 pytestmark = pytest.mark.skipif(not MAIN.exists(), reason="manuscript absent")
 

@@ -75,7 +75,7 @@ top of the x-axis label, which is what the first version of this deck did.
 
 That reach is harmless here — the two modules are always checked out together
 — but it does mean `thesis_presentation/` is the one module that will not build
-from its own directory alone. `thesis_paper/` was deliberately fixed the other
+from its own directory alone. `journal/` was deliberately fixed the other
 way: it keeps its own copy, because a manuscript uploaded to a publisher has no
 `../thesis_book/`, and `tests/test_paper_self_contained.py` fails if that copy
 drifts. Do the same here if this deck ever has to travel on its own.

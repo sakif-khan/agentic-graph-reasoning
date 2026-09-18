@@ -13,10 +13,10 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-PAPER = ROOT / "thesis_paper"
-MAIN = PAPER / "agr-paper.tex"
+PAPER = ROOT / "journal"
+MAIN = PAPER / "journal_0421052099.tex"
 FRAME = PAPER / "sections" / "framework.tex"
-BIB = PAPER / "agr-paper.bib"
+BIB = PAPER / "journal.bib"
 FIG = PAPER / "figures" / "fig_claim_path.tex"
 
 orig = {p: io.open(p, encoding="utf-8", newline="").read()
@@ -39,7 +39,7 @@ def delete(path):
 
 CASES = [
     ("shipped: bibliography escapes the directory",
-     edit(MAIN, r"\bibliography{agr-paper}",
+     edit(MAIN, r"\bibliography{journal}",
           r"\bibliography{../thesis_book/buetcsepgthesis}")),
     ("shipped: claim-path figure escapes the directory",
      edit(FRAME, r"\input{figures/fig_claim_path}",

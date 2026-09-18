@@ -1,4 +1,4 @@
-"""thesis_paper/ must build from its own directory alone.
+"""journal/ must build from its own directory alone.
 
 The manuscript is uploaded as a package: the publisher receives that
 directory and nothing above it. Two dependencies used to escape it --
@@ -20,7 +20,7 @@ import re
 import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-PAPER = ROOT / "thesis_paper"
+PAPER = ROOT / "journal"
 BOOK = ROOT / "thesis_book"
 
 pytestmark = pytest.mark.skipif(not PAPER.exists(), reason="manuscript absent")
@@ -38,8 +38,8 @@ def test_no_source_reaches_outside_the_manuscript():
     """No \\input, \\bibliography or \\includegraphics may name a parent path.
 
     Comments are stripped first: every fragment carries a `% !TEX root =
-    ../agr-paper.tex' line, which is a relative path out of sections/ and
-    figures/ but stays inside thesis_paper/, and the header comments quote
+    ../journal_0421052099.tex' line, which is a relative path out of sections/ and
+    figures/ but stays inside journal/, and the header comments quote
     the old cross-directory paths while describing why they are gone.
     """
     bad = []
@@ -52,7 +52,7 @@ def test_no_source_reaches_outside_the_manuscript():
                 bad.append(f"{p.relative_to(ROOT).as_posix()}: "
                            f"\\{m.group(1)}{{{m.group(2)}}}")
     assert not bad, (
-        "these escape thesis_paper/ and will not resolve once the directory "
+        "these escape journal/ and will not resolve once the directory "
         "is uploaded on its own:\n  " + "\n  ".join(bad))
 
 
@@ -78,8 +78,8 @@ def test_every_input_resolves_inside_the_manuscript():
 
 def test_the_bibliography_it_builds_against_is_present():
     m = re.search(r"\\bibliography\{([^}]*)\}",
-                  io.open(PAPER / "agr-paper.tex", encoding="utf-8").read())
-    assert m, "agr-paper.tex names no bibliography"
+                  io.open(PAPER / "journal_0421052099.tex", encoding="utf-8").read())
+    assert m, "journal_0421052099.tex names no bibliography"
     assert (PAPER / (m.group(1) + ".bib")).exists(), \
         f"\\bibliography{{{m.group(1)}}} has no .bib beside it"
 
@@ -92,10 +92,10 @@ def test_the_copied_bibliography_has_not_drifted():
     differ in their comments. This is a straight copy, so any difference at
     all is drift.
     """
-    a = io.open(PAPER / "agr-paper.bib", encoding="utf-8").read()
+    a = io.open(PAPER / "journal.bib", encoding="utf-8").read()
     b = io.open(BOOK / "buetcsepgthesis.bib", encoding="utf-8").read()
     assert a == b, (
-        "thesis_paper/agr-paper.bib and thesis_book/buetcsepgthesis.bib have "
+        "journal/journal.bib and thesis_book/buetcsepgthesis.bib have "
         "diverged. Re-copy rather than editing one of them: a reference added "
         "to the thesis will not otherwise reach the manuscript.")
 
@@ -108,5 +108,5 @@ def test_the_copied_figure_has_not_drifted():
     assert ROOTLINE.search(a) and ROOTLINE.search(b), \
         "a copy lost its % !TEX root line"
     assert ROOTLINE.sub("", a) == ROOTLINE.sub("", b), (
-        "thesis_paper/figures/fig_claim_path.tex has diverged from "
+        "journal/figures/fig_claim_path.tex has diverged from "
         "thesis_book/figures/fig_claim_path.tex in more than its root line.")

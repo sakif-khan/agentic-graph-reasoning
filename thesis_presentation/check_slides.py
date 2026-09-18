@@ -503,7 +503,7 @@ ck("the deck asks RQ1, RQ2 and RQ3", asked == [1, 2, 3], f"deck asks RQ{asked}")
 # The module README describes this module.
 #
 # It said check_tex_roots.py "checks both this module and the book" -- it
-# covers three, thesis_paper included -- and that "both documents \input
+# covers three, journal included -- and that "both documents \input
 # [fig_claim_path] from thesis_book/figures/", when only the presented deck
 # uses it and the backup deck does not. Prose about the repository goes
 # stale the same way a transcribed number does, and nothing was reading it.
@@ -1433,7 +1433,7 @@ COUNTED = re.compile(r"\b(" + "|".join(WORD) + r")\s+(?:\\emph\{)?cycles\b",
 for label, path in (("deck", os.path.join(HERE, "content-main.tex")),
                     ("thesis", os.path.join(ROOT, "thesis_book", "chapters",
                                             "framework.tex")),
-                    ("paper", os.path.join(ROOT, "thesis_paper", "sections",
+                    ("paper", os.path.join(ROOT, "journal", "sections",
                                            "framework.tex"))):
     src = " ".join(uncomment(open(path, encoding="utf-8").read()).split())
     # The one picture that draws this machine. A file may hold several.
@@ -1767,7 +1767,7 @@ ck("the slide lists them in the thesis's severity order", not swaps,
 #
 # The slide writes contribution 6 as "pre-specified"; the thesis titled
 # it "Pre-Registered" until 2026-09-19 and now uses the same word (the
-# standing rule in thesis_paper/sections/setup.tex: nothing was filed
+# standing rule in journal/sections/setup.tex: nothing was filed
 # with a registry), so the branch below now reports the rule retired.
 # That is a rigour point, and it read as a discrepancy: this is the one
 # slide whose premise is that the six are the thesis's, in its order, and
@@ -1776,7 +1776,7 @@ ck("the slide lists them in the thesis's severity order", not swaps,
 # rather than leaving behind a check that cannot fail.
 print("\n== the pre-specified wording is accounted for ==")
 # The deck's own spelling is a rule, not a preference: the standing note
-# in thesis_paper/sections/setup.tex says never "pre-registered", the
+# in journal/sections/setup.tex says never "pre-registered", the
 # slide comment repeats it, and section 30 now says it out loud. It was
 # checked in none of the three -- CONTRIB_KEYS accepted either spelling,
 # and the explanation rule below keyed off the deck, so a slide drifting
@@ -1785,7 +1785,7 @@ print("\n== the pre-specified wording is accounted for ==")
 # not changed.
 ck("the deck never writes pre-registered",
    "pre-registered" not in FLAT.lower(),
-   "thesis_paper/sections/setup.tex fixes this spelling")
+   "journal/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
 if "pre-registered" in thesis_six:
     s31 = spoken(31)

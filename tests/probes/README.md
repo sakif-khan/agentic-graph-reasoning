@@ -86,7 +86,7 @@ collection error is indistinguishable from a real failure at that point.
 **`prove_log` needs a LaTeX toolchain**, because three of its cases are
 only visible in a build: it reinstates the defect in `preamble.tex` and
 runs `latexmk` for each, into a temporary directory so the tracked
-`agr-paper.pdf` is never touched. That is about thirty seconds of
+`journal_0421052099.pdf` is never touched. That is about thirty seconds of
 `run_all.py`'s six and a half minutes. It also needs the manuscript to have
 been built already, since two more cases age and truncate the real log.
 

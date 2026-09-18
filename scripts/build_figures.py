@@ -195,8 +195,8 @@ TARGETS = {
         hist_tick_font=r"\small",
     ),
     "paper": dict(
-        outdir=Path("thesis_paper/figures"),
-        root="../agr-paper.tex",
+        outdir=Path("journal/figures"),
+        root="../journal_0421052099.tex",
         # Sized for elsarticle's single-column `review' measure, which is
         # what gets submitted. Widths are \textwidth-relative so the same
         # files still work if the class options change; only the fixed

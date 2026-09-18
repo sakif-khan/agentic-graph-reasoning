@@ -68,7 +68,7 @@ import sys
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 BOOK = ROOT / "thesis_book" / "chapters" / "framework.tex"
-PAPER = ROOT / "thesis_paper" / "sections" / "framework.tex"
+PAPER = ROOT / "journal" / "sections" / "framework.tex"
 DECK = ROOT / "thesis_presentation" / "content-main.tex"
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 CFG = ROOT / "agr" / "config.py"

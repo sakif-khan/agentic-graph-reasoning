@@ -60,8 +60,8 @@ def units():
     return {
         "deck": _read("thesis_presentation/content-*.tex"),
         "transcript": _read("thesis_presentation/transcript.md"),
-        "manuscript": _read("thesis_paper/*.tex", "thesis_paper/sections/*.tex",
-                            "thesis_paper/README.md"),
+        "manuscript": _read("journal/*.tex", "journal/sections/*.tex",
+                            "journal/README.md"),
         "thesis": _read("thesis_book/chapters/*.tex",
                         "thesis_book/inputs/*abstract*.tex"),
         # The event card. Widest audience, least context, and no
@@ -209,7 +209,7 @@ def cited(text, span):
 
 @pytest.mark.parametrize("unit", sorted(list(units()) + ["highlights"]))
 def test_nothing_promises_evidence_for_every_answer_or_claim(unit):
-    files = (_read("thesis_paper/highlights.txt") if unit == "highlights"
+    files = (_read("journal/highlights.txt") if unit == "highlights"
              else units()[unit])
     bad = []
     for p, text in files:

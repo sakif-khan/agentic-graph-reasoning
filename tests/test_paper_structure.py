@@ -18,7 +18,7 @@ import re
 import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SECTIONS = ROOT / "thesis_paper" / "sections"
+SECTIONS = ROOT / "journal" / "sections"
 
 pytestmark = pytest.mark.skipif(not SECTIONS.exists(), reason="manuscript absent")
 

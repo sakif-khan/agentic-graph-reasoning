@@ -30,7 +30,7 @@ def tracked_dirty():
 # a probe reads the current contents as its pristine state and restores
 # exactly that, so an existing corruption gets preserved rather than
 # reverted, and every later run bakes it in further.
-TARGETS = ("thesis_paper/", "scripts/check_paper_numbers.py",
+TARGETS = ("journal/", "scripts/check_paper_numbers.py",
            "tests/test_paper_", "tests/test_output_contract_claims.py",
            "thumbnail/",
            "thesis_presentation/content-main.tex",
