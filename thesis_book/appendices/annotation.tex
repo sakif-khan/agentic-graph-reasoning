@@ -346,18 +346,17 @@ entire class.
 
 What adjudication did confirm is nonetheless substantial: $57$ questions across
 the two datasets where the benchmark, not the system, needed correcting. Two
-sets make that total. They are \emph{not} disjoint. That overlap is the
-whole reason the figure is $57$ rather than the $58$ an addition would give.
-There are $41$ excluded before the census read anything ($22$ + $19$), and $17$
-still visible in the merged census as \textsf{gold\_noise} or
-\textsf{ambiguous\_question} rows ($3$ WebQSP + $14$ CWQ).
-\textsf{WebQTrn-64\_d8e43a02} is in both: it began as a census row, was
-adjudicated a type mismatch between question and gold, and was promoted to a
-formal exclusion mid-project. That promotion is why the census's own label
-file carries one dropped row. Counting it once gives $41 + 17 - 1 = 57$ distinct
-questions. The number is a set union rather than a sum. It is taken as one
-in \textsf{thesis\_numbers.json}, so that the two component counts can move
-without the total drifting.
+disjoint sets make that total. There are $41$ excluded before the census read
+anything ($22$ + $19$), and $16$ still visible in the merged census as
+\textsf{gold\_noise} or \textsf{ambiguous\_question} rows ($3$ WebQSP + $13$
+CWQ). One question sat on the boundary. \textsf{WebQTrn-64\_d8e43a02} began as
+a census row, was adjudicated a type mismatch between question and gold, and
+was promoted to a formal exclusion mid-project. That promotion is why the
+census's own label file carries one dropped row, and the row is not counted:
+an excluded question is not a census row, whatever label file it sits in. So
+$41 + 16 = 57$ distinct questions. The total is taken as a set union rather
+than a sum in \textsf{thesis\_numbers.json}, so that the two component counts
+can move without it drifting.
 
 Two specimens carry the point. \textsf{WebQTest-958} --- ``what are some famous
 people from el salvador'' --- has $116$ gold entities, one of them a raw
@@ -483,7 +482,7 @@ two cases are what it looks like in a single trajectory.
 
 \paragraph{The Same Relation Gap Seen from Several Angles}
 
-\textsf{relation\_selection} is the largest category at $65$ and carries no
+\textsf{relation\_selection} is the largest category at $64$ and carries no
 subtypes, because the mechanism is uniform: a wrong relation was explored, or
 the right one was explored and abandoned. Its interest is not in the individual
 cases but in the fact that several of them are the \emph{same} gap seen from
@@ -557,29 +556,34 @@ reading: one WebQSP question is both an adjudicated defect and
 planner-discordant. On CWQ, one defect and one near-miss are as well. The union
 skipped is therefore $33$ questions on WebQSP and $34$ on CWQ. That leaves
 exactly the $65$ and $157$ that Stage~D read. The two totals close without
-remainder. A question that falls in both an exclusion set and Stage~A is still
-analysed, through the Stage~A row. Net of that re-entry and of the one migrated
-row, $12$ WebQSP and $18$ CWQ failures leave the analysis altogether. That gap
-is the difference between the failure counts above and the totals in the table.
+remainder. A question that is both an adjudicated defect and planner-discordant
+is excluded like any other defect, so Stage~A contributes $20$ and $14$ rows to
+the histogram rather than the $21$ and $15$ it read. A near-miss that is
+planner-discordant is a scoring artefact rather than a defect, and it is still
+analysed, through the Stage~A row. Net of that one re-entry, $13$ WebQSP and
+$20$ CWQ failures leave the analysis altogether: the $12$ and $15$ adjudicated
+defects, and the $1$ and $5$ near-misses that neither stage read. That gap is
+the difference between the failure counts above and the totals in the table.
 
 \begin{table}[!tb]
   \begin{center}
     \caption[Census provenance]{Census provenance. Stage D is the main reading
     over the full-matrix failures. Stage A is the separate reading of the
     questions where removing the planner flipped a failure into a success
-    (\Cref{sec:ablations}). The single migrated row is a Stage D finding later
-    promoted to a formal benchmark-defect exclusion
-    (\Cref{sec:benchmark-defects}).}
+    (\Cref{sec:ablations}). Adjudicated benchmark defects
+    (\Cref{sec:benchmark-defects}) are not census rows whatever label file
+    they sit in: the one Stage D finding later promoted to a formal
+    exclusion, and the two Stage A rows that name excluded questions, are
+    left out of the totals.}
     \label{tab:census-pop}
     \begin{tabular}{|l|r|r|}
       \hline
       \textbf{Source} & \textbf{WebQSP} & \textbf{CWQ} \\
       \hline
       Stage D --- main census (all remaining wrongs and hedges) & 65 & 157 \\
-      Stage D --- row migrated to a benchmark exclusion & 0 & 1 \\
-      Stage A --- planner-discordance census & 21 & 15 \\
+      Stage A --- planner-discordance census, net of exclusions & 20 & 14 \\
       \hline
-      \textbf{Total failures analysed} & \textbf{86} & \textbf{173} \\
+      \textbf{Total failures analysed} & \textbf{85} & \textbf{171} \\
       \hline
     \end{tabular}
   \end{center}
@@ -701,7 +705,7 @@ reported elsewhere, and the third is counted elsewhere. So the totals of
 \Cref{tab:census-pop} are what the histogram is built over.
 
 \textbf{The three sets overlap, so their sizes are not additive.}
-\Cref{app:census-denominator} reconciles them and shows how the $259$ read
+\Cref{app:census-denominator} reconciles them and shows how the $256$ read
 failures follow. Only the adjudicated benchmark defects remove questions from
 the analysis altogether. The other two exclusions are of questions that were
 never failures in the first place. The census is therefore a complete

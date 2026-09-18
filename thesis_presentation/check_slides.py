@@ -650,14 +650,14 @@ D = J["benchmark_defects"]
 for k in ("excluded_before_census", "census_rows_in_defect_categories",
           "distinct_questions"):
     ck(f"{k} = {D[k]}", has(str(D[k])))
-ck("41 + 17 - 1 = 57",
+ck("41 + 16 - 0 = 57",
    D["excluded_before_census"] + D["census_rows_in_defect_categories"]
    - len(D["counted_in_both"]) == D["distinct_questions"])
 
 print("\n== failure census total ==")
 H = J["failure_histogram"]
 total = sum(H[d][k]["_n"] for d in ("webqsp", "cwq") for k in ("wrong", "hedge"))
-ck(f"census total {total}", total == 259 and has("259"), str(total))
+ck(f"census total {total}", total == 256 and has("256"), str(total))
 
 print("\n== deck hygiene ==")
 # body text must not shrink below \small. Font sizes set inside a TikZ/pgfplots

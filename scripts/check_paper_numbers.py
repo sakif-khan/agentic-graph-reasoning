@@ -1115,8 +1115,12 @@ def main():
          zt["webqsp"] + zt["cwq"])
 
     # -- the census population and its coverage, recomputed the way
-    #    scripts/synthesize_census.py computes them --
-    pop, read = {}, {}
+    #    scripts/synthesize_census.py computes them. The questions in the
+    #    population that no label file reaches must be exactly the Stage B
+    #    near-misses (strict-match failures that normalisation scores as
+    #    hits), which dump_failure_packets.py sets aside by design; the
+    #    paragraph says so, and a genuinely unread failure would fail here --
+    pop, read, aside, unread = {}, {}, {}, {}
     for ds in ("webqsp", "cwq"):
         recs = [json.loads(l) for l in
                 open(P4 / f"test_{ds}_agr.jsonl", encoding="utf-8")]
@@ -1128,22 +1132,36 @@ def main():
                 labelled |= {r["qid"] for r in
                              _csv.DictReader(open(p, encoding="utf-8"))
                              if r["category"] and r["kind"] in ("wrong", "hedge")}
+        near = {r["qid"] for r in
+                json.load(open(P4 / f"prepass_wrongs_{ds}.json", encoding="utf-8"))
+                if r["near_miss"]}
         pop[ds], read[ds] = len(popn), len(popn & labelled)
+        aside[ds] = len((popn - labelled) & near)
+        unread[ds] = len(popn - labelled - near)
     says(r"number \$(\d+)\$: \$(\d+)\$ on WebQSP and \$(\d+)\$ on "
          r"ComplexWebQuestions",
          "the census population is the non-hits less the exclusions",
          (pop["webqsp"] + pop["cwq"], pop["webqsp"], pop["cwq"]))
-    says(r"and \$(\d+)\$ of them were, \$(\d+)\$ and \$(\d+)\$",
-         "the census coverage is the labelled share of that population",
+    WORD = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
+            7: "seven", 8: "eight", 9: "nine"}
+    m = re.search(r"(\w+) of them, (\w+) and (\w+), are the surface-form "
+                  r"near-misses".replace(" ", r"\s+"), text)
+    ck("the questions set aside are named as near-misses, with the right counts",
+       m is not None and m.groups() == tuple(
+           WORD[n].capitalize() if i == 0 else WORD[n]
+           for i, n in enumerate((aside["webqsp"] + aside["cwq"],
+                                  aside["webqsp"], aside["cwq"]))),
+       f"paper {m.groups() if m else 'NO MATCH'}, computed "
+       f"{(aside['webqsp'] + aside['cwq'], aside['webqsp'], aside['cwq'])}")
+    ck("every question in the population that no label file reaches is a near-miss",
+       unread["webqsp"] + unread["cwq"] == 0,
+       f"{unread['webqsp'] + unread['cwq']} genuinely unread")
+    says(r"remaining \$(\d+)\$, \$(\d+)\$ and \$(\d+)\$, was read and labelled",
+         "the census coverage is the population less the near-misses set aside",
          (read["webqsp"] + read["cwq"], read["webqsp"], read["cwq"]))
-    unread = pop["webqsp"] + pop["cwq"] - read["webqsp"] - read["cwq"]
     ck("the histogram totals equal the read count",
        sum(hist[ds][k]["_n"] for ds in ("webqsp", "cwq") for k in ("wrong", "hedge"))
        == read["webqsp"] + read["cwq"])
-    ck("the unread count is stated as six, or the sentence has been retired",
-       (unread == 6 and re.search(r"The\s+six\s+the\s+census\s+did\s+not\s+reach", text))
-       or (unread == 0 and not re.search(r"did\s+not\s+reach", text)),
-       f"{unread} unread; when it reaches zero, say the census read all of them")
     echo = sum(hist[ds][k].get("echo", 0) for ds in ("webqsp", "cwq")
                for k in ("wrong", "hedge"))
     says(r"accounts for \$(\d+)\$ of the \$(\d+)\$ failures read",

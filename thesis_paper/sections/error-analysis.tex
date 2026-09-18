@@ -4,15 +4,14 @@
 %
 % POPULATION, as of September 2026: AGR's non-hits on the two samples,
 % less the 41 adjudicated exclusions, are 86 + 176 = 262. The census
-% read 85 + 171 = 256 of them. Until the pipeline was fixed in
-% September 2026 the histogram carried three EXCLUDED questions and
-% reported 259, and six real failures (one WebQSP, five CWQ wrong
-% answers) had never been reached by either labelling pass. The
-% sentence stating population and coverage is pinned by
-% scripts/check_paper_numbers.py, which recomputes both from the run
-% records; when the six are labelled and the census regenerated, the
-% sentence changes to "read all 262" and the check must be updated with
-% it.
+% read 85 + 171 = 256 of them; the six it did not read (one WebQSP,
+% five CWQ) are exactly the Stage B surface-form near-misses that
+% dump_failure_packets.py sets aside by design, and the paragraph says
+% so. Until the pipeline was fixed in September 2026 the histogram
+% carried three EXCLUDED questions and reported 259. The sentences
+% stating population, the six set aside, and coverage are pinned by
+% scripts/check_paper_numbers.py, which recomputes all three from the
+% run records and the near-miss flags.
 %
 % ON THE ECHO ATTRACTOR: lead with the MECHANISM and give the frequency
 % second. 13 of 256 is a small rate. The consensus breakdown (new in
@@ -32,20 +31,21 @@
 \section{Error Analysis}\label{sec:erroranalysis}
 
 After the label-defect exclusions of \Cref{sec:defects}, AGR's residual
-failures on the two samples number $262$: $86$ on WebQSP and $176$ on
-ComplexWebQuestions. Each was to be read and labelled by hand against
-its full execution trace, and $256$ of them were, $85$ and $171$. The
-six the census did not reach, one WebQSP and five ComplexWebQuestions
-wrong answers, were missed by both labelling passes and are listed in
-the repository. The counts below are therefore counts over the $256$
-read rather than estimates from a sample, and no category is
-extrapolated. The reading protocol was fixed before it began. For each
-trace, find where the trajectory \emph{first} left the correct path, and
-label that point rather than the last visible symptom. Wrong answers and
-hedges are kept separate throughout, because the two are not the same
-kind of failure. A wrong answer is a reasoning error. A hedge is usually
-a coverage gap that never produced a committal claim.
-\Cref{fig:failures} gives the census.
+non-hits on the two samples number $262$: $86$ on WebQSP and $176$ on
+ComplexWebQuestions. Six of them, one and five, are the surface-form
+near-misses of \Cref{sec:protocol}, answers that strict matching rejects
+and aggressive normalisation accepts; they are scoring artefacts rather
+than reasoning failures and were set aside. Every one of the remaining
+$256$, $85$ and $171$, was read and labelled by hand against its full
+execution trace. The counts below are therefore counts over a population
+rather than estimates from a sample, and no category is extrapolated.
+The reading protocol was fixed before it began. For each trace, find
+where the trajectory \emph{first} left the correct path, and label that
+point rather than the last visible symptom. Wrong answers and hedges are
+kept separate throughout, because the two are not the same kind of
+failure. A wrong answer is a reasoning error. A hedge is usually a
+coverage gap that never produced a committal claim. \Cref{fig:failures}
+gives the census.
 
 \begin{figure}[!tb]
   \begin{center}

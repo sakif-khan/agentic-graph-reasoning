@@ -22,11 +22,16 @@ counted once, from the first source that carries it:
 
 Until September 2026 the dropped file WAS counted, and two Stage A rows
 that name excluded questions were counted too, so the histogram carried
-three excluded questions and read as 259 while the population it claims
-to cover held 262, six of which no label file had reached. The coverage
-block at the end of each dataset's report now states the population, the
-number read, and the identifiers still unread, so that "the census is a
-population, not a sample" is a checked claim rather than a remembered one.
+three excluded questions and read as 259. The population it covers holds
+262 (86 + 176); the six it does not read (1 + 5) are the Stage B
+surface-form near-misses -- strict-match failures that aggressive
+normalisation scores as hits -- which dump_failure_packets.py sets aside
+by design as scoring artefacts rather than reasoning failures (one CWQ
+near-miss is planner-discordant and is read through Stage A). The
+coverage block at the end of each dataset's report states the
+population, the number read, the near-misses set aside, and any
+identifier genuinely unread, so that "the census is a population, not a
+sample" is a checked claim rather than a remembered one.
 
 Wrong answers and hedges are printed as separate histograms and are never
 pooled: a wrong answer is a reasoning error, whereas a hedge is usually a
@@ -48,6 +53,15 @@ def _norm(s):
 def _hit(rec):
     return bool({_norm(g) for g in rec["gold"]}
                 & {_norm(a) for a in rec.get("answer_entities", [])})
+
+
+def near_misses(ds):
+    """Stage B: strict-match failures that normalisation would score as
+    hits. dump_failure_packets.py skips them, so the census does not read
+    them unless Stage A does."""
+    return {r["qid"] for r in
+            json.load(open(DIR / f"prepass_wrongs_{ds}.json",
+                           encoding="utf-8")) if r["near_miss"]}
 
 
 def population(ds, excluded):
@@ -117,13 +131,18 @@ def main():
                 print(f"    {cat:<24} {n:>3}  ({n / max(total, 1):.0%})")
 
         pop = population(ds, excluded)
-        unread = sorted(pop - counted)
+        near = near_misses(ds)
+        aside = sorted((pop - counted) & near)
+        unread = sorted(pop - counted - near)
         stray = sorted(counted - pop)
         print(f"  -- coverage --")
         print(f"    population: {len(pop)}   read: {len(pop & counted)}"
+              f"   near-miss set aside: {len(aside)}"
               f"   unread: {len(unread)}")
+        for q in aside:
+            print(f"    near-miss (Stage B, set aside) {q}")
         for q in unread:
-            print(f"    unread {q}")
+            print(f"    UNREAD {q}")
         for q in stray:
             print(f"    STRAY (labelled but not a remaining failure) {q}")
 

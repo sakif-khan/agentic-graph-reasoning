@@ -218,22 +218,29 @@ them changed a reading the thesis carries:
 Not done, because each needs new labels or a colleague rather than a
 script: hand-measuring the verifier's wrongful acceptance and rejection
 from the drafts and rejected claims in the records; a second annotator
-on the 105 flagged questions; reading the six unread failures.
+on the 105 flagged questions.
 
-**The census pipeline was wrong, and the fix ripples into the thesis.**
-`scripts/synthesize_census.py` counted three *excluded* questions in the
-histogram and had never reached six real failures (one WebQSP, five CWQ
-wrong answers), so "all 259 remaining failures" was false in both
-directions: the population after exclusions is 262 and the census read
-256. The script now drops excluded identifiers, counts each question
-once, and prints the population, the read count and the unread
-identifiers; `thesis_numbers.json` and the figures were regenerated
-(only the census blocks changed). The paper states 262 / 256 and the
-six unread, and `check_paper_numbers.py` recomputes both. **To do:**
-read the six (the script lists them), regenerate, and change the
-sentence to "read all of them" — the checker says which sentence. The
-thesis and slides still say 259 in several places and need the same
-correction.
+**The census total was 259 and is 256; the thesis and slides carry the
+correction.** `scripts/synthesize_census.py` counted three *excluded*
+questions in the histogram: two Stage A rows naming adjudicated
+benchmark defects and the one Stage D row later promoted to a formal
+exclusion. The thesis's appendix on the census denominator documented
+all three as deliberate re-entries, which contradicted the chapter's own
+rule that adjudicated defects leave the analysis altogether and the
+abstract's "removed before the census began". The script now drops
+excluded identifiers whatever label file they sit in and counts each
+question once, so the histogram totals 256 (85 + 171); `thesis_numbers.json`
+and the figures were regenerated (only the census blocks changed:
+relation_selection 65 -> 64, kg_gap 44 -> 43, gold_noise 7 -> 6,
+census-visible defects 17 -> 16, so 41 + 16 = 57 with no overlap). The
+population after exclusions is 262 (86 + 176); the six the census does
+not read (1 + 5) are the Stage B surface-form near-misses that
+`dump_failure_packets.py` sets aside by design, which the paper's
+population paragraph states and `check_paper_numbers.py` verifies against
+the near-miss flags (an earlier draft of this note, and of that
+paragraph, wrongly called them failures no labelling pass had reached).
+The thesis chapters, the census-denominator appendix, the slides, and
+`check_slides.py` were corrected in the same pass (2026-09-18).
 
 ## Editing notes
 
