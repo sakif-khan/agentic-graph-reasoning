@@ -176,8 +176,9 @@ AGR never reaches the shared call cap. Across all $800$ test questions
 it hit the $25$-call limit zero times. That is not the same as running
 unbounded: its depth cap of \Cref{tab:budget} refuses a deeper expansion
 on $25.6\%$ of test questions. The baseline reaches the cap far more
-often, and the next subsection shows that this asymmetry, not resolution
-quality, is where the aggregate margin lives.
+often, and the next subsection shows that this asymmetry, together with
+the baseline's own candidate cut, is where the aggregate margin lives,
+and that resolution quality is not.
 
 \subsection{Where the Margin Comes From}\label{sec:margin}
 
@@ -271,16 +272,17 @@ seen from the other side.
   \end{center}
 \end{table}
 
-The correct reading of this is affordability, not resolution quality.
-Exhaustive beam search finds answers well when it is allowed to finish.
-Guided search finds them almost as well and finishes within a budget the
-beam search cannot. On a fixed spend the second is the better
-architecture. The first would win if spend were unconstrained. That is a
-claim about operating regimes rather than about reasoning power, and it
-is narrower than the aggregate table alone would suggest. The cap of
-$25$ calls is itself a choice, and a larger one would move the split.
-The clip rates are reported so a reader can see how far, and a sweep of
-the cap is the first experiment \Cref{sec:outlook} names.
+The reading this invites is affordability, not resolution quality. Beam
+search finds answers well when it is allowed to finish, and guided
+search finishes within a budget the beam search cannot. That is a claim
+about operating regimes rather than about reasoning power, and it is
+narrower than the aggregate table alone would suggest. The cap of $25$
+calls is itself a choice, and a larger one would move the split. The
+clip rates are reported so a reader can see how far, and a sweep of the
+cap is the first experiment \Cref{sec:outlook} names. The next
+paragraphs show that even this reading is too generous to the
+architecture, because the cap is not the only thing that binds on the
+baseline.
 
 \textbf{One asymmetry bounds how far that reading extends}, and it is
 the candidate-width difference named in \Cref{sec:baselines}. Both
@@ -298,23 +300,81 @@ $20$-neighbour cut on $32.8\%$ of its $7{,}992$ neighbour calls, against
 $1$ of AGR's $3{,}097$ expanded entities and $3.3\%$ of its neighbour
 calls.
 
-The affordability conclusion survives this, because a thinner candidate
-pool cannot explain why a system runs \emph{out of calls}. What it
-bounds is the other half of the split. The $0.852$ and $0.630$ the
-baseline reaches on the questions it finishes were measured while it
-searched a narrower pool than AGR. They are therefore a \textbf{lower
-bound} on what an equal-width reimplementation would reach, not an
-estimate of it. And since the baseline is already ahead of AGR on those
-questions, equalising the widths would be expected to widen that lead
-rather than close it. Beam width and depth follow the original paper.
-The candidate widths beneath them do not, and equalising them is the
-first change we would make in a follow-up. That re-run would not vary
-one thing, though. Wider candidate sets make each pruning call dearer,
-so equal widths would also raise the baseline's clip rate. That moves
-the boundary between the two halves of \Cref{tab:togsplit} at the same
-time as it changes what the search resolves within each. The two effects
-have to be read apart, which means reporting that split again rather
-than an aggregate in which they cancel or compound invisibly.
+Whether that cut discarded anything the baseline needed can be read from
+the same logs, because the tool log keeps the full relation list before
+the cut and the RoG distribution publishes each question's subgraph. For
+every distinct anchor the baseline expanded whose list exceeded the cut,
+and which lies on a shortest path from a topic entity to a gold answer
+in that subgraph, we asked whether the relation that continues the path
+was among the $40$ rows the pruning prompt saw or among the rows
+discarded. On WebQSP the cut bound on $416$ such expansions, $267$ of
+them at an anchor on a gold path, and the continuing relation was
+offered on $177$ and \textbf{discarded on $89$}. On ComplexWebQuestions
+the figures are $555$, $220$, $153$ and $53$. In question units, the cut
+discarded a gold-path relation on $89$ WebQSP and $51$
+ComplexWebQuestions questions, and the baseline scored a hit on $15$ and
+$5$ of them. A thinner pool therefore \emph{can} explain part of why a
+system runs out of calls: an agent that never sees the right relation
+searches the wrong ones until the cap stops it, and $65$ of the $117$
+questions the cap clipped on WebQSP, and $33$ of the $176$ on
+ComplexWebQuestions, are ones on which the cut had already discarded a
+gold-path relation. \Cref{tab:togdiscard} reads the budget split a
+second time on that basis.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{The budget split of \Cref{tab:togsplit} read against the
+      baseline's candidate cut: whether, on that question, the $40$-row
+      cut discarded the relation continuing a shortest path from a topic
+      entity to a gold answer in the question's published subgraph. $n$
+      and Hits@1 for the two navigators.}
+    \label{tab:togdiscard}
+    \footnotesize
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabular}{|ll|rrr|rrr|}
+      \hline
+      & & \multicolumn{3}{c|}{\textbf{no gold-path discard}}
+        & \multicolumn{3}{c|}{\textbf{gold-path discard}} \\
+      \textbf{Dataset} & \textbf{Baseline} & $n$ & \tog{} & \agr{}
+        & $n$ & \tog{} & \agr{} \\
+      \hline
+      WebQSP & finished & 259 & 0.896 & 0.784 & 24 & 0.375 & 0.833 \\
+      WebQSP & clipped & 52 & 0.327 & 0.538 & 65 & 0.092 & 0.785 \\
+      \hline
+      CWQ & finished & 206 & 0.670 & 0.612 & 18 & 0.167 & 0.556 \\
+      CWQ & clipped & 143 & 0.217 & 0.364 & 33 & 0.061 & 0.636 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\textbf{The aggregate margin lives on the questions where one of the two
+bounds binds.} On the $89$ WebQSP questions with a discard, AGR is ahead
+by $56$ hits; on the other $311$ it is \emph{behind} by $18$. On
+ComplexWebQuestions it is ahead by $26$ hits on the $51$ discard
+questions and by $9$ on the other $349$. Where neither the cap nor the
+cut binds, the top-left cells of \Cref{tab:togdiscard}, the baseline
+leads on both datasets: $0.896$ against $0.784$ and $0.670$ against
+$0.612$. Those cells are the closest this study comes to an equal-width,
+open-budget comparison, and they are the reason the paper does not
+present the margin in \Cref{tab:main} as an architectural advantage. The
+$0.852$ and $0.630$ the baseline reaches on the questions it finishes
+were measured while it searched a narrower pool than AGR, so they remain
+a \textbf{lower bound} on what an equal-width reimplementation would
+reach. Beam width and depth follow the original paper. The candidate
+widths beneath them do not, and equalising them is the first change we
+would make in a follow-up. That re-run would not vary one thing, though.
+Wider candidate sets make each pruning call dearer, so equal widths
+would also raise the baseline's clip rate. That moves the boundary
+between the two halves of \Cref{tab:togsplit} at the same time as it
+changes what the search resolves within each. The two effects have to be
+read apart, which means reporting that split again rather than an
+aggregate in which they cancel or compound invisibly. Two limits of the
+reading above are stated with it. Shortest paths were computed in the
+published per-question subgraph, and the environment is the union of all
+of them, so a path the subgraph lacks is not counted. And the analysis
+reads the baseline's own logs; AGR's $300$-row cut bound on one
+expansion in $3{,}097$, so no symmetric reading of AGR exists to make.
 
 The breadth of AGR's answers is checked rather than assumed, because a
 metric that scores a hit on any match rewards naming more entities. On

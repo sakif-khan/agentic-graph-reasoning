@@ -90,6 +90,43 @@ sources~\cite{jiang2023structgpt}. Recent surveys treat the convergence
 as a research programme in its own
 right~\cite{pan2024unifying,ma2025unifying}.
 
+\Cref{tab:designspace} places these systems and AGR on the four
+mechanisms this paper ablates, and on whether the system is trained on
+the benchmarks. The rows are read from the papers cited; only AGR and
+the Think-on-Graph reimplementation were run here.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{The design space, on the mechanisms this paper ablates.
+      \emph{Trained} means the system's own parameters are tuned on the
+      benchmark's training split. Only the last two rows were run under
+      this paper's protocol; the rest are read from the cited papers.}
+    \label{tab:designspace}
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{|l|L{20mm}|L{20mm}|L{17mm}|L{22mm}|c|}
+      \hline
+      \textbf{System} & \textbf{Decom\-position} & \textbf{Edge choice}
+        & \textbf{Backtrack} & \textbf{Output check} & \textbf{Trained} \\
+      \hline
+      RoG~\cite{luo2024reasoning} & relation-path plan, generated once
+        & path retrieval & none & faithful by construction & yes \\
+      GCR~\cite{luo2025gcr} & none & trie-constrained decoding & none
+        & faithful by construction & yes \\
+      KBQA-o1~\cite{luo2025kbqao1} & MCTS over agent actions
+        & reward model & tree search & none & yes \\
+      Plan-on-Graph~\cite{chen2024plan} & sub-objectives, in prompt
+        & model pruning & reflection & none & no \\
+      Think-on-Graph~\cite{sun2024think} & none & model pruning (beam)
+        & none & none & no \\
+      \agr{} (this work) & sub-objectives, as data
+        & embedding $+$ model blend & ban-list restore
+        & claims against traversal & no \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
 KBQA-o1~\cite{luo2025kbqao1} is the closest system to AGR's search
 strategy, and the most important to distinguish from it. It performs
 agentic knowledge base question answering with full Monte Carlo Tree

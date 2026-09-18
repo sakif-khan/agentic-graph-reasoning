@@ -61,27 +61,29 @@ descriptive rather than as a family-wise claim.
 
 \begin{table}[!tb]
   \begin{center}
-    \caption{Component ablations. $\Delta$F1 is ablated minus reference:
-      positive means the system got better without the component.
-      $p$ from McNemar's test on paired per-question correctness.}
+        \caption{Component ablations. $\Delta$F1 is ablated minus reference:
+      positive means the system got better without the component. The
+      interval is a paired percentile bootstrap over questions
+      ($10{,}000$ resamples); $p$ from McNemar's exact test on paired
+      per-question correctness.}
     \label{tab:ablation}
-    \footnotesize
-    \setlength{\tabcolsep}{5pt}
-    \begin{tabular}{|l|rrr|rrr|}
+    \scriptsize
+    \setlength{\tabcolsep}{2.5pt}
+    \begin{tabular}{|l|rlrr|rlrr|}
       \hline
-      & \multicolumn{3}{c|}{\textbf{WebQSP} ($n=200$)}
-      & \multicolumn{3}{c|}{\textbf{CWQ} ($n=198$)} \\
-      \textbf{Removed} & $\Delta$F1 & $p$ & Tokens
-                       & $\Delta$F1 & $p$ & Tokens \\
+      & \multicolumn{4}{c|}{\textbf{WebQSP} ($n=200$)}
+      & \multicolumn{4}{c|}{\textbf{CWQ} ($n=198$)} \\
+      \textbf{Removed} & $\Delta$F1 & $95\%$ CI & $p$ & Tokens
+                       & $\Delta$F1 & $95\%$ CI & $p$ & Tokens \\
       \hline
-      Planner        & $+0.083$ & \textbf{0.006} & $-31\%$
-                     & $-0.047$ & 0.088 & $-21\%$ \\
-      Backtracking   & $-0.013$ & 0.727 & $-7\%$
-                     & $0.000$  & 1.000 & $-18\%$ \\
-      Verification   & $+0.004$ & 1.000 & $-2\%$
-                     & $-0.009$ & 1.000 & $-6\%$ \\
-      Model scoring  & $-0.016$ & 0.664 & $-25\%$
-                     & $-0.008$ & 0.481 & $-31\%$ \\
+      Planner        & $+0.083$ & $[+0.038, +0.130]$ & \textbf{0.006} & $-31\%$
+                     & $-0.047$ & $[-0.108, +0.013]$ & 0.088 & $-21\%$ \\
+      Backtracking   & $-0.013$ & $[-0.038, +0.010]$ & 0.727 & $-7\%$
+                     & $0.000$  & $[-0.031, +0.030]$ & 1.000 & $-18\%$ \\
+      Verification   & $+0.004$ & $[-0.006, +0.018]$ & 1.000 & $-2\%$
+                     & $-0.009$ & $[-0.024, +0.000]$ & 1.000 & $-6\%$ \\
+      Model scoring  & $-0.016$ & $[-0.060, +0.026]$ & 0.664 & $-25\%$
+                     & $-0.008$ & $[-0.046, +0.030]$ & 0.481 & $-31\%$ \\
       \hline
     \end{tabular}
   \end{center}
@@ -166,11 +168,15 @@ from edge selection entirely, leaving pure embedding similarity. F1
 falls by $0.016$ and $0.008$, neither significant, while tokens drop
 $25\%$ and $31\%$. The model term is the single most expensive part of
 the navigation loop, and this experiment cannot establish that it earns
-its cost. One confound is recorded rather than smoothed over. At $\alpha
-= 1$ the scorer takes an early return that leaves the backtracking
-trigger's signal maximum computed over a smaller candidate set, so this
-condition's elevated backtrack count is not attributable to the scoring
-change alone.
+its cost. The development-set sweep that froze $\alpha$ points the same
+way at a smaller scale: at $\tau = 0.20$ it scored $61$, $62$, $64$, and
+$59$ hits of $80$ at $\alpha = 0.3$, $0.5$, $0.7$, and $1.0$, so
+dropping the model term cost five hits there, before the entity-filter
+correction that preceded the test runs. One confound is recorded rather
+than smoothed over. At $\alpha = 1$ the scorer takes an early return
+that leaves the backtracking trigger's signal maximum computed over a
+smaller candidate set, so this condition's elevated backtrack count is
+not attributable to the scoring change alone.
 
 \textbf{Claim verification.} Removing the checking routes of the layer
 AGR was designed around, while leaving the drafting call unchanged,
@@ -225,6 +231,13 @@ conditions produced $21$. At that count the smallest ratio detectable at
 $80\%$ power is nearer $4{:}1$. A true $2{:}1$ effect would have been
 caught about a quarter of the time. \textbf{Three of four components
 show no effect at this power}; none is shown to have no effect.
+
+One more count bounds what any single removal could have done. The union
+of the four discordant sets holds $42$ of the $200$ WebQSP questions and
+$55$ of the $198$ on ComplexWebQuestions. On the remaining $158$ and
+$143$, no condition changed the outcome. The intervals in
+\Cref{tab:ablation} say the same thing in F1: the planner's WebQSP
+interval is the only one of the eight that does not contain zero.
 
 Two features of the design bound these numbers further. Each condition
 is one run against a hosted model whose temperature-zero decoding is

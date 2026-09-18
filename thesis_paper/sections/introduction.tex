@@ -81,17 +81,20 @@ budget. That number is where the analysis starts rather than where it
 ends. Against the agentic baseline, a reimplementation of
 Think-on-Graph~\cite{sun2024think} on the same tools, the entire margin
 comes from the $29\%$ and $44\%$ of questions on which the shared
-$25$-call cap truncates the baseline. Where the cap lets it finish, it
-is ahead (\Cref{sec:margin}). The ablation finds one component with a
-detectable effect, and the effect runs the wrong way. Removing the
-planner improves WebQSP F1 by $0.083$ while cutting tokens by $31\%$,
-because decomposing a question with no compositional structure discards
-the context that would have answered it. Backtracking, model scoring,
-and claim verification show no effect at the power available, and
-\Cref{sec:power} states the smallest effect each test could have caught.
-The failure census finds label defects on $5.5\%$ and $4.8\%$ of the
-sampled questions, and names a failure that every grounding check passes
-and that consensus-based label repair cannot see.
+$25$-call cap truncates the baseline, and, read a second way, from the
+questions on which the reimplementation's own candidate cut discarded a
+relation on the path to the answer. Where neither binds, the baseline is
+ahead on both datasets (\Cref{sec:margin}). The ablation finds one
+component with a detectable effect, and the effect runs the wrong way.
+Removing the planner improves WebQSP F1 by $0.083$ while cutting tokens
+by $31\%$, because decomposing a question with no compositional
+structure discards the context that would have answered it.
+Backtracking, model scoring, and claim verification show no effect at
+the power available, and \Cref{sec:power} states the smallest effect
+each test could have caught. The failure census finds label defects on
+$5.5\%$ and $4.8\%$ of the sampled questions, and names a failure that
+every grounding check passes and that consensus-based label repair
+cannot see.
 
 % elsarticle supplies the period after a \paragraph title; a period
 % inside the braces printed "Contributions.." in every build until
@@ -111,12 +114,13 @@ and that consensus-based label repair cannot see.
     claim-verification layer among them, show no detectable effect, and
     the nulls are reported at the same length as the effect
     (\Cref{sec:attribution}).
-  \item The \textbf{location of the aggregate margin} over the agentic
-    baseline. It comes entirely from budget truncation, the
-    candidate-width confound that bounds the other half of the split is
-    measured, and the split is read within hop strata. The reading is
-    affordability under a fixed spend, not resolution quality
-    (\Cref{sec:margin}).
+    \item The \textbf{location of the aggregate margin} over the agentic
+    baseline. It lies entirely on the questions where the shared call
+    cap truncated the baseline or the baseline's candidate cut discarded
+    a gold-path relation, both read from the logs, and the split is
+    read within hop strata. Where neither binds, the baseline is ahead.
+    The margin is a fact about the comparison's regime, not about the
+    architecture (\Cref{sec:margin}).
   \item A \textbf{hand-read failure census} that names the \emph{echo
     attractor}, reports which systems converge on it, and quantifies
     label defects in both benchmarks together with their effect on the

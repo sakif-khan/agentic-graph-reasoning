@@ -19,12 +19,13 @@ aggregate result is the one the field usually reports: the agentic
 system has the highest accuracy in every column, at roughly half the
 model calls of the agentic baseline. The rest of the paper is what that
 result turns out to be made of. The entire margin over the agentic
-baseline comes from the questions on which the shared budget truncates
-it; where the budget lets that baseline finish, it is ahead. The margin
-is a finding about affordability under a fixed spend, and it is bounded
-by a candidate-width confound we measured rather than assumed. Against
-the published figures of a system fine-tuned on these benchmarks, AGR
-trails on every number, and we report that too.
+baseline lies on the questions where the shared budget truncated it or
+where its own candidate cut, read against the gold path in the logs, had
+discarded the relation it needed; where neither binds, the baseline is
+ahead. The margin is a fact about the regime the comparison ran under,
+not about the architecture. Against the published figures of a system
+fine-tuned on these benchmarks, AGR trails on every number, and we
+report that too.
 
 The result we consider most useful is the one that did not go our way.
 Of four components, three could not be shown to earn their cost at the
@@ -55,7 +56,7 @@ The attribution result is a claim about how this field measures rather
 than about this architecture. A component adopted because the assembly
 containing it performed well may be contributing nothing, or less than
 nothing, and a margin reported as an architectural advantage may be a
-budget regime. The only way to know is to remove the component, vary the
-budget, and test. We would rather report three nulls, a harmful
-component, and a margin that lives in a cap than a system that works for
-reasons nobody has checked.
+budget or a candidate width. The only way to know is to remove the
+component, read the logs, and test. We would rather report three nulls,
+a harmful component, and a margin that lives in a cap than a system that
+works for reasons nobody has checked.

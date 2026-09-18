@@ -10,6 +10,7 @@ Journal manuscript drawn from `thesis_book/`. Target: Elsevier —
 | `sections/*.tex` | Nine sections. Undrafted ones carry their source chapter and word budget as comments |
 | `figures/` | Generated. Do not edit |
 | `highlights.txt` | Elsevier highlights, submitted as a separate file |
+| `supplement.tex` + `supplement/` | Supplementary material: the thirteen prompts, generated from the code. Build with `latexmk -pdf supplement.tex` |
 
 ## Build
 
@@ -184,6 +185,40 @@ changed, beyond the front matter:
   reported; the outlook names the four experiments the reframe makes
   necessary (equal-width baseline under a cap sweep, replication plus a
   joint-removal condition, full splits, the logging change).
+
+**Derived analyses, September 2026 (`scripts/paper_analyses.py`).** After
+the reframe, the reviewer issues that prose could not answer were
+answered from the committed records instead of new runs, and one of
+them changed a reading the thesis carries:
+
+- **The candidate-width cut, read against the gold path** (Table 6).
+  The baseline's tool log keeps the full relation list before its own
+  40-row cut, and the RoG parquet gives each question's subgraph, so
+  for every truncated expansion at an anchor on a shortest path to a
+  gold answer the script asks whether the continuing relation was
+  offered or discarded. It was discarded on 89 WebQSP and 51 CWQ
+  questions, and **AGR's entire aggregate margin lies on the questions
+  where either the cap or that cut binds; where neither binds, the
+  baseline is ahead on both datasets.** The thesis says the affordability
+  reading "survives" the width confound because a thinner pool cannot
+  explain running out of calls. The logs say it can (65 of the 117
+  WebQSP clips had a discard), so the paper no longer says that. The
+  thesis's *measurements* are untouched; its *reading* of §5.3 is what
+  the paper departs from, and the departure is stated in §5.3, §8.2
+  and the conclusion.
+- Paired bootstrap intervals on every ablation delta (Table 9 column),
+  the union of the discordant sets, and the development-set α sweep
+  (thesis tab:sweep, from `results/phase3/score_run.csv`).
+- A design-space table in §2 (Table 1); the thirteen prompt templates
+  as supplementary material (`supplement.tex`, generated from the code
+  by `scripts/build_paper_supplement.py`, so it cannot drift from the
+  thesis's Appendix A, which `check_appendix_prompts.py` pins to the
+  same code).
+
+Not done, because each needs new labels or a colleague rather than a
+script: hand-measuring the verifier's wrongful acceptance and rejection
+from the drafts and rejected claims in the records; a second annotator
+on the 105 flagged questions; reading the six unread failures.
 
 **The census pipeline was wrong, and the fix ripples into the thesis.**
 `scripts/synthesize_census.py` counted three *excluded* questions in the

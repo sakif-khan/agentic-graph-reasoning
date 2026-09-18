@@ -1,0 +1,58 @@
+% =====================================================================
+% SUPPLEMENTARY MATERIAL for agr-paper.tex: the thirteen prompt templates,
+% verbatim from the code. This is a document; build it:
+%
+%   python ../scripts/build_paper_supplement.py   (regenerates supplement/)
+%   latexmk -pdf supplement.tex
+%
+% Uploaded to the submission system as a separate file. It shares nothing
+% with the manuscript but the bibliography key of the paper it belongs to.
+% =====================================================================
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\lstdefinestyle{prompt}{
+  basicstyle=\footnotesize\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  breakindent=0pt,
+  frame=single,
+  framerule=0.3pt,
+  rulecolor=\color{black!40},
+  xleftmargin=4pt,
+  xrightmargin=4pt,
+}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\title{Supplementary Material: Prompt Templates\\
+  \large for \emph{Component Attribution in Agentic Knowledge Graph
+  Question Answering: A Controlled Ablation, Budget Analysis, and Failure
+  Census}}
+\author{Md. Sakif Khan \and Sadia Sharmin}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent Seven templates constitute the whole of AGR's interface to the
+language model, and six serve the baselines: one for the parametric
+control, one shared by the two static retrieval baselines, and four
+belonging to the reimplemented agentic baseline. All thirteen are
+reproduced here verbatim from the source that sends them, in the order a
+question encounters them, by a script that reads the code
+(\texttt{scripts/build\_paper\_supplement.py} in the repository named in
+the paper's data-availability statement). No template carries a
+configuration constant, so one cached response serves every condition of
+a sweep; budgets are counters in code rather than instructions, and the
+evaluator's remaining depth and backtracks are the only budget figures any
+prompt carries. Every call asks for JSON against a schema stated in the
+code beside the template.
+
+\input{supplement/prompts}
+
+\end{document}

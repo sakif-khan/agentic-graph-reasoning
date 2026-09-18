@@ -64,25 +64,27 @@
 % paper reports them (aggregate margin located, planner asymmetry, three
 % nulls at stated power, census). It must NOT promise that verification
 % raises accuracy -- Section 6 reports the null.
+
 Agentic systems for multi-hop question answering over knowledge graphs
-assemble decomposition, guided search, backtracking, and
-self-correction, and the literature reports them as wholes. Which
-component produces a reported gain is rarely established. We build an
-agentic system, AGR, whose four components can each be removed by
-construction, run it against four baselines on one frozen backbone under
-one call budget, and take it apart. On $400$ questions from each of
-WebQSP and ComplexWebQuestions, AGR leads the agentic baseline by $9.5$
-and $8.7$ Hits@1 points. The entire margin comes from questions on which
-the shared budget truncates the baseline; where the baseline finishes,
-it is ahead. Removing the planner improves WebQSP F1 by $0.083$ ($p =
-0.006$) and cuts tokens by $31\%$. The other three components, a
-claim-verification layer among them, show no effect at the power
-available, and we report the smallest effect each test could have
-detected. A hand-read census of the residual failures finds label
-defects in $5.5\%$ and $4.8\%$ of the samples and names the \emph{echo
-attractor}: a true, grounded entity one hop from the answer on which
-systems sharing a graph and a backbone converge, so that
+are assemblies of decomposition, guided search, backtracking, and
+self-correction that the literature reports as wholes. Which component
+produces a reported gain is rarely established. We build an agentic
+system, AGR, with four removable components, run it against four
+baselines on one frozen backbone under one call budget, and take it
+apart. On $400$ questions from each of WebQSP and ComplexWebQuestions,
+AGR leads the agentic baseline by $9.5$ and $8.7$ Hits@1 points. The
+entire margin comes from questions on which the shared call budget
+truncates the baseline or its own candidate cut discards a gold-path
+relation; where neither binds, the baseline is ahead. Removing the
+planner improves WebQSP F1 by $0.083$ ($p = 0.006$) and cuts tokens by
+$31\%$. Three other components, a claim-verification layer among them,
+show no effect at the power available; we report the smallest effect
+each test could detect. A hand-read census of the residual failures
+finds label defects in $5.5\%$ and $4.8\%$ of the samples and names the
+\emph{echo attractor}: a true, grounded entity one hop from the answer
+on which systems sharing a graph and backbone converge, so
 consensus-based label repair ratifies it.
+
 \end{abstract}
 
 \begin{keyword}

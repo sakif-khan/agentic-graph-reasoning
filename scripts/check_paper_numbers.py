@@ -1225,6 +1225,116 @@ def main():
        re.search(r"leaving\s+the\s+drafting\s+call\s+unchanged", text) is not None
        and re.search(r"leaves\s+the\s+drafting\s+call\s+unchanged", text) is not None)
 
+    print("\n== derived analyses of September 2026 (scripts/paper_analyses.py) ==")
+    # Computed from the committed logs and the RoG distribution's published
+    # subgraphs; nothing here ran a system. Each figure is pinned to the
+    # sentence or table cell that quotes it.
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import paper_analyses as pa
+
+    gp = {ds: pa.gold_path_discards(ds) for ds in ("webqsp", "cwq")}
+    if gp["webqsp"] is None or gp["cwq"] is None:
+        print("  [SKIP] RoG parquet files not found beside the repository; the "
+              "gold-path discard figures are unverified")
+    else:
+        w, c = gp["webqsp"], gp["cwq"]
+        says(r"the cut bound on \$(\d+)\$ such expansions, \$(\d+)\$ of them at an "
+             r"anchor on a gold path, and the continuing relation was offered on "
+             r"\$(\d+)\$ and \\textbf\{discarded on \$(\d+)\$\}",
+             "the WebQSP gold-path discard counts are the computed ones",
+             (w["expansions_over_cap"], w["anchor_on_path"],
+              w["continuing_offered"], w["continuing_discarded"]))
+        says(r"the figures are \$(\d+)\$, \$(\d+)\$, \$(\d+)\$ and \$(\d+)\$",
+             "the CWQ gold-path discard counts are the computed ones",
+             (c["expansions_over_cap"], c["anchor_on_path"],
+              c["continuing_offered"], c["continuing_discarded"]))
+        hits_on = {ds: sum(v for (k, o), v in gp[ds]["discard_by_outcome"].items()
+                           if o == "hit") for ds in ("webqsp", "cwq")}
+        says(r"discarded a gold-path relation on \$(\d+)\$ WebQSP and \$(\d+)\$ "
+             r"ComplexWebQuestions questions, and the baseline scored a hit on "
+             r"\$(\d+)\$ and \$(\d+)\$ of them",
+             "the per-question discard counts and the baseline's hits on them",
+             (w["questions_with_discard"], c["questions_with_discard"],
+              hits_on["webqsp"], hits_on["cwq"]))
+        clip_d = {ds: sum(v for (s, o), v in gp[ds]["discard_by_outcome"].items()
+                          if s == "clipped") for ds in ("webqsp", "cwq")}
+        says(r"\$(\d+)\$ of the \$(\d+)\$ questions the cap clipped on WebQSP, and "
+             r"\$(\d+)\$ of the \$(\d+)\$ on ComplexWebQuestions, are ones",
+             "the clipped-with-discard counts are the computed ones",
+             (clip_d["webqsp"], tog["webqsp"]["tog_clipped"]["n"],
+              clip_d["cwq"], tog["cwq"]["tog_clipped"]["n"]))
+        for ds, lead in (("webqsp", "WebQSP"), ("cwq", "CWQ")):
+            for subset, name in (("finished", "finished"), ("clipped", "clipped")):
+                m = re.search(lead + r"\s*&\s*" + name
+                              + r"\s*&\s*(\d+)\s*&\s*([\d.]+)\s*&\s*([\d.]+)\s*&\s*"
+                              r"(\d+)\s*&\s*([\d.]+)\s*&\s*([\d.]+)\s*\\\\", text)
+                got = tuple(float(g) for g in m.groups()) if m else None
+                a, b = gp[ds]["split"][(subset, False)], gp[ds]["split"][(subset, True)]
+                want = (float(a[0]), rnd(a[1]), rnd(a[2]), float(b[0]), rnd(b[1]), rnd(b[2]))
+                ck(f"tab:togdiscard row {ds}/{subset} = {want}",
+                   got == want, f"table {got or 'NO ROW'}")
+        md, mr = w["margin_discard"], w["margin_rest"]
+        says(r"On the \$(\d+)\$ WebQSP questions with a discard, AGR is ahead by "
+             r"\$(\d+)\$ hits; on the other \$(\d+)\$ it is \\emph\{behind\} by \$(\d+)\$",
+             "the WebQSP hit margins on and off the discard questions add up",
+             (md[0], md[2] - md[1], mr[0], mr[1] - mr[2]))
+        md, mr = c["margin_discard"], c["margin_rest"]
+        says(r"ahead by \$(\d+)\$ hits on the \$(\d+)\$ discard questions and by "
+             r"\$(\d+)\$ on the other \$(\d+)\$",
+             "the CWQ hit margins on and off the discard questions add up",
+             (md[2] - md[1], md[0], mr[2] - mr[1], mr[0]))
+        wf, cf = w["split"][("finished", False)], c["split"][("finished", False)]
+        says(r"leads on both datasets: \$([\d.]+)\$ against \$([\d.]+)\$ and "
+             r"\$([\d.]+)\$ against \$([\d.]+)\$",
+             "the neither-binds cells are quoted from the table",
+             (rnd(wf[1]), rnd(wf[2]), rnd(cf[1]), rnd(cf[2])))
+        ck("the neither-binds cells do put the baseline ahead on both datasets",
+           wf[1] > wf[2] and cf[1] > cf[2])
+        says(r"on \$(\d+)\$ and \$(\d+)\$ questions it discarded the relation "
+             r"continuing a shortest path",
+             "the discussion quotes the per-question discard counts",
+             (w["questions_with_discard"], c["questions_with_discard"]))
+        ck("the paper no longer says a thinner pool cannot explain running out of calls",
+           not re.search(r"cannot\s+explain\s+why\s+a\s+system\s+runs", text))
+
+    # paired bootstrap intervals in tab:ablation, and the discordant union
+    bs = {ds: pa.ablation_bootstrap(ds) for ds in ("webqsp", "cwq")}
+    LABEL = {"noplanner": "Planner", "nobacktrack": "Backtracking",
+             "noverifier": "Verification", "embonly": "Model scoring"}
+    def _sgn(x):
+        return f"{x:+.3f}"
+    for cond, label in LABEL.items():
+        m = re.search(label + r"\s*&\s*\$[+-]?[\d.]+\$\s*&\s*\$\[([+-][\d.]+), ([+-][\d.]+)\]\$"
+                      r"\s*&\s*(?:\\textbf\{)?[\d.]+\}?\s*&\s*\$[+-]?\d+\\%\$"
+                      r"\s*&\s*\$[+-]?[\d.]+\$\s*&\s*\$\[([+-][\d.]+), ([+-][\d.]+)\]\$",
+                      text)
+        got = tuple(m.groups()) if m else None
+        lo_w, hi_w = bs["webqsp"][cond]["ci95"]
+        lo_c, hi_c = bs["cwq"][cond]["ci95"]
+        want = (_sgn(rnd(lo_w)), _sgn(rnd(hi_w)), _sgn(rnd(lo_c)), _sgn(rnd(hi_c)))
+        ck(f"tab:ablation bootstrap interval for {label} = {want}",
+           got == want, f"table {got or 'NO ROW'}")
+    says(r"holds \$(\d+)\$ of the \$(\d+)\$ WebQSP questions and \$(\d+)\$ of the "
+         r"\$(\d+)\$ on ComplexWebQuestions. On the remaining \$(\d+)\$ and \$(\d+)\$",
+         "the discordant union and its complement are the computed ones",
+         (bs["webqsp"]["discordant_union"], bs["webqsp"]["n"],
+          bs["cwq"]["discordant_union"], bs["cwq"]["n"],
+          bs["webqsp"]["n"] - bs["webqsp"]["discordant_union"],
+          bs["cwq"]["n"] - bs["cwq"]["discordant_union"]))
+    excl_zero = [(ds, cond) for ds in ("webqsp", "cwq") for cond in LABEL
+                 if not (bs[ds][cond]["ci95"][0] <= 0 <= bs[ds][cond]["ci95"][1])]
+    ck("only the planner's WebQSP interval excludes zero",
+       excl_zero == [("webqsp", "noplanner")], str(excl_zero))
+
+    # the development-set sweep, hits at tau = 0.20
+    sw = pa.dev_sweep_hits()
+    says(r"it scored \$(\d+)\$, \$(\d+)\$, \$(\d+)\$, and \$(\d+)\$ hits of \$80\$ "
+         r"at \$\\alpha = 0\.3\$, \$0\.5\$, \$0\.7\$, and \$1\.0\$",
+         "the sweep's hits are the phase-3 score log's",
+         (sw[0.3], sw[0.5], sw[0.7], sw[1.0]))
+    ck("dropping the model term cost five hits on the development set",
+       sw[0.7] - sw[1.0] == 5 and re.search(r"cost\s+five\s+hits", text) is not None)
+
     print("\n== unbound literals in prose (read these) ==")
     accounted = {str(v) for v in bound.values()} | {
         str(v) for v in clip.values()} | {
