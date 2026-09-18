@@ -72,6 +72,19 @@ yours. Swap the class options for other purposes:
 | `preprint,12pt` | single-spaced copy to circulate or post to arXiv |
 | `final,5p,times,twocolumn` | preview the proof; expect figure geometry to need revisiting |
 
+**The measure is widened in `preamble.tex`** (September 2026): under
+`preprint` elsarticle leaves the 12pt article default, a 131 × 220 mm
+text block with 39 mm side margins, and the 1.5-spaced build ran to 72
+pages. `\usepackage[textwidth=468pt, textheight=660pt,
+centering]{geometry}` sets the class's own 3p width with 25 mm side
+margins and about 30 mm top and bottom; the same content is 51 pages,
+with zero box warnings. Elsevier places no layout requirement on an
+initial submission. The remaining lever is the `review` option's 1.5
+line spacing: dropping it (`preprint,12pt`) gives 36 pages, but 1.5
+spacing is the form reviewers expect and the class provides for that
+reason. Remove the geometry line before switching to
+`1p`/`3p`/`5p`, which load geometry themselves.
+
 Only `agr-paper.tex` is a document. `preamble.tex`, the nine sections
 and the figures are fragments and stop with *Missing `\begin{document}`*
 if built directly; each carries a `% !TEX root` line, checked by
@@ -188,25 +201,29 @@ changed, beyond the front matter:
 
 **Derived analyses, September 2026 (`scripts/paper_analyses.py`).** After
 the reframe, the reviewer issues that prose could not answer were
-answered from the committed records instead of new runs, and one of
-them changed a reading the thesis carries:
+answered from the committed records instead of new runs. The paper
+reports the ones that stay inside the thesis's readings:
 
-- **The candidate-width cut, read against the gold path** (Table 6).
-  The baseline's tool log keeps the full relation list before its own
-  40-row cut, and the RoG parquet gives each question's subgraph, so
-  for every truncated expansion at an anchor on a shortest path to a
-  gold answer the script asks whether the continuing relation was
-  offered or discarded. It was discarded on 89 WebQSP and 51 CWQ
-  questions, and **AGR's entire aggregate margin lies on the questions
-  where either the cap or that cut binds; where neither binds, the
-  baseline is ahead on both datasets.** The thesis says the affordability
-  reading "survives" the width confound because a thinner pool cannot
-  explain running out of calls. The logs say it can (65 of the 117
-  WebQSP clips had a discard), so the paper no longer says that. The
-  thesis's *measurements* are untouched; its *reading* of §5.3 is what
-  the paper departs from, and the departure is stated in §5.3, §8.2
-  and the conclusion.
-- Paired bootstrap intervals on every ablation delta (Table 9 column),
+- **Computed but not reported: the candidate-width cut read against
+  the gold path** (`gold_path_discards`). The baseline's tool log keeps
+  the full relation list before its own 40-row cut, and the RoG parquet
+  gives each question's subgraph, so for every truncated expansion at
+  an anchor on a shortest path to a gold answer the function asks
+  whether the continuing relation was offered or discarded. It was
+  discarded on 89 WebQSP and 51 CWQ questions; on the questions where
+  neither the cap nor the cut binds, the baseline is ahead on both
+  datasets (0.896 vs 0.784, 0.670 vs 0.612), and 65 of the 117 WebQSP
+  clips had a discard. That contradicts the thesis's §5.3 sentence that
+  a thinner pool cannot explain running out of calls. The paper carried
+  this as a table and a rewritten §5.3 for one revision (e081568) and
+  then dropped it on 2026-09-18 at the author's decision that the paper
+  keeps the thesis's reading; §5.3, §8.2, the abstract and the
+  conclusion are back to the wording of 3537b3a, and
+  `check_paper_numbers.py` now checks that the table is absent. The
+  function stays in the module, and `python scripts/paper_analyses.py`
+  still prints it.
+- Paired bootstrap intervals on every ablation delta (the CI columns of
+  tab:ablation),
   the union of the discordant sets, and the development-set α sweep
   (thesis tab:sweep, from `results/phase3/score_run.csv`).
 - A design-space table in §2 (Table 1); the thirteen prompt templates

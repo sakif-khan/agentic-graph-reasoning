@@ -115,27 +115,23 @@ semantic-tier gaps of \Cref{sec:groundedness}, the hedge-rate difference
 on ComplexWebQuestions, and the last step of the rising hop-depth curve
 are within noise, and we report them as such.
 
-\textbf{The margin is a statement about one regime.} The $25$-call cap
+\textbf{The margin is a statement about one budget.} The $25$-call cap
 was pre-specified, but it is a choice, and \Cref{sec:margin} shows that
 the entire margin over the agentic baseline lives on the questions where
-that cap truncates it or where the baseline's candidate cut discarded a
-gold-path relation. Where neither binds, the baseline is ahead. The
-split that shows this conditions on the baseline's own outcome, and
-within hop strata the clipped half is as hard as the finished half on
-WebQSP and harder on ComplexWebQuestions. A cap sweep would move the
-boundary, and the paper reports the clip rates so a reader can see how
-far, but it did not run the sweep.
+that cap truncates it. The split that shows this conditions on the
+baseline's own outcome, and within hop strata the clipped half is as
+hard as the finished half on WebQSP and harder on ComplexWebQuestions. A
+cap sweep would move the boundary, and the paper reports the clip rates
+so a reader can see how far, but it did not run the sweep.
 
 \textbf{An identical environment is not identical access to it.} The
 agentic baseline truncates candidate sets at $40$ relations and $20$
 neighbours against AGR's $300$ and $200$. That cut binds on about a
-third of its expansions and effectively none of ours, and on $89$ and
-$51$ questions it discarded the relation continuing a shortest path to a
-gold answer (\Cref{sec:margin}). The comparison holds the graph constant
-and does not hold the view of it constant, which is why the baseline's
-figures on the questions it finishes are a lower bound rather than an
-estimate, and why the aggregate margin is not read as an architectural
-one. The agentic comparator is also one system. Plan-on-Graph, whose two
+third of its expansions and effectively none of ours
+(\Cref{sec:margin}). The comparison holds the graph constant and does
+not hold the view of it constant, which is why the baseline's figures on
+the questions it finishes are a lower bound rather than an estimate. The
+agentic comparator is also one system. Plan-on-Graph, whose two
 mechanisms AGR's planner and backtracker re-host
 (\Cref{sec:rel-agentic}), was not run, so the planner result speaks to
 decomposition as implemented here and to Plan-on-Graph's by analogy

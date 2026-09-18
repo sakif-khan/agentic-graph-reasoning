@@ -4,12 +4,13 @@
 % the \documentclass and the \begin{document}; building this file
 % directly stops with "Missing \begin{document}".
 %
-% What elsarticle actually loads is fontenc[T1], graphicx, natbib and
-% geometry, and nothing else worth relying on. It does NOT load hyperref,
-% amsmath, amssymb or url -- \url is undefined until something here
-% provides it, which is how the data-availability statement first failed
-% to compile. Do not load geometry; elsarticle sets the measure per class
-% option and a second geometry undoes it.
+% What elsarticle actually loads is fontenc[T1], graphicx and natbib,
+% and nothing else worth relying on. It does NOT load hyperref, amsmath,
+% amssymb or url -- \url is undefined until something here provides it,
+% which is how the data-availability statement first failed to compile.
+% It loads geometry only under the 1p/3p/5p options; under `preprint'
+% the measure is the 12pt article default, and geometry is loaded below
+% to widen it.
 % =====================================================================
 
 % Not cosmetic. elsarticle typesets \elsaddress with \footnotesize\itshape
@@ -25,6 +26,16 @@
 % sets T1 for text; the warnings are OT1/cmr, which is where maths lives,
 % and lmodern is scalable in both.
 \usepackage{lmodern}
+
+% The measure. Under `preprint' elsarticle leaves the 12pt article
+% default, a 131mm by 220mm text block on A4 with 39mm at each side and
+% 45mm at the top; with `review' spacing that ran the manuscript to 72
+% pages. Elsevier places no layout requirement on an initial submission,
+% so the block is widened here to the class's own 3p width (468pt) and
+% deepened to 660pt, centred: a 25mm side margin and about 32mm top and
+% bottom. The generated figures are \textwidth-relative and follow it;
+% their fixed heights do not change.
+\usepackage[textwidth=468pt, textheight=660pt, centering]{geometry}
 
 \usepackage{booktabs}
 \usepackage{array}
