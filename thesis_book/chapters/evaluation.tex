@@ -43,7 +43,7 @@ columns of the main matrix, and the verifier ablation (\Cref{sec:ablations}).
 half-samples, each compared against the unmodified system restricted to the same
 questions (\Cref{sec:ablation-conditions,sec:ablations}).
 
-\subsection{Pre-Registration and the No-Tuning
+\subsection{Pre-Specification and the No-Tuning
 Policy}\label{sec:pre-registration}
 
 One rule governed everything from the moment the test files were built:
@@ -59,8 +59,9 @@ baseline hedges with the gold answer visible in its own retrieved facts on fewer
 than 15\% of its hedges (\Cref{sec:baselines}); and the judge validation
 threshold of Cohen's $\kappa \geq 0.7$ against blind human annotation
 (\Cref{sec:judge}). The last was missed, by $0.0005$, and is reported as missed.
-A threshold that is only pre-registered when it is met is not pre-registered at
-all.
+A threshold that is only pre-specified when it is met is not pre-specified at
+all. Nothing was filed with a public registry, so the claim throughout is
+pre-specification rather than pre-registration.
 
 The single code change Phase~4 required --- a \textsf{use\_planner} flag to
 disable decomposition --- was certified as a no-op on the frozen path by
@@ -119,7 +120,7 @@ test-set builder asserts that the two pools do not overlap.
 Sample size was a budget decision. The full test splits hold $1{,}628$ and
 $3{,}531$ questions. At the measured token rates, running five systems over both
 projected to roughly \$45--55, against a stated ceiling of \$15--20. So the
-evaluation fell back to the pre-registered alternative: a stratified sample of
+evaluation fell back to the pre-specified alternative: a stratified sample of
 $400$ questions per dataset (\Cref{tab:testsets}). At that size the bootstrap
 confidence intervals on Hits@1 are roughly $\pm 5$ points. The arithmetic was
 written down before any run fired.
@@ -260,8 +261,11 @@ self-adjudicated labels would substitute one contestable ground truth for
 another. And the errors cut both ways: the remaining $10$ and $4$ excluded
 questions are ones the full system scored as \emph{hits} against labels now
 judged broken or ambiguous. That symmetry is what makes the footnote credible
-rather than defensive. It also means the direction of the net bias is unknown,
-not conveniently favourable.
+rather than defensive. It also bounds the net bias: recomputing every cell of
+\Cref{tab:main} with the excluded questions removed moves each system by between
+$+0.001$ and $+0.020$ Hits@1 and changes no ranking on either dataset, an order
+of magnitude below the defect rates, because removing a question a system got
+right subtracts from the numerator as well as the denominator.
 
 Two scope limits belong on the record. The rule that assigned
 \textsf{gold\_wrong} automatically to questions with implausibly long gold lists
@@ -291,7 +295,7 @@ across reruns of the same questions. The rounds disagreed with one another,
 because temperature-zero decoding on a hosted API is greedy rather than
 deterministic and a sequential agent amplifies a single divergent token.
 \Cref{app:backbone} gives the four rounds, that mechanism, and the tiebreaker
-pre-registered before rounds three and four. That tiebreaker decided the choice
+pre-specified before rounds three and four. That tiebreaker decided the choice
 on longevity grounds.
 
 \textbf{The stability figure that belongs to this thesis is the frozen model's,
@@ -497,7 +501,7 @@ rates and the bound they place on \Cref{sec:tog-split} given in
 \Cref{sec:baseline-graphrag}.
 
 Baselines were debugged exclusively on development data and certified before any
-test question ran. The pre-registered diagnostic targets the one failure mode
+test question ran. The pre-specified diagnostic targets the one failure mode
 that would be an implementation defect rather than a paradigm limit ---
 \emph{retrieval found the gold answer and the system hedged anyway}. That
 failure mode is checkable, because both retrieval baselines log a sample of what
@@ -586,7 +590,7 @@ per system per dataset ($600$ judgements), the graph's own shortest connecting
 paths between topic and asserted entity are retrieved. A language model judges
 whether any one of them expresses the relationship the question asks about. The
 governing instruction --- that \emph{mere connectedness is not support} --- is
-what separates the two tiers. Two design choices are pre-registered and
+what separates the two tiers. Two design choices are pre-specified and
 consequential. Judging is against \textbf{the environment} rather than each
 system's own retrieved context. The logs do not preserve per-system evidence
 uniformly, and environment-judging asks every system the identical question. The
@@ -637,7 +641,7 @@ $6$ human-no/judge-yes). So neither rater is systematically the more lenient.
 Cohen's $\kappa$~\cite{cohen1960coefficient} is \[ \kappa = \frac{0.8500 -
 0.5008}{1 - 0.5008} = 0.6995 . \]
 
-The pre-registered threshold was $\kappa \geq 0.7$. Rounded to three decimals
+The pre-specified threshold was $\kappa \geq 0.7$. Rounded to three decimals
 this reads $0.700$ and appears to clear. It does not: it falls short by
 $0.0005$, and it is reported as short. What follows is a matter of weight rather
 than of discarding. By the conventional bands~\cite{landis1977measurement} a
@@ -651,7 +655,7 @@ the finding is also supported by the precision column of the main matrix, which
 is measured without a judge. Tightening the judge prompt and re-judging a fresh
 sample until the bar was cleared was available and pre-committed. It was not
 taken, because the honest number was already in hand, and re-running until a
-pre-registered threshold is met is exactly what pre-registration exists to
+pre-specified threshold is met is exactly what pre-specification exists to
 prevent.
 
 \section{Ablation Conditions and the Development
@@ -667,8 +671,10 @@ and nothing else.
   \item \textbf{no-backtrack} --- \textsf{max\_backtracks} $= 0$; a
 configuration change, which correctly alters the budget hash stamped on the
 records.
-  \item \textbf{no-verifier} --- \textsf{verify\_claims} $=$ false; grounded
-drafting with no claim extraction or checking.
+  \item \textbf{no-verifier} --- \textsf{verify\_claims} $=$ false; the drafting
+call is unchanged, claims included, but no claim is checked and the draft is
+emitted verbatim (\Cref{sec:repair}), so the condition varies the checking and
+not the drafting.
   \item \textbf{embedding-only} --- $\alpha = 1.0$, removing the language-model
 term from the hybrid scorer while leaving $\tau$ at its frozen value.
 \end{itemize}
@@ -679,7 +685,7 @@ question identifiers rather than by re-running them. That filtering also
 supplies the matched pairs McNemar's test requires. Comparing against the full
 $400$-question score would be invalid, accuracy on $400$ questions and on $198$
 being different numbers for the same system. Ablations run on stratified halves
---- $200$ WebQSP and $198$ CWQ --- as the pre-registered response to the
+--- $200$ WebQSP and $198$ CWQ --- as the pre-specified response to the
 benchmark's burn coming in above projection, cutting the ablation \emph{sample}
 rather than any system or condition. The odd $198$ is floor division within each
 stratum, CWQ's $137/211/49/3$ halving to $68/105/24/1$. The consequence, reduced
@@ -1358,10 +1364,10 @@ single most useful thing the metric says. It says it about the paradigm, not
 about any one system.
 
 Two properties of the measurement limit how it can be read, and both were
-pre-registered. The rates are conservative lower bounds, depressed by the same
+pre-specified. The rates are conservative lower bounds, depressed by the same
 amount across systems. That uniformity keeps the between-system comparison
 intact and makes the absolute levels untrustworthy. And the judge was validated
-at $\kappa = 0.6995$ against a pre-registered bar of $0.7$ (\Cref{sec:judge}):
+at $\kappa = 0.6995$ against a pre-specified bar of $0.7$ (\Cref{sec:judge}):
 substantial agreement, just short of the threshold. Both are reasons to treat
 this tier as corroborating rather than decisive.
 
@@ -1682,7 +1688,7 @@ than independently establishing it.
 
 One of four conditions reaches significance. That is the correct outcome to
 report, not a disappointing one. A correction for multiple comparisons was not
-among the pre-registered decisions of \Cref{sec:pre-registration}. Applying one
+among the pre-specified decisions of \Cref{sec:pre-registration}. Applying one
 now would be a choice made after seeing the results. So the uncorrected
 $p$-values are reported as computed and read as descriptive rather than as a
 family-wise claim. \Cref{app:power} gives the arithmetic behind the second
@@ -2398,8 +2404,8 @@ questions. One polarity is reported at census scale and the other anecdotally.
 That asymmetry comes from the logging decision, not from the verifier.
 \Cref{sec:future} gives the fix.
 
-\textbf{The judge fell short of its pre-registered bar.} Cohen's $\kappa$ came
-to $0.6995$ against a threshold of $0.7$ (\Cref{sec:judge}). By the conventional
+\textbf{The judge fell short of its pre-specified bar.} Cohen's $\kappa$ came to
+$0.6995$ against a threshold of $0.7$ (\Cref{sec:judge}). By the conventional
 reading that is substantial agreement, and the miss is $0.0005$. The Tier-2
 numbers are still reported as corroborating rather than decisive. The judge also
 runs on the same backbone as the systems it judges.

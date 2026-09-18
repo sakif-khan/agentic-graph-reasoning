@@ -625,8 +625,8 @@ seen from the other side.
 > The one I'd underline is stratum-dependent decomposition: the literature
 > treats it as straightforwardly beneficial, and it is not.
 >
-> The sixth is worded *pre-registered* in the thesis; nothing was filed with a
-> registry, so I say *pre-specified*.
+> The sixth is *pre-specified*, not pre-registered: nothing was filed with a
+> registry.
 >
 > The limitations, which I'd rather state than be asked. The first is the most
 > serious: the verifier persists only what it *rejects*, so wrongful acceptance

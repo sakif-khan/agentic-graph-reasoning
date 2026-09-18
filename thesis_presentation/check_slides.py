@@ -1765,9 +1765,10 @@ ck("the slide lists them in the thesis's severity order", not swaps,
 # ---------------------------------------------------------------------
 # One deliberate wording divergence, said out loud.
 #
-# The slide writes contribution 6 as "pre-specified" where the thesis
-# titles it "Pre-Registered", per the standing rule in
-# thesis_paper/sections/setup.tex -- nothing was filed with a registry.
+# The slide writes contribution 6 as "pre-specified"; the thesis titled
+# it "Pre-Registered" until 2026-09-19 and now uses the same word (the
+# standing rule in thesis_paper/sections/setup.tex: nothing was filed
+# with a registry), so the branch below now reports the rule retired.
 # That is a rigour point, and it read as a discrepancy: this is the one
 # slide whose premise is that the six are the thesis's, in its order, and
 # the script did not mention the change. Held only while the two

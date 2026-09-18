@@ -364,7 +364,7 @@ moves whenever a source file gains a line. The remaining 63 are the ones worth
 enumerating: five pure unit tests over plan
 validation, budget accounting and Lucene escaping; two that check the two
 Cohen's kappa implementations against each other and against the
-pre-registered bar; five that check the question-identifier convention
+pre-specified bar; five that check the question-identifier convention
 Chapter 9 states to the reader against the `.tex` sources; three that hold
 Sec 4.5's relation-embedding probe to the run it was written from; eleven that
 refuse any claim of the output contract which omits what bounds it; two that

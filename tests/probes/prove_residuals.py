@@ -199,12 +199,9 @@ CASES = [
         "          candidate set}: $40$/$20$ vs $300$/$200$\n"
         "        \\item One environment, one backbone, one annotator")),
 
-    # ---- the wording divergence ----
-    ("shipped: nothing says why the slide diverges on pre-specified", edit(
-        SCRIPT,
-        "> The sixth is worded *pre-registered* in the thesis; nothing was "
-        "filed with a registry, so I say *pre-specified*.\n>\n",
-        "")),
+    # ---- the wording divergence: retired 2026-09-19. The thesis now says
+    # pre-specified too, so there is no divergence for the script to
+    # explain and check_slides.py reports that rule as reconciled. ----
 
     # ---- the hop curve ----
     ("the slide's AGR curve is corrupted",

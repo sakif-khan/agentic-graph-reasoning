@@ -58,7 +58,7 @@ def test_two_implementations_agree(monkeypatch):
         f"they must agree")
 
 
-def test_reported_kappa_misses_its_preregistered_bar():
+def test_reported_kappa_misses_its_prespecified_bar():
     """The thesis reports kappa as below its bar; that is a claim about a number.
 
     Reported rather than rounded up is the integrity point the thesis makes
@@ -67,6 +67,6 @@ def test_reported_kappa_misses_its_preregistered_bar():
     """
     k = _load("build_thesis_numbers").compute_kappa(SHEET, KEY)
     assert k["cohens_kappa"] < k["preregistered_threshold"], (
-        f"kappa is now {k['cohens_kappa']}, at or above the pre-registered "
+        f"kappa is now {k['cohens_kappa']}, at or above the pre-specified "
         f"{k['preregistered_threshold']}; the thesis describes it as falling "
         f"marginally short and that description no longer holds")

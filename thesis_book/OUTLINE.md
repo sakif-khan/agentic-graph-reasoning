@@ -133,7 +133,7 @@ hallucinate structurally: §8.6 shows they do not.)*
 &nbsp;&nbsp;&nbsp;&nbsp;1.6.3 Stratum-Dependent Decomposition: When Planning Hurts
 &nbsp;&nbsp;&nbsp;&nbsp;1.6.4 The Echo Attractor as a Named Failure Mode
 &nbsp;&nbsp;&nbsp;&nbsp;1.6.5 Quantified Benchmark Defect Rates for WebQSP and CWQ
-&nbsp;&nbsp;&nbsp;&nbsp;1.6.6 An Evaluation Protocol with Pre-Registered Thresholds
+&nbsp;&nbsp;&nbsp;&nbsp;1.6.6 An Evaluation Protocol with Pre-Specified Thresholds
 
 1.7 Scope and Delimitations
 
@@ -321,7 +321,7 @@ vocabulary §9.5.1 fixes; do not use fn/fp here.)*
 ## 7. Experimental Setup — *~11 pages*
 
 7.1 Mapping Experiments to Research Questions
-&nbsp;&nbsp;&nbsp;&nbsp;7.1.1 Pre-Registration and the No-Tuning Policy
+&nbsp;&nbsp;&nbsp;&nbsp;7.1.1 Pre-Specification and the No-Tuning Policy
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(no tuning after test data is touched; κ ≥ 0.7,
 the 15% baseline-certification diagnostic, and the α/τ freeze all fixed before
 measurement)*
@@ -350,9 +350,9 @@ on that basis. A rerun with the cache disabled reversed it: 2/3 against 3/3. Dia
 this is §7.3.1's content: temperature-0 decoding on a hosted API is *greedy*, not
 deterministic, and a sequential agent is a divergence amplifier — one flipped token in a
 planner or evaluator call changes a sub-objective's wording, hence the embedding, hence the
-beam. With n=3 the estimator was pure noise. A tiebreaker was pre-registered before rounds 3
+beam. With n=3 the estimator was pure noise. A tiebreaker was pre-specified before rounds 3
 and 4 (*within 3 matches → take 5.4-mini on longevity*); pooled over all four runs the score
-is **9/12 vs 8/12** — one match apart, **not** a tie, but inside the pre-registered
+is **9/12 vs 8/12** — one match apart, **not** a tie, but inside the pre-specified
 three-match band — so the rule fired and 5.4-mini was frozen on 2026-07-12.
 &nbsp;&nbsp;&nbsp;&nbsp;*Provenance to state honestly: only round one survives as per-question
 artifacts (`results/phase2/qualify_*_full.jsonl`, 20 records each, written in `"w"` mode and
@@ -389,7 +389,7 @@ questions and paired McNemar. Cross-reference §7.10's cache-identity verificati
 &nbsp;&nbsp;&nbsp;&nbsp;7.4.4 Think-on-Graph (Agentic Baseline)
 &nbsp;&nbsp;&nbsp;&nbsp;7.4.5 Variables Held Constant Across All Systems
 &nbsp;&nbsp;&nbsp;&nbsp;7.4.6 Baseline Certification Protocol
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(the pre-registered gold-visible-while-hedged
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(the pre-specified gold-visible-while-hedged
 diagnostic, dev-only debugging of all four baselines, and the ToG budget-clip rates)*
 
 7.5 Metrics
@@ -406,12 +406,12 @@ only — state this wherever wall-clock is reported)*
 &nbsp;&nbsp;&nbsp;&nbsp;7.6.3 Agreement Between Judge and Human Annotator
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**State the exact value, not the rounded
 one.** Cohen's κ is **0.6995** on n = 100 (85% observed agreement), against a
-pre-registered threshold of κ ≥ 0.7. Rounded to three decimals it reads 0.700 and appears
+pre-specified threshold of κ ≥ 0.7. Rounded to three decimals it reads 0.700 and appears
 to clear; it does not. Report it as *marginally below* the threshold, say what that means
 for how much weight the Tier-2 numbers can carry, and do not silently round up — a
-pre-registered threshold reported as met when it was missed by 0.0005 is exactly the kind
+pre-specified threshold reported as met when it was missed by 0.0005 is exactly the kind
 of thing that destroys a viva. The honest framing is that agreement is substantial by any
-conventional reading of κ, and that the pre-registered bar was set marginally above what
+conventional reading of κ, and that the pre-specified bar was set marginally above what
 was achieved.
 
 7.7 Gold-Answer Quality Control
@@ -513,14 +513,16 @@ and `synthesis.md` §1 states it explicitly. So there is **no sampling asymmetry
 say so plainly, since it is a strictly stronger claim than a sample. Wrong and hedge are still
 reported separately and never pooled, but for a *semantic* reason, not a sampling one: a wrong
 answer is a reasoning error, a hedge is usually a coverage gap that never produced a committal
-answer. The three populations merged into the histogram are Stage D (65 / 157), the one Stage D
-row later promoted to a formal Stage C exclusion (0 / 1), and Stage A's ablation-discordance
-census (21 / 15) — 86 and 173, 259 failures in total.
+answer. The populations merged into the histogram are Stage D (65 / 157) and Stage A's
+ablation-discordance census net of the two rows that name adjudicated defects (20 / 14) — 85
+and 171, 256 failures in total. The one Stage D row later promoted to a formal Stage C
+exclusion is excluded like the rest (corrected 2026-09-18: it and the two Stage A rows used to
+be counted, which read 259).
 
 9.2 Distribution of Failure Categories Across Datasets
 &nbsp;&nbsp;&nbsp;&nbsp;*(Source: the Stage E merged histogram,
 `results/phase4/synthesize_census_log.txt` and `results/phase4/synthesis.md` §2 — Stage D + Stage A,
-86 WebQSP and 173 CWQ rows, wrong and hedge kept separate throughout. The headline is the*
+85 WebQSP and 171 CWQ rows, wrong and hedge kept separate throughout. The headline is the*
 shape flip *between datasets — but state it the way `synthesis.md` does, because the obvious
 phrasing is wrong.* `relation_selection` *is the largest category in* **both** *datasets (26
 WebQSP, 39 CWQ), so it is not what distinguishes them. What distinguishes them is*

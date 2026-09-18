@@ -473,7 +473,7 @@ changes a sub-objective's wording, which changes its embedding, which changes
 the beam. A model that is $98\%$ stable per call can be $70$--$90\%$ stable per
 trajectory. With three probes per round, an estimator of a rate in that band
 bounces between $1/3$ and $3/3$ by sampling variance alone. A tiebreaker was
-therefore pre-registered before rounds three and four: \emph{if the two
+therefore pre-specified before rounds three and four: \emph{if the two
 candidates finish within three matches of each other, take
 \textsf{gpt-5.4-mini}} on longevity grounds, the 4.1 line being
 deprecation-adjacent. Both rounds returned $2/3$ each, the pooled score was
@@ -786,7 +786,7 @@ accuracy, a component that changes five questions in a hundred produces on the
 order of ten discordant pairs --- not enough to reject at conventional levels.
 The planner condition cleared the bar on WebQSP because its effect is large
 ($21$ against $6$), not because that comparison was better powered than the
-others. The halves were adopted as the pre-registered response to the
+others. The halves were adopted as the pre-specified response to the
 benchmark's cost coming in above projection (\Cref{sec:ablation-conditions}).
 Doubling them is the straightforward remedy and is named in
 \Cref{sec:limitations-final}.
