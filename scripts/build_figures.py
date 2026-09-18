@@ -482,7 +482,11 @@ def main():
     path = TABDIR / "tab_failure_histogram.tex"
     path.write_text(table, encoding="utf-8", newline="\n")
     print(f"wrote {path}")
-    print(f"  failure histogram totals {total} (thesis states 259)")
+    # Until September 2026 this line said "(thesis states 259)". The
+    # census pipeline was then found to count three excluded questions
+    # and miss six real failures; the histogram now totals what
+    # synthesize_census.py read, and the thesis text has to follow it.
+    print(f"  failure histogram totals {total}")
 
     path = TABDIR / "tab_tog_split.tex"
     path.write_text(tog_split_table(d), encoding="utf-8", newline="\n")

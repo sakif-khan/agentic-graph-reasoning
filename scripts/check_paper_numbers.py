@@ -488,8 +488,14 @@ def main():
     PROMISES = [
         ("sec:margin", ("relations per entity",),
          "setup names the candidate-width confound and points here"),
-        ("sec:nulls", ("detectable",),
+        ("sec:power", ("detectable",),
          "discussion points here for the minimum detectable effect"),
+        ("sec:removal", ("flag",),
+         "the framework lead-in promises that each component is one flag"),
+        ("sec:outlook", ("cap",),
+         "sec:margin promises that the cap sweep is the first experiment named"),
+        ("sec:defects", ("no-retrieval control",),
+         "sec:echo promises that the defect pass measures which systems converge"),
         ("sec:groundedness", ("ungrounded",),
          "the introduction points here for the groundedness result"),
         ("sec:verification", ("claim",),
@@ -932,7 +938,7 @@ def main():
          (ts["webqsp"]["gold_mean"], ts["webqsp"]["gold_max"]))
     ck("exactly half the WebQSP sample carries one gold answer",
        ts["webqsp"]["questions_with_one_gold"] * 2 == ts["webqsp"]["n_questions"]
-       and "Exactly half of the WebQSP sample" in text)
+       and re.search(r"Exactly\s+half\s+of\s+the\s+WebQSP\s+sample", text) is not None)
     says(r"ComplexWebQuestions averages \$([\d.]+)\$ with a median of \$(\d+)\$",
          "the CWQ gold mean and median are the committed ones",
          (ts["cwq"]["gold_mean"], int(ts["cwq"]["gold_median"])))
@@ -977,10 +983,252 @@ def main():
     except ImportError:
         print("  [SKIP] pyarrow not installed; RoG training-split sizes unverified")
 
+    print("\n== figures added in the September 2026 reframe ==")
+    # Each is recomputed from the committed records or read from the
+    # JSON, and pinned to the sentence or table cell that states it.
+    import csv as _csv
+
+    # -- the sample's strata, as the setup section lists them --
+    for ds, name in (("webqsp", "WebQSP"), ("cwq", "ComplexWebQuestions")):
+        st = ts[ds]["strata"]
+        if ds == "webqsp":
+            says(r"\$(\d+)\$, \$(\d+)\$, and \$(\d+)\$ questions at one, two, and "
+                 r"three or more hops on WebQSP, with \$(\d+)\$ whose",
+                 "the WebQSP strata are the committed sample's",
+                 (st["h1"], st["h2"], st["h3plus"], st["unreachable"]))
+        else:
+            says(r"and \$(\d+)\$, \$(\d+)\$, and \$(\d+)\$ on ComplexWebQuestions, "
+                 r"with \$(\d+)\$ unreachable",
+                 "the CWQ strata are the committed sample's",
+                 (st["h1"], st["h2"], st["h3plus"], st["unreachable"]))
+
+    # -- the agentic baseline's call structure under the cap --
+    from agr.baselines.tog import WIDTH as _W, DEPTH as _D
+    ck("a full ToG depth at width 3 costs up to thirteen calls",
+       _W + _W * _W + 1 == 13 and _D == 3
+       and re.search(r"up\s+to\s+thirteen\s+calls", text) is not None,
+       f"width {_W}, depth {_D}: {_W} + {_W * _W} + 1")
+    third = {}
+    for ds in ("webqsp", "cwq"):
+        recs = [json.loads(l) for l in
+                open(P4 / f"test_{ds}_tog.jsonl", encoding="utf-8")]
+        third[ds] = sum(1 for r in recs
+                        if any(t.get("depth") == _D - 1 for t in r["trace"]))
+    says(r"reached its third expansion on \$(\d+)\$ of \$400\$ WebQSP "
+         r"questions and \$(\d+)\$ of \$400\$ on",
+         "the third-expansion counts are the traced ones",
+         (third["webqsp"], third["cwq"]))
+
+    # -- the budget split within hop strata: every cell of tab:togstrata
+    #    and the four sentences that read it --
+    def _clipped(rec):
+        return any(t.get("budget_exhausted") for t in rec["trace"])
+    cells = {}
+    for ds in ("webqsp", "cwq"):
+        st = _strata(ds)
+        togs = [json.loads(l) for l in
+                open(P4 / f"test_{ds}_tog.jsonl", encoding="utf-8")]
+        agrs = {json.loads(l)["qid"]: _hit(json.loads(l)) for l in
+                open(P4 / f"test_{ds}_agr.jsonl", encoding="utf-8")}
+        for s in ("h1", "h2", "h3plus"):
+            for clipped in (False, True):
+                sub = [r for r in togs
+                       if _clipped(r) == clipped and st.get(r["qid"]) == s]
+                cells[(ds, s, clipped)] = (
+                    len(sub),
+                    rnd(sum(_hit(r) for r in sub) / len(sub)),
+                    rnd(sum(agrs[r["qid"]] for r in sub) / len(sub)))
+    ROWS = (("webqsp", "h1", r"WebQSP\s*&\s*1"), ("webqsp", "h2", r"WebQSP\s*&\s*2"),
+            ("cwq", "h1", r"CWQ\s*&\s*1"), ("cwq", "h2", r"CWQ\s*&\s*2"),
+            ("cwq", "h3plus", r"CWQ\s*&\s*3\+"))
+    for ds, s, lead in ROWS:
+        m = re.search(lead + r"\s*&\s*(\d+)\s*&\s*([\d.]+)\s*&\s*([\d.]+)\s*&\s*"
+                      r"(\d+)\s*&\s*([\d.]+)\s*&\s*([\d.]+)\s*\\\\", text)
+        got = tuple(float(g) for g in m.groups()) if m else None
+        want = tuple(float(v) for v in cells[(ds, s, False)] + cells[(ds, s, True)])
+        ck(f"tab:togstrata row {ds}/{s} = {want}",
+           got == want, f"table {got or 'NO ROW'}")
+    w1f, w1c = cells[("webqsp", "h1", False)], cells[("webqsp", "h1", True)]
+    says(r"\$(\d+)\$ of the \$(\d+)\$ clipped questions are single-hop, AGR "
+         r"scores \$([\d.]+)\$ on them against \$([\d.]+)\$",
+         "the WebQSP single-hop reading of the split is the computed one",
+         (w1c[0], tog["webqsp"]["tog_clipped"]["n"], w1c[2], w1f[2]))
+    says(r"baseline's fall from \$([\d.]+)\$ to \$([\d.]+)\$",
+         "the baseline's single-hop fall across the split is the computed one",
+         (w1f[1], w1c[1]))
+    c1f, c1c = cells[("cwq", "h1", False)], cells[("cwq", "h1", True)]
+    says(r"AGR scores \$([\d.]+)\$ on the clipped single-hop questions against "
+         r"\$([\d.]+)\$ on the finished ones",
+         "the CWQ single-hop reading of the split is the computed one",
+         (c1c[2], c1f[2]))
+    c2f = cells[("cwq", "h2", False)]
+    says(r"only on single-hop questions, \$([\d.]+)\$ against \$([\d.]+)\$, and "
+         r"trails on two-hop, \$([\d.]+)\$ against \$([\d.]+)\$",
+         "the finished-half stratum comparison is the computed one",
+         (c1f[1], c1f[2], c2f[1], c2f[2]))
+
+    # -- the hop-depth curve on CWQ, with its stratum sizes --
+    hs = d["main_results"]["by_hop_stratum"]["cwq/agr"]
+    says(r"\$([\d.]+)\$ at one hop, \$([\d.]+)\$ at two, \$([\d.]+)\$ at three "
+         r"or more, over strata of \$(\d+)\$, \$(\d+)\$, and \$(\d+)\$",
+         "the CWQ hop curve and its stratum sizes are the committed ones",
+         (hs["h1"]["hits_at_1"], hs["h2"]["hits_at_1"], hs["h3plus"]["hits_at_1"],
+          hs["h1"]["n"], hs["h2"]["n"], hs["h3plus"]["n"]))
+
+    # -- wall-clock: the JSON's cold-cache means, and the cache share
+    #    among the records those means are taken over --
+    secs = {k: v["mean_seconds_cold_cache"] for k, v in by.items()}
+    says(r"a mean of \$([\d.]+)\$ and \$([\d.]+)\$ per question for AGR against "
+         r"\$([\d.]+)\$ and \$([\d.]+)\$ for the baseline, and between "
+         r"\$([\d.]+)\$ and \$([\d.]+)\$ for the three single-call",
+         "the wall-clock means are the JSON's cold-cache figures",
+         (secs["webqsp/agr"], secs["cwq/agr"], secs["webqsp/tog"], secs["cwq/tog"],
+          min(secs[f"{ds}/{s}"] for ds in ("webqsp", "cwq")
+              for s in ("noretrieval", "vectorrag", "graphrag")),
+          max(secs[f"{ds}/{s}"] for ds in ("webqsp", "cwq")
+              for s in ("noretrieval", "vectorrag", "graphrag"))))
+    shares = []
+    for ds in ("webqsp", "cwq"):
+        for s in ("tog", "agr"):
+            recs = [json.loads(l) for l in
+                    open(P4 / f"test_{ds}_{s}.jsonl", encoding="utf-8")]
+            # score_test.py's "warm": a record replayed entirely from cache
+            nw = [r for r in recs if not (r["budget"].get("cache_hits", 0)
+                                          >= r["budget"]["llm_calls"] > 0)]
+            shares.append(rnd(100 * sum(r["budget"].get("cache_hits", 0) for r in nw)
+                              / sum(r["budget"]["llm_calls"] for r in nw), 1))
+    says(r"between \$([\d.]+)\\%\$ and \$([\d.]+)\\%\$ of the two navigators' "
+         r"calls in the remaining records",
+         "the cache-share caveat quotes the measured range",
+         (min(shares), max(shares)))
+
+    # -- answers emitted with zero supporting triples --
+    zt = {}
+    for ds in ("webqsp", "cwq"):
+        recs = [json.loads(l) for l in
+                open(P4 / f"test_{ds}_agr.jsonl", encoding="utf-8")]
+        ans = [r for r in recs if r["answer_entities"]]
+        zt[ds] = (sum(1 for r in ans if not r.get("n_supporting_triples")), len(ans))
+    says(r"\$(\d+)\$ of AGR's \$(\d+)\$ answered WebQSP questions and \$(\d+)\$ "
+         r"of its \$(\d+)\$ on",
+         "the zero-triple answer counts are the recorded ones",
+         zt["webqsp"] + zt["cwq"])
+
+    # -- the census population and its coverage, recomputed the way
+    #    scripts/synthesize_census.py computes them --
+    pop, read = {}, {}
+    for ds in ("webqsp", "cwq"):
+        recs = [json.loads(l) for l in
+                open(P4 / f"test_{ds}_agr.jsonl", encoding="utf-8")]
+        popn = {r["qid"] for r in recs if not _hit(r)} - set(excl[ds])
+        labelled = set()
+        for name in (f"labels_{ds}.csv", f"ablations/noplanner_categories_{ds}.csv"):
+            p = P4 / name
+            if p.exists():
+                labelled |= {r["qid"] for r in
+                             _csv.DictReader(open(p, encoding="utf-8"))
+                             if r["category"] and r["kind"] in ("wrong", "hedge")}
+        pop[ds], read[ds] = len(popn), len(popn & labelled)
+    says(r"number \$(\d+)\$: \$(\d+)\$ on WebQSP and \$(\d+)\$ on "
+         r"ComplexWebQuestions",
+         "the census population is the non-hits less the exclusions",
+         (pop["webqsp"] + pop["cwq"], pop["webqsp"], pop["cwq"]))
+    says(r"and \$(\d+)\$ of them were, \$(\d+)\$ and \$(\d+)\$",
+         "the census coverage is the labelled share of that population",
+         (read["webqsp"] + read["cwq"], read["webqsp"], read["cwq"]))
+    unread = pop["webqsp"] + pop["cwq"] - read["webqsp"] - read["cwq"]
+    ck("the histogram totals equal the read count",
+       sum(hist[ds][k]["_n"] for ds in ("webqsp", "cwq") for k in ("wrong", "hedge"))
+       == read["webqsp"] + read["cwq"])
+    ck("the unread count is stated as six, or the sentence has been retired",
+       (unread == 6 and re.search(r"The\s+six\s+the\s+census\s+did\s+not\s+reach", text))
+       or (unread == 0 and not re.search(r"did\s+not\s+reach", text)),
+       f"{unread} unread; when it reaches zero, say the census read all of them")
+    echo = sum(hist[ds][k].get("echo", 0) for ds in ("webqsp", "cwq")
+               for k in ("wrong", "hedge"))
+    says(r"accounts for \$(\d+)\$ of the \$(\d+)\$ failures read",
+         "the echo count and its denominator are the census's own",
+         (echo, read["webqsp"] + read["cwq"]))
+    says(r"hedges on them more than three times as often as it asserts something "
+         r"wrong, \$(\d+)\$ against \$(\d+)\$",
+         "the CWQ environment-gap hedge/wrong counts are the census's own",
+         (hist["cwq"]["hedge"]["kg_gap"], hist["cwq"]["wrong"]["kg_gap"]))
+    ck("'more than three times' is arithmetically true",
+       hist["cwq"]["hedge"]["kg_gap"] > 3 * hist["cwq"]["wrong"]["kg_gap"])
+
+    # -- the consensus breakdown: every cell of tab:consensus and the
+    #    sentences that read it, from the pre-pass rows --
+    cons = {}
+    for ds in ("webqsp", "cwq"):
+        rows = json.load(open(P4 / f"prepass_goldnoise_{ds}.json", encoding="utf-8"))
+        ok = [r for r in rows if r["verdict"] == "gold_ok"]
+        fam = {}
+        for r in ok:
+            fam[r.get("family")] = fam.get(r.get("family"), 0) + 1
+        echo_rows = [r for r in ok if r.get("family") == "echo"]
+        cons[ds] = {
+            "rows": len(ok), "questions": len({r["qid"] for r in ok}),
+            "echo": fam.get("echo", 0), "relation": fam.get("relation_selection", 0),
+            "constraint": fam.get("composite_claim", 0), "kg_gap": fam.get("kg_gap", 0),
+            "ctrl": sum(1 for r in ok if "noretrieval" in r["systems"]),
+            "navs": sum(1 for r in ok if {"agr", "tog"} <= set(r["systems"])),
+            "echo_ctrl": sum(1 for r in echo_rows if "noretrieval" in r["systems"]),
+            "echo_navs": sum(1 for r in echo_rows if {"agr", "tog"} <= set(r["systems"])),
+            "five_ok": sum(1 for r in rows if r["n_systems"] == 5 and r["verdict"] == "gold_ok"),
+            "five_all": sum(1 for r in rows if r["n_systems"] == 5),
+        }
+    TABLE = (("Consensus rows cleared as not a label defect", "rows"),
+             (r"\\quad filed as echo attractor", "echo"),
+             (r"\\quad filed as relation confusion", "relation"),
+             (r"\\quad filed as constraint ignored", "constraint"),
+             (r"\\quad filed as environment gap", "kg_gap"),
+             ("Rows on which the no-retrieval control agrees", "ctrl"),
+             ("Rows on which both navigators agree", "navs"),
+             ("Echo rows on which the no-retrieval control agrees", "echo_ctrl"),
+             ("Echo rows on which both navigators agree", "echo_navs"))
+    for lead, key in TABLE:
+        m = re.search(lead.replace(" ", r"\s+") + r"\s*&\s*(\d+)\s*&\s*(\d+)\s*\\\\", text)
+        got = tuple(int(g) for g in m.groups()) if m else None
+        want = (cons["webqsp"][key], cons["cwq"][key])
+        ck(f"tab:consensus row '{key}' = {want}", got == want, f"table {got or 'NO ROW'}")
+    cleared_q = cons["webqsp"]["questions"] + cons["cwq"]["questions"]
+    ck("the cleared-question count equals flagged minus confirmed",
+       cleared_q == flagged - confirmed and f"${cleared_q}$ cleared questions" in text,
+       f"{flagged} - {confirmed} = {flagged - confirmed}; pre-pass {cleared_q}")
+    says(r"filed \$(\d+)\$ of the \$(\d+)\$ cleared rows as the echo mechanism",
+         "the echo share of cleared rows is the pre-pass's own",
+         (cons["webqsp"]["echo"] + cons["cwq"]["echo"],
+          cons["webqsp"]["rows"] + cons["cwq"]["rows"]))
+    says(r"on \$(\d+)\$ of the \$(\d+)\$ cleared rows and on \$(\d+)\$ of the "
+         r"\$(\d+)\$ echo rows",
+         "the CWQ control-participation sentence is the pre-pass's own",
+         (cons["cwq"]["ctrl"], cons["cwq"]["rows"], cons["cwq"]["echo_ctrl"], cons["cwq"]["echo"]))
+    says(r"the control joins \$(\d+)\$ of \$(\d+)\$ rows and \$(\d+)\$ of \$(\d+)\$ "
+         r"echo rows, and the two navigators agree with each other on \$(\d+)\$ "
+         r"of the \$(\d+)\$",
+         "the WebQSP participation sentence is the pre-pass's own",
+         (cons["webqsp"]["ctrl"], cons["webqsp"]["rows"], cons["webqsp"]["echo_ctrl"],
+          cons["webqsp"]["echo"], cons["webqsp"]["echo_navs"], cons["webqsp"]["echo"]))
+    says(r"Of the \$(\d+)\$ rows on which all five systems agreed, \$(\d+)\$ were "
+         r"cleared",
+         "the five-system rows are counted from the pre-pass",
+         (cons["webqsp"]["five_all"] + cons["cwq"]["five_all"],
+          cons["webqsp"]["five_ok"] + cons["cwq"]["five_ok"]))
+    ck("the paper no longer calls the attractor a property of the graph alone",
+       not re.search(r"property of the graph's neighbourhood structure rather than",
+                     text))
+
+    # -- the verification ablation is described as removing the CHECKING,
+    #    with the drafting call unchanged (agr/nodes.py: verify_claims=False
+    #    returns after the draft) --
+    ck("the no-verification condition is described as draft-unchanged",
+       re.search(r"leaving\s+the\s+drafting\s+call\s+unchanged", text) is not None
+       and re.search(r"leaves\s+the\s+drafting\s+call\s+unchanged", text) is not None)
+
     print("\n== unbound literals in prose (read these) ==")
     accounted = {str(v) for v in bound.values()} | {
         str(v) for v in clip.values()} | {
-        "400", "259", "57", "2.59", "8.31", "0.083", "0.006", "31", "1",
+        "400", "262", "256", "57", "2.59", "8.31", "0.083", "0.006", "31", "1",
         "2", "3", "4", "5"}
     rest = sorted(present - accounted, key=lambda s: (len(s), s))
     print("  " + (", ".join(rest) if rest else "none"))

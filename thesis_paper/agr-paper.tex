@@ -29,14 +29,14 @@
 
 % The thesis title registered with CASR is deliberately broader than what
 % the measurements establish -- see "How to read the title" in the thesis
-% introduction. This one names the system, as a KBS systems paper should,
-% but scopes the mechanism to what is actually verified: adjacency in the
-% traversed subgraph, at claim level. Not "fact verification", which
-% overpromises the relation check, and not "hallucination mitigation",
-% which Section 5.4 attributes to graph navigation rather than to the
-% layer this paper contributes.
-\title{Agentic Graph Reasoning: Claim-Level Structural Verification for
-  Multi-Hop Knowledge Graph Question Answering}
+% introduction. The paper's title changed in September 2026 when the
+% manuscript was reframed: the system is the instrument and the
+% attribution study is the contribution. The verification layer is named
+% in the body at the width the measurements support, not in the title,
+% because the ablation finds it changes the answer on one question per
+% dataset.
+\title{Component Attribution in Agentic Knowledge Graph Question
+  Answering: A Controlled Ablation, Budget Analysis, and Failure Census}
 
 % \ead alone does not designate anyone: elsarticle prints the address as
 % an author footnote either way, and the submission system asks which
@@ -55,48 +55,39 @@
   country={Bangladesh}}
 
 \begin{abstract}
-% AT MOST 200 WORDS -- OUR line, not a quoted requirement. An earlier
-% version of this comment attributed the figure to the publisher, which
-% was never checked and appears to be false: Elsevier's generic guide
-% asks only for "a concise and factual abstract" and sets no word limit
-% at all. The KBS guide 403s to an automated fetch, so a journal-level
-% limit cannot be ruled out or cited -- see thesis_paper/README.md. So
-% 200 is house style, and the draft sat at 215 words until something
-% counted it. tests/test_paper_abstract.py counts it now.
+% AT MOST 200 WORDS -- OUR line, not a quoted requirement (the KBS guide
+% is unfetchable; a search-engine summary of it says 250). Counted by
+% tests/test_paper_abstract.py.
 %
-% Leads with the system and closes on the attribution result, which is
-% what the paper actually establishes. It must NOT promise that
-% verification raises accuracy -- Section 6 reports the null, and an
-% abstract that oversells it turns that section into a retraction.
-%
-% Register, as of the September 2026 pass: short sentences, no em
-% dashes, active voice. Same claims and numbers as before.
-Multi-hop question answering over knowledge graphs composes facts
-across several edges. A system that retrieves once before reasoning
-cannot know what the second hop will need. Agentic approaches
-interleave retrieval with reasoning, but none checks that what the
-final answer asserts is supported by what the agent retrieved. We
-present Agentic Graph Reasoning (AGR), an explicit state machine over
-a constrained graph tool API. Its structural verification layer
-decomposes each draft answer into atomic claims, checks them against
-the traversed triples before emission, and attaches the matching
-triples as evidence. On $400$ certified questions from each of WebQSP
-and ComplexWebQuestions, over a Freebase-derived environment, AGR
-reaches Hits@1 of $0.755$ and $0.522$ against four baselines that
-share one frozen backbone and one call budget, using roughly half the
-language-model calls of the strongest. A component-level ablation with
-paired significance testing finds that removing the planner
-\emph{improves} accuracy on the shallower benchmark while cutting
-tokens by $31\%$. Three of four components, claim verification among
-them, show no detectable accuracy effect. A hand-read census of all
-$259$ residual failures identifies the \emph{echo attractor}: a true,
-grounded entity one hop from the answer that passes every grounding
-check and that consensus-based evaluation cannot detect.
+% Reframed in September 2026: leads with the attribution question, names
+% the system as the instrument, and gives the findings in the order the
+% paper reports them (aggregate margin located, planner asymmetry, three
+% nulls at stated power, census). It must NOT promise that verification
+% raises accuracy -- Section 6 reports the null.
+Agentic systems for multi-hop question answering over knowledge graphs
+assemble decomposition, guided search, backtracking, and
+self-correction, and the literature reports them as wholes. Which
+component produces a reported gain is rarely established. We build an
+agentic system, AGR, whose four components can each be removed by
+construction, run it against four baselines on one frozen backbone under
+one call budget, and take it apart. On $400$ questions from each of
+WebQSP and ComplexWebQuestions, AGR leads the agentic baseline by $9.5$
+and $8.7$ Hits@1 points. The entire margin comes from questions on which
+the shared budget truncates the baseline; where the baseline finishes,
+it is ahead. Removing the planner improves WebQSP F1 by $0.083$ ($p =
+0.006$) and cuts tokens by $31\%$. The other three components, a
+claim-verification layer among them, show no effect at the power
+available, and we report the smallest effect each test could have
+detected. A hand-read census of the residual failures finds label
+defects in $5.5\%$ and $4.8\%$ of the samples and names the \emph{echo
+attractor}: a true, grounded entity one hop from the answer on which
+systems sharing a graph and a backbone converge, so that
+consensus-based label repair ratifies it.
 \end{abstract}
 
 \begin{keyword}
   knowledge graph question answering \sep large language models \sep
-  agentic retrieval \sep ablation study \sep hallucination \sep
+  agentic retrieval \sep ablation study \sep component attribution \sep
   benchmark quality
 \end{keyword}
 

@@ -28,6 +28,11 @@
 
 \usepackage{booktabs}
 \usepackage{array}
+% Algorithm 1 in framework.tex (September 2026). The float package must
+% load before hyperref/cleveref so that \Cref{alg:...} resolves as
+% "Algorithm"; both are loaded at the end of this file.
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}

@@ -819,7 +819,12 @@ def benchmark_defects(exclusions):
         if not path.exists():
             continue
         for r in csv.DictReader(open(path, encoding="utf-8")):
-            if r["category"] in DEFECT_CATEGORIES:
+            # Same population rule as synthesize_census.py since September
+            # 2026: an excluded question is not a census row, whichever
+            # file still carries its label. counted_in_both is therefore
+            # empty by construction now, and is kept so the union below
+            # stays self-checking if a file ever reintroduces one.
+            if r["category"] in DEFECT_CATEGORIES and r["qid"] not in ex:
                 rows[r["qid"]] = r["category"]
 
     both = ex & set(rows)

@@ -1,7 +1,7 @@
 % !TEX root = ../agr-paper.tex
 % ---------------------------------------------------------------------
-% From the thesis ablation study. ~1,200 words. THE PAPER'S HEADLINE
-% SECTION.
+% From the thesis ablation study. ~1,400 words. THE PAPER'S HEADLINE
+% SECTION since the September 2026 reframe.
 %
 % Delta is ablated-minus-reference, so POSITIVE MEANS REMOVING THE
 % COMPONENT IMPROVED THE METRIC. Say that once, plainly, before the
@@ -17,10 +17,10 @@
 %
 % The three nulls get the same length as the positive result. That is
 % the methodological argument, not an apology. The verification layer's
-% null is the paper's own headline component producing nothing
+% null is the paper's own designed-around component producing nothing
 % measurable, and the honest reading is the thesis's: it does not change
 % how often AGR is right, it changes how often AGR is right for a reason
-% it can exhibit.
+% it can exhibit -- with sec:limits-contribution bounding "exhibit".
 %
 % Power belongs HERE, not deferred to Discussion: n = 200 / 198, so a
 % null is "no effect detected at this power". A reviewer will ask for
@@ -28,21 +28,28 @@
 % scripts/check_paper_numbers.py recomputes every figure in that
 % subsection and pins each to its own sentence. Do not reword those
 % sentences without re-running the check.
+%
+% What the design does NOT do is also said: one run per condition, one
+% component at a time, no joint-removal condition. All three are the
+% first things a reviewer asks for and they are in sec:outlook.
 % ---------------------------------------------------------------------
 
 \section{Component-Level Attribution}\label{sec:attribution}
 
 Agentic systems are assemblies, and the literature reports them whole.
 This section takes AGR apart. Four conditions each remove exactly one
-component from the unmodified system and re-run the identical questions:
-no planner, no backtracking, no claim verification, and embedding-only
-scoring ($\alpha = 1$, disabling the model term in the edge scorer).
-Each condition is compared against the reference on the same half-split,
-$n = 200$ on WebQSP and $n = 198$ on ComplexWebQuestions, with McNemar's
-test on the paired per-question outcomes. The reference row is the
-unmodified system restricted to the same questions, read from the
-main-run records rather than re-run, so it is provably the system that
-produced \Cref{tab:main}.
+component from the unmodified system, as \Cref{sec:removal} specifies,
+and re-run the identical questions: no planner, no backtracking, no
+claim verification, and embedding-only scoring ($\alpha = 1$, disabling
+the model term in the edge scorer). Each condition is compared against
+the reference on the same half-split, drawn as half of every hop stratum
+rounded down, which gives $n = 200$ on WebQSP and $n = 198$ on
+ComplexWebQuestions, with McNemar's test on the paired per-question
+outcomes. The reference row is the unmodified system restricted to the
+same questions, read from the main-run records rather than re-run, so it
+is provably the system that produced \Cref{tab:main}. Each condition was
+run once, and the components were removed one at a time; the
+consequences of both choices are stated in \Cref{sec:power}.
 
 \textbf{Throughout this section a delta is ablated minus reference, so a
 positive number means removing the component \emph{improved} the
@@ -114,7 +121,9 @@ rather than noise. Without the planner, one-hop Hits@1 \emph{improves}
 from $0.49$ to $0.54$, two-hop collapses from $0.48$ to $0.34$, and
 three-hop-plus moves from $0.62$ to $0.54$. That is exactly the pattern
 in which decomposition helps genuine composition and hurts questions
-that do not need it.
+that do not need it, and it is the pattern \Cref{tab:togstrata} shows
+from the other side, where the agentic baseline beats AGR only on the
+single-hop questions it finishes.
 
 Pooling the two datasets would average a significant improvement against
 a non-significant harm and report approximately nothing. The asymmetry
@@ -144,13 +153,13 @@ cannot show a large effect. One implementation detail bounds the null
 further, and we record it rather than smooth it over. The backtracker
 bans the edges of the most recent explorer pass but restores the
 highest-scoring snapshot, which is often older, so everything expanded
-in between stays unbanned. Over the main runs, $53$ explorer passes
-re-expanded an anchor-and-relation set the same question had already
-expanded, and at least $65$ of the $262$ backtracks restored a depth
-other than the most recent snapshot's. The null therefore describes
-backtracking as implemented, not backtracking as specified. The accurate
-summary is that the search rarely needs to undo a decision, not that
-undoing is worthless.
+in between stays unbanned (\Cref{sec:statemachine}). Over the main runs,
+$53$ explorer passes re-expanded an anchor-and-relation set the same
+question had already expanded, and at least $65$ of the $262$ backtracks
+restored a depth other than the most recent snapshot's. The null
+therefore describes backtracking as implemented, not backtracking as
+specified. The accurate summary is that the search rarely needs to undo
+a decision, not that undoing is worthless.
 
 \textbf{Model scoring.} Setting $\alpha = 1$ removes the language model
 from edge selection entirely, leaving pure embedding similarity. F1
@@ -163,7 +172,8 @@ trigger's signal maximum computed over a smaller candidate set, so this
 condition's elevated backtrack count is not attributable to the scoring
 change alone.
 
-\textbf{Claim verification.} Removing the layer this paper contributes
+\textbf{Claim verification.} Removing the checking routes of the layer
+AGR was designed around, while leaving the drafting call unchanged,
 changes WebQSP F1 by $+0.004$ and ComplexWebQuestions F1 by $-0.009$, $p
 = 1.000$ on both. Across the half-splits --- $200$ questions on WebQSP
 and $198$ on ComplexWebQuestions --- the two conditions disagreed on
@@ -183,9 +193,11 @@ either way.
 What the layer delivers is therefore not an accuracy gain but the output
 contract: an answer paired with the traversed triples that support it,
 and an entity list that is a deterministic function of the verdicts
-rather than a second generation. That is an auditability claim. It is
-what \Cref{sec:groundedness} shows the layer cannot claim credit for on
-groundedness, and it is the claim the measurements support.
+rather than a second generation. That is an auditability claim, not an
+accuracy claim, and \Cref{sec:limits-contribution} states how far it
+reaches: which route accepts most claims is not recorded, and the
+supporting triples are counted rather than kept. \Cref{sec:groundedness}
+has already shown that the layer cannot claim credit for groundedness.
 
 \subsection{Statistical Power}\label{sec:power}
 
@@ -213,3 +225,16 @@ conditions produced $21$. At that count the smallest ratio detectable at
 $80\%$ power is nearer $4{:}1$. A true $2{:}1$ effect would have been
 caught about a quarter of the time. \textbf{Three of four components
 show no effect at this power}; none is shown to have no effect.
+
+Two features of the design bound these numbers further. Each condition
+is one run against a hosted model whose temperature-zero decoding is
+greedy rather than deterministic, so a delta of a few hundredths sits
+inside the run-to-run variance that \Cref{sec:limits-comparison}
+reports, and none of the three nulls was replicated. And the components
+were removed one at a time. Three nulls in one-at-a-time removal are
+consistent with the three components being individually dispensable and
+jointly necessary, and equally with a system that has none of them
+matching this one at a fraction of the tokens. The condition that
+separates those readings, all three removed together, was not run.
+\Cref{sec:outlook} names it, with the replication, as the next
+experiment.

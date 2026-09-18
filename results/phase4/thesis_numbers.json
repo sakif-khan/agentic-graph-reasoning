@@ -1522,10 +1522,8 @@
   "_source": "results/phase4/census_exclusions.json + labels_{webqsp,cwq}.csv + labels_cwq_dropped.csv + ablations/noplanner_categories_{webqsp,cwq}.csv",
   "_note": "Distinct questions where the benchmark needed correcting, which is what the abstract and conclusion quote. Take distinct_questions, NOT the sum of the two component counts: one question sits in both and adding them counts it twice. See sec:benchmark-defects.",
   "excluded_before_census": 41,
-  "census_rows_in_defect_categories": 17,
-  "counted_in_both": [
-   "WebQTrn-64_d8e43a02200cfdff82052f8cc5395b27"
-  ],
+  "census_rows_in_defect_categories": 16,
+  "counted_in_both": [],
   "distinct_questions": 57
  },
  "verifier_route": {
@@ -1801,8 +1799,8 @@
   "_note": "Stage D + Stage A merged. wrong and hedge are never pooled. Regenerate via scripts/synthesize_census.py after any relabelling.",
   "webqsp": {
    "wrong": {
-    "_n": 53,
-    "relation_selection": 20,
+    "_n": 52,
+    "relation_selection": 19,
     "decomposition_error": 15,
     "kg_gap": 8,
     "echo": 5,
@@ -1827,15 +1825,15 @@
   },
   "cwq": {
    "wrong": {
-    "_n": 81,
+    "_n": 79,
     "composite_claim": 23,
     "relation_selection": 20,
     "decomposition_error": 10,
     "answer_selection": 8,
-    "kg_gap": 8,
+    "kg_gap": 7,
     "echo": 4,
     "ambiguous_question": 3,
-    "gold_noise": 3,
+    "gold_noise": 2,
     "premature_termination": 1,
     "verifier_fn": 1
    },

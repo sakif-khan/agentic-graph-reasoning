@@ -151,6 +151,55 @@ If a revision request does ask for more evidence, the full splits are the
 cheapest answer available — the whole benchmark cost \$11.13, so the run
 that removes the objection is roughly fifty dollars.
 
+## The framing (September 2026)
+
+The manuscript was reframed after a reviewer-style pass found the
+original framing indefensible: it led with the system and its
+verification layer, and the paper's own measurements show the layer
+changes the answer on one question per dataset, that zero ungrounded
+assertions belong to navigation, and that the output contract is not
+persisted. All three facts were already in the paper. The title is now
+*Component Attribution in Agentic Knowledge Graph Question Answering: A
+Controlled Ablation, Budget Analysis, and Failure Census*; the system is
+the instrument and the attribution study is the contribution. What that
+changed, beyond the front matter:
+
+- **Section 3 specifies the loop** (Algorithm 1, the embedding model,
+  τ, what the evaluator sees, how the backtracker picks a snapshot, how
+  each ablation flag is implemented, a worked example). A reviewer could
+  not reimplement AGR from the earlier version.
+- **Section 5.3 reads the budget split within hop strata** (Table 4)
+  and states the per-depth call arithmetic that makes the 25-call cap
+  forbid the baseline's third expansion. The split conditions on the
+  baseline's own outcome, and the paper now says so and shows what that
+  costs on each dataset.
+- **Section 7.2 reports which systems converge** on the cleared
+  consensus rows (Table 8). The earlier claim that the echo attractor is
+  "a property of the graph's neighbourhood structure rather than of any
+  one search policy" did not survive the breakdown: on CWQ the
+  no-retrieval control is among the agreeing systems on 25 of 31 rows.
+- **Six references added** (GNN-RAG, SubgraphRAG, ToG 2.0, GCR,
+  Self-RAG, CRAG), each checked against its arXiv record.
+- **Wall-clock, zero-triple answers, and the one-at-a-time caveat** are
+  reported; the outlook names the four experiments the reframe makes
+  necessary (equal-width baseline under a cap sweep, replication plus a
+  joint-removal condition, full splits, the logging change).
+
+**The census pipeline was wrong, and the fix ripples into the thesis.**
+`scripts/synthesize_census.py` counted three *excluded* questions in the
+histogram and had never reached six real failures (one WebQSP, five CWQ
+wrong answers), so "all 259 remaining failures" was false in both
+directions: the population after exclusions is 262 and the census read
+256. The script now drops excluded identifiers, counts each question
+once, and prints the population, the read count and the unread
+identifiers; `thesis_numbers.json` and the figures were regenerated
+(only the census blocks changed). The paper states 262 / 256 and the
+six unread, and `check_paper_numbers.py` recomputes both. **To do:**
+read the six (the script lists them), regenerate, and change the
+sentence to "read all of them" — the checker says which sentence. The
+thesis and slides still say 259 in several places and need the same
+correction.
+
 ## Editing notes
 
 - **Register (September 2026).** The thesis chapters were rewritten to
@@ -181,11 +230,11 @@ that removes the objection is roughly fifty dollars.
   baseline on both datasets, so it sits to the right; the halving is in
   calls, which the figure does not plot. The header comment of
   `results.tex` now records the geometry.
-- **AGR-led framing, but the verification layer sells auditability, not
-  accuracy.** The precision column does not move when the layer is
-  removed, so the paper must never promise that it does. What it delivers
-  is the output contract. Claiming that, and only that, is what keeps
-  §6 from reading as a retraction.
+- **The verification layer sells auditability, not accuracy** (and since
+  the September 2026 reframe, the paper is not AGR-led at all). The
+  precision column does not move when the layer is removed, so the paper
+  must never promise that it does. What it delivers is the output
+  contract, at the width the next note states.
 - **State the output contract at its real width, which is narrower than
   the phrase.** An earlier version of the note above said "every answer
   arrives with the traversed triples supporting it", and that is the
