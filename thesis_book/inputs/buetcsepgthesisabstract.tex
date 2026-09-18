@@ -22,8 +22,9 @@ graph through a constrained, deterministic tool API. Its distinguishing
 component is a Structural Verification Layer. Before the answer is emitted, it
 splits the draft into atomic claims and checks each one against the triples the
 agent actually traversed. Claims it cannot ground are re-explored or withdrawn.
-So, AGR is more likely to hedge than to assert. And the claims its traversal
-grounds come back paired with the triples that support them.
+So, where it cannot ground a claim, AGR hedges rather than asserts. And the
+claims its traversal grounds come back paired with the triples that support
+them.
 
 We evaluate AGR on a Freebase-derived environment of $2.59$ million entities and
 $8.31$ million triples. We test it on $400$ certified questions from each of
@@ -33,8 +34,8 @@ systems share one frozen backbone and the same call budget. So, any difference
 between them comes from architecture, not model capacity.
 
 AGR reaches a Hits@1 of $0.755$ on WebQSP and $0.522$ on ComplexWebQuestions. It
-beats every baseline on both datasets, at half the language-model calls. This
-includes the agentic navigator, which actually leads AGR on the questions its
+beats every baseline on both datasets, at half the agentic navigator's
+language-model calls. That navigator actually leads AGR on the questions its
 own budget lets it finish. But that budget runs out on $29\%$ and $44\%$ of
 questions on the two datasets; AGR's own budget never does. AGR also never
 asserts an entity it cannot ground, across $1{,}709$ assertions, against
@@ -49,7 +50,7 @@ effect. And the one effect it does find runs the opposite way from what we
 expected: removing the planner \emph{improves} WebQSP accuracy by $0.083$ F1 ($p
 = 0.006$) and cuts token use by $31\%$, while it trends the other way on
 ComplexWebQuestions. So, decomposition should be gated on question structure,
-not applied unconditionally. We read all $259$ remaining failures by hand. The
+not applied unconditionally. We read all $256$ remaining failures by hand. The
 characteristic error is not invention; it is what we call the \emph{echo
 attractor}: a real, grounded entity one hop from the answer, which any grounding
 check will pass because it is genuinely true, and which different systems fall

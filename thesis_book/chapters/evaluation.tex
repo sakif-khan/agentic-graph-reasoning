@@ -1109,7 +1109,7 @@ The other two are ordinary.
 Section~5.1 of \cite{luo2024reasoning} states that its backbone is ``instruction
 finetuned on the training split of WebQSP and CWQ as well as Freebase for 3
 epochs''. In the distribution this thesis also uses, those training splits hold
-$2{,}830$ and $16{,}900$ questions. AGR performs no training of any kind: the
+$2{,}826$ and $27{,}639$ questions. AGR performs no training of any kind: the
 backbone is frozen, prompted at temperature $0$ (\Cref{sec:backbone}), and the
 system has seen no question from either benchmark before it is evaluated. The
 comparison is therefore between a supervised system and a zero-shot one. That is
@@ -1452,7 +1452,7 @@ charged. The two costs this thesis records do not agree.
 \textbf{On tokens, the axis of \Cref{fig:accuracy-cost}, Think-on-Graph is not
 dominated.} It buys its lower accuracy at a genuinely lower token price on both
 datasets --- $3{,}615$ against AGR's $4{,}511$ on WebQSP, $5{,}572$ against
-$7{,}039$ on CWQ --- and sits on the Pareto set of both, alongside the
+$6{,}818$ on CWQ --- and sits on the Pareto set of both, alongside the
 no-retrieval control at $113$ tokens and, on WebQSP, Vector-RAG at $527$. The
 interior points are the static graph retrievers, which the parametric control
 beats on both axes at once. Any claim that Think-on-Graph is dominated has to

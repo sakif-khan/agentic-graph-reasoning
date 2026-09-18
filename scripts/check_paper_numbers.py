@@ -144,12 +144,13 @@ def section_body(label):
 def rnd(val, places=3):
     """Round the way a person writing the number would.
 
-    Not round(): the IEEE double nearest 0.6295 is 0.62949999999999994849,
-    which is below the tie, so round(0.6295, 3) gives 0.629 while both
-    half-up and half-even on the true decimal give 0.630. That discrepancy
-    reported the budget-split table as mistranscribed when the table was
-    right and this check was wrong. Going through Decimal(str(...)) rounds
-    the decimal the JSON actually carries.
+    Not round(): the IEEE double nearest a decimal tie can sit below it,
+    so round() can go either way. Going through Decimal(str(...)) rounds
+    the decimal the JSON actually carries. Beware of using this on a value
+    the JSON has ALREADY rounded: 141/224 = 0.62946 is stored as 0.6295,
+    and half-up on that gives 0.630 when the true rate rounds to 0.629.
+    Where a count and an n are available, round the exact fraction once
+    instead (see the budget-split block).
     """
     q = Decimal(1).scaleb(-places)
     return float(Decimal(str(val)).quantize(q, rounding=ROUND_HALF_UP))
@@ -179,13 +180,22 @@ def main():
                 ck(f"{ds}/{sysname} {field} = {val}", quoted(nums, val))
 
     print("\n== budget-split table bound ==")
+    # The JSON carries these rates to four decimals, which is itself a
+    # rounding: CWQ tog_finished is 141/224 = 0.62946, stored as 0.6295,
+    # and rounding THAT half-up gives 0.630 while the true rate rounds to
+    # 0.629 (which is what the thesis's generated table prints). So the
+    # hit count is recovered from n and the rate, and the exact fraction is
+    # rounded once.
     for ds in ("webqsp", "cwq"):
         for subset in ("tog_finished", "tog_clipped"):
             blk = tog[ds][subset]
             ck(f"{ds} {subset} n = {blk['n']}", quoted(nums, blk["n"]))
             for who in ("tog_hits_at_1", "agr_hits_at_1"):
-                v = rnd(blk[who])
-                ck(f"{ds} {subset} {who} = {v}", quoted(nums, v))
+                hits = round(blk[who] * blk["n"])
+                v = float((Decimal(hits) / Decimal(blk["n"])).quantize(
+                    Decimal("0.001"), rounding=ROUND_HALF_UP))
+                ck(f"{ds} {subset} {who} = {v} ({hits}/{blk['n']})",
+                   quoted(nums, v))
 
     print("\n== ablation table bound ==")
     for ds in ("webqsp", "cwq"):

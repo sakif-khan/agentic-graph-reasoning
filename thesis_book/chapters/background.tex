@@ -531,9 +531,9 @@ and published accuracy.
       & \textbf{CWQ} \\
       \hline
       ToG & GPT-3.5 & CWQ, WebQSP, GrailQA~\cite{gu2021beyond}, QALD10-en,
-      SimpleQuestions, WebQuestions, T-REx, Zero-Shot RE, Creak & 76.2 & 58.9 \\
+      SimpleQuestions, WebQuestions, T-REx, Zero-Shot RE, Creak & 76.2 & 57.1 \\
       \cline{2-5}
-       & GPT-4 & & 82.6 & 69.5 \\
+       & GPT-4 & & 82.6 & 67.6 \\
       \hline
       PoG & GPT-3.5 & CWQ, WebQSP, GrailQA & 82.0 & 63.2 \\
       \cline{2-5}
@@ -564,13 +564,12 @@ and published accuracy.
 
     \vspace{0.7mm}
     Every figure is the one its own authors published. That this is not the same
-    as a comparison is visible inside the table: PoG's paper reproduces
-    Think-on-Graph and measures it at $57.1$ and $67.6$ on CWQ, against the
-    $58.9$ and $69.5$ Think-on-Graph reports for itself. Two published papers
-    disagree by $1.8$ and $1.9$ points on the same system and benchmark. That
-    gap is the order of many claimed improvements in this literature. It is also
-    the reason \Cref{sec:setup} reimplements its baseline rather than citing a
-    number.}
+    as a comparison is visible inside the table: Think-on-Graph's own paper
+    reports a second variant, ToG-R, at $58.9$ and $69.5$ on CWQ against the
+    $57.1$ and $67.6$ shown, on the same two backbones. One paper's own variants
+    differ by $1.8$ and $1.9$ points on the same benchmark. That gap is the
+    order of many claimed improvements in this literature. It is also the reason
+    \Cref{sec:setup} reimplements its baseline rather than citing a number.}
   \end{center}
 \end{table}
 
@@ -589,13 +588,16 @@ architecture is better.
 Second, evaluation protocols differ. Some papers evaluate on sampled test
 subsets. And answer-matching conventions are not uniform across implementations.
 
-Third, and most concretely, two papers disagree about a third. Plan-on-Graph's
-own comparison table measures Think-on-Graph at $57.1$ and $67.6$ on CWQ, while
-Think-on-Graph reports $58.9$ and $69.5$ for itself. Neither is wrong: one is an
-original result and the other a reimplementation. This thesis is in exactly that
-situation with respect to its own agentic baseline (\Cref{sec:baseline-tog}).
-The gap is $1.8$ and $1.9$ points, the same order as many improvements claimed
-in this literature. A cross-paper table cannot distinguish a real advance from a
+Third, and most concretely, one paper's own variants differ by the order of a
+claimed improvement. Think-on-Graph reports $57.1$ and $67.6$ on CWQ for the
+method in \Cref{tab:reported} and $58.9$ and $69.5$ for ToG-R, a variant that
+explores relation chains rather than triple paths, on the same two backbones.
+Plan-on-Graph's own comparison table quotes the first pair exactly. The gap
+between the variants is $1.8$ and $1.9$ points, the same order as many
+improvements claimed in this literature, and a reimplementation on a different
+substrate is a further variant of the same kind, which is the situation this
+thesis is in with respect to its own agentic baseline (\Cref{sec:baseline-tog}).
+A cross-paper table cannot distinguish a real advance from a variant or
 reproduction difference of that size. That is why no claim in this thesis rests
 on one.
 
