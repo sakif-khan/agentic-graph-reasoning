@@ -12,9 +12,15 @@ word limit at all (checked August 2026). The KBS guide 403s to an
 automated fetch by every route, so a journal-specific limit cannot be
 ruled out -- but it cannot be cited either, and it was being cited.
 
-So 200 is house style, and the second test below keeps the justification
-honest: no comment in the abstract block may attribute the limit to
-Elsevier unless someone has actually read a page that says so.
+So the line is house style, and the second test below keeps the
+justification honest: no comment in the abstract block may attribute the
+limit to Elsevier unless someone has actually read a page that says so.
+
+The line was 200 until 2026-09-19. The abstract was then rewritten in the
+thesis's register -- short sentences, one idea each -- and that version
+needs about 245 words; the 200-word one fitted by stacking ideas, which
+was the complaint. 250 is the figure the one available summary of the
+KBS guide gives, and the abstract comment says the same.
 """
 import io
 import pathlib
@@ -27,7 +33,7 @@ MAIN = ROOT / "journal" / "journal_0421052099.tex"
 
 pytestmark = pytest.mark.skipif(not MAIN.exists(), reason="manuscript absent")
 
-MAX_WORDS = 200
+MAX_WORDS = 250
 
 
 def _block():

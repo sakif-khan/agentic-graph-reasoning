@@ -38,23 +38,27 @@ def swap_block(into, frm):
 CASES = [
     ("shipped: 215 words, limit attributed to Elsevier",
      lambda s: swap_block(s, shipped)),
-    ("padded past 200 words",
-     lambda s: s.replace(
-         "cannot detect.",
-         "cannot detect. This finding has implications for how future work "
-         "should design and report evaluation protocols over knowledge "
-         "graphs, and we discuss several of them at length in the paper.", 1)),
+    # \s+ inside the anchor: the 72-column fill may break the line there.
+    ("padded past the word line",
+     lambda s: re.sub(
+         r"grounding\s+check\s+passes\s+it\.",
+         lambda _m: "grounding check passes it. This finding has implications for "
+         "how future work should design and report evaluation protocols "
+         "over knowledge graphs, and we discuss several of them at length "
+         "in the paper, together with the questions it leaves open and the "
+         "experiments that would settle them.",
+         s, count=1)),
     ("the Elsevier attribution reinstated",
      lambda s: s.replace(
-         "% AT MOST 200 WORDS -- OUR line, not a quoted requirement.",
+         "% AT MOST 250 WORDS -- OUR line, not a quoted requirement (the KBS guide",
          "% ~200 words, Elsevier's limit for these journals.", 1)),
     # \s+ for the line breaks, not "\n": the file is CRLF, so a literal
     # newline in a multi-line anchor never matches.
     ("abstract credits verification with an accuracy gain",
      lambda s: re.sub(
-         r"three\s+of\s+four\s+components\s+---\s+including\s+claim\s+"
-         r"verification\s+---\s+show\s+no\s+detectable\s+accuracy\s+effect\.",
-         lambda _m: "claim verification improves accuracy measurably.",
+         r"The\s+other\s+three\s+parts,\s+claim\s+verification\s+among\s+"
+         r"them,\s+show\s+no\s+effect\s+our\s+tests\s+could\s+detect\.",
+         lambda _m: "Claim verification improves accuracy measurably.",
          s, count=1)),
 ]
 

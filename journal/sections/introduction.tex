@@ -13,29 +13,34 @@
 % described at its real width -- relation-blind structural routes, one
 % of three attaching evidence -- and Sections 3 and 7 bound it.
 %
-% Register: short sentences, active voice where it reads at least as
-% well, few em-dashes. Filled at 72 columns.
+% Register, rewritten 2026-09-19 to match the thesis: short sentences,
+% one idea each, plain connectives ("But", "So"), no noun stacks. The
+% first paragraph is the thesis's own opening. Every number and every
+% \Cref survived the rewrite unchanged, because check_paper_numbers.py
+% pins the number-bearing sentences by regex. Filled at 72 columns.
 % ---------------------------------------------------------------------
 
 \section{Introduction}\label{sec:intro}
 
-Large language models answer factual questions fluently, and often
-wrongly. The errors are systematic rather than random, and a fabricated
-answer reads in the same register as a correct one, so they are hard to
-catch from the output alone~\cite{huang2025survey}. The problem sharpens
-once an answer requires composing several facts. A wrong resolution at
-the first hop rarely announces itself downstream, and a correctness
-check on the final answer never sees the intermediate steps.
+Large language models answer factual questions fluently. But often
+enough, they give wrong answers. The errors are not random. They are
+systematic, and a fabricated answer reads in the same register as a
+correct one, so it is hard to catch from the output
+alone~\cite{huang2025survey}. The problem gets worse once an answer
+requires putting several facts together. If the first hop lands on the
+wrong entity, nothing later in the chain will know, and a check on the
+final answer never sees the intermediate steps.
 
 Retrieval-augmented generation~\cite{lewis2020retrieval} grounds the
-model in retrieved text, but it retrieves once, before reasoning begins,
-and the passage holding an intermediate entity need not resemble the
-question at all. A knowledge graph~\cite{bollacker2008freebase} turns
-composition into traversal. Static graph retrieval~\cite{edge2024local}
-still fetches a neighbourhood in one shot and cannot know what the
-second hop will need. Agentic systems close that gap by interleaving
-retrieval with reasoning: the model takes one step, observes what it
-found, and decides where to look
+model in retrieved text. But it retrieves once, before any reasoning
+starts, and the passage that holds an intermediate entity need not
+resemble the question at all. A knowledge
+graph~\cite{bollacker2008freebase} turns composition into traversal:
+each hop is an edge. Static graph retrieval~\cite{edge2024local} still
+fetches a neighbourhood in one shot, so it cannot know what the second
+hop will need. Agentic systems close that gap by interleaving retrieval
+with reasoning. The model takes one step, looks at what it found, and
+decides where to look
 next~\cite{sun2024think,chen2024plan,luo2024reasoning,luo2025kbqao1}.
 \Cref{sec:related} traces that line of work.
 
@@ -43,33 +48,33 @@ These systems are assemblies. A typical one decomposes the question into
 sub-goals, scores candidate edges with the model, backtracks from dead
 ends, and checks or rewrites its own output. The literature reports the
 assembly as a whole. When it outperforms a static baseline, three things
-could have produced the gain, and the report rarely separates them: a
-component, the budget regime the comparison ran under, or the labels of
-the benchmark itself. Later work then inherits the entire assembly on
-faith, along with its cost. The exception shows why the instrument
-matters. KBQA-o1's own ablation removes its tree search and GrailQA F1
+could have produced the gain: a component, the budget the comparison ran
+under, or the labels of the benchmark itself. The report rarely
+separates them. Later work then inherits the whole assembly on faith,
+along with its cost. The exception shows why taking a system apart
+matters. KBQA-o1's own ablation removes its tree search, and GrailQA F1
 falls by thirty points~\cite{luo2025kbqao1}. That attribution exists
-because the authors took the system apart. This paper applies the same
-instrument to an agentic knowledge-graph question-answering system built
-so that each of its components can be removed cleanly, and reads all
-three sources of the gain.
+because the authors took the system apart. This paper does the same for
+an agentic knowledge-graph question-answering system built so that each
+of its components can be removed cleanly, and it asks which of the three
+sources produced the gain.
 
-The instrument is \textbf{Agentic Graph Reasoning} (AGR), an explicit
-state machine over a constrained, deterministic graph tool API. A
-program orchestrates the loop, and the language model is consulted only
-at bounded decision points. Its four removable components are a
-\emph{planner} that decomposes the question into an ordered chain of
-sub-objectives, a hybrid \emph{edge scorer} that blends embedding
-similarity with a batched model judgement, a \emph{backtracker} that
-restores an earlier frontier and bans the edges that led away from it,
-and a \emph{structural verification layer} that decomposes each draft
-answer into atomic claims and checks them against the traversed triples
-before the answer is emitted. The last is the component the system was
-designed around, and we state its reach at the width the measurements
-support. Its two graph routes ask whether an edge joins a claim's
-endpoints, not whether it is the edge the claim asserts, so a claim that
-X is Y's mother is certified by an edge recording that X is Y's child.
-Only the traversed-adjacency route attaches evidence.
+The system is \textbf{Agentic Graph Reasoning} (AGR). It is an explicit
+state machine over a constrained, deterministic graph tool API: a
+program runs the loop, and the language model is consulted only at
+bounded decision points. Four of its components can be removed. A
+\emph{planner} decomposes the question into an ordered chain of
+sub-objectives. A hybrid \emph{edge scorer} blends embedding similarity
+with a batched model judgement. A \emph{backtracker} restores an earlier
+frontier and bans the edges that led away from it. And a
+\emph{structural verification layer} splits each draft answer into
+atomic claims and checks them against the traversed triples before the
+answer is emitted. The last is the component the system was designed
+around, so we should be clear about what it actually checks. Its two
+graph routes ask whether an edge joins a claim's endpoints, not whether
+it is the edge the claim asserts; a claim that X is Y's mother is
+certified by an edge recording that X is Y's child. Only the
+traversed-adjacency route attaches evidence.
 \Cref{sec:verification,sec:limits-contribution} bound it further.
 
 The benchmarks are WebQSP~\cite{yih2016value} and
@@ -77,21 +82,22 @@ ComplexWebQuestions~\cite{talmor2018web}, $400$ questions from each,
 over a Freebase-derived environment of $2.59$ million entities and
 $8.31$ million triples. On them AGR reaches Hits@1 of $0.755$ and
 $0.522$ and leads four baselines that share its backbone and its call
-budget. That number is where the analysis starts rather than where it
-ends. Against the agentic baseline, a reimplementation of
-Think-on-Graph~\cite{sun2024think} on the same tools, the entire margin
-comes from the $29\%$ and $44\%$ of questions on which the shared
-$25$-call cap truncates the baseline. Where the cap lets it finish, it
-is ahead (\Cref{sec:margin}). The ablation finds one component with a
-detectable effect, and the effect runs the wrong way. Removing the
-planner improves WebQSP F1 by $0.083$ while cutting tokens by $31\%$,
-because decomposing a question with no compositional structure discards
-the context that would have answered it. Backtracking, model scoring,
-and claim verification show no effect at the power available, and
-\Cref{sec:power} states the smallest effect each test could have caught.
-The failure census finds label defects on $5.5\%$ and $4.8\%$ of the
-sampled questions, and names a failure that every grounding check passes
-and that consensus-based label repair cannot see.
+budget. That is where the analysis starts, not where it ends. The
+agentic baseline is a reimplementation of
+Think-on-Graph~\cite{sun2024think} on the same tools. Against it, the
+entire margin comes from the $29\%$ and $44\%$ of questions on which the
+shared $25$-call cap truncates the baseline. Where the cap lets it
+finish, it is ahead (\Cref{sec:margin}). The ablation finds one
+component with a detectable effect, and the effect runs the wrong way.
+Removing the planner improves WebQSP F1 by $0.083$ while cutting tokens
+by $31\%$, because decomposing a question that has no compositional
+structure throws away the context that would have answered it.
+Backtracking, model scoring, and claim verification show no effect at
+the power available, and \Cref{sec:power} states the smallest effect
+each test could have caught. The failure census finds label defects on
+$5.5\%$ and $4.8\%$ of the sampled questions. It also names a failure
+that passes every grounding check and that consensus-based label repair
+cannot see.
 
 % elsarticle supplies the period after a \paragraph title; a period
 % inside the braces printed "Contributions.." in every build until
@@ -107,24 +113,23 @@ and that consensus-based label repair cannot see.
   \item \textbf{Component attribution} for a four-component agentic
     system. Removing the planner \emph{improves} accuracy on the
     shallower benchmark while reducing token use, and the per-stratum
-    breakdown gives the mechanism. The other three components, the
+    breakdown shows why. The other three components, the
     claim-verification layer among them, show no detectable effect, and
-    the nulls are reported at the same length as the effect
-    (\Cref{sec:attribution}).
+    the nulls get the same space as the effect (\Cref{sec:attribution}).
   \item The \textbf{location of the aggregate margin} over the agentic
-    baseline. It comes entirely from budget truncation, the
-    candidate-width confound that bounds the other half of the split is
-    measured, and the split is read within hop strata. The reading is
-    affordability under a fixed spend, not resolution quality
-    (\Cref{sec:margin}).
+    baseline. It comes entirely from budget truncation. We measure the
+    candidate-width confound that limits what the other half of the
+    split can say, and we read the split within hop strata. What the
+    margin measures is affordability under a fixed spend, not resolution
+    quality (\Cref{sec:margin}).
   \item A \textbf{hand-read failure census} that names the \emph{echo
     attractor}, reports which systems converge on it, and quantifies
     label defects in both benchmarks together with their effect on the
     accuracy tables (\Cref{sec:erroranalysis}).
   \item \textbf{AGR} itself, released with its prompts, per-question
-    records, and analysis scripts, and its verification layer reported
-    as it behaves: how often it fires, how far the record can attribute
-    an acceptance to a route, and what the output contract does and does
+    records, and analysis scripts. Its verification layer is reported as
+    it behaves: how often it fires, how far the record can attribute an
+    acceptance to a route, and what the output contract does and does
     not guarantee (\Cref{sec:framework,sec:limits-contribution}).
 \end{enumerate}
 
