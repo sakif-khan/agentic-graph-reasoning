@@ -936,13 +936,19 @@ def main():
     ck("the RoG comparison quotes AGR's bootstrap intervals",
        got == ci["webqsp"] + ci["cwq"],
        f"paper {got or 'NO MATCH'}, computed {ci['webqsp'] + ci['cwq']}")
-    m = re.search(r"\\agr\{\}\s+\(this work\)\s*&\s*([\d.]+)\s*&\s*([\d.]+)\s*&"
-                  r"\s*([\d.]+)\s*&\s*([\d.]+)\s*\\\\", text)
+    # This used to bind AGR's row of tab:rog. The table was cut on
+    # 2026-09-23 when the manuscript was shortened and its two rows became
+    # one sentence of prose, so the same four values are bound there
+    # instead. The anchor is "against this work's" rather than "against
+    # AGR's", which sec:margin already uses for the candidate widths ($300$
+    # and $200$) and which this pattern would otherwise match first.
+    m = re.search(r"against this work's \$([\d.]+)\$ and \$([\d.]+)\$, and "
+                  r"\$([\d.]+)\$ and \$([\d.]+)\$".replace(" ", r"\s+"), text)
     got = tuple(float(g) for g in m.groups()) if m else None
     want = tuple(rnd(100 * by[f"{ds}/agr"][k], 1)
                  for ds in ("webqsp", "cwq") for k in ("hits_at_1", "f1"))
-    ck("AGR's row of the RoG table is the main table in points",
-       got == want, f"table {got or 'NO ROW'}, computed {want}")
+    ck("the RoG comparison states AGR's own figures in points",
+       got == want, f"paper {got or 'NO MATCH'}, computed {want}")
 
     # Gold-set shape, from the committed test samples.
     ts = d["test_sets"]

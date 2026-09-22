@@ -23,11 +23,13 @@
 % recomputes every figure in that subsection and pins each to its own
 % sentence. Do not reword those sentences without re-running the check.
 %
-% CUT 2026-09-23 to ~950 words, from ~1,600. The compression is in the
-% connective tissue -- the restated motive at the head of each null and
-% the second statement of the gating recommendation, which is made once
-% now, in sec:outlook, where the other follow-ups are. No null lost a
-% number, because the length the nulls get is the argument.
+% CUT 2026-09-23 (two passes) to ~880 words, from ~1,600. The
+% compression is in the connective tissue -- the restated motive at the
+% head of each null, the second statement of the gating recommendation
+% (made once now, in sec:outlook), and the closing paragraph on
+% one-run/one-at-a-time, which sec:limits-comparison carries. NO NULL
+% LOST A NUMBER: the length the nulls get is the methodological
+% argument, so compress their sentences, never their content.
 % ---------------------------------------------------------------------
 
 \section{Component-Level Attribution}\label{sec:attribution}
@@ -47,8 +49,7 @@ means removing the component \emph{improved} the metric.} The $p$-values
 in \Cref{tab:ablation} are reported as computed; a correction for
 multiple comparisons was not among the pre-specified decisions, and
 applying one after seeing the results would be a choice made on the
-results, so the four tests are read as descriptive rather than as a
-family-wise claim.
+results, so the four tests are read as descriptive.
 
 \begin{table}[!tb]
   \begin{center}
@@ -211,16 +212,10 @@ the union of the four discordant sets holds $42$ of the $200$ WebQSP
 questions and $55$ of the $198$ on ComplexWebQuestions. On the remaining
 $158$ and $143$, no condition changed the outcome. The intervals in
 \Cref{tab:ablation} say the same thing in F1, since the planner's WebQSP
-interval is the only one of the eight that does not contain zero.
-
-Two features of the design bound these numbers further. Each condition
-is one run against a hosted model whose temperature-zero decoding is
-greedy rather than deterministic, so a delta of a few hundredths sits
-inside the run-to-run variance that \Cref{sec:limits-comparison}
-reports, and none of the three nulls was replicated. And the components
-were removed one at a time, so three nulls are consistent with the three
-components being individually dispensable and jointly necessary, and
-equally with a system that has none of them matching this one at a
-fraction of the tokens. The condition that separates those readings, all
-three removed together, was not run; \Cref{sec:outlook} names it, with
-the replication, as the next experiment.
+interval is the only one of the eight that does not contain zero. Each
+condition was also run once, and the components were removed one at a
+time, so three nulls are consistent with the three being individually
+dispensable and jointly necessary, and equally with a system that has
+none of them matching this one at a fraction of the tokens; the
+condition that separates those readings was not run, and
+\Cref{sec:outlook} names it.

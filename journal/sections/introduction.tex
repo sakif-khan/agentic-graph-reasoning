@@ -15,11 +15,11 @@
 % Register: short sentences, one idea each, plain connectives, no noun
 % stacks. Filled at 72 columns.
 %
-% CUT 2026-09-23 to ~430 words, from ~960. Gone: the five-item
-% \enumerate of contributions and the section-by-section roadmap, which
-% between them said three times what the findings paragraph says once.
-% Every number and every \Cref that check_paper_numbers.py pins
-% survived.
+% CUT 2026-09-23 (two passes) to ~450 words, from ~960. Gone: the
+% five-item \enumerate of contributions, the section roadmap, and the
+% four-sentence walk through the components, which \Cref{sec:framework}
+% gives properly one page later. Every number and every \Cref that
+% check_paper_numbers.py pins survived.
 % ---------------------------------------------------------------------
 
 \section{Introduction}\label{sec:intro}
@@ -49,26 +49,25 @@ have produced the gain: a component, the budget the comparison ran
 under, or the labels of the benchmark itself. The report rarely
 separates them, so later work inherits the whole assembly on faith,
 along with its cost. The exception shows why taking a system apart
-matters. KBQA-o1's own ablation removes its tree search, and GrailQA F1
+matters: KBQA-o1's own ablation removes its tree search, and GrailQA F1
 falls by thirty points~\cite{luo2025kbqao1}. This paper does the same
 for an agentic knowledge-graph question-answering system built so that
 each of its components can be removed cleanly, and it asks which of the
 three sources produced the gain.
 
 The system is \textbf{Agentic Graph Reasoning} (AGR), an explicit state
-machine over a constrained, deterministic graph tool API: a program runs
-the loop, and the language model is consulted only at bounded decision
-points. Four components can be removed. A \emph{planner} decomposes the
-question into an ordered chain of sub-objectives. A hybrid \emph{edge
-scorer} blends embedding similarity with a batched model judgement. A
-\emph{backtracker} restores an earlier frontier and bans the edges that
-led away from it. And a \emph{structural verification layer} splits each
-draft answer into atomic claims and checks them against the traversed
-triples before the answer is emitted. The last is the component the
-system was designed around, so we should be clear about what it actually
-checks: its two graph routes ask whether an edge joins a claim's
-endpoints, not whether it is the edge the claim asserts, so a claim that
-X is Y's mother is certified by an edge recording that X is Y's child.
+machine over a constrained, deterministic graph tool API in which a
+program runs the loop and the language model is consulted only at
+bounded decision points. Four components can be removed: a
+\emph{planner} that decomposes the question into sub-objectives, a
+hybrid \emph{edge scorer}, a \emph{backtracker}, and a \emph{structural
+verification layer} that splits each draft answer into atomic claims and
+checks them against the traversed triples before the answer is emitted.
+The last is the component the system was designed around, so we should
+be clear about what it actually checks: its two graph routes ask whether
+an edge joins a claim's endpoints, not whether it is the edge the claim
+asserts, so a claim that X is Y's mother is certified by an edge
+recording that X is Y's child.
 \Cref{sec:verification,sec:limits-contribution} bound it further.
 
 On $400$ questions from each of WebQSP~\cite{yih2016value} and
@@ -81,7 +80,7 @@ Think-on-Graph~\cite{sun2024think} on the same tools, the entire margin
 comes from the $29\%$ and $44\%$ of questions on which the shared
 $25$-call cap truncates the baseline; where the cap lets it finish, it
 is ahead (\Cref{sec:margin}). The ablation finds one component with a
-detectable effect, and the effect runs the wrong way. Removing the
+detectable effect, and the effect runs the wrong way: removing the
 planner improves WebQSP F1 by $0.083$ while cutting tokens by $31\%$,
 because decomposing a question that has no compositional structure
 throws away the context that would have answered it. Backtracking, model

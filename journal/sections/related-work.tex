@@ -1,9 +1,8 @@
 % !TEX root = ../journal_0421052099.tex
 % ---------------------------------------------------------------------
-% Four movements compressed into four paragraphs: static graph
-% retrieval, agentic navigation, verification, and the attribution gap.
-% Since the September 2026 reframe the fourth is the frame and the
-% first three lead to it.
+% Four movements in four paragraphs: static graph retrieval, agentic
+% navigation, verification, and the attribution gap. Since the September
+% 2026 reframe the fourth is the frame and the first three lead to it.
 %
 % The KBQA-o1 sentences are load bearing twice over -- it is the
 % closest system, and its MCTS ablation (GrailQA F1 78.5 -> 48.5) is
@@ -15,19 +14,20 @@
 % addition. PoG is not among the systems run here;
 % sec:limits-comparison says so.
 %
-% CUT 2026-09-23 to ~500 words, from ~1,060. Gone: the four
-% subsections, which each carried one paragraph and a heading;
-% tab:designspace, whose six rows are a qualitative reading of the
-% cited papers rather than a measurement, and whose only two
-% load-bearing rows (Plan-on-Graph, KBQA-o1) are in the prose; and the
-% survey sentences that named a system without a claim resting on it.
-% sec:rel-agentic is now sec:related.
+% CUT 2026-09-23 (second pass) to ~420 words, from ~1,060 two passes
+% ago. ELEVEN CITATIONS WERE DROPPED with the sentences that carried
+% them, to bring the reference list from five pages to three at the
+% user's request: hipporag, tgrag, kgagent, xu2024generate, structgpt,
+% the two unifying surveys, toolformer, reflexion, du2024improving and
+% hu2025selfcorrecting. Each was a single passing mention on which no
+% claim in this paper rests. journal.bib is NOT edited -- it is pinned
+% byte-identical to thesis_book/buetcsepgthesis.bib by
+% test_paper_self_contained.py, and an uncited entry simply does not
+% print. Restore a citation here to bring its entry back.
 %
-% CUT earlier, from the thesis: the withdrawn "MCTS-inspired"
-% self-correction note, and the claim that two published papers
-% disagree about ToG's CWQ score (checked in September 2026: the
-% 58.9 / 69.5 pair is ToG-R, a variant from the ToG paper itself, and
-% PoG quotes ToG's own 57.1 / 67.6 faithfully).
+% Also gone in the first pass: the four subsections, and
+% tab:designspace, whose six rows were a qualitative reading of the
+% cited papers rather than a measurement.
 % ---------------------------------------------------------------------
 
 \section{Related Work}\label{sec:related}
@@ -49,9 +49,7 @@ the central limitation of flat retrieval~\cite{li2023survey}. Knowledge
 graphs make the missing structure explicit, storing facts as typed edges
 between identified entities so that composition becomes a traversal.
 GraphRAG~\cite{edge2024local} builds a graph over a corpus and retrieves
-structured context in place of passages, and related systems extend the
-idea to long-term memory~\cite{gutierrez2024hipporag} and to
-temporally-qualified facts~\cite{li2025tgrag}. A second family keeps
+structured context in place of passages, and a second family keeps
 retrieval static but learns it, scoring candidate subgraphs with a graph
 neural network~\cite{mavromatis2024gnnrag} or retrieving a bounded
 subgraph with a light-weight scorer~\cite{li2025subgraphrag}. All of
@@ -59,10 +57,7 @@ them retrieve once, before reasoning, so a fixed-radius neighbourhood is
 either too small to contain the answer or so large that the relevant
 edges are lost among thousands of irrelevant ones.
 
-Interleaving retrieval with reasoning removes that constraint, and it
-inherits the tool-use and self-reflection patterns established for
-language agents
-generally~\cite{yao2023react,schick2023toolformer,shinn2023reflexion}.
+Interleaving retrieval with reasoning removes that constraint.
 Think-on-Graph~\cite{sun2024think} established the pattern for knowledge
 graphs with model-guided beam search over relations and entities, and
 its successor adds document retrieval at each step~\cite{ma2024tog2}.
@@ -79,46 +74,36 @@ graph-constrained reasoning~\cite{luo2025gcr} reaches the same guarantee
 by constraining decoding to paths in the graph. RoG is also the surveyed
 system whose data distribution this paper shares, since the environment
 of \Cref{sec:environment} is built from its published subgraphs and
-\Cref{sec:rog} compares the two directly. Other systems add tool
-abstractions~\cite{jiang2024kgagent}, cope with incomplete
-graphs~\cite{xu2024generate}, or generalise across structured
-sources~\cite{jiang2023structgpt}, and recent surveys treat the
-convergence as a research programme in its own
-right~\cite{pan2024unifying,ma2025unifying}.
-KBQA-o1~\cite{luo2025kbqao1} is closest to AGR's search strategy and the
-most important to distinguish from it: it performs agentic knowledge
-base question answering with full Monte Carlo Tree Search wrapping a
-ReAct-style agent that generates logical forms against Freebase. AGR
-does none of this. Its search is guided best-first with a bounded beam
-and backtracking, and it carries neither rollouts nor value
-backpropagation.
+\Cref{sec:rog} compares the two directly. KBQA-o1~\cite{luo2025kbqao1}
+is closest to AGR's search strategy and the most important to
+distinguish from it: it performs agentic knowledge base question
+answering with full Monte Carlo Tree Search wrapping a
+ReAct-style~\cite{yao2023react} agent that generates logical forms
+against Freebase. AGR does none of this. Its search is guided best-first
+with a bounded beam and backtracking, and it carries neither rollouts
+nor value backpropagation.
 
 A parallel line checks generated content after the fact.
 Chain-of-Verification~\cite{dhuliawala2024chain} has a model draft a
 response, plan verification questions, answer those independently, and
-regenerate; multi-agent debate~\cite{du2024improving} reaches a related
-effect by having several instances critique one another. Both check
-against the model's own knowledge rather than an external symbolic
-source, and the limits of models correcting themselves without such a
-source are documented~\cite{huang2024selfcorrect}. A second group
-critiques the \emph{retrieval}, training the model to emit reflection
-tokens judging whether a passage supports its
-output~\cite{asai2024selfrag} or grading retrieved documents and
-triggering a fallback search when they are poor~\cite{yan2024crag}; Hu
-et al.~\cite{hu2025selfcorrecting} demonstrate a self-correcting agentic
-graph pipeline in a clinical setting, and
-FActScore~\cite{min2023factscore} decomposes generations into atomic
-facts as a metric rather than a control step. The layer of
-\Cref{sec:verification} sits between these lines: it decomposes a draft
-into claims and checks them against an external source, but the source
-is the set of triples the agent itself traversed and the check runs
-before the answer is emitted. The path-faithful
-systems~\cite{luo2024reasoning,luo2025gcr} make the question moot by
-never generating a claim the graph did not produce. To our knowledge no
-graph-navigating agent that generates its answer freely checks that
-answer's claims against its own traversal before emission. Whether that
-check earns its place is what \Cref{sec:attribution} measures, and the
-answer is not the one the design anticipated.
+regenerate --- checking against the model's own knowledge rather than an
+external symbolic source, whose limits are
+documented~\cite{huang2024selfcorrect}. A second group critiques the
+\emph{retrieval}, training the model to emit reflection tokens judging
+whether a passage supports its output~\cite{asai2024selfrag} or grading
+retrieved documents and triggering a fallback search when they are
+poor~\cite{yan2024crag}, and FActScore~\cite{min2023factscore}
+decomposes generations into atomic facts as a metric rather than a
+control step. The layer of \Cref{sec:verification} sits between these
+lines: it decomposes a draft into claims and checks them against an
+external source, but the source is the set of triples the agent itself
+traversed and the check runs before the answer is emitted. The
+path-faithful systems~\cite{luo2024reasoning,luo2025gcr} make the
+question moot by never generating a claim the graph did not produce. To
+our knowledge no graph-navigating agent that generates its answer freely
+checks that answer's claims against its own traversal before emission,
+and whether that check earns its place is what \Cref{sec:attribution}
+measures.
 
 The gap that motivates this paper is therefore methodological. Agentic
 systems are assemblies of decomposition, scoring, backtracking, and
@@ -127,8 +112,8 @@ published gain over a static baseline rarely establishes which mechanism
 produced it, whether some contribute nothing, or how much is the budget
 regime the comparison ran under. The exception is instructive: KBQA-o1's
 own ablation removes MCTS while leaving every other component intact,
-and GrailQA F1 drops from $78.5$ to $48.5$~\cite{luo2025kbqao1}. That is
-a thirty-point attribution to a single mechanism, obtained precisely
+and GrailQA F1 drops from $78.5$ to $48.5$~\cite{luo2025kbqao1} --- a
+thirty-point attribution to a single mechanism, obtained precisely
 because the authors ablated rather than reporting the assembly whole.
 \Cref{sec:attribution} applies the same instrument to AGR, with paired
 tests and a stated minimum detectable effect, and reports the components

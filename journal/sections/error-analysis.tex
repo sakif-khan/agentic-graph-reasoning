@@ -23,13 +23,14 @@
 % 41 + 16 with no overlap now that an excluded question is no longer a
 % census row.
 %
-% CUT 2026-09-23 to ~750 words, from ~1,430. Gone: the survey of the
-% histogram's three largest categories, which fig:failures shows and
-% which the section explicitly does not argue from, keeping only the
-% environment-gap hedge counts that check_paper_numbers.py pins; and
-% the second statement of the consensus-filtering consequence, which is
-% made once here and once in the conclusion rather than three times.
-% Every pinned count survived.
+% CUT 2026-09-23 (two passes) to ~700 words, from ~1,430. Gone: the
+% survey of the histogram's three largest categories, which
+% fig:failures shows and which the section explicitly does not argue
+% from (only the environment-gap hedge counts that check_paper_numbers
+% pins are kept); the two-shape worked examples of the attractor,
+% reduced to one clause each; and the second statement of the
+% consensus-filtering consequence, made once here and once in the
+% conclusion rather than three times. Every pinned count survived.
 % ---------------------------------------------------------------------
 
 \section{Error Analysis}\label{sec:erroranalysis}
@@ -46,7 +47,19 @@ for each trace, find where the trajectory \emph{first} left the correct
 path, and label that point rather than the last visible symptom. Wrong
 answers and hedges are kept separate throughout, because a wrong answer
 is a reasoning error while a hedge is usually a coverage gap that never
-produced a committal claim. \Cref{fig:failures} gives the census.
+produced a committal claim. \Cref{fig:failures} gives the census. Its
+largest categories are unsurprising --- wrong relation choice is the
+base rate of graph navigation, and composite claims dominate
+ComplexWebQuestions, whose template-generated questions carry
+conjunctions that WebQSP's search-log questions rarely do. Questions
+whose answer is a date, a number, or a superlative fall into the class
+\Cref{sec:environment} named as unanswerable here, and on
+ComplexWebQuestions the system hedges on them more than three times as
+often as it asserts something wrong, $24$ against $7$: the behaviour the
+drafting prompt's grounding provisions were written to produce, visible
+in the one place where the environment guarantees failure. Two smaller
+categories are reported in full instead, because they generalise past
+this architecture.
 
 \begin{figure}[!tb]
   \begin{center}
@@ -60,21 +73,6 @@ produced a committal claim. \Cref{fig:failures} gives the census.
   \label{fig:failures}
 \end{figure}
 
-The bulk of the distribution is unsurprising: choosing the wrong
-relation to follow is the base rate of graph navigation and the largest
-category overall, and composite claims, in which an unverifiable
-component drags down a verifiable one, are nearly absent on WebQSP and
-largest on ComplexWebQuestions, whose template-generated questions carry
-conjunctions and constraints that WebQSP's search-log questions rarely
-do. Questions whose answer is a date, a number, or a superlative fall
-into the class \Cref{sec:environment} named as unanswerable here, and on
-ComplexWebQuestions the system hedges on them more than three times as
-often as it asserts something wrong, $24$ against $7$ --- the behaviour
-the drafting prompt's grounding provisions were written to produce,
-visible in the one place where the environment guarantees failure. Two
-smaller categories are reported in full instead, because they generalise
-past this architecture.
-
 \subsection{The Echo Attractor}\label{sec:echo}
 
 The most instructive failure mode is one that every grounding check in
@@ -83,17 +81,15 @@ real edge, and states a fact that is genuinely true. It is not what was
 asked. We name this the \textbf{echo attractor}: a true, well-grounded
 entity sitting one hop from the answer in the graph's structure. It
 takes two shapes. \emph{Topic confusion} picks a neighbour in a tight
-naming cluster: asked who plays Lex Luthor on \emph{Smallville}, the
-system answers that John Glover plays Lionel Luthor, a different
-character in the same fictional family. \emph{Granularity} picks the
-right entity family at the wrong level: asked for a country, it answers
-``Kingdom of Denmark'' where the gold answer is ``Denmark'', a genuinely
-distinct node. A reader may prefer to call the second a
-label-granularity problem rather than a system error; we count it
-against the system because the two nodes are distinct in the graph and
-the question's gold names one of them, and the label-defect pass of
-\Cref{sec:defects} is where the other reading was tested, question by
-question.
+naming cluster, answering that John Glover plays Lionel Luthor when
+asked who plays Lex Luthor. \emph{Granularity} picks the right entity
+family at the wrong level, answering ``Kingdom of Denmark'' where the
+gold answer is ``Denmark'', a genuinely distinct node. A reader may
+prefer to call the second a label-granularity problem rather than a
+system error; we count it against the system because the two nodes are
+distinct in the graph and the question's gold names one of them, and the
+label-defect pass of \Cref{sec:defects} is where the other reading was
+tested, question by question.
 
 What makes this a mechanism rather than a residue category is that
 nothing went wrong in the parts of the system built to prevent things

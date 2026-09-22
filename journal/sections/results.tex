@@ -23,15 +23,19 @@
 % ask whether the clipped half is simply the hard half. It is on CWQ
 % and is not on WebQSP; both are said.
 %
-% CUT 2026-09-23 to ~1,350 words, from ~2,840, with two of its seven
-% floats. Gone: fig:accuracycost, whose frontier reading is one
-% sentence and whose axes carry no number the text omits, and
-% fig:hopstrata, whose three curves are the stratum figures already
-% quoted. Gone in prose: the second reading of the assertion-precision
-% mechanism, the deployment-question paragraph on which cost binds, and
-% the four-way enumeration of what the RoG table cannot establish, now
-% one decisive difference and three ordinary ones in a single sentence.
-% Every sentence check_paper_numbers.py pins survived verbatim.
+% CUT 2026-09-23 (two passes) to ~1,200 words, from ~2,840, and from
+% seven floats to four. Gone in the first pass: fig:accuracycost, whose
+% frontier reading is one sentence, and fig:hopstrata, whose curves are
+% the stratum figures already quoted. Gone in the second: TAB:ROG,
+% whose two rows are now one sentence of prose -- the comparison itself
+% is kept in full, because it is the one place the paper reports
+% trailing a published system, and dropping it would be dropping an
+% unfavourable result rather than a float. check_paper_numbers.py's
+% binding for that row was moved onto the prose sentence, keyed on
+% "against this work's" so it cannot collide with the candidate-width
+% sentence that also reads "against AGR's". Also gone: the second
+% reading of the assertion-precision mechanism and the deployment
+% question of which cost binds.
 %
 % CUT earlier: the alpha sweep, the per-question narratives, the
 % reproducibility note on 65/11/4 vs 64/11/5. Repository material.
@@ -135,19 +139,17 @@ against $5{,}572$ on ComplexWebQuestions. It is the \emph{number of
 round trips} that halves, not the volume of text, so on tokens
 Think-on-Graph is a frontier point rather than a dominated one, while on
 calls it is dominated on both datasets --- and calls are what the shared
-budget meters. Against one-shot retrieval, agency costs roughly an order
-of magnitude more in tokens, and that is stated as a price. Wall-clock
-time tells the same story in seconds: a mean of $11.2$ and $17.2$ per
-question for AGR against $12.9$ and $15.2$ for the baseline, and between
-$1.0$ and $2.2$ for the three single-call systems. Read those as
-magnitudes only. Records replayed entirely from a response cache are
-excluded, but between $3.6\%$ and $15.2\%$ of the two navigators' calls
-in the remaining records were still served from the cache, so the
-figures are lower bounds and do not rank the two navigators against each
-other at the second. AGR never reaches the shared call cap: across all
-$800$ test questions it hit the $25$-call limit zero times, though its
-depth cap refuses a deeper expansion on $25.6\%$ of test questions. The
-baseline reaches the cap far more often.
+budget meters. Wall-clock time tells the same story in seconds: a mean
+of $11.2$ and $17.2$ per question for AGR against $12.9$ and $15.2$ for
+the baseline, and between $1.0$ and $2.2$ for the three single-call
+systems. Read those as magnitudes only. Records replayed entirely from a
+response cache are excluded, but between $3.6\%$ and $15.2\%$ of the two
+navigators' calls in the remaining records were still served from the
+cache, so the figures are lower bounds and do not rank the two
+navigators against each other at the second. AGR never reaches the
+shared call cap: across all $800$ test questions it hit the $25$-call
+limit zero times, though its depth cap refuses a deeper expansion on
+$25.6\%$ of test questions. The baseline reaches the cap far more often.
 
 \subsection{Where the Margin Comes From}\label{sec:margin}
 
@@ -240,10 +242,9 @@ beam search finds answers well when it is allowed to finish; guided
 search finds them almost as well and finishes within a budget the beam
 search cannot. On a fixed spend the second is the better architecture,
 and the first would win if spend were unconstrained. That is a claim
-about operating regimes rather than about reasoning power, and it is
-narrower than the aggregate table alone would suggest. The cap of $25$
-calls is itself a choice, a larger one would move the split, and a sweep
-of the cap is the first experiment \Cref{sec:outlook} names.
+about operating regimes rather than about reasoning power. The cap of
+$25$ calls is itself a choice, a larger one would move the split, and a
+sweep of the cap is the first experiment \Cref{sec:outlook} names.
 
 \textbf{One asymmetry bounds how far that reading extends}, and it is
 the candidate-width difference named in \Cref{sec:baselines}. Both
@@ -291,52 +292,32 @@ The environment of \Cref{sec:environment} is built from the subgraphs
 the RoG distribution publishes, and RoG~\cite{luo2024reasoning} is the
 closest published system in the path-retrieval family, so a reader will
 ask how the two compare. The aggregate answer does not favour this work,
-and \Cref{tab:rog} gives it before the qualifications. \textbf{RoG leads
-on all four figures, and the margin is not sampling noise}: AGR's $95\%$
-intervals on Hits@1 are $[71.3, 79.7]$ on WebQSP and $[47.5, 57.0]$ on
-ComplexWebQuestions, and RoG's $85.7$ and $62.6$ fall outside both.
+and we give it before the qualifications. Over the full test splits RoG
+publishes $85.7$ Hits@1 and $70.8$ F1 on WebQSP and $62.6$ and $56.2$ on
+ComplexWebQuestions, against this work's $75.5$ and $64.2$, and $52.2$
+and $46.9$ over the certified $400$-question samples of those same
+splits. \textbf{RoG leads on all four figures, and the margin is not
+sampling noise}: AGR's $95\%$ intervals on Hits@1 are $[71.3, 79.7]$ on
+WebQSP and $[47.5, 57.0]$ on ComplexWebQuestions, and RoG's $85.7$ and
+$62.6$ fall outside both.
 
-\begin{table}[!tb]
-  \begin{center}
-    \caption{AGR against RoG's published figures, in points. RoG's row
-      is as published in~\cite{luo2024reasoning}, measured over the
-      full test splits. AGR's row is \Cref{tab:main}, measured over the
-      certified $400$-question samples, which are stratified draws from
-      those same splits. The two rows are computed over nested
-      populations under different protocols; the text says what that
-      permits.}
-    \label{tab:rog}
-    \footnotesize
-    \begin{tabular}{|l|rr|rr|}
-      \hline
-      & \multicolumn{2}{c|}{\textbf{WebQSP}}
-      & \multicolumn{2}{c|}{\textbf{ComplexWebQuestions}} \\
-      \textbf{System} & Hits@1 & F1 & Hits@1 & F1 \\
-      \hline
-      RoG (published)    & 85.7 & 70.8 & 62.6 & 56.2 \\
-      \agr{} (this work) & 75.5 & 64.2 & 52.2 & 46.9 \\
-      \hline
-    \end{tabular}
-  \end{center}
-\end{table}
-
-One difference bounds what the table establishes, and it is decisive.
-\textbf{RoG is trained on these benchmarks; AGR is trained on nothing.}
-RoG fine-tunes LLaMA2-Chat-7B on the training splits of both benchmarks,
-which hold $2{,}826$ and $27{,}639$ questions in the distribution used
-here, while AGR's backbone is frozen and prompted and has seen no
-question from either benchmark before evaluation. Three ordinary
-differences follow it: the backbones differ, which is the very factor
-\Cref{sec:baselines} holds constant elsewhere; RoG reports over the full
-test splits against our stratified samples of them and publishes no
+One difference bounds what that comparison establishes, and it is
+decisive. \textbf{RoG is trained on these benchmarks; AGR is trained on
+nothing.} RoG fine-tunes LLaMA2-Chat-7B on the training splits of both
+benchmarks, which hold $2{,}826$ and $27{,}639$ questions in the
+distribution used here, while AGR's backbone is frozen and prompted and
+has seen no question from either benchmark before evaluation. Three
+ordinary differences follow it: the backbones differ, which is the very
+factor \Cref{sec:baselines} holds constant elsewhere; RoG reports over
+the full splits against our stratified samples of them and publishes no
 interval, so the gap can be bounded from one side only; and RoG
 retrieves within each question's own published subgraph while AGR
 navigates the union of all of them. What the comparison settles is AGR's
-place in the published landscape, a training-free system reaching $75.5$
-and $52.2$ against a supervised system's $85.7$ and $62.6$ on the same
-question sets. What it does not settle is anything this paper measures,
-since neither the ablation of \Cref{sec:attribution} nor the census of
-\Cref{sec:erroranalysis} has a counterpart in RoG's evaluation.
+place in the published landscape, a training-free system against a
+supervised one on the same question sets. What it does not settle is
+anything this paper measures, since neither the ablation of
+\Cref{sec:attribution} nor the census of \Cref{sec:erroranalysis} has a
+counterpart in RoG's evaluation.
 
 \subsection{Accuracy by Hop Depth}\label{sec:hops}
 

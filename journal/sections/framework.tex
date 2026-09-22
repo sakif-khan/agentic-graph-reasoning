@@ -10,21 +10,23 @@
 % the test-set behaviour. The layer's aggregate cost is delivered HERE,
 % from tab:ablation (removing it saves 2% and 6% of tokens).
 %
-% CUT 2026-09-23 to ~850 words, from ~2,100. Gone: alg:agr, which
-% restated in pseudocode the loop the prose and fig:statemachine
-% already give and cost two pages at the review option's spacing;
-% fig:claim-path, whose three routes are three sentences; tab:budget,
-% whose seven caps are now one sentence; the Yale worked example; the
-% verify_triple history; and the Plan-on-Graph mechanics contrast,
-% which sec:related now carries alone. All of it is in the thesis.
-% The budget caps are still named in full, because sec:baselines and
-% sec:margin both reason from them; \Cref{tab:budget} used to be cited
-% from setup.tex and those now point at sec:budgets.
+% CUT 2026-09-23 (two passes) to ~850 words, from ~2,100. Gone with the
+% first pass: alg:agr, which restated in pseudocode the loop the prose
+% and fig:statemachine already give and cost two pages at the review
+% option's spacing; fig:claim-path, whose three routes are three
+% sentences; tab:budget, whose seven caps are one sentence; the Yale
+% worked example; the verify_triple history. Gone with the second: the
+% three-consequences preamble, the per-tool paragraph (now one sentence
+% naming the two caps the comparison needs), and the router's
+% three-test enumeration. The budget caps stay named in full, because
+% sec:baselines and sec:margin both reason from them; \Cref{tab:budget}
+% used to be cited from setup.tex and those now point at sec:budgets.
 %
 % NOTE: journal/figures/fig_claim_path.tex is still pinned to the
 % thesis's copy by tests/test_paper_self_contained.py. It is no longer
 % \input by the manuscript; the pin stays so the copy cannot drift if
-% the figure is ever restored.
+% the figure is ever restored. prove_selfcontained.py's two \input
+% cases were retargeted at fig_failure_histogram for the same reason.
 % ---------------------------------------------------------------------
 
 \section{The Instrument: AGR}\label{sec:framework}
@@ -35,12 +37,11 @@ A program orchestrates every step, calls the graph tools
 deterministically, and consults the model only at bounded decision
 points, through prompts constrained to return JSON. Every graph
 operation is therefore logged by construction rather than reconstructed
-from the model's account of what it did, budgets are enforced by
+from the model's account of what it did, and budgets are enforced by
 counters a router checks rather than requested in a prompt the model may
-ignore, and a malformed response degrades one decision rather than
-corrupting control flow. The consequence this paper uses is the fourth:
-because the loop is a program, each of its four components can be
-removed by a configuration flag without touching the others.
+ignore. The consequence this paper uses is that each of the loop's four
+components can be removed by a configuration flag without touching the
+others.
 
 \subsection{State Machine and Tool API}\label{sec:statemachine}
 
@@ -119,17 +120,14 @@ again. Every path from Evaluator to Answerer passes through the
 Four graph operations back the loop, as parameterised Cypher templates
 against a Neo4j property graph rather than free-form queries the model
 would write itself, because a generated-query failure is
-indistinguishable in the results from a reasoning failure.
-\textsf{search\_entity} resolves a surface form through exact name, then
-full-text index, then vector similarity. \textsf{get\_relations} returns
-the relation types incident on an entity with their direction and
-fanout, sorted by descending fanout and cut at $300$ rows.
-\textsf{get\_neighbors} returns at most $200$ neighbours along one
-relation; unnamed mediator nodes, which encode $n$-ary facts and make up
-$63.7\%$ of the graph (\Cref{sec:environment}), are traversed
-transparently, so a mediator path costs one hop.
-\textsf{verify\_connection} asks whether two entities are adjacent
-directly or through one mediator, ignoring the relation.
+indistinguishable in the results from a reasoning failure. They resolve
+a surface form to a node, return the relation types incident on an
+entity sorted by descending fanout and cut at $300$ rows, return at most
+$200$ neighbours along one relation, and ask whether two entities are
+adjacent directly or through one mediator. Unnamed mediator nodes, which
+encode $n$-ary facts and make up $63.7\%$ of the graph
+(\Cref{sec:environment}), are traversed transparently, so a mediator
+path costs one hop.
 
 The explorer gathers every relation row of at most five anchors into
 one candidate set and scores it in one pass. Each row $c$, an anchor
@@ -159,16 +157,15 @@ backtrack budget, and returns one of three decisions together with the
 entities it considers to satisfy the objective. Those entities are
 accepted only if they are names in the traversed set, so the evaluator
 cannot introduce an entity the graph did not return. The router after it
-ends the loop if the depth or wall-clock budget is spent; otherwise it
-backtracks if the backtrack budget allows and one of three triggers
-fires, namely that the last expansion added no triple, that its best
-score fell below $\tau = 0.20$, or that the evaluator asked to
-backtrack; otherwise the evaluator's decision stands. The backtracker
-pops the snapshot with the highest recorded score, which is often not
-the most recent one, and bans the anchor--relation--direction rows the
-most recent expansion followed. The mismatch between the snapshot it
-restores and the rows it bans is deliberate in neither direction, and
-\Cref{sec:nulls} measures what it costs.
+ends the loop when the depth or wall-clock budget is spent, and
+otherwise backtracks if the budget allows and the last expansion added
+no triple, its best score fell below $\tau = 0.20$, or the evaluator
+asked to. The backtracker pops the snapshot with the highest recorded
+score, which is often not the most recent one, and bans the
+anchor--relation--direction rows the most recent expansion followed. The
+mismatch between the snapshot it restores and the rows it bans is
+deliberate in neither direction, and \Cref{sec:nulls} measures what it
+costs.
 
 \subsection{Structural Verification Layer}\label{sec:verification}
 
@@ -199,14 +196,13 @@ where the graph is silent. Both graph routes ignore the relation and the
 direction, so what they establish is that the endpoints of a claim are
 connected in the environment, not that the claimed relation is the one
 the edge records; \Cref{sec:limits-contribution} states the exposure
-that follows and how much of it the record can bound.
+that follows.
 
 The router that follows has three outcomes. No unsupported claim routes
 to \textsf{grounded}, and the draft is emitted verbatim with no further
-model call. An unsupported claim with verification, depth, and time
-budget remaining routes to \textsf{retry}, which appends a repair
-objective naming that claim, anchors the frontier on its head entity,
-and returns control to the Explorer. Otherwise the router takes
+model call. An unsupported claim with budget remaining routes to
+\textsf{retry}, which appends a repair objective naming that claim and
+returns control to the Explorer. Otherwise the router takes
 \textsf{give\_up}, and one rewrite call restates the draft around a
 \emph{deterministically filtered} entity list in which an entity
 survives if it appears in a supported claim or in no unsupported claim.
@@ -251,15 +247,14 @@ the case for or against the layer, it is not a cost argument.
 Each ablation condition of \Cref{sec:attribution} flips one flag and
 leaves every other line of the loop as it is. \textbf{No planner}
 replaces the planning call with a plan of one objective, the question
-itself; anchors still come from the annotated topic entities.
-\textbf{Embedding-only scoring} sets $\alpha = 1$, which makes no
-scoring call and ranks candidates by cosine similarity alone. \textbf{No
-backtracking} sets the backtrack budget to zero, so the router ends the
-search where it would have backtracked. \textbf{No verification} leaves
-the drafting call unchanged, entity list and claim decomposition
-included, but checks no route, makes no entailment call, and emits the
-draft verbatim; that condition therefore measures the checking and not
-the drafting, and its token saving is the cost of the routes rather than
-of the draft. The budget configuration is hashed into every record, so
-the condition that produced a row of \Cref{tab:ablation} can be
-recovered from the row.
+itself. \textbf{Embedding-only scoring} sets $\alpha = 1$, which makes
+no scoring call and ranks candidates by cosine similarity alone.
+\textbf{No backtracking} sets the backtrack budget to zero, so the
+router ends the search where it would have backtracked. \textbf{No
+verification} leaves the drafting call unchanged, entity list and claim
+decomposition included, but checks no route, makes no entailment call,
+and emits the draft verbatim; that condition therefore measures the
+checking and not the drafting, and its token saving is the cost of the
+routes rather than of the draft. The budget configuration is hashed into
+every record, so the condition that produced a row of
+\Cref{tab:ablation} can be recovered from the row.

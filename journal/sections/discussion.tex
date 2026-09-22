@@ -33,17 +33,14 @@
 %  15  one relabelling after seeing result
 %  16  structural grounding is not answer adequacy (the echo attractor)
 %
-% CUT 2026-09-23 to ~950 words, from ~1,820. EVERY ROSTER ITEM
-% SURVIVES -- the cut is in how each is argued, not in which are
+% CUT 2026-09-23 (two passes) to ~880 words, from ~1,820. EVERY ROSTER
+% ITEM SURVIVES -- the cut is in how each is argued, not in which are
 % argued. The three that bound claims this paper actually makes
 % (wrongful acceptance, the output contract, structural grounding) keep
 % their paragraphs; the rest are one to three sentences each. Do not
 % compress this section further by dropping an item. The roster check
 % will catch it, and it is there because a completeness claim that is
 % not complete is worse than no claim.
-%
-% Close on the experiments the reframe makes necessary, in the order
-% they would be run.
 % ---------------------------------------------------------------------
 
 \section{Discussion and Limitations}\label{sec:discussion}
@@ -104,12 +101,12 @@ offers no protection.
 rather than the full splits, giving $95\%$ bootstrap intervals of
 roughly $\pm4$ to $\pm5$ points on Hits@1. The main accuracy margins
 clear that width, at $9.5$ and $8.7$ points, as does the planner effect,
-which is a paired test on per-question outcomes rather than a comparison
-of two intervals; the groundedness contrast, at zero against $22.1\%$,
-is not close. What the sample does not support is fine distinctions: the
-semantic-tier gaps of \Cref{sec:groundedness}, the hedge-rate difference
-on ComplexWebQuestions, and the last step of the rising hop-depth curve
-are within noise, and we report them as such.
+which is a paired test on per-question outcomes; the groundedness
+contrast, at zero against $22.1\%$, is not close. What the sample does
+not support is fine distinctions: the semantic-tier gaps of
+\Cref{sec:groundedness}, the hedge-rate difference on
+ComplexWebQuestions, and the last step of the rising hop-depth curve are
+within noise, and we report them as such.
 
 \textbf{The margin is a statement about one budget.} The $25$-call cap
 was pre-specified, but it is a choice, and \Cref{sec:margin} shows that
@@ -214,21 +211,20 @@ figures are reported as magnitudes with their cache caveat
 
 \subsection{Outlook}\label{sec:outlook}
 
-The findings above fix the order of the next experiments, and each is
-cheap against the cost of the study it would complete. First, the
-agentic baseline at AGR's candidate widths under a sweep of the call
-cap, with the budget split of \Cref{tab:togsplit} reported at each
-setting, which tests whether the affordability reading survives equal
-access to the graph. Second, replication: every system and every
-ablation condition run several times, so that a delta of a few
-hundredths of F1 can be read against the run-to-run variance rather than
-assumed to exceed it, together with the joint-removal condition that
-\Cref{sec:power} names. Third, the full test splits, which quadruple the
-discordant pairs the paired tests see. Fourth, one logging change:
-persist each accepted claim with the route that accepted it and the
-triples that matched, which converts the two limitations opening this
-section into measurable quantities and makes the verifier's precision
-and recall a number a labelled sample can produce.
+The findings fix the order of the next experiments, and each is cheap
+against the cost of the study it would complete. First, the agentic
+baseline at AGR's candidate widths under a sweep of the call cap, with
+the budget split of \Cref{tab:togsplit} reported at each setting, which
+tests whether the affordability reading survives equal access to the
+graph. Second, replication: every system and every ablation condition
+run several times, so that a delta of a few hundredths of F1 can be read
+against the run-to-run variance rather than assumed to exceed it,
+together with the joint-removal condition that \Cref{sec:power} names.
+Third, the full test splits, which quadruple the discordant pairs the
+paired tests see. Fourth, one logging change: persist each accepted
+claim with the route that accepted it and the triples that matched,
+which converts the two limitations opening this section into measurable
+quantities.
 
 The most actionable finding points forward rather than back. If
 decomposition helps only when a question has compositional structure,

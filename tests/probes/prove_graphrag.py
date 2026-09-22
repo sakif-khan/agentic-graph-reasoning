@@ -5,12 +5,27 @@ figures that replaced it. Files restored in a finally block.
 """
 import io
 import pathlib
+import re
 import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
 R = ROOT / "journal" / "sections" / "results.tex"
 S = ROOT / "journal" / "sections" / "setup.tex"
+
+
+def sub_once(text, find, repl):
+    """Replace `find` even where the 72-column fill broke it across lines.
+
+    Same fix as prove_power.py, prove_exclusions.py and prove_abstract.py
+    carry. The first anchor below spans eight words and so was broken by
+    almost any reflow of that paragraph; it reported the sentence missing
+    while it sat there in full.
+    """
+    pat = r"\s+".join(map(re.escape, find.split()))
+    m = re.search(pat, text)
+    assert m, f"anchor not found: {find!r}"
+    return text[:m.start()] + repl + text[m.end():]
 
 CASES = [
     (R, "reinstate 'actively worse than parametric memory'",
@@ -29,9 +44,8 @@ orig = {p: io.open(p, encoding="utf-8").read() for p in (R, S)}
 out = []
 try:
     for path, name, find, repl in CASES:
-        assert find in orig[path], f"anchor not found: {find!r}"
         io.open(path, "w", encoding="utf-8").write(
-            orig[path].replace(find, repl, 1))
+            sub_once(orig[path], find, repl))
         r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                            cwd=ROOT, capture_output=True, text=True)
         fails = [l.strip() for l in r.stdout.splitlines() if "[FAIL]" in l]
