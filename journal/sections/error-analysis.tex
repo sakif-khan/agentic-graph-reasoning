@@ -1,31 +1,35 @@
 % !TEX root = ../journal_0421052099.tex
 % ---------------------------------------------------------------------
-% Compresses the thesis error-analysis sections to ~1,700 words.
-%
 % POPULATION, as of September 2026: AGR's non-hits on the two samples,
 % less the 41 adjudicated exclusions, are 86 + 176 = 262. The census
 % read 85 + 171 = 256 of them; the six it did not read (one WebQSP,
 % five CWQ) are exactly the Stage B surface-form near-misses that
 % dump_failure_packets.py sets aside by design, and the paragraph says
-% so. Until the pipeline was fixed in September 2026 the histogram
-% carried three EXCLUDED questions and reported 259. The sentences
-% stating population, the six set aside, and coverage are pinned by
-% scripts/check_paper_numbers.py, which recomputes all three from the
-% run records and the near-miss flags.
+% so. The sentences stating population, the six set aside, and coverage
+% are pinned by scripts/check_paper_numbers.py, which recomputes all
+% three from the run records and the near-miss flags.
 %
 % ON THE ECHO ATTRACTOR: lead with the MECHANISM and give the frequency
-% second. 13 of 256 is a small rate. The consensus breakdown (new in
-% September 2026, tab:consensus) replaces the earlier claim that the
-% convergence is "a property of the graph's neighbourhood structure
-% rather than of any one search policy": on CWQ the no-graph control is
-% among the agreeing systems on 25 of 31 cleared rows, so the shared
-% backbone is at least as likely a cause there. The methodological
-% consequence survives either way and is what the section argues.
+% second. 13 of 256 is a small rate. The consensus breakdown
+% (tab:consensus) replaces the earlier claim that the convergence is "a
+% property of the graph's neighbourhood structure rather than of any
+% one search policy": on CWQ the no-graph control is among the agreeing
+% systems on 25 of 31 cleared rows, so the shared backbone is at least
+% as likely a cause there. The methodological consequence survives
+% either way and is what the section argues.
 %
 % ON THE DEFECT COUNTS: flagged and confirmed are different units and
 % must stay apart -- 58/47 flagged, 22/19 confirmed. The 57 is
 % 41 + 16 with no overlap now that an excluded question is no longer a
 % census row.
+%
+% CUT 2026-09-23 to ~750 words, from ~1,430. Gone: the survey of the
+% histogram's three largest categories, which fig:failures shows and
+% which the section explicitly does not argue from, keeping only the
+% environment-gap hedge counts that check_paper_numbers.py pins; and
+% the second statement of the consensus-filtering consequence, which is
+% made once here and once in the conclusion rather than three times.
+% Every pinned count survived.
 % ---------------------------------------------------------------------
 
 \section{Error Analysis}\label{sec:erroranalysis}
@@ -33,19 +37,16 @@
 After the label-defect exclusions of \Cref{sec:defects}, AGR's residual
 non-hits on the two samples number $262$: $86$ on WebQSP and $176$ on
 ComplexWebQuestions. Six of them, one and five, are the surface-form
-near-misses of \Cref{sec:protocol}, answers that strict matching rejects
-and aggressive normalisation accepts; they are scoring artefacts rather
-than reasoning failures and were set aside. Every one of the remaining
+near-misses of \Cref{sec:protocol}, scoring artefacts rather than
+reasoning failures, and were set aside. Every one of the remaining
 $256$, $85$ and $171$, was read and labelled by hand against its full
-execution trace. The counts below are therefore counts over a population
-rather than estimates from a sample, and no category is extrapolated.
-The reading protocol was fixed before it began. For each trace, find
-where the trajectory \emph{first} left the correct path, and label that
-point rather than the last visible symptom. Wrong answers and hedges are
-kept separate throughout, because the two are not the same kind of
-failure. A wrong answer is a reasoning error. A hedge is usually a
-coverage gap that never produced a committal claim. \Cref{fig:failures}
-gives the census.
+execution trace, so the counts below are over a population rather than
+estimates from a sample. The reading protocol was fixed before it began:
+for each trace, find where the trajectory \emph{first} left the correct
+path, and label that point rather than the last visible symptom. Wrong
+answers and hedges are kept separate throughout, because a wrong answer
+is a reasoning error while a hedge is usually a coverage gap that never
+produced a committal claim. \Cref{fig:failures} gives the census.
 
 \begin{figure}[!tb]
   \begin{center}
@@ -59,22 +60,20 @@ gives the census.
   \label{fig:failures}
 \end{figure}
 
-The bulk of the distribution is unsurprising. Choosing the wrong
-relation to follow is the base rate of graph navigation, and it is the
-largest category overall. Composite claims, in which an unverifiable
+The bulk of the distribution is unsurprising: choosing the wrong
+relation to follow is the base rate of graph navigation and the largest
+category overall, and composite claims, in which an unverifiable
 component drags down a verifiable one, are nearly absent on WebQSP and
-the largest category on ComplexWebQuestions, because that benchmark's
-template-generated questions carry conjunctions and constraints that
-WebQSP's search-log questions rarely do. The same construction explains
-the third-largest category. Questions whose answer is a date, a number,
-or a superlative fall into the class \Cref{sec:environment} named as
-unanswerable in this environment, and on ComplexWebQuestions the system
-hedges on them more than three times as often as it asserts something
-wrong, $24$ against $7$. That is the behaviour the drafting prompt's
-grounding provisions were written to produce, visible in the one place
-where the environment guarantees the system cannot succeed. Two smaller
-categories are reported in full instead, because they generalise past
-this architecture.
+largest on ComplexWebQuestions, whose template-generated questions carry
+conjunctions and constraints that WebQSP's search-log questions rarely
+do. Questions whose answer is a date, a number, or a superlative fall
+into the class \Cref{sec:environment} named as unanswerable here, and on
+ComplexWebQuestions the system hedges on them more than three times as
+often as it asserts something wrong, $24$ against $7$ --- the behaviour
+the drafting prompt's grounding provisions were written to produce,
+visible in the one place where the environment guarantees failure. Two
+smaller categories are reported in full instead, because they generalise
+past this architecture.
 
 \subsection{The Echo Attractor}\label{sec:echo}
 
@@ -82,95 +81,83 @@ The most instructive failure mode is one that every grounding check in
 this paper passes. The system resolves a real entity, reached through a
 real edge, and states a fact that is genuinely true. It is not what was
 asked. We name this the \textbf{echo attractor}: a true, well-grounded
-entity sitting one hop from the answer in the graph's structure.
-
-It takes two shapes. \emph{Topic confusion} picks a neighbour in a tight
-naming cluster. Asked who plays Lex Luthor on \emph{Smallville}, the
+entity sitting one hop from the answer in the graph's structure. It
+takes two shapes. \emph{Topic confusion} picks a neighbour in a tight
+naming cluster: asked who plays Lex Luthor on \emph{Smallville}, the
 system answers that John Glover plays Lionel Luthor, a different
-character in the same fictional family, with three further Luthor
-variants surfacing in the trace before the run gives up.
-\emph{Granularity} picks the right entity family at the wrong level.
-Asked for a country, the system answers ``Kingdom of Denmark'' where the
-gold answer is ``Denmark'', a genuinely distinct node, the formal
-sovereign-state entity rather than the common-name one. A reader may
-prefer to call the second shape a label-granularity problem rather than
-a system error. We count it against the system because the two nodes are
-distinct in the graph and the question's gold names one of them, and the
-label-defect pass of \Cref{sec:defects} is where the other reading was
-tested, question by question.
+character in the same fictional family. \emph{Granularity} picks the
+right entity family at the wrong level: asked for a country, it answers
+``Kingdom of Denmark'' where the gold answer is ``Denmark'', a genuinely
+distinct node. A reader may prefer to call the second a
+label-granularity problem rather than a system error; we count it
+against the system because the two nodes are distinct in the graph and
+the question's gold names one of them, and the label-defect pass of
+\Cref{sec:defects} is where the other reading was tested, question by
+question.
 
 What makes this a mechanism rather than a residue category is that
 nothing went wrong in the parts of the system built to prevent things
-going wrong. The right edge exists, is retrieved, and is walked. The
-entity returned is verifiably present in the environment. Every
+going wrong. The right edge exists, is retrieved, and is walked; the
+entity returned is verifiably present in the environment, and every
 structural check certifies it. The failure is entirely in \emph{which}
 true fact gets surfaced, which is architecturally distinct both from
-following a wrong edge and from the fact being absent. A claim-level
-check against traversed adjacency cannot catch it by construction. The
-claim is true.
+following a wrong edge and from the fact being absent, and a claim-level
+check against traversed adjacency cannot catch it by construction,
+because the claim is true.
 
 \textbf{The consequence for evaluation methodology is larger than the
 consequence for this system.} Systems that share a graph and a backbone
 converge on the \emph{same} wrong entity for the \emph{same} questions,
-and \Cref{sec:defects} measures how often. Any protocol that treats
-systems as independent observers therefore cannot see it. Consensus
-filtering, ensembling, and majority-vote gold repair all take agreement
-as evidence of correctness, and here agreement is evidence of a shared
-bias instead. Such a protocol will confidently ratify the wrong answer
-in exactly the cases it was introduced to catch.
-
-The echo attractor accounts for $13$ of the $256$ failures read. The
-rate is small and the sample does not support a precise one. The
-contribution is the named mechanism and its methodological consequence,
-not its frequency at this $n$.
+and \Cref{sec:defects} measures how often, so any protocol that treats
+systems as independent observers cannot see it. Consensus filtering,
+ensembling, and majority-vote gold repair all take agreement as evidence
+of correctness, and here agreement is evidence of a shared bias instead,
+so such a protocol will confidently ratify the wrong answer in exactly
+the cases it was introduced to catch. The echo attractor accounts for
+$13$ of the $256$ failures read. The rate is small and the sample does
+not support a precise one: the contribution is the named mechanism and
+its methodological consequence, not its frequency at this $n$.
 
 \subsection{Benchmark Label Defects}\label{sec:defects}
 
 The census required a second pass, because a failure against a wrong
 gold label is not a failure of the system. A consensus pre-pass flagged
 every question where at least three of the five systems agreed on an
-answer the benchmark scored wrong. Each flagged question was then
-adjudicated individually against the graph and the question text.
-
-The two counts must be kept apart. The pre-pass \textbf{flagged} $58$
-WebQSP and $47$ ComplexWebQuestions questions. Adjudication
-\textbf{confirmed} a genuine label defect in $22$ and $19$ of them,
-which is $5.5\%$ and $4.8\%$ of each sample. Confirmed defects split
-into two kinds: gold answers that are simply wrong ($12$ and $17$), and
-questions whose phrasing admits several defensible answers of which the
-benchmark lists one ($10$ and $2$). All $41$ were removed before the
-census began, as benchmark artifacts rather than system failures.
-
-The hand-read then found $16$ more that the pre-pass had missed --- $3$
-on WebQSP and $13$ on ComplexWebQuestions --- and filed them under its
-own gold-noise and ambiguous-question labels. So \textbf{$57$ distinct
-questions} across the two benchmarks turned out to need correcting. That
-the census recovered defects a dedicated consensus pass had missed is
-itself an argument for reading failures individually rather than
-screening them in aggregate.
+answer the benchmark scored wrong, and each was then adjudicated
+individually against the graph and the question text. The two counts
+must be kept apart. The pre-pass \textbf{flagged} $58$ WebQSP and $47$
+ComplexWebQuestions questions; adjudication \textbf{confirmed} a genuine
+label defect in $22$ and $19$ of them, which is $5.5\%$ and $4.8\%$ of
+each sample, splitting into gold answers that are simply wrong ($12$ and
+$17$) and questions whose phrasing admits several defensible answers of
+which the benchmark lists one ($10$ and $2$). All $41$ were removed
+before the census began, as benchmark artifacts rather than system
+failures. The hand-read then found $16$ more that the pre-pass had
+missed --- $3$ on WebQSP and $13$ on ComplexWebQuestions --- so
+\textbf{$57$ distinct questions} across the two benchmarks turned out to
+need correcting. That the census recovered defects a dedicated consensus
+pass had missed is itself an argument for reading failures individually
+rather than screening them in aggregate.
 
 The gap between flagged and confirmed is not adjudication noise. The
-pass flagged $105$ questions and adjudication confirmed $41$. So roughly
-three-fifths of what it flagged was not a bad label at all but several
-systems converging on the same wrong entity. \Cref{tab:consensus} reads
-those $64$ cleared questions row by row, where a row is one consensus
-answer and a question can carry more than one. The triage filed $52$ of
-the $85$ cleared rows as the echo mechanism of \Cref{sec:echo} and the
-rest as relation confusion, an ignored constraint, or the environment
-gap, so the gap between flagged and confirmed is mostly, not entirely,
-the echo attractor. The table also shows that the agreeing systems are
-not independent observers for a second reason besides the graph: they
-share one backbone and one resolver. On ComplexWebQuestions the
-no-retrieval control, which sees no graph at all, is among the agreeing
-systems on $25$ of the $31$ cleared rows and on $11$ of the $16$ echo
-rows, so there the convergence is at least as much a property of what
-the backbone believes as of the graph's neighbourhood structure. On
-WebQSP the control joins $15$ of $54$ rows and $13$ of $36$ echo rows,
-and the two navigators agree with each other on $20$ of the $36$. Of the
-$13$ rows on which all five systems agreed, $9$ were cleared as not a
-defect. The methodological consequence does not depend on which cause
-dominates. A protocol that takes agreement as evidence of correctness
-ratifies the shared answer either way, and had we accepted the pre-pass
+pass flagged $105$ questions and adjudication confirmed $41$, so roughly
+three-fifths of what it flagged was several systems converging on the
+same wrong entity. \Cref{tab:consensus} reads those $64$ cleared
+questions row by row, where a row is one consensus answer and a question
+can carry more than one. The triage filed $52$ of the $85$ cleared rows
+as the echo mechanism of \Cref{sec:echo} and the rest as relation
+confusion, an ignored constraint, or the environment gap. The table also
+shows that the agreeing systems are not independent observers for a
+second reason besides the graph: they share one backbone and one
+resolver. On ComplexWebQuestions the no-retrieval control, which sees no
+graph at all, is among the agreeing systems on $25$ of the $31$ cleared
+rows and on $11$ of the $16$ echo rows, so there the convergence is at
+least as much a property of what the backbone believes as of the graph's
+neighbourhood structure. On WebQSP the control joins $15$ of $54$ rows
+and $13$ of $36$ echo rows, and the two navigators agree with each other
+on $20$ of the $36$. Of the $13$ rows on which all five systems agreed,
+$9$ were cleared as not a defect. The methodological consequence does
+not depend on which cause dominates: had we accepted the pre-pass
 without per-item adjudication, we would have ``corrected'' the benchmark
 toward the systems' shared bias and reported an inflated accuracy for
 every system, including our own.
@@ -207,22 +194,17 @@ every system, including our own.
 reports every system exactly as measured over the full samples, for two
 reasons. Rescoring against labels we adjudicated ourselves would
 substitute one contestable ground truth for another. And the defects cut
-both ways. A broken label can just as easily hand a system a hit as deny
-it one, and $10$ of the $22$ WebQSP exclusions and $4$ of the $19$ on
+both ways: $10$ of the $22$ WebQSP exclusions and $4$ of the $19$ on
 ComplexWebQuestions are questions AGR scored as hits against a label now
-judged defective.
-
-That symmetry also bounds how much the exclusions could matter, which is
-worth stating because the defect rate on its own invites a much larger
-inference. Recomputing every cell of \Cref{tab:main} with the
+judged defective. That symmetry also bounds how much the exclusions
+could matter. Recomputing every cell of \Cref{tab:main} with the
 adjudicated questions removed moves each system by between $+0.001$ and
-$+0.020$ Hits@1 and leaves the ranking on both datasets unchanged. That
-shift is an order of magnitude below the $5.5\%$ and $4.8\%$ defect
-rates, because removing a question the system got right subtracts from
-the numerator as well as the denominator. The exclusions therefore do
-not threaten any comparison this paper draws. What they do establish is
-that a non-trivial share of both benchmarks is mislabelled, which is a
-fact about the benchmarks rather than a correction to be applied to
-them. The adjudication was made by one author with the consensus signal
-visible, and \Cref{sec:limits-measurement} carries that as the
-limitation it is.
+$+0.020$ Hits@1 and leaves the ranking on both datasets unchanged --- an
+order of magnitude below the $5.5\%$ and $4.8\%$ defect rates, because
+removing a question the system got right subtracts from the numerator as
+well as the denominator. The exclusions therefore do not threaten any
+comparison this paper draws. What they do establish is that a
+non-trivial share of both benchmarks is mislabelled, which is a fact
+about the benchmarks rather than a correction to be applied to them. The
+adjudication was made by one author with the consensus signal visible,
+and \Cref{sec:limits-measurement} carries that as the limitation it is.

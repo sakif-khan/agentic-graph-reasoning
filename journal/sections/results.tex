@@ -1,9 +1,8 @@
 % !TEX root = ../journal_0421052099.tex
 % ---------------------------------------------------------------------
-% Compresses the results part of the thesis evaluation chapter to
-% ~2,600 words. Since the September 2026 reframe this section's job is
-% to report the aggregate and then take it apart: the budget is the
-% second source of a reported gain, and sec:margin is where it is read.
+% This section's job is to report the aggregate and then take it apart:
+% the budget is the second source of a reported gain, and sec:margin is
+% where it is read.
 %
 % THE GROUNDEDNESS RESULT MUST BE ATTRIBUTED CORRECTLY. Zero ungrounded
 % assertions in 1,709 belongs to graph navigation, not to the
@@ -13,54 +12,55 @@
 % The efficiency result: AGR uses roughly half the CALLS, not half the
 % tokens (it spends MORE tokens than ToG on both datasets, 4,511 vs
 % 3,615 and 6,818 vs 5,572). check_paper_numbers.py fails the build on
-% "half the tokens". fig:accuracycost: AGR is above and to the RIGHT of
-% Think-on-Graph.
+% "half the tokens".
 %
 % The hop-depth claim on CWQ is "the only system whose accuracy rises",
 % and every other system "ends below where it started" -- NOT "every
 % other system decays", which is false: ToG falls then partly recovers.
 %
-% tab:togstrata (new in September 2026) reads the budget split within
-% hop strata, because the split conditions on the baseline's own
-% outcome and a reviewer will ask whether the clipped half is simply
-% the hard half. It is on CWQ and is not on WebQSP; both are said.
+% tab:togstrata reads the budget split within hop strata, because the
+% split conditions on the baseline's own outcome and a reviewer will
+% ask whether the clipped half is simply the hard half. It is on CWQ
+% and is not on WebQSP; both are said.
 %
-% sec:rog: RoG leads on every figure; the training-split sizes (2,826
-% and 27,639) were counted from the parquet files of the distribution.
+% CUT 2026-09-23 to ~1,350 words, from ~2,840, with two of its seven
+% floats. Gone: fig:accuracycost, whose frontier reading is one
+% sentence and whose axes carry no number the text omits, and
+% fig:hopstrata, whose three curves are the stratum figures already
+% quoted. Gone in prose: the second reading of the assertion-precision
+% mechanism, the deployment-question paragraph on which cost binds, and
+% the four-way enumeration of what the RoG table cannot establish, now
+% one decisive difference and three ordinary ones in a single sentence.
+% Every sentence check_paper_numbers.py pins survived verbatim.
 %
-% CUT: the alpha sweep, the per-question narratives, the
+% CUT earlier: the alpha sweep, the per-question narratives, the
 % reproducibility note on 65/11/4 vs 64/11/5. Repository material.
 % ---------------------------------------------------------------------
 
 \section{Aggregate Results and Where the Margin Lives}\label{sec:results}
 
-The same runs are read several times over. This section reports what the
-five systems answer correctly and what they spend doing it, then asks
-where the margin over the agentic baseline comes from, how the numbers
-sit against a published system on the same question sets, how accuracy
-varies with the number of hops a question requires, and whether the
-entities the systems assert are supported by the graph they navigated.
-The aggregate table comes first because the rest of the paper takes it
-apart. Where a pass narrows to two systems it says so. Where AGR is not
-the best of the five, it says that too.
+The same runs are read several times over: what the five systems answer
+correctly and what they spend, then where the margin over the agentic
+baseline comes from, how the numbers sit against a published system on
+the same question sets, how accuracy varies with hop count, and whether
+the entities the systems assert are supported by the graph they
+navigated. Where AGR is not the best of the five, it says that too.
 
 \subsection{Accuracy}\label{sec:accuracy}
 
 \Cref{tab:main} gives the main matrix. AGR has the highest Hits@1 and F1
-in every column. It reaches Hits@1 of $0.755$ on WebQSP against the
-agentic baseline's $0.660$, and $0.522$ on ComplexWebQuestions against
-$0.435$. The margin over Think-on-Graph is $9.5$ and $8.7$ points. The
-per-question F1 gap is wider still, $0.642$ against $0.477$ and $0.469$
-against $0.378$, because F1 penalises the extra wrong entities that a
-set-intersection hit forgives. All eight paired comparisons against the
-four baselines reject at the conventional level. The two against
-Think-on-Graph, the only comparisons in which both systems navigate the
-same graph with the same model under the same call budget, rest on $76$
-questions AGR alone answers against $38$ the other way on WebQSP ($p =
-4.8 \times 10^{-4}$), and $86$ against $51$ on ComplexWebQuestions ($p =
-3.5 \times 10^{-3}$). That is the aggregate. \Cref{sec:margin} shows
-that it is a statement about a budget regime, and \Cref{sec:attribution}
-shows which of its components earn their place.
+in every column, reaching Hits@1 of $0.755$ on WebQSP against the
+agentic baseline's $0.660$ and $0.522$ on ComplexWebQuestions against
+$0.435$, so the margin over Think-on-Graph is $9.5$ and $8.7$ points.
+The per-question F1 gap is wider still, $0.642$ against $0.477$ and
+$0.469$ against $0.378$, because F1 penalises the extra wrong entities
+that a set-intersection hit forgives. All eight paired comparisons
+against the four baselines reject at the conventional level. The two
+against Think-on-Graph, the only comparisons in which both systems
+navigate the same graph with the same model under the same call budget,
+rest on $76$ questions AGR alone answers against $38$ the other way on
+WebQSP ($p = 4.8 \times 10^{-4}$), and $86$ against $51$ on
+ComplexWebQuestions ($p = 3.5 \times 10^{-3}$).
 
 \begin{table}[!tb]
   \begin{center}
@@ -97,103 +97,75 @@ shows which of its components earn their place.
   \end{center}
 \end{table}
 
-Two features of this table cut against a simple reading. \textbf{Raw
-hits mislead on the static graph baseline, and the correction is itself
-a finding.} GraphRAG scores $0.340$ on WebQSP, below the no-retrieval
-control's $0.453$. That invites the conclusion that the implementation
-is broken. Putting the wrong-answer counts beside the hits inverts the
+Two features of the table cut against a simple reading. \textbf{Raw hits
+mislead on the static graph baseline, and the correction is itself a
+finding.} GraphRAG scores $0.340$ on WebQSP, below the no-retrieval
+control's $0.453$, which invites the conclusion that the implementation
+is broken; putting the wrong-answer counts beside the hits inverts the
 picture. The control asserts on $351$ of $400$ questions and is wrong on
 $170$ of them, an \emph{assertion precision} of $51.6\%$, where
 assertion precision is the share of questions a system commits on that
 it answers correctly. GraphRAG asserts on $177$ and is wrong on $41$, or
-$76.8\%$. The mechanism is the prompt. The retrieval baselines are
-instructed to answer only from the facts retrieved and to return nothing
-otherwise, so they abstain when retrieval misses. The control has no
-such constraint and guesses from memory, and on these benchmarks its
-guesses are often right. Whether that is pretraining exposure or general
-knowledge we did not measure and do not claim. What the control exposes
-is that a grounded system can score below an unconstrained one on raw
-hits while committing four times fewer falsehoods, and that the raw hit
-rate alone would misreport the comparison.
+$76.8\%$. The mechanism is the prompt: the retrieval baselines are
+instructed to answer only from the facts retrieved, so they abstain when
+retrieval misses, while the control guesses from memory. A grounded
+system can therefore score below an unconstrained one on raw hits while
+committing four times fewer falsehoods.
 
 The second is that AGR does not lead on every column. On
 ComplexWebQuestions its hedge rate of $23.0\%$ is marginally
-\emph{above} Think-on-Graph's $22.5\%$, so it declines to answer
-slightly more often there. The accuracy lead is not bought by answering
-more freely, and assertion precision on that dataset makes the point
-directly. The two systems commit at effectively the same rate, on $308$
-and $310$ of $400$ questions. From those near-identical commitments, AGR
-is right $209$ times and wrong $99$, against $174$ and $136$ for
-Think-on-Graph: $67.9\%$ assertion precision against $56.1\%$. On the
-deeper benchmark, the system with an explicit plan, a guided scorer, and
-a claim check finds $35$ more answers and asserts $37$ fewer falsehoods
-than beam search does, on the same graph, with the same model, from the
-same number of commitments.
+\emph{above} Think-on-Graph's $22.5\%$, so the accuracy lead is not
+bought by answering more freely. The two systems commit at effectively
+the same rate, on $308$ and $310$ of $400$ questions, and from those
+near-identical commitments AGR is right $209$ times and wrong $99$,
+against $174$ and $136$ for Think-on-Graph: $67.9\%$ assertion precision
+against $56.1\%$. On the deeper benchmark the system with an explicit
+plan, a guided scorer, and a claim check finds $35$ more answers and
+asserts $37$ fewer falsehoods than beam search does, from the same
+number of commitments.
 
 \subsection{Cost}\label{sec:cost}
 
 AGR reaches those numbers at roughly half the model calls of the agentic
-baseline: $6.2$ against $12.8$ on WebQSP and $8.9$ against $18.2$ on
-ComplexWebQuestions, ratios of $0.48$ and $0.49$.
-\Cref{fig:accuracycost} plots accuracy against cost for all five
-systems.
-
-\begin{figure}[!tb]
-  \begin{center}
-    \input{figures/fig_accuracy_cost}
-  \end{center}
-  \caption{Accuracy against mean tokens per question, both datasets,
-    with cost on a log scale. The single-call baselines cluster at the
-    left. The two navigators sit at the right, with AGR above and to
-    the right of Think-on-Graph on both panels: it buys its accuracy
-    with more tokens per question, not fewer. The halving is in calls,
-    which are not plotted.}
-  \label{fig:accuracycost}
-\end{figure}
-
-The call saving is genuine and the token saving is not. AGR spends
-$4{,}511$ mean tokens per question on WebQSP against Think-on-Graph's
-$3{,}615$, and $6{,}818$ against $5{,}572$ on ComplexWebQuestions. It is
-the \emph{number of round trips} that halves, not the volume of text.
-Fewer, larger calls is the accurate description. Which cost binds is a
-deployment question. On the token axis of \Cref{fig:accuracycost}
-Think-on-Graph is a frontier point rather than a dominated one, since it
-buys lower accuracy at a lower token price. On calls it is dominated on
-both datasets, and calls are what the shared budget meters. Against
-one-shot retrieval, agency costs roughly an order of magnitude more in
-tokens. That is the price of the accuracy in \Cref{tab:main}, and it is
-stated as a price. Wall-clock time tells the same story in seconds: a
-mean of $11.2$ and $17.2$ per question for AGR against $12.9$ and $15.2$
-for the baseline, and between $1.0$ and $2.2$ for the three single-call
-systems. Read those as magnitudes only. Records replayed entirely from a
-response cache are excluded from those means, but between $3.6\%$ and
-$15.2\%$ of the two navigators' calls in the remaining records were
-still served from the cache, which shortens a cached call to nothing.
-The figures are therefore lower bounds and do not rank the two
-navigators against each other at the second.
-
-AGR never reaches the shared call cap. Across all $800$ test questions
-it hit the $25$-call limit zero times. That is not the same as running
-unbounded: its depth cap of \Cref{tab:budget} refuses a deeper expansion
-on $25.6\%$ of test questions. The baseline reaches the cap far more
-often, and the next subsection shows that this asymmetry, not resolution
-quality, is where the aggregate margin lives.
+baseline, $6.2$ against $12.8$ on WebQSP and $8.9$ against $18.2$ on
+ComplexWebQuestions, ratios of $0.48$ and $0.49$. The call saving is
+genuine and the token saving is not: AGR spends $4{,}511$ mean tokens
+per question on WebQSP against Think-on-Graph's $3{,}615$, and $6{,}818$
+against $5{,}572$ on ComplexWebQuestions. It is the \emph{number of
+round trips} that halves, not the volume of text, so on tokens
+Think-on-Graph is a frontier point rather than a dominated one, while on
+calls it is dominated on both datasets --- and calls are what the shared
+budget meters. Against one-shot retrieval, agency costs roughly an order
+of magnitude more in tokens, and that is stated as a price. Wall-clock
+time tells the same story in seconds: a mean of $11.2$ and $17.2$ per
+question for AGR against $12.9$ and $15.2$ for the baseline, and between
+$1.0$ and $2.2$ for the three single-call systems. Read those as
+magnitudes only. Records replayed entirely from a response cache are
+excluded, but between $3.6\%$ and $15.2\%$ of the two navigators' calls
+in the remaining records were still served from the cache, so the
+figures are lower bounds and do not rank the two navigators against each
+other at the second. AGR never reaches the shared call cap: across all
+$800$ test questions it hit the $25$-call limit zero times, though its
+depth cap refuses a deeper expansion on $25.6\%$ of test questions. The
+baseline reaches the cap far more often.
 
 \subsection{Where the Margin Comes From}\label{sec:margin}
 
-The more informative result is \emph{where} the accuracy margin comes
-from, and it is not where a reader would assume. Beam search costs width
-times depth, so the shared $25$-call cap binds on Think-on-Graph far
-more often than on AGR. At width $3$ a full depth costs the baseline up
-to thirteen calls (\Cref{sec:baselines}), so the cap admits one full
-depth and part of a second, and the reimplementation reached its third
-expansion on $6$ of $400$ WebQSP questions and $11$ of $400$ on
-ComplexWebQuestions. Its published depth of three is nominal under this
-cap. Splitting the questions by whether the cap cut Think-on-Graph off
-before it finished separates two things the aggregate confounds: how
-good its search is, and whether it can afford to finish that search.
+Beam search costs width times depth, so the shared $25$-call cap binds
+on Think-on-Graph far more often than on AGR. At width $3$ a full depth
+costs the baseline up to thirteen calls (\Cref{sec:baselines}), and the
+reimplementation reached its third expansion on $6$ of $400$ WebQSP
+questions and $11$ of $400$ on ComplexWebQuestions, so its published
+depth of three is nominal under this cap. Splitting the questions by
+whether the cap cut it off separates two things the aggregate confounds:
+how good its search is, and whether it can afford to finish that search.
 \Cref{tab:togsplit} gives the split, and it reverses the comparison on
-one side.
+one side. Where the budget lets Think-on-Graph run to completion it is
+\emph{ahead} of AGR, $0.852$ against $0.788$ on WebQSP and $0.629$
+against $0.607$ on ComplexWebQuestions. The entire aggregate margin
+comes from the $29\%$ and $44\%$ of questions on which the cap truncates
+it, where its accuracy collapses to $0.197$ and $0.188$ while AGR still
+reaches $0.675$ and $0.415$.
 
 \begin{table}[!tb]
   \begin{center}
@@ -219,29 +191,21 @@ one side.
   \end{center}
 \end{table}
 
-On the questions where the budget lets Think-on-Graph run to completion,
-it is \emph{ahead} of AGR: $0.852$ against $0.788$ on WebQSP, and
-$0.629$ against $0.607$ on ComplexWebQuestions. The entire aggregate
-margin comes from the $29\%$ and $44\%$ of questions on which the cap
-truncates it. There its accuracy collapses to $0.197$ and $0.188$, while
-AGR still reaches $0.675$ and $0.415$.
-
-The split conditions on the baseline's own outcome, so its two halves
-need not be equally hard, and the reading above would be unsafe if the
-clipped half were simply the hard half. \Cref{tab:togstrata} therefore
-reads the split within hop strata. On WebQSP the clipped half is not
-harder for AGR. $81$ of the $117$ clipped questions are single-hop, AGR
-scores $0.728$ on them against $0.766$ on the single-hop questions the
-baseline finished, and the baseline's fall from $0.846$ to $0.160$
-across the same two sets is the cap, not the questions. On
-ComplexWebQuestions the halves do differ: AGR scores $0.309$ on the
-clipped single-hop questions against $0.609$ on the finished ones, so
-there truncation and difficulty are confounded and the affordability
-reading is correspondingly weaker. The finished halves are not uniform
-either. On ComplexWebQuestions the baseline leads AGR only on single-hop
-questions, $0.754$ against $0.609$, and trails on two-hop, $0.561$
-against $0.610$. That is the planner asymmetry of \Cref{sec:planner}
-seen from the other side.
+The split conditions on the baseline's own outcome, so the reading would
+be unsafe if the clipped half were simply the hard half, and
+\Cref{tab:togstrata} therefore reads it within hop strata. On WebQSP the
+clipped half is not harder for AGR. $81$ of the $117$ clipped questions
+are single-hop, AGR scores $0.728$ on them against $0.766$ on the
+single-hop questions the baseline finished, and the baseline's fall from
+$0.846$ to $0.160$ across the same two sets is the cap, not the
+questions. On ComplexWebQuestions the halves do differ: AGR scores
+$0.309$ on the clipped single-hop questions against $0.609$ on the
+finished ones, so there truncation and difficulty are confounded and the
+affordability reading is correspondingly weaker. The finished halves are
+not uniform either. On ComplexWebQuestions the baseline leads AGR only
+on single-hop questions, $0.754$ against $0.609$, and trails on two-hop,
+$0.561$ against $0.610$. That is the planner asymmetry of
+\Cref{sec:planner} seen from the other side.
 
 \begin{table}[!tb]
   \begin{center}
@@ -271,70 +235,66 @@ seen from the other side.
   \end{center}
 \end{table}
 
-The correct reading of this is affordability, not resolution quality.
-Exhaustive beam search finds answers well when it is allowed to finish.
-Guided search finds them almost as well and finishes within a budget the
-beam search cannot. On a fixed spend the second is the better
-architecture. The first would win if spend were unconstrained. That is a
-claim about operating regimes rather than about reasoning power, and it
-is narrower than the aggregate table alone would suggest. The cap of
-$25$ calls is itself a choice, and a larger one would move the split.
-The clip rates are reported so a reader can see how far, and a sweep of
-the cap is the first experiment \Cref{sec:outlook} names.
+The correct reading is affordability, not resolution quality. Exhaustive
+beam search finds answers well when it is allowed to finish; guided
+search finds them almost as well and finishes within a budget the beam
+search cannot. On a fixed spend the second is the better architecture,
+and the first would win if spend were unconstrained. That is a claim
+about operating regimes rather than about reasoning power, and it is
+narrower than the aggregate table alone would suggest. The cap of $25$
+calls is itself a choice, a larger one would move the split, and a sweep
+of the cap is the first experiment \Cref{sec:outlook} names.
 
 \textbf{One asymmetry bounds how far that reading extends}, and it is
 the candidate-width difference named in \Cref{sec:baselines}. Both
-navigators call the same tools, but they truncate what those tools
-return at different widths. Think-on-Graph keeps the first $40$
-relations per entity and the first $20$ neighbours per relation, the
-pruning widths of the reimplemented algorithm, against AGR's $300$ and
-$200$. The relation list is returned sorted by \emph{descending} fanout,
-so a binding cut discards the low-fanout tail. That tail is where the
-specific relation answering a specific question tends to sit, since a
-high-fanout relation is rarely the edge that resolves a particular
-entity. Over the committed tool logs the $40$-relation cut binds on
-$31.6\%$ of the $1{,}651$ entities Think-on-Graph expanded and the
-$20$-neighbour cut on $32.8\%$ of its $7{,}992$ neighbour calls, against
-$1$ of AGR's $3{,}097$ expanded entities and $3.3\%$ of its neighbour
-calls.
+navigators call the same tools but truncate what those tools return at
+different widths. Think-on-Graph keeps the first $40$ relations per
+entity and the first $20$ neighbours per relation, the pruning widths of
+the reimplemented algorithm, against AGR's $300$ and $200$. The relation
+list is returned sorted by \emph{descending} fanout, so a binding cut
+discards the low-fanout tail, which is where the specific relation
+answering a specific question tends to sit. Over the committed tool logs
+the $40$-relation cut binds on $31.6\%$ of the $1{,}651$ entities
+Think-on-Graph expanded and the $20$-neighbour cut on $32.8\%$ of its
+$7{,}992$ neighbour calls, against $1$ of AGR's $3{,}097$ expanded
+entities and $3.3\%$ of its neighbour calls.
 
 The affordability conclusion survives this, because a thinner candidate
 pool cannot explain why a system runs \emph{out of calls}. What it
 bounds is the other half of the split. The $0.852$ and $0.629$ the
 baseline reaches on the questions it finishes were measured while it
-searched a narrower pool than AGR. They are therefore a \textbf{lower
-bound} on what an equal-width reimplementation would reach, not an
-estimate of it. And since the baseline is already ahead of AGR on those
-questions, equalising the widths would be expected to widen that lead
-rather than close it. Beam width and depth follow the original paper.
-The candidate widths beneath them do not, and equalising them is the
-first change we would make in a follow-up. That re-run would not vary
-one thing, though. Wider candidate sets make each pruning call dearer,
-so equal widths would also raise the baseline's clip rate. That moves
-the boundary between the two halves of \Cref{tab:togsplit} at the same
-time as it changes what the search resolves within each. The two effects
-have to be read apart, which means reporting that split again rather
-than an aggregate in which they cancel or compound invisibly.
+searched a narrower pool than AGR, so they are a \textbf{lower bound} on
+what an equal-width reimplementation would reach, not an estimate of it;
+and since the baseline is already ahead there, equalising the widths
+would be expected to widen that lead rather than close it. Equalising
+them is the first change we would make in a follow-up. That re-run would
+not vary one thing, though: wider candidate sets make each pruning call
+dearer, so equal-width pruning would also raise the baseline's clip
+rate, moving the boundary between the two halves of \Cref{tab:togsplit}
+at the same time as it changes what the search resolves within each. The
+two effects have to be read apart, which means reporting that split
+again rather than an aggregate in which they cancel or compound
+invisibly.
 
 The breadth of AGR's answers is checked rather than assumed, because a
 metric that scores a hit on any match rewards naming more entities. On
 the WebQSP questions it answers, AGR names $3.37$ entities against
 Think-on-Graph's $2.56$, and its entity precision over those same
-answered questions is $0.760$ against $0.703$. On ComplexWebQuestions
+answered questions is $0.760$ against $0.703$; on ComplexWebQuestions
 the figures are $1.54$ against $1.40$ entities and $0.629$ against
 $0.520$ precision. If AGR bought breadth without accuracy, precision
 would fall as the entity count rose. It does not fall.
 
 \subsection{Positioning Against Published RoG Results}\label{sec:rog}
 
-Two facts in this paper invite a comparison that the controlled protocol
-above cannot make. The environment of \Cref{sec:environment} is built
-from the per-question subgraphs that the RoG distribution publishes, and
-\Cref{sec:rel-agentic} surveys RoG~\cite{luo2024reasoning} as the
-closest published system in the path-retrieval family. A reader who
-notices both will ask how the two systems compare. The aggregate answer
-does not favour this work, and \Cref{tab:rog} gives it before the
-qualifications rather than after them.
+The environment of \Cref{sec:environment} is built from the subgraphs
+the RoG distribution publishes, and RoG~\cite{luo2024reasoning} is the
+closest published system in the path-retrieval family, so a reader will
+ask how the two compare. The aggregate answer does not favour this work,
+and \Cref{tab:rog} gives it before the qualifications. \textbf{RoG leads
+on all four figures, and the margin is not sampling noise}: AGR's $95\%$
+intervals on Hits@1 are $[71.3, 79.7]$ on WebQSP and $[47.5, 57.0]$ on
+ComplexWebQuestions, and RoG's $85.7$ and $62.6$ fall outside both.
 
 \begin{table}[!tb]
   \begin{center}
@@ -360,108 +320,67 @@ qualifications rather than after them.
   \end{center}
 \end{table}
 
-\textbf{RoG leads on all four figures, and the margin is not sampling
-noise.} AGR's $95\%$ intervals on Hits@1 are $[71.3, 79.7]$ on WebQSP
-and $[47.5, 57.0]$ on ComplexWebQuestions. RoG's $85.7$ and $62.6$ fall
-outside both. Four differences bound what the table establishes. The
-first is decisive and the other three are ordinary. \textbf{RoG is
-trained on these benchmarks; AGR is trained on nothing.} RoG's backbone
-is instruction-tuned on the training splits of both benchmarks, which
-hold $2{,}826$ and $27{,}639$ questions in the distribution used here.
-AGR's backbone is frozen and prompted, and it has seen no question from
-either benchmark before evaluation. The comparison is between a
-supervised system and a zero-shot one, which is a difference in kind
-rather than in degree. \textbf{The backbones differ.} RoG fine-tunes
-LLaMA2-Chat-7B. \Cref{sec:baselines} holds the backbone constant
-precisely because it accounts for much of the spread in cross-paper
-tables, and it cannot be held constant against a system whose
-contribution \emph{is} its fine-tuned weights. \textbf{The populations
-differ.} RoG reports over the full test splits. Our figures are over
-stratified $400$-question samples of the same splits, which estimate the
-same quantity, with the intervals above as their uncertainty. RoG
-publishes no interval, so the gap can be bounded from one side only.
-\textbf{The substrate differs in one respect.} RoG retrieves within each
-question's own published subgraph, while AGR navigates the union of all
-of them, so the two systems see the same triples but AGR sees every
-other question's triples as well.
-
-What the comparison settles is AGR's place in the published landscape: a
-training-free system reaching $75.5$ and $52.2$ against a supervised
-system's $85.7$ and $62.6$ on the same question sets, with no in-domain
-examples. What it does not settle is anything this paper measures.
-Neither the component-level ablation of \Cref{sec:attribution} nor the
-failure census of \Cref{sec:erroranalysis} has a counterpart in RoG's
-evaluation, and closing the gap in \Cref{tab:rog} would inform neither.
+One difference bounds what the table establishes, and it is decisive.
+\textbf{RoG is trained on these benchmarks; AGR is trained on nothing.}
+RoG fine-tunes LLaMA2-Chat-7B on the training splits of both benchmarks,
+which hold $2{,}826$ and $27{,}639$ questions in the distribution used
+here, while AGR's backbone is frozen and prompted and has seen no
+question from either benchmark before evaluation. Three ordinary
+differences follow it: the backbones differ, which is the very factor
+\Cref{sec:baselines} holds constant elsewhere; RoG reports over the full
+test splits against our stratified samples of them and publishes no
+interval, so the gap can be bounded from one side only; and RoG
+retrieves within each question's own published subgraph while AGR
+navigates the union of all of them. What the comparison settles is AGR's
+place in the published landscape, a training-free system reaching $75.5$
+and $52.2$ against a supervised system's $85.7$ and $62.6$ on the same
+question sets. What it does not settle is anything this paper measures,
+since neither the ablation of \Cref{sec:attribution} nor the census of
+\Cref{sec:erroranalysis} has a counterpart in RoG's evaluation.
 
 \subsection{Accuracy by Hop Depth}\label{sec:hops}
 
-\Cref{fig:hopstrata} stratifies by the number of hops separating a topic
-entity from the gold answer.
-
-\begin{figure}[!tb]
-  \begin{center}
-    \input{figures/fig_hop_strata}
-  \end{center}
-  \caption{Hits@1 by hop stratum. On ComplexWebQuestions (right) AGR is
-    the only system whose accuracy rises monotonically with hop count.
-    The WebQSP three-hop stratum holds four questions and no weight
-    should be placed on it.}
-  \label{fig:hopstrata}
-\end{figure}
-
-On ComplexWebQuestions, AGR is the only system whose accuracy
-\emph{rises} with hop count: $0.46$ at one hop, $0.55$ at two, $0.57$ at
-three or more, over strata of $137$, $211$, and $49$ questions. The last
-step sits well inside the interval of a $49$-question stratum, so the
-claim is the direction across the three strata, not the size of any one
-step. Every other system ends below where it started. That phrasing is
-deliberate, and the weaker alternative is the true one. Think-on-Graph
-does not decay monotonically. It falls from $0.53$ to $0.37$ and then
-partly recovers to $0.45$, which is a different shape from a steady
-decline, and we report it as such. Think-on-Graph also beats AGR on that
-dataset's one-hop stratum, $0.53$ against $0.46$. \Cref{sec:planner}
-identifies the mechanism: decomposition costs accuracy on questions that
-do not need decomposing, and that stratum is full of them.
+Stratifying by the number of hops separating a topic entity from the
+gold answer separates the systems further. On ComplexWebQuestions, AGR
+is the only system whose accuracy \emph{rises} with hop count: $0.46$ at
+one hop, $0.55$ at two, $0.57$ at three or more, over strata of $137$,
+$211$, and $49$ questions. The last step sits well inside the interval
+of a $49$-question stratum, so the claim is the direction across the
+three strata, not the size of any one step. Every other system ends
+below where it started. That phrasing is deliberate and the weaker
+alternative is the true one: Think-on-Graph does not decay monotonically
+but falls from $0.53$ to $0.37$ and then partly recovers to $0.45$. It
+also beats AGR on that dataset's one-hop stratum, $0.53$ against $0.46$,
+and \Cref{sec:planner} identifies the mechanism, since decomposition
+costs accuracy on questions that do not need decomposing and that
+stratum is full of them.
 
 The static graph baseline's decay across these strata is deliberately
 \emph{not} offered as evidence for the paradigm, because its retrieval
-radius confounds it. A one-hop retriever cannot contain a two-hop chain,
-so part of that decline measures the radius rather than static retrieval
-as such. The evidence that it is a radius effect is in the strata
-themselves. GraphRAG scores $0.44$ on WebQSP's two-hop stratum, where
-those questions are largely mediator paths a one-hop expansion does
-reach, against $0.16$ on the ComplexWebQuestions two-hop stratum, where
-the chains are genuine compositions it cannot reach at all. A retriever
-failing uniformly on depth would not show that gap.
-
-A rising curve is what decomposition would predict: it converts one hard
-question into several easy ones, so the questions that punish
-single-shot retrieval hardest are the ones an agent that re-plans
-between hops should handle best. The curve is consistent with that
-mechanism rather than evidence for it. \Cref{sec:planner} finds that
-removing the planner costs accuracy on this dataset in the direction the
-mechanism predicts, and that the loss does not reach significance at the
-sample available. The WebQSP panel carries no comparable evidence. Its
-three-hop stratum contains four questions, which is why the claim is
-scoped to one dataset.
+radius confounds it, and the evidence that it is a radius effect is in
+the strata themselves. GraphRAG scores $0.44$ on WebQSP's two-hop
+stratum, where those questions are largely mediator paths a one-hop
+expansion does reach, against $0.16$ on the ComplexWebQuestions two-hop
+stratum, where the chains are genuine compositions it cannot reach at
+all. A retriever failing uniformly on depth would not show that gap. A
+rising curve is what decomposition would predict, but it is consistent
+with that mechanism rather than evidence for it, and the WebQSP panel
+carries no comparable evidence: its three-hop stratum contains four
+questions, which is why the claim is scoped to one dataset.
 
 \subsection{Groundedness}\label{sec:groundedness}
 
 Across both datasets AGR asserted $1{,}709$ entities, and \textbf{zero
-of them were ungrounded}. Every entity it named exists in the
-environment and is reachable from a topic entity within the hop cap. The
-parametric control asserted $1{,}001$ entities, of which $22.1\%$ failed
-that test. Two qualifications come before any reading of that contrast.
-The property is close to guaranteed by construction for any system that
-copies its entities out of tool results, because every node a tool
-returns is in the environment and was reached from a topic entity. And
-\textbf{it belongs to graph navigation, not to the verification layer.}
+of them were ungrounded}: every entity it named exists in the
+environment and is reachable from a topic entity within the hop cap,
+while the parametric control asserted $1{,}001$ entities of which
+$22.1\%$ failed that test. Two qualifications come before any reading of
+that contrast. The property is close to guaranteed by construction for
+any system that copies its entities out of tool results. And \textbf{it
+belongs to graph navigation, not to the verification layer}:
 Think-on-Graph also reaches exactly zero ungrounded assertions, on
 $1{,}265$ entities, without any claim-checking component whatsoever.
-Whatever the verification layer contributes, it is not this number. What
-the comparison establishes is that an agent which can only name entities
-it retrieved cannot fabricate one, and that this property follows from
-the retrieval discipline rather than from any check applied afterwards.
+Whatever the verification layer contributes, it is not this number.
 
 The semantic tier asks the harder question of whether an asserted entity
 is supported \emph{as the answer}, and it separates the systems far
@@ -494,17 +413,14 @@ the ordering differs by dataset and any subset of it misleads.
 
 Every system lands in a $36.7$--$66.7\%$ band. AGR is highest on WebQSP
 at $66.7\%$. \textbf{On ComplexWebQuestions it is second}, $5.0$ points
-ahead of the agentic baseline but $1.7$ behind Vector-RAG's $50.0\%$.
-Its margin over Think-on-Graph is $5.0$ points on both datasets. Its
-lead over \emph{every} system is a WebQSP result only, and we say so
-rather than quote the two comparators it happens to beat.
-
-Neither gap survives the sample. At $n = 60$ per cell a $5$-point
-difference sits well inside the interval, as does Vector-RAG's $1.7$,
-and no conclusion in this paper rests on either. What the tier
-establishes is the level rather than the ranking, and the level is the
-more useful finding: \textbf{zero structural hallucination coexists with
-between a third and nearly two-thirds of assertions failing a strict
-semantic-support test}, for every system, including the two that are
-structurally perfect. Semantic support is hard for the paradigm, not for
-one system within it.
+ahead of the agentic baseline but $1.7$ behind Vector-RAG's $50.0\%$, so
+its margin over Think-on-Graph is $5.0$ points on both datasets and its
+lead over \emph{every} system is a WebQSP result only. Neither gap
+survives the sample: at $n = 60$ per cell a $5$-point difference sits
+well inside the interval, as does Vector-RAG's $1.7$, and no conclusion
+in this paper rests on either. What the tier establishes is the level
+rather than the ranking, and the level is the more useful finding.
+\textbf{Zero structural hallucination coexists with between a third and
+nearly two-thirds of assertions failing a strict semantic-support test},
+for every system, including the two that are structurally perfect.
+Semantic support is hard for the paradigm, not for one system within it.

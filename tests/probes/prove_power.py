@@ -5,11 +5,27 @@ in a finally block.
 """
 import io
 import pathlib
+import re
 import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
 T = ROOT / "journal" / "sections" / "attribution.tex"
+
+
+def sub_once(text, find, repl):
+    """Replace `find` even where the 72-column fill broke it across lines.
+
+    The anchors below used to be literal substrings, which made every one
+    of them hostage to the wrap: the September 2026 shortening moved a
+    line break into "for / model scoring" and the probe reported an anchor
+    missing while the sentence sat there in full. Matching on \\s+ between
+    the words is the same fix prove_abstract.py already carries.
+    """
+    pat = r"\s+".join(map(re.escape, find.split()))
+    m = re.search(pat, text)
+    assert m, f"anchor not found: {find!r}"
+    return text[:m.start()] + repl + text[m.end():]
 
 CASES = [
     ("ratio 4:1 -> 3:1 (the wrong value it shipped with)",
@@ -24,7 +40,6 @@ CASES = [
      "Removing claim verification changed",
      "About $30$ discordant pairs split $20$ to $10$ rejects. "
      "Removing claim verification changed"),
-    # Anchors must not span a line break -- the .tex is hard-wrapped.
     ("half-split denominator -> 400 (the error it shipped with)",
      "--- $200$ questions on", "--- $400$ questions on"),
     ("agreement 396/398 -> 399/400 (the error it shipped with)",
@@ -35,8 +50,7 @@ orig = io.open(T, encoding="utf-8").read()
 results = []
 try:
     for name, find, repl in CASES:
-        assert find in orig, f"anchor not found: {find!r}"
-        io.open(T, "w", encoding="utf-8").write(orig.replace(find, repl, 1))
+        io.open(T, "w", encoding="utf-8").write(sub_once(orig, find, repl))
         r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                            cwd=ROOT, capture_output=True, text=True)
         fails = [l.strip() for l in r.stdout.splitlines() if "[FAIL]" in l]

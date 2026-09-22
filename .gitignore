@@ -147,6 +147,12 @@ thumbnail/*.synctex(busy)
 
 thesis_templates/brainstorming/
 
+# Published papers kept alongside the templates as models to write
+# against -- third-party PDFs, several megabytes each, and none of them
+# ours to redistribute. They are read, never built, so nothing in the
+# repository depends on one being present.
+thesis_templates/journals/
+
 # ==========================================
 # OS / System Artifacts
 # ==========================================

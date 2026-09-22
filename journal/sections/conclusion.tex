@@ -1,6 +1,6 @@
 % !TEX root = ../journal_0421052099.tex
 % ---------------------------------------------------------------------
-% ~400 words. No new numbers, no new claims.
+% No new numbers, no new claims.
 %
 % Close on the attribution argument, not on the system. Since the
 % September 2026 reframe the paper IS the attribution argument, so the
@@ -8,6 +8,9 @@
 % what the measurement could not see. The thesis's closing remark --
 % fact verification is the easier half, relevance verification is the
 % half still open -- sits in the third paragraph.
+%
+% Trimmed 2026-09-23 with the rest of the manuscript, from ~500 words
+% to ~330. Four paragraphs became three; nothing was dropped.
 % ---------------------------------------------------------------------
 
 \section{Conclusion}\label{sec:conclusion}
@@ -20,22 +23,22 @@ system has the highest accuracy in every column, at roughly half the
 model calls of the agentic baseline. The rest of the paper is what that
 result turns out to be made of. The entire margin over the agentic
 baseline comes from the questions on which the shared budget truncates
-it; where the budget lets that baseline finish, it is ahead. The margin
-is a finding about affordability under a fixed spend, and it is bounded
-by a candidate-width confound we measured rather than assumed. Against
-the published figures of a system fine-tuned on these benchmarks, AGR
-trails on every number, and we report that too.
+it, and where the budget lets that baseline finish it is ahead, so the
+margin is a finding about affordability under a fixed spend --- bounded,
+in turn, by a candidate-width confound we measured rather than assumed.
+Against the published figures of a system fine-tuned on these
+benchmarks, AGR trails on every number, and we report that too.
 
 The result we consider most useful is the one that did not go our way.
 Of four components, three could not be shown to earn their cost at the
 power available, and we state the smallest effect each test could have
 caught. That includes the claim-verification layer the system was
-designed around, which changes the answer on one question per dataset.
-What it delivers is an output contract rather than an accuracy gain, and
-the contract is narrower than its description: one route of three
-attaches evidence, and the evidence is counted rather than kept. The
-fourth component was actively harmful on the shallower benchmark.
-Removing the planner improved accuracy and cut token use, because
+designed around, which changes the answer on one question per dataset;
+what it delivers is an output contract rather than an accuracy gain, and
+the contract is narrower than its description, since one route of three
+attaches evidence and the evidence is counted rather than kept. The
+fourth component was actively harmful on the shallower benchmark:
+removing the planner improved accuracy and cut token use, because
 decomposing a question that has no compositional structure discards the
 context that would have answered it. Decomposition is conditionally
 beneficial, and the condition is measurable.
@@ -45,17 +48,16 @@ traverses a real graph and copies its answers out of real triples can be
 made to assert nothing ungrounded. That problem is solved, and the
 navigation paradigm solves it, not any checking layer built on top. What
 remains is an answer that is grounded, connected, and true, and is still
-not the answer to the question that was asked. Systems sharing a graph
+not the answer to the question that was asked; systems sharing a graph
 and a backbone converge on that answer together, so a protocol that
 takes their agreement as evidence ratifies it. Fact verification against
 a knowledge graph turns out to be the easier half of the problem.
-Relevance verification is the half still open.
-
-The attribution result is a claim about how this field measures rather
-than about this architecture. A component adopted because the assembly
-containing it performed well may be contributing nothing, or less than
-nothing, and a margin reported as an architectural advantage may be a
-budget regime. The only way to know is to remove the component, vary the
-budget, and test. We would rather report three nulls, a harmful
-component, and a margin that lives in a cap than a system that works for
-reasons nobody has checked.
+Relevance verification is the half still open. The attribution result is
+finally a claim about how this field measures rather than about this
+architecture. A component adopted because the assembly containing it
+performed well may be contributing nothing, or less than nothing, and a
+margin reported as an architectural advantage may be a budget regime.
+The only way to know is to remove the component, vary the budget, and
+test. We would rather report three nulls, a harmful component, and a
+margin that lives in a cap than a system that works for reasons nobody
+has checked.

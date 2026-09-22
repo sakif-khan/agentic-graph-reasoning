@@ -5,11 +5,33 @@ range. error-analysis.tex is restored in a finally block.
 """
 import io
 import pathlib
+import re
 import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
 E = ROOT / "journal" / "sections" / "error-analysis.tex"
+
+
+def sub_once(text, find, repl):
+    """Replace `find` even where the 72-column fill broke it across lines.
+
+    Same fix as prove_power.py and prove_abstract.py carry: a literal
+    anchor is hostage to the wrap, and the 2026-09-23 shortening moved
+    breaks into several of the anchors below.
+
+    NOTE: two anchors here are stale for a different reason and this does
+    not rescue them. The census correction of September 2026 changed the
+    count of defects the hand-read found beyond the pre-pass from 17 to
+    16, and its CWQ share from 14 to 13, so the cases keyed on "$17$ more"
+    and "and $14$ on ComplexWebQuestions" no longer match the paper. They
+    have been failing since that correction. Re-point them at 16 and 13
+    only after checking which defect each case is meant to reinstate.
+    """
+    pat = r"\s+".join(map(re.escape, find.split()))
+    m = re.search(pat, text)
+    assert m, f"anchor not found: {find!r}"
+    return text[:m.start()] + repl + text[m.end():]
 
 CASES = [
     ("reinstate 'roughly the defect rate'",
@@ -40,8 +62,7 @@ orig = io.open(E, encoding="utf-8").read()
 out = []
 try:
     for name, find, repl in CASES:
-        assert find in orig, f"anchor not found: {find!r}"
-        io.open(E, "w", encoding="utf-8").write(orig.replace(find, repl, 1))
+        io.open(E, "w", encoding="utf-8").write(sub_once(orig, find, repl))
         r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                            cwd=ROOT, capture_output=True, text=True)
         out.append((name, r.returncode,

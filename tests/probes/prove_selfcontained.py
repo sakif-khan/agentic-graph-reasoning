@@ -15,12 +15,20 @@ import sys
 ROOT = pathlib.Path(sys.argv[1])
 PAPER = ROOT / "journal"
 MAIN = PAPER / "journal_0421052099.tex"
-FRAME = PAPER / "sections" / "framework.tex"
+# The two \input cases used to mutate framework.tex's
+# \input{figures/fig_claim_path}. That figure was cut from the manuscript
+# on 2026-09-23 when the paper was shortened, so there was no longer an
+# \input there to corrupt and both cases failed on a missing anchor. They
+# now use the failure histogram, which the manuscript does still \input.
+# fig_claim_path.tex itself stays in journal/figures/ and stays pinned to
+# the thesis's copy by test_the_copied_figure_has_not_drifted, so the
+# drift case below is unaffected by the figure leaving the body.
+ERRS = PAPER / "sections" / "error-analysis.tex"
 BIB = PAPER / "journal.bib"
 FIG = PAPER / "figures" / "fig_claim_path.tex"
 
 orig = {p: io.open(p, encoding="utf-8", newline="").read()
-        for p in (MAIN, FRAME, BIB, FIG)}
+        for p in (MAIN, ERRS, BIB, FIG)}
 
 
 def edit(path, old, new):
@@ -41,9 +49,9 @@ CASES = [
     ("shipped: bibliography escapes the directory",
      edit(MAIN, r"\bibliography{journal}",
           r"\bibliography{../thesis_book/buetcsepgthesis}")),
-    ("shipped: claim-path figure escapes the directory",
-     edit(FRAME, r"\input{figures/fig_claim_path}",
-          r"\input{../thesis_book/figures/fig_claim_path}")),
+    ("shipped: a figure \\input escapes the directory",
+     edit(ERRS, r"\input{figures/fig_failure_histogram}",
+          r"\input{../thesis_book/figures/fig_failure_histogram}")),
     ("bibliography named but not present",
      delete(BIB)),
     ("bibliography copy drifts from the thesis",
@@ -52,8 +60,8 @@ CASES = [
      edit(FIG, r"\definecolor{agrNode}{HTML}{0072B2}",
           r"\definecolor{agrNode}{HTML}{FF0000}")),
     ("an input points at a file that was never copied",
-     edit(FRAME, r"\input{figures/fig_claim_path}",
-          r"\input{figures/fig_claim_path_v2}")),
+     edit(ERRS, r"\input{figures/fig_failure_histogram}",
+          r"\input{figures/fig_failure_histogram_v2}")),
 ]
 
 out = []

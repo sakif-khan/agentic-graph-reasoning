@@ -260,9 +260,13 @@ def main():
     # Both verifier arms have a single discordant pair, where no split can
     # reach alpha at all. That is a stronger statement than a failed test and
     # the paper has to make it, not soften it into "underpowered".
+    # Whitespace-tolerant, like the kappa and candidate-width blocks below:
+    # the .tex hard-wraps at 72 columns, and the September 2026 shortening
+    # moved the break into "no split / whatsoever", which reported the
+    # sentence missing while it sat there in full.
     ck("the verifier arms are reported as untestable, not merely underpowered",
        all(gaps[(ds, "noverifier")] is None for ds in ("webqsp", "cwq"))
-       and "no split whatsoever" in text,
+       and re.search(r"no\s+split\s+whatsoever", text) is not None,
        f"discordant pairs: {disc[('webqsp','noverifier')]} and "
        f"{disc[('cwq','noverifier')]}")
 
@@ -1220,8 +1224,12 @@ def main():
         want = (cons["webqsp"][key], cons["cwq"][key])
         ck(f"tab:consensus row '{key}' = {want}", got == want, f"table {got or 'NO ROW'}")
     cleared_q = cons["webqsp"]["questions"] + cons["cwq"]["questions"]
+    # Whitespace-tolerant for the same reason as the verifier-arm check
+    # above: the 72-column fill can break "cleared / questions", and a
+    # plain substring test then reports a sentence that is present.
     ck("the cleared-question count equals flagged minus confirmed",
-       cleared_q == flagged - confirmed and f"${cleared_q}$ cleared questions" in text,
+       cleared_q == flagged - confirmed
+       and re.search(rf"\${cleared_q}\$\s+cleared\s+questions", text) is not None,
        f"{flagged} - {confirmed} = {flagged - confirmed}; pre-pass {cleared_q}")
     says(r"filed \$(\d+)\$ of the \$(\d+)\$ cleared rows as the echo mechanism",
          "the echo share of cleared rows is the pre-pass's own",
