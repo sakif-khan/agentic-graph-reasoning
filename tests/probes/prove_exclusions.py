@@ -11,6 +11,12 @@ import sys
 
 ROOT = pathlib.Path(sys.argv[1])
 E = ROOT / "journal" / "sections" / "error-analysis.tex"
+# The exclusion-SENSITIVITY paragraph moved to Appendix D on 2026-09-23
+# (\label{app:sensitivity}) when the manuscript went on a hard page budget,
+# while the exclusion and census COUNTS stayed in the body. So this probe
+# now spans two files and each case names its own. Nothing about which
+# defect a case reinstates changed -- only where the sentence lives.
+A = ROOT / "journal" / "sections" / "appendix-measurements.tex"
 
 
 def sub_once(text, find, repl):
@@ -34,41 +40,48 @@ def sub_once(text, find, repl):
     return text[:m.start()] + repl + text[m.end():]
 
 CASES = [
-    ("reinstate 'roughly the defect rate'",
+    (A, "reinstate 'roughly the defect rate'",
      "moves each system by between",
      "raises every system by roughly the defect rate and moves each by between"),
-    ("reinstate the label-defect floor claim",
+    (A, "reinstate the label-defect floor claim",
      "which is a fact",
      "The samples carry a label-defect floor of five per cent. This is a fact"),
-    ("sensitivity top of range 0.020 -> 0.055 (the defect rate)",
+    (A, "sensitivity top of range 0.020 -> 0.055 (the defect rate)",
      "and $+0.020$", "and $+0.055$"),
-    ("sensitivity bottom of range 0.001 -> 0.010",
+    (A, "sensitivity bottom of range 0.001 -> 0.010",
      "between $+0.001$", "between $+0.010$"),
     # The 57 decomposition: 41 + 17 - 1.
-    ("reinstate '57 as 22 and 19 reconciled'",
+    (E, "reinstate '57 as 22 and 19 reconciled'",
      "All $41$ were removed",
      "and $57$ distinct questions once the one question appearing in both "
      "counts is resolved. All $41$ were removed"),
-    ("drop the 17 census-found defects",
+    (E, "drop the 17 census-found defects",
      "found $17$ more that the pre-pass had missed --- $3$",
      "found some more that the pre-pass had missed --- $3$"),
-    ("census-defect split 14 -> 15",
+    (E, "census-defect split 14 -> 15",
      "and $14$ on ComplexWebQuestions", "and $15$ on ComplexWebQuestions"),
-    ("exclusion total 41 -> 40",
+    (E, "exclusion total 41 -> 40",
      "All $41$ were removed", "All $40$ were removed"),
 ]
 
-orig = io.open(E, encoding="utf-8").read()
+orig = {p: io.open(p, encoding="utf-8").read() for p in (E, A)}
 out = []
 try:
-    for name, find, repl in CASES:
-        io.open(E, "w", encoding="utf-8").write(sub_once(orig, find, repl))
+    for path, name, find, repl in CASES:
+        io.open(path, "w", encoding="utf-8").write(
+            sub_once(orig[path], find, repl))
         r = subprocess.run([sys.executable, "scripts/check_paper_numbers.py"],
                            cwd=ROOT, capture_output=True, text=True)
         out.append((name, r.returncode,
                     [l.strip() for l in r.stdout.splitlines() if "[FAIL]" in l]))
+        # Restore BOTH between cases, not just the one just written: the
+        # cases now span two files, and leaving the previous one corrupted
+        # would test a combination no case describes.
+        for p, s in orig.items():
+            io.open(p, "w", encoding="utf-8").write(s)
 finally:
-    io.open(E, "w", encoding="utf-8").write(orig)
+    for p, s in orig.items():
+        io.open(p, "w", encoding="utf-8").write(s)
 
 for name, rc, fails in out:
     print(f"{'CAUGHT' if rc else 'MISSED'}  {name}")

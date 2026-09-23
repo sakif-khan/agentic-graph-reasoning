@@ -11,7 +11,13 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(sys.argv[1])
-R = ROOT / "journal" / "sections" / "results.tex"
+# Appendix D, not results.tex, since 2026-09-23: the hard page budget moved
+# tab:tier2 and the paragraph reading it out of the body under
+# \label{app:tier2}. Every cell and every phrase the cases below corrupt
+# went with it, so the defects are unchanged -- only the file holding them
+# is. The checker globs journal/sections/*.tex, and this appendix lives
+# there on purpose, so corrupting it still reaches the same rules.
+R = ROOT / "journal" / "sections" / "appendix-measurements.tex"
 orig = io.open(R, encoding="utf-8").read()
 
 SHIPPED = """The semantic tier separates the systems where the structural tier
@@ -27,9 +33,14 @@ ordering rather than as independent confirmation of it.
 # Replace the whole rewritten block with the version that shipped.
 # lambda, not a plain string: re.sub treats the replacement as a template,
 # so the LaTeX in SHIPPED ("\emph") raises "bad escape \e".
+#
+# The anchor is the paragraph that reads tab:tier2 out. It opens on the
+# band and closes on the pointer to sec:groundedness; the body's one-
+# sentence summary of the tier is NOT this paragraph and must not be the
+# anchor, because it quotes no cell and so cannot carry a selective quote.
 selective = re.sub(
-    r"The semantic tier asks the harder question[\s\S]*?"
-    r"one system within it\.\n",
+    r"Every system lands in a[\s\S]*?"
+    r"\\Cref\{sec:groundedness\} states\.\n",
     lambda _m: SHIPPED, orig)
 assert selective != orig, "could not locate the rewritten block"
 

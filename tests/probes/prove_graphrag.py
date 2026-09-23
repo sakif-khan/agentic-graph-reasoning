@@ -11,7 +11,12 @@ import sys
 
 ROOT = pathlib.Path(sys.argv[1])
 R = ROOT / "journal" / "sections" / "results.tex"
-S = ROOT / "journal" / "sections" / "setup.tex"
+# The GraphRAG truncation figure left setup.tex on 2026-09-23: the hard page
+# budget moved how the static baseline was built to Appendix C, under
+# \label{app:graphrag}. setup.tex keeps only the CLAIM it licenses, and no
+# longer carries $72.5\%$, so the last case reads the appendix instead. The
+# defect it reinstates is unchanged.
+S = ROOT / "journal" / "sections" / "appendix-protocol.tex"
 
 
 def sub_once(text, find, repl):

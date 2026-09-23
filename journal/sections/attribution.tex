@@ -1,6 +1,8 @@
 % !TEX root = ../journal_0421052099.tex
 % ---------------------------------------------------------------------
-% THE PAPER'S HEADLINE SECTION since the September 2026 reframe.
+% THE PAPER'S HEADLINE SECTION since the September 2026 reframe, and
+% the one protected hardest under the page budget: it is cut less than
+% any other section because it is the contribution.
 %
 % Delta is ablated-minus-reference, so POSITIVE MEANS REMOVING THE
 % COMPONENT IMPROVED THE METRIC. Say that once, plainly, before the
@@ -12,30 +14,23 @@
 % be called "marginally significant" (p = 0.088).
 %
 % The three nulls get the same length as the positive result. That is
-% the methodological argument, not an apology. The verification layer's
-% null is the paper's own designed-around component producing nothing
-% measurable, and the honest reading is the thesis's: it does not change
-% how often AGR is right, it changes how often AGR is right for a reason
-% it can exhibit -- with sec:limits-contribution bounding "exhibit".
+% the methodological argument, not an apology.
 %
-% Power belongs HERE, not deferred to Discussion: n = 200 / 198, so a
-% null is "no effect detected at this power". scripts/check_paper_numbers.py
-% recomputes every figure in that subsection and pins each to its own
-% sentence. Do not reword those sentences without re-running the check.
+% Power belongs HERE, not deferred to Discussion. check_paper_numbers
+% recomputes every figure in sec:power and pins each to its own
+% sentence; do not reword those without re-running the check.
 %
-% CUT 2026-09-23 (two passes) to ~880 words, from ~1,600. The
-% compression is in the connective tissue -- the restated motive at the
-% head of each null, the second statement of the gating recommendation
-% (made once now, in sec:outlook), and the closing paragraph on
-% one-run/one-at-a-time, which sec:limits-comparison carries. NO NULL
-% LOST A NUMBER: the length the nulls get is the methodological
-% argument, so compress their sentences, never their content.
+% CUT 2026-09-23 (third pass) to ~980 words, from ~1,600. The
+% implementation detail bounding the backtracking and scoring nulls
+% moved to Appendix D (app:nulldetail); both nulls keep their deltas,
+% their p-values, their token savings and their mechanism sentence
+% here. NO NULL LOST A NUMBER THE BODY NEEDS.
 % ---------------------------------------------------------------------
 
 \section{Component-Level Attribution}\label{sec:attribution}
 
 Four conditions each remove exactly one component from the unmodified
-system, as \Cref{sec:removal} specifies, and re-run the identical
+system, as \ref{sec:removal} specifies, and re-run the identical
 questions: no planner, no backtracking, no claim verification, and
 embedding-only scoring ($\alpha = 1$). Each is compared against the
 reference on the same half-split, drawn as half of every hop stratum
@@ -91,34 +86,33 @@ correct only with it, so the cheaper system is the more accurate one.
 
 The mechanism is over-decomposition. WebQSP is predominantly a
 single-hop benchmark: $256$ of its $400$ questions need one hop. Asked
-to decompose a question that has no compositional structure, the planner
+to decompose a question with no compositional structure, the planner
 manufactures sub-objectives that are not really separable, the explorer
 then scores candidate edges against a fragment of the question rather
-than against the question, and it discards exactly the context that
-would have identified the right relation. The planner prompt carries a
-single-hop exemplar precisely to show that not decomposing is a valid
-output, and that exemplar is evidently not enough. The per-stratum
-breakdown locates the damage: on the WebQSP half-split, removing the
-planner raises one-hop Hits@1 from $0.75$ to $0.85$ and two-hop Hits@1
-from $0.84$ to $0.89$.
+than the question, and it discards exactly the context that would have
+identified the right relation. The planner prompt carries a single-hop
+exemplar to show that not decomposing is a valid output, and that is
+evidently not enough. The per-stratum breakdown locates the damage: on
+the WebQSP half-split, removing the planner raises one-hop Hits@1 from
+$0.75$ to $0.85$ and two-hop Hits@1 from $0.84$ to $0.89$.
 
 On ComplexWebQuestions the direction reverses, as the mechanism
 predicts. That benchmark is genuinely compositional, only $137$ of $400$
 questions are single-hop, and removing the planner costs $0.047$ F1.
 \textbf{That arm does not reach significance} ($p = 0.088$), and we
-report it as a direction rather than an effect. We do not describe it as
+report it as a direction rather than an effect; we do not call it
 marginally significant, because at this sample size that phrase would
 assert more than the data carries. The strata show a coherent mechanism
 rather than noise: without the planner, one-hop Hits@1 \emph{improves}
 from $0.49$ to $0.54$, two-hop collapses from $0.48$ to $0.34$, and
-three-hop-plus moves from $0.62$ to $0.54$. That is exactly the pattern
-in which decomposition helps genuine composition and hurts questions
-that do not need it, and it is the pattern \Cref{tab:togstrata} shows
-from the other side. Pooling the two datasets would average a
-significant improvement against a non-significant harm and report
-approximately nothing. The asymmetry \emph{is} the result: decomposition
-is not a general-purpose benefit but a mechanism whose value depends on
-whether the question has compositional structure to find.
+three-hop-plus moves from $0.62$ to $0.54$. That is the pattern in which
+decomposition helps genuine composition and hurts questions that do not
+need it, and it is the pattern \Cref{tab:togstrata} shows from the other
+side. Pooling the two datasets would average a significant improvement
+against a non-significant harm and report approximately nothing. The
+asymmetry \emph{is} the result: decomposition is not a general-purpose
+benefit but a mechanism whose value depends on whether the question has
+compositional structure to find.
 
 \subsection{Three Components with No Detected Effect}\label{sec:nulls}
 
@@ -133,31 +127,19 @@ reference condition records $38$ and $108$ backtracks over the $398$
 paired questions, and on those same runs the meter refuses a further
 attempt on $28$ of them, $7.0\%$. A component this seldom exercised
 cannot show a large effect. One implementation detail bounds the null
-further, and we record it rather than smooth it over. The backtracker
-bans the edges of the most recent explorer pass but restores the
-highest-scoring snapshot, which is often older, so everything expanded
-in between stays unbanned (\Cref{sec:statemachine}). Over the main runs,
-$53$ explorer passes re-expanded an anchor-and-relation set the same
-question had already expanded, and at least $65$ of the $262$ backtracks
-restored a depth other than the most recent snapshot's. The null
-therefore describes backtracking as implemented, not backtracking as
-specified, and the accurate summary is that the search rarely needs to
-undo a decision, not that undoing is worthless.
+further and is recorded rather than smoothed over: the backtracker bans
+the edges of the most recent pass but restores an often older snapshot,
+so the null describes backtracking as implemented rather than as
+specified (\ref{app:nulldetail}). The accurate summary is that the
+search rarely needs to undo a decision, not that undoing is worthless.
 
 \textbf{Model scoring.} Setting $\alpha = 1$ removes the language model
 from edge selection entirely. F1 falls by $0.016$ and $0.008$, neither
 significant, while tokens drop $25\%$ and $31\%$. The model term is the
 single most expensive part of the navigation loop, and this experiment
 cannot establish that it earns its cost. The development-set sweep that
-froze $\alpha$ points the same way at a smaller scale: at $\tau = 0.20$
-it scored $61$, $62$, $64$, and $59$ hits of $80$ at $\alpha = 0.3$,
-$0.5$, $0.7$, and $1.0$, so dropping the model term cost five hits
-there, before the entity-filter correction that preceded the test runs.
-One confound is recorded rather than smoothed over: at $\alpha = 1$ the
-scorer takes an early return that leaves the backtracking trigger's
-signal maximum computed over a smaller candidate set, so this
-condition's elevated backtrack count is not attributable to the scoring
-change alone.
+froze $\alpha$ points the same way at a smaller scale, and one confound
+goes with the condition; \ref{app:nulldetail} gives both.
 
 \textbf{Claim verification.} Removing the checking routes of the layer
 AGR was designed around, while leaving the drafting call unchanged,
@@ -185,16 +167,15 @@ claim credit for groundedness.
 \subsection{Statistical Power}\label{sec:power}
 
 These are nulls at low power, not demonstrations of absence. McNemar's
-exact test sees only the \emph{discordant} pairs, the questions on which
-the two conditions disagree, and the null conditions produced very few
-of them. Removing claim verification changed the outcome on exactly one
-question per dataset, and with a single discordant pair no split
-whatsoever can reach significance. So that row is not a test that failed
-to reject; it is the two conditions agreeing on $396$ of the $398$
-paired questions, which is a statement about how rarely the layer alters
-an answer rather than about statistical power. Backtracking produced $8$
-and $11$ discordant pairs, and model scoring $21$ and $18$. At those
-counts the smallest imbalance the exact test could have called
+exact test sees only the \emph{discordant} pairs, and the null
+conditions produced very few. Removing claim verification changed the
+outcome on exactly one question per dataset, and with a single
+discordant pair no split whatsoever can reach significance, so that row
+is not a test that failed to reject: it is the two conditions agreeing
+on $396$ of the $398$ paired questions, a statement about how rarely the
+layer alters an answer rather than about statistical power. Backtracking
+produced $8$ and $11$ discordant pairs, and model scoring $21$ and $18$.
+At those counts the smallest imbalance the exact test could have called
 significant is $8$ and $9$ questions for backtracking, meaning all eight
 would have had to fall the same way, and $11$ and $10$ for model
 scoring, which is between $4.0$ and $5.5$ points of accuracy.
@@ -213,7 +194,7 @@ questions and $55$ of the $198$ on ComplexWebQuestions. On the remaining
 $158$ and $143$, no condition changed the outcome. The intervals in
 \Cref{tab:ablation} say the same thing in F1, since the planner's WebQSP
 interval is the only one of the eight that does not contain zero. Each
-condition was also run once, and the components were removed one at a
+condition was also run once and the components were removed one at a
 time, so three nulls are consistent with the three being individually
 dispensable and jointly necessary, and equally with a system that has
 none of them matching this one at a fraction of the tokens; the

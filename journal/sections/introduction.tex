@@ -56,18 +56,16 @@ each of its components can be removed cleanly, and it asks which of the
 three sources produced the gain.
 
 The system is \textbf{Agentic Graph Reasoning} (AGR), an explicit state
-machine over a constrained, deterministic graph tool API in which a
-program runs the loop and the language model is consulted only at
-bounded decision points. Four components can be removed: a
-\emph{planner} that decomposes the question into sub-objectives, a
-hybrid \emph{edge scorer}, a \emph{backtracker}, and a \emph{structural
-verification layer} that splits each draft answer into atomic claims and
-checks them against the traversed triples before the answer is emitted.
-The last is the component the system was designed around, so we should
-be clear about what it actually checks: its two graph routes ask whether
-an edge joins a claim's endpoints, not whether it is the edge the claim
-asserts, so a claim that X is Y's mother is certified by an edge
-recording that X is Y's child.
+machine over a constrained graph tool API in which a program runs the
+loop and the language model is consulted only at bounded decision
+points. Four components can be removed: a \emph{planner}, an \emph{edge
+scorer}, a \emph{backtracker}, and a \emph{structural verification
+layer} that splits each draft answer into atomic claims and checks them
+against the traversed triples before the answer is emitted. The last is
+the component the system was designed around, and its two graph routes
+ask whether an edge joins a claim's endpoints, not whether it is the
+edge the claim asserts, so a claim that X is Y's mother is certified by
+an edge recording that X is Y's child.
 \Cref{sec:verification,sec:limits-contribution} bound it further.
 
 On $400$ questions from each of WebQSP~\cite{yih2016value} and

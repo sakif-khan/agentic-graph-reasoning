@@ -23,12 +23,17 @@ MAIN = PAPER / "journal_0421052099.tex"
 # fig_claim_path.tex itself stays in journal/figures/ and stays pinned to
 # the thesis's copy by test_the_copied_figure_has_not_drifted, so the
 # drift case below is unaffected by the figure leaving the body.
-ERRS = PAPER / "sections" / "error-analysis.tex"
+# Then on 2026-09-23 the histogram itself moved: the hard page budget sent
+# the failure census to Appendix D, so appendix-measurements.tex is now the
+# file that carries the \input these two cases corrupt. Repointing the path
+# keeps each case reinstating the SAME escape it always did; the probe is
+# about an \input that escapes journal/, not about which section holds it.
+FIGHOST = PAPER / "sections" / "appendix-measurements.tex"
 BIB = PAPER / "journal.bib"
 FIG = PAPER / "figures" / "fig_claim_path.tex"
 
 orig = {p: io.open(p, encoding="utf-8", newline="").read()
-        for p in (MAIN, ERRS, BIB, FIG)}
+        for p in (MAIN, FIGHOST, BIB, FIG)}
 
 
 def edit(path, old, new):
@@ -50,7 +55,7 @@ CASES = [
      edit(MAIN, r"\bibliography{journal}",
           r"\bibliography{../thesis_book/buetcsepgthesis}")),
     ("shipped: a figure \\input escapes the directory",
-     edit(ERRS, r"\input{figures/fig_failure_histogram}",
+     edit(FIGHOST, r"\input{figures/fig_failure_histogram}",
           r"\input{../thesis_book/figures/fig_failure_histogram}")),
     ("bibliography named but not present",
      delete(BIB)),
@@ -60,7 +65,7 @@ CASES = [
      edit(FIG, r"\definecolor{agrNode}{HTML}{0072B2}",
           r"\definecolor{agrNode}{HTML}{FF0000}")),
     ("an input points at a file that was never copied",
-     edit(ERRS, r"\input{figures/fig_failure_histogram}",
+     edit(FIGHOST, r"\input{figures/fig_failure_histogram}",
           r"\input{figures/fig_failure_histogram_v2}")),
 ]
 

@@ -4,51 +4,33 @@
 % words, at full strength. None is softened on the way across.
 %
 % THE LIST IS THE CONTRACT. scripts/check_paper_numbers.py enforces the
-% roster by phrase, so nothing drops silently. The full set, and where
-% each comes from:
+% roster by phrase against THIS FILE (it reads discussion.tex directly,
+% not section_body), so every phrase below must stay in this file even
+% when its arithmetic moves. The sixteen:
 %
-%   1  sample size ......................... 400/dataset, +-4-5 pts
-%   2  one backbone ....................... gpt-5.4-mini, frozen
-%   3  nondeterminism ..................... ~67% trajectory stability;
-%                                           the repeat matrix was
-%                                           affordable and not run
-%   4  environment friendlier ............. 97%+ reachability ceiling
-%   5  ablation power ..................... n=200/198, three nulls,
-%                                           one run, one at a time
-%   6  scope .............................. English factoid, static,
-%                                           no literals or ordinals
-%   7  WRONGFUL ACCEPTANCE UNMEASURED ..... most serious item; also
-%                                           kills auditability of the
-%                                           output contract, because
-%                                           the log keeps the COUNT of
-%                                           supporting triples, not the
-%                                           triples
-%   8  view of the graph not held constant  candidate widths, Sec 5.3
-%   9  static baseline is radius-bounded .. one logical hop, Sec 4.2
-%  10  topic entities given, not linked ... setup gives only the benefit
-%  11  measured accuracy has a floor ...... extraction bug on one shape
-%  12  single-annotator adjudication ...... author, consensus visible
-%  13  homonyms merge ..................... graph is name-keyed
-%  14  judge missed its own bar ........... kappa 0.6995 vs 0.70
-%  15  one relabelling after seeing result
-%  16  structural grounding is not answer adequacy (the echo attractor)
+%   1 sample size ("questions per dataset")   2 "one backbone"
+%   3 "trajectory stability"   4 "reachability"   5 "no effect detected"
+%   6 "English factoid"   7 "Wrongful acceptance is unmeasured" +
+%   "most serious gap"   8 "identical access"   9 "radius-bounded"
+%   10 "given, not linked"   11 "unmeasured floor"   12 "single-annotator"
+%   13 "homonyms merge"   14 0.6995 + "missed its own bar"
+%   15 "after its outcome was known"   16 structural grounding is not
+%   answer adequacy.  Also checked: "count" + "discards the list".
 %
-% CUT 2026-09-23 (two passes) to ~880 words, from ~1,820. EVERY ROSTER
-% ITEM SURVIVES -- the cut is in how each is argued, not in which are
-% argued. The three that bound claims this paper actually makes
-% (wrongful acceptance, the output contract, structural grounding) keep
-% their paragraphs; the rest are one to three sentences each. Do not
-% compress this section further by dropping an item. The roster check
-% will catch it, and it is there because a completeness claim that is
-% not complete is worse than no claim.
+% CUT 2026-09-23 (third pass) to ~1,000 words, from ~1,820, under a
+% hard 20-22 page budget for abstract-to-conclusion. EVERY ROSTER ITEM
+% SURVIVES AT FULL STRENGTH. The three that bound claims this paper
+% makes keep their own paragraphs; the rest are grouped, a sentence
+% each. The arithmetic behind the first two is in Appendix D
+% (app:exposure). Do not compress this section by dropping an item: the
+% roster check will catch it, and a completeness claim that is not
+% complete is worse than no claim.
 % ---------------------------------------------------------------------
 
 \section{Discussion and Limitations}\label{sec:discussion}
 
 The limits of this study bound its claims, and we state all of them
-rather than the flattering subset. The first group bounds the
-instrument, the second bounds the comparisons, and the third bounds the
-measurements.
+rather than the flattering subset.
 
 \subsection{What Bounds the Instrument}\label{sec:limits-contribution}
 
@@ -58,143 +40,108 @@ ones it accepts, so a claim certified on an edge unrelated to the
 relation it asserts leaves no trace. The exposure is real rather than
 hypothetical, because both structural routes ignore the relation and the
 direction: any edge between two entities certifies any claimed relation
-between them. There is no way, from the committed record, to know how
-many wrongful acceptances sit inside the $761$ questions that ended
-grounded. The exposure is best stated in the claim unit, where its scale
-is visible. On test the verifier decomposed $2{,}110$ claims and
-accepted $2{,}008$ of them; the graph-wide adjacency probe accounts for
-$39$ of those acceptances, and the rest were made either by traversed
-adjacency, which is equally relation-blind, or by the entailment check,
-which is not, and the record does not say which. So the share of
-accepted claims certified without any test of the asserted relation lies
-somewhere in $[39, 2{,}008]$. That interval is two orders of magnitude
-wide, and we report it as one rather than choose a point inside it. The
-same gap means the layer has no measured precision or recall as a
-classifier of claims, which is the first number a verification component
-should carry.
+between them. Nothing in the committed record says how often that
+happened, and \ref{app:exposure} gives the interval, two orders of
+magnitude wide, that is all the record supports. The same gap means the
+layer has no measured precision or recall as a classifier of claims,
+which is the first number a verification component should carry.
 
 \textbf{The output contract cannot be audited from the run records.} AGR
 emits an answer paired with the traversed triples supporting it, and the
-pairing does hold inside the run. But the logger writes the \emph{count}
-of supporting triples and discards the list, so no committed artifact in
-this work contains a single supporting triple. On test, $12$ of AGR's
-$367$ answered WebQSP questions and $9$ of its $308$ on
-ComplexWebQuestions were emitted with a count of zero, which is the
-contract's own measure of how often it delivers nothing. A reader can
-confirm that the other answers came from a system that tracked its
-evidence; they cannot inspect that evidence. Persisting accepted claims
-with their route and their matching triples is one logging change, and
+pairing holds inside the run, but the logger writes the \emph{count} of
+supporting triples and discards the list, so no committed artifact in
+this work contains a single supporting triple. Persisting each accepted
+claim with its route and its matching triples is one logging change, and
 it would repair this limitation and the previous one together.
 
 \textbf{Structural grounding is not answer adequacy.} Both navigating
-systems assert zero ungrounded entities, and under the definition used
-that is close to guaranteed for any system that copies entities out of
-tool results. It says their answers are made of the graph's own
-material; it does not say they answer the question. The echo attractor
-of \Cref{sec:echo} is the counter-example, a wrong answer that passes
-every check this paper applies and against which the verification layer
-offers no protection.
+systems assert zero ungrounded entities, which under the definition used
+is close to guaranteed for any system that copies entities out of tool
+results. It says their answers are made of the graph's own material; it
+does not say they answer the question. The echo attractor of
+\Cref{sec:echo} is the counter-example, a wrong answer that passes every
+check this paper applies.
 
 \subsection{What Bounds the Comparisons}\label{sec:limits-comparison}
 
-\textbf{Sample size.} Every result rests on $400$ questions per dataset
-rather than the full splits, giving $95\%$ bootstrap intervals of
-roughly $\pm4$ to $\pm5$ points on Hits@1. The main accuracy margins
-clear that width, at $9.5$ and $8.7$ points, as does the planner effect,
-which is a paired test on per-question outcomes; the groundedness
-contrast, at zero against $22.1\%$, is not close. What the sample does
-not support is fine distinctions: the semantic-tier gaps of
-\Cref{sec:groundedness}, the hedge-rate difference on
-ComplexWebQuestions, and the last step of the rising hop-depth curve are
-within noise, and we report them as such.
-
-\textbf{The margin is a statement about one budget.} The $25$-call cap
-was pre-specified, but it is a choice, and \Cref{sec:margin} shows that
-the entire margin over the agentic baseline lives on the questions where
-that cap truncates it. The split that shows this conditions on the
-baseline's own outcome, and within hop strata the clipped half is as
-hard as the finished half on WebQSP and harder on ComplexWebQuestions. A
-cap sweep would move the boundary; the paper reports the clip rates so a
-reader can see how far, but it did not run the sweep.
+\textbf{Sample size, and one budget.} Every result rests on $400$
+questions per dataset rather than the full splits, giving $95\%$
+bootstrap intervals of roughly $\pm4$ to $\pm5$ points on Hits@1. The
+main accuracy margins clear that width, at $9.5$ and $8.7$ points, as
+does the planner effect, and the groundedness contrast at zero against
+$22.1\%$ is not close; the semantic-tier gaps, the hedge-rate difference
+on ComplexWebQuestions and the last step of the rising hop-depth curve
+are within noise and reported as such. The $25$-call cap was likewise
+pre-specified but is still a choice, and \Cref{sec:margin} shows the
+entire margin over the agentic baseline living on the questions where it
+truncates. A cap sweep would move that boundary; it was not run.
 
 \textbf{An identical environment is not identical access to it.} The
 agentic baseline truncates candidate sets at $40$ relations and $20$
-neighbours against AGR's $300$ and $200$, a cut that binds on about a
-third of its expansions and effectively none of ours
-(\Cref{sec:margin}), which is why the baseline's figures on the
-questions it finishes are a lower bound rather than an estimate. The
-agentic comparator is also one system: Plan-on-Graph, whose two
-mechanisms AGR's planner and backtracker re-host (\Cref{sec:related}),
-was not run, so the planner result speaks to decomposition as
-implemented here and to Plan-on-Graph's by analogy only.
+neighbours against AGR's $300$ and $200$, a cut binding on about a third
+of its expansions and effectively none of ours (\Cref{sec:margin}),
+which is why its figures where it finishes are a lower bound rather than
+an estimate. It is also the only agentic comparator: Plan-on-Graph,
+whose two mechanisms AGR's planner and backtracker re-host
+(\Cref{sec:related}), was not run, so the planner result speaks to
+decomposition as implemented here and to Plan-on-Graph's by analogy
+only. \textbf{The static graph baseline is radius-bounded} in turn, so
+its decay across hop strata measures the radius as much as the paradigm,
+and \ref{sec:hops} declines to offer it as evidence for either.
 
-\textbf{The static graph baseline is radius-bounded.} Its
-one-logical-hop expansion cannot contain a two-hop chain, so its decay
-across hop strata measures the radius as much as the paradigm, and
-\Cref{sec:hops} declines to offer it as evidence for either. Its
-unordered $100$-edge fanout cap compounds this.
-
-\textbf{One backbone.} All five systems run on \textsf{gpt-5.4-mini},
-frozen and closed. This paper establishes how these architectures
-compare \emph{on one backbone}, not how the comparison scales across
-model capacities.
-
-\textbf{Nondeterminism.} Temperature-zero decoding against a hosted API
-is greedy, not deterministic, and measured trajectory stability is about
-$67\%$. Each system and each ablation condition was run once, no seeds
-were averaged, and the intervals and paired tests resample questions, so
-they bound the sampling variance of the question draw and nothing else.
-Two things make a rank reversal from decoding noise alone unlikely ---
-the defended margins are large relative to their intervals, and the
-paired tests are computed per question --- but unlikely is the strongest
-statement available. The repeated matrix that would bound the variance
-was affordable at the observed cost and was not run, so this is a gap in
-the design rather than a budget constraint.
+\textbf{One backbone, and nondeterminism.} All five systems run on
+\textsf{gpt-5.4-mini}, frozen and closed, so this paper establishes how
+these architectures compare \emph{on one backbone}, not how the
+comparison scales across model capacities. Temperature-zero decoding
+against a hosted API is greedy rather than deterministic, and measured
+trajectory stability is about $67\%$. Each system and each ablation
+condition was run once and no seeds were averaged, so the intervals and
+paired tests bound the sampling variance of the question draw and
+nothing else. Large defended margins and per-question pairing make a
+rank reversal from decoding noise unlikely, but unlikely is the
+strongest statement available: the repeated matrix that would bound the
+variance was affordable at the observed cost and was not run, which is a
+gap in the design rather than a budget constraint.
 
 \textbf{Ablation power.} The four ablations run on half-splits of $n =
 200$ and $n = 198$, and the paired test sees only the questions on which
 two conditions disagree, as few as one for claim verification. Three of
 four components show \emph{no effect detected at this power}, which is
 not the same as no effect, and \Cref{sec:power} gives the smallest
-difference each condition could have detected. The components were also
-removed one at a time, so the three nulls do not say whether a system
-with none of them would match this one.
+difference each could have detected. The components were also removed
+one at a time, so the three nulls do not say whether a system with none
+of them would match this one.
 
 \subsection{What Bounds the Measurements}\label{sec:limits-measurement}
 
 \textbf{The environment is friendlier than the knowledge base it stands
-in for.} Per-question subgraphs with a $97\%$-plus answer-reachability
-ceiling are a more forgiving substrate than full Freebase.
-Between-system comparisons hold, because all five systems navigate the
-identical graph; absolute accuracies do not transfer, and \Cref{sec:rog}
-shows the size of the gap to a published system that was also trained on
-the benchmarks.
-
-\textbf{Topic entities are given, not linked.} Both graph-navigating
-systems seed from the datasets' annotated topic entities, which isolates
-navigation from entity linking, as intended --- but it means every
+in for}, and its node identity is coarser. Per-question subgraphs with a
+$97\%$-plus answer-reachability ceiling are a more forgiving substrate
+than full Freebase: between-system comparisons hold, because all five
+systems navigate the identical graph, but absolute accuracies do not
+transfer, and \ref{sec:rog} shows the gap to a published system trained
+on the benchmarks. Topic entities are \textbf{given, not linked}, which
+isolates navigation from entity linking as intended but means every
 reported accuracy assumes a linking step a deployed system would have to
-perform, and which would introduce errors of its own.
-
-\textbf{Entities are keyed by name, so homonyms merge.} Distinct
-real-world entities sharing a surface form collapse to one node. That
-can manufacture a path between things not actually connected, letting a
-wrong answer verify as grounded, and it can equally destroy a
-distinction a question depends on. Neither direction is measured.
+perform. And entities are keyed by name, so \textbf{homonyms merge}:
+distinct real-world entities sharing a surface form collapse to one
+node, which can manufacture a path between things not actually connected
+and can equally destroy a distinction a question depends on. Neither
+direction is measured.
 
 \textbf{The measured accuracy has an unmeasured floor.} An extraction
 defect converts correct reasoning into a wrong entity list on one
-specific question shape: on ``list the professions'' and ``what did $X$
-do'' questions the drafted text names every gold value and the scored
-entity list collapses to the sentence's subject. Accuracy on that shape
-is a lower bound rather than an estimate.
+question shape: on ``list the professions'' and ``what did $X$ do''
+questions the drafted text names every gold value and the scored entity
+list collapses to the sentence's subject. Accuracy on that shape is a
+lower bound rather than an estimate.
 
 \textbf{The judge missed its own bar, and the adjudication was
 single-annotator.} Agreement between the semantic-tier judge and a human
-annotator reached $\kappa = 0.6995$ against a pre-specified $0.70$. That
-is a miss, by $0.0005$, which is why those numbers are reported as
+annotator reached $\kappa = 0.6995$ against a pre-specified $0.70$ --- a
+miss, by $0.0005$, which is why those numbers are reported as
 corroborating rather than decisive and why no conclusion rests on them
-alone; the judge also runs on the same backbone as the systems it
+alone. The judge also runs on the same backbone as the systems it
 judges. Separately, the benchmark-defect exclusions and the failure
 census rest on single-annotator judgements made by an author with the
 consensus signal visible (\Cref{sec:erroranalysis}), and one
@@ -206,33 +153,25 @@ temporal facts, no graph construction, and an offline prototype. The
 environment carries no typed literals and the tool API no ordering
 operator, so questions answered by a date, a quantity, or a superlative
 are out of reach by construction (\Cref{sec:environment}). Wall-clock
-figures are reported as magnitudes with their cache caveat
-(\Cref{sec:cost}), not as a production-readiness claim.
+figures are magnitudes with a cache caveat (\ref{app:latency}), not a
+production-readiness claim.
 
 \subsection{Outlook}\label{sec:outlook}
 
 The findings fix the order of the next experiments, and each is cheap
-against the cost of the study it would complete. First, the agentic
-baseline at AGR's candidate widths under a sweep of the call cap, with
-the budget split of \Cref{tab:togsplit} reported at each setting, which
-tests whether the affordability reading survives equal access to the
-graph. Second, replication: every system and every ablation condition
-run several times, so that a delta of a few hundredths of F1 can be read
-against the run-to-run variance rather than assumed to exceed it,
-together with the joint-removal condition that \Cref{sec:power} names.
-Third, the full test splits, which quadruple the discordant pairs the
-paired tests see. Fourth, one logging change: persist each accepted
-claim with the route that accepted it and the triples that matched,
-which converts the two limitations opening this section into measurable
-quantities.
+against the cost of the study it would complete: the agentic baseline at
+AGR's candidate widths under a sweep of the call cap, replication with
+the joint-removal condition \Cref{sec:power} names, the full test
+splits, and one logging change that would convert the two limitations
+opening this section into measurable quantities. \ref{app:experiments}
+says what each would settle.
 
 The most actionable finding points forward rather than back. If
 decomposition helps only when a question has compositional structure,
 improving accuracy by $0.083$ F1 where that structure is absent and
 costing $0.047$ where it is present, then the planner should not run
-unconditionally. \textbf{Gate decomposition on question structure}: a
+unconditionally: \textbf{gate decomposition on question structure}. A
 hop-count predictor gating the planner would capture both arms of that
-asymmetry, and it can be evaluated with the ablation instrument used
-here. More generally, agentic components should be treated as
-conditionally rather than universally beneficial, and the condition is
-worth measuring.
+asymmetry, and it can be evaluated with the instrument used here. More
+generally, agentic components should be treated as conditionally rather
+than universally beneficial, and the condition is worth measuring.

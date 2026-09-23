@@ -1,0 +1,362 @@
+% !TEX root = ../journal_0421052099.tex
+% ---------------------------------------------------------------------
+% APPENDIX C. Created 2026-09-23 with appendix-instrument.tex, when the
+% user set a hard budget of 20-22 pages for abstract-to-conclusion. The
+% budget excludes the appendices, so this is RELOCATED material: five
+% measurements that were subsections of Sections 5 and 7. None was
+% dropped, and the body points at each one where it used to stand.
+%
+% WHY THESE FIVE AND NOT OTHERS. Each reports something the paper does
+% not rest a conclusion on. The RoG comparison "does not settle
+% anything this paper measures" and says so in its own last sentence;
+% the hop-depth curve is consistent with the planner mechanism rather
+% than evidence for it, and Section 6 establishes that mechanism
+% directly; the semantic tier's between-system gaps do not survive
+% n = 60 and the paper says no conclusion rests on them; the wall-clock
+% means are magnitudes with a cache caveat; tab:consensus is the
+% row-level backing for a reading the prose in sec:defects states in
+% full. The body keeps every headline each of them supports.
+%
+% IT LIVES IN sections/ ON PURPOSE -- see the note at the head of
+% appendix-instrument.tex. check_paper_numbers.py reads
+% journal/sections/*.tex, so every figure below keeps its binding.
+% sec:rog and sec:hops keep their labels; body references to them are
+% \ref, not \Cref, because elsarticle's \appendix redefines \thesection.
+% ---------------------------------------------------------------------
+
+\section{Secondary measurements}\label{app:measurements}
+
+Five measurements are reported here rather than in the body. Each
+supports a headline the body states; none carries a conclusion of its
+own.
+
+\subsection{Latency}\label{app:latency}
+
+\Cref{sec:cost} reports calls and tokens, both exact from the shared
+meter. Wall-clock time tells the same story in seconds: a mean of $11.2$
+and $17.2$ per question for AGR against $12.9$ and $15.2$ for the
+baseline, and between $1.0$ and $2.2$ for the three single-call systems.
+Read those as magnitudes only. Records replayed entirely from a response
+cache are excluded from those means, but between $3.6\%$ and $15.2\%$ of
+the two navigators' calls in the remaining records were still served
+from the cache, which shortens a cached call to nothing. The figures are
+therefore lower bounds and do not rank the two navigators against each
+other at the second.
+
+\subsection{Positioning against published RoG results}\label{sec:rog}
+
+The environment of \Cref{sec:environment} is built from the per-question
+subgraphs that the RoG distribution publishes, and
+RoG~\cite{luo2024reasoning} is the closest published system in the
+path-retrieval family, so a reader who notices both will ask how the two
+compare. The aggregate answer does not favour this work, and we give it
+before the qualifications. Over the full test splits RoG publishes
+$85.7$ Hits@1 and $70.8$ F1 on WebQSP and $62.6$ and $56.2$ on
+ComplexWebQuestions, against this work's $75.5$ and $64.2$, and $52.2$
+and $46.9$ over the certified $400$-question samples of those same
+splits. \textbf{RoG leads on all four figures, and the margin is not
+sampling noise}: AGR's $95\%$ intervals on Hits@1 are $[71.3, 79.7]$ on
+WebQSP and $[47.5, 57.0]$ on ComplexWebQuestions, and RoG's $85.7$ and
+$62.6$ fall outside both.
+
+One difference bounds what that comparison establishes, and it is
+decisive. \textbf{RoG is trained on these benchmarks; AGR is trained on
+nothing.} RoG fine-tunes LLaMA2-Chat-7B on the training splits of both
+benchmarks, which hold $2{,}826$ and $27{,}639$ questions in the
+distribution used here, while AGR's backbone is frozen and prompted and
+has seen no question from either benchmark before evaluation. Three
+ordinary differences follow it: the backbones differ, which is the very
+factor \Cref{sec:baselines} holds constant elsewhere; RoG reports over
+the full splits against our stratified samples of them and publishes no
+interval, so the gap can be bounded from one side only; and RoG
+retrieves within each question's own published subgraph while AGR
+navigates the union of all of them. What the comparison settles is AGR's
+place in the published landscape, a training-free system against a
+supervised one on the same question sets. What it does not settle is
+anything this paper measures, since neither the ablation of
+\Cref{sec:attribution} nor the census of \Cref{sec:erroranalysis} has a
+counterpart in RoG's evaluation.
+
+\subsection{Accuracy by hop depth}\label{sec:hops}
+
+Stratifying by the number of hops separating a topic entity from the
+gold answer separates the systems further. On ComplexWebQuestions, AGR
+is the only system whose accuracy \emph{rises} with hop count: $0.46$ at
+one hop, $0.55$ at two, $0.57$ at three or more, over strata of $137$,
+$211$, and $49$ questions. The last step sits well inside the interval
+of a $49$-question stratum, so the claim is the direction across the
+three strata, not the size of any one step. Every other system ends
+below where it started. That phrasing is deliberate and the weaker
+alternative is the true one: Think-on-Graph does not decay monotonically
+but falls from $0.53$ to $0.37$ and then partly recovers to $0.45$. It
+also beats AGR on that dataset's one-hop stratum, $0.53$ against $0.46$,
+and \Cref{sec:planner} identifies the mechanism, since decomposition
+costs accuracy on questions that do not need decomposing and that
+stratum is full of them.
+
+The static graph baseline's decay across these strata is deliberately
+\emph{not} offered as evidence for the paradigm, because its retrieval
+radius confounds it, and the evidence that it is a radius effect is in
+the strata themselves. GraphRAG scores $0.44$ on WebQSP's two-hop
+stratum, where those questions are largely mediator paths a one-hop
+expansion does reach, against $0.16$ on the ComplexWebQuestions two-hop
+stratum, where the chains are genuine compositions it cannot reach at
+all. A retriever failing uniformly on depth would not show that gap. A
+rising curve is what decomposition would predict, but it is consistent
+with that mechanism rather than evidence for it, and the WebQSP panel
+carries no comparable evidence: its three-hop stratum contains four
+questions, which is why the claim is scoped to one dataset.
+
+\subsection{Semantic-tier support}\label{app:tier2}
+
+\Cref{sec:groundedness} reports the structural tier. The semantic tier
+asks the harder question of whether an asserted entity is supported
+\emph{as the answer}, and it separates the systems far less.
+\Cref{tab:tier2} gives every cell rather than a selection, because the
+ordering differs by dataset and any subset of it misleads.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{Semantic-tier support rate: the share of sampled assertions
+      a judge found supported \emph{as the answer} by the graph's own
+      connecting paths. $n = 60$ per cell, so the $95\%$ binomial
+      interval has a half-width of roughly $12$ to $13$ points. These
+      are conservative lower bounds by construction
+      (\Cref{sec:protocol}).}
+    \label{tab:tier2}
+    \footnotesize
+    \begin{tabular}{|l|rr|}
+      \hline
+      \textbf{System} & \textbf{WebQSP} & \textbf{CWQ} \\
+      \hline
+      \noret        & 63.3\% & 36.7\% \\
+      \vecrag       & 61.7\% & \textbf{50.0\%} \\
+      \graphrag     & 55.0\% & 36.7\% \\
+      \tog          & 61.7\% & 43.3\% \\
+      \agr          & \textbf{66.7\%} & 48.3\% \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+Every system lands in a $36.7$--$66.7\%$ band. AGR is highest on WebQSP
+at $66.7\%$. \textbf{On ComplexWebQuestions it is second}, $5.0$ points
+ahead of the agentic baseline but $1.7$ behind Vector-RAG's $50.0\%$, so
+its margin over Think-on-Graph is $5.0$ points on both datasets and its
+lead over \emph{every} system is a WebQSP result only. Neither gap
+survives the sample: at $n = 60$ per cell a $5$-point difference sits
+well inside the interval, as does Vector-RAG's $1.7$, and no conclusion
+in this paper rests on either. What the tier establishes is the level
+rather than the ranking, and the level is the more useful finding, which
+\Cref{sec:groundedness} states.
+
+\subsection{Consensus rows behind the cleared
+  questions}\label{app:consensus}
+
+\Cref{tab:consensus} is the row-level backing for the reading
+\Cref{sec:defects} gives of the $64$ questions adjudication cleared. A
+row is one consensus answer, and a question can carry more than one.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{The $64$ flagged questions that adjudication cleared, read
+      as consensus rows (one row per consensus answer). The triage
+      family is the pre-pass's own label for why the systems agreed on
+      a wrong entity. The lower rows count which systems were among
+      those agreeing.}
+    \label{tab:consensus}
+    \footnotesize
+    \begin{tabular}{|l|r|r|}
+      \hline
+      & \textbf{WebQSP} & \textbf{CWQ} \\
+      \hline
+      Consensus rows cleared as not a label defect & 54 & 31 \\
+      \quad filed as echo attractor & 36 & 16 \\
+      \quad filed as relation confusion & 16 & 3 \\
+      \quad filed as constraint ignored & 0 & 12 \\
+      \quad filed as environment gap & 2 & 0 \\
+      \hline
+      Rows on which the no-retrieval control agrees & 15 & 25 \\
+      Rows on which both navigators agree & 26 & 14 \\
+      Echo rows on which the no-retrieval control agrees & 13 & 11 \\
+      Echo rows on which both navigators agree & 20 & 9 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\subsection{The next experiments, and what each would
+  settle}\label{app:experiments}
+
+\Cref{sec:outlook} names four follow-ups in the order they would be run.
+First, the agentic baseline at AGR's candidate widths under a sweep of
+the call cap, with the budget split of \Cref{tab:togsplit} reported at
+each setting, which tests whether the affordability reading survives
+equal access to the graph. Second, replication: every system and every
+ablation condition run several times, so that a delta of a few
+hundredths of F1 can be read against the run-to-run variance rather than
+assumed to exceed it, together with the joint-removal condition
+\Cref{sec:power} names. Third, the full test splits, which quadruple the
+discordant pairs the paired tests see. Fourth, one logging change:
+persist each accepted claim with the route that accepted it and the
+triples that matched, which makes the verifier's precision and recall a
+number a labelled sample can produce.
+
+\subsection{The budget split within hop strata}\label{app:strata}
+
+\Cref{sec:margin} reads the budget split of \Cref{tab:togsplit} within
+hop strata, to check that the clipped half is not simply the hard half,
+and quotes every figure it argues from. \Cref{tab:togstrata} gives the
+full breakdown.
+
+\begin{table}[!tb]
+  \begin{center}
+    \caption{The budget split of \Cref{tab:togsplit} read within hop
+      strata: $n$ and Hits@1 for the two navigators on the questions
+      the baseline finished and the questions the cap clipped. The four
+      three-hop WebQSP questions and the unreachable strata ($12$ and
+      $3$ questions) are omitted.}
+    \label{tab:togstrata}
+    \footnotesize
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabular}{|ll|rrr|rrr|}
+      \hline
+      & & \multicolumn{3}{c|}{\textbf{\tog{} finished}}
+        & \multicolumn{3}{c|}{\textbf{\tog{} clipped}} \\
+      \textbf{Dataset} & \textbf{Hops} & $n$ & \tog{} & \agr{}
+        & $n$ & \tog{} & \agr{} \\
+      \hline
+      WebQSP & 1 & 175 & 0.846 & 0.766 & 81 & 0.160 & 0.728 \\
+      WebQSP & 2 & 100 & 0.910 & 0.890 & 28 & 0.321 & 0.679 \\
+      \hline
+      CWQ & 1 & 69 & 0.754 & 0.609 & 68 & 0.309 & 0.309 \\
+      CWQ & 2 & 123 & 0.561 & 0.610 & 88 & 0.102 & 0.477 \\
+      CWQ & 3+ & 31 & 0.613 & 0.581 & 18 & 0.167 & 0.556 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\subsection{The failure census by category}\label{app:census}
+
+\Cref{fig:failures} is the distribution behind \Cref{sec:erroranalysis},
+which names its largest categories in prose and argues from two of the
+smaller ones.
+
+\begin{figure}[!tb]
+  \begin{center}
+    \input{figures/fig_failure_histogram}
+  \end{center}
+  \caption{Hand-read census of the $256$ residual failures read, by
+    category, with wrong answers and hedges kept separate. Relation
+    selection and composite claims dominate. The two categories
+    \Cref{sec:erroranalysis} discusses are not the largest, but they
+    are the two whose lessons transfer beyond this system.}
+  \label{fig:failures}
+\end{figure}
+
+\subsection{What bounds the two larger nulls}\label{app:nulldetail}
+
+\Cref{sec:nulls} reports that backtracking and model scoring change
+nothing detectable. Two implementation facts bound those nulls further,
+and we record them rather than smooth them over.
+
+The backtracker bans the edges of the most recent explorer pass but
+restores the highest-scoring snapshot, which is often older, so
+everything expanded in between stays unbanned (\ref{app:routing}). Over
+the main runs, $53$ explorer passes re-expanded an anchor-and-relation
+set the same question had already expanded, and at least $65$ of the
+$262$ backtracks restored a depth other than the most recent snapshot's.
+The null therefore describes backtracking as implemented, not
+backtracking as specified.
+
+The development-set sweep that froze $\alpha$ points the same way as the
+scoring null at a smaller scale: at $\tau = 0.20$ it scored $61$, $62$,
+$64$, and $59$ hits of $80$ at $\alpha = 0.3$, $0.5$, $0.7$, and $1.0$,
+so dropping the model term cost five hits there, before the
+entity-filter correction that preceded the test runs. One confound goes
+with it: at $\alpha = 1$ the scorer takes an early return that leaves
+the backtracking trigger's signal maximum computed over a smaller
+candidate set, so that condition's elevated backtrack count is not
+attributable to the scoring change alone.
+
+\subsection{What an equal-width re-run would and would not
+  settle}\label{app:equalwidth}
+
+\Cref{sec:margin} reports that the agentic baseline searched a narrower
+candidate pool than AGR, so its figures on the questions it finishes are
+a lower bound rather than an estimate, and that equalising the widths is
+the first change we would make in a follow-up. That re-run would not
+vary one thing, though. Wider candidate sets make each pruning call
+dearer, so equal-width pruning would also raise the baseline's clip
+rate, moving the boundary between the two halves of \Cref{tab:togsplit}
+at the same time as it changes what the search resolves within each. The
+two effects have to be read apart, which means reporting that split
+again at each setting rather than an aggregate in which they cancel or
+compound invisibly.
+
+A related check bounds the aggregate from the other side, because a
+metric that scores a hit on any match rewards naming more entities. On
+the WebQSP questions it answers, AGR names $3.37$ entities against
+Think-on-Graph's $2.56$, and its entity precision over those same
+answered questions is $0.760$ against $0.703$; on ComplexWebQuestions
+the figures are $1.54$ against $1.40$ entities and $0.629$ against
+$0.520$ precision. If AGR bought breadth without accuracy, precision
+would fall as the entity count rose. It does not fall.
+
+\subsection{Which systems joined each cleared
+  consensus}\label{app:participation}
+
+\Cref{sec:defects} reports that the systems agreeing on a cleared
+consensus answer are not independent observers. These are the counts
+behind that. On ComplexWebQuestions the no-retrieval control, which sees
+no graph at all, is among the agreeing systems on $25$ of the $31$
+cleared rows and on $11$ of the $16$ echo rows, so there the convergence
+is at least as much a property of what the backbone believes as of the
+graph's neighbourhood structure. On WebQSP the control joins $15$ of
+$54$ rows and $13$ of $36$ echo rows, and the two navigators agree with
+each other on $20$ of the $36$. Of the $13$ rows on which all five
+systems agreed, $9$ were cleared as not a defect.
+
+\subsection{The verifier's unmeasured exposure, in
+  claims}\label{app:exposure}
+
+\Cref{sec:limits-contribution} names wrongful acceptance as the most
+serious gap in this work and says why the committed record cannot close
+it. This is its scale in the claim unit. There is no way, from that
+record, to know how many wrongful acceptances sit inside the $761$
+questions that ended grounded. On test the verifier decomposed $2{,}110$
+claims and accepted $2{,}008$ of them; the graph-wide adjacency probe
+accounts for $39$ of those acceptances, and the rest were made either by
+traversed adjacency, which is equally relation-blind, or by the
+entailment check, which is not, and the record does not say which. So
+the share of accepted claims certified without any test of the asserted
+relation lies somewhere in $[39, 2{,}008]$. That interval is two orders
+of magnitude wide, and we report it as one rather than choose a point
+inside it. The same gap means the layer has no measured precision or
+recall as a classifier of claims, which is the first number a
+verification component should carry.
+
+The output contract is bounded by the same logging decision. On test,
+$12$ of AGR's $367$ answered WebQSP questions and $9$ of its $308$ on
+ComplexWebQuestions were emitted with a count of zero supporting
+triples, which is the contract's own measure of how often it delivers
+nothing.
+
+\subsection{Sensitivity of the tables to the
+  exclusions}\label{app:sensitivity}
+
+\Cref{sec:defects} reports that the accuracy tables are not rescored
+against the adjudicated labels. This is how much that decision could
+matter. The defects cut both ways: $10$ of the $22$ WebQSP exclusions
+and $4$ of the $19$ on ComplexWebQuestions are questions AGR scored as
+hits against a label now judged defective. Recomputing every cell of
+\Cref{tab:main} with the adjudicated questions removed moves each system
+by between $+0.001$ and $+0.020$ Hits@1 and leaves the ranking on both
+datasets unchanged. That shift is an order of magnitude below the
+$5.5\%$ and $4.8\%$ defect rates, because removing a question the system
+got right subtracts from the numerator as well as the denominator. The
+exclusions therefore do not threaten any comparison this paper draws.
+What they establish is that a non-trivial share of both benchmarks is
+mislabelled, which is a fact about the benchmarks rather than a
+correction to be applied to them.

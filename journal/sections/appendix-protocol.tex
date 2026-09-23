@@ -1,0 +1,86 @@
+% !TEX root = ../journal_0421052099.tex
+% ---------------------------------------------------------------------
+% APPENDIX C. Created 2026-09-23 with the other two, under a hard
+% budget of 20-22 pages for abstract-to-conclusion. RELOCATED from
+% Section 4: the two baseline implementations at the width a
+% reimplementation needs, and the definitions behind the groundedness
+% tiers. Nothing was dropped.
+%
+% WHAT STAYED IN sec:baselines: the claim each baseline licenses, which
+% is what Sections 5-8 reason from. What moved here is how each was
+% built. Same rule as Appendix B.
+%
+% THE KAPPA SENTENCES DID NOT MOVE, and must not: check_paper_numbers
+% takes section_body("sec:protocol") and requires \kappa = 0.6995, the
+% word "misses" against $0.70$, and the shortfall 0.0005 to be inside
+% sec:protocol itself. Four ways to lose that were recorded when the
+% block was written; moving the sentence to an appendix would be a
+% fifth.
+%
+% IT LIVES IN sections/ ON PURPOSE -- see appendix-instrument.tex.
+% ---------------------------------------------------------------------
+
+\section{Protocol detail}\label{app:protocol}
+
+\Cref{sec:setup} states what each baseline licenses and how the
+comparison is controlled. This appendix records how the two non-trivial
+baselines were built and how groundedness was measured.
+
+\subsection{The static graph baseline}\label{app:graphrag}
+
+Static GraphRAG~\cite{edge2024local} fetches a fixed-radius
+neighbourhood around the linked topic entities in one shot, reranks it
+by embedding similarity to the question, and answers from the top $30$
+facts. Two properties of that implementation bound what it licenses, and
+we state them rather than leave a reader to infer them from its scores.
+The radius is \emph{one logical hop}: mediators are traversed
+transparently, so a mediator path costs two graph edges while remaining
+one hop, and a genuine two-hop chain is outside its reach by
+construction. And expansion retrieves at most $100$ edges per topic
+entity with no ordering criterion, so on a high-degree entity the
+retained edges are an arbitrary sample rather than the best or the
+first; at least one topic entity is truncated on $72.5\%$ of the $800$
+test questions. The baseline therefore licenses one narrow claim, the
+one \Cref{sec:baselines} draws, and not a claim about what a two-hop
+static retriever would score. That experiment was not run.
+
+\subsection{The agentic baseline}\label{app:tog}
+
+Think-on-Graph~\cite{sun2024think} performs model-guided beam search
+over relations and entities, reimplemented on this environment's tools
+rather than quoted. Beam width and depth follow the original paper, $3$
+and $3$. At each depth it makes one relation-pruning call per frontier
+entity, one entity-pruning call per selected relation, and one
+sufficiency call, so a full depth at width $3$ costs up to thirteen
+calls, and the $25$-call cap of \ref{sec:budgets} admits one full depth
+and part of a second. Two widths beneath the beam are this
+reimplementation's own rather than the original's: it offers the pruning
+prompt the first $40$ relations of an entity and the first $20$
+neighbours of a relation, against the $300$ and $200$ AGR sees
+(\ref{sec:budgets}). Reimplementing is a stronger comparison than citing
+the original figures, because graph, model, budget, and scoring rule are
+held constant and only the algorithm varies. It also means its numbers
+are not comparable to the published ones, and we do not present them as
+such. All baselines were debugged on development data and certified
+before any test question ran, against a pre-specified diagnostic
+targeting the one failure that would be an implementation defect rather
+than a paradigm limit: retrieval found the gold answer and the system
+hedged anyway.
+
+\subsection{How groundedness is measured}\label{app:groundedness}
+
+\textbf{Groundedness} is measured at two levels. The structural tier is
+deterministic and applies to every asserted entity in all $4{,}000$
+records: an entity is grounded if and only if it exists as a node in the
+environment and connects to a topic entity within four hops. The
+semantic tier asks the harder question of whether the entity is
+supported \emph{as the answer}. For a stratified sample of $60$ answers
+per system per dataset, it retrieves the graph's own shortest connecting
+paths and has a language model judge whether any path expresses the
+relationship the question asks about, under the governing instruction
+that mere connectedness is not support. Because path retrieval takes
+only the three shortest paths, semantic-tier rates are conservative
+lower bounds. They are depressed uniformly across systems and read as a
+between-system comparison rather than as absolute support rates.
+\Cref{sec:protocol} reports the judge's validation against a human
+annotator, including the threshold it missed.

@@ -23,7 +23,13 @@ orig = io.open(S, encoding="utf-8").read()
 
 # anchor spans plain prose to plain prose: no LaTeX in the pattern, so
 # no backslash for the shell or for re to disagree about.
-CURRENT = re.search(r"agreement and Cohen's [\s\S]*?rounding it away\.", orig)
+# Whitespace-tolerant, not literal: the 72-column fill moved the line break
+# on 2026-09-23 so that "Cohen's" now ends a line and the literal space this
+# pattern used to carry became a newline. The anchor reported the sentence
+# missing while it sat there in full -- the recurring failure mode of the
+# shortening passes. Every gap here is \s+ for that reason.
+CURRENT = re.search(r"agreement\s+and\s+Cohen's\s+[\s\S]*?"
+                    r"rounding\s+it\s+away\.", orig)
 assert CURRENT, "could not locate the kappa sentence"
 cur = CURRENT.group(0)
 

@@ -1,0 +1,250 @@
+% !TEX root = ../journal_0421052099.tex
+% ---------------------------------------------------------------------
+% APPENDIX B. Created 2026-09-23 when the user set a hard budget of
+% 20-22 pages for abstract-to-conclusion. The budget excludes the
+% appendices, so this is RELOCATED material, not deleted material:
+% everything here was in Section 3 and is reachable from it by an
+% explicit pointer. Nothing was dropped in the move.
+%
+% IT LIVES IN sections/ ON PURPOSE. scripts/check_paper_numbers.py
+% reads journal/sections/*.tex plus the root file and nothing else, so
+% a number moved out of the body into a file under sections/ keeps its
+% binding. Moving this to journal/appendix/ would silently break every
+% check that pins a constant of the loop. The same applies to
+% section_body(), which finds a label wherever it sits.
+%
+% sec:removal keeps its label even though it is now an appendix
+% subsection: check_paper_numbers.py's PROMISES block requires a
+% section labelled sec:removal containing the word "flag", and the
+% body's pointer to it is \ref (elsarticle's \appendix redefines
+% \thesection, so \Cref would print "Section Appendix B.5").
+%
+% Read off agr/nodes.py, agr/scorer.py, agr/planner.py, agr/budget.py
+% and agr/kg_tools.py; where a number is a code constant it is the
+% constant the reported runs used.
+% ---------------------------------------------------------------------
+
+\section{The instrument in detail}\label{app:instrument}
+
+\Cref{sec:framework} gives the loop at the width the attribution study
+needs. This appendix records the mechanics a reimplementation would
+want, in the order a question meets them.
+
+\begin{figure}[!tb]
+  \begin{center}
+    \begin{tikzpicture}[
+        node distance=9mm,
+        box/.style={draw=agrNode, thick, rounded corners=2pt,
+                    minimum height=7.5mm, fill=agrNode!8,
+                    minimum width=24mm, align=center, font=\small},
+        vbox/.style={box, draw=agrSup, fill=agrSup!12},
+        term/.style={draw=black!45, rounded corners=6pt, minimum height=6mm,
+                     minimum width=16mm, font=\scriptsize\sffamily,
+                     fill=black!6},
+        flow/.style={-{Stealth[length=2mm]}, semithick, draw=black!68},
+        lbl/.style={font=\scriptsize\ttfamily, inner sep=1.5pt,
+                    fill=white, anchor=center}]
+
+      \node[term]              (start) {START};
+      \node[box, below=of start] (plan) {Planner};
+      \node[box, below=of plan]  (expl) {Explorer};
+      \node[box, below=of expl]  (eval) {Evaluator};
+      \node[vbox, below=of eval] (ver)  {Verifier};
+      \node[box, below=of ver]   (ans)  {Answerer};
+      \node[term, below=of ans]  (end)  {END};
+      \node[box, right=26mm of eval] (back) {Backtracker};
+
+      \draw[flow] (start) -- (plan);
+      \draw[flow] (plan)  -- (expl);
+      \draw[flow] (expl)  -- (eval);
+      \draw[flow] (eval)  -- node[lbl] {answer} (ver);
+      \draw[flow] (ver)   -- node[lbl] {grounded $\mid$ give\_up} (ans);
+      \draw[flow] (ans)   -- (end);
+
+      \draw[flow] (eval.west) -- ++(-22mm,0)
+        node[lbl, above, pos=0.5] {continue}
+        |- (expl.west);
+
+      \draw[flow] (eval.east) -- node[lbl] {backtrack} (back.west);
+      \draw[flow] (back.north) |- (expl.east);
+
+      \draw[flow] (ver.west) -- ++(-30mm,0)
+        node[lbl, below, pos=0.5] {retry}
+        |- ([yshift=-2mm] expl.west);
+
+      \begin{scope}[on background layer]
+        \node[draw=black!35, dashed, rounded corners, inner sep=2.5mm,
+              fit=(expl)(eval)] {};
+      \end{scope}
+    \end{tikzpicture}
+  \end{center}
+  \caption{The AGR state machine. The dashed region is the
+    Explorer\,$\leftrightarrow$\,Evaluator search loop.
+    Evaluator $\rightarrow$ Backtracker $\rightarrow$ Explorer restores
+    an earlier frontier, and Verifier $\rightarrow$ Explorer is
+    verification-driven re-exploration. The budgets of
+    \ref{sec:budgets} bound all three cycles. Every path from
+    Evaluator to Answerer passes through the Verifier.}
+  \label{fig:statemachine}
+\end{figure}
+
+\subsection{Graph tool API}\label{app:tools}
+
+Four graph operations back the loop, as parameterised Cypher templates
+against a Neo4j property graph rather than free-form queries the model
+would write itself, because a generated-query failure is
+indistinguishable in the results from a reasoning failure.
+\textsf{search\_entity} resolves a surface form to a node through three
+tiers, exact name, then full-text index, then vector similarity, and
+stops at the first that returns a match. \textsf{get\_relations} returns
+the relation types incident on an entity with their direction and
+fanout, after a blocklist removes schema relations, sorted by descending
+fanout and cut at $300$ rows. \textsf{get\_neighbors} returns at most
+$200$ neighbours along one relation. Unnamed mediator nodes, which
+encode $n$-ary facts and make up $63.7\%$ of the graph
+(\Cref{sec:environment}), are traversed transparently, so a mediator
+path costs one hop. \textsf{verify\_connection} asks whether two
+entities are adjacent directly or through one mediator, ignoring the
+relation. A fifth operation, \textsf{verify\_triple}, was built first to
+check a claim $\langle h, r, t \rangle$ by asking whether that exact
+relation held between the two entities. It did not survive contact with
+generated text, because claim decomposition phrases relations in English
+(``played for'', ``is the capital of'') and those phrases rarely
+correspond to a single Freebase predicate, so matching on them rejected
+claims that were true. Nothing in the running loop calls it.
+
+\subsection{Edge scoring}\label{app:scoring}
+
+The explorer gathers every relation row of every anchor into one
+candidate set, at most five anchors, and scores it in one pass. Each
+row $c$, an anchor together with a relation and a direction, receives
+\begin{equation}\label{eq:score}
+  \mathrm{score}(c) \;=\; \alpha \cos\!\big(v_{\mathrm{rel}(c)},\,
+  v_{o}\big) \;+\; (1-\alpha)\, \mathrm{LLM}(c),
+\end{equation}
+which blends two signals at the frozen $\alpha = 0.7$. The first is the
+cosine similarity between the candidate relation's embedding and the
+embedding of the active sub-objective $o$, both from
+\textsf{all-MiniLM-L6-v2}~\cite{reimers2019sentence}, with the relation
+vocabulary of $7{,}058$ types embedded once in advance. The objective,
+not the original question, is what gets embedded, and that substitution
+is the concrete mechanism through which decomposition is meant to help.
+The second is a batched model judgement, one call, over the twenty
+candidates with the highest embedding score; every other candidate
+receives zero for that term. The blend is applied after the model call
+rather than inside the prompt, so that a prompt free of any
+configuration value lets an $\alpha$ sweep reuse one set of cached
+responses across every condition. The three best rows per anchor,
+skipping banned ones, are expanded, and the five neighbours with the
+highest reaching score become the next frontier.
+
+\subsection{Evaluation, routing, and backtracking}\label{app:routing}
+
+The evaluator is one model call. It sees the active sub-objective, the
+thirty traversed triples most similar to it by the same embedding, and
+the remaining depth and backtrack budget, and it returns one of three
+decisions together with the entities it considers to satisfy the
+objective. Those entities are accepted only if they are names in the
+traversed set, so the evaluator cannot introduce an entity the graph did
+not return. When it marks an objective done, its resolved entities
+become the anchors for the next objective.
+
+The router after it applies three tests in order. If the depth or the
+wall-clock budget is spent, the loop ends and the verifier runs.
+Otherwise, if a backtrack trigger fires and the backtrack budget allows,
+the backtracker runs; three triggers exist, namely that the last
+expansion added no triple, that the best score of the last expansion
+fell below $\tau = 0.20$, or that the evaluator asked to backtrack.
+Otherwise the evaluator's decision stands. The backtracker pops the
+snapshot with the highest recorded score from the stack, which is often
+not the most recent one, restores its anchors and depth, and bans the
+anchor--relation--direction rows the most recent expansion followed. The
+mismatch between the snapshot it restores and the rows it bans is
+deliberate in neither direction, and \Cref{sec:nulls} measures what it
+costs. This is where the mechanics part from
+Plan-on-Graph~\cite{chen2024plan}, whose decomposition and reflection
+live in prompts the model executes: here the plan is a data structure
+the program advances, two of the three backtrack triggers are
+deterministic tests on the scores, and the ban list, not a reflection,
+is what makes a restored frontier explore differently.
+
+\subsection{Claim routing and the verifier's outcomes}\label{app:claims}
+
+One model call sees the question, the sixty traversed triples most
+similar to it, and up to twenty-five candidates. It drafts prose,
+extracts the entities the draft asserts as its answer, and decomposes
+the draft into atomic claims over entity \emph{names}, since the model
+has never seen a graph identifier; the relation slot is left as free
+text for the reason \ref{app:tools} gives.
+
+Each claim is routed through up to three tests and leaves at the first
+that settles it. \textbf{Traversed adjacency} collapses the traversed
+triples into an undirected set of endpoint pairs; a claim is supported
+if its pair is in that set, and every traversed triple joining the pair
+is attached as citable evidence. This is the only route of the three
+that attaches evidence. \textbf{\textsf{verify\_connection}} catches
+claims whose endpoints were both reached but never walked together,
+querying the full graph for the same relation-agnostic adjacency. Claims
+that clear neither route, together with those naming an entity the agent
+never traversed at all, fall to an \textbf{entailment check}: one
+batched model call judging each remaining claim against the same fact
+window the drafter saw. Symbols decide, and the model is consulted only
+where the graph is silent.
+
+The router that follows has three outcomes. No unsupported claim routes
+to \textsf{grounded}, and the draft is emitted verbatim with no further
+model call. An unsupported claim with verification, depth, and time
+budget remaining routes to \textsf{retry}: the verifier appends a repair
+objective naming the first unsupported claim, anchors the frontier on
+that claim's head entity, and control returns to the Explorer. Otherwise
+the router takes \textsf{give\_up}, and one rewrite call restates the
+draft around a \emph{deterministically filtered} entity list, in which
+an entity survives if it appears in a supported claim or in no
+unsupported claim. An earlier design let the model regenerate the list
+itself, and that reintroduced exactly the ungroundedness the layer
+exists to prevent.
+
+On the $80$-question development set used to validate this design, $77$
+questions asserted no unsupported claim and took the grounded path at
+zero additional model cost. The remaining $3$ took \textsf{give\_up},
+and the retry route did not fire once, because every question that
+reached the verifier with an unsupported claim had already exhausted its
+depth budget. On most questions, then, the layer is a pass-through that
+certifies a draft rather than a mechanism that visibly intervenes, which
+is the reading \Cref{sec:nulls} confirms at test scale.
+
+\subsection{Budgets and termination}\label{sec:budgets}
+
+Routers and the model client enforce every cap; no prompt requests one.
+A run may take at most $4$ expansion depths, a beam of $3$ candidate
+rows per anchor, $5$ anchors in the frontier, $3$ backtracks, $2$
+verification iterations, $300$ seconds of wall-clock time, and $25$
+model calls. The depth, wall-clock, and verification caps are checked at
+two separate sites each, because the \textsf{retry} edge re-enters the
+Explorer without passing back through the router that would otherwise
+catch it. Every cap is hashed into the run configuration, so a reported
+result can always be traced to the caps that produced it. The two
+tool-layer caps of \ref{app:tools}, $300$ candidate relations and $200$
+neighbours, bound what the agent can see rather than what it can spend,
+and \Cref{sec:baselines} shows why they matter for the comparison. Every
+cycle in \Cref{fig:statemachine} therefore passes through a router that
+checks or decrements a monotone counter, so no sequence of model
+outputs, however adversarial, can produce a non-terminating run.
+
+\subsection{Removing a component}\label{sec:removal}
+
+Each ablation condition of \Cref{sec:attribution} flips one flag and
+leaves every other line of the loop as it is. \textbf{No planner}
+replaces the planning call with a plan of one objective, the question
+itself; anchors still come from the annotated topic entities, as they do
+in the full system. \textbf{Embedding-only scoring} sets $\alpha = 1$,
+which makes no scoring call and ranks candidates by cosine similarity
+alone. \textbf{No backtracking} sets the backtrack budget to zero, so
+the router ends the search where it would have backtracked. \textbf{No
+verification} leaves the drafting call unchanged, entity list and claim
+decomposition included, but checks no route, makes no entailment call,
+and emits the draft verbatim. That condition therefore measures the
+checking and not the drafting, and its token saving is the cost of the
+routes rather than of the draft. The budget configuration is hashed into
+every record, so the condition that produced a row of
+\Cref{tab:ablation} can be recovered from the row.

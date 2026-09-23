@@ -19,9 +19,14 @@ orig = io.open(R, encoding="utf-8").read()
 # Ends at the subsection that follows rather than at the passage's own
 # last sentence -- that sentence later gained the clip-rate caveat, and
 # an anchor on its old wording silently stopped matching.
+# The terminator is the subsection that FOLLOWS the passage, and which
+# subsection that is changed on 2026-09-23: "Accuracy by Hop Depth" moved
+# to Appendix D under \label{sec:hops} when the manuscript went on a hard
+# page budget, so Groundedness now follows the width passage. The passage
+# itself, and all three rates the cases below corrupt, stayed in the body.
 without = re.sub(
     r"\\textbf\{One asymmetry bounds how far that reading extends\}[\s\S]*?"
-    r"(?=\\subsection\{Accuracy by Hop Depth\})",
+    r"(?=\\subsection\{Groundedness\})",
     "", orig)
 assert without != orig, "could not locate the added passage"
 

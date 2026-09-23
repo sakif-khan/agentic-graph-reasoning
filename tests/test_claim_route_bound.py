@@ -40,6 +40,14 @@ PROSE = [
     ROOT / "thesis_book" / "chapters" / "verification.tex",
     ROOT / "thesis_book" / "chapters" / "erroranalysis.tex",
     ROOT / "journal" / "sections" / "discussion.tex",
+    # The [39, 2,008] interval moved out of discussion.tex on 2026-09-23,
+    # when the manuscript was put on a hard page budget and the arithmetic
+    # behind the wrongful-acceptance limitation went to Appendix D. The
+    # limitation is still stated in discussion.tex; the interval that bounds
+    # it is here. Without this line the parametrised guard below simply
+    # SKIPPED the file that now carries the numbers -- a silent loss of
+    # coverage, which is exactly the failure this test exists to prevent.
+    ROOT / "journal" / "sections" / "appendix-measurements.tex",
     # The deck's own answer to "your verifier doesn't check the relation",
     # in both renderings. It is the shortest statement of the interval in the
     # project and the one delivered under questioning, which is the worst
