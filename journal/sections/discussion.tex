@@ -41,9 +41,9 @@ relation it asserts leaves no trace. The exposure is real rather than
 hypothetical, because both structural routes ignore the relation and the
 direction: any edge between two entities certifies any claimed relation
 between them. Nothing in the committed record says how often that
-happened, and \ref{app:exposure} gives the interval, two orders of
-magnitude wide, that is all the record supports. The same gap means the
-layer has no measured precision or recall as a classifier of claims,
+happened, and the supplementary material gives the interval, two orders
+of magnitude wide, that is all the record supports. The same gap means
+the layer has no measured precision or recall as a classifier of claims,
 which is the first number a verification component should carry.
 
 \textbf{The output contract cannot be audited from the run records.} AGR
@@ -87,7 +87,8 @@ whose two mechanisms AGR's planner and backtracker re-host
 decomposition as implemented here and to Plan-on-Graph's by analogy
 only. \textbf{The static graph baseline is radius-bounded} in turn, so
 its decay across hop strata measures the radius as much as the paradigm,
-and \ref{sec:hops} declines to offer it as evidence for either.
+and the supplementary material declines to offer it as evidence for
+either.
 
 \textbf{One backbone, and nondeterminism.} All five systems run on
 \textsf{gpt-5.4-mini}, frozen and closed, so this paper establishes how
@@ -119,15 +120,15 @@ in for}, and its node identity is coarser. Per-question subgraphs with a
 $97\%$-plus answer-reachability ceiling are a more forgiving substrate
 than full Freebase: between-system comparisons hold, because all five
 systems navigate the identical graph, but absolute accuracies do not
-transfer, and \ref{sec:rog} shows the gap to a published system trained
-on the benchmarks. Topic entities are \textbf{given, not linked}, which
-isolates navigation from entity linking as intended but means every
-reported accuracy assumes a linking step a deployed system would have to
-perform. And entities are keyed by name, so \textbf{homonyms merge}:
-distinct real-world entities sharing a surface form collapse to one
-node, which can manufacture a path between things not actually connected
-and can equally destroy a distinction a question depends on. Neither
-direction is measured.
+transfer, and the supplementary material shows the gap to a published
+system trained on the benchmarks. Topic entities are \textbf{given, not
+linked}, which isolates navigation from entity linking as intended but
+means every reported accuracy assumes a linking step a deployed system
+would have to perform. And entities are keyed by name, so
+\textbf{homonyms merge}: distinct real-world entities sharing a surface
+form collapse to one node, which can manufacture a path between things
+not actually connected and can equally destroy a distinction a question
+depends on. Neither direction is measured.
 
 \textbf{The measured accuracy has an unmeasured floor.} An extraction
 defect converts correct reasoning into a wrong entity list on one
@@ -153,8 +154,8 @@ temporal facts, no graph construction, and an offline prototype. The
 environment carries no typed literals and the tool API no ordering
 operator, so questions answered by a date, a quantity, or a superlative
 are out of reach by construction (\Cref{sec:environment}). Wall-clock
-figures are magnitudes with a cache caveat (\ref{app:latency}), not a
-production-readiness claim.
+figures are magnitudes with a cache caveat (reported in the
+supplementary material), not a production-readiness claim.
 
 \subsection{Outlook}\label{sec:outlook}
 
@@ -163,8 +164,8 @@ against the cost of the study it would complete: the agentic baseline at
 AGR's candidate widths under a sweep of the call cap, replication with
 the joint-removal condition \Cref{sec:power} names, the full test
 splits, and one logging change that would convert the two limitations
-opening this section into measurable quantities. \ref{app:experiments}
-says what each would settle.
+opening this section into measurable quantities. The supplementary
+material says what each would settle.
 
 The most actionable finding points forward rather than back. If
 decomposition helps only when a question has compositional structure,

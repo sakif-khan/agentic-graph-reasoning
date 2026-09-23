@@ -43,14 +43,14 @@ from the model's account of what it did, and budgets are enforced by
 counters a router checks rather than requested in a prompt the model may
 ignore. The consequence this paper uses is that each of the loop's four
 components can be removed by a configuration flag without touching the
-others, which is what \Cref{sec:attribution} does; \ref{sec:removal}
-states exactly what each flag removes.
+others, which is what \Cref{sec:attribution} does; the supplementary
+material states exactly what each flag removes.
 
 \subsection{State Machine}\label{sec:statemachine}
 
-\Cref{fig:statemachine}, in \ref{app:instrument}, gives the topology:
-six agent nodes over a shared typed state, with three cycles. The
-\textbf{Planner} decomposes the question into an ordered chain of at
+A state-machine diagram in the supplementary material gives the
+topology: six agent nodes over a shared typed state, with three cycles.
+The \textbf{Planner} decomposes the question into an ordered chain of at
 most four sub-objectives in one model call, from a prompt whose first
 exemplar is a single-hop question that is \emph{not} decomposed.
 \textbf{Explorer} and \textbf{Evaluator} form a search loop: the
@@ -63,12 +63,12 @@ graph returned. The \textbf{Backtracker} restores an earlier,
 higher-scoring frontier and bans the edges that led away from it; that
 ban list is what turns backtracking into a search operation, since
 without it a deterministic scorer facing the same restored frontier
-would select the same edges again. \ref{app:tools} gives the four graph
-operations, \ref{app:scoring} the scoring rule, and \ref{app:routing}
-the router and the backtracker's snapshot discipline. Every path from
-Evaluator to Answerer passes through the \textbf{Verifier}, and the
-budgets of \ref{sec:budgets} bound all three cycles, so no sequence of
-model outputs can produce a non-terminating run.
+would select the same edges again. The supplementary material gives the
+four graph operations, the scoring rule, and the router and the
+backtracker's snapshot discipline. Every path from Evaluator to Answerer
+passes through the \textbf{Verifier}, and the budgets recorded in the
+supplementary material bound all three cycles, so no sequence of model
+outputs can produce a non-terminating run.
 
 \subsection{Structural Verification Layer}\label{sec:verification}
 
@@ -89,8 +89,8 @@ fact window the drafter saw. Symbols decide, and the model is consulted
 only where the graph is silent. If no claim is unsupported the draft is
 emitted verbatim; otherwise the verifier either sends the agent back to
 explore for the missing support or, when the budget is spent, rewrites
-the draft around a deterministically filtered entity list.
-\ref{app:claims} gives the routing and the three outcomes in full.
+the draft around a deterministically filtered entity list. The
+supplementary material gives the routing and the three outcomes in full.
 
 \textbf{What the graph routes actually check bounds every claim made for
 this layer.} Both of them ignore the relation and the direction, so what

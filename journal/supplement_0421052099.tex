@@ -1,0 +1,130 @@
+% =====================================================================
+% SUPPLEMENTARY MATERIAL for journal_0421052099.tex. This is a document;
+% build it -- but build the manuscript FIRST:
+%
+%   latexmk -pdf journal_0421052099.tex      (writes journal_0421052099.aux)
+%   latexmk -pdf supplement_0421052099.tex
+%
+% WHY THAT ORDER. Everything under sections/appendix-*.tex refers back
+% into the manuscript -- \Cref{sec:baselines}, \Cref{tab:main} and about
+% thirty-five more. `xr' below reads those labels out of the manuscript's
+% .aux, so the supplement prints the manuscript's real section and table
+% numbers instead of "??". With no .aux present the supplement still
+% builds, and every cross-manuscript reference degrades to "??", which is
+% the one warning class to expect from a first-ever build here.
+%
+% WHY THIS FILE EXISTS. Until 2026-09-23 this material was Appendices A-D
+% of the manuscript. The manuscript was then required to carry no
+% appendices at all: it runs abstract to conclusion, then the
+% declarations, then the references, and nothing else. The material was
+% not deleted -- it moved here, and each place in the manuscript that
+% used to point at an appendix now points at "the supplementary
+% material".
+%
+% THE SECTION FILES STAY IN journal/sections/ AND MUST NOT BE MOVED.
+% scripts/check_paper_numbers.py globs journal/sections/*.tex plus the
+% manuscript root and nothing else. It reads the FILESYSTEM, not the
+% build, so a file that sits there keeps all of its number bindings even
+% though a different document now \inputs it. Moving these three files
+% next to this document would silently unbind roughly a third of the
+% checked figures in the study.
+%
+% Numbering is S1, S1.1, Table S1, Figure S1 -- the convention Elsevier
+% supplementary files use, and distinct from the manuscript's own
+% numbers, which appear here too by way of xr.
+% =====================================================================
+\documentclass[preprint,12pt]{elsarticle}
+
+% No `review' here, deliberately. The manuscript carries it because
+% Elsevier asks for 1.5-spaced copy at peer review; a supplement that is
+% mostly verbatim prompt listings and wide tables reads better, and
+% shorter, single-spaced.
+
+\input{preamble}
+
+% Loaded after preamble.tex, which ends with hyperref and cleveref.
+% Plain `xr', not `xr-hyper': xr-hyper wants to load before hyperref, and
+% the only thing it buys is a clickable link into a separate PDF, which
+% is not something a reviewer can follow in a submission bundle anyway.
+% The imported \newlabel entries include cleveref's own @cref records, so
+% \Cref{sec:baselines} prints "Section 4.2" here exactly as it does in
+% the manuscript.
+\usepackage{xr}
+
+% \bibcite is deafened for exactly the length of the aux read, and put
+% back immediately. xr walks the manuscript's .aux and acts on its
+% \newlabel entries, but the \bibcite entries beside them are executed
+% too, so natbib saw a second definition for every key this document and
+% the manuscript both cite -- five of them, each raising "Citation `x'
+% multiply defined" and then a summary warning. The keys are real and
+% resolve correctly either way; the warnings are noise, and noise is what
+% a log check counts. \@gobbletwo, because \bibcite takes two arguments.
+\makeatletter
+\let\SUPP@bibcite\bibcite
+\let\bibcite\@gobbletwo
+\externaldocument{journal_0421052099}
+\let\bibcite\SUPP@bibcite
+\makeatother
+
+% S-numbering for everything this document defines. \thesubsection is
+% built from \thesection, so it follows to S1.1 without being set here.
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\journal{Knowledge-Based Systems}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Supplementary Material\\
+  \normalsize for \emph{Component Attribution in Agentic Knowledge Graph
+    Question Answering: A Controlled Ablation, Budget Analysis, and
+    Failure Census}}
+
+\author[buet]{Md. Sakif Khan}
+\author[buet]{Sadia Sharmin}
+
+\affiliation[buet]{organization={Department of Computer Science and
+    Engineering, Bangladesh University of Engineering and Technology},
+  city={Dhaka},
+  country={Bangladesh}}
+
+\end{frontmatter}
+
+\noindent This file accompanies the manuscript named above. It carries
+four things the manuscript refers to but does not contain: the thirteen
+prompt templates the five systems send, the mechanics of the instrument
+at the width a reimplementation would need, how the two non-trivial
+baselines were built and how groundedness was measured, and five
+secondary measurements the manuscript reports no conclusion from.
+Section and table numbers prefixed \textsf{S} belong to this document;
+unprefixed ones refer to the manuscript.
+
+\section{Prompt templates}
+\label{app:prompts}
+Seven templates constitute the whole of AGR's interface to the
+language model, and six serve the baselines: one for the parametric
+control, one shared by the two static retrieval baselines, and four
+belonging to the reimplemented agentic baseline. All thirteen are
+reproduced here verbatim from the source that sends them, in the
+order a question encounters them, by a script that reads the code
+(\texttt{scripts/build\_paper\_appendix.py} in the repository named
+in the manuscript's data availability statement). No template carries a
+configuration constant, so one cached response serves every
+condition of a sweep; budgets are counters in code rather than
+instructions, and the evaluator's remaining depth and backtracks are
+the only budget figures any prompt carries. Every call asks for JSON
+against a schema stated in the code beside the template.
+
+\input{appendix/prompts}
+
+\input{sections/appendix-instrument}
+\input{sections/appendix-protocol}
+\input{sections/appendix-measurements}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{journal}
+
+\end{document}

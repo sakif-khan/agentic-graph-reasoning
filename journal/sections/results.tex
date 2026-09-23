@@ -55,8 +55,8 @@ rest on $76$ questions AGR alone answers against $38$ the other way on
 WebQSP ($p = 4.8 \times 10^{-4}$), and $86$ against $51$ on
 ComplexWebQuestions ($p = 3.5 \times 10^{-3}$). Against RoG's published
 figures, measured over the full splits with a backbone fine-tuned on
-both benchmarks, AGR trails on all four; \ref{sec:rog} gives that
-comparison and what it does and does not establish.
+both benchmarks, AGR trails on all four; the supplementary material
+gives that comparison and what it does and does not establish.
 
 \begin{table}[!tb]
   \begin{center}
@@ -127,11 +127,11 @@ against $5{,}572$ on ComplexWebQuestions. It is the \emph{number of
 round trips} that halves, not the volume of text, so on tokens
 Think-on-Graph is a frontier point rather than a dominated one, while on
 calls it is dominated on both datasets --- and calls are what the shared
-budget meters. Wall-clock time tells the same story in seconds
-(\ref{app:latency}). AGR never reaches the shared call cap: across all
-$800$ test questions it hit the $25$-call limit zero times, though its
-depth cap refuses a deeper expansion on $25.6\%$ of test questions. The
-baseline reaches the cap far more often.
+budget meters. Wall-clock time tells the same story in seconds (reported
+in the supplementary material). AGR never reaches the shared call cap:
+across all $800$ test questions it hit the $25$-call limit zero times,
+though its depth cap refuses a deeper expansion on $25.6\%$ of test
+questions. The baseline reaches the cap far more often.
 
 \subsection{Where the Margin Comes From}\label{sec:margin}
 
@@ -176,21 +176,21 @@ reaches $0.675$ and $0.415$.
 \end{table}
 
 The split conditions on the baseline's own outcome, so the reading would
-be unsafe if the clipped half were simply the hard half, and
-\Cref{tab:togstrata}, in \ref{app:strata}, reads it within hop strata,
-and every figure the reading rests on is quoted here. On WebQSP the
-clipped half is not harder for AGR: $81$ of the $117$ clipped questions
-are single-hop, AGR scores $0.728$ on them against $0.766$ on the
-single-hop questions the baseline finished, and the baseline's fall from
-$0.846$ to $0.160$ across the same two sets is the cap, not the
-questions. On ComplexWebQuestions the halves do differ --- AGR scores
-$0.309$ on the clipped single-hop questions against $0.609$ on the
-finished ones --- so there truncation and difficulty are confounded and
-the affordability reading is weaker. The finished halves are not uniform
-either: on ComplexWebQuestions the baseline leads AGR only on single-hop
-questions, $0.754$ against $0.609$, and trails on two-hop, $0.561$
-against $0.610$, which is the planner asymmetry of \Cref{sec:planner}
-seen from the other side.
+be unsafe if the clipped half were simply the hard half, and the
+supplementary material reads it within hop strata, and every figure the
+reading rests on is quoted here. On WebQSP the clipped half is not
+harder for AGR: $81$ of the $117$ clipped questions are single-hop, AGR
+scores $0.728$ on them against $0.766$ on the single-hop questions the
+baseline finished, and the baseline's fall from $0.846$ to $0.160$
+across the same two sets is the cap, not the questions. On
+ComplexWebQuestions the halves do differ --- AGR scores $0.309$ on the
+clipped single-hop questions against $0.609$ on the finished ones --- so
+there truncation and difficulty are confounded and the affordability
+reading is weaker. The finished halves are not uniform either: on
+ComplexWebQuestions the baseline leads AGR only on single-hop questions,
+$0.754$ against $0.609$, and trails on two-hop, $0.561$ against $0.610$,
+which is the planner asymmetry of \Cref{sec:planner} seen from the other
+side.
 
 The correct reading is affordability, not resolution quality. Exhaustive
 beam search finds answers well when allowed to finish; guided search
@@ -226,9 +226,9 @@ wider candidate sets make each pruning call dearer, so equal-width
 pruning would also raise the baseline's clip rate and move the boundary
 of the very split it would be read from. The two effects have to be read
 apart, which means reporting that split at each setting rather than an
-aggregate in which they cancel or compound invisibly.
-\ref{app:equalwidth} adds the check on whether AGR buys hits by naming
-more entities; it does not.
+aggregate in which they cancel or compound invisibly. The supplementary
+material adds the check on whether AGR buys hits by naming more
+entities; it does not.
 
 \subsection{Groundedness}\label{sec:groundedness}
 
@@ -244,10 +244,10 @@ exactly zero ungrounded assertions, on $1{,}265$ entities, without any
 claim-checking component whatsoever.
 
 A second tier asks whether an asserted entity is supported \emph{as the
-answer}, and it separates the systems far less; \ref{app:tier2} gives
-every cell, and no between-system gap there survives $n = 60$. The level
-is the useful finding rather than the ranking. \textbf{Zero structural
-hallucination coexists with between a third and nearly two-thirds of
-assertions failing a strict semantic-support test}, for every system,
-including the two that are structurally perfect. Semantic support is
-hard for the paradigm, not for one system within it.
+answer}, and it separates the systems far less; the supplementary
+material gives every cell, and no between-system gap there survives $n =
+60$. The level is the useful finding rather than the ranking.
+\textbf{Zero structural hallucination coexists with between a third and
+nearly two-thirds of assertions failing a strict semantic-support test},
+for every system, including the two that are structurally perfect.
+Semantic support is hard for the paradigm, not for one system within it.

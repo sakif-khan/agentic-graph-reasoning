@@ -82,20 +82,21 @@ Hits@1.
 Four baselines span the design space, three of them controls that bound
 what a paradigm can do here rather than tuned competitors. A
 \textbf{no-retrieval} control answers from parametric memory alone, and
-\textbf{Vector-RAG} retrieves verbalised triples by embedding
-similarity. \textbf{Static GraphRAG}~\cite{edge2024local} retrieves a
-fixed-radius neighbourhood in one shot; its radius is one logical hop
-and its expansion is capped and unordered (\ref{app:graphrag}), so it
-licenses one narrow claim and no more: \emph{retrieval fixed before
-reasoning must commit to a radius in advance, and any fixed radius is
-wrong for some question in the set}.
-\textbf{Think-on-Graph}~\cite{sun2024think} is the agentic comparator
-and the one comparison here between two systems of the same paradigm:
-model-guided beam search over relations and entities, reimplemented on
-this environment's tools at the original paper's beam width and depth of
-$3$ and $3$ (\ref{app:tog}). Reimplementing holds graph, model, budget,
-and scoring rule constant so that only the algorithm varies, and it also
-means its numbers are not comparable to the published ones.
+\textbf{Vector-RAG} retrieves verbalised triples by embedding similarity
+over a sentence encoder~\cite{reimers2019sentence}. \textbf{Static
+GraphRAG}~\cite{edge2024local} retrieves a fixed-radius neighbourhood in
+one shot; its radius is one logical hop and its expansion is capped and
+unordered (detailed in the supplementary material), so it licenses one
+narrow claim and no more: \emph{retrieval fixed before reasoning must
+commit to a radius in advance, and any fixed radius is wrong for some
+question in the set}. \textbf{Think-on-Graph}~\cite{sun2024think} is the
+agentic comparator and the one comparison here between two systems of
+the same paradigm: model-guided beam search over relations and entities,
+reimplemented on this environment's tools at the original paper's beam
+width and depth of $3$ and $3$ (detailed in the supplementary material).
+Reimplementing holds graph, model, budget, and scoring rule constant so
+that only the algorithm varies, and it also means its numbers are not
+comparable to the published ones.
 
 Every system shares one frozen backbone,
 \textsf{gpt-5.4-mini-2026-03-17}, a dated snapshot rather than an alias,
@@ -133,12 +134,12 @@ normalisation would have scored as hits, so the census of
 \Cref{sec:erroranalysis} is reading real errors. \textbf{Groundedness}
 is measured at two levels, one deterministic over every asserted entity
 and one a sampled judgement of whether an entity is supported \emph{as
-the answer} (\ref{app:groundedness}). That judge was validated against a
-human annotator on $100$ items, reaching $85\%$ agreement and Cohen's
-$\kappa = 0.6995$. That \emph{misses} the $0.70$ we pre-specified, by
-$0.0005$, and \Cref{sec:discussion} treats the miss as a limitation
-rather than rounding it away. Efficiency is tokens and model calls, both
-exact from the shared meter.
+the answer} (both defined in the supplementary material). That judge was
+validated against a human annotator on $100$ items, reaching $85\%$
+agreement and Cohen's $\kappa = 0.6995$. That \emph{misses} the $0.70$
+we pre-specified, by $0.0005$, and \Cref{sec:discussion} treats the miss
+as a limitation rather than rounding it away. Efficiency is tokens and
+model calls, both exact from the shared meter.
 
 % \ref, not \Cref, for app:prompts: elsarticle's \appendix defines
 % \thesection as "Appendix A", so \Cref printed "Section Appendix A".
@@ -160,5 +161,5 @@ $95\%$ percentile bootstrap intervals over questions from $10{,}000$
 resamples, and paired comparisons use the exact form of McNemar's test
 on per-question correctness. The thirteen prompt templates the five
 systems send, AGR's seven and the baselines' six, are reproduced
-verbatim in \ref{app:prompts}, generated from the code by a script so
-that they cannot drift.
+verbatim in the supplementary material, generated from the code by a
+script so that they cannot drift.

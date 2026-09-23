@@ -5,12 +5,21 @@ Journal manuscript drawn from `thesis_book/`. Target: Elsevier —
 
 | File | What it is |
 | --- | --- |
-| `journal_0421052099.tex` | **The document.** `elsarticle`, `preprint,review,12pt` |
-| `preamble.tex` | Fonts, figure toolchain, palette, system-name macros |
-| `sections/*.tex` | Nine sections. Undrafted ones carry their source chapter and word budget as comments |
+| `journal_0421052099.tex` | **The manuscript.** `elsarticle`, `preprint,review,12pt`. Abstract → conclusion → declarations → references. **No appendices** |
+| `supplement_0421052099.tex` | **The supplementary file**, uploaded alongside it. `elsarticle`, `preprint,12pt` (single-spaced). Holds what used to be Appendices A–D |
+| `preamble.tex` | Fonts, figure toolchain, palette, system-name macros. Shared by both documents |
+| `sections/*.tex` | Nine body sections, plus the three `appendix-*.tex` the **supplement** inputs |
 | `figures/` | Generated. Do not edit |
 | `highlights.txt` | Elsevier highlights, submitted as a separate file |
-| `appendix/` | Generated: the thirteen prompt templates, verbatim from the code, as Appendix A. Do not edit |
+| `appendix/` | Generated: the thirteen prompt templates, verbatim from the code. Inputs into the supplement. Do not edit |
+
+**`sections/appendix-*.tex` must stay under `sections/`, even though the
+manuscript no longer inputs them.** `scripts/check_paper_numbers.py`
+globs `journal/sections/*.tex` plus the manuscript root and nothing
+else, and it reads the filesystem rather than following the build — so
+those files keep all of their number bindings exactly as long as they
+sit in that directory. Moving them beside the supplement would silently
+unbind roughly a third of the study's checked figures.
 
 ## Build
 
@@ -18,7 +27,15 @@ Journal manuscript drawn from `thesis_book/`. Target: Elsevier —
 cd journal
 latexmk -pdf journal_0421052099.tex
 python ../scripts/check_paper_log.py
+latexmk -pdf supplement_0421052099.tex      # manuscript first, see below
 ```
+
+**Order matters.** The supplement's sections refer back into the
+manuscript — `\Cref{sec:baselines}`, `\Cref{tab:main}` and about
+thirty-five more — and resolve them through `xr`, which reads
+`journal_0421052099.aux`. Build the manuscript first and the supplement
+prints the manuscript's real numbers; build it alone and it still
+compiles, with every cross-manuscript reference printed as `??`.
 
 `review` gives the 1.5-spaced single column Elsevier wants for peer
 review — all the option does is set the baseline stretch.
@@ -77,18 +94,25 @@ yours. Swap the class options for other purposes:
 text block with 39 mm side margins, and the 1.5-spaced build ran to 72
 pages. `\usepackage[textwidth=468pt, textheight=660pt,
 centering]{geometry}` sets the class's own 3p width with 25 mm side
-margins and about 30 mm top and bottom; the same content is 51 pages,
-with zero box warnings. Elsevier places no layout requirement on an
-initial submission. The remaining lever is the `review` option's 1.5
-line spacing: dropping it (`preprint,12pt`) gives 36 pages, but 1.5
-spacing is the form reviewers expect and the class provides for that
-reason. Remove the geometry line before switching to
+margins and about 30 mm top and bottom, with zero box warnings.
+Elsevier places no layout requirement on an initial submission.
+
+**Where the pages go** (2026-09-23, after the shortening passes and the
+move of the appendices into the supplement): the manuscript is **29
+pages** — abstract to conclusion 24 (p. 1–24), declarations 1, references
+4 — and the supplement is 15. The remaining lever on the manuscript is
+the `review` option's 1.5 line spacing: dropping it (`preprint,12pt`)
+takes abstract-to-conclusion from 24 pages to about 17 and costs no
+content, but 1.5 spacing is the form reviewers expect and the class
+provides for that reason. Remove the geometry line before switching to
 `1p`/`3p`/`5p`, which load geometry themselves.
 
-Only `journal_0421052099.tex` is a document. `preamble.tex`, the nine sections,
-the appendix and the figures are fragments and stop with *Missing `\begin{document}`*
-if built directly; each carries a `% !TEX root` line, checked by
-`python scripts/check_tex_roots.py`.
+Two files here are documents: `journal_0421052099.tex` and
+`supplement_0421052099.tex`. `preamble.tex`, the nine body sections, the
+three `appendix-*.tex`, the generated prompt appendix and the figures are
+fragments and stop with *Missing `\begin{document}`* if built directly;
+each carries a `% !TEX root` line naming which of the two documents it
+belongs to, checked by `python scripts/check_tex_roots.py`.
 
 ## Numbers and figures
 
@@ -227,12 +251,14 @@ reports the ones that stay inside the thesis's readings:
   the union of the discordant sets, and the development-set α sweep
   (thesis tab:sweep, from `results/phase3/score_run.csv`).
 - A design-space table in §2 (Table 1); the thirteen prompt templates
-  as Appendix A (`appendix/prompts.tex`, generated from the code by
+  (`appendix/prompts.tex`, generated from the code by
   `scripts/build_paper_appendix.py`, so it cannot drift from the
   thesis's Appendix A, which `check_appendix_prompts.py` pins to the
-  same code). It was a separate supplementary file until 2026-09-19;
-  folded in because the comparable papers carry their prompts in an
-  appendix and the promise in §4 should be checkable from the PDF.
+  same code). These were a separate supplementary file until
+  2026-09-19, folded in as Appendix A, and moved back out on
+  2026-09-23 when the manuscript was required to carry no appendices;
+  they are §S1 of `supplement_0421052099.tex` now, and §4's promise
+  points at the supplementary material.
 
 Not done, because each needs new labels or a colleague rather than a
 script: hand-measuring the verifier's wrongful acceptance and rejection

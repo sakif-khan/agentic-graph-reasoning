@@ -63,12 +63,13 @@ as explicit plans with a fine-tuned model and traverses them, so answers
 are faithful by construction, as does graph-constrained
 reasoning~\cite{luo2025gcr}; RoG is also the system whose published
 subgraphs this paper's environment is built from
-(\Cref{sec:environment}), and \ref{sec:rog} compares the two directly.
-KBQA-o1~\cite{luo2025kbqao1} is closest to AGR's search strategy,
-performing agentic knowledge base question answering with full Monte
-Carlo Tree Search over a ReAct-style~\cite{yao2023react} agent. AGR does
-none of this: its search is guided best-first with a bounded beam and
-backtracking, carrying neither rollouts nor value backpropagation.
+(\Cref{sec:environment}), and the supplementary material compares the
+two directly. KBQA-o1~\cite{luo2025kbqao1} is closest to AGR's search
+strategy, performing agentic knowledge base question answering with full
+Monte Carlo Tree Search over a ReAct-style~\cite{yao2023react} agent.
+AGR does none of this: its search is guided best-first with a bounded
+beam and backtracking, carrying neither rollouts nor value
+backpropagation.
 
 A parallel line checks generated content after the fact.
 Chain-of-Verification~\cite{dhuliawala2024chain} has a model draft a
