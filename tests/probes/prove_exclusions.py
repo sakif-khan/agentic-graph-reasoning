@@ -26,13 +26,15 @@ def sub_once(text, find, repl):
     anchor is hostage to the wrap, and the 2026-09-23 shortening moved
     breaks into several of the anchors below.
 
-    NOTE: two anchors here are stale for a different reason and this does
-    not rescue them. The census correction of September 2026 changed the
-    count of defects the hand-read found beyond the pre-pass from 17 to
-    16, and its CWQ share from 14 to 13, so the cases keyed on "$17$ more"
-    and "and $14$ on ComplexWebQuestions" no longer match the paper. They
-    have been failing since that correction. Re-point them at 16 and 13
-    only after checking which defect each case is meant to reinstate.
+    The two anchors that were stale for a different reason are fixed as of
+    2026-09-26. The census correction of September 2026 changed the count of
+    defects the hand-read found beyond the pre-pass from 17 to 16, and its
+    CWQ share from 14 to 13, and the cases keyed on "$17$ more" and "and
+    $14$ on ComplexWebQuestions" had been failing ever since. They now read
+    16 and 13. What each case reinstates is unchanged: one drops the census
+    count from the sentence entirely, the other moves the CWQ share off the
+    measured value -- the corruption side still says 15, which is wrong
+    against 13 exactly as it was wrong against 14.
     """
     pat = r"\s+".join(map(re.escape, find.split()))
     m = re.search(pat, text)
@@ -56,10 +58,10 @@ CASES = [
      "and $57$ distinct questions once the one question appearing in both "
      "counts is resolved. All $41$ were removed"),
     (E, "drop the 17 census-found defects",
-     "found $17$ more that the pre-pass had missed --- $3$",
+     "found $16$ more that the pre-pass had missed --- $3$",
      "found some more that the pre-pass had missed --- $3$"),
     (E, "census-defect split 14 -> 15",
-     "and $14$ on ComplexWebQuestions", "and $15$ on ComplexWebQuestions"),
+     "and $13$ on ComplexWebQuestions", "and $15$ on ComplexWebQuestions"),
     (E, "exclusion total 41 -> 40",
      "All $41$ were removed", "All $40$ were removed"),
 ]

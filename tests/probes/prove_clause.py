@@ -24,8 +24,13 @@ spec.loader.exec_module(t)
 REAL = " ".join(t.words()).lower()
 # The clause the real abstract uses to talk about verification. Replacing
 # it puts a case inside the genuine sentence, with its real comma count.
-SLOT = ("and that three of four components including claim verification "
-        "show no detectable accuracy effect")
+# The abstract was rewritten in the thesis's register on 2026-09-19, so the
+# clause reads "the other three parts, claim verification among them, show
+# no effect our tests could detect" -- one sentence of its own rather than a
+# subordinate clause. Same sentence, same job: it is the place a case gets
+# planted so that it sits inside real prose with a real comma count.
+SLOT = ("the other three parts, claim verification among them, "
+        "show no effect our tests could detect")
 assert SLOT in REAL, "the abstract's verification clause moved; update SLOT"
 
 

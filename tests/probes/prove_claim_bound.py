@@ -25,6 +25,7 @@ Every file is restored in a finally block.
 """
 import io
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -35,9 +36,19 @@ ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
 TEST = "tests/test_claim_route_bound.py"
 
 FILES = {
-    "verification.tex": ROOT / "thesis_book" / "chapters" / "verification.tex",
-    "erroranalysis.tex": ROOT / "thesis_book" / "chapters" / "erroranalysis.tex",
-    "discussion.tex": ROOT / "journal" / "sections" / "discussion.tex",
+    # The keys keep the OLD chapter names because the CASES below address
+    # them by key; only the paths moved. d79a945 folded verification.tex
+    # into framework.tex and 15140dd folded results/setup/erroranalysis
+    # into evaluation.tex, so from September 2026 this probe opened two
+    # files that no longer existed and died before its first case.
+    "verification.tex": ROOT / "thesis_book" / "chapters" / "framework.tex",
+    "erroranalysis.tex": ROOT / "thesis_book" / "chapters" / "evaluation.tex",
+    # The paper's arithmetic, which is no longer in discussion.tex: the
+    # [39, 2,008] interval moved to Appendix D on 2026-09-23 when the
+    # manuscript went on a hard page budget. discussion.tex still states the
+    # limitation, without numbers, so there is nothing there to corrupt.
+    "appendix-measurements.tex":
+        ROOT / "journal" / "sections" / "appendix-measurements.tex",
     # The rehearsal script answers this question out loud, and it spells
     # thousands the way prose does rather than the way LaTeX does. Both
     # renderings, because nothing derives one from the other.
@@ -48,13 +59,16 @@ FILES = {
 # (label, file, find, replace) -- each is the mistake the rule exists to catch.
 CORRUPTIONS = [
     # The inverted inequality, in prose: the joint total sold as relation-blind.
+    # The em-dash, not a full stop: the sentence reads "was made by a
+    # relation-blind test --- \Cref{...} shows" since the chapter merge.
     ("inverted inequality / erroranalysis", "erroranalysis.tex",
-     "relation-blind test. \\Cref{sec:structural-check} shows",
-     "relation-blind test. At least $1{,}969$ were relation-blind, and "
+     "relation-blind test --- \\Cref{sec:structural-check} shows",
+     "relation-blind test --- at least $1{,}969$ were relation-blind, and "
      "\\Cref{sec:structural-check} shows"),
-    ("inverted inequality / discussion", "discussion.tex",
-     "acceptances; the rest were made either by traversed adjacency",
-     "acceptances; the other $1{,}969$ relation-blind ones were made "
+    ("inverted inequality / appendix-measurements",
+     "appendix-measurements.tex",
+     "acceptances, and the rest were made either by traversed adjacency",
+     "acceptances, and the other $1{,}969$ relation-blind ones were made "
      "either by traversed adjacency"),
     # Dropping the upper endpoint, which turns an interval into reassurance.
     ("upper endpoint dropped / verification", "verification.tex",
@@ -63,9 +77,10 @@ CORRUPTIONS = [
     ("upper endpoint dropped / erroranalysis", "erroranalysis.tex",
      "beyond the interval $[39, 2{,}008]$",
      "beyond a floor of $39$"),
-    ("upper endpoint dropped / discussion", "discussion.tex",
-     "lies somewhere in\n$[39, 2{,}008]$",
-     "is at least\n$39$"),
+    ("upper endpoint dropped / appendix-measurements",
+     "appendix-measurements.tex",
+     "relation lies somewhere in $[39, 2{,}008]$",
+     "relation is at least $39$"),
     # Under questioning the floor is the tempting number, and the sentence
     # that follows would go with it -- so the corruption takes both. Leaving
     # "That is an interval two orders of magnitude wide" behind would park the
@@ -119,19 +134,36 @@ def native(s, text):
     return s.replace("\n", "\r\n" if "\r\n" in text else "\n")
 
 
-originals = {k: read(v) for k, v in FILES.items()}
+# transcript.tex is a RENDERING of transcript.md, produced by
+# build_transcript.py, which is frozen with the pre-defense -- so between
+# defenses the file simply does not exist. Same treatment as OPTIONAL in
+# tests/test_claim_route_bound.py: a rendering that has not been built
+# cannot state the interval wrongly, and the .md beside it is corrupted
+# either way. Reading it unconditionally aborted this probe before its
+# first case, which is how it came to prove nothing at all.
+originals = {k: read(v) for k, v in FILES.items() if v.exists()}
 assert run() == 0, "suite is not green before the probe"
 
 caught = missed = 0
 try:
     for label, fname, find, repl in CORRUPTIONS:
+        if fname not in originals:
+            print(f"  [SKIP  ] {label}: {fname} is not generated")
+            continue
         path = FILES[fname]
         text = originals[fname]
-        find, repl = native(find, text), native(repl, text)
-        if find not in text:
+        # Whitespace-tolerant, not a plain substring test. Every file here is
+        # hard-wrapped -- the book at 80 columns, the paper at 72 -- so an
+        # anchor of more than a few words is hostage to wherever the fill
+        # last put a line break. Four of these cases were reporting "anchor
+        # not present" against sentences sitting in the file in full, which
+        # makes a probe claim a rule is unreachable when it is not.
+        pattern = re.compile(r"\s+".join(map(re.escape, find.split())))
+        m = pattern.search(text)
+        if not m:
             print(f"  [SKIP  ] {label}: anchor not present")
             continue
-        write(path, text.replace(find, repl, 1))
+        write(path, text[:m.start()] + native(repl, text) + text[m.end():])
         red = run() != 0
         write(path, text)
         print(f"  [{'CAUGHT' if red else 'MISSED'}] {label}")
@@ -139,7 +171,8 @@ try:
         missed += not red
 finally:
     for k, v in FILES.items():
-        write(v, originals[k])
+        if k in originals:
+            write(v, originals[k])
 
 print(f"\ncaught {caught}, missed {missed}")
 assert run() == 0, "files not restored cleanly"

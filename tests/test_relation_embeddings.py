@@ -51,7 +51,21 @@ def test_prose_quotes_the_first_two_rows_of_the_log(ranking):
     """
     text = PROSE.read_text(encoding="utf-8")
     # the paragraph that reports the probe, not the whole chapter
-    start = text.index("A functional check confirms")
+    #
+    # Conditional since 2026-09-26. 4d4671b ("Shorten the book to ~100
+    # pages") cut this paragraph out of sec:environment, so `text.index`
+    # raised ValueError and the test reported a hard failure about prose the
+    # book had deliberately dropped. The two tests above still hold the
+    # archived log itself to its invariants, which is the part that cannot
+    # go stale; this one guards the transcription, and there is nothing to
+    # transcribe while the paragraph is absent. If it comes back -- in the
+    # book or anywhere else this constant is pointed at -- the guard resumes
+    # with no edit here.
+    marker = "A functional check confirms"
+    if marker not in text:
+        pytest.skip(f"{PROSE.name} no longer reports the embedding probe "
+                    f"(cut in 4d4671b); nothing to hold to the log")
+    start = text.index(marker)
     para = text[start:start + 900]
 
     for rank, score, name in ranking[:2]:

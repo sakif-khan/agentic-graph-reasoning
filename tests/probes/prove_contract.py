@@ -155,12 +155,21 @@ def card_as_shipped():
     io.open(CARD, "w", encoding="utf-8", newline="").write(s)
 
 def unquote_a_retraction():
-    """Strip the quotation marks off a cited overclaim, making it a claim."""
+    """Strip the quotation marks off a cited overclaim, making it a claim.
+
+    Reads journal/README.md rather than highlights.txt. The bullet this used
+    to find was replaced when the FINAL SET was rewritten, and highlights.txt
+    quotes nothing longer than a phrase now -- so the probe was asserting on
+    an absent retraction rather than exercising the QUOTED exemption. The
+    manuscript's editing notes still carry the overclaim verbatim, which is
+    the point of keeping it: the note names what changed. Unquoted, it is a
+    live universal claim and UNIVERSAL must catch it.
+    """
     def go():
-        s = orig[HIGH]
-        m = re.search(r'"(pairs every answer[^"]*)"', s)
-        assert m, "highlights.txt no longer quotes the retracted bullet"
-        io.open(HIGH, "w", encoding="utf-8", newline="").write(
+        s = orig[PREADME]
+        m = re.search(r'"(every answer\s+arrives with[^"]*)"', s)
+        assert m, "journal/README.md no longer quotes the retracted overclaim"
+        io.open(PREADME, "w", encoding="utf-8", newline="").write(
             s[:m.start()] + m.group(1) + s[m.end():])
     return go
 
@@ -175,14 +184,19 @@ CASES = [
     ("...nor its record bound alone",
      strip_bound(CARD, BOUND_RECORD, "record")),
     ("shipped: slide 15, evidence for every asserted claim",
-     edit(DECK, r"\item Attaches \alert{supporting triples} --- from one route of",
-          r"\item Attaches \alert{supporting triples} to every asserted claim %")),
+     edit(DECK, r"From \alert{one route of three}: \textsf{verify\_connection} and entailment attach none.",
+          # No \alert inside "every asserted claim". The quantifier has to
+          # reach its noun with nothing but whitespace in between, and
+          # \alert{...} between them is exactly the markup-inside-the-phrase
+          # case the rule's own docstring records. Alerting the phrase made
+          # this case report MISSED against a rule that works.
+          r"To every asserted claim.")),
     ("shipped: slide 6, returns every answer with its evidence",
      edit(DECK, "carries its evidence with the answer",
           "returns every answer with its evidence")),
     ("shipped: transcript, attaches to every claim it does assert",
-     edit(SCRIPT, "It attaches supporting triples to the claims traversal",
-          "It attaches supporting triples to every claim it does assert. Traversal")),
+     edit(SCRIPT, "It attaches supporting triples, from one route of three, and pairs the answer",
+          "It attaches supporting triples to every claim it does assert, and pairs the answer")),
     ("shipped: thesis abstract, returns every answer paired with",
      # Anchor re-pointed 2026-09-26. The abstract's sentence was reworded
      # from "the claims its traversal grounds come back paired with" to
@@ -195,12 +209,17 @@ CASES = [
      edit(TABS, "And the grounded claims come paired with the triples that support them.",
           "And it returns every answer\npaired with the triples that support it.")),
     ("shipped: manuscript editing note, every answer arrives with",
-     edit(PREADME, "is the output contract. Claiming that",
+     edit(PREADME, "is the output contract, at the width the next note states.",
           "is the output contract: every answer arrives with the traversed "
-          "triples supporting it. Claiming that")),
+          "triples supporting it.")),
+    # The FINAL SET was rewritten, so bullet 1 is the ablation bullet now.
+    # Any bullet will do as the carrier: highlights.txt is held to the
+    # no-universal rule rather than to the both-bounds rule -- five bullets
+    # under 85 characters cannot state a bound -- so what this case proves is
+    # that a universal claim is caught wherever in the file it appears.
     ("shipped: highlights bullet 1, pairs every answer",
-     edit(HIGH, "- Agentic KGQA framework returns answers with the traversed "
-                "triples supporting them",
+     edit(HIGH, "- An agentic KGQA system taken apart: one component removed "
+                "at a time, paired tests",
           "- Agentic KGQA framework pairs every answer with the triples that "
           "support it")),
     ("deck keeps the claim, loses the route bound",

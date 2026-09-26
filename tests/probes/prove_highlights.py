@@ -38,9 +38,14 @@ CASES = [
          l for l in s.splitlines()
          if not l.startswith("- ") or l.startswith("- Agentic")
          or l.startswith("- Matches")) + "\n"),
+    # The FINAL SET was rewritten; the nulls bullet reads "Backtracking,
+    # model scoring and claim checking show no effect at the power available"
+    # now. Same bullet, same defect: replace the null with a claim that
+    # verification raises accuracy.
     ("a bullet claiming verification raises accuracy",
      lambda s: s.replace(
-         "- Three of four agentic components show no detectable accuracy effect",
+         "- Backtracking, model scoring and claim checking show no effect at "
+         "the power available",
          "- Claim-level verification improves answer accuracy measurably", 1)),
     # 44% is deliberate: it IS in the paper, as a clip rate. Presence
     # matching passes it, which is why the token cut is bound to the

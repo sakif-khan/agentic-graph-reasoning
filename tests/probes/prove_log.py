@@ -158,12 +158,31 @@ def truncated():
 CASES = [
     ("shipped: \\corref markup reaches the PDF string", "hyperref",
      build_with(lambda s: HOOK.sub("", s))),
-    ("shipped: the repository URL without xurl", "[box]",
-     build_with(lambda s: s.replace(r"\usepackage{xurl}",
-                                    r"%\usepackage{xurl}", 1))),
+    # The measure, not xurl. This case removed \usepackage{xurl} and relied
+    # on the repository URL setting 0.68pt overfull, which it did under Latin
+    # Modern. The fonts changed to Times on 2026-09-25 and that line now
+    # fits with room to spare -- measured: no xurl gives zero boxes, and so
+    # does removing \emergencystretch, either \hyphenation list, or all of
+    # them. There is no longer a typographic provision in this preamble whose
+    # removal overfulls anything, so a corruption that only *reinstates* one
+    # cannot demonstrate the box detector any more.
+    #
+    # Narrowing the measure does, and it is honest about being synthetic --
+    # as the four cases below it already are. What is under test here is
+    # check_paper_log.py's ability to see a box at all, not this particular
+    # box. xurl stays in the preamble: it costs nothing and the URL is one
+    # rename away from being unbreakable again.
+    ("synthetic: the measure narrowed until lines overrun", "[box]",
+     build_with(lambda s: s.replace("textwidth=468pt", "textwidth=200pt", 1))),
+    # fix-cm, not lmodern: lmodern left the preamble on 2026-09-25 when the
+    # fonts were matched to thesis_book, so this corruption had nothing to
+    # comment out and the case reported MISSED. fix-cm is what answers the
+    # same bug now -- it declares the Computer Modern shapes at arbitrary
+    # sizes -- and removing it reinstates the warnings exactly: 22 of them,
+    # led by "Font shape `OT1/cmr/m/n' in size <> not available".
     ("shipped: \\affiliation without a scalable family", "Font",
-     build_with(lambda s: s.replace(r"\usepackage{lmodern}",
-                                    r"%\usepackage{lmodern}", 1))),
+     build_with(lambda s: s.replace(r"\usepackage{fix-cm}",
+                                    r"%\usepackage{fix-cm}", 1))),
     ("no log at all", "no log at", absent),
     ("a source edited since the build", "built from different sources",
      stale),

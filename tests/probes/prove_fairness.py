@@ -32,10 +32,13 @@ DECK = ROOT / "thesis_presentation" / "content-main.tex"
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 TOG = ROOT / "agr" / "baselines" / "tog.py"
 CONC = ROOT / "thesis_book" / "chapters" / "conclusion.tex"
+# sec:threats lives here, and it is the ordered list the script's
+# ordinals index into since the conclusion's was cut to four.
+THREATS = ROOT / "thesis_book" / "chapters" / "evaluation.tex"
 NUMS = ROOT / "results" / "phase4" / "thesis_numbers.json"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
-FILES = (DECK, SCRIPT, TOG, CONC, NUMS)
+FILES = (DECK, SCRIPT, TOG, CONC, THREATS, NUMS)
 orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
 
 
@@ -86,11 +89,14 @@ SHIPPED_CLAIM = (r"Differences are attributable to \textbf{architecture}, "
                  r"not to model capacity or to a bigger retrieval budget.")
 CURRENT_CLAIM = (r"Differences are attributable to \textbf{architecture}, "
                  r"not to model capacity or spend.")
-DISCLOSURE = (r"\begin{block}{What is \emph{not} held equal} \small ToG prunes "
-              r"to $40$/$20$ candidates per step, AGR to $300$/$200$ --- "
-              r"\alert{narrower is cheaper}, so it cannot explain ToG's "
-              r"clipping, but its unclipped score is a \alert{lower bound}. "
-              r"\end{block}")
+# The block was retitled "\alert{Not} held equal", lost its \small, and the
+# sentence was re-punctuated (full stop after the widths, "but" promoted to
+# a dash clause). Same disclosure, same slide; the anchor had to follow.
+DISCLOSURE = (r"\begin{block}{\alert{Not} held equal} "
+              r"ToG prunes to $40$/$20$ candidates per step, AGR to "
+              r"$300$/$200$. \alert{Narrower is cheaper}, so it cannot "
+              r"explain ToG's clipping --- but its unclipped score is a "
+              r"\alert{lower bound}. \end{block}")
 
 CASES = [
     ("shipped: denies a retrieval-budget control, widths absent",
@@ -99,14 +105,21 @@ CASES = [
      edit(DECK, CURRENT_CLAIM,
           r"Differences are attributable to \textbf{architecture}, not to "
           r"model capacity and not to a bigger candidate set.")),
+    # The two sentences this used to span are no longer adjacent: a sentence
+    # about the parametric control sits between them, and "*not* equal" lost
+    # its emphasis. Anchored on the attribution claim alone, which is the
+    # thing the case corrupts anyway.
     ("the spoken copy keeps the retrieval-budget claim",
-     edit(SCRIPT, "capacity or to spend. One thing is *not* equal",
-          "capacity or to somebody getting a bigger retrieval budget. "
-          "One thing is *not* equal")),
+     edit(SCRIPT, "differences to architecture rather than to model capacity.",
+          "differences to architecture rather than to model capacity or to "
+          "somebody getting a bigger retrieval budget.")),
+    # Re-punctuated on the slide: full stop after the widths, "Narrower"
+    # capitalised, and the dash moved to before "but".
     ("widths disclosed, but not which way they cut",
-     edit(DECK, r"--- \alert{narrower is cheaper}, so it cannot explain ToG's "
-                r"clipping, but its unclipped score is a \alert{lower bound}.",
-          r"--- a difference of configuration.")),
+     edit(DECK, r"\alert{Narrower is cheaper}, so it cannot explain ToG's "
+                r"clipping --- but its unclipped score is a "
+                r"\alert{lower bound}.",
+          r"A difference of configuration.")),
     ("the anticipated-questions entry goes missing",
      edit(SCRIPT, '**"Did both systems see the same candidate sets?"**',
           '**"An unrelated question."**')),
@@ -133,14 +146,17 @@ CASES = [
           '"entities_at_relation_cap": 4,')),
     # The ordinal, at both ends.
     ("the two spoken ordinals disagree with each other",
-     edit(SCRIPT, "the conclusion ranks it limitation 5.",
-          "the conclusion ranks it limitation 3.")),
+     edit(SCRIPT, "the threats to validity rank it limitation 2.",
+          "the threats to validity rank it limitation 3.")),
+    # Inserted into sec:threats, not the conclusion. check_slides.py reads
+    # the rank off sec:threats since the conclusion's list was cut to four
+    # and stopped ranking this item at all.
     ("the thesis reorders its limitations and the script does not follow",
-     edit(CONC, r"\textbf{The agentic baseline prunes from a narrower "
-                r"candidate set.}",
+     edit(THREATS, r"\textbf{An identical environment is not identical "
+                   r"access to it. One baseline sees less of it.}",
           "\\textbf{An unrelated limitation.} Text.\n\n"
-          r"\textbf{The agentic baseline prunes from a narrower "
-          r"candidate set.}")),
+          r"\textbf{An identical environment is not identical "
+          r"access to it. One baseline sees less of it.}")),
 ]
 
 out = []

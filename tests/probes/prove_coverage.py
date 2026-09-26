@@ -28,7 +28,14 @@ import sys
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 MAIN = ROOT / "thesis_presentation" / "content-main.tex"
-BACK = ROOT / "thesis_presentation" / "content-backup.tex"
+# The backup frames are the TAIL OF content-main.tex now, not a file of
+# their own: 275fadc ("Freeze pre-defense files") moved content-backup.tex
+# into pre-defense-frozen-2026-08-29/ and the frames were folded into the
+# one deck, which check_slides.py records at the head of its SOURCES list.
+# This probe kept opening the old path and died before its first case. BACK
+# and MAIN are deliberately the same file now; every case restores before
+# the next runs, so sharing the path is safe.
+BACK = ROOT / "thesis_presentation" / "content-main.tex"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
 FILES = (MAIN, BACK)
@@ -69,22 +76,36 @@ CASES = [
     ("distinct relations 7,058 -> 9,058", MAIN, "$7{,}058$", "$9{,}058$"),
     ("import time 36.4s -> 96.4s", MAIN, "$36.4$", "$96.4$"),
     # The headline the talk opens on.
-    ("slide 1 asserted 661 -> 999", MAIN, "$661$ entities", "$999$ entities"),
-    ("slide 1 ungrounded 179 -> 479", MAIN, "$179$ of them", "$479$ of them"),
-    ("slide 1 rate 27.1% -> 87.1%", MAIN, r"$27.1\%$", r"$87.1\%$"),
+    # The groundedness slide reports both datasets POOLED now, and as a
+    # table rather than a sentence. These three were the no-retrieval
+    # control's WebQSP figures -- 661 asserted, 179 ungrounded, 27.1% -- and
+    # its pooled row is 1,001 / 221 / 22.1%. Same trio, same row, same
+    # defect: a cell that disagrees with the JSON.
+    ("control asserted 1,001 -> 1,999", MAIN,
+     r"$1{,}001$", r"$1{,}999$"),
+    ("control ungrounded 221 -> 421", MAIN, "$221$", "$421$"),
+    # Anchored on the table CELL. A bare "$22.1\%$" matched a LaTeX comment
+    # further up the file first -- the note explaining the column width --
+    # so the corruption edited a comment the checker strips and the case
+    # reported MISSED against a live rule.
+    ("control rate 22.1% -> 82.1%", MAIN,
+     r"$221$ ($22.1\%$)", r"$221$ ($82.1\%$)"),
     # The state machine, counted from its own diagram.
     ("'Six nodes' -> 'Sixteen nodes'", MAIN, "Six nodes;", "Sixteen nodes;"),
     ("'Three cycles' -> 'Seven cycles'", MAIN, "Three cycles ---",
      "Seven cycles ---"),
     # The tool API.
-    ("tool cap 300 -> 900", MAIN, r"$\leq 300$ offered", r"$\leq 900$ offered"),
+    # "offered" became "to the scorer" in the tool-API table.
+    ("tool cap 300 -> 900", MAIN, r"$\leq 300$ to the scorer",
+     r"$\leq 900$ to the scorer"),
     ("tool cap 200 -> 500", MAIN, r"$\leq 200$ per expansion",
      r"$\leq 500$ per expansion"),
     ("tool name search_entity -> quantum_entity", MAIN,
      r"\texttt{search\_entity}", r"\texttt{quantum\_entity}"),
     # The failure census, per category.
-    ("census relation_selection 65 -> 85", MAIN,
-     "Relation selection   & 65", "Relation selection   & 85"),
+    # 64, not 65: the September 2026 census correction changed this count.
+    ("census relation_selection 64 -> 84", MAIN,
+     "Relation selection   & 64", "Relation selection   & 84"),
     ("census composite_claim 47 -> 74", MAIN,
      "Composite claim      & 47", "Composite claim      & 74"),
     ("census echo 13 -> 31", MAIN, r"\alert{13}", r"\alert{31}"),
@@ -101,8 +122,13 @@ CASES = [
      r"\texttt{max\_seconds}      & 300", r"\texttt{max\_seconds}      & 900"),
     ("binding depth cap 16.5% -> 61.5%", BACK, r"$16.5\%$", r"$61.5\%$"),
     # The substring trap: "0.0" is inside "40.0".
-    ("binding call cap 0.0% -> 40.0%", BACK, r"\mathbf{0.0\%}",
-     r"\mathbf{40.0\%}"),
+    # Anchored on the Call cap ROW. \mathbf{0.0\%} has five homes in this
+    # deck and the first two are the groundedness table's zero-hallucination
+    # cells, so a bare anchor corrupted a different slide's number and the
+    # budget-binding rule never saw anything wrong.
+    ("binding call cap 0.0% -> 40.0%", BACK,
+     r"\textbf{Call cap} & $\mathbf{0.0\%}$",
+     r"\textbf{Call cap} & $\mathbf{40.0\%}$"),
     ("backup hedge rate 12.2 -> 52.2", BACK, "12.2", "52.2"),
 ]
 

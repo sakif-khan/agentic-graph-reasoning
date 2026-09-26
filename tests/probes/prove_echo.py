@@ -61,13 +61,15 @@ def edit(path, old, new):
 SHIPPED_SLIDE = (r"{\small It appears across systems, so it is a property of "
                  r"the task, not of AGR. Naming it is what lets future work "
                  r"target it.}")
-CURRENT_SLIDE = (r"{\small Different systems fall into it \alert{together}, so "
+# The {\small ...} wrapper came off this sentence in the deck, so the
+# braces that used to open and close the anchor are no longer there.
+CURRENT_SLIDE = (r"Different systems fall into it \alert{together}, so "
                  r"no evaluation treating them as independent can see it --- "
                  r"and a policy of rescoring on majority agreement turns it "
-                 r"into apparent \alert{correctness}.}")
+                 r"into apparent \alert{correctness}.")
 CURRENT_SPOKEN = ("Different systems fall into it together, so no evaluation "
                   "treating them as independent can see it. Rescore whenever "
-                  "a majority agree — a natural thing to want — and this "
+                  "a majority agrees — a natural thing to want — and this "
                   "becomes apparent correctness. That is the contribution: "
                   "the mechanism, not the count.")
 SHIPPED_BENCH = (r"The same cross-system agreement is also a "
@@ -93,17 +95,25 @@ CASES = [
      edit(SCRIPT, "so no evaluation treating them as independent can see it.",
           "which is worth knowing.")),
     ("the thesis stops making it a claim about evaluation",
-     edit(INTRO, "the contribution is\nthe named mechanism itself and what it "
-                 "means for consensus-based evaluation, not\nthe frequency.",
+     # "the named mechanism" (no "itself") and "rather than the frequency"
+     # (not ", not the frequency") since sec:contribution was rewritten.
+     edit(INTRO, "the contribution is the named mechanism and what it "
+                 "means for consensus-based evaluation rather than the "
+                 "frequency.",
           "the contribution is the named mechanism itself.")),
     # The two slides are one finding.
     ("the benchmark slide goes back to an unrelated second finding",
      edit(DECK, SHIPPED_BENCH,
           r"Reading every failure also found questions where the "
           r"\emph{benchmark}, not the system, was at fault:")),
-    ("and the script does too",
-     edit(SCRIPT, CURRENT_S20,
-          "One more thing came out of reading every failure.")),
+    # The companion case, "and the script does too", was dropped on
+    # 2026-09-26. It corrupted the script's version of this framing, and two
+    # things have since changed: the transcript no longer carries that
+    # answer at all, and check_slides.py's "attributes the gap to the
+    # attractor" rule now iterates over a single entry -- the deck's
+    # benchmark slide -- so nothing reads the script for it. A case whose
+    # rule does not look at the file it edits can only report MISSED.
+    # CURRENT_S20 is kept above as the record of what the script used to say.
     # The counts, from both ends.
     ("the flagged total drifts on the slide",
      edit(DECK, r"consensus flagged $105$ questions",

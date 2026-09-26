@@ -66,10 +66,11 @@ CASES = [
           r"Two cycles, both bounded by budgets rather than by model "
           r"behaviour.")),
     ("shipped: the script hardens it to exactly two",
-     edit(SCRIPT, "There are three cycles — the three arrows going back to the "
-                  "Explorer: continue, backtrack, retry.",
-          "There are exactly two cycles — explorer-to-evaluator, and verifier "
-          "back to explorer.")),
+     edit(SCRIPT, "Three cycles — the three arrows returning to the "
+                  "explorer — and all three are bounded by explicit "
+                  "budgets rather than by model behaviour.",
+          "Exactly two cycles — explorer-to-evaluator, and verifier "
+          "back to explorer — both bounded by explicit budgets.")),
     ("an arrow is removed and the sentence does not follow",
      edit(DECK, RETRY_EDGE, "")),
     ("an arrow is added and the sentence does not follow",
@@ -81,7 +82,8 @@ CASES = [
      edit(DECK, r"\emph{continue}, \emph{backtrack}, \emph{retry}",
           r"\emph{continue}, \emph{backtrack}")),
     ("slide and script disagree on the count",
-     edit(SCRIPT, "There are three cycles", "There are two cycles")),
+     edit(SCRIPT, "Three cycles — the three arrows returning",
+          "Two cycles — the three arrows returning")),
 ]
 
 out = []

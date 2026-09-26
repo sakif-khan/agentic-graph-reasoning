@@ -46,16 +46,27 @@ def run():
 
 # The enumerate under "Contributions", whitespace-tolerantly: the deck is
 # hard-wrapped and rewrapping it must not turn this probe into a no-op.
-BODY = re.compile(r"(?<=\\begin\{enumerate\}\\setlength\{\\itemsep\}\{0pt\})"
-                  r".*?(?=\\end\{enumerate\})", re.S)
+# Anchored on the CONTRIBUTIONS FRAME, not on the first enumerate in the
+# deck. "\begin{enumerate}\setlength{\itemsep}{0pt}" has two homes -- an
+# earlier slide sets the same spacing -- and a count=1 substitution rewrote
+# that one instead, so four cases below corrupted a list no rule reads and
+# reported MISSED against rules that were working. The ninth recurrence of
+# the two-homes trap this directory records, and the first structural one:
+# the duplicate was a LaTeX idiom rather than a value.
+BODY = re.compile(
+    r"\\begin\{frame\}\{Contributions\}[\s\S]*?"
+    r"\\begin\{enumerate\}\\setlength\{\\itemsep\}\{0pt\}"
+    r"([\s\S]*?)(?=\\end\{enumerate\})")
 
 
 def set_contributions(items):
     def go():
-        assert BODY.search(orig[DECK]), "the contributions enumerate moved"
+        m = BODY.search(orig[DECK])
+        assert m, "the contributions enumerate moved"
         body = "\n" + "\n".join("        \\item " + i for i in items) + "\n      "
+        s = orig[DECK]
         io.open(DECK, "w", encoding="utf-8", newline="").write(
-            BODY.sub(lambda _: body, orig[DECK], count=1))
+            s[:m.start(1)] + body + s[m.end(1):])
     return go
 
 
@@ -152,10 +163,16 @@ CASES = [
                        + CURRENT[2:])),
     ("count padded back to six with a duplicate",
      set_contributions(CURRENT[:5] + [CURRENT[4]])),
-    ("the thesis grows a seventh the deck does not carry",
-     edit(INTRO, r"\subsection{The Echo Attractor as a Named Failure Mode}",
-          "\\subsection{A Seventh Thing}\n\nText.\n\n"
-          r"\subsection{The Echo Attractor as a Named Failure Mode}")),
+    # "the thesis grows a seventh the deck does not carry" was dropped on
+    # 2026-09-26. sec:contribution had one \subsection per contribution when
+    # it was written, and inserting a seventh heading was what tripped the
+    # count. That section is prose now -- the framework in its own paragraph,
+    # four \textbf lead-ins, the protocol in a closing paragraph with no
+    # marker -- so check_slides.py counts the contributions the thesis NAMES
+    # instead, and a seventh one that matches none of the six keys is
+    # invisible to it. The tradeoff is recorded at that rule: what the key
+    # count buys instead is that all six must appear in the thesis as well as
+    # the deck, which the heading count never checked.
     ("the thesis's limitation swapped back for the deck's own",
      edit(DECK, r"ToG leads where it finishes, from a \alert{narrower "
                 r"candidate set}: $40$/$20$ vs $300$/$200$",

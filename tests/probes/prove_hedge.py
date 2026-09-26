@@ -35,9 +35,11 @@ orig = io.open(DECK, encoding="utf-8", newline="").read()
 # The shipped bullet, and its replacement, whitespace-tolerantly: the deck
 # is hard-wrapped and rewrapping it must not silently turn a probe into a
 # no-op.
+# The isolating comparison, as the first sentence of the block that now
+# carries it. Whitespace-tolerant because the deck is hard-wrapped and a
+# rewrap must not turn this probe into a no-op.
 BULLET = re.compile(
-    r"\\item\s+Withholds[^\\]*?(?:\\alert\{hedge\}|hedge)[^\n]*"
-    r"(?:\n(?!\s*\\item|\s*\\end)[^\n]*)*")
+    r"Removing\s+the\s+layer\s+drops\s+hedging[\s\S]*?on\s+WebQSP\.")
 
 
 def run():
@@ -55,24 +57,19 @@ def replace_bullet(new):
     return go
 
 
-SHIPPED = (r"\item Turns silent error into a \alert{hedge}: AGR hedges on"
-           "\n            $8.2\\%$ of WebQSP against no-retrieval's "
-           r"$12.2\%$ error rate")
+SHIPPED = (r"AGR hedges on $8.2\%$ of WebQSP against no-retrieval's "
+           r"$12.2\%$ error rate.")
 
-REPLACEMENT = (r"\item Withholds what it cannot ground, as a \alert{hedge}:"
-               "\n            removing the layer drops hedging "
-               r"$23.2\% \to 20.2\%$ on CWQ,"
-               "\n            $8.5\\% \\to 8.0\\%$ on WebQSP")
+REPLACEMENT = (r"Removing the layer drops hedging $23.2\% \to 20.2\%$ on "
+               r"CWQ and $8.5\% \to 8.0\%$ on WebQSP.")
 
 CASES = [
     ("shipped: 12.2% hedge rate sold as an error rate",
      replace_bullet(SHIPPED)),
     ("the isolating comparison deleted entirely",
-     replace_bullet(r"\item Withholds what it cannot ground, as a "
-                    r"\alert{hedge}")),
+     replace_bullet(r"It withholds what it cannot ground.")),
     ("datasets swapped: CWQ's delta attributed to WebQSP",
-     replace_bullet(REPLACEMENT.replace("on CWQ,", "on WebQSP,")
-                    .replace("on WebQSP\n", "on CWQ\n")
+     replace_bullet(REPLACEMENT.replace("on CWQ and", "on WebQSP and")
                     .replace(r"$8.5\% \to 8.0\%$ on WebQSP",
                              r"$8.5\% \to 8.0\%$ on CWQ"))),
     ("arrow reversed: removing the layer made it hedge more",

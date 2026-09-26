@@ -28,7 +28,9 @@ ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 DECK = ROOT / "thesis_presentation" / "content-main.tex"
-BACKUP = ROOT / "thesis_presentation" / "content-backup.tex"
+# content-main.tex: the backup frames were folded into the one deck by
+# 275fadc, which moved content-backup.tex into the frozen pre-defense dir.
+BACKUP = ROOT / "thesis_presentation" / "content-main.tex"
 NUMS = ROOT / "results" / "phase4" / "thesis_numbers.json"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
@@ -61,38 +63,48 @@ def edit(path, old, new):
 
 CASES = [
     ("shipped: a backup slide referred to by ordinal",
-     edit(SCRIPT, "**If asked about budgets, go to backup page 2.**",
+     edit(SCRIPT, "**If asked about budgets, go to backup slide 33.**",
           "**If asked about budgets, go to Backup 1.**")),
     ("shipped: the (B2) shorthand",
-     edit(SCRIPT, "on both datasets (backup page 3)",
+     edit(SCRIPT, "on both datasets (backup slide 34)",
           "on both datasets (B2)")),
     ("shipped: a page number written as an ordinal",
-     edit(SCRIPT, "histogram is backup page 4 if anyone",
+     edit(SCRIPT, "histogram is backup slide 35 if anyone",
           "histogram is Backup 4 if anyone")),
-    ("shipped: four bold slides, three of them bold",
-     edit(SCRIPT, "The three **bold** slides are the ones the committee will "
+    # Direction swapped on 2026-09-26. When this was written the script said
+    # "three" against four bold rows, so the corruption was to write "four".
+    # The script says four now and check_slides.py agrees with the table, so
+    # the live value is four and the miscount to reinstate is "three". The
+    # rule under test is unchanged: the spoken count must equal the number
+    # of bold rows in the slide table.
+    ("shipped: three bold slides, four of them bold",
+     edit(SCRIPT, "The four **bold** slides are the ones the committee will "
                   "actually interrogate.",
-          "The four **bold** slides are the ones the committee will actually "
+          "The three **bold** slides are the ones the committee will actually "
           "interrogate.")),
     ("shipped: the two protected lists name different slides",
-     edit(SCRIPT, "never from 11, 13, 14, 17 or 18.",
-          "never from 11, 13, 17.")),
+     edit(SCRIPT, "never from 20, 21, 22, 27 or 28.",
+          "never from 20, 21, 27.")),
     ("a row goes bold without its section being starred",
-     edit(SCRIPT, "| 12 | Accuracy against cost |",
-          "| 12 | **Accuracy against cost** |")),
+     edit(SCRIPT, "| 36 | Accuracy against cost, both metrics |",
+          "| 36 | **Accuracy against cost, both metrics** |")),
     ("a reference to a backup page the table does not list",
-     edit(SCRIPT, "histogram is backup page 4 if anyone",
-          "histogram is backup page 9 if anyone")),
+     edit(SCRIPT, "histogram is backup slide 35 if anyone",
+          "histogram is backup slide 99 if anyone")),
+    # Anchored on the first backup frame that still exists. "Backup:
+    # hedging behaviour" left the deck along with content-backup.tex; the
+    # defect is unchanged, since what it reinstates is an unlisted frame
+    # appearing in the backup run, not that particular neighbour.
     ("the backup deck gains a slide the table does not carry",
-     edit(BACKUP, r"\begin{frame}{Backup: hedging behaviour}",
+     edit(BACKUP, r"\begin{frame}{Backup: budget configuration}",
           "\\begin{frame}{Backup: something else}\n\\end{frame}\n"
-          r"\begin{frame}{Backup: hedging behaviour}")),
+          r"\begin{frame}{Backup: budget configuration}")),
     ("a table row stops describing its slide",
-     edit(SCRIPT, "| 4 | Full 12-category failure histogram |",
-          "| 4 | Assorted other material |")),
+     edit(SCRIPT, "| 35 | Full 12-category failure histogram |",
+          "| 35 | Assorted other material |")),
     # The pooled-census caption, from both ends.
     ("the slide stops saying its totals are pooled",
-     edit(DECK, r"Totals. Wrong and hedge are \emph{never pooled} in the "
+     edit(DECK, r"Wrong and hedge are \emph{never pooled} in the "
                 r"thesis, and the shape flips: composite claim is $1$ on "
                 r"WebQSP against $46$ on CWQ.",
           r"Totals across both datasets.")),

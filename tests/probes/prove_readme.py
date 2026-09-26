@@ -23,7 +23,9 @@ ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 RM = ROOT / "thesis_presentation" / "README.md"
 MAIN = ROOT / "thesis_presentation" / "content-main.tex"
-BACK = ROOT / "thesis_presentation" / "content-backup.tex"
+# content-main.tex: the backup frames were folded into the one deck by
+# 275fadc, which moved content-backup.tex into the frozen pre-defense dir.
+BACK = ROOT / "thesis_presentation" / "content-main.tex"
 ROOTS = ROOT / "scripts" / "check_tex_roots.py"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
@@ -67,9 +69,17 @@ CASES = [
               "— this one, the book, and the paper",
           "`python scripts/check_tex_roots.py` checks both this module and "
           "the book")),
-    ("shipped: the README says both decks input the figure",
-     edit(RM, "the backup deck does not use it at all.",
-          "and so does the backup deck.")),
+    # Re-aimed at the rule that is actually live. The shipped defect was
+    # "both documents \input it", corrected by a clause saying the backup
+    # deck does not use the figure -- and that clause went away with the
+    # backup deck itself when 275fadc made this one document. What
+    # check_slides.py reads now is whether the README describes a
+    # cross-directory reach exactly when the deck makes one, so the
+    # corruption is to stop describing the reach while the deck still does
+    # it. Same rule, same direction, an anchor that exists.
+    ("shipped: the README stops describing the cross-directory reach",
+     edit(RM, "across the directory boundary",
+          "from a copy kept in this module")),
     ("a fourth module is checked and the README does not follow",
      edit(ROOTS, 'MODULES = ("thesis_book", "thesis_presentation", '
                  '"journal")',
@@ -78,10 +88,14 @@ CASES = [
     ("the deck takes a local copy and the README still says it reaches out",
      edit(MAIN, r"\input{../thesis_book/figures/fig_claim_path.tex}",
           r"\input{figures/fig_claim_path.tex}")),
-    ("the backup deck starts using the figure",
-     edit(BACK, r"\begin{frame}{Backup: budget configuration}",
-          "\\begin{frame}{Backup: budget configuration}\n"
-          r"\input{../thesis_book/figures/fig_claim_path.tex}")),
+    # A fifth case, "the backup deck starts using the figure", was dropped
+    # on 2026-09-26. It described a defect that cannot happen any more:
+    # there is one deck, the backup frames are its tail, and the rule reads
+    # the FIRST \input of fig_claim_path to decide whether the deck reaches
+    # across the boundary -- so a second \input lower down changes nothing
+    # it looks at. The case would have reported MISSED against a rule that
+    # is working. What it used to cover from the deck side, the case above
+    # covers.
 ]
 
 out = []

@@ -37,8 +37,15 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 NUMS = ROOT / "results" / "phase4" / "thesis_numbers.json"
 
 PROSE = [
-    ROOT / "thesis_book" / "chapters" / "verification.tex",
-    ROOT / "thesis_book" / "chapters" / "erroranalysis.tex",
+    # framework.tex and evaluation.tex, not verification.tex and
+    # erroranalysis.tex: d79a945 folded verification.tex into framework.tex
+    # and 15140dd folded setup/results/erroranalysis into evaluation.tex.
+    # These two entries named the pre-merge files from September 2026 until
+    # 2026-09-26, so `require()` raised FileNotFoundError and both
+    # parametrised guards reported a hard failure on every run -- four of
+    # the seven long-standing pytest failures in this repository.
+    ROOT / "thesis_book" / "chapters" / "framework.tex",
+    ROOT / "thesis_book" / "chapters" / "evaluation.tex",
     ROOT / "journal" / "sections" / "discussion.tex",
     # The [39, 2,008] interval moved out of discussion.tex on 2026-09-23,
     # when the manuscript was put on a hard page budget and the arithmetic
@@ -214,3 +221,31 @@ def test_prose_naming_the_exposure_gives_both_endpoints(path, block):
         f"{path.name}: {lo} and {hi} never appear together as an interval, so "
         f"the exposure reads as a floor rather than the range the record "
         f"actually supports")
+
+    # And the same claim stated negatively, because the rule above is any()
+    # and has to be.
+    #
+    # any() is not laziness: 39 has other homes in these documents -- "$39$
+    # of CWQ's $171$" in the census, "2 min 39 s" in the transcript -- so
+    # requiring every occurrence to pair with 2,008 fails correct prose.
+    # That leaves one gap, and the chapter merges opened it: framework.tex
+    # now states the interval twice (it absorbed verification.tex in
+    # d79a945), so gutting either statement alone left the other to satisfy
+    # any() and the guard went quiet. tests/probes/prove_claim_bound.py
+    # reported exactly that as a MISSED case.
+    #
+    # What the gutted sentence acquires is floor language: "at least $39$",
+    # "a floor of $39$". Forbidding that catches the regression wherever it
+    # happens and however many other statements survive, and it costs no
+    # false positives -- none of 39's other homes is phrased as a bound.
+    FLOOR = re.compile(
+        r"(?:at\s+least|a\s+floor\s+of|at\s+minimum|no\s+fewer\s+than"
+        rf"|lower\s+bound\s+of|minimum\s+of)\s+\$?(?:{forms(lo)})\$?"
+        r"(?![\d.])", re.I)
+    floored = FLOOR.search(text)
+    assert not floored, (
+        f"{path.name}: the exposure is stated as a floor -- "
+        f"{text[max(0, floored.start() - 40):floored.end() + 40]!r}. "
+        f"{lo} is the bottom of an interval whose top is {hi}; presenting it "
+        f"as a minimum is the inverted inequality this file exists to "
+        f"prevent, and it reads as reassurance rather than a limitation.")

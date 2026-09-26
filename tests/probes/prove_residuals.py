@@ -69,6 +69,11 @@ ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 BOOK = ROOT / "thesis_book" / "chapters" / "framework.tex"
 PAPER = ROOT / "journal" / "sections" / "framework.tex"
+# fig:statemachine and its caption left the paper's body on 2026-09-23, when
+# the manuscript was put on a hard page budget; they are in the appendix the
+# supplement inputs. The body still carries the "three cycles" sentence that
+# points at the figure, so the two cases below read different files now.
+PAPERAPP = ROOT / "journal" / "sections" / "appendix-instrument.tex"
 DECK = ROOT / "thesis_presentation" / "content-main.tex"
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 CFG = ROOT / "agr" / "config.py"
@@ -76,7 +81,7 @@ CARD = ROOT / "thumbnail" / "thumbnail.tex"
 SHEET = ROOT / "results" / "phase4" / "labels_webqsp.csv"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
-FILES = (BOOK, PAPER, DECK, SCRIPT, CFG, SHEET, CARD)
+FILES = (BOOK, PAPER, PAPERAPP, DECK, SCRIPT, CFG, SHEET, CARD)
 orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
 
 
@@ -135,10 +140,18 @@ def retime_row(n, secs):
             run += alloc[int(r[0])]
             lines.append(f"| {r[0]} | {r[1]} | {mmss(alloc[int(r[0])])} "
                          f"| {mmss(run)} |")
-        old = "\n".join(f"| {r[0]} | {r[1]} | {r[2]}:{r[3]} | {r[4]}:{r[5]} |"
-                        for r in rows)
+        # Joined with the FILE's newline, not with "\n". This file is stored
+        # LF and checked out CRLF under core.autocrlf=true, and it is read
+        # here with newline="" so that restoring cannot change its endings --
+        # so an LF-joined block never matched a CRLF working copy, and the
+        # probe reported "the table is not laid out as expected" about a
+        # table that was laid out exactly as expected. prove_claim_bound's
+        # read() docstring records the same hazard and names this probe.
+        nl = "\r\n" if "\r\n" in md else "\n"
+        old = nl.join(f"| {r[0]} | {r[1]} | {r[2]}:{r[3]} | {r[4]}:{r[5]} |"
+                      for r in rows)
         assert old in md, "the table is not laid out as expected"
-        md = md.replace(old, "\n".join(lines))
+        md = md.replace(old, nl.join(lines))
         md = re.sub(r"^## (\d+) — (.*?)\*\(\d+:\d\d\)\*",
                     lambda m: f"## {m.group(1)} — {m.group(2)}"
                               f"*({mmss(alloc[int(m.group(1))])})*",
@@ -182,22 +195,27 @@ CASES = [
      edit(PAPER, "shared typed state, with three cycles.",
           "shared typed state, with two cycles.")),
     ("shipped: the paper's caption says both cycles", edit(
-        PAPER,
+        PAPERAPP,
         "Evaluator $\\rightarrow$ Backtracker $\\rightarrow$ Explorer restores "
-        "an earlier frontier; Verifier $\\rightarrow$ Explorer is "
-        "verification-driven re-exploration. All three cycles are bounded",
+        "an earlier frontier, and Verifier $\\rightarrow$ Explorer is "
+        "verification-driven re-exploration. The budgets of "
+        "\\ref{sec:budgets} bound all three cycles.",
         "Verifier $\\rightarrow$ Explorer is verification-driven\n"
-        "    re-exploration. Both cycles are bounded")),
+        "    re-exploration. The budgets of \\ref{sec:budgets} bound both\n"
+        "    cycles.")),
 
     # ---- the limitations, in the thesis's severity order ----
+    # ", one annotator" came off the environment bullet: nothing in the deck
+    # claimed the judge was validated against one reader's labels any more,
+    # and the comment above that block in content-main.tex records it.
     ("shipped: the deck's limitations 4 and 5 are swapped", edit(
         DECK,
-        "\\item One environment, one backbone, one annotator "
+        "\\item One environment, one backbone "
         "\\item ToG leads where it finishes, from a \\alert{narrower "
         "candidate set}: $40$/$20$ vs $300$/$200$",
         "\\item ToG leads where it finishes, from a \\alert{narrower\n"
         "          candidate set}: $40$/$20$ vs $300$/$200$\n"
-        "        \\item One environment, one backbone, one annotator")),
+        "        \\item One environment, one backbone")),
 
     # ---- the wording divergence: retired 2026-09-19. The thesis now says
     # pre-specified too, so there is no divergence for the script to
@@ -258,8 +276,9 @@ CASES = [
 
     # ---- the spelling rule, stated three times and checked in none ----
     ("shipped: contribution 6 drifts back to the thesis's word",
-     edit(DECK, r"\alert{Pre-specified} evaluation thresholds",
-          r"\alert{Pre-registered} evaluation thresholds")),
+     # The bullet reads "\alert{Pre-specified} thresholds, fixed in advance".
+     edit(DECK, r"\alert{Pre-specified} thresholds, fixed in advance",
+          r"\alert{Pre-registered} thresholds, fixed in advance")),
 
     # ---- "static baselines" collides with Static GraphRAG ----
     ("the two systems that do not seed are grouped, not named",
@@ -276,14 +295,14 @@ CASES = [
                 r"fault}",
           r"{benchmark questions whose own\\ gold labels were wrong}")),
     ("shipped: the deck heads the column 'Why it is capped'",
-     edit(DECK, r"\textbf{Why it is bounded} \\",
+     edit(DECK, r"\textbf{At most} \\",
           r"\textbf{Why it is capped} \\")),
     ("the deck's header states a cap outright",
-     edit(DECK, r"\textbf{Why it is bounded} \\",
+     edit(DECK, r"\textbf{At most} \\",
           r"\textbf{Why all four are capped} \\")),
     ("shipped: the script caps all four operations",
-     edit(SCRIPT, "It gets four operations with fixed signatures \u2014",
-          "It gets four operations with fixed signatures and hard caps \u2014")),
+     edit(SCRIPT, "Four operations, never Cypher.",
+          "Four operations, never Cypher, and all four hard-capped.")),
     ("shipped: the card caps all four tools",
      edit(CARD, "4 tools, no free-form queries",
           "4 tools with hard caps, no free-form queries")),

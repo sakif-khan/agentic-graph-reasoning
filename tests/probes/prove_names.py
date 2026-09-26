@@ -61,10 +61,14 @@ CASES = [
      edit(DECK, r"\texttt{search\_entity}", r"\texttt{resolve\_entity}")),
     ("the operation no node calls listed among the live four",
      edit(DECK, r"\texttt{search\_entity}", r"\texttt{verify\_triple}")),
+    # The tool table gained an agent column, so the row reads
+    # "search_entity & Planner & Surface form -> node & $3$ candidates".
     ("a fifth row appears on a slide that lists four",
-     edit(DECK, r"\texttt{search\_entity}  & Surface form $\rightarrow$ node",
-          r"\texttt{get\_relations} & Again & Again \\ "
-          r"\texttt{search\_entity}  & Surface form $\rightarrow$ node")),
+     edit(DECK, r"\texttt{search\_entity} & Planner & Surface form "
+                r"$\rightarrow$ node",
+          r"\texttt{get\_relations} & Again & Again & Again \\ "
+          r"\texttt{search\_entity} & Planner & Surface form "
+          r"$\rightarrow$ node")),
     ("the code renames an operation and the slide does not follow",
      edit(KG, "def search_entity(self, surface_form: str, k: int = 5):",
           "def resolve_entity(self, surface_form: str, k: int = 5):")),

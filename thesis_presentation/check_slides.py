@@ -840,7 +840,12 @@ CONTRIB_KEYS = [
     ("stratum-dependent decomposition", ("stratum-dependent",)),
     ("echo attractor", ("echo attractor",)),
     ("benchmark defect rates", ("benchmark-defect", "benchmark defect")),
-    ("pre-specified protocol", ("pre-specified",)),
+    # Two spellings because the two documents word it differently: the
+    # slide says "pre-specified", sec:contribution now describes the same
+    # contribution as fixing four decisions before any test data was
+    # touched, without using the word. Alternatives per contribution is
+    # what these keys are for.
+    ("pre-specified protocol", ("pre-specified", "fixed four decisions")),
 ]
 
 
@@ -857,7 +862,26 @@ def block(after, environment):
 intro = open(INTRO, encoding="utf-8").read()
 start = intro.index(r"\section{Our Contribution}")
 end = intro.index(r"\section", start + 10)
-claimed = re.findall(r"\\subsection\{", intro[start:end])
+# Counted by NAME, not by \subsection.
+#
+# sec:contribution had one \subsection per contribution when this rule was
+# written, and the count of those headings was the whole tripwire: a seventh
+# contribution appeared as a seventh heading and failed here until the deck
+# listed it. The section was later rewritten as prose -- the framework in
+# its own paragraph, four \textbf lead-ins, and the protocol in a closing
+# paragraph with no marker at all -- so the heading count went to zero and
+# this reported "thesis claims 0 contributions" from then on.
+#
+# There is no structural marker left to count, so the thesis side is now
+# the keys it names. That is weaker in one way and stronger in another:
+# an unnamed seventh contribution added to the prose no longer trips
+# anything, but every one of the six must now appear in the THESIS as well
+# as the deck, which the \subsection count never checked -- it compared a
+# number against a number and would have passed six headings naming six
+# entirely different things.
+contrib_block = " ".join(intro[start:end].split()).lower()
+claimed = [label for label, keys in CONTRIB_KEYS
+           if any(k in contrib_block for k in keys)]
 # The frame title, not a bold line in the body: slide 31 took slide
 # 7\'s shape, so "Contributions" heads the frame and the six sit
 # under it with no header of their own.
@@ -993,21 +1017,51 @@ if m:
 
 # The transcript ranks this limitation. An ordinal typed into a script is a
 # transcription like any other, and the thesis's list is the source.
+#
+# THE SOURCE LIST IS sec:threats, NOT THE CONCLUSION. It used to be the
+# conclusion: sec:limitations-final carried eight \textbf heads and the
+# script's ordinals were positions in it. 4d4671b ("Shorten the book to
+# ~100 pages") cut that list to four, which are explicitly the ones
+# "repeated" from sec:threats rather than the ranking itself -- so two of
+# the three limitations the script cites collapsed into a single head and
+# the third left the conclusion altogether. Ordinals cannot be repaired
+# against a four-item subset, and sec:threats is the list that "states the
+# threats to validity in full" and still ranks all three. The script's
+# wording was moved to match in the same pass.
+# TWO lists, and they are not interchangeable. THREAT_HEADS is the full
+# ranking in sec:threats, which the script's ordinals index. LIMIT_HEADS is
+# the conclusion's four, which open "in order of severity" and are what the
+# deck's own ordering is checked against further down. Collapsing them into
+# one name broke the second block the first time this was fixed.
+THREATS = os.path.join(ROOT, "thesis_book", "chapters", "evaluation.tex")
+_thr = open(THREATS, encoding="utf-8").read()
+i = _thr.index(r"\label{sec:threats}")
+_after = re.search(r"\n\\(?:section|chapter)\{", _thr[i:])
+THREAT_HEADS = [" ".join(h.split()).lower() for h in re.findall(
+    r"\\textbf\{([^}]*)\}",
+    _thr[i:i + (_after.start() if _after else len(_thr) - i)])]
+
 CONC = os.path.join(ROOT, "thesis_book", "chapters", "conclusion.tex")
 conc = open(CONC, encoding="utf-8").read()
-i = conc.index(r"\section{Limitations}")
+_ci = conc.index(r"\section{Limitations}")
+_cafter = re.search(r"\n\\(?:section|chapter)\{", conc[_ci:])
 LIMIT_HEADS = [" ".join(h.split()).lower() for h in re.findall(
-    r"\\textbf\{([^}]*)\}", conc[i:conc.index(r"\section", i + 10)])]
+    r"\\textbf\{([^}]*)\}",
+    conc[_ci:_ci + (_cafter.start() if _cafter else len(conc) - _ci)])]
 # Three answers cite an ordinal now, so a set equality against one rank
 # would fail a correct script. Each is ranked off the thesis heading it
 # is about, and the set is still closed: an ordinal quoted anywhere else
 # in the script belongs to no ranked limitation and fails here.
-RANKS = (("narrower candidate set", "Did both systems see the same"),
-         ("entity linking is assumed", "topic entities come from"),
-         ("depresses the reported accuracy", "Nine of your failures"))
+#
+# Keyed on the sec:threats heads: "identical access" is the candidate-width
+# item, "topic entities are given" the linking one, "unmeasured floor" the
+# extraction bug that depresses this work's own accuracy.
+RANKS = (("identical access", "Did both systems see the same"),
+         ("topic entities are given", "topic entities come from"),
+         ("unmeasured floor", "Nine of your failures"))
 used = set()
 for head_key, question in RANKS:
-    at = next((n for n, h in enumerate(LIMIT_HEADS, 1)
+    at = next((n for n, h in enumerate(THREAT_HEADS, 1)
                if head_key in h), None)
     ck(f"the thesis ranks {head_key!r}", at is not None)
     said = answer(question)
@@ -1082,11 +1136,20 @@ ck("and says why GraphRAG's number does not carry it",
    re.search(r"radius confounds", s20, re.I) is not None)
 
 # The deck's caveat is correct only while the thesis holds that position.
-RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
+#
+# evaluation.tex, not results.tex, since 15140dd ("Merge chapters (old) 7,
+# 8, and 9") folded setup.tex, results.tex and erroranalysis.tex into it.
+# This read FileNotFoundError'd from that commit until 2026-09-26, which
+# aborted check_slides.py partway and took prove_paired, prove_residuals
+# and tests/test_slide_numbers.py down with it. The second anchor moved in
+# the same period: the thesis now names the baseline outright ("rests on
+# Vector-RAG") where it used to say "the first baseline", which is the
+# stronger form of the same sentence.
+RES = os.path.join(ROOT, "thesis_book", "chapters", "evaluation.tex")
 res = " ".join(open(RES, encoding="utf-8").read().split())
 ck("the thesis still refuses the pooling",
    "weaker evidence of the two" in res
-   and "claim rests on the first baseline" in res,
+   and "claim therefore rests on Vector-RAG" in res,
    "sec:cwq-results is what the deck's caveat answers to")
 
 # The strata the answer quotes are the figure's own, and the figure is
@@ -1168,8 +1231,16 @@ for label, text in (("echo slide", echo), ("sections 28-29", said)):
        and re.search(r"correctness", text, re.I) is not None)
 
 # The framing is only right while the thesis frames it that way.
+#
+# Anchored on the claim and not on the contrast that follows it. This read
+# "...evaluation, not the" and sec:contribution now says "...evaluation
+# rather than the frequency" -- the same framing in different words, which
+# the old literal reported as the framing having been dropped. What has to
+# hold is that the thesis calls the contribution a claim about
+# consensus-based evaluation; whether the foil is "not the frequency" or
+# "rather than the frequency" is wording.
 ck("the thesis still makes it a claim about evaluation",
-   "what it means for consensus-based evaluation, not the" in
+   "what it means for consensus-based evaluation" in
    " ".join(open(INTRO, encoding="utf-8").read().split()),
    "sec:contribution is what the slide answers to")
 
@@ -1430,12 +1501,21 @@ WORD = {v.lower(): k for k, v in NUM.items()}
 WORD["both"] = 2
 COUNTED = re.compile(r"\b(" + "|".join(WORD) + r")\s+(?:\\emph\{)?cycles\b",
                      re.I)
-for label, path in (("deck", os.path.join(HERE, "content-main.tex")),
-                    ("thesis", os.path.join(ROOT, "thesis_book", "chapters",
-                                            "framework.tex")),
-                    ("paper", os.path.join(ROOT, "journal", "sections",
-                                           "framework.tex"))):
-    src = " ".join(uncomment(open(path, encoding="utf-8").read()).split())
+# The paper's copy is a LIST of candidates, because fig:statemachine left
+# journal/sections/framework.tex on 2026-09-23 when the manuscript went on
+# a hard page budget: it is in appendix-instrument.tex now, which the
+# supplement inputs. Both are read and the first one holding the picture
+# wins, so this survives the figure moving back as well as having moved.
+for label, paths in (("deck", [os.path.join(HERE, "content-main.tex")]),
+                     ("thesis", [os.path.join(ROOT, "thesis_book", "chapters",
+                                              "framework.tex")]),
+                     ("paper", [os.path.join(ROOT, "journal", "sections",
+                                             "framework.tex"),
+                                os.path.join(ROOT, "journal", "sections",
+                                             "appendix-instrument.tex")])):
+    src = " ".join(uncomment("\n".join(
+        open(p, encoding="utf-8").read()
+        for p in paths if os.path.exists(p))).split())
     # The one picture that draws this machine. A file may hold several.
     pic = next((p for p in re.findall(
         r"\\begin\{tikzpicture\}(.*?)\\end\{tikzpicture\}", src)
@@ -1498,9 +1578,15 @@ for (page, contents), title in zip(rows, backup_titles):
 
 ordinal = re.search(r"\bbackup\s+\d|\(B\d\)", MD, re.I)
 ck("nothing refers to a backup slide by ordinal", ordinal is None,
-   f"{ordinal.group(0)!r} -- say 'backup page N'" if ordinal else "")
-for m in re.finditer(r"backup page (\d+)", MD, re.I):
-    ck(f"backup page {m.group(1)} is a page the table lists",
+   f"{ordinal.group(0)!r} -- say 'backup slide N'" if ordinal else "")
+# "page" OR "slide". The script addressed a second PDF by page while there
+# was one; it says "backup slide 33" now, and this loop matched only "backup
+# page (\d+)", so from that rewording onward it iterated over nothing and
+# every reference to an unlisted slide passed. Vacuous rather than wrong,
+# which is the harder kind to notice -- tests/probes/prove_script.py found
+# it by pointing a reference at slide 99 and watching the checker agree.
+for m in re.finditer(r"backup (?:page|slide) (\d+)", MD, re.I):
+    ck(f"backup slide {m.group(1)} is one the table lists",
        m.group(1) in [p for p, _ in rows])
 
 # "The four bold slides" against three bold rows, and two lists of slides
@@ -1744,9 +1830,13 @@ else:
 # evaluation. Ranked off the thesis headings, so a reordering there fails
 # this until the slide follows.
 print("\n== the deck's limitations keep the thesis's order ==")
+# Keyed on sec:limitations-final's four heads as they read now. The third
+# was "narrower candidate set", which is in that item's BODY and never in
+# its heading once 4d4671b consolidated eight items into four -- so it had
+# been reporting "the thesis ranks nothing" for that row.
 RANKED = (("rejects", "wrongful acceptance"),
           ("one environment", "single-environment"),
-          ("candidate set", "narrower candidate set"))
+          ("candidate set", "baseline comparisons are bounded"))
 order = []
 for deck_key, head_key in RANKED:
     at = next((n for n, h in enumerate(LIMIT_HEADS) if head_key in h), None)
@@ -2038,7 +2128,8 @@ else:
 print("\n== the RoG comparison agrees across deck and thesis ==")
 ROGFRAME = frame("Backup: AGR against RoG")
 ck("the RoG backup slide is in the deck", bool(ROGFRAME))
-RES = os.path.join(ROOT, "thesis_book", "chapters", "results.tex")
+# evaluation.tex since 15140dd, as above; tab:rog moved with the chapter.
+RES = os.path.join(ROOT, "thesis_book", "chapters", "evaluation.tex")
 _res = " ".join(uncomment(open(RES, encoding="utf-8").read()).split())
 _tab = re.search(r"\\label\{tab:rog\}(.*?)\\end\{tabular\}", _res)
 ck("the thesis carries tab:rog", _tab is not None)

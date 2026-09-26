@@ -25,7 +25,8 @@ import sys
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
-RES = ROOT / "thesis_book" / "chapters" / "results.tex"
+# evaluation.tex since 15140dd merged setup/results/erroranalysis into it.
+RES = ROOT / "thesis_book" / "chapters" / "evaluation.tex"
 FIG = ROOT / "thesis_book" / "figures" / "fig_hop_strata.tex"
 GRAPHRAG = ROOT / "agr" / "baselines" / "graphrag.py"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
@@ -63,10 +64,15 @@ SHIPPED = ("First, look at vector RAG and GraphRAG on ComplexWebQuestions "
            "On genuinely multi-hop questions, single-shot retrieval is worse "
            "than not retrieving at all. It fills the context with plausible "
            "but wrong material.")
-CURRENT = ("First, vector RAG on ComplexWebQuestions — 0.203, *below* the "
+# Two words of this drifted after it was written: the em-dash after
+# "ComplexWebQuestions" became a colon and "GraphRAG is beside it" became
+# "GraphRAG sits beside it". The matcher tolerates a rewrap and the '>'
+# markers but not a rewording, so the probe reported the paragraph missing
+# while it sat in the script in full.
+CURRENT = ("First, vector RAG on ComplexWebQuestions: 0.203, *below* the "
            "no-retrieval control at 0.307. One verbalised triple cannot "
            "contain a chain, so single-shot retrieval is worse there than not "
-           "retrieving at all. GraphRAG is beside it at 0.205, but its "
+           "retrieving at all. GraphRAG sits beside it at 0.205, but its "
            "one-hop radius confounds the paradigm, so the claim rests on "
            "vector RAG.")
 
@@ -88,8 +94,9 @@ CASES = [
      edit(SCRIPT, "but its one-hop radius confounds the paradigm",
           "but it is a different retriever")),
     ("the thesis drops its own refusal",
-     edit(RES, "the weaker evidence of the two: it confounds the paradigm "
-               "with the radius",
+     # ", because it confounds" now, not ": it confounds".
+     edit(RES, "the weaker evidence of the two, because it confounds the "
+               "paradigm with the radius",
           "further evidence of the same thing")),
     # The strata, from both ends.
     ("the figure moves and the script does not follow",

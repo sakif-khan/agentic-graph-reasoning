@@ -393,7 +393,7 @@ committed tool log.
 **Say the width line, don't skip it.** This slide used to claim a
 retrieval-budget control it does not have; the Think-on-Graph baseline section
 names the widths as the one place a reader should look first for a confound,
-and the conclusion ranks it limitation 5.
+and the threats to validity rank it limitation 2.
 The numbers are on the slide and in the answer below — you do not have to
 recite 40/20/300/200 here.
 
@@ -741,8 +741,8 @@ do is rescue the budget argument: a narrower candidate set makes each step
 does mean is that the residual gap on the questions it *finishes* is measured
 against a system searching a thinner pool, so that figure is a lower bound on
 what it could resolve at equal width — not an estimate of it. Re-running it at
-300 and 200 is the first item in my future work, and it is limitation 5 in the
-conclusion.
+300 and 200 is the first item in my future work, and it is limitation 2 in
+the threats to validity.
 
 **"Your verifier doesn't verify the relationship — any edge between the two
 entities passes."**
@@ -840,8 +840,9 @@ They are given by the datasets. `use_gold_entities` is on for every run I
 report, so the question's annotated mentions go to `search_entity`, which
 resolves each one to a graph node through the three-stage resolver. Mention
 *detection* is assumed; mention-to-node resolution is not — that part the
-system does. It is limitation 7 in the conclusion: the accuracies I report
-presume a linking step a deployed system would have to perform, and I do not
+system does. It is limitation 7 in the threats to validity: the accuracies
+I report presume a linking step a deployed system would have to perform,
+and I do not
 measure that step. What it is not is a between-system confound. The three
 systems that touch the graph — AGR, Think-on-Graph and GraphRAG — all seed
 from the same annotated mentions, and neither the parametric control nor Vector-RAG ever sees them.
@@ -855,7 +856,7 @@ names them verbatim, and `answer_entities` then collapses to the sentence's
 grammatical subject. WebQTest-1215 drafts all six of Stephen Covey's
 professions and scores `['Stephen Covey']`. The reasoning was complete and the
 verifier certified it; what failed is the step that reads entities back out of
-the draft. That is limitation 8, and the direction is the part worth saying:
+the draft. That is limitation 10, and the direction is the part worth saying:
 it depresses my *own* reported accuracy, so on that question shape the
 headline numbers are a floor rather than an estimate. The fix is an
 instruction to the claim decomposer, not an architecture change, and it is the
