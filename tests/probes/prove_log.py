@@ -79,6 +79,23 @@ def check(log_path):
     return r.returncode, r.stdout + r.stderr
 
 
+# Half of this probe's cases are corruptions of a log that is expected to
+# be clean to begin with, and the last thing it does is assert the restored
+# log checks out. If the committed log is already stale -- someone edited a
+# section and did not rebuild -- every one of those still behaves correctly
+# and the probe reports "SOME CASE MISSED" with no hint of the cause. Said
+# plainly here instead, in the same shape as the missing-log message above.
+_pre_rc, _pre_text = check(LOG)
+if _pre_rc:
+    print(f"{LOG.name} is already failing its own checker before this probe "
+          f"mutates anything:")
+    print(f"  {(_pre_text.strip().splitlines() or ['(silent)'])[0]}")
+    print("rebuild the manuscript, then re-run -- the clean-log cases below "
+          "cannot mean anything against a stale one")
+    print("SOME CASE MISSED")
+    sys.exit(1)
+
+
 def build_with(mutate):
     """Apply a mutation to preamble.tex, build out of tree, check that log."""
     def go():

@@ -76,8 +76,15 @@ def main():
         tail = [l for l in r.stdout.splitlines() if l.strip()]
         verdict = tail[-1].strip() if tail else "(no output)"
         ok = r.returncode == 0 and bool(PASS.search(verdict))
-        if r.returncode != 0:
-            verdict = (r.stderr.strip().splitlines() or ["failed"])[-1][:90]
+        # A crashing probe says why on stderr, and that traceback line is
+        # more use than its last stdout line. A probe that merely fails --
+        # "SOME CASE MISSED" -- has nothing on stderr, and overwriting its
+        # verdict with a bare "failed" threw away the only diagnostic it
+        # produced. Measured: that is exactly what prove_log reported here
+        # on 2026-09-27, and its output had to be re-run to recover.
+        err = r.stderr.strip().splitlines()
+        if r.returncode != 0 and err:
+            verdict = err[-1][:90]
         results.append((p.name, ok, verdict))
         print(f"  [{'OK  ' if ok else 'FAIL'}] {p.name:24s} {verdict}")
 
