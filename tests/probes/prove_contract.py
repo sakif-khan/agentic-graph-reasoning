@@ -184,7 +184,15 @@ CASES = [
      edit(SCRIPT, "It attaches supporting triples to the claims traversal",
           "It attaches supporting triples to every claim it does assert. Traversal")),
     ("shipped: thesis abstract, returns every answer paired with",
-     edit(TABS, "And the claims its traversal\ngrounds come back paired with the triples that support them.",
+     # Anchor re-pointed 2026-09-26. The abstract's sentence was reworded
+     # from "the claims its traversal grounds come back paired with" to
+     # "the grounded claims come paired with"; edit() tolerates a rewrap
+     # but not a rewording, so the old anchor silently stopped matching.
+     # It was MASKED: the deck case above fails on its own stale anchor
+     # first, so run_all never reached this one and reported the same
+     # failure either way. The defect reinstated is unchanged -- the
+     # unbounded universal form the abstract shipped with.
+     edit(TABS, "And the grounded claims come paired with the triples that support them.",
           "And it returns every answer\npaired with the triples that support it.")),
     ("shipped: manuscript editing note, every answer arrives with",
      edit(PREADME, "is the output contract. Claiming that",
