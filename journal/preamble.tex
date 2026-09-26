@@ -13,19 +13,60 @@
 % to widen it.
 % =====================================================================
 
-% Not cosmetic. elsarticle typesets \elsaddress with \footnotesize\itshape
-% inside its frontmatter, and under `review' that call reaches font
-% selection with an empty size -- "Calculating math sizes for size <>",
-% then nine "Font shape OT1/cmr/m/n in size <> not available" warnings
-% substituting size <5>. Bisected to \affiliation: remove it and the
-% warnings vanish, and all three affiliation forms (full key-value,
-% organization-only, plain text) trigger it equally. A scalable family
-% clears every one of them, because there is then a shape to find at
-% whatever size is asked for. Elsevier re-typesets in their own fonts at
-% proof stage, so this affects the submission PDF only. The class already
-% sets T1 for text; the warnings are OT1/cmr, which is where maths lives,
-% and lmodern is scalable in both.
-\usepackage{lmodern}
+% =====================================================================
+% FONTS: the same set thesis_book uses, and for the same reasons.
+% Changed 2026-09-25 at the user's request ("change the journal to
+% exactly match the thesis_book styles"). buetcsepgthesis.sty lines
+% 68-86 are the reference: Times for text, Helvetica scaled to 92% for
+% sans, Computer Modern left in place for maths, microtype with one
+% interface skipped. All four are reproduced below.
+%
+% This REPLACED \usepackage{lmodern}, which was here for a bug rather
+% than for a look, and the bug still has to be answered. elsarticle
+% typesets \elsaddress with \footnotesize\itshape inside its
+% frontmatter, and under `review' that call reaches font selection with
+% an empty size -- "Calculating math sizes for size <>", then a run of
+% "Font shape ... in size <> not available" warnings substituting size
+% <5>. Bisected to \affiliation: remove it and the warnings vanish, and
+% all three affiliation forms (full key-value, organization-only, plain
+% text) trigger it equally. What clears them is a font family that is
+% scalable, so there is a shape to find at whatever size is asked for;
+% lmodern was scalable in both text and maths, which is why it worked.
+%
+% `times' alone does NOT fix it, and this was measured rather than
+% assumed: times sets rmdefault/sfdefault/ttdefault and leaves maths on
+% Computer Modern, so the warnings simply move from OT1/cmr to OML/cmm
+% and OMS/cmsy -- six of them, plus an underfull box. fix-cm is the
+% answer that keeps the thesis's actual font: it declares the CM shapes
+% at arbitrary sizes, so maths stays literally Computer Modern, as in
+% thesis_book, and there is still a shape at size <>. It must load
+% before anything asks for a font, hence first in this file.
+%
+% Elsevier re-typesets in their own fonts at proof stage, so all of this
+% affects the submission and review PDF only.
+\usepackage{fix-cm}
+\usepackage{times}
+% times sets the sans face to Helvetica at full size, but Helvetica's
+% x-height is far larger than Times's, so sans text set at the same
+% nominal size looks bigger and heavier than the prose around it. This
+% paper marks identifiers and system names in sans, and in a paragraph
+% carrying several of them the page reads speckled. Scaling Helvetica to
+% 92% matches the two faces optically. The conventional pairing
+% correction, not a size change: the nominal size is unchanged, so
+% nothing about the layout or the marking is affected. Verbatim from
+% buetcsepgthesis.sty, so the two documents mark identifiers identically.
+\usepackage[scaled=0.92]{helvet}
+\usepackage{microtype}
+% hyperref (loaded at the foot of this file) redefines \@footnotetext to
+% wrap footnotes in a PDF link anchor once hyperfootnotes are active;
+% microtype's `footnote' interface patch does a literal-text match
+% against the kernel's original \@footnotetext and no longer finds it, so
+% it always warns "Unable to apply patch `footnote'" even though no
+% footnote has been typeset yet. Skip just that one interface -- all
+% other microtype patches (item, toc, eqnum, protrusion and expansion in
+% general) are unaffected. Same load order as the thesis: microtype
+% before hyperref.
+\microtypesetup{nopatch=footnote}
 
 % The measure. Under `preprint' elsarticle leaves the 12pt article
 % default, a 131mm by 220mm text block on A4 with 39mm at each side and

@@ -97,15 +97,31 @@ centering]{geometry}` sets the class's own 3p width with 25 mm side
 margins and about 30 mm top and bottom, with zero box warnings.
 Elsevier places no layout requirement on an initial submission.
 
-**Where the pages go** (2026-09-23, after the shortening passes and the
-move of the appendices into the supplement): the manuscript is **29
-pages** — abstract to conclusion 24 (p. 1–24), declarations 1, references
-4 — and the supplement is 15. The remaining lever on the manuscript is
-the `review` option's 1.5 line spacing: dropping it (`preprint,12pt`)
-takes abstract-to-conclusion from 24 pages to about 17 and costs no
-content, but 1.5 spacing is the form reviewers expect and the class
-provides for that reason. Remove the geometry line before switching to
-`1p`/`3p`/`5p`, which load geometry themselves.
+**Where the pages go** (2026-09-25, after the shortening passes, the
+move of the appendices into the supplement, and the font change): the
+manuscript is **27 pages** — abstract to conclusion 23 (p. 1–23),
+declarations 1, references 3 — and the supplement is 15. Matching
+`thesis_book`'s fonts took a page off each of the body and the
+references on its own: Times sets narrower than Latin Modern, and
+`microtype` came with it. The remaining lever on the manuscript is the
+`review` option's 1.5 line spacing: dropping it (`preprint,12pt`) took
+abstract-to-conclusion to 17 pages when measured against the Latin
+Modern build, and costs no content — but 1.5 spacing is the form
+reviewers expect and the class provides for that reason. Remove the
+geometry line before switching to `1p`/`3p`/`5p`, which load geometry
+themselves.
+
+**Fonts match `thesis_book` exactly** (2026-09-25, at the user's
+request). `buetcsepgthesis.sty` lines 68–86 are the reference and
+`preamble.tex` reproduces all four parts: `times` for text,
+`helvet[scaled=0.92]` for sans, Computer Modern left in place for
+maths, and `microtype` with `nopatch=footnote`. Verified at the level
+that matters — the font programs the two PDFs actually embed are the
+same families, `NimbusRomNo9L` (Times), `NimbusSanL` (Helvetica),
+`NimbusMonL` (Courier) and `CM*` for maths. The thesis additionally
+embeds shapes this paper has no occasion to use (CM bold and extension
+maths, slanted Times, sans italic), which is a difference in content,
+not in the font set.
 
 Two files here are documents: `journal_0421052099.tex` and
 `supplement_0421052099.tex`. `preamble.tex`, the nine body sections, the
@@ -369,12 +385,17 @@ The thesis chapters, the census-denominator appendix, the slides, and
   `\pdfstringdefDisableCommands` in `preamble.tex` blanks the three
   title-block markers while a PDF string is being built and nowhere
   else; the asterisk still marks the author on page 1.
-- **`\affiliation` needs a scalable font family.** Under `review`,
-  elsarticle asks for a font at an empty size while typesetting the
-  address block, and CM has no shape to give it — nine `Font shape …
-  size <>` warnings. The class already sets T1 for text — the warnings
-  are OT1/cmr, where maths lives — so `lmodern` alone clears all nine.
-  Do not remove it.
+- **`\affiliation` needs font shapes at arbitrary sizes.** Under
+  `review`, elsarticle asks for a font at an empty size while
+  typesetting the address block, and Computer Modern has no shape to
+  give it — a run of `Font shape … size <>` warnings. `lmodern` cleared
+  them until 2026-09-25 by substituting a scalable family for CM
+  outright. The fonts now match `thesis_book` instead (below), and
+  `times` alone does **not** fix this — it leaves maths on CM, so the
+  warnings move from OT1/cmr to OML/cmm and OMS/cmsy, six of them plus
+  an underfull box. `fix-cm` is what answers it now: it declares the CM
+  shapes at arbitrary sizes, so maths stays literally Computer Modern,
+  as in the thesis. Do not remove it.
 - **Figure geometry targets the single-column review measure.** Widths
   are `\textwidth`-relative and adapt, but the fixed heights in
   `build_figures.py` assume roughly a 6in measure. A two-column proof is
