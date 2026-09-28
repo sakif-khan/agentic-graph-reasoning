@@ -192,20 +192,25 @@ flagging it.
 
 \section{Research Questions}\label{sec:rqs}
 
-\textbf{RQ1: does agentic navigation improve multi-hop factual accuracy?} Does
-interleaving retrieval with reasoning over a knowledge graph yield more accurate
-answers than static retrieval, and does the advantage grow with the number of
-hops a question requires? Answering it calls for a no-retrieval control. The
-standard benchmarks predate current models and may be partly memorised.
+\textbf{RQ1: Does agentic navigation improve multi-hop factual accuracy?}
 
-\textbf{RQ2: what does pre-generation verification contribute beyond graph
-navigation?} Given a system that already navigates the graph, what does a
-claim-level check against the traversed triples add? This is posed as \emph{what
-does it contribute} rather than \emph{does it reduce hallucination}. The answer
-turns out to have several parts that a yes-or-no framing would obscure
+Does interleaving retrieval with reasoning over a knowledge graph yield more
+accurate answers than static retrieval, and does the advantage grow with the
+number of hops a question requires? Answering it calls for a no-retrieval
+control. The standard benchmarks predate current models and may be partly
+memorised.
+
+\textbf{RQ2: What does pre-generation verification contribute beyond graph
+navigation?}
+
+Given a system that already navigates the graph, what does a claim-level check
+against the traversed triples add? This is posed as \emph{what does it
+contribute} rather than \emph{does it reduce hallucination}. The answer turns
+out to have several parts that a yes-or-no framing would obscure
 (\Cref{sec:findings}).
 
-\textbf{RQ3: which components contribute what, at what token cost?}
+\textbf{RQ3: Which components contribute what, at what token cost?}
+
 Decomposition, backtracking, verification, and learned candidate scoring each
 cost model calls. Which of them measurably improve accuracy or groundedness, by
 how much, and at what price in tokens and latency?

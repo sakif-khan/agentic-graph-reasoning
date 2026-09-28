@@ -2213,7 +2213,8 @@ annotation query that traversed one relation too far.
 
 \subsection{Findings Against RQ1, RQ2, and RQ3}\label{sec:findings}
 
-\textbf{RQ1 --- does agentic navigation improve multi-hop factual accuracy?}
+\textbf{RQ1: Does agentic navigation improve multi-hop factual accuracy?}
+
 Yes. The multi-hop qualifier is doing real work. AGR leads every accuracy cell
 of \Cref{tab:main}. All eight paired comparisons reject, including both against
 the agentic baseline running on the same graph with the same model under the
@@ -2237,9 +2238,11 @@ The margin is a lower bound on what an equal-width reimplementation would show.
 The static graph baseline's per-stratum decay is not offered as evidence here.
 Its retrieval radius confounds it (\Cref{sec:baseline-graphrag}).
 
-\textbf{RQ2 --- what does pre-generation verification contribute beyond
-navigation?} The answer has three parts that a yes-or-no question would have
-merged, which is why it was not asked as one.
+\textbf{RQ2: What does pre-generation verification contribute beyond
+navigation?}
+
+The answer has three parts that a yes-or-no question would have merged, which is
+why it was not asked as one.
 
 \emph{First, navigation eliminates structural hallucination. The verifier is not
 what does it.} Both navigating systems assert zero ungrounded entities on WebQSP
@@ -2280,8 +2283,9 @@ claim. The honest formulation is that \emph{claim verification does not change
 how often the system is right; it changes how often the system is right for a
 reason it can show}.
 
-\textbf{RQ3 --- which components contribute what, at what token cost?} One
-condition of four reaches significance. The planner's effect depends on the
+\textbf{RQ3: Which components contribute what, at what token cost?}
+
+One condition of four reaches significance. The planner's effect depends on the
 stratum: removing it improves WebQSP by $0.083$ F1 at $p = 0.006$, saving $31\%$
 of tokens and $35\%$ of calls, and costs CWQ $0.047$ F1 at $p = 0.088$. That
 asymmetry, not a pooled average, is the result. It says how decomposition should
