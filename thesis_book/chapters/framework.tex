@@ -1217,11 +1217,11 @@ and mean of $4.1$ above inherit.
 
 \Cref{app:verify-walkthrough} walks one question end to end --- \emph{which
 university, founded in 1701, did actor James Franco attend?} --- through
-drafting, claim decomposition, both structural routes, and the entity filter,
-showing where each mechanism specified above fires on a single trajectory. Its
-instructive part is the counterfactual: before deterministic filtering replaced
-a second generation call, the same trajectory emitted an entity the traversal
-had never supported. Replacing generation with filtering is what removed it.
+drafting, claim decomposition, both structural routes, and the entity filter.
+Its instructive part is the counterfactual: before deterministic filtering
+replaced a second generation call, the same trajectory emitted an entity the
+traversal had never supported. Replacing generation with filtering is what
+removed it.
 
 \section{What the Verification Layer Establishes, and What It Does
 Not}\label{sec:verify-failure-modes}
@@ -1231,10 +1231,7 @@ often they occur. \Cref{app:failure-modes} enumerates them: five mechanisms of
 wrongful rejection, led by the composite claim whose unverifiable component
 drags down its verifiable one, and four of wrongful acceptance, led by
 relation-agnostic adjacency. \Cref{sec:verifier-errors} reports which of them
-actually fired. In the vocabulary of \Cref{sec:polarities}, a claim is
-\emph{wrongly rejected} when the layer withholds support the environment would
-in fact provide, and \emph{wrongly accepted} when it certifies a claim the
-environment does not support.
+actually fired.
 
 One of those mechanisms bounds the layer's principal risk and belongs here
 rather than behind the body. Both structural routes ignore the relation and
