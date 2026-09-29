@@ -12,8 +12,17 @@
 % \bibliographystyle{acm} %% ACM style
 % \bibliographystyle{alpha}
 % buetcsepgthesis.bib carries the references in the template's own bib style.
-% agr.bib is the annotated backup: the same 45 entries in the same order, with
-% the provenance comments. Switch the argument below to build against it.
+% agr.bib is the annotated backup: the same 51 entries in the same order, with
+% the provenance comments. Switch the argument below to build against it. The
+% book cites 45 of the 51. The other six are cited only by the journal, whose
+% journal.bib is a byte-identical copy of this file, and BibTeX prints only
+% what is cited, so they never reach this reference list.
+%
+% ieeetr numbers the list in order of first citation, read off the .aux, so
+% the entry order in the .bib files is free to follow provenance instead and
+% the numbering re-derives itself on every build. Verified against the
+% typeset book on 2026-09-30: references [1]--[45] are first met in exactly
+% that order, page by page and line by line.
 %
 % One reference runs 0.87pt into the right margin. The class already typesets
 % thebibliography under \sloppy, which tolerates 0.5pt of overhang and gives TeX

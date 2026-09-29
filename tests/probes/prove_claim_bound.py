@@ -59,11 +59,14 @@ FILES = {
 # (label, file, find, replace) -- each is the mistake the rule exists to catch.
 CORRUPTIONS = [
     # The inverted inequality, in prose: the joint total sold as relation-blind.
-    # The em-dash, not a full stop: the sentence reads "was made by a
-    # relation-blind test --- \Cref{...} shows" since the chapter merge.
+    # A full stop again: the sentence read "was made by a relation-blind test
+    # --- \Cref{...} shows" from the chapter merge until the book traded its
+    # em-dashes for sentence breaks (2026-09-29), and now reads "test.
+    # \Cref{...} shows". A missing anchor SKIPs here rather than failing, so
+    # this line has to move with the sentence.
     ("inverted inequality / erroranalysis", "erroranalysis.tex",
-     "relation-blind test --- \\Cref{sec:structural-check} shows",
-     "relation-blind test --- at least $1{,}969$ were relation-blind, and "
+     "relation-blind test. \\Cref{sec:structural-check} shows",
+     "relation-blind test. At least $1{,}969$ were relation-blind, and "
      "\\Cref{sec:structural-check} shows"),
     ("inverted inequality / appendix-measurements",
      "appendix-measurements.tex",

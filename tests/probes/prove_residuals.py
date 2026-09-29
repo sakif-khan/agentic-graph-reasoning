@@ -179,9 +179,12 @@ def drop_subtype():
 
 CASES = [
     # ---- the cycle count, in the two documents that still said two ----
+    # The anchor is the caption as it reads now: "exist. The dashed" since
+    # the book traded its explanatory colons for full stops (2026-09-29).
+    # The corruption is left as it shipped, colon and all.
     ("shipped: the thesis caption says two cycles", edit(
         BOOK,
-        "The AGR state machine. Three cycles exist: the dashed region marks "
+        "The AGR state machine. Three cycles exist. The dashed region marks "
         "the Explorer\\,$\\leftrightarrow$\\,Evaluator search loop; "
         "Evaluator\\,$\\rightarrow$\\,Backtracker\\,$\\rightarrow$\\,Explorer "
         "restores an earlier frontier; and "
