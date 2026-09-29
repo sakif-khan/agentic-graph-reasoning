@@ -473,8 +473,8 @@ they press on GraphRAG, the answer below has the strata.
 > RQ2. Start with the narrowest form of it: does anything ungrounded get
 > asserted?
 >
-> Pooling both datasets: AGR asserts 1,709 entities and zero are absent from the
-> graph. The parametric control asserts 1,001 and 22.1 percent are absent.
+> Pooling both datasets: AGR asserts 1,709 entities and zero are ungrounded.
+> The parametric control asserts 1,001 and 22.1 percent are ungrounded.
 >
 > That looks like a headline result for the verification layer. It isn't, and
 > this is the finding I think matters most: Think-on-Graph also reaches 0.0
@@ -674,7 +674,7 @@ chosen to suit AGR.
 **"How do you know models actually do this? Where is your evidence?"**
 From this work's own no-retrieval baseline, which is the parametric control
 in the five-system comparison. On WebQSP it asserted 661 entities and 179 of
-them do not exist anywhere in the knowledge graph — 27.1 percent, every one
+them have no basis in the knowledge graph — 27.1 percent, every one
 stated without a hedge. Slide 23 gives the same measurement over both
 datasets pooled: 1,001 asserted, 221 ungrounded, 22.1 percent. The WebQSP
 slice runs higher because CWQ questions are longer and the model hedges more
@@ -932,8 +932,8 @@ lands very differently that way.
 ## Delivery
 
 - **Say the number, then what it means.** Not the reverse. "Twenty-two percent
-  of what the parametric model asserts is nowhere in the graph — backed by no
-  source it can point to."
+    of what the parametric model asserts has no basis in the graph — backed by
+  no source it can point to."
 - **Four slides are negative results** (22, 23, 24, 25). Deliver them at normal
   pace, not apologetically. A student who reports a clean null is more credible
   than one who reports only wins.
