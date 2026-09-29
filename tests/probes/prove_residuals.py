@@ -210,12 +210,12 @@ CASES = [
     # and the comment above that block in content-main.tex records it.
     ("shipped: the deck's limitations 4 and 5 are swapped", edit(
         DECK,
-        "\\item One environment, one backbone "
+        "\\item One environment, one backbone, one run "
         "\\item ToG leads where it finishes, from a \\alert{narrower "
         "candidate set}: $40$/$20$ vs $300$/$200$",
         "\\item ToG leads where it finishes, from a \\alert{narrower\n"
         "          candidate set}: $40$/$20$ vs $300$/$200$\n"
-        "        \\item One environment, one backbone")),
+        "        \\item One environment, one backbone, one run")),
 
     # ---- the wording divergence: retired 2026-09-19. The thesis now says
     # pre-specified too, so there is no divergence for the script to
@@ -276,9 +276,13 @@ CASES = [
 
     # ---- the spelling rule, stated three times and checked in none ----
     ("shipped: contribution 6 drifts back to the thesis's word",
-     # The bullet reads "\alert{Pre-specified} thresholds, fixed in advance".
-     edit(DECK, r"\alert{Pre-specified} thresholds, fixed in advance",
-          r"\alert{Pre-registered} thresholds, fixed in advance")),
+     # The bullet reads "A \alert{pre-specified} protocol: four decisions
+     # fixed in advance" since 2026-09-29 -- it said "thresholds" before,
+     # which is not what the thesis's protocol fixed.
+     edit(DECK, r"A \alert{pre-specified} protocol: four decisions fixed in "
+                r"advance",
+          r"A \alert{pre-registered} protocol: four decisions fixed in "
+          r"advance")),
 
     # ---- "static baselines" collides with Static GraphRAG ----
     ("the two systems that do not seed are grouped, not named",

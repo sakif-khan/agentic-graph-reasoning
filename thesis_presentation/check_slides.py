@@ -2119,7 +2119,7 @@ else:
 
 
 # ---------------------------------------------------------------------
-# The RoG comparison exists twice: Chapter 8's tab:rog and backup slide
+# The RoG comparison exists twice: tab:rog (Table 5.7) and backup slide
 # 37. Eight figures, two documents, one of them cited from a paper that
 # cannot be re-measured -- which is the exact shape of every drift this
 # file was written to catch. AGR's half is bound to thesis_numbers.json;

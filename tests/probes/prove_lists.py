@@ -144,13 +144,18 @@ SHIPPED = [
     r"A counted benchmark-defect rate ($57$)",
 ]
 
+# The slide's six as of 2026-09-29. "planning hurts" came off item 3 that
+# day: the thesis says the finding is "neither 'the planner helps' nor 'the
+# planner hurts'", and item 6 is a protocol of four decisions, not
+# thresholds. Items 5 and 6 had drifted from the slide before that too.
 CURRENT = [
     r"AGR and its \alert{Structural Verification Layer}",
     r"A \alert{component-level ablation} of four mechanisms",
-    r"\alert{Stratum-dependent decomposition} --- planning hurts",
+    r"\alert{Stratum-dependent decomposition} --- gate it on structure",
     r"The \emph{\alert{echo attractor}}, named",
-    r"\alert{Benchmark-defect rates} for WebQSP and CWQ ($57$)",
-    r"\alert{Pre-specified} evaluation thresholds",
+    (r"\alert{Benchmark-defect rates}: $57$ questions whose gold labels "
+     r"are wrong or ambiguous"),
+    r"A \alert{pre-specified} protocol: four decisions fixed in advance",
 ]
 
 CASES = [

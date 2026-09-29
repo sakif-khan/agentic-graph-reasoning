@@ -294,8 +294,8 @@
     \item[\textbf{RQ2}] Given a system that already navigates the graph, what
       does a claim-level check against traversed triples \alert{contribute}?
       \vspace{2mm}
-    \item[\textbf{RQ3}] Which components earn their cost, in accuracy and in
-      \alert{tokens}?
+    \item[\textbf{RQ3}] Which components contribute what, at what
+      \alert{token cost}?
   \end{enumerate}
   \vspace{3mm}\sinkfoot
   {\small RQ2 is posed as \emph{what does it contribute}, not \emph{does it
@@ -414,7 +414,7 @@
       % rather than as an alphabetised API listing.
       % Was \texttt{link_entity}, which is not the name of anything: the
       % operation is search_entity in kg_tools.py, in app:tool-search, and in
-      % tab:toolapi. On a slide that sets these in monospace, a name that
+      % tab:tools. On a slide that sets these in monospace, a name that
       % appears nowhere else in the repository reads as the literal API.
       % Every name in this column is checked against a def in kg_tools.py.
       \texttt{search\_entity}  & Planner  & Surface form $\rightarrow$ node
@@ -858,8 +858,8 @@
       \end{block}
     \end{column}
   \end{columns}
-  \takeaway{Silent error becomes an explicit hedge. That is the claim, and
-    it is the whole of it.}
+  \takeaway{Not right more often --- right \alert{for a reason it can
+    show}, at a small cost in recall.}
 \end{frame}
 
 % ===================== 26 =====================
@@ -969,7 +969,8 @@
   % is 17 unbreakable characters, and once the line before it is short the
   % justified setting stretches "ComplexWebQuestions trends the other way:"
   % to badness 2529. Ragged setting is what the deck already does in its
-  % other prose blocks, and only this block needs it.
+  % other prose blocks. The right block is ragged too since 2026-09-29:
+  % its strata sentence, justified at 0.35, hyphenated "col-lapses".
   \begin{columns}[T]
     \begin{column}{0.61\textwidth}
       \begin{block}{Removing the planner \emph{improves} WebQSP}
@@ -982,8 +983,9 @@
     \end{column}
     \begin{column}{0.35\textwidth}
       \begin{block}{What follows}
-        WebQSP is mostly one hop, and decomposing a one-hop question sends
-        the frontier away from the answer.
+        \agrraggedright
+        Without it, WebQSP rises at one hop \emph{and} at two, while CWQ's
+        two-hop stratum collapses.
       \end{block}
     \end{column}
   \end{columns}
@@ -1097,8 +1099,9 @@
   % position. The widths are slide 7's too.
   \begin{columns}[T]
     \begin{column}{0.50\textwidth}
-      % THESE ARE THE THESIS'S SIX, IN ITS ORDER (sec:contribution, one
-      % \subsection each). They were a different six: this slide had split
+      % THESE ARE THE THESIS'S SIX, IN ITS ORDER (sec:contribution: the
+      % framework paragraph, four \textbf lead-ins, the protocol paragraph --
+      % it was one \subsection each until 4d4671b made it prose). They were a different six: this slide had split
       % the framework and its verification layer into two items, promoted
       % the five-system comparison and the hop-count shape from results to
       % contributions, and dropped the ablation, the decomposition finding
@@ -1121,7 +1124,8 @@
       \begin{enumerate}\setlength{\itemsep}{0pt}
         \item AGR and its \alert{Structural Verification Layer}
         \item A \alert{component-level ablation} of four mechanisms
-        \item \alert{Stratum-dependent decomposition} --- planning hurts
+        \item \alert{Stratum-dependent decomposition} --- gate it on
+          structure
         \item The \emph{\alert{echo attractor}}, named
         % Both of these named an artefact without saying what it was.
         % 57 is the count of questions whose gold labels were adjudicated
@@ -1130,7 +1134,8 @@
         % seeing the numbers.
         \item \alert{Benchmark-defect rates}: $57$ questions whose gold
           labels are wrong or ambiguous
-        \item \alert{Pre-specified} thresholds, fixed in advance
+        \item A \alert{pre-specified} protocol: four decisions fixed in
+          advance
       \end{enumerate}
     \end{column}
     \begin{column}{0.46\textwidth}
@@ -1153,12 +1158,13 @@
       % thing, and nothing was holding them anywhere else, so
       % check_slides.py now pins each to the slide that carries it.
       %
-      % The single-annotator clause left with them. It is thesis
-      % limitation 4, whose heading reads "single-environment,
-      % single-backbone, and single-annotator", so this bullet is now
-      % narrower than the heading it answers to, and the deck no longer
-      % says anywhere that the judge was validated against one reader's
-      % labels. sec:judge still does.
+      % The single-annotator clause left with them. The heading this
+      % bullet answers to is now thesis limitation 3, and it reads
+      % "single-environment, single-backbone, and single-run" -- so the
+      % bullet says one run as well (sec:limitations-final, after
+      % 4d4671b cut that section from eight headings to four). The deck
+      % no longer says anywhere that the judge was validated against one
+      % reader's labels. sec:judge still does.
       % Three bullets spread to the left column's depth read as
       % padding, and centred in a measured box they left their own
       % header stranded 46pt above them. Neither is a problem a block
@@ -1168,7 +1174,7 @@
         \begin{itemize}\setlength{\itemsep}{0pt}
           \item The verifier logs only what it \alert{rejects}: wrongful
             acceptance is unmeasured, and the evidence is not persisted
-          \item One environment, one backbone
+          \item One environment, one backbone, one run
           \item ToG leads where it finishes, from a \alert{narrower
             candidate set}: $40$/$20$ vs $300$/$200$
         \end{itemize}
@@ -1287,7 +1293,8 @@
 % backup slide because the honest answer is that RoG leads and the
 % comparison does not settle an architectural question -- which is an
 % answer to a question, not a step in the argument. Figures are
-% Chapter 8's tab:rog; do not let the two drift.
+% tab:rog (Table 5.7, sec:rog-comparison -- it was Chapter 8's before
+% 15140dd merged that chapter into Chapter 5); do not let the two drift.
 \begin{frame}{Backup: AGR against RoG}
   \begin{table}
     \small

@@ -88,7 +88,7 @@ clipping issue to them.
 
 ## 1 — Title *(0:19)*
 
-> Good afternoon. I'm Sakif Khan. This is my pre-defense on Agentic Graph
+> Good afternoon. I'm Sakif Khan. This is my thesis defense on Agentic Graph
 > Reasoning — knowledge graph navigation with verification before the answer is
 > emitted. My supervisor is Dr. Sadia Sharmin.
 
@@ -201,7 +201,7 @@ the room is holding.*
 
 ## 10 — What everyone else does *(0:56)*
 
-> Five systems, and the column that matters is the last one.
+> Four systems, and the column that matters is the last one.
 >
 > The four prior systems differ in how they explore — a fixed radius,
 > generated paths, beam search, adaptive planning. Some decompose the question,
@@ -231,7 +231,7 @@ the numbers. The environment slide answers it.*
 > RQ2: given a system that already navigates the graph, what does a claim-level
 > check against the traversed triples contribute?
 >
-> RQ3: which components earn their cost, in accuracy and in tokens?
+> RQ3: which components contribute what, at what token cost?
 >
 > One framing note. RQ2 asks what verification *contributes*, not whether it
 > reduces hallucination. That's deliberate. The answer has several parts, and a
@@ -256,10 +256,10 @@ the numbers. The environment slide answers it.*
 > on the model cooperating.
 
 **Do not say "exactly two cycles."** The diagram has three arrows returning to
-the Explorer and the audience is looking at it while you speak. The thesis
-caption says two and names two, but the figure source calls the third one a
-cycle in its own comment. Naming them after the edge labels — continue,
-backtrack, retry — means counting the arrows confirms the sentence.
+the Explorer and the audience is looking at it while you speak, and the
+thesis caption says three and names all three. Naming them after the edge
+labels — continue, backtrack, retry — means counting the arrows confirms the
+sentence.
 
 **If asked about budgets, go to backup slide 33.**
 
@@ -424,7 +424,7 @@ the attribution claim the pointer used to occupy.*
 
 **Do not pool the two retrieval baselines.** The table puts 0.203 and 0.205 side
 by side and the pooled version of this point is the one that gets walked back:
-results.tex calls GraphRAG the weaker evidence of the two and says the claim
+section 5.7.3 calls GraphRAG the weaker evidence of the two and says the claim
 rests on vector RAG. The paper retracted the pooled claim in its own words. If
 they press on GraphRAG, the answer below has the strata.
 
@@ -474,7 +474,7 @@ they press on GraphRAG, the answer below has the strata.
 > asserted?
 >
 > Pooling both datasets: AGR asserts 1,709 entities and zero are absent from the
-> graph. The parametric control asserts 1,001 and 22.1 percent don't exist.
+> graph. The parametric control asserts 1,001 and 22.1 percent are absent.
 >
 > That looks like a headline result for the verification layer. It isn't, and
 > this is the finding I think matters most: Think-on-Graph also reaches 0.0
@@ -527,7 +527,7 @@ it before it is asked costs eight seconds.*
 
 *This was in the backup deck until the last round. It is on the run now
 because the objection it answers is the one the failure census invites three
-slides later — 259 failures, of which 125 are hedges, not wrong answers.*
+slides later — 256 failures, of which 125 are hedges, not wrong answers.*
 
 **Do not overstate CWQ.** 23.0 against Think-on-Graph's 22.5 is half a point
 *more*, not less. What holds on both datasets is the pairing: it hedges no
@@ -551,8 +551,8 @@ that split is a coin toss, and 21–6 gives p = 0.006.
 
 **The verifier rows are the ones to understand before you are asked.** p = 1.000
 there rests on **one** discordant question on each dataset. That is "the test had
-no information", not "there is no effect" — which is exactly why slide 31 says
-*not detected* rather than *none*.
+no information", not "there is no effect" — which is exactly why slides 24 and
+27 say *detectable* rather than *none*.
 
 **The p is on Hits@1, not on the F1 beside it.** Correctness per question is
 binary, so the test runs on that; F1 is the effect size printed next to it. The
@@ -566,8 +566,8 @@ slide footnote now says so.
 > *improves* WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31 percent.
 > On ComplexWebQuestions it trends the other way.
 >
-> The explanation is hop count: WebQSP is mostly one-hop, and decomposing a
-> one-hop question sends the frontier away from the answer. So decomposition
+> The strata explain it: without the planner, WebQSP rises at one hop and at
+> two, while CWQ's two-hop stratum collapses. So decomposition
 > should be gated on question structure — a conclusion the measurement forced,
 > not one it confirmed.
 
@@ -577,8 +577,8 @@ slide footnote now says so.
 
 ## 29 — Every failure, read and labelled *(0:29)*
 
-> Two hundred and fifty-nine failures, read and labelled by hand: every AGR
-> failure over the 800 test questions, less the adjudicated benchmark defects.
+> Two hundred and fifty-six failures, read and labelled by hand: every AGR
+> failure over the 800 test questions, less benchmark defects and near-misses.
 >
 > The largest category is relation selection — the agent taking the wrong edge,
 > not inventing one. That shape is the finding.
@@ -614,7 +614,7 @@ than of AGR."** That is defensive where the thesis is substantive, and nothing
 on the slide blames AGR for it. The claim is about evaluation: sec:echo calls
 the attractor "invisible to any evaluation treating systems as independent",
 and section 1.6 says the contribution is the mechanism "and what it means for
-consensus-based evaluation, not the frequency". Backup slide 37 is the same finding
+consensus-based evaluation rather than the frequency". Backup slide 37 is the same finding
 seen from the other side.
 
 ---
@@ -633,8 +633,8 @@ seen from the other side.
 > has no rate at all — and the same decision is why the output contract cannot
 > be audited from the record.
 >
-> Then: one environment, one backbone. And Think-on-Graph leads where it
-> finishes, from a narrower candidate set.
+> Then: one environment, one backbone, one run. And Think-on-Graph leads
+> where it finishes, from a narrower candidate set.
 
 ---
 
@@ -678,12 +678,13 @@ them do not exist anywhere in the knowledge graph — 27.1 percent, every one
 stated without a hedge. Slide 23 gives the same measurement over both
 datasets pooled: 1,001 asserted, 221 ungrounded, 22.1 percent. The WebQSP
 slice runs higher because CWQ questions are longer and the model hedges more
-on them; the pooled row is the one I quote, and it is the one in the thesis.
+on them; the pooled row is the one I quote, and the one the thesis's abstract
+and conclusion use.
 
 **"Isn't the 25-call cap arbitrary, and doesn't it favour AGR?"**
-It's the cap Think-on-Graph's own paper operates under. And AGR never reaches it
-— zero percent on both datasets (backup slide 34). If I raised the cap, AGR's numbers would
-not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
+It is AGR's own budget, applied identically to every system. And AGR never
+reaches it — zero percent on both datasets (backup slide 34). If I raised the
+cap, AGR's numbers would not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
 
 **"Do the categories look the same on both datasets?"** *(Slide 29 is pooled.)*
@@ -725,7 +726,8 @@ dataset, which is why its p is 1.000 and why I report it as no *detected*
 effect rather than no effect. The power limit is arithmetic: at n around 200 a
 component that moves five questions in a hundred produces roughly ten discordant
 pairs, and ten pairs cannot reject at conventional levels. Doubling the
-half-samples is the remedy, and it is named as future work.
+half-samples is the remedy, and the threats to validity list the ablations as
+underpowered.
 
 **"Did both systems see the same candidate sets?"** *(The sharper form of the
 cap question. Slide 20 raises it deliberately — answer it, don't deflect.)*
@@ -741,13 +743,13 @@ do is rescue the budget argument: a narrower candidate set makes each step
 does mean is that the residual gap on the questions it *finishes* is measured
 against a system searching a thinner pool, so that figure is a lower bound on
 what it could resolve at equal width — not an estimate of it. Re-running it at
-300 and 200 is the first item in my future work, and it is limitation 2 in
-the threats to validity.
+300 and 200 is the first of two baseline bounds my future work calls cheap to
+lift, and it is limitation 2 in the threats to validity.
 
 **"Your verifier doesn't verify the relationship — any edge between the two
 entities passes."**
 Correct, and I would rather name it than defend it: it is the layer's principal
-acceptance risk, and section 6.8 lists it first among the mechanisms of wrongful
+acceptance risk, and section 4.15 lists it first among the mechanisms of wrongful
 acceptance. Both structural routes ignore the relation and the direction, so a
 claim that X is Y's mother is certified by an edge recording that X is Y's child.
 It is a deliberate consequence of one design choice. The claim's relation is free
@@ -763,8 +765,8 @@ claims, somewhere between 39 and all 2,008 were certified without any test of th
 asserted relation. That is an interval two orders of magnitude wide and I report
 it as one rather than choose a point inside it. Narrowing it needs the logging
 change — persist accepted claims with the triples that matched them — which is
-the same future-work item as the previous answer, and it is what would let the
-relation be checked where the mediator schema makes that possible.
+the future-work item the supporting-triple answer below names, and it is what
+would let the relation be checked where the mediator schema makes that possible.
 
 **"If verification doesn't improve accuracy, why keep it?"**
 Because accuracy was never the only claim. It converts silent error into an
@@ -780,18 +782,19 @@ triple; every statistic I quote about them comes from that counter. What I can
 show is the traversal record each answer was produced against. Two things follow
 and I state both: the pairing is real inside the run and unavailable afterwards,
 and one polarity of the verifier's error is therefore unmeasured. Persisting
-accepted claims with their matching triples is one logging change, and it is the
-first item in my future work. I did not make it late because it would separate
-the code from results already frozen against it.
+accepted claims with their matching triples is one logging change, and my
+future work ranks it the highest-value change for its cost. I did not make it
+late because it would separate the code from results already frozen against it.
 
 **"Why isn't the five-system comparison one of your contributions?"**
 Because the thesis does not count it as one, and slide 31 is the thesis's list —
-section 1.6, one subsection per item. The comparison and the hop-count shape are
-results the contributions rest on; they get slides 21 and 22, which is where the
-weight belongs. An earlier version of that slide promoted both to contributions
-and dropped the ablation, the decomposition finding and the protocol to make room
-— still saying "six". The thesis had already been audited for exactly that
-mismatch, where its conclusion counted four against section 1.6's six.
+the six section 1.6 claims, in its order. The comparison and the hop-count shape
+are results the contributions rest on; they get slides 20 and 21, which is where
+the weight belongs. An earlier version of that slide promoted both to
+contributions and dropped the ablation, the decomposition finding and the
+protocol to make room — still saying "six". The thesis had already been audited
+for exactly that mismatch: its conclusion itemises four and says where the
+other two are.
 
 **"How many questions is that hedge difference, and is it significant?"**
 Six, on CWQ: 23.2 percent of 198 against 20.2. The sets nest — there is no
@@ -806,7 +809,7 @@ say that than be shown it. No, it is not significance-tested; the ablation's
 McNemar test is on correctness, not on the hedge column, and I claim the
 direction and nothing more.
 *Do not* offer the no-retrieval contrast here. Its 12.2 percent is a hedge rate,
-not an error rate — slide 26 has it in a column headed "WebQSP hedge %" —
+not an error rate — slide 26, a table of hedge rates, has it under WebQSP —
 and AGR hedges *less* than it does, 8.2 against 12.2, so that comparison argues
 the opposite of what it looks like. No-retrieval's actual error rate is 170 wrong
 out of the 351 questions it asserts on.
@@ -821,10 +824,13 @@ evidence. Median across all 80 is 3, mean 4.1, maximum 16 — read from the
 counter, since the triples are exactly what the log does not keep.
 
 **"Your planner result says your own design is wrong."**
-It says the planner is wrong *for one-hop questions*, and WebQSP is mostly
-one-hop. On ComplexWebQuestions the effect reverses in sign. The conclusion is
-that decomposition should be gated on question structure — which is a finding,
-and one I'd have missed without the ablation.
+It says something narrower: the thesis's finding is neither "the planner
+helps" nor "the planner hurts". Without it, WebQSP rises at one hop *and* at
+two — most of its questions need no composing. On ComplexWebQuestions the sign
+reverses and the two-hop stratum collapses without it, though at p = 0.088
+that is a direction, not an effect. The conclusion is that decomposition should
+be gated on question structure — which is a finding, and one I'd have missed
+without the ablation.
 
 **"n=4 in the three-hop WebQSP stratum is meaningless."**
 Agreed, and I don't draw a conclusion from it. The hop-count claim rests on
@@ -864,7 +870,7 @@ first of the three repairs the census earned. The category split is backup
 slide 35.
 
 **"Is that a standard dataset, or one you built yourself?"**
-*(Asked at the pre-defense. Section 4.2 of the thesis is “Source Datasets”.)*
+*(Asked at the pre-defense. Section 3.1.3 of the thesis is “Source Datasets”.)*
 Standard, and public. WebQSP and ComplexWebQuestions, both unmodified, taken
 from the per-question subgraph distribution the Reasoning-on-Graphs paper
 released — rmanluo/RoG-webqsp and rmanluo/RoG-cwq on HuggingFace. I collected
@@ -874,9 +880,9 @@ knowledge environment derived from them: the union of every per-question
 subgraph into one graph, plus its store and its vector index. That union is
 deliberate — a per-question subgraph in isolation is a near-oracle, extracted
 to contain its own answer, so merging all of them back together is what
-restores the distractors. Section 4.2 gives the provenance, section 7.2 gives
-the sampling: 400 per dataset, stratified at seed 42, every question ID listed
-in the appendix.
+restores the distractors. Section 3.1.3 gives the provenance, section 5.2.2
+gives the sampling: 400 per dataset, stratified at seed 42, every question ID
+listed in the appendix.
 
 **"You used RoG’s data. How does AGR compare to RoG itself?"**
 *(Asked at the pre-defense. Backup slide 38 has the table — put it up.)*
@@ -890,8 +896,8 @@ before it is evaluated. So it is a supervised system against a zero-shot one on
 the same data, which is a difference in kind. I could not hold the backbone
 constant against RoG the way I do across my five systems, because RoG’s
 contribution *is* its fine-tuned weights — that is the same objection my
-Chapter 3 table already makes against every fine-tuned entry in the literature.
-What I would not do is claim parity. Section 8.5 of the thesis states the
+Chapter 2 table already makes against every fine-tuned entry in the literature.
+What I would not do is claim parity. Section 5.9 of the thesis states the
 numbers, states that RoG leads, and separates what the comparison settles from
 what it cannot. The verification layer, the ablation and the failure census
 have no counterpart in RoG’s evaluation, and closing that accuracy gap would
@@ -925,9 +931,10 @@ lands very differently that way.
 
 ## Delivery
 
-- **Say the number, then what it means.** Not the reverse. "Twenty-seven percent
-  of asserted entities don't exist — the model is confidently inventing."
-- **Four slides are negative results** (21, 22, 23, 24). Deliver them at normal
+- **Say the number, then what it means.** Not the reverse. "Twenty-two percent
+  of what the parametric model asserts is nowhere in the graph — backed by no
+  source it can point to."
+- **Four slides are negative results** (22, 23, 24, 25). Deliver them at normal
   pace, not apologetically. A student who reports a clean null is more credible
   than one who reports only wins.
 - The word is **hedge**, not "refuse." A hedge is a calibrated non-assertion.
