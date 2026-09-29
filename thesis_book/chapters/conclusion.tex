@@ -9,36 +9,24 @@ subgraph adds on top. The answers are not uniform. The value of the work lies
 partly in where they diverge.
 
 \Cref{sec:results} reported the measurements. AGR leads every accuracy cell of
-the main matrix. The agentic baseline hedges marginally less on CWQ, and
-\Cref{sec:findings} reports that as the one cell it does not lead. Every one of
-the eight paired comparisons rejects, including both against a reimplementation
-of the agentic baseline running on the same graph with the same model under the
-same budget. That last margin is located rather than merely claimed. On the
-questions where the shared cap lets the baseline finish, the baseline is
-slightly ahead. The whole margin comes from the $29\%$ and $44\%$ of questions
-where the cap truncates it (\Cref{sec:tog-split}). The finding is therefore
-about affordability rather than about resolution quality. Beam search cannot
-complete under a budget a deployed system would impose. Guided search can. On
-ComplexWebQuestions AGR is the only system whose accuracy \emph{rises} with hop
-count. Every other system ends below where it started. That contrast is the
-strongest available form of the multi-hop claim. The agentic baseline is the one
-that does not simply decay. It falls and then partially recovers. That recovery
-is weaker than a rise and is reported as such in \Cref{sec:hop-results}. AGR
+the main matrix. Every one of the eight paired comparisons rejects, including
+both against a reimplementation of the agentic baseline on the same graph, with
+the same model and budget. Where the shared call cap lets that baseline finish,
+the baseline is slightly ahead. The whole margin comes from the $29\%$ and
+$44\%$ of questions where the cap truncates it (\Cref{sec:tog-split}). The
+finding is therefore about affordability rather than resolution quality. AGR
 runs at half the language-model calls of the agentic baseline and never exhausts
-the call budget that clips that baseline on $44\%$ of multi-hop questions.
-Structural hallucination is eliminated. Over both datasets, none of $1{,}709$
-asserted entities is ungrounded, against $22.1\%$ of the $1{,}001$ the
-parametric control asserts. And three of four ablations detect nothing. That
-null result is reported at the same length as the one that does.
+the cap. On ComplexWebQuestions it is the only system whose accuracy
+\emph{rises} with hop count, and every other system ends below where it started
+(\Cref{sec:hop-results}). Structural hallucination is eliminated. Over both
+datasets, none of $1{,}709$ asserted entities is ungrounded, against $22.1\%$ of
+the $1{,}001$ the parametric control asserts.
 
 \Cref{sec:erroranalysis} read all $256$ remaining failures and named each
-mechanism. The findings that generalise beyond this system are three.
-The first is \emph{context-stripping}. Decomposing a question can discard a
-qualifier that appears only in a later clause. An early sub-objective then
-resolves the wrong sense of an ambiguous term before the disambiguating
-information ever arrives. In the strongest specimen, decomposition actively
-pushed down the one anchor that could have told the senses apart and drove its
-score to the noise floor.
+mechanism. Three findings generalise beyond this system. The first is
+\emph{context-stripping}. Decomposing a question can discard a qualifier that
+appears only in a later clause. An early sub-objective then resolves the wrong
+sense of an ambiguous term before the disambiguating information ever arrives.
 
 The second is \emph{the echo attractor}. The characteristic failure of a
 graph-navigating system is not to invent an entity. It is to surface a real,
@@ -50,11 +38,10 @@ Five systems sharing one graph and one backbone landed on the same wrong answer
 often enough that rescoring on majority agreement would have turned this failure
 mode into apparent correctness.
 
-Four contributions follow from that body of work. \Cref{sec:contribution}
-claimed six. The other two are stated above rather than repeated as items here.
-The echo attractor is the second of the three findings just given. The
-pre-specified evaluation protocol is reported in the \Cref{sec:setup} paragraph,
-including the threshold it missed.
+\Cref{sec:contribution} claimed six contributions. The echo attractor is the
+second finding above, and the pre-specified evaluation protocol is reported in
+\Cref{sec:pre-registration}, including the threshold it missed. The other four
+follow.
 
 \textbf{The framework and its verification layer.} An agentic KGQA system that
 returns its answer paired with the triples supporting it, built so that the
