@@ -37,44 +37,46 @@ natural substrate for multi-hop questions.
 Freebase~\cite{bollacker2008freebase} is a large, collaboratively-built
 knowledge\index{Freebase} base, frozen since 2016. It is also the substrate for
 the standard knowledge graph question answering benchmarks. Three of its
-characteristics affect any system built on it: how it identifies entities, how
-it names relations, and how it stores a fact with more than two participants.
+characteristics affect any system built on it. They concern how it identifies
+entities, how it names relations, and how it stores a fact with more than two
+participants.
 
 A \emph{machine identifier}\index{MID} (MID) is the permanent key Freebase
-assigns to a node: a short code prefixed \textsf{m.} or \textsf{g.}, such as
-\textsf{m.02mjmr}. It is opaque --- nothing in the code says what the node is.
-A node's human-readable name is stored apart from its MID, as the value of an
-ordinary property. Names are neither unique nor stable: two entities can share
-one, and editors could change one. So entity identity and entity surface form
-must be handled separately.
+assigns to a node. It is a short, opaque code prefixed \textsf{m.} or
+\textsf{g.}, such as \textsf{m.02mjmr}. Nothing in the code says what the node
+is. A node's human-readable name is stored apart from its MID, as the value of
+an ordinary property. Names are neither unique nor stable. Two entities can
+share one, and editors could change one. So entity identity and entity surface
+form must be handled separately.
 
 The \emph{schema}\index{schema} is the vocabulary Freebase states facts in, and
 it has three levels. A \emph{domain} is a subject area, such as
 \textsf{people}. A \emph{type} is a class of entity within a domain, such as
 \textsf{people.person}, and one entity may carry several types. A
 \emph{property} is an attribute that a type defines. A relation is named by the
-full path to its property: \textsf{people.person.place\_of\_birth} is the
-property \textsf{place\_of\_birth} of the type \textsf{person} in the domain
-\textsf{people}. Many properties come with a \emph{reverse} that states the same
-fact from the other end, here \textsf{location.location.people\_born\_here}. The
-vocabulary runs to tens of thousands of relations, many of them carrying no
-factual content: the \emph{type} predicates recording which types an entity
-has, and the \emph{key} predicates listing its identifiers in other namespaces,
-such as Wikipedia's.
+full path to its property. For example, \textsf{people.person.place\_of\_birth}
+is the property \textsf{place\_of\_birth} of the type \textsf{person} in the
+domain \textsf{people}. Many properties come with a \emph{reverse} that states
+the same fact from the other end, here
+\textsf{location.location.people\_born\_here}. The vocabulary runs to tens of
+thousands of relations, and many of them carry no factual content. Among these
+are the \emph{type} predicates, which record an entity's types, and the
+\emph{key} predicates, which list its identifiers in other namespaces, such as
+Wikipedia's.
 
 Most consequentially, a \emph{mediator node}\index{mediator node}, which
 Freebase calls a \emph{compound value type} (CVT), is an unnamed node standing
-for one $n$-ary fact: a fact with more than two participants. A triple joins
-only two entities. So the fact becomes a node of its own, with one edge to each
-participant, and each edge's relation names that participant's role. That Rainn
-Wilson played Dwight Schrute in \emph{The Office} is stored as the mediator
-\textsf{m.02l00g\_}. Its \textsf{actor}, \textsf{character}, and \textsf{series}
-edges, all properties of the type \textsf{tv.regular\_tv\_appearance}, lead to
-the actor, the character, and the show. So a relationship a user would describe
-as one hop is two edges in the graph. Any system reporting hop counts
-over Freebase must state how it treats these nodes. The choice changes every
-depth measurement. Systems that ignore them lose the facts they
-encode~\cite{xu2024generate}.
+for one $n$-ary fact. An $n$-ary fact has more than two participants, but a
+triple joins only two entities. So the fact becomes a node of its own, with one
+edge to each participant, and each edge's relation names that participant's
+role. That Rainn Wilson played Dwight Schrute in \emph{The Office} is stored as
+the mediator \textsf{m.02l00g\_}. Its \textsf{actor}, \textsf{character}, and
+\textsf{series} edges, all properties of the type
+\textsf{tv.regular\_tv\_appearance}, lead to the actor, the character, and the
+show. So a relationship a user would describe as one hop is two edges in the
+graph. Any system reporting hop counts over Freebase must state how it treats
+these nodes. The choice changes every depth measurement. Systems that ignore
+them lose the facts they encode~\cite{xu2024generate}.
 
 \subsection{Property Graphs, Neo4j, and Cypher}
 
@@ -148,7 +150,7 @@ prompt, without gradient updates --- \emph{in-context learning}\index{in-context
 learning}~\cite{brown2020language}. Prompting the model to produce intermediate
 reasoning steps before its final answer, \emph{chain-of-thought}
 prompting~\cite{wei2022chain}, substantially improves performance on multi-step
-problems. Both are used here: the agent's planner, scorer, evaluator, and
+problems. Both are used here. The agent's planner, scorer, evaluator, and
 verifier are prompted components of a single frozen model, which this thesis
 calls the \emph{backbone}. No component is \emph{fine-tuned}, that is, trained
 further on examples of the task. That matters for comparability, since several
@@ -205,10 +207,10 @@ once, before reasoning begins, or again and again as reasoning proceeds?
 
 \subsection{Search over Graphs}\label{sec:search}
 
-\emph{Best-first search}\index{best-first search} keeps a \emph{frontier}: the
-nodes it has reached but not yet expanded, where \emph{expanding} a node means
-generating its neighbours. A heuristic scores each frontier node by how
-promising it looks, and the search expands the most promising one
+\emph{Best-first search}\index{best-first search} keeps a \emph{frontier} of
+nodes it has reached but not yet expanded. To \emph{expand} a node is to
+generate its neighbours. A heuristic scores each frontier node by how promising
+it looks, and the search expands the most promising one
 first~\cite{hart1968formal,pearl1984heuristics}. \emph{Beam search} trims the
 frontier to the $b$ highest-scoring candidates at each depth. That gives up
 \emph{completeness}, the guarantee of finding a goal whenever one is reachable,
@@ -284,13 +286,13 @@ scale values between $0.61$ and $0.80$ denote substantial agreement.
 
 GraphRAG~\cite{edge2024local} constructs a knowledge graph from a text
 corpus\index{GraphRAG} using a language model. It partitions the graph into
-\emph{communities} --- clusters of densely interlinked entities, nested in a
-hierarchy --- and pre-computes a summary of each. A query is then answered from
-those summaries rather than from retrieved passages. That is
-\emph{query-focused summarization}: summarising a corpus with respect to one
-question. Its strength is global
-questions --- those whose answer depends on the corpus as a whole rather than
-any single passage. Flat retrieval handles these poorly.
+\emph{communities}, which are clusters of densely interlinked entities nested in
+a hierarchy. It pre-computes a summary of each community. A query is then
+answered from those summaries rather than from retrieved passages. GraphRAG was
+designed for \emph{query-focused summarization}, in which a corpus is summarised
+with respect to one question. Its strength is global questions --- those whose
+answer depends on the corpus as a whole rather than any single passage. Flat
+retrieval handles these poorly.
 
 The relevant limitation is that retrieval remains a single step preceding
 generation. The context is assembled before the model has begun reasoning. So it
@@ -303,9 +305,9 @@ that shapes the environment design in \Cref{sec:env-goals}.
 
 HippoRAG~\cite{gutierrez2024hipporag} draws on the hippocampal indexing theory
 of human memory. It combines a knowledge graph with \emph{personalised
-PageRank}: a random walk over the graph that keeps restarting from the entities
-named in the query, so that nodes are ranked by how readily the walk reaches
-them. A single query can then integrate evidence distributed across many
+PageRank}. This is a random walk over the graph that keeps restarting from the
+entities named in the query, so that nodes are ranked by how readily the walk
+reaches them. A single query can then integrate evidence distributed across many
 passages. It substantially improves multi-hop retrieval over flat baselines
 at low cost.
 
@@ -322,13 +324,13 @@ rather than compared against.
 
 Reasoning-on-Graphs (RoG)~\cite{luo2024reasoning} adopts a\index{KGQA}
 planning--retrieval--reasoning pipeline. A fine-tuned model generates
-\emph{relation paths}: sequences of schema relations that name no entity, such
-as a place of birth followed by the country containing it. Each path is then
-\emph{instantiated} --- matched against the graph as a chain of actual triples
-starting from the question's topic entities. The model reasons over the chains
-it retrieves. Because every answer comes from a retrieved chain, RoG is
-\emph{faithful} by construction: the path it presents as an explanation is the
-path that produced the answer.
+\emph{relation paths}. A relation path is a sequence of schema relations that
+names no entity, such as a place of birth followed by the country containing it.
+Each path is then \emph{instantiated}. It is matched against the graph as a
+chain of actual triples, starting from the question's topic entities. The model
+reasons over the chains it retrieves. Because every answer comes from a
+retrieved chain, RoG is \emph{faithful} by construction. The path it presents as
+an explanation is the path that produced the answer.
 
 Two properties distinguish it from the present work. It is \emph{fine-tuned}.
 This places its reported numbers outside direct comparison with prompting
@@ -350,15 +352,15 @@ invoke--linearise--generate loop. Specialised interfaces extract evidence that
 is linearised into text for the model. StructGPT is deliberately general rather
 than graph-specific. It performs no open-ended graph search.
 
-KG-Agent~\cite{jiang2024kgagent} is closer to the agentic setting: a
-multifunctional toolbox, a knowledge-graph executor, and a dynamic memory,
-driven by an \emph{instruction-tuned} model --- one fine-tuned on examples that
-pair task instructions with worked solutions --- that autonomously selects tools
-across iterations. KG-Agent demonstrates that a small fine-tuned model with good
-tool abstractions is competitive with much larger prompted ones. It plans
-implicitly through tool selection rather than committing to explicit
-sub-objectives. It provides no backtracking mechanism. And it performs no
-verification of the final answer.
+KG-Agent~\cite{jiang2024kgagent} is closer to the agentic setting. It combines a
+multifunctional toolbox, a knowledge-graph executor, and a dynamic memory, all
+driven by an \emph{instruction-tuned} model that autonomously selects tools
+across iterations. An instruction-tuned model is one fine-tuned on examples that
+pair task instructions with worked solutions. KG-Agent demonstrates that a small
+fine-tuned model with good tool abstractions is competitive with much larger
+prompted ones. It plans implicitly through tool selection rather than committing
+to explicit sub-objectives. It provides no backtracking mechanism. And it
+performs no verification of the final answer.
 
 \section{Agentic Graph Exploration}\label{sec:agentic-exploration}
 
@@ -384,14 +386,14 @@ nothing checks the answer that follows.
 \subsection{Plan-on-Graph}
 
 Plan-on-Graph (PoG)~\cite{chen2024plan} is the closest system to AGR in
-ambition. It decomposes the question into \emph{sub-objectives}: smaller
-questions, each resolvable by a short search, with the question's constraints
-attached. It explores adaptively, with a breadth that varies by sub-objective,
-under three mechanisms. \emph{Guidance} uses the sub-objectives to steer
-exploration. \emph{Memory} records the subgraph and reasoning paths found so
-far. \emph{Reflection} decides both whether to self-correct and which entity to
-backtrack to. That dual role makes
-PoG the one surveyed system with genuine backtracking.
+ambition. It decomposes the question into \emph{sub-objectives}. These are
+smaller questions, each resolvable by a short search, with the question's
+constraints attached. It explores adaptively, with a breadth that varies by
+sub-objective, under three mechanisms. \emph{Guidance} uses the sub-objectives
+to steer exploration. \emph{Memory} records the subgraph and reasoning paths
+found so far. \emph{Reflection} decides both whether to self-correct and which
+entity to backtrack to. That dual role makes PoG the one surveyed system with
+genuine backtracking.
 
 PoG's self-correction operates on the \emph{search process}: it reconsiders
 where to explore. It does not decompose the draft answer into claims and check
@@ -424,13 +426,13 @@ the guided best-first search implemented here.
 KBQA-o1~\cite{luo2025kbqao1} is the closest system to the search strategy the
 present work's proposal originally described, and therefore the most important
 one to distinguish from it. It performs agentic knowledge base question
-answering with full Monte Carlo Tree Search --- a policy model proposing
-actions, a reward model scoring them, and rollouts whose values propagate back
-through the tree --- wrapped around a ReAct-style agent that generates
-\emph{logical forms} --- queries in a formal language the knowledge base can
-execute --- step by step against a Freebase environment. The exploration
-additionally generates annotations used for incremental fine-tuning. So the
-search improves the model that drives it.
+answering with full Monte Carlo Tree Search. A policy model proposes actions, a
+reward model scores them, and the values of rollouts propagate back through the
+tree. The search is wrapped around a ReAct-style agent that generates
+\emph{logical forms} step by step against a Freebase environment. A logical form
+is a query in a formal language that the knowledge base can execute. The
+exploration additionally generates annotations used for incremental fine-tuning.
+So the search improves the model that drives it.
 
 Two aspects bear on this thesis. First, KBQA-o1 is what the withdrawn
 ``MCTS-inspired'' description of \Cref{sec:mcts-clarification} would have
@@ -488,13 +490,13 @@ hepatology system is a graph-specific instance of it.
 \paragraph{Claim-Decomposition Metrics}
 
 FActScore~\cite{min2023factscore} evaluates long-form generation by
-breaking\index{claim extraction} the text into \emph{atomic facts} --- short
-statements that each convey a single piece of information --- and checking each
-one against a reference source. It reports the proportion that are supported.
-This decompose-then-verify protocol is the basis for the groundedness metric in
-\Cref{sec:groundedness-metric}, with the knowledge graph as the reference. The
-one methodological requirement that carries over is that the judge doing the
-checking must be independent of the system that wrote the text.
+breaking\index{claim extraction} the text into \emph{atomic facts}. An atomic
+fact is a short statement that conveys a single piece of information. FActScore
+checks each one against a reference source and reports the proportion that are
+supported. This decompose-then-verify protocol is the basis for the groundedness
+metric in \Cref{sec:groundedness-metric}, with the knowledge graph as the
+reference. The one methodological requirement that carries over is that the
+judge doing the checking must be independent of the system that wrote the text.
 
 \paragraph{Factuality Benchmarks and Their Limits}
 
@@ -625,7 +627,7 @@ comparison in this thesis.
 First, the figures are drawn from the original publications and reflect
 different backbones. RoG and KG-Agent are fine-tuned. Their numbers are not
 comparable with prompting methods at all. Among the prompting methods, the
-backbone accounts for much of the spread: the same methods drop sharply when run
+backbone accounts for much of the spread. The same methods drop sharply when run
 on smaller \emph{open-weight} models, whose trained weights are publicly
 released. That sensitivity is the direct motivation for
 holding the backbone constant across every system in \Cref{sec:setup}. The
