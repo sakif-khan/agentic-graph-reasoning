@@ -144,18 +144,20 @@ SHIPPED = [
     r"A counted benchmark-defect rate ($57$)",
 ]
 
-# The slide's six as of 2026-09-29. "planning hurts" came off item 3 that
-# day: the thesis says the finding is "neither 'the planner helps' nor 'the
-# planner hurts'", and item 6 is a protocol of four decisions, not
-# thresholds. Items 5 and 6 had drifted from the slide before that too.
+# The slide's six as of 2026-10. "planning hurts" came off item 3 on
+# 2026-09-29: the thesis says the finding is "neither 'the planner helps'
+# nor 'the planner hurts'". The October rebuild took the dash and colons out
+# of items 3, 5 and 6, and item 6 now names the decision that was missed,
+# as sec:contribution does.
 CURRENT = [
     r"AGR and its \alert{Structural Verification Layer}",
     r"A \alert{component-level ablation} of four mechanisms",
-    r"\alert{Stratum-dependent decomposition} --- gate it on structure",
+    r"\alert{Stratum-dependent decomposition}, gated on structure",
     r"The \emph{\alert{echo attractor}}, named",
-    (r"\alert{Benchmark-defect rates}: $57$ questions whose gold labels "
-     r"are wrong or ambiguous"),
-    r"A \alert{pre-specified} protocol: four decisions fixed in advance",
+    (r"\alert{Benchmark-defect rates} for $57$ questions with wrong or "
+     r"\mbox{ambiguous gold}"),
+    (r"A \alert{pre-specified} protocol of four decisions, one missed "
+     r"($\kappa = 0.6995$ against $0.7$)"),
 ]
 
 CASES = [
@@ -179,13 +181,14 @@ CASES = [
     # count buys instead is that all six must appear in the thesis as well as
     # the deck, which the heading count never checked.
     ("the thesis's limitation swapped back for the deck's own",
-     edit(DECK, r"ToG leads where it finishes, from a \alert{narrower "
-                r"candidate set}: $40$/$20$ vs $300$/$200$",
+     edit(DECK, r"Think-on-Graph leads where it finishes, from a "
+                r"\alert{narrower candidate set} ($40$/$20$ against "
+                r"$300$/$200$)",
           r"ToG leads on the questions it finishes")),
     ("first-ranked limitation demoted below the others",
-     edit(DECK, r"\item The verifier logs only what it \alert{rejects}: "
-                r"wrongful acceptance is unmeasured, and the evidence is "
-                r"not persisted",
+     edit(DECK, r"\item The verifier logs only what it \alert{rejects}. "
+                r"Wrongful acceptance is unmeasured, and the evidence is "
+                r"not persisted.",
           r"\item One more thing")),
     ("ToG's caps change in code and the slide does not follow",
      edit(TOG, "MAX_RELATIONS, MAX_NEIGHBORS = 40, 20",

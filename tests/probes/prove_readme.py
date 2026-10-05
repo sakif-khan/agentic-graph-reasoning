@@ -77,17 +77,27 @@ CASES = [
     # cross-directory reach exactly when the deck makes one, so the
     # corruption is to stop describing the reach while the deck still does
     # it. Same rule, same direction, an anchor that exists.
-    ("shipped: the README stops describing the cross-directory reach",
-     edit(RM, "across the directory boundary",
-          "from a copy kept in this module")),
+    #
+    # Re-aimed again in October 2026, when the deck stopped reaching across
+    # at all and began drawing the claim path on its own slide (the book
+    # figure printed at 5.2pt there). The README now has to say THAT, and
+    # stop describing a reach the deck no longer makes.
+    ("the README stops describing the slide's own drawing",
+     edit(RM, "draws the claim path itself",
+          "inputs the claim path from the book")),
     ("a fourth module is checked and the README does not follow",
      edit(ROOTS, 'MODULES = ("thesis_book", "thesis_presentation", '
                  '"journal")',
           'MODULES = ("thesis_book", "thesis_presentation", "journal", '
           '"thesis_extra")')),
-    ("the deck takes a local copy and the README still says it reaches out",
-     edit(MAIN, r"\input{../thesis_book/figures/fig_claim_path.tex}",
-          r"\input{figures/fig_claim_path.tex}")),
+    ("the deck reaches across again and the README still says it draws",
+     edit(MAIN, r"\begin{frame}{One claim, three routes}",
+          r"\begin{frame}{One claim, three routes}"
+          r"\input{../thesis_book/figures/fig_claim_path.tex}")),
+    # The drawing is bound to the book figure's words, so a test relabelled
+    # on the slide alone is a drift between the two.
+    ("the slide's claim path renames a test the book figure keeps",
+     edit(MAIN, r"pair in \emph{traversed}", r"pair in \emph{walked}")),
     # A fifth case, "the backup deck starts using the figure", was dropped
     # on 2026-09-26. It described a defect that cannot happen any more:
     # there is one deck, the backup frames are its tail, and the rule reads

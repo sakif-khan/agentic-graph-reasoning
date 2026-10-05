@@ -63,14 +63,14 @@ def edit(path, old, new):
 
 CASES = [
     ("shipped: a backup slide referred to by ordinal",
-     edit(SCRIPT, "**If asked about budgets, go to backup slide 33.**",
+     edit(SCRIPT, "**If asked about budgets, go to backup slide 32.**",
           "**If asked about budgets, go to Backup 1.**")),
     ("shipped: the (B2) shorthand",
-     edit(SCRIPT, "on both datasets (backup slide 34)",
+     edit(SCRIPT, "on both datasets (backup slide 33)",
           "on both datasets (B2)")),
     ("shipped: a page number written as an ordinal",
-     edit(SCRIPT, "histogram is backup slide 35 if anyone",
-          "histogram is Backup 4 if anyone")),
+     edit(SCRIPT, "categories are backup slide 34 if anyone",
+          "categories are Backup 4 if anyone")),
     # Direction swapped on 2026-09-26. When this was written the script said
     # "three" against four bold rows, so the corruption was to write "four".
     # The script says four now and check_slides.py agrees with the table, so
@@ -83,14 +83,14 @@ CASES = [
           "The three **bold** slides are the ones the committee will actually "
           "interrogate.")),
     ("shipped: the two protected lists name different slides",
-     edit(SCRIPT, "never from 20, 21, 22, 27 or 28.",
-          "never from 20, 21, 27.")),
+     edit(SCRIPT, "never from 17, 18, 19, 24 or 25.",
+          "never from 17, 18, 24.")),
     ("a row goes bold without its section being starred",
-     edit(SCRIPT, "| 36 | Accuracy against cost, both metrics |",
-          "| 36 | **Accuracy against cost, both metrics** |")),
+     edit(SCRIPT, "| 35 | Accuracy against cost, both metrics |",
+          "| 35 | **Accuracy against cost, both metrics** |")),
     ("a reference to a backup page the table does not list",
-     edit(SCRIPT, "histogram is backup slide 35 if anyone",
-          "histogram is backup slide 99 if anyone")),
+     edit(SCRIPT, "categories are backup slide 34 if anyone",
+          "categories are backup slide 99 if anyone")),
     # Anchored on the first backup frame that still exists. "Backup:
     # hedging behaviour" left the deck along with content-backup.tex; the
     # defect is unchanged, since what it reinstates is an unlisted frame
@@ -100,12 +100,14 @@ CASES = [
           "\\begin{frame}{Backup: something else}\n\\end{frame}\n"
           r"\begin{frame}{Backup: budget configuration}")),
     ("a table row stops describing its slide",
-     edit(SCRIPT, "| 35 | Full 12-category failure histogram |",
-          "| 35 | Assorted other material |")),
+     edit(SCRIPT, "| 34 | Full 12-category failure histogram |",
+          "| 34 | Assorted other material |")),
     # The pooled-census caption, from both ends.
     ("the slide stops saying its totals are pooled",
+     # Three sentences since the October 2026 sweep; it was one with a
+     # colon explanation.
      edit(DECK, r"Wrong and hedge are \emph{never pooled} in the "
-                r"thesis, and the shape flips: composite claim is $1$ on "
+                r"thesis. The shape flips too. Composite claim is $1$ on "
                 r"WebQSP against $46$ on CWQ.",
           r"Totals across both datasets.")),
     ("the split moves and the caption does not follow",

@@ -83,15 +83,27 @@ try:
         restore()
 
     # Must NOT fire: a comment quoting the banned wording is a comment.
+    #
+    # This case was vacuous for a while and nothing said so. The anchor
+    # carried a six-space indent the comment no longer had, so the replace
+    # matched nothing -- and the no-op check compared a universal-newline
+    # read against a CRLF original, which are never equal, so it passed.
+    # The comparison reads both the same way now, the anchor follows the
+    # file's own line ending, and its absence is an error rather than a
+    # silent skip.
     print("these must not fire:")
-    io.open(DECK, "w", encoding="utf-8", newline="").write(
-        orig[DECK].replace(
-            '% This read "it appears across systems, so it is a property of the\n'
-            "      % task, not of AGR\" -- defensive where the thesis is substantive.",
-            '% This read "it appears across systems, so it is a property of'
-            ' the task, not of AGR"\n'
-            "      % -- defensive where the thesis is substantive."))
-    assert io.open(DECK, encoding="utf-8").read() != orig[DECK], \
+    src = orig[DECK]
+    nl = "\r\n" if "\r\n" in src else "\n"
+    quoted = ('% This read "it appears across systems, so it is a property '
+              'of the' + nl + '% task, not of AGR" -- defensive where the '
+              'thesis is substantive.')
+    assert quoted in src, "the quoted comment this case rewraps is gone"
+    io.open(DECK, "w", encoding="utf-8", newline="").write(src.replace(
+        quoted,
+        '% This read "it appears across systems, so it is a property of'
+        ' the task, not of AGR"' + nl
+        + "% -- defensive where the thesis is substantive."))
+    assert io.open(DECK, encoding="utf-8", newline="").read() != src, \
         "the rewrap was a no-op: the comment moved"
     rewrap_rc, rewrap_first = run()
     print(f"{'CLEAN' if rewrap_rc == 0 else 'FIRED':7s}  "

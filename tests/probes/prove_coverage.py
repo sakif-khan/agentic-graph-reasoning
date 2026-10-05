@@ -90,10 +90,12 @@ CASES = [
     # reported MISSED against a live rule.
     ("control rate 22.1% -> 82.1%", MAIN,
      r"$221$ ($22.1\%$)", r"$221$ ($82.1\%$)"),
-    # The state machine, counted from its own diagram.
-    ("'Six nodes' -> 'Sixteen nodes'", MAIN, "Six nodes;", "Sixteen nodes;"),
-    ("'Three cycles' -> 'Seven cycles'", MAIN, "Three cycles ---",
-     "Seven cycles ---"),
+    # The state machine, counted from its own diagram. Both anchors lost
+    # their punctuation in the October 2026 dash sweep: "Six nodes;" became
+    # "Six nodes." and "Three cycles ---" became "Three cycles (".
+    ("'Six nodes' -> 'Sixteen nodes'", MAIN, "Six nodes.", "Sixteen nodes."),
+    ("'Three cycles' -> 'Seven cycles'", MAIN, r"Three cycles (\emph",
+     r"Seven cycles (\emph"),
     # The tool API.
     # "offered" became "to the scorer" in the tool-API table.
     ("tool cap 300 -> 900", MAIN, r"$\leq 300$ to the scorer",

@@ -62,20 +62,25 @@ SHIPPED_SLIDE = (r"{\small It appears across systems, so it is a property of "
                  r"the task, not of AGR. Naming it is what lets future work "
                  r"target it.}")
 # The {\small ...} wrapper came off this sentence in the deck, so the
-# braces that used to open and close the anchor are no longer there.
+# braces that used to open and close the anchor are no longer there. Its
+# em-dash went in the October 2026 sweep: two sentences now.
 CURRENT_SLIDE = (r"Different systems fall into it \alert{together}, so "
-                 r"no evaluation treating them as independent can see it --- "
-                 r"and a policy of rescoring on majority agreement turns it "
+                 r"no evaluation treating them as independent can see it. "
+                 r"A policy of rescoring on majority agreement turns it "
                  r"into apparent \alert{correctness}.")
 CURRENT_SPOKEN = ("Different systems fall into it together, so no evaluation "
                   "treating them as independent can see it. Rescore whenever "
-                  "a majority agrees — a natural thing to want — and this "
-                  "becomes apparent correctness. That is the contribution: "
-                  "the mechanism, not the count.")
+                  "a majority agrees, and this becomes apparent correctness. "
+                  "The contribution is the mechanism, not the count.")
 SHIPPED_BENCH = (r"The same cross-system agreement is also a "
                  r"\alert{\mbox{detector}}: consensus flagged $105$ questions, "
                  r"adjudication confirmed $41$, and the gap is the attractor "
                  r"above rather than label noise.")
+# The colon explanation became three sentences in the same sweep.
+CURRENT_BENCH = (r"The same cross-system agreement is also a "
+                 r"\alert{detector}. Consensus flagged $105$ questions and "
+                 r"adjudication confirmed $41$. The gap is the attractor "
+                 r"above, not label noise.")
 CURRENT_S20 = ("Same pass, same cross-system agreement: consensus flagged 105 "
                "questions, adjudication confirmed 41 — and the gap is the "
                "attractor I just described, not label noise.")
@@ -88,8 +93,8 @@ CASES = [
           "It appears across systems, so it's a property of the task rather "
           "than of AGR. Naming it is what lets future work target it.")),
     ("the majority-rescoring consequence is dropped",
-     edit(DECK, r"--- and a policy of rescoring on majority agreement turns "
-                r"it into apparent \alert{correctness}.", r"--- a shared "
+     edit(DECK, r"A policy of rescoring on majority agreement turns "
+                r"it into apparent \alert{correctness}.", r"It is a shared "
                 r"failure mode.")),
     ("the independence clause is dropped from the script",
      edit(SCRIPT, "so no evaluation treating them as independent can see it.",
@@ -103,7 +108,7 @@ CASES = [
           "the contribution is the named mechanism itself.")),
     # The two slides are one finding.
     ("the benchmark slide goes back to an unrelated second finding",
-     edit(DECK, SHIPPED_BENCH,
+     edit(DECK, CURRENT_BENCH,
           r"Reading every failure also found questions where the "
           r"\emph{benchmark}, not the system, was at fault:")),
     # The companion case, "and the script does too", was dropped on
@@ -116,8 +121,8 @@ CASES = [
     # CURRENT_S20 is kept above as the record of what the script used to say.
     # The counts, from both ends.
     ("the flagged total drifts on the slide",
-     edit(DECK, r"consensus flagged $105$ questions",
-          r"consensus flagged $100$ questions")),
+     edit(DECK, r"Consensus flagged $105$ questions",
+          r"Consensus flagged $100$ questions")),
     ("the pass flags more and neither slide follows",
      edit(NUMS, '"flagged_questions": 58,', '"flagged_questions": 60,')),
     ("the confirmed pair stops matching the census exclusions",

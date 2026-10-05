@@ -87,16 +87,20 @@ def deck_edits(*pairs):
 # The shipped column, verbatim from the commit that had it.
 SHIPPED_CLAIM = (r"Differences are attributable to \textbf{architecture}, "
                  r"not to model capacity or to a bigger retrieval budget.")
+# "or spend" went in October 2026: AGR spends more tokens than ToG (slide
+# 17), so the denial was false in its own right.
 CURRENT_CLAIM = (r"Differences are attributable to \textbf{architecture}, "
-                 r"not to model capacity or spend.")
-# The block was retitled "\alert{Not} held equal", lost its \small, and the
-# sentence was re-punctuated (full stop after the widths, "but" promoted to
-# a dash clause). Same disclosure, same slide; the anchor had to follow.
-DISCLOSURE = (r"\begin{block}{\alert{Not} held equal} "
+                 r"not to model capacity.")
+# The block was retitled "\alert{Not} held equal", and the sentence was
+# re-punctuated more than once. Since October 2026 it has no dash, is set
+# \small and ragged again, and carries the second thing not held equal,
+# the drafting prompt. Same disclosure, same slide; the anchor follows.
+DISCLOSURE = (r"\begin{block}{\alert{Not} held equal} \small\agrraggedright "
               r"ToG prunes to $40$/$20$ candidates per step, AGR to "
               r"$300$/$200$. \alert{Narrower is cheaper}, so it cannot "
-              r"explain ToG's clipping --- but its unclipped score is a "
-              r"\alert{lower bound}. \end{block}")
+              r"explain ToG's clipping, but its unclipped score is a "
+              r"\alert{lower bound}. The baselines' prompt is plain, while "
+              r"AGR's carries grounding rules. \end{block}")
 
 CASES = [
     ("shipped: denies a retrieval-budget control, widths absent",
@@ -117,7 +121,7 @@ CASES = [
     # capitalised, and the dash moved to before "but".
     ("widths disclosed, but not which way they cut",
      edit(DECK, r"\alert{Narrower is cheaper}, so it cannot explain ToG's "
-                r"clipping --- but its unclipped score is a "
+                r"clipping, but its unclipped score is a "
                 r"\alert{lower bound}.",
           r"A difference of configuration.")),
     ("the anticipated-questions entry goes missing",
@@ -128,8 +132,9 @@ CASES = [
      edit(DECK, r"ToG prunes to $40$/$20$ candidates per step, AGR to "
                 r"$300$/$200$",
           r"ToG prunes to a narrower candidate set than AGR")),
-    ("widths dropped from slide 21, kept on the fairness slide",
-     edit(DECK, r"\alert{narrower candidate set}: $40$/$20$ vs $300$/$200$",
+    ("widths dropped from the limitations, kept on the fairness slide",
+     edit(DECK, r"\alert{narrower candidate set} ($40$/$20$ against "
+                r"$300$/$200$)",
           r"\alert{narrower candidate set}")),
     ("ToG's caps change in code and neither slide follows",
      edit(TOG, "MAX_RELATIONS, MAX_NEIGHBORS = 40, 20",

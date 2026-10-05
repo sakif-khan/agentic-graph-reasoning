@@ -9,6 +9,7 @@ Run from anywhere:  python thesis_presentation/check_slides.py
 """
 import csv
 import json
+import math
 import os
 import re
 import subprocess
@@ -44,6 +45,13 @@ def uncomment(tex):
 
 FLAT = " ".join(uncomment(TEX).split())
 ok = True
+# Checks that could not run here, named in the final verdict. A rule that
+# skips prints "[   ]" at the point it skips, and that line scrolled past
+# unread for as long as PyMuPDF was missing from the interpreter the suite
+# ran under -- the page-geometry rules were vacuous with the suite green.
+# The exit code is unchanged, so an environment without PyMuPDF still runs;
+# the last line now says what that run did not check.
+skipped = []
 
 
 def ck(label, cond, detail=""):
@@ -108,6 +116,39 @@ def spoken(n):
     m = re.search(rf"^## {n} [^\n]*$(.*?)(?=^## |\Z)", MD, re.S | re.M)
     return plain(" ".join(l for l in m.group(1).splitlines()
                           if l.startswith(">"))) if m else ""
+
+
+# Sections by the slide they speak to, not by number. Every rule below that
+# reads speech used to name its section by number, and the October 2026
+# rebuild moved all of them: six background slides became three, so section
+# 20 became 17 and a rule still reading 20 would have checked the RQ2 slide
+# for the GraphRAG caveat. A title survives a renumbering; a number is a
+# position, and positions are what a rebuild changes.
+#
+# The number is still checked, against the deck: section N has to be the
+# speech for frame N, or the rehearsal and the slides have come apart.
+def frame_no(title):
+    """1-based position in the deck of the frame whose title starts so."""
+    src = open(os.path.join(HERE, "content-main.tex"), encoding="utf-8").read()
+    for n, m in enumerate(re.finditer(r"\\begin\{frame\}(?:\[[^\]]*\])?"
+                                      r"(?:\{([^\n]*)\})?", src), 1):
+        if (m.group(1) or "").startswith(title):
+            return n
+    return 0
+
+
+def section(title, heading=None):
+    """The speech for the slide with this frame title, and its number.
+
+    `heading` is the title as the transcript spells it, where markdown and
+    LaTeX differ (*structural* against \\emph{structural}).
+    """
+    m = re.search(rf"^## (\d+) — {re.escape(heading or title)}", MD, re.M)
+    n = int(m.group(1)) if m else 0
+    ck(f"the script speaks to {title[:40]!r} in its slide's own section",
+       n > 0 and n == frame_no(title),
+       f"section {n}, frame {frame_no(title)}")
+    return spoken(n) if n else ""
 
 
 # Counts that appear as words on a slide -- nodes, cycles, modules -- are
@@ -176,8 +217,12 @@ def holds(scope, label, n, value):
 
 print("== main results table ==")
 B = J["main_results"]["by_system"]
-NAME = {"noretrieval": "No-retrieval", "vectorrag": "Vector RAG",
-        "graphrag": "Static GraphRAG", "tog": "Think-on-Graph", "agr": "AGR"}
+# The row labels are the book's table labels and the figure legends':
+# "Vector-RAG" and "GraphRAG". The deck said "Vector RAG" and "Static
+# GraphRAG" in its tables while the generated legends beside them said the
+# other thing. "Static GraphRAG" survives as the PARADIGM's name on slide 5.
+NAME = {"noretrieval": "No-retrieval", "vectorrag": "Vector-RAG",
+        "graphrag": "GraphRAG", "tog": "Think-on-Graph", "agr": "AGR"}
 # The label as the row actually begins, and the column each metric sits in:
 # system, WebQSP Hits@1, WebQSP F1, CWQ Hits@1, CWQ F1, tokens, calls.
 LABEL = dict(NAME, agr=r"\textbf{AGR}")
@@ -220,9 +265,11 @@ for ds, s, tok, calls in (("webqsp", "noretrieval", 113, 1.0),
         # thousands-marker substitution to the whole pattern rewrote the
         # comma inside {0,120} and the regex stopped meaning anything.
         num = re.escape(f"{tok:,}".replace(",", "{,}"))
+        # "On CWQ, AGR spends ..." since the colon sweep; the label colon
+        # this used to require is gone from the sentence.
         ck(f"{ds}/{s} cost is in the sentence under the table",
-           re.search(rf"CWQ:.{{0,200}}?{num}.{{0,40}}?{re.escape(str(calls))}",
-                     FLAT) is not None)
+           re.search(rf"CWQ\b.{{0,200}}?{num}.{{0,40}}?{re.escape(str(calls))}",
+                     MAIN) is not None)
 
 print("\n== hedge rates, all five systems ==")
 for s, label in NAME.items():
@@ -255,9 +302,9 @@ for s, label in NAME.items():
            not near, near[0] if near else "")
 
 # The one comparison that isolates the verification layer, quoted on slide
-# 15. Bound to the sentence rather than to the four values appearing
+# 22. Bound to the sentence rather than to the four values appearing
 # somewhere: each is also a cell in the ablation table on another slide.
-print("\n== verifier hedge deltas (slide 16) ==")
+print("\n== verifier hedge deltas (slide 22) ==")
 AB = J["ablations"]["by_condition"]
 for ds, name in (("cwq", "CWQ"), ("webqsp", "WebQSP")):
     full = f"{AB[f'{ds}/half_abl_full']['hedge_pct']:.1f}"
@@ -448,6 +495,25 @@ ck("the six listed are the six largest",
        key=lambda kv: -kv[1])[:6]],
    "the slide claims the top categories")
 
+# ...and the column adds up to the heading over it. The slide read "All
+# 256" above six rows summing to 220, and every rule above passed: each
+# cell was right, and nothing asked what the cells were a part of. The
+# closing row carries the other six categories, and the sum is held here.
+census_total = sum(H2[ds][k]["_n"] for ds in ("webqsp", "cwq")
+                   for k in ("wrong", "hedge"))
+rest = census_total - sum(
+    sum(H2[ds][k].get(key, 0) for ds in ("webqsp", "cwq")
+        for k in ("wrong", "hedge")) for _, key in CATS)
+ck(f"the smaller categories' row holds the other {rest}",
+   holds(CENSUS, "Six smaller categories", 1, str(rest)),
+   f"cell holds {cell(CENSUS, 'Six smaller categories', 1)!r}")
+column = [num(cell(CENSUS, label, 1)) for label, _ in CATS] + \
+    [num(cell(CENSUS, "Six smaller categories", 1))]
+ck(f"the census column sums to the {census_total} it is headed with",
+   all(column) and sum(int(v) for v in column) == census_total
+   and f"All ${census_total}$" in CENSUS,
+   f"sums to {sum(int(v) for v in column if v)}")
+
 # The tool caps, printed on the tool slide and checked nowhere.
 print("\n== the tool slide's caps come from the code ==")
 kg = open(os.path.join(ROOT, "agr", "kg_tools.py"), encoding="utf-8").read()
@@ -521,15 +587,17 @@ if n_mods in NUM:
        f"it covers {n_mods}")
 
 main_src = open(os.path.join(HERE, "content-main.tex"), encoding="utf-8").read()
+# Whether the README should describe a cross-directory reach, a local copy
+# or a slide-native drawing is decided by which one the deck actually does.
+# Since 2026-10 it draws the claim path on the slide: the book's figure is a
+# tall vertical chain, and scaled into a 16:9 frame its labels printed at
+# 5.2pt. The drawing is held to the book figure's wording further down.
 claim = re.search(r"\\input\{([^}]*fig_claim_path[^}]*)\}", main_src)
-ck("the deck inputs fig_claim_path", claim is not None)
-if claim:
-    # Whether the README should describe a cross-directory reach or a local
-    # copy is decided by which one the deck actually does.
-    crosses = claim.group(1).startswith("../")
-    ck("the README describes where the figure comes from",
-       ("across the directory boundary" in RM) == crosses,
-       f"deck inputs {claim.group(1)!r}")
+crosses = bool(claim) and claim.group(1).startswith("../")
+ck("the README describes where the claim-path figure comes from",
+   ("across the directory boundary" in RM) == crosses
+   and ("draws the claim path itself" in RM) == (claim is None),
+   f"deck inputs {claim.group(1)!r}" if claim else "deck draws it")
 
 # ---------------------------------------------------------------------
 # The hedge-difference answer, recomputed from the paired records.
@@ -644,15 +712,38 @@ except ImportError as e:
     ck("build_figures.py is importable", False, str(e))
 ck("WebQSP h3plus is 4 (quoted as a limitation)",
    J["test_sets"]["webqsp"]["strata"]["h3plus"] == 4)
+# ...and the RQ1 slide says why that panel is dashed, with the same n.
+HOP_TITLE = (r"RQ1: Does agentic navigation improve\\ multi-hop factual "
+             r"accuracy?")
+_h3 = J["test_sets"]["webqsp"]["strata"]["h3plus"]
+ck(f"the RQ1 slide explains the dashed panel as n = {_h3}",
+   re.search(rf"Dashed:?\s*\$n = {_h3}\$", frame(HOP_TITLE)) is not None)
 
+# The breakdown on the backup slide, line by line. This used to be three
+# has() calls -- "is 16 anywhere in the deck" -- and the slide said "17
+# found inside the census, 1 counted in both" for a full release while the
+# JSON said 16 and none: "16" was matched inside "16.5%" on another backup
+# slide. Scoped to the frame now, and the overlap line is held to the
+# JSON's own list, so an overlap reappearing in the data fails here until
+# the slide says so.
 print("\n== benchmark defects ==")
 D = J["benchmark_defects"]
-for k in ("excluded_before_census", "census_rows_in_defect_categories",
-          "distinct_questions"):
-    ck(f"{k} = {D[k]}", has(str(D[k])))
+BENCH = frame(r"Backup: the benchmark was wrong $57$ times")
 ck("41 + 16 - 0 = 57",
    D["excluded_before_census"] + D["census_rows_in_defect_categories"]
    - len(D["counted_in_both"]) == D["distinct_questions"])
+for k, pattern in (("excluded_before_census", r"\$({})\$ excluded before"),
+                   ("census_rows_in_defect_categories",
+                    r"\$({})\$ more found inside"),
+                   ("distinct_questions", r"\$({})\$ distinct questions")):
+    ck(f"the backup slide gives {k} = {D[k]}",
+       re.search(pattern.format(D[k]), BENCH) is not None)
+both = len(D["counted_in_both"])
+ck(f"and says {both or 'no'} question{'s' if both != 1 else ''} counted in both",
+   ("No question counted in both" in BENCH) if both == 0
+   else re.search(rf"\${both}\$ counted in both", BENCH) is not None)
+ck("the stale breakdown is gone", "$17$" not in BENCH,
+   "17 inside the census, 1 in both was the pre-promotion accounting")
 
 print("\n== failure census total ==")
 H = J["failure_histogram"]
@@ -708,15 +799,34 @@ ck("the closing slide is in the deck", _close >= 0)
 ck(f"all {len(_backups)} backup frames follow it, none before",
    bool(_backups) and _close >= 0 and min(_backups) > _close)
 
-# The three data figures have slide-geometry variants under figures/; the claim
-# path is hand-drawn and shared with the thesis, so it is read from there.
+# The three data figures have slide-geometry variants under figures/. The
+# claim path used to be \input from the book; it is drawn on its slide now,
+# in the book figure's own words, which the rule below holds.
 slide_figs = re.findall(r"\\input\{figures/([\w.]+)\}", TEX)
 book_figs = re.findall(r"\\input\{\.\./thesis_book/figures/([\w.]+)\}", TEX)
 ck(f"three generated figures come from figures/: {sorted(slide_figs)}",
    sorted(slide_figs) == ["fig_accuracy_cost.tex", "fig_failure_histogram.tex",
                           "fig_hop_strata.tex"])
-ck(f"the hand-drawn one is shared with the book: {book_figs}",
-   book_figs == ["fig_claim_path.tex"])
+ck(f"nothing is \\input across the directory boundary: {book_figs}",
+   book_figs == [])
+# Every test, bucket and edge label of the book's claim-path figure, in its
+# words, is on the slide's drawing -- so a change of wording in one fails
+# here until the other follows. Read from the figure, not listed here.
+_cp_book = " ".join(open(os.path.join(ROOT, "thesis_book", "figures",
+                                      "fig_claim_path.tex"),
+                         encoding="utf-8").read().split())
+_cp_slide = frame("One claim, three routes")
+_cp_terms = [t for t in (
+    "both endpoint names seen during traversal?",
+    r"pair in \emph{traversed} adjacency?",
+    r"\textsf{verify\_connection}: adjacent in the full graph?",
+    "entailment check", "one batched call", "Draft and decompose",
+    "one model call", r"claims $K$", "+ evidence", "entailed",
+    r"supported $S$", r"unsupported $U$", "structural")]
+_cp_missing = [t for t in _cp_terms
+               if t not in _cp_book or t not in _cp_slide]
+ck("the slide's claim path carries the book figure's wording",
+   bool(_cp_slide) and not _cp_missing, "; ".join(_cp_missing))
 for f in slide_figs:
     p = os.path.join(HERE, "figures", f)
     ck(f"  {f} exists", os.path.exists(p))
@@ -788,6 +898,7 @@ try:
     import pymupdf
 except ImportError:
     print("  [   ] pymupdf not installed -- pages not measured")
+    skipped.append("page geometry (no PyMuPDF in this interpreter)")
     pymupdf = None
 if pymupdf is not None:
     for drv in DRIVERS:
@@ -1124,16 +1235,47 @@ for label, text in (("deck", plain(FLAT)), ("transcript", plain(MDF))):
 # to each other, so the script has to say which baseline carries the claim
 # and why the other does not, or the audience pools them anyway.
 #
-# Bound to what is actually said on slide 13, not to the whole file. The
-# first version searched the transcript and passed while section 20 had
-# been stripped of it, because the speaker note below the section quotes
-# the same phrase -- a second home, again.
-s20 = spoken(20)
-ck("section 20 is in the transcript", bool(s20))
-ck("section 20 names the baseline the claim rests on",
+# Bound to what is actually said on the main-results slide, not to the
+# whole file. The first version searched the transcript and passed while
+# that section had been stripped of it, because the speaker note below the
+# section quotes the same phrase -- a second home, again.
+s20 = section("Main results")
+ck("the main-results section is in the transcript", bool(s20))
+ck("the main-results section names the baseline the claim rests on",
    re.search(r"claim rests on vector RAG", s20, re.I) is not None)
 ck("and says why GraphRAG's number does not carry it",
    re.search(r"radius confounds", s20, re.I) is not None)
+# The raw-hits inversion on WebQSP is said there too, with its two
+# assertion precisions. sec:webqsp-results defines the measure: correct
+# answers over the questions a system commits on. Recounted from the run
+# records rather than read from the book, which gives the same 51.6/76.8.
+
+
+def _records(path):
+    with open(path, encoding="utf-8") as f:
+        return {r["qid"]: r for r in (json.loads(l) for l in f if l.strip())}
+
+
+def _hit(r):
+    ents = {str(x).strip().lower() for x in (r.get("answer_entities") or [])}
+    return bool(ents & {str(g).strip().lower() for g in (r.get("gold") or [])})
+
+
+def assertion_precision(ds, system):
+    recs = _records(os.path.join(ROOT, "results", "phase4",
+                                 f"test_{ds}_{system}.jsonl"))
+    committed = [r for r in recs.values() if r.get("answer_entities")]
+    return 100 * sum(_hit(r) for r in committed) / len(committed)
+
+
+_ap = {(ds, s): f"{assertion_precision(ds, s):.1f}"
+       for ds, s in (("webqsp", "noretrieval"), ("webqsp", "graphrag"),
+                     ("cwq", "agr"), ("cwq", "tog"))}
+ck(f"the script gives WebQSP assertion precision {_ap['webqsp', 'noretrieval']}"
+   f" (control) and {_ap['webqsp', 'graphrag']} (GraphRAG)",
+   re.search(rf"{re.escape(_ap['webqsp', 'noretrieval'])} percent of what "
+             rf"it asserts, GraphRAG on {re.escape(_ap['webqsp', 'graphrag'])}",
+             s20) is not None)
 
 # The deck's caveat is correct only while the thesis holds that position.
 #
@@ -1213,13 +1355,14 @@ bench = frame(r"Backup: the benchmark was wrong $57$ times")
 # The census and the attractor are two sections now, and the framing
 # rules below are about the pair: the deflection this bans could be
 # reintroduced in either one.
-said = spoken(29) + " " + spoken(30)
+said = (section("Every failure, read and labelled") + " "
+        + section("The echo attractor"))
 ck("both frames are in the deck", bool(echo) and bool(bench))
 
 RETRACTED = re.compile(r"propert\w+ of the task|across unrelated systems"
                        r"|not (?:a propert\w+ of )?AGR\b"
                        r"|rather than (?:of )?AGR\b", re.I)
-for label, text in (("echo slide", echo), ("sections 28-29", said)):
+for label, text in (("echo slide", echo), ("census and echo sections", said)):
     hit = RETRACTED.search(text)
     ck(f"{label} does not deflect it onto the task", hit is None,
        hit.group(0)[:60] if hit else "")
@@ -1395,9 +1538,12 @@ ck("and the slide names each of them", not missing, str(missing))
 # Checked on the slide AND in the spoken script, because a bound only on
 # the slide is one the speaker can walk past without noticing.
 print("\n== the structural bounds are stated, not just implied ==")
-BOUNDS = frame(r"What \emph{structural} means --- and what it does not")
+# The title lost its em-dash in the October 2026 sweep; the deck now
+# follows the book's rule of separate sentences, no dashes.
+BOUNDS = frame(r"What \emph{structural} means, and what it does not")
 ck("the bounds frame is in the deck", bool(BOUNDS))
-SAID = spoken(15)
+SAID = section(r"What \emph{structural} means",
+               heading="What *structural* means")
 for what, on_slide, in_script in (
         # Relation-blindness: supervisor issue 1. The mother/child pair is
         # the example the supervisor used and book Sec 6.8 repeats, so it
@@ -1437,6 +1583,22 @@ for what, on_slide, in_script in (
 # while the word is being said, so the deck is where it costs.
 print("\n== the cycle count is what the diagram draws ==")
 SM = frame("AGR: An explicit state machine")
+s12 = section("AGR: An explicit state machine")
+
+# The Backtracker restores the highest-scoring snapshot, "not the most
+# recent one, which would make backtracking a simple undo" (framework.tex,
+# sec:backtracking). The slide called it "undo + ban list" and the script
+# said it "undoes a bad expansion" until 2026-10.
+_bt = " ".join(open(os.path.join(ROOT, "thesis_book", "chapters",
+                                  "framework.tex"), encoding="utf-8").read()
+               .split())
+ck("the thesis still says the backtracker is not a simple undo",
+   "would make backtracking a simple undo" in _bt)
+for label, text in (("slide", SM), ("script", s12)):
+    ck(f"the {label} does not call the backtracker an undo",
+       re.search(r"\bundo", text, re.I) is None)
+    ck(f"the {label} says it returns to the best earlier frontier",
+       re.search(r"best(?:-scoring)? earlier frontier", text) is not None)
 
 # The node count, from the same diagram. START is a terminal, not a node
 # of the machine, which is why box and vbox are counted and term is not.
@@ -1446,7 +1608,7 @@ if nodes in NUM:
     ck(f"the slide says {NUM[nodes]} nodes", f"{NUM[nodes]} nodes" in SM,
        f"diagram draws {nodes}")
     ck(f"the script says {NUM[nodes].lower()} nodes",
-       re.search(rf"\b{NUM[nodes]} nodes\b", spoken(12), re.I) is not None)
+       re.search(rf"\b{NUM[nodes]} nodes\b", s12, re.I) is not None)
 
 
 def target(edge):
@@ -1479,7 +1641,6 @@ if m and len(back) in NUM:
     ck("and every name is a label on the diagram",
        set(listed) <= labels, f"{sorted(set(listed) - labels)} not labelled")
 
-s12 = spoken(12)
 ck("the script does not harden the old count",
    re.search(r"exactly (?:one|two|three|four|five) cycles", s12, re.I) is None)
 if len(back) in NUM:
@@ -1721,6 +1882,7 @@ else:
             pages = d.page_count
     if pages is None:
         print("  [   ] deck not measured -- row count checked against itself")
+        skipped.append("timing rows against the built deck's page count")
         ck("the table has a row per slide", len(rows) > 0, f"{len(rows)} rows")
     else:
         ck(f"the table has a row per slide ({pages} pages)",
@@ -1878,7 +2040,7 @@ ck("the deck never writes pre-registered",
    "journal/sections/setup.tex fixes this spelling")
 thesis_six = " ".join(intro[start:end].split()).lower()
 if "pre-registered" in thesis_six:
-    s31 = spoken(31)
+    s31 = section("Contributions")
     ck("the script names the thesis's word", "pre-registered" in s31.lower())
     ck("and the word the slide uses", "pre-specified" in s31.lower())
     ck("and gives the reason the slide diverges",
@@ -1898,9 +2060,11 @@ else:
 # other systems that no rule read at all.
 print("\n== the hop curve is the strata ==")
 TR = J["main_results"]["hop_trends"]["cwq"]
-HOP = frame("RQ1: Does agentic navigation improve multi-hop factual "
-            "accuracy --- and does the advantage grow with hop count?")
-s21 = spoken(21)
+# The title is sec:rqs's bold RQ1 since 2026-10, broken by hand; it carried
+# the hop-count clause after an em-dash and wrapped one word onto a line.
+HOP = frame(HOP_TITLE)
+s21 = section("RQ1: Does agentic navigation improve",
+              heading="RQ1: Does agentic navigation improve")
 agr = TR["agr"]["hits_at_1"]
 arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)
 ck("the hop slide is in the deck", bool(HOP))
@@ -1939,6 +2103,13 @@ ck(f"the script says it ends {abs(net)} below its one-hop score",
    re.search(r"(?<![\d.])" + re.escape(str(abs(net)))
              + r"(?![\d.])[^.]*below its own one-hop", s21) is not None,
    f"hop_trends gives {net}")
+# ...and the one cell of the RQ1 answer AGR does not win, which
+# sec:findings states as a boundary: Think-on-Graph's CWQ one-hop stratum.
+_st = J["main_results"]["by_hop_stratum"]
+_tog1, _agr1 = (f'{_st[f"cwq/{s}"]["h1"]["hits_at_1"]:.2f}' for s in ("tog", "agr"))
+ck(f"the script concedes CWQ one-hop, {_tog1} against {_agr1}",
+   float(_tog1) > float(_agr1)
+   and f"{_tog1} against {_agr1}" in s21)
 
 # The strata the answer rests on, from the stratum table.
 n = [J["main_results"]["by_hop_stratum"]["cwq/agr"][k]["n"]
@@ -2093,10 +2264,12 @@ else:
     # card writes "4 tools" and the script says "four operations".
     allcaps = re.compile(rf"(?:{len(named)}|{NUM[len(named)]})\s+"
                          rf"(?:tools|operations)[^.]{{0,40}}hard caps", re.I)
-    # spoken(8) until now, which is the state-machine section and has
-    # never made this claim -- an earlier bulk renumber moved the
-    # number without moving the rule. Section 12 is the tools section.
-    for label, text in (("card", CARD), ("script", spoken(13))):
+    # spoken(8) once, which was the state-machine section and had never
+    # made this claim -- a bulk renumber moved the number without moving
+    # the rule. Found by title since 2026-10, so a renumber cannot.
+    for label, text in (("card", CARD),
+                        ("script",
+                         section("Constrained tools, not free-form queries"))):
         ck(f"the {label} does not claim a cap on all of them",
            allcaps.search(text) is None,
            f"only {len(capped)} of {len(named)} cap anything")
@@ -2119,8 +2292,8 @@ else:
 
 
 # ---------------------------------------------------------------------
-# The RoG comparison exists twice: tab:rog (Table 5.7) and backup slide
-# 37. Eight figures, two documents, one of them cited from a paper that
+# The RoG comparison exists twice: tab:rog (Table 5.7) and the backup
+# slide. Eight figures, two documents, one of them cited from a paper that
 # cannot be re-measured -- which is the exact shape of every drift this
 # file was written to catch. AGR's half is bound to thesis_numbers.json;
 # RoG's half is bound to the thesis, so the deck cannot disagree with the
@@ -2142,7 +2315,7 @@ agr_pts = [f'{B["webqsp/agr"]["hits_at_1"] * 100:.1f}',
            f'{B["cwq/agr"]["hits_at_1"] * 100:.1f}',
            f'{B["cwq/agr"]["f1"] * 100:.1f}']
 for v in agr_pts:
-    ck(f"slide 38 gives AGR {v}", f"${v}$" in ROGFRAME)
+    ck(f"the RoG slide gives AGR {v}", f"${v}$" in ROGFRAME)
     if _tab:
         ck(f"  and tab:rog gives AGR {v}", f"${v}$" in _tab.group(1))
 
@@ -2150,16 +2323,242 @@ for v in agr_pts:
 # other; the paper is the source for both.
 ROG_PUBLISHED = ["85.7", "70.8", "62.6", "56.2"]
 for v in ROG_PUBLISHED:
-    ck(f"slide 38 gives RoG {v}", f"${v}$" in ROGFRAME)
+    ck(f"the RoG slide gives RoG {v}", f"${v}$" in ROGFRAME)
     if _tab:
         ck(f"  and tab:rog gives RoG {v}", f"${v}$" in _tab.group(1))
 
 # The comparison may not be presented as a like-for-like one. Both
 # documents have to name the training asymmetry wherever they show it.
-for label, text in (("slide 38", ROGFRAME), ("the thesis section", _res)):
+for label, text in (("the RoG slide", ROGFRAME), ("the thesis section", _res)):
     ck(f"{label} says RoG is fine-tuned", "fine-tun" in text.lower())
+
+# The training-split sizes, which are what "fine-tuned" means in numbers.
+# The slide and the script said 2,830 and 16,900 for a full release; the
+# thesis says 2,826 and 27,639, the row counts of the distribution it uses.
+# Held to the thesis sentence, as the published RoG row is.
+_splits = re.search(r"training splits hold \$([\d{},]+)\$ and "
+                    r"\$([\d{},]+)\$ questions", _res)
+ck("the thesis states RoG's training-split sizes", _splits is not None)
+if _splits:
+    for v in _splits.groups():
+        ck(f"the RoG slide gives the training split {v.replace('{,}', ',')}",
+           f"${v}$" in ROGFRAME)
+    _rog = answer("How does AGR compare to RoG itself?")
+    ck("the RoG answer in the script gives the same two sizes",
+       all(v.replace("{,}", ",") in _rog for v in _splits.groups()),
+       "; ".join(v.replace("{,}", ",") for v in _splits.groups()))
+
+
+# ---------------------------------------------------------------------
+# The worked example, held to the run record it narrates.
+#
+# WebQTest-960 was the one slide whose every figure was typed from a run
+# record and checked against nothing. The figures were right; the prose
+# around them was not quite: it said the Explorer "takes" one relation,
+# where each pass kept three, and printed the supporting-triple counter as
+# a count of triples, where sec:output-contract reads it as an upper bound.
+print("\n== the worked example is its run record ==")
+EX = frame("One question, end to end")
+ex_said = section("One question, end to end")
+_rec = _records(os.path.join(ROOT, "results", "phase4",
+                             "test_webqsp_agr.jsonl")).get("WebQTest-960")
+ck("the WebQTest-960 record is committed", _rec is not None)
+if _rec:
+    bud = _rec["budget"]
+    trace = _rec["trace"]
+    expl = [t for t in trace if t.get("node") == "explorer"]
+    evals = [t for t in trace if t.get("node") == "evaluator"]
+    ver = next((t for t in trace if t.get("node") == "verifier"), {})
+    ck("the slide names the question as recorded",
+       r"\textsf{WebQTest-960}" in EX and f"``{_rec['question']}''" in EX)
+    ck(f"{bud['llm_calls']} model calls and depth {bud['depth']}",
+       f"${bud['llm_calls']}$ model calls" in EX
+       and f"depth ${bud['depth']}$" in EX)
+    ck(f"at most {_rec['n_supporting_triples']} supporting triples, as a bound",
+       f"at most ${_rec['n_supporting_triples']}$ supporting triples" in EX)
+    ck(f"{ver.get('n_claims')} claims, {ver.get('n_structural')} supported, "
+       f"none dropped",
+       f"${ver.get('n_claims')}$ claims, ${ver.get('n_structural')}$ supported"
+       in EX and not ver.get("unsupported") and "none dropped" in EX)
+    # Each pass keeps the beam, and the relation named is the best of it.
+    for i, step in enumerate(expl):
+        best = max(step["expanded"], key=lambda e: e["score"])["rel"]
+        ck(f"explorer pass {i + 1} keeps {len(step['expanded'])} and the "
+           f"slide names the best, {best}",
+           len(step["expanded"]) == 3
+           and r"\textsf{" + best.replace("_", r"\_") + "}" in EX)
+    ck("the slide says each pass keeps three",
+       "keeps three relations" in EX and "keeps three again" in EX)
+    for t in evals:
+        for name in t["out"].get("resolved", []):
+            ck(f"the evaluator resolves {name}",
+               r"\textsf{" + name + "}" in EX)
+    ck("the answer is quoted as emitted", f"``{_rec['answer']}''" in EX)
+    # The Office is the dataset's annotation; the planner resolves it.
+    ck("the mention is given by the dataset, and the slide says so",
+       _rec["run_config"]["use_gold_entities"] is True
+       and "The given mention" in EX)
+    spelled = {6: "Six", 2: "two", 18: "eighteen"}
+    ck("the script speaks the same three figures",
+       all(w in ex_said for w in (
+           f"{spelled[bud['llm_calls']]} model calls",
+           f"depth {spelled[bud['depth']]}",
+           f"at most {spelled[_rec['n_supporting_triples']]} supporting")))
+
+
+# ---------------------------------------------------------------------
+# What the October 2026 rebuild put on the slides, each held to a source.
+# Every rule in this block is a figure or claim the deck did not carry
+# before it, so none of them has a history yet -- only a home.
+print("\n== the rebuilt slides' new figures ==")
+
+# The mediator share on slide 4, from the graph-statistics table.
+_env = " ".join(uncomment(open(os.path.join(
+    ROOT, "thesis_book", "chapters", "environment.tex"),
+    encoding="utf-8").read()).split())
+_med = re.search(r"Mediator-form nodes \(\\textsf\{is\\_cvt\}\) & "
+                 r"[\d{},]+ \(([\d.]+)\\%\)", _env)
+ck("the mediator share is the thesis's graph statistic",
+   _med is not None and rf"${_med.group(1)}\%$ of this graph's nodes" in
+   frame("Knowledge graphs, and why multi-hop is hard"),
+   _med.group(1) if _med else "no tab:graphstats row")
+
+# The backbone, named on the fairness slide, from the records themselves.
+_bb = _rec["backbone"]["model"] if _rec else ""
+ck(f"the fairness slide names the backbone {_bb}",
+   bool(_bb) and r"\textsf{" + _bb + "}" in fair)
+
+# Significance and intervals under the main table.
+_mc = J["main_results"]["mcnemar_vs_baselines"]
+_pmax = max(m["p"] for m in _mc)
+# A strict bound, rounded UP: the book prints the largest p as 3.5e-3, and
+# "p <= 0.0035" read off that was false by 0.00002.
+_pbound = math.ceil(_pmax * 1000) / 1000
+ck(f"all {len(_mc)} McNemar tests favour AGR, the largest p {_pmax}",
+   len(_mc) == 8 and all(m["a_only_correct"] > m["b_only_correct"]
+                         for m in _mc)
+   and "All eight paired McNemar tests favour AGR" in MAIN
+   and rf"$p < {_pbound:g}$" in MAIN, f"bound {_pbound:g}")
+_hw = sorted({round(50 * (r["hits_at_1_ci95"][1] - r["hits_at_1_ci95"][0]))
+              for r in B.values()})
+ck(f"the Hits@1 intervals are +/-{_hw[0]} to {_hw[-1]} points",
+   rf"$\pm {_hw[0]}$ to ${_hw[-1]}$ points" in MAIN, str(_hw))
+_prem = sorted(round(100 * (B[f"{d}/agr"]["mean_tokens"]
+                            / B[f"{d}/tog"]["mean_tokens"] - 1))
+               for d in ("webqsp", "cwq"))
+ck(f"the token premium over ToG is {_prem[0]} to {_prem[-1]}%",
+   f"{_prem[0]} to {_prem[-1]}\\% more tokens" in MAIN, str(_prem))
+
+# The Tier-2 band on the groundedness slide.
+_t2 = [v["supported_pct"] for v in J["groundedness_tier2_judge"].values()
+       if isinstance(v, dict) and "supported_pct" in v]
+ck(f"the Tier-2 band is {min(_t2)} to {max(_t2)}%",
+   rf"${min(_t2)}$ to ${max(_t2)}\%$" in frame(
+       "RQ2: What does pre-generation verification contribute beyond "
+       "graph navigation?"))
+
+# The verifier's null, the precision lead, and the 77 of 80.
+NOT_DO = frame(r"RQ2: What verification does \emph{not} do")
+ck("the CWQ assertion precisions are the records'",
+   rf"${_ap['cwq', 'agr']}\%$ of what it asserts, Think-on-Graph on "
+   rf"${_ap['cwq', 'tog']}\%$" in NOT_DO,
+   f"{_ap['cwq', 'agr']} / {_ap['cwq', 'tog']}")
+_dp = max(abs(A[f"{d}/half_abl_noverifier"]["precision"]
+              - A[f"{d}/half_abl_full"]["precision"])
+          for d in ("webqsp", "cwq"))
+ck(f"removing the layer moves precision by {_dp:.3f}, 'a point at most'",
+   _dp <= 0.0105 and "by a point at most" in NOT_DO)
+_dev = re.search(r"On \$(\d+)\$ of \$(\d+)\$ development questions the layer "
+                 r"certified the draft", _res)
+ck("the 77 of 80 is the thesis's development figure",
+   _dev is not None and f"${_dev.group(1)}$ of ${_dev.group(2)}$ development"
+   in NOT_DO)
+if os.path.isdir(ABL):
+    ck(f"it changed {moved} of {paired} test answers, as the slide says",
+       f"${moved}$ of ${paired}$ test answers" in NOT_DO)
+    # The two flips go opposite ways (sec:ablations: 0 against 1 and 1
+    # against 0), which is what "one each way" claims.
+    _ways = set()
+    for ds in ("cwq", "webqsp"):
+        _f = _records(os.path.join(ABL, f"test_{ds}_half_abl_full.jsonl"))
+        _a = _records(os.path.join(ABL, f"test_{ds}_half_abl_noverifier.jsonl"))
+        _ways |= {_hit(_f[q]) for q in _f if q in _a and _hit(_f[q]) != _hit(_a[q])}
+    ck("and one each way", _ways == {True, False} and "one each way" in NOT_DO)
+    # The case-level reading of the hedge deltas on the next slide.
+    DOES = frame("RQ2: So what does it do?")
+    ck(f"the {len(st['cwq']['full_only'])} withheld CWQ answers were all wrong",
+       not st["cwq"]["rescued"] and "Those six answers were all wrong" in DOES)
+    ck("the one withheld WebQSP answer was right, and the slide says so",
+       len(st["webqsp"]["rescued"]) == 1 and "which was right" in DOES)
+ck("the fabricated-actor specimen is the thesis's",
+   "Marlon Brando also played in \\emph{Joy}" in _res
+   and "Marlon Brando was in \\emph{Joy}" in frame("RQ2: So what does it do?"))
+
+# The planner's strata and the context-stripping specimen.
+PLANNER = frame("RQ3: One effect, and its sign is backwards")
+AS = J["ablations"]["by_hop_stratum"]
+for d, h in (("webqsp", "h1"), ("webqsp", "h2"), ("cwq", "h2")):
+    a, b = (f'{AS[f"{d}/half_abl_{c}"][h]["hits_at_1"]:.2f}'
+            for c in ("full", "noplanner"))
+    ck(f"{d} {h} without the planner: {a} -> {b}",
+       rf"${a} \to {b}$" in PLANNER)
+_cs = {c: next(r for q, r in _records(os.path.join(
+           ABL, f"test_cwq_half_abl_{c}.jsonl")).items()
+           if q.startswith("WebQTrn-2570_d63877a4"))
+       for c in ("full", "noplanner")} if os.path.isdir(ABL) else {}
+if _cs:
+    ck("the context-stripping specimen answered Woodrow Wilson",
+       _cs["full"]["answer_entities"] == ["Woodrow Wilson"]
+       and "Woodrow Wilson" in PLANNER)
+    ck(f"undecomposed, it found Truman in {_cs['noplanner']['budget']['llm_calls']}"
+       f" calls",
+       _hit(_cs["noplanner"]) and _cs["noplanner"]["budget"]["llm_calls"] == 3
+       and "found Truman in three calls" in PLANNER)
+
+# The echo specimen, a census case with its record.
+_lex = _records(os.path.join(ROOT, "results", "phase4",
+                             "test_webqsp_agr.jsonl")).get("WebQTest-1707")
+ck("the Lex Luthor specimen named John Glover, and missed",
+   _lex is not None and _lex["answer_entities"] == ["John Glover"]
+   and not _hit(_lex) and "AGR named John Glover" in echo
+   and "WebQTest-1707" in _res)
+
+# The protocol item's missed threshold.
+JV = J["judge_validation"]
+ck(f"the missed decision is kappa {JV['cohens_kappa']} against "
+   f"{JV['preregistered_threshold']}",
+   JV["cohens_kappa"] < JV["preregistered_threshold"]
+   and rf"$\kappa = {JV['cohens_kappa']}$ against "
+   rf"${JV['preregistered_threshold']}$" in
+   block(r"\begin{frame}{Contributions}", "enumerate"))
+
+# The future-work counts are the census's.
+NEXT = frame("What comes next")
+for label, count in (("extraction-bug", len(bug)),
+                     ("composite-claim", sum(H2[d][k].get("composite_claim", 0)
+                                             for d in ("webqsp", "cwq")
+                                             for k in ("wrong", "hedge"))),
+                     ("knowledge-graph-gap", sum(H2[d][k].get("kg_gap", 0)
+                                                 for d in ("webqsp", "cwq")
+                                                 for k in ("wrong", "hedge")))):
+    ck(f"{count} {label} cases on the next-steps slide",
+       f"${count}$ {label} cases" in NEXT)
+ck("the closing line is the thesis's",
+   "\\emph{Relevance} verification is the half still open" in
+   " ".join(open(CONC, encoding="utf-8").read().split())
+   and "verification is the half still open" in NEXT)
+
+# Cross-references inside the deck point where they say.
+for text, title in (("echo attractor of slide", "The echo attractor"),
+                    ("retraction of slide", "Main results")):
+    m = re.search(re.escape(text) + r" (\d+)", FLAT)
+    ck(f"'{text} N' is slide {frame_no(title)}",
+       m is not None and int(m.group(1)) == frame_no(title),
+       m.group(0) if m else "no reference")
 
 
 print("\n" + ("ALL SLIDE NUMBERS MATCH THEIR SOURCE"
               if ok else "SOMETHING DOES NOT MATCH"))
+if skipped:
+    print(f"NOT CHECKED IN THIS RUN ({len(skipped)}): " + "; ".join(skipped))
 sys.exit(0 if ok else 1)

@@ -3,35 +3,24 @@
 Rehearsal script for **`thesis_defense_0421052099.pdf`** — 38 pages: a title,
 thirty-six body slides, a closing slide.
 
-You present slides 1 to 32. The six after the closing slide are **backup**:
+You present slides 1 to 31. The seven after the closing slide are **backup**:
 you reach them by paging past "Thank you" when a question calls for one, not
 by switching to a second file. They are timed 0:00 below because none of them
 is spoken; the table near the end of this file maps each to its question.
 
-**Budget: 25 min 52 s of speaking against a 25-minute
-limit — 52 s over.** Deliberate: the beam-search frame was added knowing
-its cost. Every row below is set to exactly what its own words take at 93 wpm,
-so there is no slack anywhere to absorb the overage — if the slot is enforced,
-it comes out of the recovery notes below, in the order they are listed.
+**Budget: 22 min 38 s of speaking against a 25-minute
+limit.** Every row below is set to what its own words take at 93 wpm, rounded
+up to the second, so the margin under the limit is the only slack there is.
 
-The table read 24:26 until its rows were checked against the words above
-them, and fourteen of the rows demanded a faster rate than this script's
-own — the echo-attractor slide worst, at 125 wpm against 93. Every round's
-additions had been costed against the total and never against the row they
-landed in, so the table stayed internally consistent while drifting away from
-the speech it describes. It is re-derived from the words on every edit now.
+This round (October 2026) rebuilt the talk against the book. The six
+background slides became three, the results now start 11:35 in rather than
+16:04, and three things the deck never said are said: the answers to the three
+questions (slide 28), what comes next (slide 30), and the six contributions
+as a preview (slide 8). The talk had run 52 s over; it now fits with the
+margin below.
 
-The seven crowded slides became seventeen this round, and the background the
-new audience needs — what a hallucination is, where it comes from, what a
-knowledge graph is — is new speech, not redistributed speech. It cost 2 min
-39 s on the first draft, which ran 25:40. All of it came back out of the
-seventeen sections that had just been written: no section that was already
-settled and already timed gave up a word, and the total moved from 22:41 to
-23:58 rather than past the limit.
-
-**A minute is a margin, not a cushion.** Everything that could move to the
-answers has already moved there. If you need more than the minute, it has to
-come out of what is said: about 60 words buys 40 seconds, and the recovery
+**A margin is not a cushion.** If you need more time than the margin, it has
+to come out of what is said: about 60 words buys 40 seconds, and the recovery
 notes below name the slides that can give it up.
 
 Times below are *cumulative at the end of that slide*. If you are more than
@@ -39,312 +28,265 @@ Times below are *cumulative at the end of that slide*. If you are more than
 
 | # | Slide | Slide time | Cumulative |
 | --- | --- | ---: | ---: |
-| 1 | Title | 0:19 | 0:19 |
-| 2 | The problem | 0:32 | 0:51 |
-| 3 | What a hallucination is | 0:38 | 1:29 |
-| 4 | Where it comes from | 0:31 | 2:00 |
-| 5 | Which of the three can we act on? | 0:32 | 2:32 |
-| 6 | What a knowledge graph is | 0:37 | 3:09 |
-| 7 | The complication: Mediator nodes | 0:34 | 3:43 |
-| 8 | Where existing approaches stop | 0:41 | 4:24 |
-| 9 | What guided beam search is | 0:53 | 5:17 |
-| 10 | What everyone else does | 0:56 | 6:13 |
-| 11 | Research questions | 0:53 | 7:06 |
-| 12 | AGR: An explicit state machine | 1:14 | 8:20 |
-| 13 | Constrained tools, not free-form queries | 0:37 | 8:57 |
-| 14 | The Structural Verification Layer | 0:32 | 9:29 |
-| 15 | What *structural* means — and what it does not | 0:58 | 10:27 |
-| 16 | One claim, three routes | 1:00 | 11:27 |
-| 17 | One question, end to end | 1:10 | 12:37 |
-| 18 | The environment and the question sets | 1:03 | 13:40 |
-| 19 | Making the comparison fair | 1:14 | 14:54 |
-| 20 | **Main results** | 1:10 | 16:04 |
-| 21 | **RQ1: Does agentic navigation improve multi-hop factual accuracy — and does the advantage grow with hop count?** | 1:02 | 17:06 |
-| 22 | The caveat I want to raise myself | 1:05 | 18:11 |
-| 23 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 1:08 | 19:19 |
-| 24 | RQ2: What verification does *not* do | 0:53 | 20:12 |
-| 25 | RQ2: So what does it do? | 0:41 | 20:53 |
-| 26 | Does it just refuse more often? | 0:43 | 21:36 |
-| 27 | **RQ3: Which components contribute what, at what token cost?** | 0:30 | 22:06 |
-| 28 | **RQ3: One effect, and its sign is backwards** | 0:48 | 22:54 |
-| 29 | Every failure, read and labelled | 0:29 | 23:23 |
-| 30 | The echo attractor | 1:12 | 24:35 |
-| 31 | Contributions | 1:12 | 25:47 |
-| 32 | Thank you | 0:05 | 25:52 |
-| 33 | *Backup:* budget configuration | 0:00 | 25:52 |
-| 34 | *Backup:* which budgets actually bind | 0:00 | 25:52 |
-| 35 | *Backup:* the full failure census | 0:00 | 25:52 |
-| 36 | *Backup:* accuracy against cost | 0:00 | 25:52 |
-| 37 | *Backup:* the benchmark was wrong 57 times | 0:00 | 25:52 |
-| 38 | *Backup:* AGR against RoG | 0:00 | 25:52 |
+| 1 | Title | 0:21 | 0:21 |
+| 2 | The problem | 0:40 | 1:01 |
+| 3 | Where it comes from, and what we can change | 0:35 | 1:36 |
+| 4 | Knowledge graphs, and why multi-hop is hard | 0:49 | 2:25 |
+| 5 | Where existing approaches stop | 0:41 | 3:06 |
+| 6 | What guided beam search is | 0:46 | 3:52 |
+| 7 | What everyone else does | 0:43 | 4:35 |
+| 8 | Research questions | 0:34 | 5:09 |
+| 9 | AGR: An explicit state machine | 0:53 | 6:02 |
+| 10 | Constrained tools, not free-form queries | 0:33 | 6:35 |
+| 11 | The Structural Verification Layer | 0:37 | 7:12 |
+| 12 | What *structural* means, and what it does not | 0:58 | 8:10 |
+| 13 | One claim, three routes | 0:45 | 8:55 |
+| 14 | One question, end to end | 0:44 | 9:39 |
+| 15 | The environment and the question sets | 0:48 | 10:27 |
+| 16 | Making the comparison fair | 1:08 | 11:35 |
+| 17 | **Main results** | 1:21 | 12:56 |
+| 18 | **RQ1: Does agentic navigation improve multi-hop factual accuracy?** | 0:56 | 13:52 |
+| 19 | The caveat I want to raise myself | 1:01 | 14:53 |
+| 20 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 0:50 | 15:43 |
+| 21 | RQ2: What verification does *not* do | 0:50 | 16:33 |
+| 22 | RQ2: So what does it do? | 0:41 | 17:14 |
+| 23 | Does it just refuse more often? | 0:31 | 17:45 |
+| 24 | **RQ3: Which components contribute what, at what token cost?** | 0:24 | 18:09 |
+| 25 | **RQ3: One effect, and its sign is backwards** | 0:57 | 19:06 |
+| 26 | Every failure, read and labelled | 0:20 | 19:26 |
+| 27 | The echo attractor | 1:01 | 20:27 |
+| 28 | The three answers | 0:39 | 21:06 |
+| 29 | Contributions | 0:58 | 22:04 |
+| 30 | What comes next | 0:29 | 22:33 |
+| 31 | Thank you | 0:05 | 22:38 |
+| 32 | *Backup:* budget configuration | 0:00 | 22:38 |
+| 33 | *Backup:* which budgets actually bind | 0:00 | 22:38 |
+| 34 | *Backup:* the full failure census | 0:00 | 22:38 |
+| 35 | *Backup:* accuracy against cost | 0:00 | 22:38 |
+| 36 | *Backup:* the benchmark was wrong 57 times | 0:00 | 22:38 |
+| 37 | *Backup:* AGR against RoG | 0:00 | 22:38 |
+| 38 | *Backup:* what changed from the proposal | 0:00 | 22:38 |
 
 The four **bold** slides are the ones the committee will actually
-interrogate. If you are running long, take time from 8, 12, and 15 —
-never from 20, 21, 22, 27 or 28. That is the same list the recovery notes
-protect, and 22 is on it for a different reason: skipping it hands the
+interrogate. If you are running long, take time from 9, 13 and 14 —
+never from 17, 18, 19, 24 or 25. That is the same list the recovery notes
+protect, and 19 is on it for a different reason: skipping it hands the
 clipping issue to them.
 
 ---
 
-## 1 — Title *(0:19)*
+## 1 — Title *(0:21)*
 
 > Good afternoon. I'm Sakif Khan. This is my thesis defense on Agentic Graph
-> Reasoning — knowledge graph navigation with verification before the answer is
-> emitted. My supervisor is Dr. Sadia Sharmin.
+> Reasoning, which is knowledge graph navigation with verification before the
+> answer is emitted. My supervisor is Dr. Sadia Sharmin.
 
-*Don't read the title aloud. It's on the screen.*
-
----
-
-## 2 — The problem *(0:32)*
-
-> Language models answer factual questions fluently — and just as fluently when
-> they do not hold the fact. Fluency and factuality come out of the same
-> mechanism, so nothing in the wording separates them. A system that is
-> confidently wrong is worse than one that says it does not know.
+*Don't read the title aloud. It's on the screen. It is the title registered
+at the proposal stage, and three of its terms are broader than the claims.
+Slide 29 names them, so do not defend them here.*
 
 ---
 
-## 3 — What a hallucination is *(0:38)*
+## 2 — The problem *(0:40)*
 
-> First, the word. A hallucination is fluent, confident, and backed by no
-> source the model can point to.
+> Language models answer factual questions just as fluently when they do not
+> hold the fact. A hallucination is output with no source the model can
+> point to.
 >
-> Two kinds, separated by what it takes to catch them. Factually wrong: you
-> need the true answer already, which is what we are trying to produce.
-> Unsupported: you need only what was retrieved, and we have that. I claim
-> the second.
+> Two kinds, separated by what it takes to catch them. A factually wrong
+> answer needs the true answer already. An unsupported one needs only what
+> was retrieved, and we have that. I claim the second.
 
-*Name the two block titles as you say them — the slide carries the rest. The
-last sentence is a scope limit, not modesty. Say it at normal pace.*
+*The last sentence is a scope limit, not modesty. Say it at normal pace.*
 
 ---
 
-## 4 — Where it comes from *(0:31)*
+## 3 — Where it comes from, and what we can change *(0:35)*
 
-> Why does it happen? Not a bug that escaped testing — it comes out of how these
-> models are built, so the response has to be architectural.
+> It is not a bug that escaped testing. It comes from how these models are
+> built, so the response has to be architectural.
 >
-> Three origins. The training data. The model itself, where knowledge sits spread
-> across the weights with no index. And the prompt.
+> Three origins. The training data, the model itself, and the prompt. Only
+> the prompt is ours to change. So control what goes in, and check what
+> comes out against it.
 
 *Name the three, don't read them. The slide carries the wording.*
 
 ---
 
-## 5 — Which of the three can we act on? *(0:32)*
+## 4 — Knowledge graphs, and why multi-hop is hard *(0:49)*
 
-> Only the third; the other two need retraining. So this is a systems problem:
-> control what goes in, and check what comes back out against it.
+> A knowledge graph stores facts as triples, so every fact has an address
+> and a claim can be checked by looking for an edge. A question that chains
+> two facts is multi-hop, and a wrong first hop is never revisited.
 >
-> Multi-hop compounds it. A wrong first step is never revisited, so the chain
-> proceeds from a false premise. That is where this thesis lives.
+> One complication. Freebase stores a fact with more than two participants
+> as an unnamed node, and nearly two thirds of this graph's nodes are that
+> kind. So nothing here is called "plays". Hold onto that.
+
+*The last line is a setup. The worked example on slide 14 pays it off, and so
+does the verification layer's limit on slide 12.*
 
 ---
 
-## 6 — What a knowledge graph is *(0:37)*
+## 5 — Where existing approaches stop *(0:41)*
 
-> Two things about the graph, because they shape everything after.
+> Four families, and each stops somewhere specific. The first three fix their
+> evidence before reasoning begins. Agentic navigation interleaves the two,
+> which is the right move, and it already names only what it traversed.
 >
-> Facts are stored as triples — head, relation, tail. Ada Lovelace, place of
-> birth, London. A question needing two of those chained is multi-hop. The point
-> of a graph is that every fact has an address, so a claim can be checked by
-> looking for an edge.
+> So its problem is precision. A real, traversed entity can still be the
+> wrong answer, and none of the four checks what the answer asserts before it
+> goes out.
+
+*This is the book's turn from fabrication to precision. It is what makes
+slide 20's zero for both navigating systems a result rather than a
+surprise.*
 
 ---
 
-## 7 — The complication: Mediator nodes *(0:34)*
+## 6 — What guided beam search is *(0:46)*
 
-> Freebase stores any fact with more than two participants as a node rather than
-> an edge. "Rainn Wilson played Dwight in The Office" is one node joining three
-> things. Nearly two thirds of this graph's nodes are that kind, and they carry
-> no name.
+> You hold a set of current nodes, the frontier. List every edge out of it,
+> score each, keep the best few, expand those, and repeat to a depth cap.
+> The number you keep is the beam width.
 >
-> So nothing here is called "plays". Hold onto that.
+> Guided means the score is a judgement, here a model call. So the width is
+> the cost, and it multiplies with every hop. And whatever falls outside the
+> beam is gone for good.
 
-*The last line is a setup. The worked example pays it off, and so does the
-verification layer's honest limit.*
+*The multiplication is what slide 19 cashes: it is why Think-on-Graph runs out
+of calls and AGR does not.*
 
 ---
 
-## 8 — Where existing approaches stop *(0:41)*
+## 7 — What everyone else does *(0:43)*
 
-> Four families, and each stops somewhere specific — the table walks left to
-> right. The first three stop before reasoning begins, or at a radius fixed in
-> advance. Agentic navigation does interleave retrieval and reasoning, which is
-> the right move.
+> Four prior systems, and the column that matters is the last one. They
+> differ in how they explore, some decompose, and Plan-on-Graph backtracks.
+> None checks its answer's claims against what it retrieved, before
+> answering. RoG comes closest, since its answers are grounded by
+> construction, but nothing examines them. Post-hoc checkers such as
+> Chain-of-Verification check after generation.
 >
-> But all four share one gap: whatever the final generation call produces is what
-> gets emitted. Nothing checks what the answer *asserts*.
+> Their published accuracies are higher than mine and not comparable.
 
-*Walk the table left to right with the pointer. Don't read the cells verbatim.*
+*Plan-on-Graph in full, always. Paths-over-Graph is also cited as "PoG" and
+reports higher numbers. The note on the slide gives the three reasons the
+published figures are not comparable; read them only if asked.*
 
 ---
 
-## 9 — What guided beam search is *(0:53)*
+## 8 — Research questions *(0:34)*
 
-> You hold a set of current nodes — the frontier. List every edge out of it,
-> score each for how likely it helps, keep the best few, expand those, repeat
-> to a depth cap. The number you keep is the beam width.
+> Three questions. RQ1: does agentic navigation improve multi-hop accuracy,
+> and does the advantage grow with hop count? RQ2: what does pre-generation
+> verification contribute beyond graph navigation? RQ3: which components
+> contribute what, at what token cost?
 >
-> Guided means that score is a judgement, not a fixed rule — here, a model
-> call. So the width is the cost.
->
-> And everything outside the beam is discarded unlooked-at: a plain beam has
-> no way back for it.
+> On the right are the six contributions the thesis claims. I return to them
+> at the end.
 
-*This frame exists because the term is used on the next slide and was
-never defined. If you say "guided beam search" of AGR later, this is what
-the room is holding.*
+*RQ2 asks what verification contributes, not whether it reduces
+hallucination. The slide says so; say it only if asked why.*
 
 ---
 
-## 10 — What everyone else does *(0:56)*
+## 9 — AGR: An explicit state machine *(0:53)*
 
-> Four systems, and the column that matters is the last one.
+> AGR is an explicit state machine, not a prompt loop. Six nodes. The planner
+> writes sub-objectives. The explorer scores candidate edges and keeps the
+> best three per anchor. The evaluator decides whether an objective is met.
+> The backtracker returns to the best-scoring earlier frontier and bans the
+> edges that failed. The verifier checks the draft's claims, and the answerer
+> emits what survived.
 >
-> The four prior systems differ in how they explore — a fixed radius,
-> generated paths, beam search, adaptive planning. Some decompose the question,
-> one backtracks. None checks what its own answer asserts against what it
-> retrieved, before answering. That empty column is where this thesis sits.
->
-> One caution. Their published accuracies are higher than anything I am about
-> to show, and not comparable: different backbones, different subsets, and full
-> Freebase rather than the environment I built.
-
-*Scope every count to the four prior systems. Backtracking is PoG's alone
-among them; "two can backtrack" counted AGR in one breath and "none checks"
-counted it out in the next, and the table on screen shows both columns.*
-
-*If a committee member knows these papers, this is where they will ask about
-the numbers. The environment slide answers it.*
-
----
-
-## 11 — Research questions *(0:53)*
-
-> Three questions.
->
-> RQ1: does agentic navigation actually improve multi-hop accuracy — and does the
-> advantage grow with the number of hops?
->
-> RQ2: given a system that already navigates the graph, what does a claim-level
-> check against the traversed triples contribute?
->
-> RQ3: which components contribute what, at what token cost?
->
-> One framing note. RQ2 asks what verification *contributes*, not whether it
-> reduces hallucination. That's deliberate. The answer has several parts, and a
-> yes-or-no question would have hidden most of them.
-
----
-
-## 12 — AGR: An explicit state machine *(1:14)*
-
-> AGR is an explicit state machine — not a prompt loop. Six nodes.
->
-> The planner decomposes the question into ordered sub-objectives. The explorer
-> is the beam: it scores every candidate edge and keeps the best three per
-> anchor. The evaluator decides whether
-> the sub-objective has been met. The backtracker undoes a bad expansion and
-> bans the edge that caused it. The verifier is the contribution. The answerer
-> emits only what survived.
->
-> Three cycles — the three arrows returning to the explorer — and all three are
-> bounded by explicit budgets rather than by model behaviour. Every cycle passes
-> through a router checking a monotone counter, so termination does not depend
-> on the model cooperating.
+> Three cycles, the three arrows back to the explorer, and all three are
+> bounded by budgets checked in code.
 
 **Do not say "exactly two cycles."** The diagram has three arrows returning to
-the Explorer and the audience is looking at it while you speak, and the
-thesis caption says three and names all three. Naming them after the edge
-labels — continue, backtrack, retry — means counting the arrows confirms the
-sentence.
+the Explorer and the audience is looking at it while you speak. Naming them
+after the edge labels — continue, backtrack, retry — means counting the
+arrows confirms the sentence.
 
-**If asked about budgets, go to backup slide 33.**
+**Do not call the backtracker an undo.** It restores the highest-scoring
+earlier snapshot, not the most recent one, and the thesis says outright that
+popping the most recent one "would make backtracking a simple undo". If
+pressed, the implementation bans the latest pass while restoring an older
+frontier, and the thesis records that misalignment rather than hiding it.
+
+**If asked about budgets, go to backup slide 32.**
 
 ---
 
-## 13 — Constrained tools, not free-form queries *(0:37)*
+## 10 — Constrained tools, not free-form queries *(0:33)*
 
-> One agent, six nodes — and only three touch the graph. The planner links
-> entities, the explorer asks for relations and neighbours, the verifier checks
-> adjacency. Four operations, never Cypher. Every call is deterministic and
-> logged with its arguments and result, so the traversal is a record — and that
-> record is what the verification layer checks against.
+> One agent, six nodes, and only three touch the graph. The planner resolves
+> entity mentions, the explorer asks for relations and neighbours, and the
+> verifier checks adjacency. Four operations, never Cypher. Every call is
+> logged, so the traversal is a record, and that record is what the
+> verification layer checks against.
 
 *Say "one agent" out loud. The previous slide draws six named boxes, and
-"the agent" on its own invites the question of how many there are: they are
-six nodes of one machine over one shared state, not six agents. The Node
-column answers the follow-up before it is asked.*
+"the agent" on its own invites the question of how many there are.*
 
 ---
 
-## 14 — The Structural Verification Layer *(0:32)*
+## 11 — The Structural Verification Layer *(0:37)*
 
-> This is the contribution.
->
-> Before anything is emitted, the draft is split into atomic claims, each checked
-> against the triples the agent actually traversed. What cannot be grounded is
-> re-explored or dropped; what is grounded carries its triples back with the
-> answer. So the system hedges rather than asserts.
+> This is the part I set out to contribute. Before anything is emitted, the
+> draft is split into atomic claims, each checked against the graph, the
+> traversed triples first. What cannot be grounded is re-explored or
+> dropped. So where it cannot ground a claim, the system hedges rather than
+> asserts. Measured, it buys auditability rather than accuracy.
 
 ---
 
-## 15 — What *structural* means — and what it does not *(0:58)*
+## 12 — What *structural* means, and what it does not *(0:58)*
 
-> Now the bound.
+> Now the bound. The graph decides. The model is consulted only where the
+> graph is silent, and it never overrides the graph.
 >
-> *Structural* means the check is against the graph the agent walked, not the
-> model's opinion of its own output. It does not mean the check reads the
-> relation: the first two routes test adjacency, either direction, so a mother
-> claim survives on a child edge — the mediator problem from slide 7, as a
-> limitation.
+> Structural does not mean it can read the relation. The first two routes
+> test adjacency, in either direction, so a mother claim survives on a child
+> edge. That is the mediator problem as a limitation.
 >
-> "Its evidence" is narrower too: only the walked-graph check attaches
-> triples, and the log keeps a count. Slide 24 has both. And a claim can be
+> "Its evidence" is narrower too. Only the walked-graph check attaches
+> triples, and the log keeps a count, not the triples. And a claim can be
 > true and still be the wrong answer.
 
-**The last sentence is a promise. Slide 30 pays it off.**
+**The last sentence is a promise. Slide 27 pays it off.**
 
 ---
 
-## 16 — One claim, three routes *(1:00)*
+## 13 — One claim, three routes *(0:45)*
 
-> This is the inside of the verifier — the node between the evaluator deciding
-> to answer and the answer going out.
->
-> It drafts an answer and breaks it into atomic claims, one model call. Each
-> claim then takes one of three routes to being called supported, ordered by
-> cost: only the third spends a model call. Plus-evidence sits on the first
-> route only.
->
-> The box at the bottom is how the node exits: no unsupported claims means
-> grounded and the answer goes out; otherwise retry if the budget allows, or
-> give up.
+> This is the inside of the verifier. One model call drafts the answer and
+> splits it into claims. Each claim leaves at the first test that settles
+> it, left to right. Traversed adjacency comes first, and it is the only
+> route that adds evidence. Then verify connection, on the full graph. Only
+> the third route, entailment, spends a model call. With no unsupported
+> claim the answer goes out grounded.
 
-*Say the first sentence before anything else. This is the one slide in the
-deck that is a zoom rather than a new subject, and without that framing it
-reads as a second, unrelated flowchart next to slide 12's. The bottom box is
-the same three edges leaving the Verifier there: grounded and give\_up go to
-the Answerer, retry goes back to the Explorer.*
+*Say the first sentence before anything else. This is the one slide that is a
+zoom rather than a new subject. A claim whose endpoints were never traversed
+skips both structural routes; point at the lower lane if asked.*
 
 ---
 
-## 17 — One question, end to end *(1:10)*
+## 14 — One question, end to end *(0:44)*
 
-> One real question, all the way through — a run out of the committed records.
+> One real question, from the committed records. "Who plays Dwight in The
+> Office." The dataset gives the mention The Office, and the planner resolves
+> it and splits the question. The explorer keeps three relations and the
+> evaluator resolves Dwight Schrute. Second hop, and it resolves Rainn
+> Wilson and answers. The verifier finds two claims, both supported.
 >
-> "Who plays Dwight in The Office." The planner splits it in two and resolves
-> The Office to a node. The explorer scores the available relations and takes
-> the regular-cast one; the evaluator resolves Dwight Schrute. Second hop: the
-> character relation, and the evaluator resolves Rainn Wilson and answers. The
-> verifier splits the draft into two claims, both supported.
->
-> Six model calls, depth two, eighteen supporting triples.
->
-> And the relation names: both hops run *through* a mediator, so the name is the
-> edge into the appearance record, not the one that lands on the entity.
+> Six model calls, depth two, and at most eighteen supporting triples.
+
+**If "at most" is questioned.** The counter counts matches rather than
+distinct triples, so the thesis reads it as an upper bound (section on the
+output contract), and so does the slide.
 
 **If the relation names are challenged.** They read backwards until you say
 the walk is two edges. `tv.tv_program.regular_cast` has 42 direct edges out of
@@ -355,179 +297,168 @@ is how hop 1 resolves Dwight Schrute. Hop 2 is the same shape: 1 direct edge
 into Dwight, 12 returned, the actor among them. Both counts are in the
 committed tool log.
 
-*If you are behind, cut everything after "decides to answer."*
+*If you are behind, cut everything after "both supported."*
 
 ---
 
-## 18 — The environment and the question sets *(1:03)*
+## 15 — The environment and the question sets *(0:48)*
 
-> The environment is a Freebase-derived graph: 2.6 million entities, 8.3
-> million triples, seven thousand distinct relations, importing in 36 seconds.
+> The environment is the union of RoG's per-question subgraphs, 2.6 million
+> entities and 8.3 million triples. Each subgraph was cut to contain its own
+> answer, so this is friendlier than full Freebase.
 >
-> Questions: 400 each from WebQSP and ComplexWebQuestions — standard public
-> benchmarks, used unmodified. The important column is reachability — for every
-> question I verified the gold answer is actually reachable here. 97 percent on
-> WebQSP, 99.2 on CWQ.
->
-> That is the *ceiling* on every accuracy figure I'm about to show. It is also
-> the answer to the caution two slides back: an environment this reachable is
-> not full Freebase, so these numbers are not comparable with published ones.
+> 400 questions each from WebQSP and ComplexWebQuestions, unmodified. Every
+> question's gold answer is certified reachable, 97 percent and 99.2. That
+> is the ceiling on every accuracy figure, for entity answers only. Dates,
+> quantities and superlatives this graph cannot express at all.
+
+*Both disclosures are the book's: the friendliness is threat 1 in the threats
+to validity, and the inexpressible class is defined in the environment
+chapter. Say them rather than have them raised.*
 
 ---
 
-## 19 — Making the comparison fair *(1:14)*
+## 16 — Making the comparison fair *(1:08)*
 
-> Five systems, on the slide: a parametric control, three retrieval baselines,
-> and AGR.
+> Five systems on one frozen backbone, under the same 25-call budget, on the
+> same questions and graph. That is what lets me attribute differences to
+> architecture rather than to model capacity. Think-on-Graph is my
+> reimplementation, and the graph systems all start from the datasets'
+> topic entities.
 >
-> All five run on one frozen backbone, at temperature zero, under the same
-> 25-call budget, on the same questions, against the same graph. That is what
-> lets me attribute differences to architecture rather than to model capacity.
-> The control is there because these benchmarks may be partly memorised.
->
-> One thing is not equal, and I would rather say it than have it found.
-> Think-on-Graph prunes from a narrower candidate set than AGR. That cuts against
-> it, not for it — a thinner set is cheaper — so it cannot explain the clipping,
-> but it does make its score a lower bound.
+> Two things are not equal, and I would rather say them than have them
+> found. Think-on-Graph prunes from a narrower candidate set. That cuts
+> against it, since a thinner set is cheaper, so it cannot explain the
+> clipping, but it makes its score a lower bound. And AGR's drafting prompt
+> carries grounding rules the baselines' plain prompt does not.
 
-**Say the width line, don't skip it.** This slide used to claim a
-retrieval-budget control it does not have; the Think-on-Graph baseline section
+**Say the width line, don't skip it.** The Think-on-Graph baseline section
 names the widths as the one place a reader should look first for a confound,
-and the threats to validity rank it limitation 2.
-The numbers are on the slide and in the answer below — you do not have to
-recite 40/20/300/200 here.
-
-*This was two slides until the last round. The second said one thing and
-pointed at it; it is the "Not held equal" block now, and the takeaway makes
-the attribution claim the pointer used to occupy.*
+and the threats to validity rank it limitation 2. The numbers are on the
+slide and in the answer below — you do not have to recite 40/20/300/200 here.
 
 ---
 
-## 20 — Main results *(1:10)* ★
+## 17 — Main results *(1:21)* ★
 
 > Here is the comparison.
 >
 > AGR reaches 0.755 Hits@1 and 0.642 F1 on WebQSP, and 0.522 and 0.469 on
-> ComplexWebQuestions — ahead of every baseline on both.
+> ComplexWebQuestions, ahead of every baseline on both. All eight paired
+> tests reject.
 >
-> Two things beyond the top line. First, vector RAG on ComplexWebQuestions:
-> 0.203, *below* the no-retrieval control at 0.307. One verbalised triple cannot
-> contain a chain, so single-shot retrieval is worse there than not retrieving
-> at all. GraphRAG sits beside it at 0.205, but its one-hop radius confounds the
-> paradigm, so the claim rests on vector RAG.
+> First, vector RAG on ComplexWebQuestions: 0.203, *below* the no-retrieval
+> control at 0.307. One verbalised triple cannot contain a chain, so
+> single-shot retrieval is worse there than not retrieving at all. GraphRAG
+> sits beside it at 0.205, but its one-hop radius confounds the paradigm, so
+> the claim rests on vector RAG.
 >
-> Second, the cost columns: 4,511 tokens and 6.2 calls against Think-on-Graph's
-> 3,615 and 12.8. More tokens, half the calls — and calls are what the budget
-> meters.
+> On WebQSP the control even beats GraphRAG on raw hits, by guessing. It is
+> right on 51.6 percent of what it asserts, GraphRAG on 76.8.
+>
+> And cost: about a quarter more tokens than Think-on-Graph, at half the
+> calls, and calls are what the budget meters.
 
 **Slow down here. This is the slide they read while you talk.**
 
 **Do not pool the two retrieval baselines.** The table puts 0.203 and 0.205 side
 by side and the pooled version of this point is the one that gets walked back:
-section 5.7.3 calls GraphRAG the weaker evidence of the two and says the claim
-rests on vector RAG. The paper retracted the pooled claim in its own words. If
-they press on GraphRAG, the answer below has the strata.
+the CWQ results section calls GraphRAG the weaker evidence of the two and says
+the claim rests on vector RAG. If they press on GraphRAG, the answer below has
+the strata.
 
 ---
 
-## 21 — RQ1: Does agentic navigation improve multi-hop factual accuracy — and does the advantage grow with hop count? *(1:02)* ★
+## 18 — RQ1: Does agentic navigation improve multi-hop factual accuracy? *(0:56)* ★
 
-> The direct answer to RQ1, and it is a shape rather than a difference of means.
+> The answer to RQ1 is yes, and the evidence is a shape.
 >
-> ComplexWebQuestions, on the right. AGR goes 0.46, 0.55, 0.57 as questions get
-> harder — one hop, two, three or more. It is the only system on that dataset
-> that ends above where it started. Three of the other four decay monotonically;
-> Think-on-Graph falls and partially recovers, still 0.08 below its own one-hop
-> score.
+> ComplexWebQuestions, on the right. AGR goes 0.46, 0.55, 0.57 as questions
+> get harder. It is the only system on that dataset that ends above where it
+> started. Three of the other four decay monotonically, and Think-on-Graph
+> falls and partially recovers, still 0.08 below its own one-hop score. It
+> does beat AGR at one hop, 0.53 against 0.46, where decomposition is not
+> needed.
 >
-> One caution about the left panel: on WebQSP the three-or-more stratum is n
-> equals 4. I draw no conclusion from four questions, and neither does the
-> thesis.
+> The left panel is dashed because its three-hop stratum is four questions.
 
-**Volunteering the n=4 weakness pre-empts the obvious attack.**
+**Volunteering the n=4 weakness pre-empts the obvious attack.** The one-hop
+loss is the book's own boundary on this answer; say it before it is found.
 
 ---
 
-## 22 — The caveat I want to raise myself *(1:05)*
+## 19 — The caveat I want to raise myself *(1:01)*
 
 > I want to raise this before you do.
 >
 > Split the questions by whether Think-on-Graph finished inside the shared
-> 25-call cap. On the ones it *finishes*, it is ahead of AGR — 0.852 against
-> 0.788 on WebQSP, 0.629 against 0.607 on CWQ.
+> 25-call cap. On the ones it finishes, it is ahead of AGR, 0.852 against
+> 0.788 on WebQSP and 0.629 against 0.607 on CWQ.
 >
-> The entire aggregate margin comes from the questions it cannot finish, where
-> it drops to 0.197 and 0.188. It gets clipped on 29 percent of WebQSP and 44
-> percent of CWQ.
+> The entire margin comes from the questions it cannot finish, 29 percent
+> of WebQSP and 44 percent of CWQ. Beam search pays width times depth in
+> calls, and AGR's plan does not multiply.
 >
-> So the honest claim is not that AGR reasons better per step. It is that AGR
-> completes its reasoning inside a fixed budget and Think-on-Graph frequently
-> does not.
+> So the claim is not that AGR reasons better per step. It is that AGR
+> finishes inside a fixed budget.
 
 **Deliver this as a strength. It is the most defensible slide in the deck.**
 
 ---
 
-## 23 — RQ2: What does pre-generation verification contribute beyond graph navigation? *(1:08)*
+## 20 — RQ2: What does pre-generation verification contribute beyond graph navigation? *(0:50)*
 
-> RQ2. Start with the narrowest form of it: does anything ungrounded get
-> asserted?
+> RQ2, in its narrowest form. Does anything ungrounded get asserted?
 >
 > Across both datasets, AGR asserts 1,709 entities and zero are ungrounded.
 > The parametric control asserts 1,001 and 22.1 percent are ungrounded.
 >
-> That looks like a headline result for the verification layer. It isn't, and
-> this is the finding I think matters most: Think-on-Graph also reaches 0.0
-> percent, and it has no verification layer at all.
->
-> So zero ungrounded assertion is a property of *navigating a graph* — you can
-> only name what you visited. It is not a property of my layer, and I don't
-> claim it as one.
+> That looks like a headline for the verification layer. It isn't.
+> Think-on-Graph also reaches zero, with no verification layer at all. So
+> this is a property of navigating a graph. And a stricter semantic check
+> still fails a third to a half of every system's answers.
 
 ---
 
-## 24 — RQ2: What verification does *not* do *(0:53)*
+## 21 — RQ2: What verification does *not* do *(0:50)*
 
-> The negative half first: removing the layer changes accuracy by an amount I
-> cannot detect — p equals 1.0 on both datasets. And its evidence does not
-> outlive the run: the logger keeps the count of supporting triples and drops
-> the list.
+> Removing the layer changes accuracy by nothing I can detect, p equals 1.0
+> on both datasets. On test it changed two answers, one each way.
 >
-> This is not a retraction of slide 20. That was AGR against four baselines;
-> this is AGR against itself with one part removed. The lead came from
-> navigating the graph and finishing inside the budget — never from this layer.
+> Nor does it explain the precision lead. On CWQ, AGR is right on 67.9
+> percent of what it asserts, Think-on-Graph on 56.1, and removing the layer
+> barely moves AGR's. The lead belongs to the architecture, and perhaps the
+> prompt.
+>
+> And its evidence ends with the run. The log keeps a count.
 
-*Say the last paragraph. It is the objection the slide invites, and answering
-it before it is asked costs eight seconds.*
+*The slide's foot answers the objection that this retracts slide 17: that
+was AGR against four baselines, this is AGR against itself. Say it if the
+room looks puzzled.*
 
 ---
 
-## 25 — RQ2: So what does it do? *(0:41)*
+## 22 — RQ2: So what does it do? *(0:41)*
 
-> What it does do is withhold what it cannot ground. Removing the layer drops the
-> CWQ hedge rate from 23.2 to 20.2 percent — direction only, six questions. A
-> hedge is a calibrated non-assertion, not a refusal.
+> What it does is withhold what it cannot ground. Without it, CWQ hedging
+> falls from 23.2 to 20.2 percent. Those six answers were all wrong. On
+> WebQSP it withheld one, and that one was right.
 >
-> It attaches supporting triples, from one route of three, and pairs the answer
-> with its evidence inside the run. So the case rests on auditability, not
-> accuracy.
+> Its clearest catch was a draft claiming Marlon Brando was in Joy. The
+> verifier rejected it. Not right more often, but right for a reason it can
+> show.
+
+*The six and the one are the paired records, not a difference of rates. The
+anticipated questions below have the full answer if it is pressed.*
 
 ---
 
-## 26 — Does it just refuse more often? *(0:43)*
+## 23 — Does it just refuse more often? *(0:31)*
 
-> The obvious objection to that claim, and the answer is no.
->
-> AGR hedges on 8.2 percent of WebQSP, the lowest of the five, and it is
-> also the most accurate there. On CWQ it is 23 percent — within half a point
-> of Think-on-Graph, and nearly nine points more accurate.
->
-> A hedge scores zero, exactly like a wrong answer. This is not accuracy
-> bought with silence.
-
-*This was in the backup deck until the last round. It is on the run now
-because the objection it answers is the one the failure census invites three
-slides later — 256 failures, of which 125 are hedges, not wrong answers.*
+> The obvious objection, and the answer is no. AGR hedges least of the five
+> on WebQSP, where it is also the most accurate. On CWQ it is within half a
+> point of Think-on-Graph, and nearly nine points more accurate. A hedge
+> scores zero, like a wrong answer.
 
 **Do not overstate CWQ.** 23.0 against Think-on-Graph's 22.5 is half a point
 *more*, not less. What holds on both datasets is the pairing: it hedges no
@@ -535,13 +466,15 @@ more than the agentic baseline and scores above it.
 
 ---
 
-## 27 — RQ3: Which components contribute what, at what token cost? *(0:30)* ★
+## 24 — RQ3: Which components contribute what, at what token cost? *(0:24)* ★
 
-> RQ3: which components earn their cost.
->
-> Four ablations, paired McNemar against the full system. The p asks how often
-> chance alone would produce a gap this big. Three of the four change nothing I
-> can detect — backtracking, the verifier, and the learned half of the scorer.
+> RQ3: which components earn their cost. Four ablations, each a paired test
+> against the full system on the same halves. Three change nothing I can
+> detect: backtracking, the verifier, and the learned half of the scorer.
+
+**"Full system" is the main run restricted to the same half-samples.** That is
+why its WebQSP F1 reads 0.659 here and 0.642 on slide 17. The p-values are
+uncorrected, as the thesis reports them, and read as descriptive.
 
 **What the p column is, if you are asked.** McNemar throws away every question
 both systems get right and every question both get wrong, and reads only the
@@ -551,94 +484,114 @@ that split is a coin toss, and 21–6 gives p = 0.006.
 
 **The verifier rows are the ones to understand before you are asked.** p = 1.000
 there rests on **one** discordant question on each dataset. That is "the test had
-no information", not "there is no effect" — which is exactly why slides 24 and
-27 say *detectable* rather than *none*.
-
-**The p is on Hits@1, not on the F1 beside it.** Correctness per question is
-binary, so the test runs on that; F1 is the effect size printed next to it. The
-slide footnote now says so.
+no information", not "there is no effect" — which is exactly why slides 21 and
+24 say *detectable* rather than *none*.
 
 ---
 
-## 28 — RQ3: One effect, and its sign is backwards *(0:48)* ★
+## 25 — RQ3: One effect, and its sign is backwards *(0:57)* ★
 
 > The one that does is the planner, and the sign is backwards. Removing it
-> *improves* WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31 percent.
-> On ComplexWebQuestions it trends the other way.
+> improves WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31
+> percent. On ComplexWebQuestions it trends the other way, and its two-hop
+> stratum falls from 0.48 to 0.34.
 >
-> The strata explain it: without the planner, WebQSP rises at one hop and at
-> two, while CWQ's two-hop stratum collapses. So decomposition
-> should be gated on question structure — a conclusion the measurement forced,
-> not one it confirmed.
+> The mechanism is context-stripping. Asked for the 33rd president who led
+> during WW2, the planner split the question, WW2 was never used, and the run
+> answered Woodrow Wilson. Undecomposed, it found Truman in three calls. So
+> decomposition should be gated on question structure.
 
 **Do not compress this one.** It is the only place a component's cost is priced.
 
 ---
 
-## 29 — Every failure, read and labelled *(0:29)*
+## 26 — Every failure, read and labelled *(0:20)*
 
-> Two hundred and fifty-six failures, read and labelled by hand: every AGR
-> failure over the 800 test questions, less benchmark defects and near-misses.
->
-> The largest category is relation selection — the agent taking the wrong edge,
-> not inventing one. That shape is the finding.
+> Two hundred and fifty-six failures, read and labelled by hand. The largest
+> category is relation selection, the agent taking the wrong edge, not
+> inventing one. That shape is the finding.
 
 **The table is pooled, and the slide says so.** Wrong and hedge are never
 pooled in the thesis — sec:taxonomy: "a pooled percentage would describe
 neither" — and pooling also hides the shape flip: `composite_claim` is 1 on
 WebQSP against 46 on CWQ. The block on the slide carries both facts, so the
 split census is something you offer rather than something you are corrected
-with.
-
-**The full 12-category histogram is backup slide 35 if anyone wants it** — the
-slides no longer advertise it, so it is yours to offer, not theirs to spot.
+with. The last row closes the column to 256; the six smaller categories are
+backup slide 34 if anyone wants them.
 
 ---
 
-## 30 — The echo attractor *(1:12)*
+## 27 — The echo attractor *(1:01)*
 
-> The one to name is sixth, with 13 cases: the **echo attractor** — a real,
-> grounded entity one hop from the correct answer. Ask for a director and get the
-> film; ask for a capital and get the country.
+> The one to name is sixth, with 13 cases: the echo attractor, a real,
+> grounded entity one hop from the answer. Asked who plays Lex Luthor on
+> Smallville, AGR named the actor who plays his father.
 >
-> Why it matters, and it is the promise I made on slide 15: any grounding check
-> *passes* it. It is real, it was traversed, the triple exists — true, and wrong.
+> Any grounding check passes it. It is real, it was traversed, the triple
+> exists. True, and wrong. That is the promise from slide 12.
 >
 > Different systems fall into it together, so no evaluation treating them as
-> independent can see it. Rescore whenever a majority agrees — a natural thing
-> to want — and this becomes apparent correctness. That is the contribution:
-> the mechanism, not the count.
+> independent can see it. Rescore whenever a majority agrees, and this
+> becomes apparent correctness. The contribution is the mechanism, not the
+> count.
 
 **Do not say "it appears across systems, so it is a property of the task rather
 than of AGR."** That is defensive where the thesis is substantive, and nothing
 on the slide blames AGR for it. The claim is about evaluation: sec:echo calls
 the attractor "invisible to any evaluation treating systems as independent",
 and section 1.6 says the contribution is the mechanism "and what it means for
-consensus-based evaluation rather than the frequency". Backup slide 37 is the same finding
+consensus-based evaluation rather than the frequency". Backup slide 36 is the same finding
 seen from the other side.
 
 ---
 
-## 31 — Contributions *(1:12)*
+## 28 — The three answers *(0:39)*
 
-> To summarise. Six contributions, the six the thesis claims in section 1.6.
-> The one I'd underline is stratum-dependent decomposition: the literature
-> treats it as straightforwardly beneficial, and it is not.
+> So, the three answers. RQ1: yes, though the margin over Think-on-Graph lies
+> in the budget. RQ2: navigation, not verification, removes structural
+> hallucination, and the layer buys auditability. RQ3: only the planner
+> matters detectably, and its sign depends on the stratum.
 >
-> The sixth is *pre-specified*, not pre-registered: nothing was filed with a
-> registry.
->
-> The limitations, which I'd rather state than be asked. The first is the most
-> serious: the verifier persists only what it *rejects*, so wrongful acceptance
-> has no rate at all — and the same decision is why the output contract cannot
-> be audited from the record.
->
-> Then: one environment, one backbone, one run. And Think-on-Graph leads
-> where it finishes, from a narrower candidate set.
+> Navigation is where the accuracy comes from. Verification is where the
+> auditability comes from. And decomposition is sometimes harmful.
+
+*The last three sentences are the book's discussion chapter, closing its
+answer to the three questions. Say them slowly.*
 
 ---
 
-## 32 — Thank you *(0:05)*
+## 29 — Contributions *(0:58)*
+
+> Six contributions, the six the thesis claims. The one I'd underline is
+> stratum-dependent decomposition. The literature treats it as plainly
+> beneficial, and it is not. The protocol fixed four decisions in advance,
+> and I missed one: the judge reached a kappa of 0.6995 against 0.7.
+>
+> The limitations. The most serious is that the verifier persists only what
+> it rejects, so wrongful acceptance has no rate. Then one environment, one
+> backbone, one run, and the narrower candidate set. And the title is
+> broader than my claims, as the thesis says.
+
+*The title's three terms, if asked: hallucination mitigation happens, but
+navigation does it, not the layer; "autonomous" names a design the thesis
+argues against, since the program drives the loop; and "fact verification" is
+structural adjacency, not the relation and never relevance. The book's scope
+section reads the title the same way.*
+
+---
+
+## 30 — What comes next *(0:29)*
+
+> Next, three cheap repairs the census earned, and three operators the
+> failures specify, from decomposition gating to set intersection.
+>
+> The thesis closes on this. Fact verification against a knowledge graph
+> turns out to be the easier half. Relevance verification is the half still
+> open.
+
+---
+
+## 31 — Thank you *(0:05)*
 
 > Thank you. I'm happy to take questions.
 
@@ -647,7 +600,7 @@ seen from the other side.
 
 ## Backup slides — the tail of the same deck
 
-They are slides 33 to 38 of `thesis_defense_0421052099.pdf`, after the closing
+They are slides 32 to 38 of `thesis_defense_0421052099.pdf`, after the closing
 slide. **Everything in this script refers to a backup slide by its number in
 that deck**, which is what this table lists — the same numbering the footer
 prints, so there is nothing to convert under pressure. Page forward from
@@ -655,14 +608,15 @@ prints, so there is nothing to convert under pressure. Page forward from
 
 | Slide | Contents | Use when asked |
 | --- | --- | --- |
-| 33 | Budget configuration and enforcement sites | "How do you guarantee termination?" |
-| 34 | Which budgets actually bind | "Is the 25-call cap fair to Think-on-Graph?" |
-| 35 | Full 12-category failure histogram | "What were the other failure modes?" |
-| 36 | Accuracy against cost, both metrics | "Is it cheaper, or just better?" |
-| 37 | The benchmark was wrong 57 times | "How good is the gold?" |
-| 38 | AGR against RoG, side by side | "How does this compare to RoG?" |
+| 32 | Budget configuration and enforcement sites | "How do you guarantee termination?" |
+| 33 | Which budgets actually bind | "Is the 25-call cap fair to Think-on-Graph?" |
+| 34 | Full 12-category failure histogram | "What were the other failure modes?" |
+| 35 | Accuracy against cost, both metrics | "Is it cheaper, or just better?" |
+| 36 | The benchmark was wrong 57 times | "How good is the gold?" |
+| 37 | AGR against RoG, side by side | "How does this compare to RoG?" |
+| 38 | What changed from the proposal | "Your proposal said MCTS. What happened?" |
 
-**Slide 34 is the important one.** It shows AGR never reaches the call cap —
+**Slide 33 is the important one.** It shows AGR never reaches the call cap —
 0.0 percent on both datasets — which is precisely what makes the comparison
 against a clipped Think-on-Graph legitimate rather than an artefact of a cap
 chosen to suit AGR.
@@ -675,7 +629,7 @@ chosen to suit AGR.
 From this work's own no-retrieval baseline, which is the parametric control
 in the five-system comparison. On WebQSP it asserted 661 entities and 179 of
 them have no basis in the knowledge graph. That is 27.1 percent, every one
-stated without a hedge. Slide 23 gives the same measurement over both
+stated without a hedge. Slide 20 gives the same measurement over both
 datasets pooled: 1,001 asserted, 221 ungrounded, 22.1 percent. The WebQSP
 slice runs higher because CWQ questions are longer and the model hedges more
 on them; the pooled row is the one I quote, and the one the thesis's abstract
@@ -683,20 +637,20 @@ and conclusion use.
 
 **"Isn't the 25-call cap arbitrary, and doesn't it favour AGR?"**
 It is AGR's own budget, applied identically to every system. And AGR never
-reaches it — zero percent on both datasets (backup slide 34). If I raised the
+reaches it — zero percent on both datasets (backup slide 33). If I raised the
 cap, AGR's numbers would not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
 
-**"Do the categories look the same on both datasets?"** *(Slide 29 is pooled.)*
+**"Do the categories look the same on both datasets?"** *(Slide 26 is pooled.)*
 No, and that is the more interesting answer. The census is reported split in the
 thesis and never pooled, because wrong and hedge describe different failure
 semantics and the proportions differ sharply by dataset. The clearest case is
 `composite_claim`: 1 on WebQSP against 46 on CWQ. WebQSP questions mostly are
 not compound, so the category barely exists there; on ComplexWebQuestions it is
 the largest single failure mode. A pooled percentage would describe neither
-dataset. The full split is backup slide 35.
+dataset. The full split is backup slide 34.
 
-**"Doesn't GraphRAG show the same thing?"** *(Slide 20 puts 0.203 and 0.205
+**"Doesn't GraphRAG show the same thing?"** *(Slide 17 puts 0.203 and 0.205
 side by side. Do not pool them.)*
 No, and the thesis says so rather than letting the two numbers be read together.
 GraphRAG retrieves a one-logical-hop neighbourhood, so its fall on CWQ confounds
@@ -711,7 +665,19 @@ exceeds that degree, so on those it answers from an arbitrary sample. Vector RAG
 carries the paradigm claim, because one verbalised triple cannot contain a chain
 at any radius.
 
-**"What exactly does that p-value test?"** *(Slide 27 prints five of
+**"Why does the no-retrieval control beat GraphRAG on WebQSP?"** *(Slide 17.
+Said in passing there; this is the long form.)*
+Because it guesses and GraphRAG abstains. The retrieval baselines are told to
+answer only from the facts given and to return nothing otherwise, so when
+retrieval misses they hedge; the control has no such rule and answers from
+memory, which pays on a benchmark this old. Count only the questions each one
+commits on and the picture inverts: the control asserts on 351 of 400 and is
+right on 51.6 percent of them, GraphRAG asserts on 177 and is right on 76.8
+percent. A grounded system scoring below an ungrounded one on raw hits while
+asserting far fewer falsehoods is the contamination the control was there to
+expose.
+
+**"What exactly does that p-value test?"** *(Slide 24 prints five of
 them. Expect it from anyone who reads tables.)*
 An exact paired McNemar test on per-question correctness, full system against
 one ablation, over the same questions. It uses only the discordant pairs — the
@@ -730,7 +696,7 @@ half-samples is the remedy, and the threats to validity list the ablations as
 underpowered.
 
 **"Did both systems see the same candidate sets?"** *(The sharper form of the
-cap question. Slide 20 raises it deliberately — answer it, don't deflect.)*
+cap question. Slide 16 raises it deliberately — answer it, don't deflect.)*
 No, and it is the one thing I do not hold constant. Think-on-Graph keeps 40
 relations per entity and 20 neighbours per relation — the pruning widths of the
 algorithm as published — where AGR keeps 300 and 200. Measured over the
@@ -774,7 +740,7 @@ explicit hedge, and it pairs the answer with the triples that ground it at the
 point of emission. I report the null on accuracy rather than hiding it — and I
 report the bounds on the auditability too, which is the next question.
 
-**"Show me one supporting triple, then."** *(Expect this. Slide 23 invites it.)*
+**"Show me one supporting triple, then."** *(Expect this. Slide 22 invites it.)*
 I can't, from the committed record, and that is a limitation rather than an
 evasion. `RunLogger` writes `n_supporting_triples` — an integer — and discards
 the list, so no committed artifact in this work contains a single supporting
@@ -787,9 +753,9 @@ future work ranks it the highest-value change for its cost. I did not make it
 late because it would separate the code from results already frozen against it.
 
 **"Why isn't the five-system comparison one of your contributions?"**
-Because the thesis does not count it as one, and slide 31 is the thesis's list —
+Because the thesis does not count it as one, and slide 29 is the thesis's list —
 the six section 1.6 claims, in its order. The comparison and the hop-count shape
-are results the contributions rest on; they get slides 20 and 21, which is where
+are results the contributions rest on; they get slides 17 and 18, which is where
 the weight belongs. An earlier version of that slide promoted both to
 contributions and dropped the ablation, the decomposition finding and the
 protocol to make room — still saying "six". The thesis had already been audited
@@ -809,7 +775,7 @@ say that than be shown it. No, it is not significance-tested; the ablation's
 McNemar test is on correctness, not on the hedge column, and I claim the
 direction and nothing more.
 *Do not* offer the no-retrieval contrast here. Its 12.2 percent is a hedge rate,
-not an error rate — slide 26, a table of hedge rates, has it under WebQSP —
+not an error rate — slide 23, a table of hedge rates, has it under WebQSP —
 and AGR hedges *less* than it does, 8.2 against 12.2, so that comparison argues
 the opposite of what it looks like. No-retrieval's actual error rate is 170 wrong
 out of the 351 questions it asserts on.
@@ -839,6 +805,16 @@ ComplexWebQuestions, where the strata are 137, 211, and 49.
 **"How do you know the gold answers are reachable?"**
 Verified per question against the graph before scoring — 97.0 percent on WebQSP,
 99.2 on CWQ. It's the ceiling on every Hits@1 I report, and it's stated as such.
+It covers answers that are entities. A gold answer that is a date, a quantity or
+a superlative selection is in a class the environment chapter defines as
+unanswerable here, and slide 15 says so.
+
+**"Your CWQ Hits@1 is 209 out of 400. Isn't that 0.523, not 0.522?"**
+By hand, rounding half up, yes. The scoring script formats floats, and 0.5225 is
+stored a hair below itself, so it prints 0.522; the clip rate of 117 in 400 is
+the same case, 29.25 percent printed as 29.2. The thesis and the deck both carry
+the script's figure, so they agree with each other and with the JSON. Neither
+rounding moves a comparison.
 
 **"Where do the topic entities come from — doesn't the system have to find
 them first?"**
@@ -867,14 +843,14 @@ it depresses my *own* reported accuracy, so on that question shape the
 headline numbers are a floor rather than an estimate. The fix is an
 instruction to the claim decomposer, not an architecture change, and it is the
 first of the three repairs the census earned. The category split is backup
-slide 35.
+slide 34.
 
 **"Is that a standard dataset, or one you built yourself?"**
 *(Asked at the pre-defense. Section 3.1.3 of the thesis is “Source Datasets”.)*
 Standard, and public. WebQSP and ComplexWebQuestions, both unmodified, taken
 from the per-question subgraph distribution the Reasoning-on-Graphs paper
 released — rmanluo/RoG-webqsp and rmanluo/RoG-cwq on HuggingFace. I collected
-nothing and annotated nothing, which is also why every system on slide 20 is
+nothing and annotated nothing, which is also why every system on slide 17 is
 measured on the questions those benchmarks define. What I did build is the
 knowledge environment derived from them: the union of every per-question
 subgraph into one graph, plus its store and its vector index. That union is
@@ -885,12 +861,12 @@ gives the sampling: 400 per dataset, stratified at seed 42, every question ID
 listed in the appendix.
 
 **"You used RoG’s data. How does AGR compare to RoG itself?"**
-*(Asked at the pre-defense. Backup slide 38 has the table — put it up.)*
+*(Asked at the pre-defense. Backup slide 37 has the table — put it up.)*
 Directly, and RoG is ahead: 85.7 and 70.8 on WebQSP, 62.6 and 56.2 on CWQ,
 against my 75.5 and 64.2, and 52.2 and 46.9. The gap is outside my confidence
 intervals, so it is real and not sampling. The reason is not subtle. RoG
-fine-tunes LLaMA2-Chat-7B on the training splits of both benchmarks — 2,830
-WebQSP and 16,900 CWQ questions — for three epochs. AGR does no training at
+fine-tunes LLaMA2-Chat-7B on the training splits of both benchmarks — 2,826
+WebQSP and 27,639 CWQ questions — for three epochs. AGR does no training at
 all: the backbone is frozen and has seen no question from either benchmark
 before it is evaluated. So it is a supervised system against a zero-shot one on
 the same data, which is a difference in kind. I could not hold the backbone
@@ -903,6 +879,16 @@ what it cannot. The verification layer, the ablation and the failure census
 have no counterpart in RoG’s evaluation, and closing that accuracy gap would
 not settle any of them.
 
+**"Your proposal promised MCTS and FactBench. What happened?"**
+*(Backup slide 38.)* Both were withdrawn before any test run, and the thesis
+says why where each would have appeared. The search has no rollouts and no
+value backpropagation, so calling it MCTS-inspired would invite comparison with
+machinery it does not have; it is guided best-first search with a bounded beam
+and backtracking. FactBench was dropped because an evaluator whose facts sit
+inside the graph the system retrieves from makes a low hallucination rate
+automatic. Path fidelity, the proposal's third criterion, needs gold SPARQL
+relation chains the RoG distribution does not carry, so it is future work.
+
 **"Is this reproducible?"**
 Every number in the thesis is generated from frozen run records by a script;
 none is transcribed. Same for the three data figures in this deck — they are
@@ -912,20 +898,17 @@ pulled directly from the thesis's own generated sources.
 
 ## Recovery notes
 
-If you hit **16:04 (the end of slide 20) more than 40 seconds late**, compress
+If you hit **12:56 (the end of slide 17) more than 40 seconds late**, compress
 as follows.
 
-- Slides 24 and 25 — take them as one: *"It doesn't improve accuracy. It
-  converts silent error into an explicit hedge and attaches evidence. The case
-  is auditability."* Saves ~50 s.
-- Slide 4 — name the three origins and stop; skip the model sentence.
-  Saves ~15 s. Slide 8 has already been compressed this way and cannot give
-  again.
-- Slide 3 — the two kinds are on the slide; say the last sentence only.
-  Saves ~20 s. This is the one addition of this round that the talk can lose
-  without losing a claim.
+- Slides 21 and 22 — take them as one: *"It doesn't improve accuracy or explain
+  the precision lead. It withholds what it cannot ground and attaches evidence.
+  The case is auditability."* Saves ~40 s.
+- Slide 7 — say the first two sentences and the last; skip RoG and the
+  post-hoc checkers. Saves ~15 s.
+- Slide 14 — stop at "both supported." Saves ~5 s.
 
-Never compress 20, 21, 22, 27, or 28. Slide 22 in particular: skipping it
+Never compress 17, 18, 19, 24, or 25. Slide 19 in particular: skipping it
 means a committee member raises the clipping issue instead of you, and it
 lands very differently that way.
 
@@ -934,9 +917,10 @@ lands very differently that way.
 - **Say the number, then what it means.** Not the reverse. "Twenty-two percent
   of what the parametric model asserts has no basis in the graph. It has no
   source to point to."
-- **Four slides are negative results** (22, 23, 24, 25). Deliver them at normal
+- **Four slides are negative results** (19, 20, 21, 22). Deliver them at normal
   pace, not apologetically. A student who reports a clean null is more credible
   than one who reports only wins.
-- The word is **hedge**, not "refuse." A hedge is a calibrated non-assertion.
+- The word is **hedge**, not "refuse." A hedge is an explicit non-assertion,
+  and it scores as a miss.
 - If you lose your place, the takeaway bar at the bottom of the data slides is
   your prompt — read it aloud and continue.

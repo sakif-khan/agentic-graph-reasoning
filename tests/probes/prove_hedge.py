@@ -38,8 +38,12 @@ orig = io.open(DECK, encoding="utf-8", newline="").read()
 # The isolating comparison, as the first sentence of the block that now
 # carries it. Whitespace-tolerant because the deck is hard-wrapped and a
 # rewrap must not turn this probe into a no-op.
+#
+# Since October 2026 the comparison carries its case-level reading in the
+# same block -- the six CWQ answers withheld were all wrong, the one WebQSP
+# answer was right -- so the anchor runs to the end of that reading.
 BULLET = re.compile(
-    r"Removing\s+the\s+layer\s+drops\s+hedging[\s\S]*?on\s+WebQSP\.")
+    r"Remove\s+it\s+and\s+hedging\s+falls[\s\S]*?which\s+was\s+right\.")
 
 
 def run():
@@ -60,8 +64,9 @@ def replace_bullet(new):
 SHIPPED = (r"AGR hedges on $8.2\%$ of WebQSP against no-retrieval's "
            r"$12.2\%$ error rate.")
 
-REPLACEMENT = (r"Removing the layer drops hedging $23.2\% \to 20.2\%$ on "
-               r"CWQ and $8.5\% \to 8.0\%$ on WebQSP.")
+REPLACEMENT = (r"Remove it and hedging falls $23.2\% \to 20.2\%$ on CWQ. "
+               r"Those six answers were all wrong. It falls "
+               r"$8.5\% \to 8.0\%$ on WebQSP, one answer, which was right.")
 
 CASES = [
     ("shipped: 12.2% hedge rate sold as an error rate",
@@ -69,7 +74,7 @@ CASES = [
     ("the isolating comparison deleted entirely",
      replace_bullet(r"It withholds what it cannot ground.")),
     ("datasets swapped: CWQ's delta attributed to WebQSP",
-     replace_bullet(REPLACEMENT.replace("on CWQ and", "on WebQSP and")
+     replace_bullet(REPLACEMENT.replace("on CWQ. Those", "on WebQSP. Those")
                     .replace(r"$8.5\% \to 8.0\%$ on WebQSP",
                              r"$8.5\% \to 8.0\%$ on CWQ"))),
     ("arrow reversed: removing the layer made it hedge more",

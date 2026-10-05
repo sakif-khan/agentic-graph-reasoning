@@ -211,14 +211,17 @@ CASES = [
     # ", one annotator" came off the environment bullet: nothing in the deck
     # claimed the judge was validated against one reader's labels any more,
     # and the comment above that block in content-main.tex records it.
+    # The bullet lost its colon in the October 2026 sweep; the swap is the
+    # same defect with the current wording.
     ("shipped: the deck's limitations 4 and 5 are swapped", edit(
         DECK,
         "\\item One environment, one backbone, one run "
-        "\\item ToG leads where it finishes, from a \\alert{narrower "
-        "candidate set}: $40$/$20$ vs $300$/$200$",
-        "\\item ToG leads where it finishes, from a \\alert{narrower\n"
-        "          candidate set}: $40$/$20$ vs $300$/$200$\n"
-        "        \\item One environment, one backbone, one run")),
+        "\\item Think-on-Graph leads where it finishes, from a "
+        "\\alert{narrower candidate set} ($40$/$20$ against $300$/$200$)",
+        "\\item Think-on-Graph leads where it finishes, from a\n"
+        "            \\alert{narrower candidate set} ($40$/$20$ against\n"
+        "            $300$/$200$)\n"
+        "          \\item One environment, one backbone, one run")),
 
     # ---- the wording divergence: retired 2026-09-19. The thesis now says
     # pre-specified too, so there is no divergence for the script to
@@ -231,8 +234,8 @@ CASES = [
      edit(SCRIPT, "AGR goes 0.46, 0.55, 0.57 as",
           "AGR goes 0.96, 0.95, 0.97 as")),
     ("the slide drops the ends-above claim",
-     edit(DECK, "that ends above where it started",
-          "that ends above where it began")),
+     edit(DECK, "ending above where it started",
+          "ending above where it began")),
     ("the script drops the ends-above claim",
      edit(SCRIPT, "It is the only system on that dataset that ends above "
                   "where it started.",
@@ -270,7 +273,12 @@ CASES = [
     ("a labelled instance is taken out of the census", drop_subtype()),
 
     # ---- the table said 24:26 while the words said 24:50 ----
-    ("shipped: slide 19 gets 75 seconds for 156 words", retime_row(19, 75)),
+    # Shipped as slide 19 with 75 seconds for 156 words. The October 2026
+    # rebuild left no section that long, and a row given MORE time than its
+    # words is legitimate slack the rule does not flag -- so the same
+    # shortfall is reinstated on the longest section now, the main results.
+    ("shipped: a slide gets 75 seconds for more words than that holds",
+     retime_row(17, 75)),
 
     # ---- Nine matched inside Nineteen ----
     ("the extraction-bug count grows a syllable",
@@ -279,13 +287,11 @@ CASES = [
 
     # ---- the spelling rule, stated three times and checked in none ----
     ("shipped: contribution 6 drifts back to the thesis's word",
-     # The bullet reads "A \alert{pre-specified} protocol: four decisions
-     # fixed in advance" since 2026-09-29 -- it said "thresholds" before,
-     # which is not what the thesis's protocol fixed.
-     edit(DECK, r"A \alert{pre-specified} protocol: four decisions fixed in "
-                r"advance",
-          r"A \alert{pre-registered} protocol: four decisions fixed in "
-          r"advance")),
+     # The bullet reads "A \alert{pre-specified} protocol of four
+     # decisions, one missed (...)" since 2026-10; "four decisions fixed in
+     # advance" before that, and "thresholds" before 2026-09-29.
+     edit(DECK, r"A \alert{pre-specified} protocol of four decisions",
+          r"A \alert{pre-registered} protocol of four decisions")),
 
     # ---- "static baselines" collides with Static GraphRAG ----
     ("the two systems that do not seed are grouped, not named",

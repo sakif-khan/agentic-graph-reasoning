@@ -4,11 +4,12 @@ The defense slide deck for the thesis in `thesis_book/`.
 
 | File | What it is |
 | --- | --- |
-| `thesis_defense_0421052099.tex` / `.pdf` | **The deck.** 36 pages |
+| `thesis_defense_0421052099.tex` / `.pdf` | **The deck.** 38 pages: 31 presented, 7 backup |
 | `preamble.tex` | Shared preamble — 16:9, 12 pt, palette, styles |
 | `content-main.tex` | Every frame: title, body slides, closing slide, then the backup slides |
 | `figures/` | Slide-geometry figures, generated |
 | `check_slides.py` | Verifies every number in the deck against its source |
+| `transcript.md` | The rehearsal script, timed per slide, with the anticipated questions |
 | `pre-defense-frozen-2026-08-29/` | The pre-defense as delivered — its two decks, its rehearsal transcript, and the scripts that built them. Frozen; not expected to build from here. |
 
 ## Build
@@ -41,14 +42,20 @@ appearing *before* the close is the defect it now looks for.
 
 ## The transcript
 
-There is none in this folder, deliberately. The pre-defense rehearsal script
-and both its renderings are in `pre-defense-frozen-2026-08-29/`, along with
-`build_transcript.py` and `build_min.py`, which generated them. A new one gets
-written before the final defense.
+`transcript.md` is the rehearsal script for this deck: one section per slide,
+the speech in quoted lines, a timing table, the backup map, and the
+anticipated questions. Every row of the table is what its own words take at the
+rate the file states (93 wpm), and `check_slides.py` holds the arithmetic, the
+rate, the slide count and roughly fifty claims in the speech to their sources.
+It finds a section by the slide title it speaks to and checks that the section
+number is that slide's position in the deck, so a reordering of the deck fails
+until the script follows.
 
-Until then `check_slides.py` reports its script-facing rules as failures rather
-than skipping them — roughly fifty checks that read `transcript.md`. That is
-expected, and it is the list of what a new transcript has to satisfy.
+The pre-defense script and its two typeset renderings are in
+`pre-defense-frozen-2026-08-29/`, with `build_transcript.py` and
+`build_min.py`, which generated them. Those builders are frozen there, so this
+script is not typeset here; the checker reports the renderings as not built
+rather than stale.
 
 ## Figures
 
@@ -70,15 +77,14 @@ the hop tick labels over two lines, drop the redundant *Hop stratum* axis label,
 and use a deeper legend offset. Getting that offset wrong prints the legend on
 top of the x-axis label, which is what the first version of this deck did.
 
-`fig_claim_path.tex` is hand-drawn and has no slide variant. The deck
-`\input`s it across the directory boundary, from `thesis_book/figures/`.
-
-That reach is harmless here — the two modules are always checked out together
-— but it does mean `thesis_presentation/` is the one module that will not build
-from its own directory alone. `journal/` was deliberately fixed the other
-way: it keeps its own copy, because a manuscript uploaded to a publisher has no
-`../thesis_book/`, and `tests/test_paper_self_contained.py` fails if that copy
-drifts. Do the same here if this deck ever has to travel on its own.
+The deck draws the claim path itself, on the "One claim, three routes"
+slide. The book's `thesis_book/figures/fig_claim_path.tex` is a tall vertical
+chain, and scaled into a 16:9 frame its labels printed at 5.2 pt; the slide
+lays the same routing out left to right at its own size, where the smallest
+label is 10 pt. The two cannot drift: `check_slides.py` reads the book figure
+and requires each of its tests, buckets and edge labels, in its words, on the
+slide. The module therefore builds from its own directory alone, as `journal/`
+does.
 
 ## Numbers
 
@@ -89,8 +95,9 @@ checked:
 python thesis_presentation/check_slides.py
 ```
 
-This binds the figures in **both** decks back to the artifact, code, or thesis
-section each came from, and asserts the decks' formatting invariants — 16:9,
+This binds the figures in the deck and its transcript back to the artifact,
+code, or thesis section each came from, and asserts the deck's formatting
+invariants — 16:9,
 12 pt base, nothing in body text below `\small`, both justification hooks. Run
 it after editing any table. It exits non-zero on a mismatch, and
 `tests/test_slide_numbers.py` runs it, so a red checker fails the suite rather
@@ -144,6 +151,13 @@ two rounds of builds described as clean.
   hyphen or a wide word space. `\hbadness=2000` names the accepted ceiling;
   anything looser still reports in the log and still has to be fixed. Names
   (WebQSP, GraphRAG, …) are in a `\hyphenation` list and are never broken.
+- **No em-dashes and no colon explanations in slide text**, the rule the book
+  follows: a thought that needs a dash is two sentences. Colons stay where
+  they introduce a list or follow a bold or alert label.
+- **Lists in narrow columns are set ragged.** Beamer's list code re-issues
+  `\raggedright`, which the preamble repoints at `\justifying`, so a list is
+  justified unless the column says `\let\raggedright\agrraggedright`. At a
+  60mm measure justified items hyphenated words and spread short ones.
 - **Watch for the single orphaned word.** Several tables here once ran to two
   lines for the sake of one trailing word. Measure the cells (`\settowidth`)
   and set the column to fit, rather than guessing a width — the deck's 140mm
@@ -154,8 +168,8 @@ two rounds of builds described as clean.
   separates by luminance, so the figures survive a greyscale print — the mark
   shapes carry the distinction independently of hue.
 - **Watch for overfull boxes.** On a slide an overfull `\vbox` means content
-  running off the bottom edge, where a thumbnail will not show it. Both decks
-  build with **zero overfull boxes and zero underfull ones above the stated
+  running off the bottom edge, where a thumbnail will not show it. The deck
+  builds with **zero overfull boxes and zero underfull ones above the stated
   badness ceiling**; keep it that way.
 - **Read the rendered page, not the log.** Every defect fixed in this deck so
   far — an edge label sitting on top of the box it pointed at, a legend printed

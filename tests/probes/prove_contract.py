@@ -183,20 +183,26 @@ CASES = [
      strip_bound(CARD, BOUND_ROUTE, "route")),
     ("...nor its record bound alone",
      strip_bound(CARD, BOUND_RECORD, "record")),
-    ("shipped: slide 15, evidence for every asserted claim",
-     edit(DECK, r"From \alert{one route of three}: \textsf{verify\_connection} and entailment attach none.",
+    # Anchors re-pointed 2026-10, when the deck and script were rebuilt: the
+    # bounded sentences they corrupt were reworded, and moved slides.
+    ("shipped: the RQ2 slide, evidence for every asserted claim",
+     edit(DECK, r"From \alert{one route of three}, it attaches supporting "
+                r"triples, inside the run only. The other two routes, "
+                r"\mbox{\textsf{verify\_connection}} and entailment, attach "
+                r"none.",
           # No \alert inside "every asserted claim". The quantifier has to
           # reach its noun with nothing but whitespace in between, and
           # \alert{...} between them is exactly the markup-inside-the-phrase
           # case the rule's own docstring records. Alerting the phrase made
           # this case report MISSED against a rule that works.
-          r"To every asserted claim.")),
-    ("shipped: slide 6, returns every answer with its evidence",
-     edit(DECK, "carries its evidence with the answer",
-          "returns every answer with its evidence")),
+          r"It attaches supporting triples to every asserted claim.")),
+    ("shipped: the layer slide, returns every answer with its evidence",
+     edit(DECK, "the answer arrives with that evidence",
+          "it returns every answer with its evidence")),
     ("shipped: transcript, attaches to every claim it does assert",
-     edit(SCRIPT, "It attaches supporting triples, from one route of three, and pairs the answer",
-          "It attaches supporting triples to every claim it does assert, and pairs the answer")),
+     edit(SCRIPT, "Not right more often, but right for a reason it can show.",
+          "It attaches supporting triples to every claim it does assert, "
+          "and pairs the answer with its evidence.")),
     ("shipped: thesis abstract, returns every answer paired with",
      # Anchor re-pointed 2026-09-26. The abstract's sentence was reworded
      # from "the claims its traversal grounds come back paired with" to

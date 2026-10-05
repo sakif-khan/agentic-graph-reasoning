@@ -54,11 +54,16 @@ def edit(path, old, new):
     return go
 
 
-CURRENT = (r"Three cycles --- \emph{continue}, \emph{backtrack}, "
-           r"\emph{retry} --- all bounded by budgets rather than by model "
+# Both reworded in October 2026: the sentence lost its em-dashes to the
+# book's prose rule, and the retry run shortened from 28mm to 24mm when the
+# diagram was scaled up for legibility.
+CURRENT = (r"Three cycles (\emph{continue}, \emph{backtrack}, "
+           r"\emph{retry}), all bounded by budgets rather than by model "
            r"behaviour.")
-RETRY_EDGE = (r"\draw[flow] (ver.west) -- ++(-28mm,0) node[lbl, below, "
+RETRY_EDGE = (r"\draw[flow] (ver.west) -- ++(-24mm,0) node[lbl, below, "
               r"pos=0.5] {retry} |- ([yshift=-1.8mm] expl.west);")
+SAID = ("Three cycles, the three arrows back to the explorer, and all "
+        "three are bounded by budgets checked in code.")
 
 CASES = [
     ("shipped: the slide says two beside three arrows",
@@ -66,9 +71,7 @@ CASES = [
           r"Two cycles, both bounded by budgets rather than by model "
           r"behaviour.")),
     ("shipped: the script hardens it to exactly two",
-     edit(SCRIPT, "Three cycles — the three arrows returning to the "
-                  "explorer — and all three are bounded by explicit "
-                  "budgets rather than by model behaviour.",
+     edit(SCRIPT, SAID,
           "Exactly two cycles — explorer-to-evaluator, and verifier "
           "back to explorer — both bounded by explicit budgets.")),
     ("an arrow is removed and the sentence does not follow",
@@ -82,8 +85,8 @@ CASES = [
      edit(DECK, r"\emph{continue}, \emph{backtrack}, \emph{retry}",
           r"\emph{continue}, \emph{backtrack}")),
     ("slide and script disagree on the count",
-     edit(SCRIPT, "Three cycles — the three arrows returning",
-          "Two cycles — the three arrows returning")),
+     edit(SCRIPT, "Three cycles, the three arrows back",
+          "Two cycles, the three arrows back")),
 ]
 
 out = []
