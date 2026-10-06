@@ -10,6 +10,8 @@ The defense slide deck for the thesis in `thesis_book/`.
 | `figures/` | Slide-geometry figures, generated |
 | `check_slides.py` | Verifies every number in the deck against its source |
 | `transcript.md` | The rehearsal script, timed per slide, with the anticipated questions |
+| `transcript-min.tex` / `.pdf` | **The speaking copy.** Each slide's number, title, time and spoken lines, and nothing else |
+| `build_min.py` | Generates `transcript-min.tex` from `transcript.md` |
 | `pre-defense-frozen-2026-08-29/` | The pre-defense as delivered — its two decks, its rehearsal transcript, and the scripts that built them. Frozen; not expected to build from here. |
 
 ## Build
@@ -51,10 +53,27 @@ It finds a section by the slide title it speaks to and checks that the section
 number is that slide's position in the deck, so a reordering of the deck fails
 until the script follows.
 
+`transcript-min.pdf` is the speaking copy, the one to hold while presenting.
+It carries each slide's number, title and time and the words spoken, and
+nothing else from `transcript.md`. No slide's speech is split across two
+pages. A slide that will not fit in what is left of a page starts on the next
+one, because the document measures each slide's section before placing it.
+Rebuild it after any edit to the script:
+
+```bash
+cd thesis_presentation
+python build_min.py
+latexmk -pdf transcript-min.tex
+```
+
+`check_slides.py` fails if the copy is out of date. It also reads back the
+page each slide's speech starts and ends on (`python build_min.py --pages`),
+so a slide split across two pages fails too.
+
 The pre-defense script and its two typeset renderings are in
-`pre-defense-frozen-2026-08-29/`, with `build_transcript.py` and
-`build_min.py`, which generated them. Those builders are frozen there, so this
-script is not typeset here; the checker reports the renderings as not built
+`pre-defense-frozen-2026-08-29/`, with the `build_transcript.py` and
+`build_min.py` that generated them, and those stay frozen there. The full
+typeset transcript is not built here, and the checker reports it as not built
 rather than stale.
 
 ## Figures
@@ -68,14 +87,25 @@ python scripts/build_figures.py --target presentation
 from `results/phase4/thesis_numbers.json` — the same source the thesis reads.
 Nothing plotted is transcribed, and `check_slides.py` re-renders all three to
 confirm the committed copies are what `build_figures.py` would write today — a
-generated file is only current until the JSON moves under it. Running the script with no `--target` emits both
-the thesis and the presentation variants.
+generated file is only current until the JSON moves under it. Running the
+script with no `--target` emits every variant, the thesis's, the deck's and
+the paper's. Every run also rewrites the thesis's two generated tables, which
+come out unchanged unless the JSON has moved.
 
 The two targets exist because a thesis text column and a 16:9 slide are
 different shapes: the slide variants are wider relative to their height, stack
 the hop tick labels over two lines, drop the redundant *Hop stratum* axis label,
 and use a deeper legend offset. Getting that offset wrong prints the legend on
 top of the x-axis label, which is what the first version of this deck did.
+The slide variant of the census histogram also names its categories in words,
+as the census slide does, where the book and the paper print the schema's
+identifiers (`relation_selection`). `check_slides.py` holds the six largest
+to the census slide's own names.
+
+The accuracy-against-cost slide labels its token axis 100, 1,000 and 10,000
+rather than as powers of ten, whose exponents printed at 6 pt. That is set on
+the slide rather than in `build_figures.py`, so no generated file changes for
+it.
 
 The deck draws the claim path itself, on the "One claim, three routes"
 slide. The book's `thesis_book/figures/fig_claim_path.tex` is a tall vertical
@@ -167,6 +197,11 @@ two rounds of builds described as clean.
   unsupported. The series palette is Okabe-Ito, which is colour-blind safe and
   separates by luminance, so the figures survive a greyscale print — the mark
   shapes carry the distinction independently of hue.
+- **Every titled frame ends in `\takeaway`, `\sinkfoot` or `\centrebody`.**
+  The preamble puts stretchable glue under every frame title so that a thin
+  slide settles midway, and that needs a matching stretch at the foot. Without
+  one the body sinks to the floor, as four backup slides did until October
+  2026. `check_slides.py` fails on a titled frame that has none of the three.
 - **Watch for overfull boxes.** On a slide an overfull `\vbox` means content
   running off the bottom edge, where a thumbnail will not show it. The deck
   builds with **zero overfull boxes and zero underfull ones above the stated

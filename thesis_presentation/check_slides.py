@@ -495,6 +495,24 @@ ck("the six listed are the six largest",
        key=lambda kv: -kv[1])[:6]],
    "the slide claims the top categories")
 
+# ...and the backup histogram calls them what this slide calls them. It
+# printed the schema's identifiers in typewriter, relation_selection and
+# kg_gap, a few pages after a slide that said "Relation selection" and
+# "Knowledge-graph gap". The figure is generated, so this reads the file
+# build_figures.py wrote, which the figures rule below holds current.
+_hist = open(os.path.join(HERE, "figures", "fig_failure_histogram.tex"),
+             encoding="utf-8").read()
+_yl = re.search(r"yticklabels=\{(.*?)\},", _hist, re.S)
+_names = [" ".join(s.split()) for s in _yl.group(1).split(",")] if _yl else []
+ck("the backup census figure names categories in words, not identifiers",
+   bool(_names) and not any("\\_" in s for s in _names)
+   and "ttfamily" not in _hist,
+   ", ".join(_names[:3]) if _names else "no yticklabels")
+for label, key in CATS:
+    _word = re.sub(r"\\alert\{(.*)\}", r"\1", label)
+    ck(f"  and calls {key} {_word!r}, as the census slide does",
+       _word in _names)
+
 # ...and the column adds up to the heading over it. The slide read "All
 # 256" above six rows summing to 220, and every rule above passed: each
 # cell was right, and nothing asked what the cells were a part of. The
@@ -716,8 +734,12 @@ ck("WebQSP h3plus is 4 (quoted as a limitation)",
 HOP_TITLE = (r"RQ1: Does agentic navigation improve\\ multi-hop factual "
              r"accuracy?")
 _h3 = J["test_sets"]["webqsp"]["strata"]["h3plus"]
+# It read "Dashed: $n = 4$ at 3+.", which named neither the panel nor what
+# the n was of. The sentence that does both fits the line; the n is written
+# as the figure's own tick label writes it.
 ck(f"the RQ1 slide explains the dashed panel as n = {_h3}",
-   re.search(rf"Dashed:?\s*\$n = {_h3}\$", frame(HOP_TITLE)) is not None)
+   re.search(rf"WebQSP is dashed \(\$n\s*(?:\{{=\}}|=)\s*{_h3}\$ at 3\+\)",
+             frame(HOP_TITLE)) is not None)
 
 # The breakdown on the backup slide, line by line. This used to be three
 # has() calls -- "is 16 anywhere in the deck" -- and the slide said "17
@@ -798,6 +820,21 @@ _backups = [m.start() for m in
 ck("the closing slide is in the deck", _close >= 0)
 ck(f"all {len(_backups)} backup frames follow it, none before",
    bool(_backups) and _close >= 0 and min(_backups) > _close)
+
+# Every titled frame balances the glue under its title. The preamble puts
+# `plus 1filll' after every frametitle so a thin slide's body settles
+# midway; that needs a second stretch at the foot, which \takeaway,
+# \sinkfoot and \centrebody each supply. A frame with none of them sinks
+# to the floor. Four backup frames shipped that way, and "which budgets
+# actually bind" sat 82pt under its title and 2pt above the page number.
+_titled = re.findall(
+    r"\\begin\{frame\}(\[[^\]]*\])?\{(.*?)\}[ \t]*\n(.*?)\\end\{frame\}",
+    uncomment(main_src), re.S)
+_sunk = [t for _, t, b in _titled
+         if not re.search(r"\\(?:takeaway|sinkfoot|centrebody)\b", b)]
+ck(f"all {len(_titled)} titled frames close with glue to balance the "
+   f"title's", bool(_titled) and not _sunk,
+   "; ".join(t[:40] for t in _sunk))
 
 # The three data figures have slide-geometry variants under figures/. The
 # claim path used to be \input from the book; it is drawn on its slide now,
@@ -1831,26 +1868,68 @@ else:
     ck("transcript-min.tex matches transcript.md", r.returncode == 0,
        (r.stdout + r.stderr).strip().splitlines()[-1]
        if (r.stdout + r.stderr).strip() else "")
-# Both PDFs exist and are newer than the script they render. A .tex that
-# matches while the PDF beside it was built two edits ago is the same
+# Both PDFs exist and were built from the script as it stands. A .tex
+# that matches while the PDF beside it was built two edits ago is the same
 # staleness one level down, and the speaking copy is printed, not read
 # from the source.
 #
-# Gated on the generator, like the two rules above it. transcript.md is
-# authored here well before it is typeset -- the builders are frozen with
-# the pre-defense -- and a rendering that does not exist yet is not a
-# stale rendering. Restore a builder and its PDF becomes required again.
-for pdf, gen in (("transcript.pdf", GEN), ("transcript-min.pdf", MIN)):
-    if not os.path.exists(gen):
-        print(f"  [   ] {pdf}: {os.path.basename(gen)} absent, "
-              f"nothing renders it here")
-        continue
-    p = os.path.join(HERE, pdf)
-    ck(f"{pdf} is built and not older than transcript.md",
-       os.path.exists(p) and
-       os.path.getmtime(p) >= os.path.getmtime(os.path.join(
-           HERE, "transcript.md")),
-       "rebuild it" if os.path.exists(p) else "missing")
+# Gated on the generator, like the two rules above it. A rendering that
+# does not exist yet is not a stale rendering. build_transcript.py is still
+# frozen with the pre-defense, so transcript.pdf is not built here, and
+# restoring that builder would make its PDF required again.
+if not os.path.exists(GEN):
+    print("  [   ] transcript.pdf: build_transcript.py absent, nothing "
+          "renders it here")
+else:
+    p = os.path.join(HERE, "transcript.pdf")
+    fresh = os.path.exists(p) and os.path.getmtime(p) >= os.path.getmtime(
+        os.path.join(HERE, "transcript.md"))
+    ck("transcript.pdf is built and not older than transcript.md", fresh,
+       "" if fresh else "rebuild it" if os.path.exists(p) else "missing")
+# build_min.py was rewritten here in October 2026, so transcript-min.pdf is
+# required, and it is held by content rather than by age. Age was the rule
+# while nothing here could build it, and it is wrong both ways: every
+# probe that edits transcript.md and restores it left a current copy
+# looking stale, and a fresh clone writes the PDF before the script, in
+# alphabetical order, so it would start out stale. The build stamps a
+# digest of its .tex into the PDF's keywords; the copy is current when that
+# is the digest build_min.py would write now.
+if not os.path.exists(MIN):
+    print("  [   ] transcript-min.pdf: build_min.py absent, nothing renders "
+          "it here")
+elif pymupdf is None:
+    skipped.append("transcript-min.pdf's digest (no PyMuPDF)")
+else:
+    p = os.path.join(HERE, "transcript-min.pdf")
+    want = subprocess.run([sys.executable, MIN, "--digest"],
+                          capture_output=True, text=True,
+                          cwd=HERE).stdout.strip()
+    have = ""
+    if os.path.exists(p):
+        with pymupdf.open(p) as d:
+            have = d.metadata.get("keywords") or ""
+    ck("transcript-min.pdf is built from the script as it stands",
+       bool(want) and have == f"speech digest {want}",
+       "" if have == f"speech digest {want}" else
+       "missing" if not os.path.exists(p) else
+       f"PDF says {have!r}, script is {want!r}: rebuild it")
+# The speaking copy keeps each slide's speech on one page: a section that
+# will not fit in what is left of a page starts on the next one. The
+# document measures each section before placing it; this reads back the
+# page every section starts and ends on, from the labels the build wrote,
+# so a macro change that lets one split fails here and not at the lectern.
+# The .aux is a build product and is not committed, so a clone that has
+# not built the copy has nothing to read.
+if os.path.exists(MIN):
+    if not os.path.exists(os.path.join(HERE, "transcript-min.aux")):
+        print("  [   ] transcript-min.aux absent, page layout not read")
+    else:
+        r = subprocess.run([sys.executable, MIN, "--pages"],
+                           capture_output=True, text=True, cwd=HERE)
+        ck("no slide's speech in transcript-min.pdf runs across two pages",
+           r.returncode == 0,
+           (r.stdout + r.stderr).strip().splitlines()[-1]
+           if (r.stdout + r.stderr).strip() else "")
 
 # ---------------------------------------------------------------------
 # The rehearsal transcript's timing table has to add up.

@@ -555,7 +555,10 @@
 % check_slides.py holds every figure on this slide to that record. The
 % mention "The Office" is the dataset's annotation (use_gold_entities); the
 % planner's search_entity call resolves it to a node. Each Explorer pass
-% keeps three relations, and the one named is the highest-scoring.
+% keeps three relations, and the one named is the highest-scoring. The
+% mention is quoted because it is a string until it resolves: as
+% \textsf{The Office} it read "the given mention The Office", since \textsf
+% is invisible in a deck already set in sans.
 \begin{frame}{One question, end to end}
   \small
   \textsf{WebQTest-960}, ``who plays dwight in the office''
@@ -565,7 +568,7 @@
       \let\raggedright\agrraggedright
       \begin{enumerate}\setlength{\itemsep}{0pt}
         \item \alert{Planner}: two sub-objectives. The given mention
-          \textsf{The Office} resolves to one node.
+          ``The Office'' resolves to one node.
         \item \alert{Explorer}: keeps three relations. The best is\\
           \textsf{tv.tv\_program.regular\_cast}
         \item \alert{Evaluator}: objective met, resolves
@@ -756,7 +759,7 @@
   % and it is said aloud.
   {\small On CWQ, AGR goes $0.46 \to 0.55 \to 0.57$, the \textbf{only}
   system ending above where it started. Three of the other four decay
-  monotonically. Dashed: $n = 4$ at 3+.\par}
+  monotonically. WebQSP is dashed ($n{=}4$ at 3+).\par}
   \takeaway{Yes. The evidence is a shape, not a difference of means.}
 \end{frame}
 
@@ -1152,7 +1155,11 @@
       % severity order, which check_slides.py reads and holds this list to.
       % The fourth is sec:scope's "How to read the title": the registered
       % title is broader than the findings, and the thesis says how to
-      % read it.
+      % read it. "At face value" is its "better read against the findings
+      % than taken as claims in their own right". The item used to list the
+      % three terms and never say what was not claimed about them; the list
+      % is the script's if-asked note now. With the list in brackets the
+      % last line's descenders overran this frame by 1.7pt.
       \begin{block}{What I would not claim}
         \small\let\raggedright\agrraggedright
         \begin{itemize}\setlength{\itemsep}{0pt}
@@ -1162,8 +1169,7 @@
           \item Think-on-Graph leads where it finishes, from a
             \alert{narrower candidate set} ($40$/$20$ against
             $300$/$200$)
-          \item The title's broad terms, hallucination mitigation,
-            autonomy and fact verification
+          \item The title's terms at face value
         \end{itemize}
       \end{block}
     \end{column}
@@ -1211,6 +1217,10 @@
 % ===================== BACKUP =====================
 % Not presented. These follow the closing slide so a question can be
 % answered by paging past it, rather than by switching to a second PDF.
+% A backup frame with no takeaway bar closes with \centrebody, as the
+% presented ones do. Without it the frametitle's glue is the only stretch
+% in the frame and the body sinks to the floor: "which budgets actually
+% bind" sat 82pt under its title and 2pt above the page number.
 \begin{frame}{Backup: budget configuration}
   \begin{table}
     \small
@@ -1230,6 +1240,7 @@
   \end{table}
   {\small Termination does not depend on model behaviour. Every cycle passes
   through a router that checks a monotone counter.\par}
+  \centrebody
 \end{frame}
 
 \begin{frame}{Backup: which budgets actually bind}
@@ -1250,17 +1261,25 @@
   {\small Percentage of questions on which each budget refused a request.
   AGR never reaches the $25$-call cap. That is what makes a clipped
   Think-on-Graph a meaningful comparison.\par}
+  \centrebody
 \end{frame}
 
 \begin{frame}{Backup: the full failure census}
   \centering
   \resizebox{\textwidth}{!}{%
     \input{figures/fig_failure_histogram.tex}}
+  \centrebody
 \end{frame}
 
+% Token counts tick as 100, 1,000 and 10,000 here, not as powers of ten.
+% As 10^2, 10^3 and 10^4 the one digit that tells the ticks apart is the
+% exponent, which printed at 6pt, the smallest text in the deck. Set on
+% this slide rather than in build_figures.py, so the book's and the
+% paper's copies of the figure are untouched.
 \begin{frame}{Backup: accuracy against cost}
   \centering
-  \input{figures/fig_accuracy_cost.tex}
+  {\pgfplotsset{every axis/.append style={log ticks with fixed point}}%
+   \input{figures/fig_accuracy_cost.tex}}
 
   \vspace{1mm}
   {\small On \emph{tokens} Think-on-Graph is \textbf{not} dominated. It buys
@@ -1366,4 +1385,5 @@
       \bottomrule
     \end{tabular}
   \end{table}
+  \centrebody
 \end{frame}
