@@ -146,7 +146,7 @@
     \end{tabular}
   \end{table}
   % sec:limitations: "The problem is not fabrication. The problem is
-  % precision." Said here, slide 20's zero for both navigating systems is
+  % precision." Said here, slide 21's zero for both navigating systems is
   % the expected result rather than a surprise that undercuts the opening.
   {\small Agentic systems already name only what they traversed. Their
   problem is \alert{precision}. A real, traversed entity can still be the
@@ -158,7 +158,7 @@
 % ===================== 6 =====================
 % "Beam search" arrives on the next slide as Think-on-Graph's row, and it
 % has to be defined before then. The takeaway plants the limitation that
-% slide 9's Backtracker answers, and "multiplies" is what slide 19 cashes.
+% slide 9's Backtracker answers, and "multiplies" is what slide 20 cashes.
 \begin{frame}{What guided beam search is}
   \begin{columns}[T]
     \begin{column}{0.56\textwidth}
@@ -188,7 +188,7 @@
 
 % ===================== 7 =====================
 \begin{frame}{What everyone else does}
-  \bodyshift{-2.75pt}
+  \bodyshift{-4pt}
   \begin{table}
     \small
     \setlength{\tabcolsep}{5pt}
@@ -214,16 +214,17 @@
   {\small\agrraggedright RoG's answers are grounded by construction, but
   nothing examines them. Chain-of-Verification and FActScore check claims
   \emph{after} generation. Published Hits@1 is higher and \emph{not}
-  comparable, because of other backbones, subsets and full Freebase.\par}
+  comparable. RoG is fine-tuned on these benchmarks, and the others search
+  the full Freebase with other backbones.\par}
   \takeaway{No surveyed graph-navigating system checks its answer's claims
     against the triples it retrieved, before answering.}
 \end{frame}
 
 % ===================== 8 =====================
 % The questions as sec:rqs words them, word for word, and the six
-% contributions as a preview. Slide 29 is the same six, in the same order.
+% contributions as a preview. Slide 30 is the same six, in the same order.
 % RQ1 used to carry "and does the advantage grow with hop count", which is
-% sec:rqs's elaboration rather than its question; it is slide 18's subtitle
+% sec:rqs's elaboration rather than its question; it is slide 19's subtitle
 % now. check_slides.py holds all three to the book's bold lines.
 \begin{frame}{Research questions}
   \bodyshift{2.75pt}
@@ -400,7 +401,7 @@
 % ch:framework opens by introducing the layer "as one part of the
 % architecture rather than as the part the rest exists to serve", and says
 % its measured contribution is "auditability rather than accuracy". The
-% takeaway says both, so slides 20 to 22 read as the measurement this slide
+% takeaway says both, so slides 21 to 23 read as the measurement this slide
 % announced rather than as a retraction of it.
 \begin{frame}{The Structural Verification Layer}
   \begin{columns}[T]
@@ -459,7 +460,7 @@
       \begin{block}{What it cannot catch}
         \agrraggedright
         A claim can be \emph{true} and still be the wrong answer. That is
-        the echo attractor of slide 27.
+        the echo attractor of slide 28.
       \end{block}
     \end{column}
     \begin{column}{0.48\textwidth}
@@ -765,16 +766,56 @@
     more tokens.}
 \end{frame}
 
-% ================ 18 to 25, the research questions ================
+% ===================== 18 =====================
+% The board asked for this at the pre-defense: the environment is built
+% from RoG's published subgraphs, so a direct comparison is owed. It was a
+% backup slide until 2026-10 and is presented now, after the results it
+% places. The honest answer is that RoG leads and the comparison does not
+% settle an architectural question. Figures are tab:rog
+% (sec:rog-comparison). The third row is AGR's own answers scored by RoG's
+% released scorer, which finds a gold answer anywhere inside the predicted
+% text (the rog_scorer block of thesis_numbers.json, from
+% scripts/rog_scorer.py). The training-split sizes are evaluation.tex's,
+% and check_slides.py holds them there: this slide said 2,830 and 16,900
+% until 2026-10.
+\begin{frame}{AGR against RoG}
+  \bodyshift{-2.75pt}
+  \begin{table}
+    \small
+    \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{}}
+      \toprule
+      & \multicolumn{2}{c}{\textbf{WebQSP}}
+      & \multicolumn{2}{c}{\textbf{CWQ}} \\
+      \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+      \textbf{System} & \textbf{Hits@1} & \textbf{F1}
+                      & \textbf{Hits@1} & \textbf{F1} \\
+      \midrule
+      RoG (published) & $85.7$ & $70.8$ & $62.6$ & $56.2$ \\
+      \textbf{AGR} (this work) & $75.5$ & $64.2$ & $52.2$ & $46.9$ \\
+      \quad scored by RoG's code & $76.0$ & $64.9$ & $52.2$ & $47.2$ \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  {\small\agrraggedright \alert{RoG leads on all four}, outside AGR's
+  confidence intervals. Scored by RoG's own code, AGR moves by under a
+  point. RoG is \alert{fine-tuned} on both benchmarks' training splits,
+  $2{,}826$ and $27{,}639$ questions, while AGR trains on \alert{nothing}.
+  And RoG searches each question's \alert{own subgraph}, where AGR searches
+  the union of them all.\par}
+  \takeaway{Same data, a different \textbf{class} of system. It places AGR,
+    but it is not an architecture comparison.}
+\end{frame}
+
+% ================ 19 to 26, the research questions ================
 % Each slide is titled with its question exactly as sec:rqs words it, on
 % one line, and what that slide answers is its subtitle. RQ1 and RQ2 do not
 % fit one line at the frame-title size, so each question's slides sit in a
 % group that sets its title a little smaller and closes after its last
 % slide (preamble.tex says how much, and why a group). RQ3 fits, and its
 % two slides have no group.
-{\rqtitlesize{14pt}{17.5pt}% RQ1, slides 18 and 19
+{\rqtitlesize{14pt}{17.5pt}% RQ1, slides 19 and 20
 
-% ===================== 18 =====================
+% ===================== 19 =====================
 % The subtitle is the second half of RQ1 as sec:rqs elaborates it, which
 % slide 8 carried until the questions there became the book's verbatim.
 \begin{frame}{RQ1: Does agentic navigation improve multi-hop factual accuracy?}{And does the advantage grow with hop count?}
@@ -792,11 +833,11 @@
   \takeaway{Yes. The evidence is a shape, not a difference of means.}
 \end{frame}
 
-% ===================== 19 =====================
+% ===================== 20 =====================
 \begin{frame}{RQ1: Does agentic navigation improve multi-hop factual accuracy?}{The caveat I want to raise myself}
   \begin{table}
     \small
-    % 1.1, as slides 20, 23 and 24 set it: the question at 14pt cost this
+    % 1.1, as slides 21, 24 and 25 set it: the question at 14pt cost this
     % slide 2.6pt it did not have.
     \renewcommand{\arraystretch}{1.1}
     % Grouped like slide 17's table, and for the same reason: the long
@@ -834,9 +875,9 @@
 \end{frame}
 
 }% end of RQ1's title size
-{\rqtitlesize{11.6pt}{14.5pt}% RQ2, slides 20 to 23
+{\rqtitlesize{11.6pt}{14.5pt}% RQ2, slides 21 to 24
 
-% ===================== 20 =====================
+% ===================== 21 =====================
 % The subtitle is the question this slide answers, RQ2 in its narrowest
 % form, and the script opens on the same words.
 \begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{Does anything ungrounded get asserted?}
@@ -869,7 +910,7 @@
     property of \emph{graph navigation}, not of the verification layer.}
 \end{frame}
 
-% ===================== 21 =====================
+% ===================== 22 =====================
 % Three negative findings, each the book's. The middle one is the second
 % part of sec:findings' RQ2 answer, which the deck did not carry: the
 % precision lead "belongs to the architecture", the layer's removal does not
@@ -909,7 +950,7 @@
   \alert{What it does buy is the next slide.}\par}
 \end{frame}
 
-% ===================== 22 =====================
+% ===================== 23 =====================
 % The hedge deltas stay, because they are what removing the layer measured.
 % What they mean is the paired records', computed in check_slides.py: the
 % six CWQ questions the layer withheld are exactly the six the ablated run
@@ -950,7 +991,7 @@
     at a small cost in recall.}
 \end{frame}
 
-% ===================== 23 =====================
+% ===================== 24 =====================
 % The between-system evidence that a hedge is not accuracy bought with
 % silence, and the answer to the objection the failure census invites
 % three slides later: 256 failures, of which 125 are hedges.
@@ -964,7 +1005,7 @@
   \bodyshift{-0.5pt}
   \begin{table}
     \small
-    % 1.1, as slides 20 and 24 set it: the subtitle cost this slide a line.
+    % 1.1, as slides 21 and 25 set it: the subtitle cost this slide a line.
     \renewcommand{\arraystretch}{1.1}
     \begin{tabular}{@{}lrr@{}}
       \toprule
@@ -988,12 +1029,12 @@
 
 }% end of RQ2's title size: from here on titles are at full size
 
-% ===================== 24 =====================
+% ===================== 25 =====================
 % The subtitle is what the table is, in the script's own words.
 \begin{frame}{RQ3: Which components contribute what, at what token cost?}{Four ablations, each a paired test against the full system}
   \begin{table}
     \small
-    % 1.05, not the 1.1 of slides 20 and 23: the question at full size
+    % 1.05, not the 1.1 of slides 21 and 24: the question at full size
     % cost this slide 0.95pt it did not have.
     \renewcommand{\arraystretch}{1.05}
     % Three groups, separated like slide 17's: the two datasets and the
@@ -1031,7 +1072,7 @@
     the next slide, and its sign is backwards.}
 \end{frame}
 
-% ===================== 25 =====================
+% ===================== 26 =====================
 % The strata and the mechanism together. sec:ablations gives the per-stratum
 % Hits@1 (held in check_slides.py against ablations.by_hop_stratum), and
 % sec:decomposition-errors names context-stripping as the mechanism the
@@ -1060,7 +1101,7 @@
     that conclusion rather than confirming one.}
 \end{frame}
 
-% ===================== 26 =====================
+% ===================== 27 =====================
 \begin{frame}{Every failure, read and labelled}
   \bodyshift{-1pt}
   \begin{columns}[T]
@@ -1117,7 +1158,7 @@
     invention.}
 \end{frame}
 
-% ===================== 27 =====================
+% ===================== 28 =====================
 % This read "it appears across systems, so it is a property of the
 % task, not of AGR" -- defensive where the thesis is substantive.
 % Real specimens rather than invented ones. WebQTest-1707 is sec:echo's own
@@ -1154,7 +1195,7 @@
   \takeaway{The contribution is the mechanism, named, not the count.}
 \end{frame}
 
-% ===================== 28 =====================
+% ===================== 29 =====================
 % sec:findings answers each question in its own words, and the deck never
 % said the answers. The takeaway is the chapter's closing sentence, broken
 % into three.
@@ -1182,7 +1223,7 @@
     where the auditability comes from. Decomposition is sometimes harmful.}
 \end{frame}
 
-% ===================== 29 =====================
+% ===================== 30 =====================
 \begin{frame}{Contributions}
   \bodyshift{-3.25pt}
   \begin{columns}[T]
@@ -1235,7 +1276,7 @@
   \centrebody
 \end{frame}
 
-% ===================== 30 =====================
+% ===================== 31 =====================
 % conclusion.tex's future work, the three repairs the census earned and the
 % operators the categories specify, and its closing remark as the takeaway.
 % The counts are the census's own and check_slides.py holds them.
@@ -1383,41 +1424,6 @@
     \end{column}
   \end{columns}
   \takeaway{A contribution that outlives this particular system.}
-\end{frame}
-
-% The board asked for this at the pre-defense: the environment is built
-% from RoG's published subgraphs, so a direct comparison is owed. It is a
-% backup slide because the honest answer is that RoG leads and the
-% comparison does not settle an architectural question. Figures are tab:rog
-% (sec:rog-comparison). The training-split sizes are evaluation.tex's, and
-% check_slides.py holds them there: this slide said 2,830 and 16,900 until
-% 2026-10.
-\begin{frame}{Backup: AGR against RoG}
-  \bodyshift{-2.75pt}
-  \begin{table}
-    \small
-    \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{}}
-      \toprule
-      & \multicolumn{2}{c}{\textbf{WebQSP}}
-      & \multicolumn{2}{c}{\textbf{CWQ}} \\
-      \cmidrule(lr){2-3}\cmidrule(lr){4-5}
-      \textbf{System} & \textbf{Hits@1} & \textbf{F1}
-                      & \textbf{Hits@1} & \textbf{F1} \\
-      \midrule
-      RoG (published) & $85.7$ & $70.8$ & $62.6$ & $56.2$ \\
-      \textbf{AGR} (this work) & $75.5$ & $64.2$ & $52.2$ & $46.9$ \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  {\small\agrraggedright \alert{RoG leads on all four}, and the gap is
-  outside AGR's confidence intervals. But RoG is \alert{fine-tuned} on the
-  training splits of both benchmarks, $2{,}826$ and $27{,}639$ questions,
-  while AGR trains on \alert{nothing}. RoG reports over the full test
-  splits, AGR over the certified $400$-question samples of those
-  splits.\par}
-  \takeaway{Same data, different \textbf{class} of system, supervised
-    against zero-shot. Worth stating, but it is not an architecture
-    comparison, and no protocol here could make it one.}
 \end{frame}
 
 % Four departures from the approved proposal, each recorded in the thesis

@@ -2662,7 +2662,10 @@ if not os.path.exists(CARDF):
 else:
     CARD = " ".join(uncomment(open(CARDF, encoding="utf-8").read()).split())
 
-    def cell(value):
+    # Named apart from cell(), the table helper. Defined at module level, a
+    # second cell() replaced it for every rule after this one, and holds()
+    # called the card's version with three arguments.
+    def card_cell(value):
         """The one brace group on the card holding this value."""
         hits = [g for g in re.findall(r"\{([^{}]*)\}", CARD) if value in g]
         return hits[0] if len(hits) == 1 else ""
@@ -2725,7 +2728,7 @@ else:
        re.search(r"sum\(r\['hedge'\] for r in rows\)\s*/\s*n", ST)
        is not None)
     hedge = f"{J['main_results']['by_system']['webqsp/agr']['hedge_pct']}"
-    line = cell(hedge)
+    line = card_cell(hedge)
     ck("the card's hedge line is on the card", bool(line), hedge)
     if line:
         ck("and counts questions rather than answers",
@@ -2733,15 +2736,23 @@ else:
 
 
 # ---------------------------------------------------------------------
-# The RoG comparison exists twice: tab:rog (Table 5.7) and the backup
-# slide. Eight figures, two documents, one of them cited from a paper that
-# cannot be re-measured -- which is the exact shape of every drift this
-# file was written to catch. AGR's half is bound to thesis_numbers.json;
-# RoG's half is bound to the thesis, so the deck cannot disagree with the
-# document it summarises even though neither can be recomputed here.
+# The RoG comparison exists twice: tab:rog (Table 5.7) and slide 18. Eight
+# figures, two documents, one of them cited from a paper that cannot be
+# re-measured -- which is the exact shape of every drift this file was
+# written to catch. AGR's half is bound to thesis_numbers.json; RoG's half
+# is bound to the thesis, so the deck cannot disagree with the document it
+# summarises even though neither can be recomputed here.
+#
+# It was a backup slide until 2026-10. It is presented now, where the book
+# puts sec:rog-comparison: after the main results it places, and before the
+# questions take the results apart.
 print("\n== the RoG comparison agrees across deck and thesis ==")
-ROGFRAME = frame("Backup: AGR against RoG")
-ck("the RoG backup slide is in the deck", bool(ROGFRAME))
+ROGFRAME = frame("AGR against RoG")
+ck("the RoG slide is in the deck", bool(ROGFRAME))
+_rq_first = min((n for n, _, _ in _rq_at), default=0)
+ck("it is presented, between the main results and the questions",
+   0 < frame_no("Main results") < frame_no("AGR against RoG") < _rq_first,
+   f"slide {frame_no('AGR against RoG')}")
 # evaluation.tex since 15140dd, as above; tab:rog moved with the chapter.
 RES = os.path.join(ROOT, "thesis_book", "chapters", "evaluation.tex")
 _res = " ".join(uncomment(open(RES, encoding="utf-8").read()).split())
@@ -2788,6 +2799,76 @@ if _splits:
     ck("the RoG answer in the script gives the same two sizes",
        all(v.replace("{,}", ",") in _rog for v in _splits.groups()),
        "; ".join(v.replace("{,}", ",") for v in _splits.groups()))
+
+# The two rows are scored by different rules. RoG's released scorer finds a
+# gold answer anywhere inside the predicted text, and this thesis's needs an
+# exact entity match, so AGR's own answers are scored RoG's way too
+# (scripts/rog_scorer.py, into the JSON's rog_scorer block). The slide's
+# third row is that score, and the slide, the book and the script all say
+# it moves AGR by under a point.
+RS = J["rog_scorer"]
+_rs_pts = {(ds, k): f"{RS[ds][k] * 100:.1f}"
+           for ds in ("webqsp", "cwq") for k in ("hits_at_1", "f1")}
+_RSROW = r"\quad scored by RoG's code"
+for (ds, k), n in COL.items():
+    ck(f"the RoG slide's RoG-scored row gives {ds} {k} {_rs_pts[ds, k]}",
+       holds(ROGFRAME, _RSROW, n, _rs_pts[ds, k]),
+       f"cell holds {cell(ROGFRAME, _RSROW, n)!r}")
+_moved = max(abs(RS[ds][k] - B[f"{ds}/agr"][k])
+             for ds in ("webqsp", "cwq") for k in ("hits_at_1", "f1"))
+ck(f"RoG's scorer moves AGR by under a point ({100 * _moved:.1f} at most)",
+   _moved < 0.01)
+_rs_said = section("AGR against RoG")
+for label, text in (("slide", ROGFRAME), ("script", _rs_said)):
+    ck(f"the {label} says so", "under a point" in text)
+_rs_book = re.search(
+    r"AGR's figures become \$([\d.]+)\$ and \$([\d.]+)\$ on WebQSP and "
+    r"\$([\d.]+)\$ and \$([\d.]+)\$ on CWQ", _res)
+ck("the thesis gives AGR's four figures under RoG's scorer",
+   _rs_book is not None and list(_rs_book.groups()) ==
+   [_rs_pts[ds, k] for ds in ("webqsp", "cwq") for k in ("hits_at_1", "f1")],
+   str(_rs_book.groups()) if _rs_book else "no sentence")
+ck("and says no figure moves by as much as a point",
+   "No figure moves by as much as a point" in _res)
+# Which hits change, and the specimen the thesis names. Read off the run
+# record, so a specimen that stopped being one fails here.
+_gain = {ds: len(RS[ds]["hits_gained"]) for ds in ("webqsp", "cwq")}
+ck(f"the thesis counts the hits that change, {_gain['webqsp']} on WebQSP "
+   f"and {_gain['cwq']} on CWQ",
+   not RS["webqsp"]["hits_lost"] and not RS["cwq"]["hits_lost"]
+   and re.search(rf"Hits@1 changes on {NUM[_gain['webqsp']].lower()} WebQSP "
+                 rf"questions", _res) is not None
+   and (_gain["cwq"] > 0 or "on no CWQ question" in _res))
+_dk = _records(os.path.join(ROOT, "results", "phase4", "test_webqsp_agr.jsonl"))
+_dk = [_dk[q] for q in RS["webqsp"]["hits_gained"]
+       if "Kingdom of Denmark" in _dk[q]["answer_entities"]
+       and "Denmark" in _dk[q]["gold"]]
+ck("its specimen is a gained hit, Kingdom of Denmark against Denmark",
+   bool(_dk) and "``Kingdom of Denmark'' against the gold ``Denmark''" in _res)
+
+# The second difference the slide names: RoG searches each question's own
+# subgraph, the near-oracle the book's environment chapter says the union
+# exists to avoid. The slide, the script and the book's section all say it.
+_rc = _res[_res.index(r"\label{sec:rog-comparison}"):]
+_rc = _rc[:_rc.index(r"\section{")]
+for label, text in (("slide", ROGFRAME), ("script", _rs_said),
+                    ("thesis section", _rc)):
+    ck(f"the {label} says RoG searches each question's own subgraph",
+       re.search(r"each question's\s+(?:\\alert\{)?own subgraph", text)
+       is not None and "union" in text)
+# The book counts its differences, and the count is the number it names.
+_rcm = re.search(r"(\w+) differences bound what", _rc)
+_rch = len(re.findall(r"\\textbf\{", _rc[_rcm.end():_rc.index(
+    "What the comparison does settle")])) if _rcm else 0
+ck(f"the thesis says {_rcm.group(1) if _rcm else '?'} differences and names "
+   f"{_rch}", _rcm is not None and NUM.get(_rch) == _rcm.group(1))
+
+# Slide 7 gives the published figures' reasons, and RoG's is not the full
+# Freebase: it searched the subgraphs this thesis's graph is built from.
+_s7 = frame("What everyone else does")
+ck("slide 7 gives RoG's real difference, the training",
+   "RoG is fine-tuned on these benchmarks" in _s7
+   and re.search(r"because of [^.]*full Freebase", _s7) is None)
 
 
 # ---------------------------------------------------------------------

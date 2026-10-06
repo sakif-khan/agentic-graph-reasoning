@@ -9,7 +9,7 @@ The thesis quotes this file rather than transcribing numbers from the logs.
 
 Usage: python scripts/build_thesis_numbers.py
 """
-import csv, inspect, json, re, statistics, unicodedata
+import csv, importlib.util, inspect, json, re, statistics, unicodedata
 from pathlib import Path
 
 from agr.baselines.tog import MAX_NEIGHBORS, MAX_RELATIONS
@@ -374,6 +374,50 @@ def tog_budget_split():
                     sum(v["precision"] for v in ans) / len(ans), 4),
             }
         out[ds] = block
+    return out
+
+
+def rog_scored():
+    """AGR's test answers scored by RoG's released scorer.
+
+    tab:rog sets RoG's published row against AGR's, and the two rows are
+    scored by different rules. RoG's scorer finds a gold answer anywhere
+    inside the predicted text (scripts/rog_scorer.py says how), and this
+    thesis's needs an exact entity match. Scoring AGR's own answers RoG's way
+    measures how much of the gap that difference could be. The figures are
+    rounded as score_test.py prints main_results, so the two blocks read in
+    the same units. hits_gained and hits_lost name the questions whose hit
+    changes between the two scorers.
+    """
+    # Loaded from beside this file, not imported at the top: the tests load
+    # this module by path, where scripts/ is not on sys.path, and a top-level
+    # import failed them before they reached anything they test.
+    spec = importlib.util.spec_from_file_location(
+        "rog_scorer", Path(__file__).with_name("rog_scorer.py"))
+    rog = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rog)
+    out = {}
+    for ds in ("webqsp", "cwq"):
+        path = P4 / f"test_{ds}_agr.jsonl"
+        thesis = _read_run(path)
+        hits, f1s, gained, lost = 0, 0.0, [], []
+        for line in open(path, encoding="utf-8"):
+            r = json.loads(line)
+            hit, f1 = rog.score(r["gold"], r.get("answer_entities", []))
+            hits += hit
+            f1s += f1
+            if hit and not thesis[r["qid"]]["hit"]:
+                gained.append(r["qid"])
+            elif thesis[r["qid"]]["hit"] and not hit:
+                lost.append(r["qid"])
+        n = len(thesis)
+        out[ds] = {
+            "n": n,
+            "hits_at_1": float(f"{hits / n:.3f}"),
+            "f1": float(f"{f1s / n:.3f}"),
+            "hits_gained": sorted(gained),
+            "hits_lost": sorted(lost),
+        }
     return out
 
 
@@ -1048,6 +1092,18 @@ def main():
             "hop_trends": hop_trends(main_strata),
             "mcnemar_vs_baselines": main_mcnemar,
         },
+        "rog_scorer": {
+            "_source": ("results/phase4/test_{webqsp,cwq}_agr.jsonl, scored "
+                        "by scripts/rog_scorer.py"),
+            "_note": ("AGR's own test answers scored by RoG's released "
+                      "scorer, which counts a gold answer found anywhere "
+                      "inside the predicted text. tab:rog sets RoG's "
+                      "published row, scored that way, against AGR's, "
+                      "scored by exact entity match (main_results). These "
+                      "figures say how much of the gap the scorer could be: "
+                      "under a point on all four. See sec:rog-comparison."),
+            **rog_scored(),
+        },
         "tog_budget_split": {
             "_source": ("results/phase4/test_{webqsp,cwq}_{tog,agr}.jsonl"),
             "_note": ("AGR vs Think-on-Graph split on whether the shared 25-call "
@@ -1229,6 +1285,15 @@ def main():
     assert cwq["_systems_ending_below_h1"] == others, (
         f"the same sentence says every other CWQ system ends below its h1; "
         f"those that do are now {cwq['_systems_ending_below_h1']}, not {others}")
+
+    # sec:rog-comparison says RoG's scorer moves none of AGR's four figures by
+    # as much as a point, and the rog_scorer note repeats it. Pinned, so a
+    # rerun that breaks the sentence fails here rather than in the prose.
+    rs, mr = doc["rog_scorer"], doc["main_results"]["by_system"]
+    moved = {f"{ds}/{m}": round(rs[ds][m] - mr[f"{ds}/agr"][m], 3)
+             for ds in ("webqsp", "cwq") for m in ("hits_at_1", "f1")}
+    assert all(abs(d) < 0.01 for d in moved.values()), (
+        f"RoG's scorer now moves an AGR figure by a point or more: {moved}")
 
     # The abstract quotes the benchmark-defect total, and it was quoted as the
     # sum of the two component counts, which double-counts the one question that

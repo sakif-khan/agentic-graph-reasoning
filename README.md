@@ -435,6 +435,12 @@ figures from. Chapter 4's environment figures come from `results/phase1/`,
 Chapters 5 and 6 quote the development and smoke runs directly, and four figures
 in Chapters 7–9 have their own sources, each named where it is stated.
 
+`build_thesis_numbers.py` also scores AGR's test answers with RoG's released
+scorer, which finds a gold answer anywhere inside the predicted text, because
+the thesis sets AGR beside RoG's published figures and the two scorers differ.
+`scripts/rog_scorer.py` carries that scorer, copied unchanged from RoG's
+repository under its MIT licence. It needs no model calls.
+
 ### About the cache
 
 Every model call is keyed by a hash over the model id, temperature,

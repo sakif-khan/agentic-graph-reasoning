@@ -527,8 +527,10 @@ NFKC\index{Hits"@1}\index{F1}\index{precision} normalisation, case folding, and
 whitespace stripping. There is no fuzzy matching and no substring containment.
 \emph{Hits@1} is $1$ if any predicted entity matches any gold entity. That is
 the convention in this literature, and it is what makes published numbers
-comparable at all. \emph{F1} is computed per question between the predicted and
-gold sets as defined in \Cref{sec:kgqa}, and averaged over questions.
+comparable at all. It does not fix how strings are matched, and RoG's scorer
+is looser (\Cref{sec:rog-comparison}). \emph{F1} is computed per question
+between the predicted and gold sets as defined in \Cref{sec:kgqa}, and averaged
+over questions.
 
 The two metrics are not redundant. Hits@1 rewards a system that names one
 correct entity among several wrong ones. On WebQSP that loophole is narrow on
@@ -1112,8 +1114,9 @@ $95\%$ confidence intervals on Hits@1 are $[71.3, 79.7]$ on WebQSP and $[47.5,
 the qualifications. The qualifications do not reverse it, and a comparison
 offered only with its excuses attached is not a comparison.
 
-Three differences bound what \Cref{tab:rog} establishes. The first is decisive.
-The other two are ordinary.
+Five differences bound what \Cref{tab:rog} establishes. The first is decisive.
+The second favours RoG by an amount nothing here measures. The third and fourth
+are ordinary, and the fifth is measured and small.
 
 \textbf{RoG is trained on these benchmarks. AGR is trained on nothing.}
 Section~5.1 of \cite{luo2024reasoning} states that its backbone is ``instruction
@@ -1126,6 +1129,13 @@ The comparison is therefore between a supervised system and a zero-shot one.
 That is a difference in kind rather than in degree. It is the same objection
 \Cref{tab:reported} already raises against every fine-tuned entry in the
 surveyed literature.
+
+\textbf{RoG searches a smaller graph.} RoG instantiates its relation paths
+inside each question's own subgraph, which its released code builds from that
+question's record alone. AGR navigates the union of them all, which
+\Cref{sec:graph-construction} builds because a per-question subgraph on its own
+is close to an oracle. The difference favours RoG, and nothing here measures by
+how much.
 
 \textbf{The backbones differ.} RoG fine-tunes LLaMA2-Chat-7B. AGR prompts the
 model named in \Cref{sec:backbone}. \Cref{sec:comparison-table} argues that
@@ -1141,6 +1151,17 @@ splits (\Cref{sec:test-sets}). The samples preserve the hop-stratum proportions
 of their populations. So they estimate the same quantity. The intervals quoted
 above are the estimate's uncertainty. RoG publishes no interval. So the gap can
 be bounded from one side only.
+
+\textbf{The scorers differ, by less than a point.} RoG's released scorer
+lower-cases both strings and strips punctuation and articles. It then counts a
+gold answer as found anywhere inside the predicted text, where
+\Cref{sec:metrics} matches whole entities. RoG's paper defines Hits@1 by the
+top-1 answer, but its scorer reads every answer emitted, as \Cref{sec:metrics}
+does. Scored with RoG's functions, copied unchanged into
+\textsf{scripts/\allowbreak rog\_scorer.py}, AGR's figures become $76.0$ and
+$64.9$ on WebQSP and $52.2$ and $47.2$ on CWQ. Hits@1 changes on two WebQSP
+questions, such as ``Kingdom of Denmark'' against the gold ``Denmark'', and on
+no CWQ question. No figure moves by as much as a point.
 
 What the comparison does settle is worth stating positively. It fixes AGR's
 place in the published landscape. A training-free system reaches $75.5$ and

@@ -57,6 +57,23 @@ The fourth pass centred what was off centre:
        match the generator and only the word-space rule can catch it. In a
        box those spaces set the RQ1 figure 10pt right of centre.
 
+The fifth pass made the RoG comparison a presented slide, after the main
+results, and added the two differences the book had not named: RoG searches
+each question's own subgraph, and its released scorer finds a gold answer
+anywhere inside the predicted text. AGR scored RoG's way moves by under a
+point, a figure the slide, the book and the paper now state.
+
+  19   Slide 7's sentence as it shipped: published Hits@1 not comparable
+       "because of other backbones, subsets and full Freebase". RoG
+       searched the subgraphs this thesis's graph is built from.
+  20   The book adding its two differences and still counting three.
+  21   The slide's RoG-scored row drifting from the JSON.
+  22   The slide no longer saying the scorer moves AGR under a point.
+  23   The slide dropping the search-space difference.
+  24   The book quoting a RoG-scored figure wrongly.
+  25   The book's specimen a question RoG's scorer did not change.
+  26   The comparison back in the backup tail, titled as it is now.
+
 The fourth pass's page rules need a rebuilt deck too, and were proved once
 on 2026-10-06, each against its own defective build. The takeaway bar's
 old geometry (\\textwidth less 3.6mm, unmoved) failed the bar rule, slide 2
@@ -86,9 +103,10 @@ BUILD = ROOT / "scripts" / "build_figures.py"
 HIST = ROOT / "thesis_presentation" / "figures" / "fig_failure_histogram.tex"
 HOP = ROOT / "thesis_presentation" / "figures" / "fig_hop_strata.tex"
 ACC = ROOT / "thesis_presentation" / "figures" / "fig_accuracy_cost.tex"
+BOOK = ROOT / "thesis_book" / "chapters" / "evaluation.tex"
 AUX = ROOT / "thesis_presentation" / "transcript-min.aux"
 
-FILES = (DECK, SCRIPT, BUILD, HIST, HOP, ACC) + (
+FILES = (DECK, SCRIPT, BUILD, HIST, HOP, ACC, BOOK) + (
     (AUX,) if AUX.exists() else ())
 orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
 
@@ -149,6 +167,19 @@ def word_spaces():
     assert new != orig[BUILD], "anchor gone in build_figures.py"
     io.open(BUILD, "w", encoding="utf-8", newline="").write(new)
     subprocess.run([sys.executable, "-c", REGEN_ALL], cwd=ROOT, check=True)
+
+
+def back_to_backup():
+    """The RoG frame moved back after the closing slide, title unchanged."""
+    start = orig[DECK].index("% The board asked for this at the pre-defense")
+    start = orig[DECK].rindex("% =====", 0, start)
+    end = orig[DECK].index("\\end{frame}\n",
+                           orig[DECK].index("\\begin{frame}{AGR against RoG}"))
+    end += len("\\end{frame}\n")
+    deck = orig[DECK][:start] + orig[DECK][end:]
+    at = deck.index("% Four departures from the approved proposal")
+    io.open(DECK, "w", encoding="utf-8", newline="").write(
+        deck[:at] + orig[DECK][start:end] + "\n" + deck[at:])
 
 
 def split_speech():
@@ -220,6 +251,28 @@ CASES = [
           r"\begin{frame}{RQ3: One effect, and its sign is backwards}"
           r"{One effect, and its sign is backwards}")),
     ("shipped: the deck's figures on their word spaces", word_spaces),
+    ("shipped: slide 7 gives RoG the full Freebase as its reason",
+     edit(DECK, "comparable. RoG is fine-tuned on these benchmarks, and the "
+                "others search the full Freebase with other backbones.",
+          "comparable, because of other backbones, subsets and full "
+          "Freebase.")),
+    ("the book adds two differences and still counts three",
+     edit(BOOK, "Five differences bound what", "Three differences bound what")),
+    ("the RoG slide's RoG-scored row drifts from the JSON",
+     edit(DECK, r"\quad scored by RoG's code & $76.0$",
+          r"\quad scored by RoG's code & $77.0$")),
+    ("the RoG slide stops saying the scorer moves AGR under a point",
+     edit(DECK, "Scored by RoG's own code, AGR moves by under a point.", "")),
+    ("the RoG slide drops the search-space difference",
+     edit(DECK, r"And RoG searches each question's \alert{own subgraph}, "
+                r"where AGR searches the union of them all.", "")),
+    ("the book quotes a RoG-scored figure wrongly",
+     edit(BOOK, "AGR's figures become $76.0$ and $64.9$ on WebQSP",
+          "AGR's figures become $76.5$ and $64.9$ on WebQSP")),
+    ("the book's specimen is a question RoG's scorer did not change",
+     edit(BOOK, "``Kingdom of Denmark'' against the gold ``Denmark''",
+          "``Kingdom of Sweden'' against the gold ``Sweden''")),
+    ("the RoG comparison back in the backup tail", back_to_backup),
 ]
 if AUX.exists():
     CASES.append(("a slide's speech split across two pages of the "

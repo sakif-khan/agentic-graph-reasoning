@@ -3,20 +3,21 @@
 Rehearsal script for **`thesis_defense_0421052099.pdf`** — 38 pages: a title,
 thirty-six body slides, a closing slide.
 
-You present slides 1 to 31. The seven after the closing slide are **backup**:
+You present slides 1 to 32. The six after the closing slide are **backup**:
 you reach them by paging past "Thank you" when a question calls for one, not
 by switching to a second file. They are timed 0:00 below because none of them
 is spoken; the table near the end of this file maps each to its question.
 
-**Budget: 22 min 38 s of speaking against a 25-minute
+**Budget: 23 min 44 s of speaking against a 25-minute
 limit.** Every row below is set to what its own words take at 93 wpm, rounded
 up to the second, so the margin under the limit is the only slack there is.
 
 This round (October 2026) rebuilt the talk against the book. The six
 background slides became three, the results now start 11:35 in rather than
 16:04, and three things the deck never said are said: the answers to the three
-questions (slide 28), what comes next (slide 30), and the six contributions
-as a preview (slide 8). The talk had run 52 s over; it now fits with the
+questions (slide 29), what comes next (slide 31), and the six contributions
+as a preview (slide 8). The RoG comparison, a backup slide before this round,
+is now slide 18. The talk had run 52 s over; it now fits with the
 margin below.
 
 **A margin is not a cushion.** If you need more time than the margin, it has
@@ -45,32 +46,32 @@ Times below are *cumulative at the end of that slide*. If you are more than
 | 15 | The environment and the question sets | 0:48 | 10:27 |
 | 16 | Making the comparison fair | 1:08 | 11:35 |
 | 17 | **Main results** | 1:21 | 12:56 |
-| 18 | **RQ1: Does agentic navigation improve multi-hop factual accuracy?** | 0:56 | 13:52 |
-| 19 | The caveat I want to raise myself | 1:01 | 14:53 |
-| 20 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 0:50 | 15:43 |
-| 21 | RQ2: What verification does *not* do | 0:50 | 16:33 |
-| 22 | RQ2: So what does it do? | 0:41 | 17:14 |
-| 23 | Does it just refuse more often? | 0:31 | 17:45 |
-| 24 | **RQ3: Which components contribute what, at what token cost?** | 0:24 | 18:09 |
-| 25 | **RQ3: One effect, and its sign is backwards** | 0:57 | 19:06 |
-| 26 | Every failure, read and labelled | 0:20 | 19:26 |
-| 27 | The echo attractor | 1:01 | 20:27 |
-| 28 | The three answers | 0:39 | 21:06 |
-| 29 | Contributions | 0:58 | 22:04 |
-| 30 | What comes next | 0:29 | 22:33 |
-| 31 | Thank you | 0:05 | 22:38 |
-| 32 | *Backup:* budget configuration | 0:00 | 22:38 |
-| 33 | *Backup:* which budgets actually bind | 0:00 | 22:38 |
-| 34 | *Backup:* the full failure census | 0:00 | 22:38 |
-| 35 | *Backup:* accuracy against cost | 0:00 | 22:38 |
-| 36 | *Backup:* the benchmark was wrong 57 times | 0:00 | 22:38 |
-| 37 | *Backup:* AGR against RoG | 0:00 | 22:38 |
-| 38 | *Backup:* what changed from the proposal | 0:00 | 22:38 |
+| 18 | AGR against RoG | 1:06 | 14:02 |
+| 19 | **RQ1: Does agentic navigation improve multi-hop factual accuracy?** | 0:56 | 14:58 |
+| 20 | The caveat I want to raise myself | 1:01 | 15:59 |
+| 21 | RQ2: What does pre-generation verification contribute beyond graph navigation? | 0:50 | 16:49 |
+| 22 | RQ2: What verification does *not* do | 0:50 | 17:39 |
+| 23 | RQ2: So what does it do? | 0:41 | 18:20 |
+| 24 | Does it just refuse more often? | 0:31 | 18:51 |
+| 25 | **RQ3: Which components contribute what, at what token cost?** | 0:24 | 19:15 |
+| 26 | **RQ3: One effect, and its sign is backwards** | 0:57 | 20:12 |
+| 27 | Every failure, read and labelled | 0:20 | 20:32 |
+| 28 | The echo attractor | 1:01 | 21:33 |
+| 29 | The three answers | 0:39 | 22:12 |
+| 30 | Contributions | 0:58 | 23:10 |
+| 31 | What comes next | 0:29 | 23:39 |
+| 32 | Thank you | 0:05 | 23:44 |
+| 33 | *Backup:* budget configuration | 0:00 | 23:44 |
+| 34 | *Backup:* which budgets actually bind | 0:00 | 23:44 |
+| 35 | *Backup:* the full failure census | 0:00 | 23:44 |
+| 36 | *Backup:* accuracy against cost | 0:00 | 23:44 |
+| 37 | *Backup:* the benchmark was wrong 57 times | 0:00 | 23:44 |
+| 38 | *Backup:* what changed from the proposal | 0:00 | 23:44 |
 
 The four **bold** slides are the ones the committee will actually
 interrogate. If you are running long, take time from 9, 13 and 14 —
-never from 17, 18, 19, 24 or 25. That is the same list the recovery notes
-protect, and 19 is on it for a different reason: skipping it hands the
+never from 17, 19, 20, 25 or 26. That is the same list the recovery notes
+protect, and 20 is on it for a different reason: skipping it hands the
 clipping issue to them.
 
 ---
@@ -83,7 +84,7 @@ clipping issue to them.
 
 *Don't read the title aloud. It's on the screen. It is the title registered
 at the proposal stage, and three of its terms are broader than the claims.
-Slide 29 names them, so do not defend them here.*
+Slide 30 names them, so do not defend them here.*
 
 ---
 
@@ -140,7 +141,7 @@ does the verification layer's limit on slide 12.*
 > goes out.
 
 *This is the book's turn from fabrication to precision. It is what makes
-slide 20's zero for both navigating systems a result rather than a
+slide 21's zero for both navigating systems a result rather than a
 surprise.*
 
 ---
@@ -155,7 +156,7 @@ surprise.*
 > the cost, and it multiplies with every hop. And whatever falls outside the
 > beam is gone for good.
 
-*The multiplication is what slide 19 cashes: it is why Think-on-Graph runs out
+*The multiplication is what slide 20 cashes: it is why Think-on-Graph runs out
 of calls and AGR does not.*
 
 ---
@@ -172,8 +173,10 @@ of calls and AGR does not.*
 > Their published accuracies are higher than mine and not comparable.
 
 *Plan-on-Graph in full, always. Paths-over-Graph is also cited as "PoG" and
-reports higher numbers. The note on the slide gives the three reasons the
-published figures are not comparable; read them only if asked.*
+reports higher numbers. The note on the slide says why the
+published figures are not comparable. RoG is fine-tuned on these
+benchmarks, and the others search the full Freebase with other backbones.
+Read it only if asked. Slide 18 takes RoG up directly.*
 
 ---
 
@@ -215,7 +218,7 @@ popping the most recent one "would make backtracking a simple undo". If
 pressed, the implementation bans the latest pass while restoring an older
 frontier, and the thesis records that misalignment rather than hiding it.
 
-**If asked about budgets, go to backup slide 32.**
+**If asked about budgets, go to backup slide 33.**
 
 ---
 
@@ -255,7 +258,7 @@ frontier, and the thesis records that misalignment rather than hiding it.
 > triples, and the log keeps a count, not the triples. And a claim can be
 > true and still be the wrong answer.
 
-**The last sentence is a promise. Slide 27 pays it off.**
+**The last sentence is a promise. Slide 28 pays it off.**
 
 ---
 
@@ -369,7 +372,29 @@ the strata.
 
 ---
 
-## 18 — RQ1: Does agentic navigation improve multi-hop factual accuracy? *(0:56)* ★
+## 18 — AGR against RoG *(1:06)*
+
+> RoG is the one published system measured on this same data. My graph is
+> built from its subgraphs. And it is ahead on all four figures, outside my
+> confidence intervals. It is not the scorer. Scored by RoG's own code, my
+> numbers move by under a point.
+>
+> Two things differ. RoG is fine-tuned on both benchmarks' training splits,
+> and AGR trains on nothing, which is a difference in kind. And RoG searches
+> each question's own subgraph, close to an oracle, where I search the union
+> of all of them.
+>
+> So this places AGR among published systems. It does not compare
+> architectures.
+
+*The last row of the table is AGR's own answers scored by RoG's released
+scorer, which accepts a gold answer found anywhere inside the predicted
+text. The book's section 5.9 gives all five differences. The anticipated
+questions below have the long answer, with the training-split sizes.*
+
+---
+
+## 19 — RQ1: Does agentic navigation improve multi-hop factual accuracy? *(0:56)* ★
 
 > The answer to RQ1 is yes, and the evidence is a shape.
 >
@@ -387,7 +412,7 @@ loss is the book's own boundary on this answer; say it before it is found.
 
 ---
 
-## 19 — The caveat I want to raise myself *(1:01)*
+## 20 — The caveat I want to raise myself *(1:01)*
 
 > I want to raise this before you do.
 >
@@ -406,7 +431,7 @@ loss is the book's own boundary on this answer; say it before it is found.
 
 ---
 
-## 20 — RQ2: What does pre-generation verification contribute beyond graph navigation? *(0:50)*
+## 21 — RQ2: What does pre-generation verification contribute beyond graph navigation? *(0:50)*
 
 > RQ2, in its narrowest form. Does anything ungrounded get asserted?
 >
@@ -420,7 +445,7 @@ loss is the book's own boundary on this answer; say it before it is found.
 
 ---
 
-## 21 — RQ2: What verification does *not* do *(0:50)*
+## 22 — RQ2: What verification does *not* do *(0:50)*
 
 > Removing the layer changes accuracy by nothing I can detect, p equals 1.0
 > on both datasets. On test it changed two answers, one each way.
@@ -438,7 +463,7 @@ room looks puzzled.*
 
 ---
 
-## 22 — RQ2: So what does it do? *(0:41)*
+## 23 — RQ2: So what does it do? *(0:41)*
 
 > What it does is withhold what it cannot ground. Without it, CWQ hedging
 > falls from 23.2 to 20.2 percent. Those six answers were all wrong. On
@@ -453,7 +478,7 @@ anticipated questions below have the full answer if it is pressed.*
 
 ---
 
-## 23 — Does it just refuse more often? *(0:31)*
+## 24 — Does it just refuse more often? *(0:31)*
 
 > The obvious objection, and the answer is no. AGR hedges least of the five
 > on WebQSP, where it is also the most accurate. On CWQ it is within half a
@@ -466,7 +491,7 @@ more than the agentic baseline and scores above it.
 
 ---
 
-## 24 — RQ3: Which components contribute what, at what token cost? *(0:24)* ★
+## 25 — RQ3: Which components contribute what, at what token cost? *(0:24)* ★
 
 > RQ3: which components earn their cost. Four ablations, each a paired test
 > against the full system on the same halves. Three change nothing I can
@@ -484,12 +509,12 @@ that split is a coin toss, and 21–6 gives p = 0.006.
 
 **The verifier rows are the ones to understand before you are asked.** p = 1.000
 there rests on **one** discordant question on each dataset. That is "the test had
-no information", not "there is no effect" — which is exactly why slides 21 and
-24 say *detectable* rather than *none*.
+no information", not "there is no effect" — which is exactly why slides 22 and
+25 say *detectable* rather than *none*.
 
 ---
 
-## 25 — RQ3: One effect, and its sign is backwards *(0:57)* ★
+## 26 — RQ3: One effect, and its sign is backwards *(0:57)* ★
 
 > The one that does is the planner, and the sign is backwards. Removing it
 > improves WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31
@@ -505,7 +530,7 @@ no information", not "there is no effect" — which is exactly why slides 21 and
 
 ---
 
-## 26 — Every failure, read and labelled *(0:20)*
+## 27 — Every failure, read and labelled *(0:20)*
 
 > Two hundred and fifty-six failures, read and labelled by hand. The largest
 > category is relation selection, the agent taking the wrong edge, not
@@ -517,11 +542,11 @@ neither" — and pooling also hides the shape flip: `composite_claim` is 1 on
 WebQSP against 46 on CWQ. The block on the slide carries both facts, so the
 split census is something you offer rather than something you are corrected
 with. The last row closes the column to 256; the six smaller categories are
-backup slide 34 if anyone wants them.
+backup slide 35 if anyone wants them.
 
 ---
 
-## 27 — The echo attractor *(1:01)*
+## 28 — The echo attractor *(1:01)*
 
 > The one to name is sixth, with 13 cases: the echo attractor, a real,
 > grounded entity one hop from the answer. Asked who plays Lex Luthor on
@@ -540,12 +565,12 @@ than of AGR."** That is defensive where the thesis is substantive, and nothing
 on the slide blames AGR for it. The claim is about evaluation: sec:echo calls
 the attractor "invisible to any evaluation treating systems as independent",
 and section 1.6 says the contribution is the mechanism "and what it means for
-consensus-based evaluation rather than the frequency". Backup slide 36 is the same finding
+consensus-based evaluation rather than the frequency". Backup slide 37 is the same finding
 seen from the other side.
 
 ---
 
-## 28 — The three answers *(0:39)*
+## 29 — The three answers *(0:39)*
 
 > So, the three answers. RQ1: yes, though the margin over Think-on-Graph lies
 > in the budget. RQ2: navigation, not verification, removes structural
@@ -560,7 +585,7 @@ answer to the three questions. Say them slowly.*
 
 ---
 
-## 29 — Contributions *(0:58)*
+## 30 — Contributions *(0:58)*
 
 > Six contributions, the six the thesis claims. The one I'd underline is
 > stratum-dependent decomposition. The literature treats it as plainly
@@ -580,7 +605,7 @@ section reads the title the same way.*
 
 ---
 
-## 30 — What comes next *(0:29)*
+## 31 — What comes next *(0:29)*
 
 > Next, three cheap repairs the census earned, and three operators the
 > failures specify, from decomposition gating to set intersection.
@@ -591,7 +616,7 @@ section reads the title the same way.*
 
 ---
 
-## 31 — Thank you *(0:05)*
+## 32 — Thank you *(0:05)*
 
 > Thank you. I'm happy to take questions.
 
@@ -600,7 +625,7 @@ section reads the title the same way.*
 
 ## Backup slides — the tail of the same deck
 
-They are slides 32 to 38 of `thesis_defense_0421052099.pdf`, after the closing
+They are slides 33 to 38 of `thesis_defense_0421052099.pdf`, after the closing
 slide. **Everything in this script refers to a backup slide by its number in
 that deck**, which is what this table lists — the same numbering the footer
 prints, so there is nothing to convert under pressure. Page forward from
@@ -608,15 +633,14 @@ prints, so there is nothing to convert under pressure. Page forward from
 
 | Slide | Contents | Use when asked |
 | --- | --- | --- |
-| 32 | Budget configuration and enforcement sites | "How do you guarantee termination?" |
-| 33 | Which budgets actually bind | "Is the 25-call cap fair to Think-on-Graph?" |
-| 34 | Full 12-category failure histogram | "What were the other failure modes?" |
-| 35 | Accuracy against cost, both metrics | "Is it cheaper, or just better?" |
-| 36 | The benchmark was wrong 57 times | "How good is the gold?" |
-| 37 | AGR against RoG, side by side | "How does this compare to RoG?" |
+| 33 | Budget configuration and enforcement sites | "How do you guarantee termination?" |
+| 34 | Which budgets actually bind | "Is the 25-call cap fair to Think-on-Graph?" |
+| 35 | Full 12-category failure histogram | "What were the other failure modes?" |
+| 36 | Accuracy against cost, both metrics | "Is it cheaper, or just better?" |
+| 37 | The benchmark was wrong 57 times | "How good is the gold?" |
 | 38 | What changed from the proposal | "Your proposal said MCTS. What happened?" |
 
-**Slide 33 is the important one.** It shows AGR never reaches the call cap —
+**Slide 34 is the important one.** It shows AGR never reaches the call cap —
 0.0 percent on both datasets — which is precisely what makes the comparison
 against a clipped Think-on-Graph legitimate rather than an artefact of a cap
 chosen to suit AGR.
@@ -629,7 +653,7 @@ chosen to suit AGR.
 From this work's own no-retrieval baseline, which is the parametric control
 in the five-system comparison. On WebQSP it asserted 661 entities and 179 of
 them have no basis in the knowledge graph. That is 27.1 percent, every one
-stated without a hedge. Slide 20 gives the same measurement over both
+stated without a hedge. Slide 21 gives the same measurement over both
 datasets pooled: 1,001 asserted, 221 ungrounded, 22.1 percent. The WebQSP
 slice runs higher because CWQ questions are longer and the model hedges more
 on them; the pooled row is the one I quote, and the one the thesis's abstract
@@ -637,18 +661,18 @@ and conclusion use.
 
 **"Isn't the 25-call cap arbitrary, and doesn't it favour AGR?"**
 It is AGR's own budget, applied identically to every system. And AGR never
-reaches it — zero percent on both datasets (backup slide 33). If I raised the
+reaches it — zero percent on both datasets (backup slide 34). If I raised the
 cap, AGR's numbers would not move; Think-on-Graph's would. I say that in the thesis rather than leaving it
 for someone to find.
 
-**"Do the categories look the same on both datasets?"** *(Slide 26 is pooled.)*
+**"Do the categories look the same on both datasets?"** *(Slide 27 is pooled.)*
 No, and that is the more interesting answer. The census is reported split in the
 thesis and never pooled, because wrong and hedge describe different failure
 semantics and the proportions differ sharply by dataset. The clearest case is
 `composite_claim`: 1 on WebQSP against 46 on CWQ. WebQSP questions mostly are
 not compound, so the category barely exists there; on ComplexWebQuestions it is
 the largest single failure mode. A pooled percentage would describe neither
-dataset. The full split is backup slide 34.
+dataset. The full split is backup slide 35.
 
 **"Doesn't GraphRAG show the same thing?"** *(Slide 17 puts 0.203 and 0.205
 side by side. Do not pool them.)*
@@ -677,7 +701,7 @@ percent. A grounded system scoring below an ungrounded one on raw hits while
 asserting far fewer falsehoods is the contamination the control was there to
 expose.
 
-**"What exactly does that p-value test?"** *(Slide 24 prints five of
+**"What exactly does that p-value test?"** *(Slide 25 prints five of
 them. Expect it from anyone who reads tables.)*
 An exact paired McNemar test on per-question correctness, full system against
 one ablation, over the same questions. It uses only the discordant pairs — the
@@ -740,7 +764,7 @@ explicit hedge, and it pairs the answer with the triples that ground it at the
 point of emission. I report the null on accuracy rather than hiding it — and I
 report the bounds on the auditability too, which is the next question.
 
-**"Show me one supporting triple, then."** *(Expect this. Slide 22 invites it.)*
+**"Show me one supporting triple, then."** *(Expect this. Slide 23 invites it.)*
 I can't, from the committed record, and that is a limitation rather than an
 evasion. `RunLogger` writes `n_supporting_triples` — an integer — and discards
 the list, so no committed artifact in this work contains a single supporting
@@ -753,9 +777,9 @@ future work ranks it the highest-value change for its cost. I did not make it
 late because it would separate the code from results already frozen against it.
 
 **"Why isn't the five-system comparison one of your contributions?"**
-Because the thesis does not count it as one, and slide 29 is the thesis's list —
+Because the thesis does not count it as one, and slide 30 is the thesis's list —
 the six section 1.6 claims, in its order. The comparison and the hop-count shape
-are results the contributions rest on; they get slides 17 and 18, which is where
+are results the contributions rest on; they get slides 17 and 19, which is where
 the weight belongs. An earlier version of that slide promoted both to
 contributions and dropped the ablation, the decomposition finding and the
 protocol to make room — still saying "six". The thesis had already been audited
@@ -775,7 +799,7 @@ say that than be shown it. No, it is not significance-tested; the ablation's
 McNemar test is on correctness, not on the hedge column, and I claim the
 direction and nothing more.
 *Do not* offer the no-retrieval contrast here. Its 12.2 percent is a hedge rate,
-not an error rate — slide 23, a table of hedge rates, has it under WebQSP —
+not an error rate — slide 24, a table of hedge rates, has it under WebQSP —
 and AGR hedges *less* than it does, 8.2 against 12.2, so that comparison argues
 the opposite of what it looks like. No-retrieval's actual error rate is 170 wrong
 out of the 351 questions it asserts on.
@@ -843,7 +867,7 @@ it depresses my *own* reported accuracy, so on that question shape the
 headline numbers are a floor rather than an estimate. The fix is an
 instruction to the claim decomposer, not an architecture change, and it is the
 first of the three repairs the census earned. The category split is backup
-slide 34.
+slide 35.
 
 **"Is that a standard dataset, or one you built yourself?"**
 *(Asked at the pre-defense. Section 3.1.3 of the thesis is “Source Datasets”.)*
@@ -861,7 +885,7 @@ gives the sampling: 400 per dataset, stratified at seed 42, every question ID
 listed in the appendix.
 
 **"You used RoG’s data. How does AGR compare to RoG itself?"**
-*(Asked at the pre-defense. Backup slide 37 has the table — put it up.)*
+*(Asked at the pre-defense. Slide 18 answers it now; this is the long form.)*
 Directly, and RoG is ahead: 85.7 and 70.8 on WebQSP, 62.6 and 56.2 on CWQ,
 against my 75.5 and 64.2, and 52.2 and 46.9. The gap is outside my confidence
 intervals, so it is real and not sampling. The reason is not subtle. RoG
@@ -869,7 +893,10 @@ fine-tunes LLaMA2-Chat-7B on the training splits of both benchmarks — 2,826
 WebQSP and 27,639 CWQ questions — for three epochs. AGR does no training at
 all: the backbone is frozen and has seen no question from either benchmark
 before it is evaluated. So it is a supervised system against a zero-shot one on
-the same data, which is a difference in kind. I could not hold the backbone
+the same data, which is a difference in kind. It also searches each
+question's own subgraph, where I search the union of all of them. And its
+scorer accepts a gold answer found anywhere inside its text; scored that way,
+my numbers move by under a point. I could not hold the backbone
 constant against RoG the way I do across my five systems, because RoG’s
 contribution *is* its fine-tuned weights — that is the same objection my
 Chapter 2 table already makes against every fine-tuned entry in the literature.
@@ -901,14 +928,16 @@ pulled directly from the thesis's own generated sources.
 If you hit **12:56 (the end of slide 17) more than 40 seconds late**, compress
 as follows.
 
-- Slides 21 and 22 — take them as one: *"It doesn't improve accuracy or explain
+- Slides 22 and 23 — take them as one: *"It doesn't improve accuracy or explain
   the precision lead. It withholds what it cannot ground and attaches evidence.
   The case is auditability."* Saves ~40 s.
+- Slide 18 — say the first paragraph and the last; the table carries the
+  rest. Saves ~25 s.
 - Slide 7 — say the first two sentences and the last; skip RoG and the
   post-hoc checkers. Saves ~15 s.
 - Slide 14 — stop at "both supported." Saves ~5 s.
 
-Never compress 17, 18, 19, 24, or 25. Slide 19 in particular: skipping it
+Never compress 17, 19, 20, 25, or 26. Slide 20 in particular: skipping it
 means a committee member raises the clipping issue instead of you, and it
 lands very differently that way.
 
@@ -917,7 +946,7 @@ lands very differently that way.
 - **Say the number, then what it means.** Not the reverse. "Twenty-two percent
   of what the parametric model asserts has no basis in the graph. It has no
   source to point to."
-- **Four slides are negative results** (19, 20, 21, 22). Deliver them at normal
+- **Four slides are negative results** (20, 21, 22, 23). Deliver them at normal
   pace, not apologetically. A student who reports a clean null is more credible
   than one who reports only wins.
 - The word is **hedge**, not "refuse." A hedge is an explicit non-assertion,

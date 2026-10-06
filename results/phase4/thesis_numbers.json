@@ -730,6 +730,27 @@
    }
   ]
  },
+ "rog_scorer": {
+  "_source": "results/phase4/test_{webqsp,cwq}_agr.jsonl, scored by scripts/rog_scorer.py",
+  "_note": "AGR's own test answers scored by RoG's released scorer, which counts a gold answer found anywhere inside the predicted text. tab:rog sets RoG's published row, scored that way, against AGR's, scored by exact entity match (main_results). These figures say how much of the gap the scorer could be: under a point on all four. See sec:rog-comparison.",
+  "webqsp": {
+   "n": 400,
+   "hits_at_1": 0.76,
+   "f1": 0.649,
+   "hits_gained": [
+    "WebQTest-1309",
+    "WebQTest-86"
+   ],
+   "hits_lost": []
+  },
+  "cwq": {
+   "n": 400,
+   "hits_at_1": 0.522,
+   "f1": 0.472,
+   "hits_gained": [],
+   "hits_lost": []
+  }
+ },
  "tog_budget_split": {
   "_source": "results/phase4/test_{webqsp,cwq}_{tog,agr}.jsonl",
   "_note": "AGR vs Think-on-Graph split on whether the shared 25-call cap cut ToG off, read from the per-record trace flag budget_exhausted (NOT from llm_calls == 25, which overcounts CWQ by 3). On the questions ToG finishes it is ahead on both datasets; the whole aggregate margin comes from the clipped subset.",

@@ -949,6 +949,24 @@ def main():
                  for ds in ("webqsp", "cwq") for k in ("hits_at_1", "f1"))
     ck("the RoG comparison states AGR's own figures in points",
        got == want, f"paper {got or 'NO MATCH'}, computed {want}")
+    # ...and the same answers scored by RoG's own released scorer, which finds
+    # a gold answer anywhere inside the predicted text (scripts/rog_scorer.py,
+    # into the JSON's rog_scorer block). The sentence also says none of the
+    # four moves by a point, so that is held to the two blocks as well.
+    rs = d["rog_scorer"]
+    m = re.search(r"Scored with RoG's own functions, AGR's answers give "
+                  r"\$([\d.]+)\$ and \$([\d.]+)\$ on WebQSP and \$([\d.]+)\$ "
+                  r"and \$([\d.]+)\$ on ComplexWebQuestions, none more than a "
+                  r"point from".replace(" ", r"\s+"), text)
+    got = tuple(float(g) for g in m.groups()) if m else None
+    want = tuple(rnd(100 * rs[ds][k], 1)
+                 for ds in ("webqsp", "cwq") for k in ("hits_at_1", "f1"))
+    ck("the RoG comparison states AGR's figures under RoG's own scorer",
+       got == want, f"paper {got or 'NO MATCH'}, computed {want}")
+    moved = max(abs(rs[ds][k] - by[f"{ds}/agr"][k])
+                for ds in ("webqsp", "cwq") for k in ("hits_at_1", "f1"))
+    ck("and none of them is a point from AGR's own", moved < 0.01,
+       f"largest move {100 * moved:.1f} points")
 
     # Gold-set shape, from the committed test samples.
     ts = d["test_sets"]

@@ -70,8 +70,13 @@ factor \Cref{sec:baselines} holds constant elsewhere; RoG reports over
 the full splits against our stratified samples of them and publishes no
 interval, so the gap can be bounded from one side only; and RoG
 retrieves within each question's own published subgraph while AGR
-navigates the union of all of them. What the comparison settles is AGR's
-place in the published landscape, a training-free system against a
+navigates the union of all of them. The scorers differ as well, and that
+difference was measured. RoG's released scorer counts a gold answer
+found anywhere inside the predicted text, where ours needs an exact
+entity match. Scored with RoG's own functions, AGR's answers give $76.0$
+and $64.9$ on WebQSP and $52.2$ and $47.2$ on ComplexWebQuestions, none
+more than a point from the figures above. What the comparison settles is
+AGR's place in the published landscape, a training-free system against a
 supervised one on the same question sets. What it does not settle is
 anything this paper measures, since neither the ablation of
 \Cref{sec:attribution} nor the census of \Cref{sec:erroranalysis} has a

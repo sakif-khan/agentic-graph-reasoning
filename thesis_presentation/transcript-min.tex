@@ -22,12 +22,12 @@
 % with the digest build_min.py would write now, and the PDF is current when
 % the two agree.
 \usepackage[hidelinks,pdftitle={Defense speaking copy},%
-  pdfauthor={Md. Sakif Khan},pdfkeywords={speech digest 4af57fffbd4a5e9f}]{hyperref}
+  pdfauthor={Md. Sakif Khan},pdfkeywords={speech digest 125617e1374a87b0}]{hyperref}
 % ...and so does the .aux, so build_min.py --pages knows that the page
 % labels it reads were written by a build of this file.
 \makeatletter
 \AtBeginDocument{\immediate\write\@mainaux{\@percentchar\space speech
-  digest 4af57fffbd4a5e9f}}
+  digest 125617e1374a87b0}}
 \makeatother
 
 \definecolor{agrdark}{RGB}{28,54,78}
@@ -265,7 +265,22 @@ And cost: about a quarter more tokens than Think-on-Graph, at half the
 calls, and calls are what the budget~meters.
 }
 
-\speech{18}{RQ1: Does agentic navigation improve multi-hop factual~accuracy?}{0:56}{%
+\speech{18}{AGR against~RoG}{1:06}{%
+RoG is the one published system measured on this same data. My graph is
+built from its subgraphs. And it is ahead on all four figures, outside my
+confidence intervals. It is not the scorer. Scored by RoG's own code, my
+numbers move by under a~point.
+
+Two things differ. RoG is fine-tuned on both benchmarks' training splits,
+and AGR trains on nothing, which is a difference in kind. And RoG searches
+each question's own subgraph, close to an oracle, where I search the union
+of all of~them.
+
+So this places AGR among published systems. It does not
+compare~architectures.
+}
+
+\speech{19}{RQ1: Does agentic navigation improve multi-hop factual~accuracy?}{0:56}{%
 The answer to RQ1 is yes, and the evidence is a~shape.
 
 ComplexWebQuestions, on the right. AGR goes 0.46, 0.55, 0.57 as questions
@@ -278,7 +293,7 @@ not~needed.
 The left panel is dashed because its three-hop stratum is four~questions.
 }
 
-\speech{19}{The caveat I want to raise~myself}{1:01}{%
+\speech{20}{The caveat I want to raise~myself}{1:01}{%
 I want to raise this before you~do.
 
 Split the questions by whether Think-on-Graph finished inside the shared
@@ -293,7 +308,7 @@ So the claim is not that AGR reasons better per step. It is that AGR
 finishes inside a fixed~budget.
 }
 
-\speech{20}{RQ2: What does pre-generation verification contribute beyond graph~navigation?}{0:50}{%
+\speech{21}{RQ2: What does pre-generation verification contribute beyond graph~navigation?}{0:50}{%
 RQ2, in its narrowest form. Does anything ungrounded get~asserted?
 
 Across both datasets, AGR asserts 1,709 entities and zero are ungrounded.
@@ -305,7 +320,7 @@ is a property of navigating a graph. And a stricter semantic check still
 fails a third to a half of every system's~answers.
 }
 
-\speech{21}{RQ2: What verification does \emph{not}~do}{0:50}{%
+\speech{22}{RQ2: What verification does \emph{not}~do}{0:50}{%
 Removing the layer changes accuracy by nothing I can detect, p equals 1.0 on
 both datasets. On test it changed two answers, one each~way.
 
@@ -316,7 +331,7 @@ moves AGR's. The lead belongs to the architecture, and perhaps the~prompt.
 And its evidence ends with the run. The log keeps a~count.
 }
 
-\speech{22}{RQ2: So what does it~do?}{0:41}{%
+\speech{23}{RQ2: So what does it~do?}{0:41}{%
 What it does is withhold what it cannot ground. Without it, CWQ hedging
 falls from 23.2 to 20.2 percent. Those six answers were all wrong. On WebQSP
 it withheld one, and that one was~right.
@@ -326,20 +341,20 @@ verifier rejected it. Not right more often, but right for a reason it
 can~show.
 }
 
-\speech{23}{Does it just refuse more~often?}{0:31}{%
+\speech{24}{Does it just refuse more~often?}{0:31}{%
 The obvious objection, and the answer is no. AGR hedges least of the five on
 WebQSP, where it is also the most accurate. On CWQ it is within half a point
 of Think-on-Graph, and nearly nine points more accurate. A hedge scores
 zero, like a wrong~answer.
 }
 
-\speech{24}{RQ3: Which components contribute what, at what token~cost?}{0:24}{%
+\speech{25}{RQ3: Which components contribute what, at what token~cost?}{0:24}{%
 RQ3: which components earn their cost. Four ablations, each a paired test
 against the full system on the same halves. Three change nothing I can
 detect: backtracking, the verifier, and the learned half of the~scorer.
 }
 
-\speech{25}{RQ3: One effect, and its sign is~backwards}{0:57}{%
+\speech{26}{RQ3: One effect, and its sign is~backwards}{0:57}{%
 The one that does is the planner, and the sign is backwards. Removing it
 improves WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31
 percent. On ComplexWebQuestions it trends the other way, and its two-hop
@@ -351,13 +366,13 @@ answered Woodrow Wilson. Undecomposed, it found Truman in three calls. So
 decomposition should be gated on question~structure.
 }
 
-\speech{26}{Every failure, read and~labelled}{0:20}{%
+\speech{27}{Every failure, read and~labelled}{0:20}{%
 Two hundred and fifty-six failures, read and labelled by hand. The largest
 category is relation selection, the agent taking the wrong edge, not
 inventing one. That shape is the~finding.
 }
 
-\speech{27}{The echo~attractor}{1:01}{%
+\speech{28}{The echo~attractor}{1:01}{%
 The one to name is sixth, with 13 cases: the echo attractor, a real,
 grounded entity one hop from the answer. Asked who plays Lex Luthor on
 Smallville, AGR named the actor who plays his~father.
@@ -370,7 +385,7 @@ independent can see it. Rescore whenever a majority agrees, and this becomes
 apparent correctness. The contribution is the mechanism, not the~count.
 }
 
-\speech{28}{The three~answers}{0:39}{%
+\speech{29}{The three~answers}{0:39}{%
 So, the three answers. RQ1: yes, though the margin over Think-on-Graph lies
 in the budget. RQ2: navigation, not verification, removes structural
 hallucination, and the layer buys auditability. RQ3: only the planner
@@ -380,7 +395,7 @@ Navigation is where the accuracy comes from. Verification is where the
 auditability comes from. And decomposition is sometimes~harmful.
 }
 
-\speech{29}{Contributions}{0:58}{%
+\speech{30}{Contributions}{0:58}{%
 Six contributions, the six the thesis claims. The one I'd underline is
 stratum-dependent decomposition. The literature treats it as plainly
 beneficial, and it is not. The protocol fixed four decisions in advance, and
@@ -392,7 +407,7 @@ backbone, one run, and the narrower candidate set. And the title is broader
 than my claims, as the thesis~says.
 }
 
-\speech{30}{What comes~next}{0:29}{%
+\speech{31}{What comes~next}{0:29}{%
 Next, three cheap repairs the census earned, and three operators the
 failures specify, from decomposition gating to set~intersection.
 
@@ -400,7 +415,7 @@ The thesis closes on this. Fact verification against a knowledge graph turns
 out to be the easier half. Relevance verification is the half still~open.
 }
 
-\speech{31}{Thank~you}{0:05}{%
+\speech{32}{Thank~you}{0:05}{%
 Thank you. I'm happy to take~questions.
 }
 

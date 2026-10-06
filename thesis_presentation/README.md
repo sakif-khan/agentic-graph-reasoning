@@ -4,7 +4,7 @@ The defense slide deck for the thesis in `thesis_book/`.
 
 | File | What it is |
 | --- | --- |
-| `thesis_defense_0421052099.tex` / `.pdf` | **The deck.** 38 pages: 31 presented, 7 backup |
+| `thesis_defense_0421052099.tex` / `.pdf` | **The deck.** 38 pages: 32 presented, 6 backup |
 | `preamble.tex` | Shared preamble — 16:9, 12 pt, palette, styles |
 | `content-main.tex` | Every frame: title, body slides, closing slide, then the backup slides |
 | `figures/` | Slide-geometry figures, generated |
@@ -145,8 +145,13 @@ than waiting to be noticed by whoever remembers.
 Sources, not one source: results and rates come from `thesis_numbers.json`;
 the tool caps, the budget table and the operation names from `agr/`; the graph
 statistics from the thesis's own `tab:graphstats`; the contributions and
-limitations from `introduction.tex` and `conclusion.tex`; and the cycle and
-node counts from the tikzpicture on the slide itself.
+limitations from `introduction.tex` and `conclusion.tex`; the cycle and node
+counts from the tikzpicture on the slide itself; and RoG's published row from
+the thesis's `tab:rog`. The RoG slide's third row is AGR's own answers scored
+by RoG's released scorer, which finds a gold answer anywhere inside the
+predicted text. `scripts/rog_scorer.py` carries that scorer, copied unchanged,
+and `build_thesis_numbers.py` writes the result into the JSON's `rog_scorer`
+block.
 
 **How a value is matched matters more than whether it is present.** This file
 used to claim it bound *every* result, cost, p-value, rate and count. Measured
@@ -207,7 +212,7 @@ two rounds of builds described as clean.
   separates by luminance, so the figures survive a greyscale print — the mark
   shapes carry the distinction independently of hue.
 - **The research-question slides are the one exception to the title size.**
-  Slides 18 to 25 are each titled with their question exactly as the book's
+  Slides 19 to 26 are each titled with their question exactly as the book's
   `sec:rqs` words it, on one line, and what that slide answers is its
   subtitle. A question is set smaller only if it would otherwise wrap, and
   only as far as one line needs. RQ3 fits at `\large` and keeps it. RQ1 is
