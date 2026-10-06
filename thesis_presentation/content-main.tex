@@ -219,8 +219,11 @@
 \end{frame}
 
 % ===================== 8 =====================
-% The questions as sec:rqs words them, and the six contributions as a
-% preview. Slide 29 is the same six, in the same order.
+% The questions as sec:rqs words them, word for word, and the six
+% contributions as a preview. Slide 29 is the same six, in the same order.
+% RQ1 used to carry "and does the advantage grow with hop count", which is
+% sec:rqs's elaboration rather than its question; it is slide 18's subtitle
+% now. check_slides.py holds all three to the book's bold lines.
 \begin{frame}{Research questions}
   % Ragged inside both lists. Beamer's list code re-issues \raggedright on
   % entry, which the preamble repoints at \justifying, so a list in a narrow
@@ -231,9 +234,8 @@
     \begin{column}{0.58\textwidth}
       \let\raggedright\agrraggedright
       \begin{enumerate}
-        \item[\textbf{RQ1}] Does agentic navigation improve multi-hop
-          factual accuracy, and does the advantage \alert{grow with hop
-          count}?
+        \item[\textbf{RQ1}] Does agentic navigation improve
+          \alert{multi-hop} factual accuracy?
           \vspace{1mm}
         \item[\textbf{RQ2}] What does pre-generation verification
           \alert{contribute} beyond graph navigation?
@@ -746,10 +748,17 @@
     more tokens.}
 \end{frame}
 
+% ================ 18 to 25, the research questions ================
+% Each slide is titled with its question exactly as sec:rqs words it, on
+% one line, and what that slide answers is its subtitle. The group below
+% sets those titles at \small (preamble.tex says why) and closes after
+% slide 25, so the exception reaches these eight frames and no others.
+{\rqtitles
+
 % ===================== 18 =====================
-% The title is sec:rqs's bold RQ1, broken by hand so that "accuracy?" does
-% not wrap onto a line of its own. Slide 8 carries its hop-count half.
-\begin{frame}{RQ1: Does agentic navigation improve\\ multi-hop factual accuracy?}
+% The subtitle is the second half of RQ1 as sec:rqs elaborates it, which
+% slide 8 carried until the questions there became the book's verbatim.
+\begin{frame}{RQ1: Does agentic navigation improve multi-hop factual accuracy?}{And does the advantage grow with hop count?}
   \centering
   \scalebox{0.92}{\input{figures/fig_hop_strata.tex}}
 
@@ -764,7 +773,7 @@
 \end{frame}
 
 % ===================== 19 =====================
-\begin{frame}{The caveat I want to raise myself}
+\begin{frame}{RQ1: Does agentic navigation improve multi-hop factual accuracy?}{The caveat I want to raise myself}
   \begin{table}
     \small
     % Grouped like slide 17's table, and for the same reason: the long
@@ -802,7 +811,9 @@
 \end{frame}
 
 % ===================== 20 =====================
-\begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}
+% The subtitle is the question this slide answers, RQ2 in its narrowest
+% form, and the script opens on the same words.
+\begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{Does anything ungrounded get asserted?}
   \begin{table}
     \small
     \renewcommand{\arraystretch}{1.1}
@@ -838,7 +849,7 @@
 % move it, and "some share of the precision margin ... may be prompt rather
 % than structure". 77/80 is sec:ablations' development figure, and the
 % 2/398 is computed from the paired records by check_slides.py.
-\begin{frame}{RQ2: What verification does \emph{not} do}
+\begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{What verification does \emph{not} do}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \begin{block}{It does not move accuracy}
@@ -879,7 +890,7 @@
 % it withheld, the ablated run got right. sec:verification-tradeoff
 % establishes the layer's value "at case level", and the De Niro case of
 % sec:answer-selection is its specimen of a correct rejection.
-\begin{frame}{RQ2: So what does it do?}
+\begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{So what does it do?}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \begin{block}{It withholds the ungrounded}
@@ -888,7 +899,9 @@
         answers were all wrong. It falls $8.5\% \to 8.0\%$ on WebQSP, one
         answer, which was right.
       \end{block}
-      \vspace{1mm}
+      % 0.5mm, not 1mm: the subtitle cost this slide a line, and this
+      % column was 0.8pt over.
+      \vspace{0.5mm}
       \begin{block}{It attaches evidence}
         \small\agrraggedright
         From \alert{one route of three}, it attaches supporting triples,
@@ -919,9 +932,11 @@
 %
 % The population note is not optional. The previous slide's 8.5 and 23.2
 % are the ablation half-samples and these are the full 400 per dataset.
-\begin{frame}{Does it just refuse more often?}
+\begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{Does it just refuse more often?}
   \begin{table}
     \small
+    % 1.1, as slides 20 and 24 set it: the subtitle cost this slide a line.
+    \renewcommand{\arraystretch}{1.1}
     \begin{tabular}{@{}lrr@{}}
       \toprule
       \textbf{System} & \textbf{WebQSP} & \textbf{CWQ} \\
@@ -943,7 +958,8 @@
 \end{frame}
 
 % ===================== 24 =====================
-\begin{frame}{RQ3: Which components contribute what, at what token cost?}
+% The subtitle is what the table is, in the script's own words.
+\begin{frame}{RQ3: Which components contribute what, at what token cost?}{Four ablations, each a paired test against the full system}
   \begin{table}
     \small
     \renewcommand{\arraystretch}{1.1}
@@ -956,7 +972,7 @@
       \cmidrule(lr){2-3}\cmidrule(lr){4-5}
       \textbf{Condition} & \textbf{F1} & \textbf{$p$}
                          & \textbf{F1} & \textbf{$p$}
-                         & \textbf{Tokens} \\
+                         & \textbf{WebQSP tokens} \\
       \midrule
       Full system     & 0.659 & ---   & 0.445 & ---   & 4{,}562 \\
       No planner      & \textbf{0.742} & \alert{\textbf{0.006}}
@@ -972,11 +988,12 @@
   % why its WebQSP F1 is 0.659 here and 0.642 on slide 17. The p-values are
   % uncorrected and read as descriptive (sec:ablations). The test is on
   % per-question correctness, so "on Hits@1" stops the p from being read as
-  % a test of the F1 beside it.
+  % a test of the F1 beside it. "Tokens are for WebQSP" is the column's
+  % header now: the subtitle cost this slide a line, and the note's third
+  % line held only those two words.
   {\small\agrraggedright $p$ is a paired McNemar test on Hits@1, $n =
   200$/$198$, uncorrected. \emph{Full system} is the main run on the same
-  halves, and \emph{embedding-only} drops the model term. Tokens are for
-  WebQSP.\par}
+  halves, and \emph{embedding-only} drops the model term.\par}
   \takeaway{Three of the four change nothing detectable. The fourth is on
     the next slide, and its sign is backwards.}
 \end{frame}
@@ -990,7 +1007,7 @@
 % Full-width blocks, one above the other. Side by side at half the measure
 % the first title wrapped "WebQSP" onto a line of its own, which is the
 % defect the 0.61 column width of the September deck existed to prevent.
-\begin{frame}{RQ3: One effect, and its sign is backwards}
+\begin{frame}{RQ3: Which components contribute what, at what token cost?}{One effect, and its sign is backwards}
   \begin{block}{Removing the planner \emph{improves} WebQSP}
     \small\agrraggedright
     $+0.083$ F1, $p = 0.006$, and $-31\%$ tokens. CWQ trends the other
@@ -1008,6 +1025,8 @@
   \takeaway{\textbf{Gate decomposition on structure.} The measurement forced
     that conclusion rather than confirming one.}
 \end{frame}
+
+}% end of \rqtitles: frame titles from here on are back at \large
 
 % ===================== 26 =====================
 \begin{frame}{Every failure, read and labelled}

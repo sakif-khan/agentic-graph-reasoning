@@ -111,8 +111,12 @@ CASES = [
     ("census composite_claim 47 -> 74", MAIN,
      "Composite claim      & 47", "Composite claim      & 74"),
     ("census echo 13 -> 31", MAIN, r"\alert{13}", r"\alert{31}"),
-    # Research-question numbering.
-    ("RQ1 renamed RQ9", MAIN, "RQ1", "RQ9"),
+    # Research-question numbering. Anchored on slide 8's label, which is
+    # what the bare "RQ1" used to hit first. Since 2026-10 a comment above
+    # slide 8 names RQ1 earlier in the file, and the bare anchor renamed
+    # that comment, which the checker rightly ignores: MISSED, for the
+    # probe's reason rather than the checker's.
+    ("RQ1 renamed RQ9", MAIN, r"\textbf{RQ1}", r"\textbf{RQ9}"),
     # The backup deck, which nothing reached at all.
     ("budget max_llm_calls 25 -> 99", BACK,
      r"\texttt{max\_llm\_calls}   & 25", r"\texttt{max\_llm\_calls}   & 99"),

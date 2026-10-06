@@ -34,6 +34,21 @@ The second pass, after the first round of fixes was swept again:
        from the page labels its build wrote. The .aux is a build product,
        so this case is skipped, visibly, where the copy has not been built.
 
+The third pass made the research questions the book's, word for word:
+
+  15   Slide 8's RQ1 carrying sec:rqs's elaboration, "and does the
+       advantage grow with hop count", as if it were the question.
+  16   A slide that answers a question titled with its own heading instead,
+       as slide 23 was, which leaves a gap in the run of question slides.
+  17   A question slide whose title paraphrases its question, as slide 25's
+       "RQ3: One effect, and its sign is backwards" did.
+
+The rules on the built titles (each question on one line, and only the
+questions set small) need a rebuilt deck to reinstate, so they were proved
+once instead, on 2026-10-06, against two defective builds: the questions at
+full size failed the one-line rule on all six RQ1 and RQ2 slides, and a
+group closed one slide late failed the size rule on the census slide.
+
 Every file is restored in a finally block.
 """
 import io
@@ -146,6 +161,22 @@ CASES = [
           r"Think-on-Graph a meaningful comparison.\par}")),
     ("shipped: the census histogram on the schema's identifiers",
      identifiers),
+    ("shipped: slide 8's RQ1 carrying the elaboration as the question",
+     edit(DECK, r"\item[\textbf{RQ1}] Does agentic navigation improve "
+                r"\alert{multi-hop} factual accuracy?",
+          r"\item[\textbf{RQ1}] Does agentic navigation improve multi-hop "
+          r"factual accuracy, and does the advantage \alert{grow with hop "
+          r"count}?")),
+    ("shipped: an answering slide titled with its own heading",
+     edit(DECK, r"\begin{frame}{RQ2: What does pre-generation verification "
+                r"contribute beyond graph navigation?}{Does it just refuse "
+                r"more often?}",
+          r"\begin{frame}{Does it just refuse more often?}")),
+    ("shipped: a question slide titled with a paraphrase of its question",
+     edit(DECK, r"\begin{frame}{RQ3: Which components contribute what, at "
+                r"what token cost?}{One effect, and its sign is backwards}",
+          r"\begin{frame}{RQ3: One effect, and its sign is backwards}"
+          r"{One effect, and its sign is backwards}")),
 ]
 if AUX.exists():
     CASES.append(("a slide's speech split across two pages of the "

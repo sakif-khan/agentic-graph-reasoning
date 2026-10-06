@@ -43,6 +43,25 @@
 \setbeamercolor{alerted text}{fg=agraccent}
 \setbeamerfont{frametitle}{size=\large,series=\bfseries}
 \setbeamerfont{title}{size=\Large,series=\bfseries}
+% Only the research-question slides carry a subtitle (see \rqtitles). It is
+% what that slide answers, set under the question at the same size and
+% without the bold, so the question stays the heavier line. Beamer's own
+% default is \footnotesize, below this deck's floor.
+\setbeamerfont{framesubtitle}{size=\small,series=\mdseries}
+
+% The research-question slides, 18 to 25, are the one exception to the
+% frame-title size. Each is titled with its question exactly as sec:rqs
+% words it, on one line, and the longest (RQ2, 408pt at \small) does not
+% fit the title bar at \large or at \normalsize. One size for all eight, so
+% the three questions read as one family; \small is also the body size, so
+% nothing drops below the deck's floor.
+%
+% Issued inside a group that encloses those frames. A frame option cannot
+% carry it: beamer applies frame options outside the frame's own group, so
+% the size set by one leaked into every frame after it. Measured in a test
+% deck before use, and check_slides.py reads the built titles to hold both
+% halves: the RQ titles on one line, every other title at full size.
+\newcommand{\rqtitles}{\setbeamerfont{frametitle}{size=\small}}
 
 % Half of the vertical centring; \takeaway and \sinkfoot are the other
 % half. Anchoring the foot to the bottom of the frame put all of a thin

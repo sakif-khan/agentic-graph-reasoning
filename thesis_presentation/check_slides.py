@@ -127,14 +127,61 @@ def spoken(n):
 #
 # The number is still checked, against the deck: section N has to be the
 # speech for frame N, or the rehearsal and the slides have come apart.
+def _group(s, i):
+    """The balanced {...} group opening at s[i], as (content, index after
+    it), or (None, i) when s[i] does not open one."""
+    if i >= len(s) or s[i] != "{":
+        return None, i
+    depth, j = 0, i
+    while j < len(s):
+        if s[j] == "\\":                 # \{ and \} are not braces
+            j += 2
+            continue
+        depth += {"{": 1, "}": -1}.get(s[j], 0)
+        if depth == 0:
+            return s[i + 1:j], j + 1
+        j += 1
+    return None, i
+
+
+def _frames():
+    """(title, subtitle, body) for every frame, in deck order.
+
+    Read as beamer reads them: options skipped, then up to two brace groups,
+    the title and the subtitle. Since 2026-10 the research-question slides
+    share their titles, two to four frames each, and only their subtitles
+    tell them apart, so a frame is found by either.
+    """
+    out = []
+    for m in re.finditer(r"\\begin\{frame\}", FLAT):
+        i = m.end()
+        if FLAT.startswith("[", i):
+            i = FLAT.index("]", i) + 1
+        heads = []
+        while len(heads) < 2:
+            g, k = _group(FLAT, i + (FLAT[i:i + 1] == " "))
+            if g is None:
+                break
+            heads.append(g)
+            i = k
+        heads += ["", ""]
+        out.append((heads[0], heads[1], FLAT[i:FLAT.find(r"\end{frame}", i)]))
+    return out
+
+
+FRAMES = _frames()
+
+
 def frame_no(title):
-    """1-based position in the deck of the frame whose title starts so."""
-    src = open(os.path.join(HERE, "content-main.tex"), encoding="utf-8").read()
-    for n, m in enumerate(re.finditer(r"\\begin\{frame\}(?:\[[^\]]*\])?"
-                                      r"(?:\{([^\n]*)\})?", src), 1):
-        if (m.group(1) or "").startswith(title):
-            return n
-    return 0
+    """1-based position of the one frame whose title or subtitle starts so.
+
+    0 when none does, and 0 when several do: a research question's title is
+    shared by every slide that answers it, and the first of them is not an
+    answer to which one was meant.
+    """
+    hits = [n for n, (t, s, _) in enumerate(FRAMES, 1)
+            if t.startswith(title) or (s and s.startswith(title))]
+    return hits[0] if len(hits) == 1 else 0
 
 
 def section(title, heading=None):
@@ -158,10 +205,13 @@ NUM = {0: "No", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
 
 
 def frame(title):
-    """The one frame with this title, from \\begin{frame} to \\end{frame}."""
-    m = re.search(r"\\begin\{frame\}\{" + re.escape(title) + r"\}(.*?)"
-                  r"\\end\{frame\}", FLAT)
-    return m.group(1) if m else ""
+    """The body of the one frame with this title or subtitle, matched whole.
+
+    '' when no frame has it, and '' when several do, so a rule fails rather
+    than reading the first of the slides that share a question's title.
+    """
+    hits = [b for t, s, b in FRAMES if title in (t, s)]
+    return hits[0] if len(hits) == 1 else ""
 
 
 def frames(*titles):
@@ -579,6 +629,44 @@ print("\n== the research questions are numbered as the thesis numbers them ==")
 asked = sorted({int(n) for n in re.findall(r"\bRQ(\d+)", FLAT)})
 ck("the deck asks RQ1, RQ2 and RQ3", asked == [1, 2, 3], f"deck asks RQ{asked}")
 
+# ...and worded as it words them. The question is sec:rqs's bold line; the
+# paragraph under it elaborates. Slide 8's RQ1 carried the elaboration's
+# "and does the advantage grow with hop count" as if it were the question,
+# and nothing compared the two. Read from the book, so a question reworded
+# there fails here until the deck follows.
+_rq_book = " ".join(open(os.path.join(ROOT, "thesis_book", "chapters",
+                                      "introduction.tex"),
+                         encoding="utf-8").read().split())
+BOOK_RQ = dict(re.findall(r"\\textbf\{RQ(\d): ([^{}]*)\}", _rq_book))
+ck("the book states three research questions",
+   sorted(BOOK_RQ) == ["1", "2", "3"], str(sorted(BOOK_RQ)))
+_slide_rq = {n: " ".join(re.sub(r"\\alert\{([^{}]*)\}", r"\1", q).split())
+             for n, q in re.findall(
+                 r"\\item\[\\textbf\{RQ(\d)\}\]\s*(.*?)\s*"
+                 r"(?=\\vspace|\\item|\\end\{enumerate\})",
+                 frame("Research questions"))}
+for _n, _q in sorted(BOOK_RQ.items()):
+    ck(f"slide 8 asks RQ{_n} in the book's words", _slide_rq.get(_n) == _q,
+       f"slide says {_slide_rq.get(_n)!r}")
+
+# Every slide that answers a question is titled with that question, whole
+# and in the book's words, and says in its subtitle what it answers. The
+# question slides run unbroken and in order, so a slide that drops its
+# question for a heading of its own leaves a gap, which fails.
+_rq_at = [(n, t, s) for n, (t, s, _) in enumerate(FRAMES, 1)
+          if re.match(r"RQ\d: ", t)]
+_rq_pos = [n for n, _, _ in _rq_at]
+ck(f"{len(_rq_at)} slides carry a research question as their title, "
+   f"unbroken and in order",
+   len(_rq_at) >= 3 and _rq_pos == list(range(_rq_pos[0], _rq_pos[-1] + 1))
+   and [t[2] for _, t, _ in _rq_at] == sorted(t[2] for _, t, _ in _rq_at)
+   and {t[2] for _, t, _ in _rq_at} == set(BOOK_RQ),
+   f"slides {_rq_pos}")
+for _n, _t, _s in _rq_at:
+    ck(f"  slide {_n}: RQ{_t[2]} verbatim, and a subtitle",
+       _t == f"RQ{_t[2]}: {BOOK_RQ.get(_t[2])}" and bool(_s),
+       f"{_t[:48]!r} / {_s[:30]!r}")
+
 # The three generated figures. check_slides used to say these "need no
 # checking" because build_figures.py generates them -- but a generated
 # file is only right until the JSON moves under it, and the deck keeps its
@@ -730,9 +818,10 @@ except ImportError as e:
     ck("build_figures.py is importable", False, str(e))
 ck("WebQSP h3plus is 4 (quoted as a limitation)",
    J["test_sets"]["webqsp"]["strata"]["h3plus"] == 4)
-# ...and the RQ1 slide says why that panel is dashed, with the same n.
-HOP_TITLE = (r"RQ1: Does agentic navigation improve\\ multi-hop factual "
-             r"accuracy?")
+# ...and the RQ1 slide says why that panel is dashed, with the same n. The
+# slide is found by its subtitle: its title, RQ1 itself, is shared with
+# the caveat slide that follows it.
+HOP_TITLE = "And does the advantage grow with hop count?"
 _h3 = J["test_sets"]["webqsp"]["strata"]["h3plus"]
 # It read "Dashed: $n = 4$ at 3+.", which named neither the panel nor what
 # the n was of. The sentence that does both fits the line; the n is written
@@ -827,10 +916,8 @@ ck(f"all {len(_backups)} backup frames follow it, none before",
 # \sinkfoot and \centrebody each supply. A frame with none of them sinks
 # to the floor. Four backup frames shipped that way, and "which budgets
 # actually bind" sat 82pt under its title and 2pt above the page number.
-_titled = re.findall(
-    r"\\begin\{frame\}(\[[^\]]*\])?\{(.*?)\}[ \t]*\n(.*?)\\end\{frame\}",
-    uncomment(main_src), re.S)
-_sunk = [t for _, t, b in _titled
+_titled = [(t, s, b) for t, s, b in FRAMES if t]
+_sunk = [s or t for t, s, b in _titled
          if not re.search(r"\\(?:takeaway|sinkfoot|centrebody)\b", b)]
 ck(f"all {len(_titled)} titled frames close with glue to balance the "
    f"title's", bool(_titled) and not _sunk,
@@ -963,6 +1050,44 @@ if pymupdf is not None:
         ck(f"{drv}: no overprinted text", not clashes,
            clashes[0] if clashes else "")
 
+# The research-question titles are each on one line, which is what setting
+# them small was for, and the small size stays on those slides. Both are
+# facts about the built page rather than the source. \rqtitles is issued in
+# a group around the question slides because a frame option that set the
+# same size leaked it into every frame after its own (measured 2026-10-06),
+# and a group closed in the wrong place would shrink the census slide's
+# title without a word in the log. A title is the topmost line of its page,
+# and a question that wrapped has no line holding all of it.
+print("\n== each research question is a one-line title, and only they ==")
+if pymupdf is not None:
+    _deck = os.path.join(HERE, os.path.splitext(DRIVERS[0])[0] + ".pdf")
+    _tline, _tsize = {}, {}
+    if os.path.exists(_deck):
+        with pymupdf.open(_deck) as d:
+            for _n, (_t, _s, _) in enumerate(FRAMES, 1):
+                if not _t or _n > d.page_count:
+                    continue
+                _lines = sorted(
+                    (l["bbox"][1],
+                     " ".join("".join(sp["text"] for sp in l["spans"])
+                              .split()),
+                     max(sp["size"] for sp in l["spans"]))
+                    for b in d[_n - 1].get_text("dict")["blocks"]
+                    for l in b.get("lines", [])
+                    if "".join(sp["text"] for sp in l["spans"]).strip())
+                if _lines:
+                    _tline[_n], _tsize[_n] = _lines[0][1], round(
+                        _lines[0][2], 1)
+    _rqn = {n for n, _, _ in _rq_at}
+    for _n, _t, _ in _rq_at:
+        ck(f"  slide {_n}'s question is set on one line",
+           _tline.get(_n) == _t, f"its first line is {_tline.get(_n, '')!r}")
+    _big = {v for n, v in _tsize.items() if n not in _rqn}
+    _small = {v for n, v in _tsize.items() if n in _rqn}
+    ck("the question titles alone are set small, every other at full size",
+       len(_big) == 1 and len(_small) == 1 and min(_big) > max(_small),
+       f"other titles {sorted(_big)}pt, questions {sorted(_small)}pt")
+
 # ---------------------------------------------------------------------
 # The deck's six contributions must be the thesis's six.
 #
@@ -1065,11 +1190,10 @@ for key in LIMIT_KEYS:
 # each instead: the summary may drop them, the argument may not.
 MOVED = (
     ("the ablation is underpowered",
-     r"RQ2: What verification does \emph{not} do",
+     r"What verification does \emph{not} do",
      ("do not detectably change", r"$p = 1.0$ on \emph{both} datasets")),
     ("zero ungrounded is navigation, not the layer",
-     "RQ2: What does pre-generation verification contribute beyond "
-     "graph navigation?",
+     "Does anything ungrounded get asserted?",
      (r"property of \emph{graph navigation}, not of the verification "
       r"layer",)),
 )
@@ -2139,11 +2263,11 @@ else:
 # other systems that no rule read at all.
 print("\n== the hop curve is the strata ==")
 TR = J["main_results"]["hop_trends"]["cwq"]
-# The title is sec:rqs's bold RQ1 since 2026-10, broken by hand; it carried
-# the hop-count clause after an em-dash and wrapped one word onto a line.
+# The title is sec:rqs's bold RQ1, on one line, and the hop-count clause
+# it once carried after an em-dash is its subtitle. The script's heading
+# still names the slide by its question.
 HOP = frame(HOP_TITLE)
-s21 = section("RQ1: Does agentic navigation improve",
-              heading="RQ1: Does agentic navigation improve")
+s21 = section(HOP_TITLE, heading="RQ1: Does agentic navigation improve")
 agr = TR["agr"]["hits_at_1"]
 arrow = r"\s*(?:\$?\\to\$?|\u2192|,)\s*".join(re.escape(f"{v}") for v in agr)
 ck("the hop slide is in the deck", bool(HOP))
@@ -2533,11 +2657,10 @@ _t2 = [v["supported_pct"] for v in J["groundedness_tier2_judge"].values()
        if isinstance(v, dict) and "supported_pct" in v]
 ck(f"the Tier-2 band is {min(_t2)} to {max(_t2)}%",
    rf"${min(_t2)}$ to ${max(_t2)}\%$" in frame(
-       "RQ2: What does pre-generation verification contribute beyond "
-       "graph navigation?"))
+       "Does anything ungrounded get asserted?"))
 
 # The verifier's null, the precision lead, and the 77 of 80.
-NOT_DO = frame(r"RQ2: What verification does \emph{not} do")
+NOT_DO = frame(r"What verification does \emph{not} do")
 ck("the CWQ assertion precisions are the records'",
    rf"${_ap['cwq', 'agr']}\%$ of what it asserts, Think-on-Graph on "
    rf"${_ap['cwq', 'tog']}\%$" in NOT_DO,
@@ -2564,17 +2687,17 @@ if os.path.isdir(ABL):
         _ways |= {_hit(_f[q]) for q in _f if q in _a and _hit(_f[q]) != _hit(_a[q])}
     ck("and one each way", _ways == {True, False} and "one each way" in NOT_DO)
     # The case-level reading of the hedge deltas on the next slide.
-    DOES = frame("RQ2: So what does it do?")
+    DOES = frame("So what does it do?")
     ck(f"the {len(st['cwq']['full_only'])} withheld CWQ answers were all wrong",
        not st["cwq"]["rescued"] and "Those six answers were all wrong" in DOES)
     ck("the one withheld WebQSP answer was right, and the slide says so",
        len(st["webqsp"]["rescued"]) == 1 and "which was right" in DOES)
 ck("the fabricated-actor specimen is the thesis's",
    "Marlon Brando also played in \\emph{Joy}" in _res
-   and "Marlon Brando was in \\emph{Joy}" in frame("RQ2: So what does it do?"))
+   and "Marlon Brando was in \\emph{Joy}" in frame("So what does it do?"))
 
 # The planner's strata and the context-stripping specimen.
-PLANNER = frame("RQ3: One effect, and its sign is backwards")
+PLANNER = frame("One effect, and its sign is backwards")
 AS = J["ablations"]["by_hop_stratum"]
 for d, h in (("webqsp", "h1"), ("webqsp", "h2"), ("cwq", "h2")):
     a, b = (f'{AS[f"{d}/half_abl_{c}"][h]["hits_at_1"]:.2f}'

@@ -197,6 +197,16 @@ two rounds of builds described as clean.
   unsupported. The series palette is Okabe-Ito, which is colour-blind safe and
   separates by luminance, so the figures survive a greyscale print — the mark
   shapes carry the distinction independently of hue.
+- **The research-question slides are the one exception to the title size.**
+  Slides 18 to 25 are each titled with their question exactly as the book's
+  `sec:rqs` words it, on one line, and what that slide answers is its
+  subtitle. RQ2 does not fit one line at `\large`, so a group, `{\rqtitles`
+  before slide 18 and `}` after slide 25, sets those eight titles at
+  `\small`. Keep the closing brace there. A frame option cannot carry the
+  size, because beamer applies frame options outside the frame and the size
+  leaked into every later frame. `check_slides.py` holds the questions to the
+  book (slide 8 and every question title) and reads the built titles: each
+  question on one line, and every other title at full size.
 - **Every titled frame ends in `\takeaway`, `\sinkfoot` or `\centrebody`.**
   The preamble puts stretchable glue under every frame title so that a thin
   slide settles midway, and that needs a matching stretch at the foot. Without
