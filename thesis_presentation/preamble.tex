@@ -43,25 +43,28 @@
 \setbeamercolor{alerted text}{fg=agraccent}
 \setbeamerfont{frametitle}{size=\large,series=\bfseries}
 \setbeamerfont{title}{size=\Large,series=\bfseries}
-% Only the research-question slides carry a subtitle (see \rqtitles). It is
-% what that slide answers, set under the question at the same size and
-% without the bold, so the question stays the heavier line. Beamer's own
-% default is \footnotesize, below this deck's floor.
+% Only the research-question slides carry a subtitle (see \rqtitlesize). It
+% is what that slide answers, set under the question in \small and without
+% the bold, so the question stays the heavier line. Beamer's own default is
+% \footnotesize, below this deck's floor.
 \setbeamerfont{framesubtitle}{size=\small,series=\mdseries}
 
-% The research-question slides, 18 to 25, are the one exception to the
-% frame-title size. Each is titled with its question exactly as sec:rqs
-% words it, on one line, and the longest (RQ2, 408pt at \small) does not
-% fit the title bar at \large or at \normalsize. One size for all eight, so
-% the three questions read as one family; \small is also the body size, so
-% nothing drops below the deck's floor.
+% The research-question slides, 18 to 25, are titled with their question
+% exactly as sec:rqs words it, on one line. A title shrinks only if it would
+% otherwise wrap, and only as far as one line needs. The title line is 436pt.
+% RQ3 is 419pt at \large and keeps the frame-title size. RQ1 is 444pt there
+% and is set at 14pt, against 14.4pt for every other title. RQ2 is 537pt and
+% is set at 11.6pt. The second argument keeps \large's line spacing of 1.25
+% times the size, which puts the tops of the letters level with every other
+% slide's title.
 %
-% Issued inside a group that encloses those frames. A frame option cannot
-% carry it: beamer applies frame options outside the frame's own group, so
-% the size set by one leaked into every frame after it. Measured in a test
-% deck before use, and check_slides.py reads the built titles to hold both
-% halves: the RQ titles on one line, every other title at full size.
-\newcommand{\rqtitles}{\setbeamerfont{frametitle}{size=\small}}
+% Issued inside a group that encloses that question's frames. A frame option
+% cannot carry it: beamer applies frame options outside the frame's own
+% group, so the size set by one leaked into every frame after it. Measured in
+% a test deck before use, and check_slides.py reads the built titles to hold
+% it: each question on one line, at full size wherever that fits, and every
+% other title at full size.
+\newcommand{\rqtitlesize}[2]{\setbeamerfont{frametitle}{size*={#1}{#2}}}
 
 % Half of the vertical centring; \takeaway and \sinkfoot are the other
 % half. Anchoring the foot to the bottom of the frame put all of a thin
@@ -164,9 +167,19 @@
     tick style={gray!60},
   }}
 
-% One-line takeaway bar, used at the foot of the data slides. The box width
-% must subtract twice `sep', which beamercolorbox adds OUTSIDE `wd' -- passing
-% \textwidth directly overruns the text block by exactly 2*sep.
+% One-line takeaway bar, used at the foot of the data slides. The bar spans
+% the text block exactly, so it is centred on the slide. A rounded beamer box
+% draws its background 4bp wider than the box on each side
+% (beamerbaseboxes.sty), so the box is \textwidth less 8bp, moved right by
+% 4bp. It used to be \textwidth less 2*sep and unmoved, on the belief that
+% beamercolorbox adds `sep' outside `wd'. It does not. Measured in October
+% 2026, the bar ran from 4pt left of the text block to 6pt short of its
+% right edge, 5pt left of centre on every slide that has one.
+%
+% The words keep the measure they always had, \textwidth less 2*sep, inset
+% sep from each edge of the bar. The box's own `sep' would inset them, but
+% the \raggedright inside (which this deck points at \justifying) resets the
+% skips that `sep' sets, so the inset is set again after it.
 \setbeamercolor{takeawaybar}{bg=agrNode!12,fg=agrdark}
 % The leading \par is not cosmetic. Without it the box is appended to the
 % paragraph above rather than starting its own, and the preceding line is
@@ -198,12 +211,27 @@
 % that ends in \takeaway: there the bar is meant to reach the floor, and a
 % third glue would lift it back off.
 \newcommand{\centrebody}{\par\vskip 0pt plus 1filll\relax}
+% The two glues share a slide's slack evenly, which centres the body between
+% the title and the foot when the body starts and ends in plain text. A
+% table, a list or a block brings space of its own above or below it, and
+% that space is not slack: measured on the page in October 2026, it set
+% sixteen bodies up to 4.5pt off centre. Centred means the same gap from the
+% header's last baseline down to the body's first ink as from the body's last
+% baseline down to the takeaway bar, or to the frame number on a slide
+% without one. \bodyshift{<len>} at the head of a frame sets its body <len>
+% lower than the glue alone would (higher, if negative). It inserts twice
+% that, because the glue gives half of any inserted space back.
+% check_slides.py measures every slide and fails one more than 1.5pt off.
+\newcommand{\bodyshift}[1]{\vspace*{2\dimexpr #1\relax}}
 \newcommand{\takeaway}[1]{%
   \par\vspace{1mm}\vskip 0pt plus 1filll\relax%
-  \begin{beamercolorbox}[wd=\dimexpr\textwidth-3.6mm\relax,sep=1.8mm,
-    rounded=true]{takeawaybar}%
-    \small\raggedright\textbf{#1}%
-  \end{beamercolorbox}}
+  \moveright4bp\vbox{%
+    \begin{beamercolorbox}[wd=\dimexpr\textwidth-8bp\relax,sep=1.8mm,
+      rounded=true]{takeawaybar}%
+      \small\raggedright
+      \leftskip=\dimexpr1.8mm-4bp\relax \rightskip=\leftskip
+      \textbf{#1}%
+    \end{beamercolorbox}}}
 
 % hyperref copies \title and \author into the PDF's own metadata, where a
 % spacing command is not a legal token. \quad reached it as a raw

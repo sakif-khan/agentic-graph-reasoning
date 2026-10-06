@@ -102,6 +102,15 @@ as the census slide does, where the book and the paper print the schema's
 identifiers (`relation_selection`). `check_slides.py` holds the six largest
 to the census slide's own names.
 
+Two more settings are the deck's alone. The deck sets two of the figures
+inside a box (`\scalebox`, `\resizebox`), where every line end outside the
+`tikzpicture` is a word space, so the slide variants end those lines with `%`.
+Without that the RQ1 figure sat 10pt right of centre and the census histogram
+11pt. And the two-panel figures place their shared legend by `legend_x`,
+measured on the slide so the legend is centred under both panels. Both are set
+for the presentation target only, and the book's and the paper's files keep
+their bytes.
+
 The accuracy-against-cost slide labels its token axis 100, 1,000 and 10,000
 rather than as powers of ten, whose exponents printed at 6 pt. That is set on
 the slide rather than in `build_figures.py`, so no generated file changes for
@@ -200,13 +209,32 @@ two rounds of builds described as clean.
 - **The research-question slides are the one exception to the title size.**
   Slides 18 to 25 are each titled with their question exactly as the book's
   `sec:rqs` words it, on one line, and what that slide answers is its
-  subtitle. RQ2 does not fit one line at `\large`, so a group, `{\rqtitles`
-  before slide 18 and `}` after slide 25, sets those eight titles at
-  `\small`. Keep the closing brace there. A frame option cannot carry the
-  size, because beamer applies frame options outside the frame and the size
-  leaked into every later frame. `check_slides.py` holds the questions to the
-  book (slide 8 and every question title) and reads the built titles: each
-  question on one line, and every other title at full size.
+  subtitle. A question is set smaller only if it would otherwise wrap, and
+  only as far as one line needs. RQ3 fits at `\large` and keeps it. RQ1 is
+  set at 14pt and RQ2 at 11.6pt, each by a group around that question's
+  slides: `{\rqtitlesize{...}` before the first and `}` after the last. Keep
+  the closing braces where they are. A frame option cannot carry the size,
+  because beamer applies frame options outside the frame and the size leaked
+  into every later frame. `check_slides.py` holds the questions to the book
+  (slide 8 and every question title) and reads the built titles: each
+  question on one line, at full size wherever it fits, and every other title
+  at full size.
+- **Centred means centred on the page, and it is measured.** The takeaway bar
+  spans the text block, 1cm in from each edge. A rounded beamer box draws its
+  background 4bp outside the box on either side, which `\takeaway` allows
+  for. Until October 2026 the bar sat 5pt left of centre on every slide. Each
+  generated figure is centred on its slide, and the shared legends are
+  centred under both panels. Vertically, every slide's body sits midway
+  between the header and the foot (the takeaway bar, the `\sinkfoot` line, or
+  the frame number). The gap runs from the header's last baseline to the
+  body's first ink, and from the body's last baseline to the foot. A table, a
+  list or a block brings space of its own above or below it, so a slide that
+  starts or ends with one carries `\bodyshift{<len>}` at the head of its
+  frame, measured to put it back. `check_slides.py` renders the pages and
+  fails a bar off the text block, a figure or legend off centre, or a body
+  more than 1pt from midway. That failure prints both gaps. To balance the
+  slide, add half of (the gap over the foot minus the gap under the header)
+  to its `\bodyshift`.
 - **Every titled frame ends in `\takeaway`, `\sinkfoot` or `\centrebody`.**
   The preamble puts stretchable glue under every frame title so that a thin
   slide settles midway, and that needs a matching stretch at the foot. Without

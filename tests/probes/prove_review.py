@@ -49,6 +49,26 @@ once instead, on 2026-10-06, against two defective builds: the questions at
 full size failed the one-line rule on all six RQ1 and RQ2 slides, and a
 group closed one slide late failed the size rule on the census slide.
 
+The fourth pass centred what was off centre:
+
+  18   The deck's figures back on their word spaces. The generator writes
+       the slide variants without the % that ends each line outside the
+       picture, and the figures are regenerated with it, so they still
+       match the generator and only the word-space rule can catch it. In a
+       box those spaces set the RQ1 figure 10pt right of centre.
+
+The fourth pass's page rules need a rebuilt deck too, and were proved once
+on 2026-10-06, each against its own defective build. The takeaway bar's
+old geometry (\\textwidth less 3.6mm, unmoved) failed the bar rule, slide 2
+first at 24.35pt from the left and 34.55pt from the right. The old legend
+position (1.08) failed the legend rule on slides 18 and 35, by 2.9pt and
+4.5pt. The word spaces back failed the centring rule on slides 18 and 34
+(+10.1pt, +10.7pt) and on 35 (-2.4pt, from the one space after the picture),
+besides the word-space rule on all three files. RQ3 set small failed the
+size rule, and the balance rule on slide 24. Slide 30 without its
+\\bodyshift failed the balance rule, at 12.9pt under its header against
+21.8pt over its foot.
+
 Every file is restored in a finally block.
 """
 import io
@@ -64,9 +84,12 @@ SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 BUILD = ROOT / "scripts" / "build_figures.py"
 HIST = ROOT / "thesis_presentation" / "figures" / "fig_failure_histogram.tex"
+HOP = ROOT / "thesis_presentation" / "figures" / "fig_hop_strata.tex"
+ACC = ROOT / "thesis_presentation" / "figures" / "fig_accuracy_cost.tex"
 AUX = ROOT / "thesis_presentation" / "transcript-min.aux"
 
-FILES = (DECK, SCRIPT, BUILD, HIST) + ((AUX,) if AUX.exists() else ())
+FILES = (DECK, SCRIPT, BUILD, HIST, HOP, ACC) + (
+    (AUX,) if AUX.exists() else ())
 orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
 
 
@@ -107,6 +130,25 @@ def identifiers():
     assert new != orig[BUILD], "anchor gone in build_figures.py"
     io.open(BUILD, "w", encoding="utf-8", newline="").write(new)
     subprocess.run([sys.executable, "-c", REGEN], cwd=ROOT, check=True)
+
+
+# All three of the deck's figures, regenerated the same way.
+REGEN_ALL = ("import sys; sys.path.insert(0, 'scripts'); "
+             "import build_figures as BF; c = BF.TARGETS['presentation']; "
+             "d = BF.load(); "
+             "[(c['outdir'] / (n + '.tex')).write_text(f(d, c), "
+             "encoding='utf-8', newline='\\n') for n, f in ("
+             "('fig_accuracy_cost', BF.accuracy_cost), "
+             "('fig_hop_strata', BF.hop_strata), "
+             "('fig_failure_histogram', BF.failure_histogram))]")
+
+
+def word_spaces():
+    """The deck's figures without their %s, generator and figures both."""
+    new = orig[BUILD].replace("in_box=True,", "in_box=False,", 1)
+    assert new != orig[BUILD], "anchor gone in build_figures.py"
+    io.open(BUILD, "w", encoding="utf-8", newline="").write(new)
+    subprocess.run([sys.executable, "-c", REGEN_ALL], cwd=ROOT, check=True)
 
 
 def split_speech():
@@ -177,6 +219,7 @@ CASES = [
                 r"what token cost?}{One effect, and its sign is backwards}",
           r"\begin{frame}{RQ3: One effect, and its sign is backwards}"
           r"{One effect, and its sign is backwards}")),
+    ("shipped: the deck's figures on their word spaces", word_spaces),
 ]
 if AUX.exists():
     CASES.append(("a slide's speech split across two pages of the "

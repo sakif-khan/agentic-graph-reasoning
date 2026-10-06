@@ -46,6 +46,23 @@ PALETTE = {
 COLOUR_DEFS = "\n".join(
     r"\definecolor{%s}{HTML}{%s}" % (n, v) for n, v in PALETTE.items())
 
+
+# A target with in_box set puts its figures inside a box: the deck scales the
+# hop-strata figure with \scalebox and the census histogram with \resizebox.
+# Inside a box every line end outside the tikzpicture is a word space, and the
+# seven \definecolor lines ahead of the picture against the one after it set
+# the RQ1 slide's figure 10pt right of centre. The thesis and the paper \input
+# their copies between paragraphs, where those spaces are discarded, so their
+# files keep the bytes they had.
+def colour_defs(cfg):
+    if not cfg["in_box"]:
+        return COLOUR_DEFS
+    return "%\n".join(COLOUR_DEFS.split("\n")) + "%"
+
+
+def picture_end(cfg):
+    return r"\end{tikzpicture}" + ("%" if cfg["in_box"] else "")
+
 # Display names and per-series marks. Marks carry the distinction on paper; the
 # colours carry it on a projector.
 SYSTEMS = [
@@ -199,19 +216,25 @@ TARGETS = {
         mark_size=2.6, line_mark=2.2,
         hist_width=r"0.80\textwidth", hist_height="95mm", bar_width="4.2mm",
         stack_ticks=False, strata_xlabel=True, hist_tick_font=r"\scriptsize",
-        hist_prose=False,
+        hist_prose=False, in_box=False,
+        legend_x=1.08, strata_legend_x=1.08,
     ),
     "presentation": dict(
         outdir=Path("thesis_presentation/figures"),
         # One deck, one driver -- the same root preamble.tex points at.
         root="../thesis_defense_0421052099.tex",
         width="52mm", height="34mm", gutter="18mm",
-        legend_drop=-0.70, strata_legend_drop=-0.86,
+        # strata_legend_drop was -0.86, set deeper than legend_drop for the
+        # stacked ticks below, but the dropped xlabel had already bought that
+        # line back. It hung the legend 21pt under the hop panels' ticks,
+        # nearer the sentence under the figure than the figure it keys. At
+        # -0.56 it sits 7pt under them, as the scatter's sits under its
+        # xlabel. Measured on the slide.
+        legend_drop=-0.70, strata_legend_drop=-0.56,
         mark_size=3.0, line_mark=2.6,
         hist_width="112mm", hist_height="62mm", bar_width="3.0mm",
         # A slide panel is 52mm wide and the hop labels read "1 hop (n=256)",
-        # which does not fit three across. Break them over two lines -- which
-        # costs vertical space, hence the deeper strata_legend_drop.
+        # which does not fit three across. Break them over two lines.
         stack_ticks=True,
         # ...and once the ticks read "1 hop", "2 hops", "3+ hops", an axis
         # labelled "Hop stratum" says nothing the reader cannot see. Dropping
@@ -220,6 +243,12 @@ TARGETS = {
         hist_tick_font=r"\small",
         # Category names in words, as the census slide gives them.
         hist_prose=True,
+        in_box=True,
+        # Measured on the slide, where 1.08 put the legend 2.9pt left of the
+        # hop panels' centre and 4.5pt left of the scatter panels'. The
+        # panels are not symmetric about the gutter: each carries its y
+        # labels on the left.
+        legend_x=1.13, strata_legend_x=1.11,
     ),
     "paper": dict(
         outdir=Path("journal/figures"),
@@ -253,19 +282,22 @@ TARGETS = {
         # overflowed, not the bars, so the axis gives way instead.
         hist_width=r"0.78\textwidth", hist_height="88mm", bar_width="3.8mm",
         hist_tick_font=r"\scriptsize",
-        hist_prose=False,
+        hist_prose=False, in_box=False,
+        legend_x=1.08, strata_legend_x=1.08,
     ),
 }
 
 
-def legend_below(cfg, drop_key="legend_drop"):
+def legend_below(cfg, drop_key="legend_drop", x_key="legend_x"):
     """One legend for a two-panel figure, centred underneath both panels.
     Placing it inside either panel collides with the data: on WebQSP the curves
     cross the whole plotting area, and on the scatter two systems sit within a
-    few tokens of each other. x=1.08 is just past the right edge of the left
-    axis, which is the midpoint of the pair once the gutter is counted."""
-    return (r"  legend style={at={(1.08,%.2f)}, anchor=north,"
-            r" legend columns=5, column sep=1.8mm}," % cfg[drop_key]
+    few tokens of each other. x is in the left axis's own units, so just past
+    1.0 is just past its right edge, which is near the midpoint of the pair
+    once the gutter is counted. The target sets it, as it sets the drop."""
+    return (r"  legend style={at={(%.2f,%.2f)}, anchor=north,"
+            r" legend columns=5, column sep=1.8mm},"
+            % (cfg[x_key], cfg[drop_key])
             + "\n  legend cell align=left,"
             # The legend keys the systems, not the line styles. Without this
             # the samples inherit WebQSP's dashing and the legend reads as if
@@ -281,7 +313,7 @@ def load():
 def accuracy_cost(d, cfg):
     """Hits@1 against mean tokens per question, log x, one series per system."""
     by = d["main_results"]["by_system"]
-    out = [banner(cfg["root"]), COLOUR_DEFS, r"\begin{tikzpicture}"]
+    out = [banner(cfg["root"]), colour_defs(cfg), r"\begin{tikzpicture}"]
     for i, (ds, ds_label) in enumerate(DATASETS):
         pos = ("" if i == 0 else
                "at={($(plot1.east)+(%s,0)$)}, anchor=west," % cfg["gutter"])
@@ -305,7 +337,7 @@ def accuracy_cost(d, cfg):
             if i == 0:
                 out.append(r"\addlegendentry{%s}" % label)
         out.append(r"\end{axis}")
-    out += [r"\end{tikzpicture}", ""]
+    out += [picture_end(cfg), ""]
     return fold80("\n".join(out))
 
 
@@ -316,7 +348,7 @@ def hop_strata(d, cfg):
     interpretable. CWQ, whose smallest stratum is n=49, is drawn solid."""
     by = d["main_results"]["by_hop_stratum"]
     sep = r"\\" if cfg["stack_ticks"] else " "
-    out = [banner(cfg["root"]), COLOUR_DEFS, r"\begin{tikzpicture}"]
+    out = [banner(cfg["root"]), colour_defs(cfg), r"\begin{tikzpicture}"]
     for i, (ds, ds_label) in enumerate(DATASETS):
         pos = ("" if i == 0 else
                "at={($(hop1.east)+(%s,0)$)}, anchor=west," % cfg["gutter"])
@@ -332,7 +364,8 @@ def hop_strata(d, cfg):
                         for s, n in zip(STRATA, ns)),
             r"  xticklabel style={align=center},",
             r"  xmin=-0.25, xmax=2.25, ymin=0, ymax=0.9,",
-            legend_below(cfg, "strata_legend_drop") if i == 0 else "%",
+            legend_below(cfg, "strata_legend_drop", "strata_legend_x")
+            if i == 0 else "%",
             r"]",
         ]
         for key, label, mark, colour in SYSTEMS:
@@ -346,7 +379,7 @@ def hop_strata(d, cfg):
             if i == 0:
                 out.append(r"\addlegendentry{%s}" % label)
         out.append(r"\end{axis}")
-    out += [r"\end{tikzpicture}", ""]
+    out += [picture_end(cfg), ""]
     return fold80("\n".join(out))
 
 
@@ -381,7 +414,7 @@ def failure_histogram(d, cfg):
     else:
         labels = ", ".join(c.replace("_", r"\_") for c in order)
         tick_font = cfg["hist_tick_font"] + r"\ttfamily"
-    out = [banner(cfg["root"]), COLOUR_DEFS, r"\begin{tikzpicture}",
+    out = [banner(cfg["root"]), colour_defs(cfg), r"\begin{tikzpicture}",
            r"\begin{axis}[agrplot,",
            r"  width=%s, height=%s," % (cfg["hist_width"], cfg["hist_height"]),
            r"  xbar stacked, bar width=%s," % cfg["bar_width"],
@@ -405,7 +438,7 @@ def failure_histogram(d, cfg):
                        % (base, tint, base, hatch if pol == "wrong" else "",
                           series(ds, pol)))
             out.append(r"\addlegendentry{%s %s}" % (ds_label, pol))
-    out += [r"\end{axis}", r"\end{tikzpicture}", ""]
+    out += [r"\end{axis}", picture_end(cfg), ""]
     return fold80("\n".join(out))
 
 

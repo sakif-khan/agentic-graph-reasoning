@@ -963,6 +963,24 @@ for f in book_figs:
 ck("slide figures are colourised, not greyscale",
    all("black!55" not in open(os.path.join(HERE, "figures", f),
                               encoding="utf-8").read() for f in slide_figs))
+# Two of the three sit inside a box, \scalebox on the RQ1 slide and
+# \resizebox on the census backup, and inside a box a line end outside the
+# tikzpicture is a word space. The seven \definecolor lines ahead of the
+# picture against the one line end after it set the RQ1 figure 10pt right of
+# centre and the census histogram 11pt, and nothing in the log says so. The
+# presentation target of build_figures.py ends each such line with %, and
+# this holds the files to it; matching the generator alone would not, since
+# a generator that stopped doing so would match too.
+for f in slide_figs:
+    _src = open(os.path.join(HERE, "figures", f), encoding="utf-8").read()
+    _pre, _, _rest = _src.partition(r"\begin{tikzpicture}")
+    _post = _rest.rpartition(r"\end{tikzpicture}")[2]
+    _bare = [l for l in _pre.splitlines()
+             if l.strip() and not l.lstrip().startswith("%")
+             and not l.rstrip().endswith("%")]
+    ck(f"  {f} leaves no word space outside its picture",
+       not _bare and _post.startswith("%") and not _post[1:].strip(),
+       _bare[0] if _bare else f"after the picture: {_post[:8]!r}")
 
 print("\n== build logs ==")
 # Warnings were being counted by grepping for the literal "LaTeX Warning",
@@ -1050,20 +1068,31 @@ if pymupdf is not None:
         ck(f"{drv}: no overprinted text", not clashes,
            clashes[0] if clashes else "")
 
-# The research-question titles are each on one line, which is what setting
-# them small was for, and the small size stays on those slides. Both are
-# facts about the built page rather than the source. \rqtitles is issued in
-# a group around the question slides because a frame option that set the
-# same size leaked it into every frame after its own (measured 2026-10-06),
-# and a group closed in the wrong place would shrink the census slide's
-# title without a word in the log. A title is the topmost line of its page,
-# and a question that wrapped has no line holding all of it.
-print("\n== each research question is a one-line title, and only they ==")
+# The research-question titles are each on one line, and a question is set
+# below the frame-title size only where one line needs it: RQ3 fits the
+# title line at full size and keeps it, while RQ1 and RQ2 do not and are set
+# just small enough (preamble.tex). Both are facts about the built page
+# rather than the source. \rqtitlesize is issued in a group around each
+# question's slides because a frame option that set the same size leaked it
+# into every frame after its own (measured 2026-10-06), and a group closed
+# in the wrong place would shrink the census slide's title without a word in
+# the log. A title is the topmost line of its page, and a question that
+# wrapped has no line holding all of it.
+#
+# Until October 2026 all eight were set at \small, RQ3 included, and this
+# rule held that they alone were small. The rule since is that a question
+# shrinks only if it would otherwise wrap. Whether it would is
+# read off the page: its width as set, scaled to the frame-title size,
+# against the title line, which is the page's width less beamer's 0.3cm
+# inside each edge.
+print("\n== each research question is a one-line title, smaller only where "
+      "one line needs it ==")
+_deck = os.path.join(HERE, os.path.splitext(DRIVERS[0])[0] + ".pdf")
 if pymupdf is not None:
-    _deck = os.path.join(HERE, os.path.splitext(DRIVERS[0])[0] + ".pdf")
-    _tline, _tsize = {}, {}
+    _tline, _tsize, _twide, _room = {}, {}, {}, 0.0
     if os.path.exists(_deck):
         with pymupdf.open(_deck) as d:
+            _room = d[0].rect.width - 2 * 0.3 / 2.54 * 72
             for _n, (_t, _s, _) in enumerate(FRAMES, 1):
                 if not _t or _n > d.page_count:
                     continue
@@ -1071,22 +1100,231 @@ if pymupdf is not None:
                     (l["bbox"][1],
                      " ".join("".join(sp["text"] for sp in l["spans"])
                               .split()),
-                     max(sp["size"] for sp in l["spans"]))
+                     max(sp["size"] for sp in l["spans"]),
+                     l["bbox"][2] - l["bbox"][0])
                     for b in d[_n - 1].get_text("dict")["blocks"]
                     for l in b.get("lines", [])
                     if "".join(sp["text"] for sp in l["spans"]).strip())
                 if _lines:
-                    _tline[_n], _tsize[_n] = _lines[0][1], round(
-                        _lines[0][2], 1)
+                    _, _tline[_n], _tsize[_n], _twide[_n] = _lines[0]
     _rqn = {n for n, _, _ in _rq_at}
     for _n, _t, _ in _rq_at:
         ck(f"  slide {_n}'s question is set on one line",
            _tline.get(_n) == _t, f"its first line is {_tline.get(_n, '')!r}")
-    _big = {v for n, v in _tsize.items() if n not in _rqn}
-    _small = {v for n, v in _tsize.items() if n in _rqn}
-    ck("the question titles alone are set small, every other at full size",
-       len(_big) == 1 and len(_small) == 1 and min(_big) > max(_small),
-       f"other titles {sorted(_big)}pt, questions {sorted(_small)}pt")
+    _full = sorted({round(v, 1) for n, v in _tsize.items() if n not in _rqn})
+    ck("every other title is set at one size, the frame-title size",
+       len(_full) == 1, f"{_full}pt")
+    _fsize = max((v for n, v in _tsize.items() if n not in _rqn), default=0)
+    for _k in sorted(BOOK_RQ):
+        _ns = [n for n, t, _ in _rq_at if t[2] == _k and n in _tsize]
+        if not _ns or len(_full) != 1:
+            continue
+        _sizes = sorted({round(_tsize[n], 1) for n in _ns})
+        _at_full = _twide[_ns[0]] * _fsize / _tsize[_ns[0]]
+        _fits = _at_full <= _room
+        ck(f"  RQ{_k}, {_at_full:.0f}pt at full size against a "
+           f"{_room:.0f}pt line, is set "
+           + ("at full size" if _fits else "smaller, on one line"),
+           len(_sizes) == 1 and (_sizes[0] == _full[0]) == _fits,
+           f"slides {_ns} at {_sizes}pt, other titles at {_full[0]}pt")
+
+# The takeaway bar spans the text block, 1cm in from each edge of the page,
+# so it is centred under the slide it sums up. A rounded beamer box draws
+# its background 4bp outside the box on either side, and until October 2026
+# the bar ran from 4pt left of the text block to 6pt short of its right
+# edge: 5pt left of centre, on every slide that had one. The bar is found by
+# its colour, read from the preamble, and its width.
+print("\n== every takeaway bar spans the text block ==")
+if pymupdf is not None and os.path.exists(_deck):
+    _node = re.search(r"\\definecolor\{agrNode\}\{HTML\}\{(\w{6})\}", TEX)
+    _tint = re.search(r"\\setbeamercolor\{takeawaybar\}\{bg=agrNode!(\d+)",
+                      TEX)
+    _bar_rgb = tuple(1 - int(_tint.group(1)) / 100 * (1 - int(h, 16) / 255)
+                     for h in re.findall("..", _node.group(1)))
+    _edge = 72 / 2.54
+    _bars, _off = 0, []
+    with pymupdf.open(_deck) as d:
+        for page in d:
+            _r = None
+            for dr in page.get_drawings():
+                f = dr.get("fill")
+                if (f and dr["rect"].width > 300
+                        and all(abs(a - b) < 0.01
+                                for a, b in zip(f, _bar_rgb))):
+                    _r = dr["rect"] if _r is None else _r | dr["rect"]
+            if _r is None:
+                continue
+            _bars += 1
+            _l, _rt = _r.x0, page.rect.width - _r.x1
+            if abs(_l - _edge) > 0.3 or abs(_rt - _edge) > 0.3:
+                _off.append(f"slide {page.number + 1}: {_l:.2f}pt in from "
+                            f"the left, {_rt:.2f}pt from the right")
+    _want = sum(1 for _, _, b in FRAMES if r"\takeaway{" in b)
+    ck(f"all {_bars} bars sit 1cm in from each edge, one per \\takeaway "
+       f"({_want})", _bars == _want and not _off,
+       _off[0] if _off else f"{_bars} bars found")
+
+# Each generated figure sits centred on its slide, and the two two-panel
+# figures' legends sit centred under their panels. The RQ1 figure was 10pt
+# right of centre and the census histogram 11pt, both from the word spaces
+# held off above; the hop legend was 2.9pt left of its panels and the cost
+# legend 4.8pt, from a legend position (build_figures.py's legend_x) that was
+# reasoned rather than measured. A figure is every drawing on its slide but
+# the page and the takeaway bar, and every line of text level with them.
+# The legend is the row of system names and their marks, the lowest row.
+print("\n== the generated figures sit centred, legends under their panels ==")
+if pymupdf is not None and os.path.exists(_deck):
+    _names = {"No-retrieval", "Vector-RAG", "GraphRAG", "Think-on-Graph",
+              "AGR"}
+    with pymupdf.open(_deck) as d:
+        for _n, (_t, _s, _b) in enumerate(FRAMES, 1):
+            _fig = re.search(r"\\input\{figures/(fig_\w+)\.tex\}", _b)
+            if not _fig or _n > d.page_count:
+                continue
+            page = d[_n - 1]
+            W = page.rect.width
+            # Not the page, not the bar, and nothing drawn in white: the
+            # census histogram's hatching is a white pattern, whose tile
+            # PyMuPDF reports at the page's corner.
+            _white = (1.0, 1.0, 1.0)
+            _dr = [dr["rect"] for dr in page.get_drawings()
+                   if dr["rect"].width < W - 1
+                   and not (dr.get("fill") and dr["rect"].width > 300)
+                   and not all(c is None or tuple(round(v, 2) for v in c)
+                               == _white
+                               for c in (dr.get("fill"), dr.get("color")))]
+            # Text within 10pt of the drawing is the figure's own: panel
+            # titles above the axes, tick labels under the census axis. The
+            # header and the sentence under a figure are further off.
+            _y0 = min(r.y0 for r in _dr) - 10
+            _y1 = max(r.y1 for r in _dr) + 10
+            _tx = [(pymupdf.Rect(l["bbox"]),
+                    "".join(sp["text"] for sp in l["spans"]).strip())
+                   for b in page.get_text("dict")["blocks"]
+                   for l in b.get("lines", [])
+                   if "".join(sp["text"] for sp in l["spans"]).strip()]
+            _tx = [(r, s) for r, s in _tx if r.y1 > _y0 and r.y0 < _y1]
+            _all = _dr + [r for r, _ in _tx]
+            _mid = (min(r.x0 for r in _all) + max(r.x1 for r in _all)) / 2
+            ck(f"slide {_n}: {_fig.group(1)} is centred on the page",
+               abs(_mid - W / 2) < 1.5, f"{_mid - W / 2:+.2f}pt off")
+            _leg = [r for r, s in _tx if s in _names]
+            if len(_leg) < len(_names):
+                continue
+            _ly0 = min(r.y0 for r in _leg) - 2
+            _ly1 = max(r.y1 for r in _leg) + 2
+            _row = [r for r in _all if r.y0 >= _ly0 and r.y1 <= _ly1]
+            _rest = [r for r in _all if not (r.y0 >= _ly0 and r.y1 <= _ly1)]
+            _lmid = (min(r.x0 for r in _row) + max(r.x1 for r in _row)) / 2
+            _pmid = (min(r.x0 for r in _rest) + max(r.x1 for r in _rest)) / 2
+            ck(f"slide {_n}: its legend is centred under its panels",
+               abs(_lmid - _pmid) < 1.5, f"{_lmid - _pmid:+.2f}pt off")
+
+# Every slide's body sits midway between its header and its foot. The
+# preamble's two glues share a slide's slack evenly, but a table, a list or
+# a block brings space of its own above or below it, and before October
+# 2026 sixteen bodies sat up to 4.5pt off centre; \bodyshift corrects each.
+# Measured as a reader sees it, on a rendering of the page: from the
+# header's last baseline down to the body's first ink, against the body's
+# last baseline (or its last ink, where a drawing reaches lower than any
+# text) down to the takeaway bar, the \sinkfoot paragraph, or else the
+# frame number. Also held here: every title's letters start at one height,
+# whatever its size, which is what \rqtitlesize's second argument is for.
+print("\n== every slide's body sits midway between its header and its "
+      "foot ==")
+try:
+    import numpy
+except ImportError:
+    numpy = None
+if pymupdf is None or numpy is None or not os.path.exists(_deck):
+    print("  [   ] page renderings not measured")
+    skipped.append("vertical balance (needs PyMuPDF, numpy and a built PDF)")
+else:
+    _S = 4
+    _left = 0.3 / 2.54 * 72
+    _unbal, _tops, _seen = [], {}, 0
+    with pymupdf.open(_deck) as d:
+        for _n, (_t, _s, _b) in enumerate(FRAMES, 1):
+            if not _t or _n > d.page_count:
+                continue
+            page = d[_n - 1]
+            H = page.rect.height
+            _px = page.get_pixmap(matrix=pymupdf.Matrix(_S, _S),
+                                  colorspace=pymupdf.csGRAY, alpha=False)
+            _ink = numpy.frombuffer(_px.samples, dtype=numpy.uint8).reshape(
+                _px.height, _px.width) < 245
+            _ls = []
+            for b in page.get_text("rawdict")["blocks"]:
+                for l in b.get("lines", []):
+                    ch = [c for sp in l["spans"] for c in sp["chars"]
+                          if c["c"].strip()]
+                    if ch:
+                        _ls.append(dict(
+                            x0=min(c["bbox"][0] for c in ch),
+                            x1=max(c["bbox"][2] for c in ch),
+                            y0=min(c["bbox"][1] for c in ch),
+                            y1=max(c["bbox"][3] for c in ch),
+                            base=max(sp["origin"][1] for sp in l["spans"]),
+                            text="".join(c["c"] for c in ch)))
+            _head = [l for l in _ls
+                     if abs(l["x0"] - _left) < 0.6 and l["y1"] < 50]
+            _num = [l for l in _ls
+                    if l["y0"] > H - 16 and l["text"].isdigit()]
+            if not _head:
+                continue
+            _mask = numpy.zeros_like(_ink)
+            for l in _head + _num:
+                _mask[max(int(l["y0"] * _S) - 4, 0):int(l["y1"] * _S) + 4,
+                      max(int(l["x0"] * _S) - 4, 0):
+                      int(l["x1"] * _S) + 12] = True
+            _hrows = numpy.where((_ink & _mask).any(axis=1))[0]
+            _tops[_n] = _hrows[0] / _S
+            _bar = None
+            if r"\takeaway{" in _b:
+                for dr in page.get_drawings():
+                    f = dr.get("fill")
+                    if (f and dr["rect"].width > 300
+                            and all(abs(a - c) < 0.01
+                                    for a, c in zip(f, _bar_rgb))):
+                        _bar = dr["rect"] if _bar is None else _bar | dr["rect"]
+                if _bar is None:
+                    continue
+                _mask[int(_bar.y0 * _S) - 1:, :] = True
+            _body = _ink & ~_mask
+            _rows = numpy.where(_body.any(axis=1))[0]
+            _inner = [l for l in _ls if l not in _head and l not in _num
+                      and (_bar is None or l["y0"] < _bar.y0)]
+            if r"\sinkfoot" in _b:
+                # the foot is the last run of lines, a line apart
+                _lo = sorted(_inner, key=lambda l: l["base"])
+                k = len(_lo) - 1
+                while k > 0 and _lo[k]["base"] - _lo[k - 1]["base"] < 16:
+                    k -= 1
+                _fy = min(l["y0"] for l in _lo[k:])
+                _ref = _rows[_rows / _S >= _fy - 1][0] / _S
+                _rows = _rows[_rows / _S < _fy - 1]
+                _inner = [l for l in _inner if l["base"] < _fy]
+            elif _bar is not None:
+                _ref = _bar.y0
+            else:
+                _nr = numpy.where((_ink & _mask).any(axis=1))[0]
+                _ref = _nr[_nr / _S > H - 20][0] / _S
+            _top, _ib = _rows[0] / _S, (_rows[-1] + 1) / _S
+            _last = max(_inner, key=lambda l: l["base"]) if _inner else None
+            _bot = (_last["base"] if _last and _ib <= _last["y1"] + 0.5
+                    else _ib)
+            _above = _top - max(l["base"] for l in _head)
+            _below = _ref - _bot
+            _seen += 1
+            if abs(_above - _below) > 2.0:
+                _unbal.append(f"slide {_n}: {_above:.1f}pt under its "
+                              f"header, {_below:.1f}pt over its foot")
+    ck(f"all {_seen} titled slides sit within 1pt of midway",
+       _seen > 0 and not _unbal, "; ".join(_unbal[:3]))
+    _tv = sorted(_tops.values())
+    ck(f"every title's letters start within 1pt of one height",
+       bool(_tv) and _tv[-1] - _tv[0] <= 1.0,
+       f"from {_tv[0]:.2f}pt to {_tv[-1]:.2f}pt" if _tv else "")
 
 # ---------------------------------------------------------------------
 # The deck's six contributions must be the thesis's six.
