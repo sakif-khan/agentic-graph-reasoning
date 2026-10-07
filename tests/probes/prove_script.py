@@ -28,9 +28,9 @@ ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 DECK = ROOT / "thesis_presentation" / "content-main.tex"
-# content-main.tex: the backup frames were folded into the one deck by
-# 275fadc, which moved content-backup.tex into the frozen pre-defense dir.
-BACKUP = ROOT / "thesis_presentation" / "content-main.tex"
+# The backup frames are content-backup.tex again since 2026-10-07. From
+# 275fadc until then they were the tail of content-main.tex.
+BACKUP = ROOT / "thesis_presentation" / "content-backup.tex"
 NUMS = ROOT / "results" / "phase4" / "thesis_numbers.json"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
@@ -61,19 +61,20 @@ def edit(path, old, new):
     return go
 
 
-# The backup slides are 33 to 38 since 2026-10-07, when the RoG comparison
-# moved from the backup tail to slide 18 and every slide after the main
-# results moved one later. The anchors follow the script's numbering; each
-# case still reinstates the defect it was written for.
+# The backup slides are pages 2 to 8 of their own PDF since 2026-10-07,
+# behind an index page, as at the pre-defense; that day they left the tail
+# of the main deck. The anchors follow the script's numbering; each case
+# still reinstates the defect it was written for. "Backup 4" now names a
+# real page, but as an ordinal it is still the shape the rule refuses.
 CASES = [
     ("shipped: a backup slide referred to by ordinal",
-     edit(SCRIPT, "**If asked about budgets, go to backup slide 33.**",
+     edit(SCRIPT, "**If asked about budgets, go to backup slide 2.**",
           "**If asked about budgets, go to Backup 1.**")),
     ("shipped: the (B2) shorthand",
-     edit(SCRIPT, "on both datasets (backup slide 34)",
+     edit(SCRIPT, "on both datasets (backup slide 3)",
           "on both datasets (B2)")),
     ("shipped: a page number written as an ordinal",
-     edit(SCRIPT, "categories are backup slide 35 if anyone",
+     edit(SCRIPT, "categories are backup slide 4 if anyone",
           "categories are Backup 4 if anyone")),
     # Direction swapped on 2026-09-26. When this was written the script said
     # "three" against four bold rows, so the corruption was to write "four".
@@ -87,25 +88,25 @@ CASES = [
           "The three **bold** slides are the ones the committee will actually "
           "interrogate.")),
     ("shipped: the two protected lists name different slides",
-     edit(SCRIPT, "never from 17, 19, 20, 25 or 26.",
-          "never from 17, 19, 25.")),
+     edit(SCRIPT, "never from 18, 20, 21, 26 or 27.",
+          "never from 18, 20, 26.")),
     ("a row goes bold without its section being starred",
-     edit(SCRIPT, "| 36 | Accuracy against cost, both metrics |",
-          "| 36 | **Accuracy against cost, both metrics** |")),
+     edit(SCRIPT, "| 5 | Accuracy against cost, both metrics |",
+          "| 5 | **Accuracy against cost, both metrics** |")),
     ("a reference to a backup page the table does not list",
-     edit(SCRIPT, "categories are backup slide 35 if anyone",
+     edit(SCRIPT, "categories are backup slide 4 if anyone",
           "categories are backup slide 99 if anyone")),
-    # Anchored on the first backup frame that still exists. "Backup:
-    # hedging behaviour" left the deck along with content-backup.tex; the
-    # defect is unchanged, since what it reinstates is an unlisted frame
-    # appearing in the backup run, not that particular neighbour.
+    # Anchored on the first backup frame. "Backup: hedging behaviour" left
+    # with the pre-defense's content-backup.tex; the defect is unchanged,
+    # since what it reinstates is an unlisted frame appearing in the backup
+    # run, not that particular neighbour.
     ("the backup deck gains a slide the table does not carry",
      edit(BACKUP, r"\begin{frame}{Backup: budget configuration}",
           "\\begin{frame}{Backup: something else}\n\\end{frame}\n"
           r"\begin{frame}{Backup: budget configuration}")),
     ("a table row stops describing its slide",
-     edit(SCRIPT, "| 35 | Full 12-category failure histogram |",
-          "| 35 | Assorted other material |")),
+     edit(SCRIPT, "| 4 | Full 12-category failure histogram |",
+          "| 4 | Assorted other material |")),
     # The pooled-census caption, from both ends.
     ("the slide stops saying its totals are pooled",
      # Three sentences since the October 2026 sweep; it was one with a

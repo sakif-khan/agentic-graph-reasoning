@@ -22,12 +22,12 @@
 % with the digest build_min.py would write now, and the PDF is current when
 % the two agree.
 \usepackage[hidelinks,pdftitle={Defense speaking copy},%
-  pdfauthor={Md. Sakif Khan},pdfkeywords={speech digest 125617e1374a87b0}]{hyperref}
+  pdfauthor={Md. Sakif Khan},pdfkeywords={speech digest f28c6e38853b9a8a}]{hyperref}
 % ...and so does the .aux, so build_min.py --pages knows that the page
 % labels it reads were written by a build of this file.
 \makeatletter
 \AtBeginDocument{\immediate\write\@mainaux{\@percentchar\space speech
-  digest 125617e1374a87b0}}
+  digest f28c6e38853b9a8a}}
 \makeatother
 
 \definecolor{agrdark}{RGB}{28,54,78}
@@ -90,17 +90,24 @@ Reasoning, which is knowledge graph navigation with verification before the
 answer is emitted. My supervisor is Dr. Sadia~Sharmin.
 }
 
-\speech{2}{The~problem}{0:40}{%
-Language models answer factual questions just as fluently when they do not
-hold the fact. A hallucination is output with no source the model can
-point~to.
-
-Two kinds, separated by what it takes to catch them. A factually wrong
-answer needs the true answer already. An unsupported one needs only what was
-retrieved, and we have that. I claim the~second.
+\speech{2}{The~problem}{0:32}{%
+Language models answer factual questions fluently, and just as fluently when
+they do not hold the fact. Fluency and factuality come out of the same
+mechanism, so nothing in the wording separates them. A system that is
+confidently wrong is worse than one that says it does not~know.
 }
 
-\speech{3}{Where it comes from, and what we can~change}{0:35}{%
+\speech{3}{What a hallucination~is}{0:39}{%
+First, the word. A hallucination is fluent, confident, and backed by no
+source the model can point~to.
+
+Two kinds, separated by what it takes to catch them. Factually wrong: you
+need the true answer already, which is what we are trying to produce.
+Unsupported: you need only what was retrieved, and we have that. I claim
+the~second.
+}
+
+\speech{4}{Where it comes from, and what we can~change}{0:35}{%
 It is not a bug that escaped testing. It comes from how these models are
 built, so the response has to be~architectural.
 
@@ -109,7 +116,7 @@ prompt is ours to change. So control what goes in, and check what comes out
 against~it.
 }
 
-\speech{4}{Knowledge graphs, and why multi-hop is~hard}{0:49}{%
+\speech{5}{Knowledge graphs, and why multi-hop is~hard}{0:49}{%
 A knowledge graph stores facts as triples, so every fact has an address and
 a claim can be checked by looking for an edge. A question that chains two
 facts is multi-hop, and a wrong first hop is never~revisited.
@@ -117,16 +124,6 @@ facts is multi-hop, and a wrong first hop is never~revisited.
 One complication. Freebase stores a fact with more than two participants as
 an unnamed node, and nearly two thirds of this graph's nodes are that kind.
 So nothing here is called ``plays''. Hold onto~that.
-}
-
-\speech{5}{Where existing approaches~stop}{0:41}{%
-Four families, and each stops somewhere specific. The first three fix their
-evidence before reasoning begins. Agentic navigation interleaves the two,
-which is the right move, and it already names only what it~traversed.
-
-So its problem is precision. A real, traversed entity can still be the wrong
-answer, and none of the four checks what the answer asserts before it
-goes~out.
 }
 
 \speech{6}{What guided beam search~is}{0:46}{%
@@ -139,7 +136,17 @@ the cost, and it multiplies with every hop. And whatever falls outside the
 beam is gone for~good.
 }
 
-\speech{7}{What everyone else~does}{0:43}{%
+\speech{7}{Where existing approaches~stop}{0:41}{%
+Four families, and each stops somewhere specific. The first three fix their
+evidence before reasoning begins. Agentic navigation interleaves the two,
+which is the right move, and it already names only what it~traversed.
+
+So its problem is precision. A real, traversed entity can still be the wrong
+answer, and none of the four checks what the answer asserts before it
+goes~out.
+}
+
+\speech{8}{What everyone else~does}{0:43}{%
 Four prior systems, and the column that matters is the last one. They differ
 in how they explore, some decompose, and Plan-on-Graph backtracks. None
 checks its answer's claims against what it retrieved, before answering. RoG
@@ -150,7 +157,7 @@ after~generation.
 Their published accuracies are higher than mine and not~comparable.
 }
 
-\speech{8}{Research~questions}{0:34}{%
+\speech{9}{Research~questions}{0:34}{%
 Three questions. RQ1: does agentic navigation improve multi-hop accuracy,
 and does the advantage grow with hop count? RQ2: what does pre-generation
 verification contribute beyond graph navigation? RQ3: which components
@@ -160,7 +167,7 @@ On the right are the six contributions the thesis claims. I return to them
 at the~end.
 }
 
-\speech{9}{AGR: An explicit state~machine}{0:53}{%
+\speech{10}{AGR: An explicit state~machine}{0:53}{%
 AGR is an explicit state machine, not a prompt loop. Six nodes. The planner
 writes sub-objectives. The explorer scores candidate edges and keeps the
 best three per anchor. The evaluator decides whether an objective is met.
@@ -172,7 +179,7 @@ Three cycles, the three arrows back to the explorer, and all three are
 bounded by budgets checked in~code.
 }
 
-\speech{10}{Constrained tools, not free-form~queries}{0:33}{%
+\speech{11}{Constrained tools, not free-form~queries}{0:33}{%
 One agent, six nodes, and only three touch the graph. The planner resolves
 entity mentions, the explorer asks for relations and neighbours, and the
 verifier checks adjacency. Four operations, never Cypher. Every call is
@@ -180,7 +187,7 @@ logged, so the traversal is a record, and that record is what the
 verification layer checks~against.
 }
 
-\speech{11}{The Structural Verification~Layer}{0:37}{%
+\speech{12}{The Structural Verification~Layer}{0:37}{%
 This is the part I set out to contribute. Before anything is emitted, the
 draft is split into atomic claims, each checked against the graph, the
 traversed triples first. What cannot be grounded is re-explored or dropped.
@@ -188,7 +195,16 @@ So where it cannot ground a claim, the system hedges rather than asserts.
 Measured, it buys auditability rather than~accuracy.
 }
 
-\speech{12}{What \emph{structural} means, and what it does~not}{0:58}{%
+\speech{13}{One claim, three~routes}{0:45}{%
+This is the inside of the verifier. One model call drafts the answer and
+splits it into claims. Each claim leaves at the first test that settles it,
+left to right. Traversed adjacency comes first, and it is the only route
+that adds evidence. Then verify connection, on the full graph. Only the
+third route, entailment, spends a model call. With no unsupported claim the
+answer goes out~grounded.
+}
+
+\speech{14}{What \emph{structural} means, and what it does~not}{0:58}{%
 Now the bound. The graph decides. The model is consulted only where the
 graph is silent, and it never overrides the~graph.
 
@@ -201,16 +217,7 @@ triples, and the log keeps a count, not the triples. And a claim can be true
 and still be the wrong~answer.
 }
 
-\speech{13}{One claim, three~routes}{0:45}{%
-This is the inside of the verifier. One model call drafts the answer and
-splits it into claims. Each claim leaves at the first test that settles it,
-left to right. Traversed adjacency comes first, and it is the only route
-that adds evidence. Then verify connection, on the full graph. Only the
-third route, entailment, spends a model call. With no unsupported claim the
-answer goes out~grounded.
-}
-
-\speech{14}{One question, end to~end}{0:44}{%
+\speech{15}{One question, end to~end}{0:44}{%
 One real question, from the committed records. ``Who plays Dwight in The
 Office.'' The dataset gives the mention The Office, and the planner resolves
 it and splits the question. The explorer keeps three relations and the
@@ -220,7 +227,7 @@ and answers. The verifier finds two claims, both~supported.
 Six model calls, depth two, and at most eighteen supporting~triples.
 }
 
-\speech{15}{The environment and the question~sets}{0:48}{%
+\speech{16}{The environment and the question~sets}{0:48}{%
 The environment is the union of RoG's per-question subgraphs, 2.6 million
 entities and 8.3 million triples. Each subgraph was cut to contain its own
 answer, so this is friendlier than full~Freebase.
@@ -231,7 +238,7 @@ the ceiling on every accuracy figure, for entity answers only. Dates,
 quantities and superlatives this graph cannot express at~all.
 }
 
-\speech{16}{Making the comparison~fair}{1:08}{%
+\speech{17}{Making the comparison~fair}{1:08}{%
 Five systems on one frozen backbone, under the same 25-call budget, on the
 same questions and graph. That is what lets me attribute differences to
 architecture rather than to model capacity. Think-on-Graph is my
@@ -245,7 +252,7 @@ makes its score a lower bound. And AGR's drafting prompt carries grounding
 rules the baselines' plain prompt does~not.
 }
 
-\speech{17}{Main~results}{1:21}{%
+\speech{18}{Main~results}{1:21}{%
 Here is the~comparison.
 
 AGR reaches 0.755 Hits@1 and 0.642 F1 on WebQSP, and 0.522 and 0.469 on
@@ -265,7 +272,7 @@ And cost: about a quarter more tokens than Think-on-Graph, at half the
 calls, and calls are what the budget~meters.
 }
 
-\speech{18}{AGR against~RoG}{1:06}{%
+\speech{19}{AGR against~RoG}{1:06}{%
 RoG is the one published system measured on this same data. My graph is
 built from its subgraphs. And it is ahead on all four figures, outside my
 confidence intervals. It is not the scorer. Scored by RoG's own code, my
@@ -280,7 +287,7 @@ So this places AGR among published systems. It does not
 compare~architectures.
 }
 
-\speech{19}{RQ1: Does agentic navigation improve multi-hop factual~accuracy?}{0:56}{%
+\speech{20}{RQ1: Does agentic navigation improve multi-hop factual~accuracy?}{0:56}{%
 The answer to RQ1 is yes, and the evidence is a~shape.
 
 ComplexWebQuestions, on the right. AGR goes 0.46, 0.55, 0.57 as questions
@@ -293,7 +300,7 @@ not~needed.
 The left panel is dashed because its three-hop stratum is four~questions.
 }
 
-\speech{20}{The caveat I want to raise~myself}{1:01}{%
+\speech{21}{The caveat I want to raise~myself}{1:01}{%
 I want to raise this before you~do.
 
 Split the questions by whether Think-on-Graph finished inside the shared
@@ -308,7 +315,7 @@ So the claim is not that AGR reasons better per step. It is that AGR
 finishes inside a fixed~budget.
 }
 
-\speech{21}{RQ2: What does pre-generation verification contribute beyond graph~navigation?}{0:50}{%
+\speech{22}{RQ2: What does pre-generation verification contribute beyond graph~navigation?}{0:50}{%
 RQ2, in its narrowest form. Does anything ungrounded get~asserted?
 
 Across both datasets, AGR asserts 1,709 entities and zero are ungrounded.
@@ -320,7 +327,7 @@ is a property of navigating a graph. And a stricter semantic check still
 fails a third to a half of every system's~answers.
 }
 
-\speech{22}{RQ2: What verification does \emph{not}~do}{0:50}{%
+\speech{23}{RQ2: What verification does \emph{not}~do}{0:50}{%
 Removing the layer changes accuracy by nothing I can detect, p equals 1.0 on
 both datasets. On test it changed two answers, one each~way.
 
@@ -331,7 +338,7 @@ moves AGR's. The lead belongs to the architecture, and perhaps the~prompt.
 And its evidence ends with the run. The log keeps a~count.
 }
 
-\speech{23}{RQ2: So what does it~do?}{0:41}{%
+\speech{24}{RQ2: So what does it~do?}{0:41}{%
 What it does is withhold what it cannot ground. Without it, CWQ hedging
 falls from 23.2 to 20.2 percent. Those six answers were all wrong. On WebQSP
 it withheld one, and that one was~right.
@@ -341,20 +348,20 @@ verifier rejected it. Not right more often, but right for a reason it
 can~show.
 }
 
-\speech{24}{Does it just refuse more~often?}{0:31}{%
+\speech{25}{Does it just refuse more~often?}{0:31}{%
 The obvious objection, and the answer is no. AGR hedges least of the five on
 WebQSP, where it is also the most accurate. On CWQ it is within half a point
 of Think-on-Graph, and nearly nine points more accurate. A hedge scores
 zero, like a wrong~answer.
 }
 
-\speech{25}{RQ3: Which components contribute what, at what token~cost?}{0:24}{%
+\speech{26}{RQ3: Which components contribute what, at what token~cost?}{0:24}{%
 RQ3: which components earn their cost. Four ablations, each a paired test
 against the full system on the same halves. Three change nothing I can
 detect: backtracking, the verifier, and the learned half of the~scorer.
 }
 
-\speech{26}{RQ3: One effect, and its sign is~backwards}{0:57}{%
+\speech{27}{RQ3: One effect, and its sign is~backwards}{0:57}{%
 The one that does is the planner, and the sign is backwards. Removing it
 improves WebQSP by 0.083 F1 at p equals 0.006, and cuts tokens by 31
 percent. On ComplexWebQuestions it trends the other way, and its two-hop
@@ -366,33 +373,23 @@ answered Woodrow Wilson. Undecomposed, it found Truman in three calls. So
 decomposition should be gated on question~structure.
 }
 
-\speech{27}{Every failure, read and~labelled}{0:20}{%
+\speech{28}{Every failure, read and~labelled}{0:20}{%
 Two hundred and fifty-six failures, read and labelled by hand. The largest
 category is relation selection, the agent taking the wrong edge, not
 inventing one. That shape is the~finding.
 }
 
-\speech{28}{The echo~attractor}{1:01}{%
+\speech{29}{The echo~attractor}{1:01}{%
 The one to name is sixth, with 13 cases: the echo attractor, a real,
 grounded entity one hop from the answer. Asked who plays Lex Luthor on
 Smallville, AGR named the actor who plays his~father.
 
 Any grounding check passes it. It is real, it was traversed, the triple
-exists. True, and wrong. That is the promise from slide~12.
+exists. True, and wrong. That is the promise from slide~14.
 
 Different systems fall into it together, so no evaluation treating them as
 independent can see it. Rescore whenever a majority agrees, and this becomes
 apparent correctness. The contribution is the mechanism, not the~count.
-}
-
-\speech{29}{The three~answers}{0:39}{%
-So, the three answers. RQ1: yes, though the margin over Think-on-Graph lies
-in the budget. RQ2: navigation, not verification, removes structural
-hallucination, and the layer buys auditability. RQ3: only the planner
-matters detectably, and its sign depends on the~stratum.
-
-Navigation is where the accuracy comes from. Verification is where the
-auditability comes from. And decomposition is sometimes~harmful.
 }
 
 \speech{30}{Contributions}{0:58}{%
@@ -407,15 +404,7 @@ backbone, one run, and the narrower candidate set. And the title is broader
 than my claims, as the thesis~says.
 }
 
-\speech{31}{What comes~next}{0:29}{%
-Next, three cheap repairs the census earned, and three operators the
-failures specify, from decomposition gating to set~intersection.
-
-The thesis closes on this. Fact verification against a knowledge graph turns
-out to be the easier half. Relevance verification is the half still~open.
-}
-
-\speech{32}{Thank~you}{0:05}{%
+\speech{31}{Thank~you}{0:05}{%
 Thank you. I'm happy to take~questions.
 }
 

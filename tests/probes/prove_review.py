@@ -72,7 +72,9 @@ point, a figure the slide, the book and the paper now state.
   23   The slide dropping the search-space difference.
   24   The book quoting a RoG-scored figure wrongly.
   25   The book's specimen a question RoG's scorer did not change.
-  26   The comparison back in the backup tail, titled as it is now.
+  26   The comparison back among the backup slides, titled as it is now.
+       (Since 2026-10-07 the backups are their own file, and the case
+       moves the frame into it.)
 
 The fourth pass's page rules need a rebuilt deck too, and were proved once
 on 2026-10-06, each against its own defective build. The takeaway bar's
@@ -97,6 +99,8 @@ import sys
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 DECK = ROOT / "thesis_presentation" / "content-main.tex"
+# The backup slides, a deck of their own since 2026-10-07.
+BACKUP = ROOT / "thesis_presentation" / "content-backup.tex"
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 BUILD = ROOT / "scripts" / "build_figures.py"
@@ -106,7 +110,7 @@ ACC = ROOT / "thesis_presentation" / "figures" / "fig_accuracy_cost.tex"
 BOOK = ROOT / "thesis_book" / "chapters" / "evaluation.tex"
 AUX = ROOT / "thesis_presentation" / "transcript-min.aux"
 
-FILES = (DECK, SCRIPT, BUILD, HIST, HOP, ACC, BOOK) + (
+FILES = (DECK, BACKUP, SCRIPT, BUILD, HIST, HOP, ACC, BOOK) + (
     (AUX,) if AUX.exists() else ())
 orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
 
@@ -170,16 +174,22 @@ def word_spaces():
 
 
 def back_to_backup():
-    """The RoG frame moved back after the closing slide, title unchanged."""
+    """The RoG frame moved back among the backup slides, title unchanged.
+
+    The backup slides are their own file since 2026-10-07, so the frame
+    leaves the presented deck and lands in content-backup.tex, where it
+    stood before the proposal frame while the backups were the deck's tail.
+    """
     start = orig[DECK].index("% The board asked for this at the pre-defense")
     start = orig[DECK].rindex("% =====", 0, start)
     end = orig[DECK].index("\\end{frame}\n",
                            orig[DECK].index("\\begin{frame}{AGR against RoG}"))
     end += len("\\end{frame}\n")
-    deck = orig[DECK][:start] + orig[DECK][end:]
-    at = deck.index("% Four departures from the approved proposal")
     io.open(DECK, "w", encoding="utf-8", newline="").write(
-        deck[:at] + orig[DECK][start:end] + "\n" + deck[at:])
+        orig[DECK][:start] + orig[DECK][end:])
+    at = orig[BACKUP].index("% Four departures from the approved proposal")
+    io.open(BACKUP, "w", encoding="utf-8", newline="").write(
+        orig[BACKUP][:at] + orig[DECK][start:end] + "\n" + orig[BACKUP][at:])
 
 
 def split_speech():
@@ -199,7 +209,7 @@ CASES = [
      edit(SCRIPT, "2,826 WebQSP and 27,639 CWQ questions",
           "2,830 WebQSP and 16,900 CWQ questions")),
     ("shipped: 17 inside the census, 1 counted in both",
-     edit(DECK, r"\item $16$ more found inside it, as gold-noise or "
+     edit(BACKUP, r"\item $16$ more found inside it, as gold-noise or "
                 r"ambiguous rows \item No question counted in both",
           r"\item $17$ found inside the census \item $1$ counted in both")),
     ("shipped: All 256 over a column summing to 220",
@@ -230,7 +240,7 @@ CASES = [
      edit(DECK, r"WebQSP is dashed ($n{=}4$ at 3+).",
           r"WebQSP is dashed ($n{=}5$ at 3+).")),
     ("shipped: a backup frame with no glue to balance its title's",
-     edit(DECK, r"Think-on-Graph a meaningful comparison.\par} \centrebody",
+     edit(BACKUP, r"Think-on-Graph a meaningful comparison.\par} \centrebody",
           r"Think-on-Graph a meaningful comparison.\par}")),
     ("shipped: the census histogram on the schema's identifiers",
      identifiers),

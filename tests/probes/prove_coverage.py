@@ -28,14 +28,11 @@ import sys
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 MAIN = ROOT / "thesis_presentation" / "content-main.tex"
-# The backup frames are the TAIL OF content-main.tex now, not a file of
-# their own: 275fadc ("Freeze pre-defense files") moved content-backup.tex
-# into pre-defense-frozen-2026-08-29/ and the frames were folded into the
-# one deck, which check_slides.py records at the head of its SOURCES list.
-# This probe kept opening the old path and died before its first case. BACK
-# and MAIN are deliberately the same file now; every case restores before
-# the next runs, so sharing the path is safe.
-BACK = ROOT / "thesis_presentation" / "content-main.tex"
+# The backup frames are content-backup.tex again since 2026-10-07, a deck
+# of their own as at the pre-defense. From 275fadc ("Freeze pre-defense
+# files") until then they were the tail of content-main.tex, and BACK and
+# MAIN were the same file.
+BACK = ROOT / "thesis_presentation" / "content-backup.tex"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
 FILES = (MAIN, BACK)
@@ -135,7 +132,10 @@ CASES = [
     ("binding call cap 0.0% -> 40.0%", BACK,
      r"\textbf{Call cap} & $\mathbf{0.0\%}$",
      r"\textbf{Call cap} & $\mathbf{40.0\%}$"),
-    ("backup hedge rate 12.2 -> 52.2", BACK, "12.2", "52.2"),
+    # Named for the backup hedging slide it was written against. That slide
+    # left with the pre-defense; 12.2 is a cell of the main deck's
+    # "Does it just refuse more often?" table now.
+    ("backup hedge rate 12.2 -> 52.2", MAIN, "12.2", "52.2"),
 ]
 
 rc, first = run()

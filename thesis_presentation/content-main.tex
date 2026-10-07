@@ -13,17 +13,49 @@
 \end{frame}}
 
 % ===================== 2 =====================
-% Slides 2 and 3 of the August deck, merged. The definition and the two
-% kinds of hallucination are the whole of what the rest of the talk needs
-% from this part; the separate "the problem" slide said the first sentence
-% of the definition twice.
+% Slides 2 and 3 are the August deck's pair, restored on 2026-10-07. The
+% October rebuild had merged them, and the merged slide kept the definition
+% and the two kinds but dropped the problem itself, that fluency gives no
+% sign of whether the model holds the fact. The wording is August's, less
+% its dashes and its colon explanation.
 \begin{frame}{The problem}
-  Language models answer just as fluently when they \alert{do not hold the
-  fact}.
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \agrraggedright
+      Language models answer factual questions \alert{fluently}.
 
-  A \emph{hallucination} is output with \alert{no source the model can
-  point to}.
-  \vspace{2mm}
+      \vspace{4mm}
+      They answer just as fluently when they \alert{do not hold the fact}.
+
+      \vspace{4mm}
+      Nothing in the wording separates the two.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \agrraggedright
+      \begin{block}{The gap}
+        \agrraggedright
+        Fluency and factuality are produced by the same mechanism, so the
+        output gives the reader no signal about which one they are getting.
+      \end{block}
+      \vspace{3mm}
+      A system that is confidently wrong is worse than one that says it
+      does not know.
+    \end{column}
+  \end{columns}
+  \takeaway{The failure is not visible in the answer.}
+\end{frame}
+
+% ===================== 3 =====================
+% August centred the two blocks between the lead-in and the line under
+% them. A columns environment and a block each add a skip above and none
+% below, so the gap above is cut and the one below added back. Without its
+% dash the left block runs to five lines, so both gaps come in by 4pt, which
+% keeps the pair centred and the slide's gaps in August's proportions.
+\begin{frame}{What a hallucination is}
+  \bodyshift{-1.25pt}
+  Output that is fluent, confident, and backed by \alert{no source the
+  model can point to}.
+  \vspace{-8pt}
   \begin{columns}[T]
     \begin{column}{0.47\textwidth}
       \begin{block}{Factually wrong}
@@ -41,13 +73,16 @@
       \end{block}
     \end{column}
   \end{columns}
+  \vspace{14pt}
+  Identical from the outside. What differs is what it takes to
+  \emph{catch} them.
   \takeaway{A retrieval system can only police the second kind. That is the
     one this thesis attacks, and the only one it claims.}
 \end{frame}
 
-% ===================== 3 =====================
+% ===================== 4 =====================
 % Slides 4 and 5 merged: the three origins, and which of them a deployer can
-% act on. "And multi-hop compounds it" moved to slide 4, where the knowledge
+% act on. "And multi-hop compounds it" moved to slide 5, where the knowledge
 % graph slide used to make the same point a second time.
 \begin{frame}{Where it comes from, and what we can change}
   Not a bug that escaped testing. It comes from how these models are built,
@@ -80,7 +115,7 @@
     before anything is emitted.}
 \end{frame}
 
-% ===================== 4 =====================
+% ===================== 5 =====================
 % Slides 6 and 7 merged. The mediator block keeps its one number, which
 % environment.tex's graph-statistics table gives as 1,652,618 nodes (63.7%).
 \begin{frame}{Knowledge graphs, and why multi-hop is hard}
@@ -114,7 +149,40 @@
     question names is rarely the relation the graph stores.}
 \end{frame}
 
-% ===================== 5 =====================
+% ===================== 6 =====================
+% The search, straight after the graph it searches and before "beam
+% search" is first used, in Think-on-Graph's row on slide 8. Until
+% 2026-10-07 it sat between that slide and the approaches table, splitting
+% the two related-work slides. The takeaway plants the limitation that
+% slide 10's Backtracker answers, and "multiplies" is what slide 21 cashes.
+\begin{frame}{What guided beam search is}
+  \begin{columns}[T]
+    \begin{column}{0.56\textwidth}
+      \small
+      It keeps only the most promising branches:
+      \begin{enumerate}\itemsep2pt
+        \item List every edge out of the current \alert{frontier}.
+        \item \alert{Score} each for how likely it is to help.
+        \item Keep the best $b$, the \alert{beam width}.
+        \item Expand those, and repeat to a depth cap.
+      \end{enumerate}
+      \vspace{1mm}
+      \emph{Guided} means the score is a judgement.
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \begin{block}{Why bound it}
+        \small\agrraggedright
+        Entities carry hundreds of relations, so three unbounded hops is
+        millions of paths. When the scorer is a \alert{model call}, the
+        width \emph{is} the cost, and it multiplies with every hop.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \takeaway{Everything outside the beam is discarded unseen, and a plain
+    beam has no way back for it.}
+\end{frame}
+
+% ===================== 7 =====================
 \begin{frame}{Where existing approaches stop}
   % Widths measured from the cells, not guessed. The last column cannot be
   % made single-line -- "Emits whatever the last generation call produces" is
@@ -146,7 +214,7 @@
     \end{tabular}
   \end{table}
   % sec:limitations: "The problem is not fabrication. The problem is
-  % precision." Said here, slide 21's zero for both navigating systems is
+  % precision." Said here, slide 22's zero for both navigating systems is
   % the expected result rather than a surprise that undercuts the opening.
   {\small Agentic systems already name only what they traversed. Their
   problem is \alert{precision}. A real, traversed entity can still be the
@@ -155,38 +223,7 @@
     it is delivered.}
 \end{frame}
 
-% ===================== 6 =====================
-% "Beam search" arrives on the next slide as Think-on-Graph's row, and it
-% has to be defined before then. The takeaway plants the limitation that
-% slide 9's Backtracker answers, and "multiplies" is what slide 20 cashes.
-\begin{frame}{What guided beam search is}
-  \begin{columns}[T]
-    \begin{column}{0.56\textwidth}
-      \small
-      It keeps only the most promising branches:
-      \begin{enumerate}\itemsep2pt
-        \item List every edge out of the current \alert{frontier}.
-        \item \alert{Score} each for how likely it is to help.
-        \item Keep the best $b$, the \alert{beam width}.
-        \item Expand those, and repeat to a depth cap.
-      \end{enumerate}
-      \vspace{1mm}
-      \emph{Guided} means the score is a judgement.
-    \end{column}
-    \begin{column}{0.40\textwidth}
-      \begin{block}{Why bound it}
-        \small\agrraggedright
-        Entities carry hundreds of relations, so three unbounded hops is
-        millions of paths. When the scorer is a \alert{model call}, the
-        width \emph{is} the cost, and it multiplies with every hop.
-      \end{block}
-    \end{column}
-  \end{columns}
-  \takeaway{Everything outside the beam is discarded unseen, and a plain
-    beam has no way back for it.}
-\end{frame}
-
-% ===================== 7 =====================
+% ===================== 8 =====================
 \begin{frame}{What everyone else does}
   \bodyshift{-4pt}
   \begin{table}
@@ -194,7 +231,7 @@
     \setlength{\tabcolsep}{5pt}
     % Plan-on-Graph in full. Paths-over-Graph is also cited as "PoG" and
     % reports higher numbers, and background.tex writes both names out for
-    % that reason. AGR is not a row: it is introduced on slide 9.
+    % that reason. AGR is not a row: it is introduced on slide 10.
     \begin{tabular}{@{}lL{42mm}ccc@{}}
       \toprule
       \textbf{System} & \textbf{Exploration} & \textbf{Decomp.} &
@@ -220,11 +257,11 @@
     against the triples it retrieved, before answering.}
 \end{frame}
 
-% ===================== 8 =====================
+% ===================== 9 =====================
 % The questions as sec:rqs words them, word for word, and the six
 % contributions as a preview. Slide 30 is the same six, in the same order.
 % RQ1 used to carry "and does the advantage grow with hop count", which is
-% sec:rqs's elaboration rather than its question; it is slide 19's subtitle
+% sec:rqs's elaboration rather than its question; it is slide 20's subtitle
 % now. check_slides.py holds all three to the book's bold lines.
 \begin{frame}{Research questions}
   \bodyshift{2.75pt}
@@ -274,7 +311,7 @@
   \centrebody
 \end{frame}
 
-% ===================== 9 =====================
+% ===================== 10 =====================
 \begin{frame}{AGR: An explicit state machine}
   \begin{columns}[T]
     \begin{column}{0.46\textwidth}
@@ -357,7 +394,7 @@
   \centrebody
 \end{frame}
 
-% ===================== 10 =====================
+% ===================== 11 =====================
 \begin{frame}{Constrained tools, not free-form queries}
   % One agent, not six. The Node column says which of its six nodes issues
   % each call, and check_slides.py holds that column against the call sites
@@ -397,11 +434,11 @@
     possible.}
 \end{frame}
 
-% ===================== 11 =====================
+% ===================== 12 =====================
 % ch:framework opens by introducing the layer "as one part of the
 % architecture rather than as the part the rest exists to serve", and says
 % its measured contribution is "auditability rather than accuracy". The
-% takeaway says both, so slides 21 to 23 read as the measurement this slide
+% takeaway says both, so slides 22 to 24 read as the measurement this slide
 % announced rather than as a retraction of it.
 \begin{frame}{The Structural Verification Layer}
   \begin{columns}[T]
@@ -432,46 +469,6 @@
   \end{columns}
   \takeaway{The layer this thesis set out to contribute. Measured, it buys
     auditability rather than accuracy.}
-\end{frame}
-
-% ===================== 12 =====================
-% The bounds are the supervisor's first two issues, and check_slides.py
-% holds each of them on this slide AND in the script. They have been
-% proposed for deletion once already, on the ground that the slide is wordy;
-% the wordiness was never the bounds.
-\begin{frame}{What \emph{structural} means, and what it does not}
-  \bodyshift{-2pt}
-  % "Against the graph the agent walked, not against the model's judgement"
-  % was true of route 1 only. Route 2 asks the FULL graph, and route 3 is a
-  % model call. framework.tex states the actual rule: the model "is
-  % consulted only where the graph is silent ... It never overrides a
-  % finding of the environment."
-  The graph decides. The model is consulted only where the graph is
-  silent, and it never overrides the graph.
-  \vspace{2mm}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{block}{What it does not mean}
-        It tests \alert{adjacency}, not the relation the claim names, and
-        not its direction. A \emph{mother} claim passes on a \emph{child}
-        edge.
-      \end{block}
-      \vspace{2mm}
-      \begin{block}{What it cannot catch}
-        \agrraggedright
-        A claim can be \emph{true} and still be the wrong answer. That is
-        the echo attractor of slide 28.
-      \end{block}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{block}{What ``its evidence'' means}
-        Only the check against the \alert{walked} graph attaches triples.
-        The other two routes accept with nothing attached. The log keeps
-        the \emph{count}, not the triples.
-      \end{block}
-    \end{column}
-  \end{columns}
-  \centrebody
 \end{frame}
 
 % ===================== 13 =====================
@@ -563,6 +560,48 @@
 \end{frame}
 
 % ===================== 14 =====================
+% The bounds are the supervisor's first two issues, and check_slides.py
+% holds each of them on this slide AND in the script. They have been
+% proposed for deletion once already, on the ground that the slide is wordy;
+% the wordiness was never the bounds. It follows the routes it bounds,
+% since "the other two routes" and the adjacency test are slide 13's
+% drawing. The two stood the other way round until 2026-10-07.
+\begin{frame}{What \emph{structural} means, and what it does not}
+  \bodyshift{-2pt}
+  % "Against the graph the agent walked, not against the model's judgement"
+  % was true of route 1 only. Route 2 asks the FULL graph, and route 3 is a
+  % model call. framework.tex states the actual rule: the model "is
+  % consulted only where the graph is silent ... It never overrides a
+  % finding of the environment."
+  The graph decides. The model is consulted only where the graph is
+  silent, and it never overrides the graph.
+  \vspace{2mm}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{What it does not mean}
+        It tests \alert{adjacency}, not the relation the claim names, and
+        not its direction. A \emph{mother} claim passes on a \emph{child}
+        edge.
+      \end{block}
+      \vspace{2mm}
+      \begin{block}{What it cannot catch}
+        \agrraggedright
+        A claim can be \emph{true} and still be the wrong answer. That is
+        the echo attractor of slide 29.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{What ``its evidence'' means}
+        Only the check against the \alert{walked} graph attaches triples.
+        The other two routes accept with nothing attached. The log keeps
+        the \emph{count}, not the triples.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \centrebody
+\end{frame}
+
+% ===================== 15 =====================
 % WebQTest-960, read from results/phase4/test_webqsp_agr.jsonl, and
 % check_slides.py holds every figure on this slide to that record. The
 % mention "The Office" is the dataset's annotation (use_gold_entities); the
@@ -613,7 +652,7 @@
   \centrebody
 \end{frame}
 
-% ===================== 15 =====================
+% ===================== 16 =====================
 % Two disclosures the old slide lacked, both from the book. The graph is a
 % union of subgraphs extracted to contain their answers, which threat 1 in
 % sec:threats says "bounds every absolute number". And reachability
@@ -670,12 +709,12 @@
     levels are optimistic, and every system faces the same graph.}
 \end{frame}
 
-% ===================== 16 =====================
+% ===================== 17 =====================
 % sec:baseline-constants names TWO things not held constant: the candidate
 % widths, and the drafting prompt, whose grounding provisions the baselines'
 % plain prompt lacks. The takeaway used to call the widths "the one
 % exception". It also claimed the differences were not due to "spend",
-% which slide 17 contradicts: AGR spends more tokens than Think-on-Graph.
+% which slide 18 contradicts: AGR spends more tokens than Think-on-Graph.
 %
 % What must not go: "Narrower is cheaper" and "lower bound". Disclosing that
 % the widths differ, without saying which way the difference cuts, invites
@@ -718,7 +757,7 @@
     model capacity. Both exceptions are on this slide.}
 \end{frame}
 
-% ===================== 17 =====================
+% ===================== 18 =====================
 \begin{frame}{Main results}
   \bodyshift{-2.75pt}
   \begin{table}
@@ -766,7 +805,7 @@
     more tokens.}
 \end{frame}
 
-% ===================== 18 =====================
+% ===================== 19 =====================
 % The board asked for this at the pre-defense: the environment is built
 % from RoG's published subgraphs, so a direct comparison is owed. It was a
 % backup slide until 2026-10 and is presented now, after the results it
@@ -806,18 +845,18 @@
     but it is not an architecture comparison.}
 \end{frame}
 
-% ================ 19 to 26, the research questions ================
+% ================ 20 to 27, the research questions ================
 % Each slide is titled with its question exactly as sec:rqs words it, on
 % one line, and what that slide answers is its subtitle. RQ1 and RQ2 do not
 % fit one line at the frame-title size, so each question's slides sit in a
 % group that sets its title a little smaller and closes after its last
 % slide (preamble.tex says how much, and why a group). RQ3 fits, and its
 % two slides have no group.
-{\rqtitlesize{14pt}{17.5pt}% RQ1, slides 19 and 20
+{\rqtitlesize{14pt}{17.5pt}% RQ1, slides 20 and 21
 
-% ===================== 19 =====================
+% ===================== 20 =====================
 % The subtitle is the second half of RQ1 as sec:rqs elaborates it, which
-% slide 8 carried until the questions there became the book's verbatim.
+% slide 9 carried until the questions there became the book's verbatim.
 \begin{frame}{RQ1: Does agentic navigation improve multi-hop factual accuracy?}{And does the advantage grow with hop count?}
   \bodyshift{1.25pt}
   \centering
@@ -833,14 +872,14 @@
   \takeaway{Yes. The evidence is a shape, not a difference of means.}
 \end{frame}
 
-% ===================== 20 =====================
+% ===================== 21 =====================
 \begin{frame}{RQ1: Does agentic navigation improve multi-hop factual accuracy?}{The caveat I want to raise myself}
   \begin{table}
     \small
-    % 1.1, as slides 21, 24 and 25 set it: the question at 14pt cost this
+    % 1.1, as slides 22, 25 and 26 set it: the question at 14pt cost this
     % slide 2.6pt it did not have.
     \renewcommand{\arraystretch}{1.1}
-    % Grouped like slide 17's table, and for the same reason: the long
+    % Grouped like slide 18's table, and for the same reason: the long
     % spanning header was wider than the two columns under it.
     \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{}}
       \toprule
@@ -875,9 +914,9 @@
 \end{frame}
 
 }% end of RQ1's title size
-{\rqtitlesize{11.6pt}{14.5pt}% RQ2, slides 21 to 24
+{\rqtitlesize{11.6pt}{14.5pt}% RQ2, slides 22 to 25
 
-% ===================== 21 =====================
+% ===================== 22 =====================
 % The subtitle is the question this slide answers, RQ2 in its narrowest
 % form, and the script opens on the same words.
 \begin{frame}{RQ2: What does pre-generation verification contribute beyond graph navigation?}{Does anything ungrounded get asserted?}
@@ -910,7 +949,7 @@
     property of \emph{graph navigation}, not of the verification layer.}
 \end{frame}
 
-% ===================== 22 =====================
+% ===================== 23 =====================
 % Three negative findings, each the book's. The middle one is the second
 % part of sec:findings' RQ2 answer, which the deck did not carry: the
 % precision lead "belongs to the architecture", the layer's removal does not
@@ -945,12 +984,12 @@
     \end{column}
   \end{columns}
   \vspace{2mm}\sinkfoot
-  {\small Not a retraction of slide 17. That was AGR against four
+  {\small Not a retraction of slide 18. That was AGR against four
   baselines. This is AGR against \emph{itself} with one part removed.
   \alert{What it does buy is the next slide.}\par}
 \end{frame}
 
-% ===================== 23 =====================
+% ===================== 24 =====================
 % The hedge deltas stay, because they are what removing the layer measured.
 % What they mean is the paired records', computed in check_slides.py: the
 % six CWQ questions the layer withheld are exactly the six the ablated run
@@ -991,7 +1030,7 @@
     at a small cost in recall.}
 \end{frame}
 
-% ===================== 24 =====================
+% ===================== 25 =====================
 % The between-system evidence that a hedge is not accuracy bought with
 % silence, and the answer to the objection the failure census invites
 % three slides later: 256 failures, of which 125 are hedges.
@@ -1005,7 +1044,7 @@
   \bodyshift{-0.5pt}
   \begin{table}
     \small
-    % 1.1, as slides 21 and 25 set it: the subtitle cost this slide a line.
+    % 1.1, as slides 22 and 26 set it: the subtitle cost this slide a line.
     \renewcommand{\arraystretch}{1.1}
     \begin{tabular}{@{}lrr@{}}
       \toprule
@@ -1029,15 +1068,15 @@
 
 }% end of RQ2's title size: from here on titles are at full size
 
-% ===================== 25 =====================
+% ===================== 26 =====================
 % The subtitle is what the table is, in the script's own words.
 \begin{frame}{RQ3: Which components contribute what, at what token cost?}{Four ablations, each a paired test against the full system}
   \begin{table}
     \small
-    % 1.05, not the 1.1 of slides 21 and 24: the question at full size
+    % 1.05, not the 1.1 of slides 22 and 25: the question at full size
     % cost this slide 0.95pt it did not have.
     \renewcommand{\arraystretch}{1.05}
-    % Three groups, separated like slide 17's: the two datasets and the
+    % Three groups, separated like slide 18's: the two datasets and the
     % token column.
     \begin{tabular}{@{}lrr@{\hspace{7mm}}rr@{\hspace{7mm}}r@{}}
       \toprule
@@ -1059,7 +1098,7 @@
   \end{table}
   \vspace{-2mm}
   % "Full system" is the main run restricted to the same halves, which is
-  % why its WebQSP F1 is 0.659 here and 0.642 on slide 17. The p-values are
+  % why its WebQSP F1 is 0.659 here and 0.642 on slide 18. The p-values are
   % uncorrected and read as descriptive (sec:ablations). The test is on
   % per-question correctness, so "on Hits@1" stops the p from being read as
   % a test of the F1 beside it. "Tokens are for WebQSP" is the column's
@@ -1072,7 +1111,7 @@
     the next slide, and its sign is backwards.}
 \end{frame}
 
-% ===================== 26 =====================
+% ===================== 27 =====================
 % The strata and the mechanism together. sec:ablations gives the per-stratum
 % Hits@1 (held in check_slides.py against ablations.by_hop_stratum), and
 % sec:decomposition-errors names context-stripping as the mechanism the
@@ -1101,7 +1140,7 @@
     that conclusion rather than confirming one.}
 \end{frame}
 
-% ===================== 27 =====================
+% ===================== 28 =====================
 \begin{frame}{Every failure, read and labelled}
   \bodyshift{-1pt}
   \begin{columns}[T]
@@ -1158,7 +1197,7 @@
     invention.}
 \end{frame}
 
-% ===================== 28 =====================
+% ===================== 29 =====================
 % This read "it appears across systems, so it is a property of the
 % task, not of AGR" -- defensive where the thesis is substantive.
 % Real specimens rather than invented ones. WebQTest-1707 is sec:echo's own
@@ -1195,34 +1234,6 @@
   \takeaway{The contribution is the mechanism, named, not the count.}
 \end{frame}
 
-% ===================== 29 =====================
-% sec:findings answers each question in its own words, and the deck never
-% said the answers. The takeaway is the chapter's closing sentence, broken
-% into three.
-\begin{frame}{The three answers}
-  \small
-  % A margin as wide as the label, as on slide 8, so the labels start at
-  % the text block's edge, flush with the takeaway bar. At the default
-  % margin they hung 4pt outside both.
-  \settowidth{\leftmargini}{\textbf{RQ1}}%
-  \addtolength{\leftmargini}{\labelsep}%
-  \begin{enumerate}
-    \item[\textbf{RQ1}] \textbf{Yes.} AGR leads every accuracy cell, all
-      eight paired tests reject, and on CWQ only AGR rises with hop count.
-      The margin over Think-on-Graph lies in the budget.
-      \vspace{1mm}
-    \item[\textbf{RQ2}] Navigation, not verification, removes structural
-      hallucination. The precision lead belongs to the architecture. The
-      layer buys auditability, not accuracy.
-      \vspace{1mm}
-    \item[\textbf{RQ3}] Only the planner has a detectable effect, and its
-      sign depends on the stratum. The whole system runs at half the
-      agentic baseline's calls.
-  \end{enumerate}
-  \takeaway{Navigation is where the accuracy comes from. Verification is
-    where the auditability comes from. Decomposition is sometimes harmful.}
-\end{frame}
-
 % ===================== 30 =====================
 \begin{frame}{Contributions}
   \bodyshift{-3.25pt}
@@ -1230,7 +1241,7 @@
     \begin{column}{0.50\textwidth}
       % THESE ARE THE THESIS'S SIX, IN ITS ORDER (sec:contribution: the
       % framework paragraph, four \textbf lead-ins, the protocol paragraph).
-      % check_slides.py holds each one against sec:contribution. Slide 8
+      % check_slides.py holds each one against sec:contribution. Slide 9
       % previews the same six.
       %
       % "pre-specified": nothing was filed with a registry, and the thesis
@@ -1276,35 +1287,9 @@
   \centrebody
 \end{frame}
 
-% ===================== 31 =====================
-% conclusion.tex's future work, the three repairs the census earned and the
-% operators the categories specify, and its closing remark as the takeaway.
-% The counts are the census's own and check_slides.py holds them.
-% Full width, so each item is one line: in two columns, every
-% parenthetical count wrapped away from the noun it counts. Two headed
-% lists rather than two blocks, because the block chrome was the 15pt the
-% takeaway needed.
-\begin{frame}{What comes next}
-  \bodyshift{4.5pt}
-  \small\let\raggedright\agrraggedright
-  \textbf{Repairs the census earned}
-  \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
-    \item Tell the decomposer which argument is the answer ($9$
-      extraction-bug cases)
-    \item Log accepted claims with the triples that matched them
-    \item Re-run the baselines at equal candidate widths and a wider radius
-  \end{itemize}
-  \textbf{Operators the failures specify}
-  \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
-    \item Gate decomposition on question structure
-    \item A set-intersection operator ($47$ composite-claim cases)
-    \item Ordinals and literal values ($43$ knowledge-graph-gap cases)
-  \end{itemize}
-  \takeaway{Fact verification against a knowledge graph is the easier half.
-    \alert{Relevance} verification is the half still open.}
-\end{frame}
-
 % ===================== CLOSE =====================
+% The last slide presented, and the last frame in this file. The backup
+% slides are content-backup.tex, a PDF of their own since 2026-10-07.
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
   \vfill
@@ -1313,146 +1298,3 @@
   {\large Questions}
   \vfill
 \end{frame}}
-
-% ===================== BACKUP =====================
-% Not presented. These follow the closing slide so a question can be
-% answered by paging past it, rather than by switching to a second PDF.
-% A backup frame with no takeaway bar closes with \centrebody, as the
-% presented ones do. Without it the frametitle's glue is the only stretch
-% in the frame and the body sinks to the floor: "which budgets actually
-% bind" sat 82pt under its title and 2pt above the page number.
-\begin{frame}{Backup: budget configuration}
-  \bodyshift{-4.5pt}
-  \begin{table}
-    \small
-    \begin{tabular}{@{}lrL{52mm}@{}}
-      \toprule
-      \textbf{Parameter} & \textbf{Value} & \textbf{Enforced in} \\
-      \midrule
-      \texttt{max\_depth}        & 4 & both routers \\
-      \texttt{beam\_width}       & 3 & explorer (slice) \\
-      \texttt{max\_anchors}      & 5 & explorer \emph{and} evaluator \\
-      \texttt{max\_backtracks}   & 3 & post-evaluation router \\
-      \texttt{max\_llm\_calls}   & 25 & LLM client \\
-      \texttt{max\_verify\_iters}& 2 & post-verification router, verifier \\
-      \texttt{max\_seconds}      & 300 & both routers \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  {\small Termination does not depend on model behaviour. Every cycle passes
-  through a router that checks a monotone counter.\par}
-  \centrebody
-\end{frame}
-
-\begin{frame}{Backup: which budgets actually bind}
-  \bodyshift{-3.5pt}
-  \begin{table}
-    \small
-    \begin{tabular}{@{}lrrr@{}}
-      \toprule
-      \textbf{Budget} & \textbf{WebQSP} & \textbf{CWQ} & \textbf{Pooled} \\
-      \midrule
-      Depth cap        & $16.5\%$ & $34.8\%$ & $25.6\%$ \\
-      Backtrack cap    & $3.2\%$  & $9.2\%$  & $6.2\%$ \\
-      Verify-iteration cap & $1.0\%$ & $2.8\%$ & $1.9\%$ \\
-      \textbf{Call cap} & $\mathbf{0.0\%}$ & $\mathbf{0.0\%}$
-                        & $\mathbf{0.0\%}$ \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  {\small Percentage of questions on which each budget refused a request.
-  AGR never reaches the $25$-call cap. That is what makes a clipped
-  Think-on-Graph a meaningful comparison.\par}
-  \centrebody
-\end{frame}
-
-\begin{frame}{Backup: the full failure census}
-  \bodyshift{3pt}
-  \centering
-  \resizebox{\textwidth}{!}{%
-    \input{figures/fig_failure_histogram.tex}}
-  \centrebody
-\end{frame}
-
-% Token counts tick as 100, 1,000 and 10,000 here, not as powers of ten.
-% As 10^2, 10^3 and 10^4 the one digit that tells the ticks apart is the
-% exponent, which printed at 6pt, the smallest text in the deck. Set on
-% this slide rather than in build_figures.py, so the book's and the
-% paper's copies of the figure are untouched.
-\begin{frame}{Backup: accuracy against cost}
-  \centering
-  {\pgfplotsset{every axis/.append style={log ticks with fixed point}}%
-   \input{figures/fig_accuracy_cost.tex}}
-
-  \vspace{1mm}
-  {\small On \emph{tokens} Think-on-Graph is \textbf{not} dominated. It buys
-  lower accuracy at a lower token price. On \emph{calls}, which the budget
-  meters, it is.\par}
-  \takeaway{The frontier depends on which cost you charge.}
-\end{frame}
-
-\begin{frame}{Backup: the benchmark was wrong $57$ times}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \small
-      % sec:benchmark-defects makes the detector and the attractor one
-      % finding: "The gap between those figures is not measurement noise.
-      % It is the echo attractor of sec:echo, operating across systems."
-      % 105 is 58 + 47 flagged, 41 is 22 + 19 adjudicated.
-      %
-      % The breakdown is app:defects': two DISJOINT sets, 41 + 16 = 57. It
-      % read "17 inside the census, 1 counted in both" until 2026-10, the
-      % accounting from before WebQTrn-64 was promoted to an exclusion.
-      % check_slides.py holds all three lines to benchmark_defects.
-      \agrraggedright The same cross-system agreement is also a
-      \alert{detector}. Consensus flagged $105$ questions and adjudication
-      confirmed $41$. The gap is the attractor above, not label noise.
-      \begin{itemize}
-        \item $41$ excluded before the census
-        \item $16$ more found inside it, as gold-noise or ambiguous rows
-        \item No question counted in both
-        \item[$\Rightarrow$] \textbf{$57$ distinct questions}
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Why report it}
-        \small\agrraggedright
-        Reported defect rates for these two standard benchmarks are rare and
-        usually anecdotal. This is a counted rate with a documented
-        adjudication procedure and per-question provenance.
-      \end{block}
-    \end{column}
-  \end{columns}
-  \takeaway{A contribution that outlives this particular system.}
-\end{frame}
-
-% Four departures from the approved proposal, each recorded in the thesis
-% where it applies: sec:mcts-clarification, sec:factuality-related,
-% sec:metrics-not-run and sec:pre-registration.
-\begin{frame}{Backup: what changed from the proposal}
-  \begin{table}
-    \small
-    \begin{tabular}{@{}L{34mm}L{24mm}L{72mm}@{}}
-      \toprule
-      \textbf{Proposal} & \textbf{Now} & \textbf{Why} \\
-      \midrule
-      ``MCTS-inspired'' search & Withdrawn
-        & No rollouts and no value backpropagation. It is guided best-first
-          search with a bounded beam and backtracking. \\
-      \midrule
-      FactBench as graph and judge & Dropped
-        & An evaluator whose facts sit inside the retrieval graph cannot
-          measure hallucination. \\
-      \midrule
-      Path fidelity metric & Deferred
-        & Needs gold SPARQL relation chains, which the RoG distribution
-          does not carry. \\
-      \midrule
-      A registered protocol & Pre-specified
-        & Four decisions were fixed in writing, but nothing was filed with
-          a registry. \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-  \centrebody
-\end{frame}

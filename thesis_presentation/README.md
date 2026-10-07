@@ -4,9 +4,11 @@ The defense slide deck for the thesis in `thesis_book/`.
 
 | File | What it is |
 | --- | --- |
-| `thesis_defense_0421052099.tex` / `.pdf` | **The deck.** 38 pages: 32 presented, 6 backup |
+| `thesis_defense_0421052099.tex` / `.pdf` | **The deck.** 31 pages, all presented: title, body slides, closing slide |
+| `thesis_defense_0421052099_backup.tex` / `.pdf` | **The backup slides**, for questions only. 8 pages: an index and seven slides |
 | `preamble.tex` | Shared preamble — 16:9, 12 pt, palette, styles |
-| `content-main.tex` | Every frame: title, body slides, closing slide, then the backup slides |
+| `content-main.tex` | The presented frames: title, body slides, closing slide |
+| `content-backup.tex` | The backup frames, after their index page |
 | `figures/` | Slide-geometry figures, generated |
 | `check_slides.py` | Verifies every number in the deck against its source |
 | `transcript.md` | The rehearsal script, timed per slide, with the anticipated questions |
@@ -19,28 +21,35 @@ The defense slide deck for the thesis in `thesis_book/`.
 ```bash
 cd thesis_presentation
 latexmk -pdf thesis_defense_0421052099.tex
+latexmk -pdf thesis_defense_0421052099_backup.tex
 ```
 
 `latexmk -C` cleans.
 
-**Only `thesis_defense_0421052099.tex` is a document.** `preamble.tex` and
-`content-main.tex` have no `\begin{document}` and stop with `Emergency stop
-... no legal \end found` if you build them directly. Each carries a `% !TEX
-root` line so an editor's build button compiles the driver instead. The figures
+**Only the two `thesis_defense_0421052099*.tex` files are documents.**
+`preamble.tex` and the two `content-*.tex` files have no `\begin{document}`
+and stop with `Emergency stop ... no legal \end found` if you build them
+directly. Each content file carries a `% !TEX root` line naming its driver, so
+an editor's build button compiles the right one instead. The figures
 under `figures/` are generated, so their directive comes from
 `scripts/build_figures.py` — editing it into the files themselves would last
 until the next regeneration.
 `python scripts/check_tex_roots.py` checks all three modules — this one, the
 book, and the paper.
 
-## One document, not two
+## Two documents
 
-Through the pre-defense this module built two PDFs: a presented deck, and a
-separate backup deck opened alongside it and jumped into when a question called
-for one. They are one file now — the backup frames are the tail of
-`content-main.tex`, after the closing slide, reached by paging past it rather
-than by switching windows. `check_slides.py` holds them there: a backup frame
-appearing *before* the close is the defect it now looks for.
+The presented deck ends on its closing slide. The backup slides are a second
+PDF, opened alongside it and jumped into when a question calls for one, as at
+the pre-defense. From the pre-defense until 2026-10-07 they were the tail of
+the one deck, reached by paging past the close. They are a file of their own
+again so that the talk can be projected end to end with nothing to skip.
+
+The backup deck opens on an index, and every page carries its number in the
+footer, which is the number `transcript.md` refers to it by. `check_slides.py`
+holds the arrangement: a backup frame in the presented deck, a frame after the
+closing slide, or an index row that does not name the frame on its page
+fails. Its page rules (bars, centring, balance) read both PDFs.
 
 ## The transcript
 
@@ -212,7 +221,7 @@ two rounds of builds described as clean.
   separates by luminance, so the figures survive a greyscale print — the mark
   shapes carry the distinction independently of hue.
 - **The research-question slides are the one exception to the title size.**
-  Slides 19 to 26 are each titled with their question exactly as the book's
+  Slides 20 to 27 are each titled with their question exactly as the book's
   `sec:rqs` words it, on one line, and what that slide answers is its
   subtitle. A question is set smaller only if it would otherwise wrap, and
   only as far as one line needs. RQ3 fits at `\large` and keeps it. RQ1 is
@@ -221,7 +230,7 @@ two rounds of builds described as clean.
   the closing braces where they are. A frame option cannot carry the size,
   because beamer applies frame options outside the frame and the size leaked
   into every later frame. `check_slides.py` holds the questions to the book
-  (slide 8 and every question title) and reads the built titles: each
+  (slide 9 and every question title) and reads the built titles: each
   question on one line, at full size wherever it fits, and every other title
   at full size.
 - **Centred means centred on the page, and it is measured.** The takeaway bar

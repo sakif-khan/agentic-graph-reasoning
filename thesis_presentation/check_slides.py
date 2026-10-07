@@ -18,12 +18,16 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 NUMS = os.path.join(ROOT, "results", "phase4", "thesis_numbers.json")
-# One deck now. The backup frames used to live in content-backup.tex and
-# build into a second PDF; they are the tail of content-main.tex since the
-# pre-defense, so a figure quoted on one is read from the same file as one
-# on a main slide -- and checked identically.
-SOURCES = ["preamble.tex", "content-main.tex"]
-DRIVERS = ["thesis_defense_0421052099.tex"]
+# Two documents, as at the pre-defense. The presented deck ends on its
+# closing slide, and the backup slides are a second PDF built from
+# content-backup.tex; from the pre-defense until 2026-10-07 they were the
+# tail of content-main.tex. Both are read here, so a figure quoted on a
+# backup slide is checked exactly as one on a main slide. Each source is
+# paired with the driver that builds it.
+SOURCES = ["preamble.tex", "content-main.tex", "content-backup.tex"]
+DRIVERS = ["thesis_defense_0421052099.tex",
+           "thesis_defense_0421052099_backup.tex"]
+CONTENT = ["content-main.tex", "content-backup.tex"]
 
 J = json.load(open(NUMS, encoding="utf-8"))
 TEX = "\n".join(open(os.path.join(HERE, f), encoding="utf-8").read()
@@ -144,8 +148,8 @@ def _group(s, i):
     return None, i
 
 
-def _frames():
-    """(title, subtitle, body) for every frame, in deck order.
+def _frames(flat):
+    """(title, subtitle, body) for every frame in this text, in order.
 
     Read as beamer reads them: options skipped, then up to two brace groups,
     the title and the subtitle. Since 2026-10 the research-question slides
@@ -153,33 +157,44 @@ def _frames():
     tell them apart, so a frame is found by either.
     """
     out = []
-    for m in re.finditer(r"\\begin\{frame\}", FLAT):
+    for m in re.finditer(r"\\begin\{frame\}", flat):
         i = m.end()
-        if FLAT.startswith("[", i):
-            i = FLAT.index("]", i) + 1
+        if flat.startswith("[", i):
+            i = flat.index("]", i) + 1
         heads = []
         while len(heads) < 2:
-            g, k = _group(FLAT, i + (FLAT[i:i + 1] == " "))
+            g, k = _group(flat, i + (flat[i:i + 1] == " "))
             if g is None:
                 break
             heads.append(g)
             i = k
         heads += ["", ""]
-        out.append((heads[0], heads[1], FLAT[i:FLAT.find(r"\end{frame}", i)]))
+        out.append((heads[0], heads[1], flat[i:flat.find(r"\end{frame}", i)]))
     return out
 
 
-FRAMES = _frames()
+# Each deck's frames in its own order, so that a frame's position is the
+# page it prints on in its own PDF: (pdf, frames) for the presented deck,
+# then for the backup deck. FRAMES is both, for finding a frame by title
+# wherever it is.
+DECKS = [(os.path.join(HERE, os.path.splitext(d)[0] + ".pdf"),
+          _frames(" ".join(uncomment(open(os.path.join(HERE, c),
+                                          encoding="utf-8").read()).split())))
+         for d, c in zip(DRIVERS, CONTENT)]
+MAIN_FRAMES = DECKS[0][1]
+FRAMES = MAIN_FRAMES + DECKS[1][1]
 
 
 def frame_no(title):
-    """1-based position of the one frame whose title or subtitle starts so.
+    """1-based position in the presented deck of the one frame whose title
+    or subtitle starts so.
 
     0 when none does, and 0 when several do: a research question's title is
     shared by every slide that answers it, and the first of them is not an
-    answer to which one was meant.
+    answer to which one was meant. A backup slide has no position in the
+    talk, so it is not one of the candidates.
     """
-    hits = [n for n, (t, s, _) in enumerate(FRAMES, 1)
+    hits = [n for n, (t, s, _) in enumerate(MAIN_FRAMES, 1)
             if t.startswith(title) or (s and s.startswith(title))]
     return hits[0] if len(hits) == 1 else 0
 
@@ -351,10 +366,12 @@ for s, label in NAME.items():
         ck(f"{label:15s} {ds:6s} hedge {v} not labelled an error rate",
            not near, near[0] if near else "")
 
-# The one comparison that isolates the verification layer, quoted on slide
-# 22. Bound to the sentence rather than to the four values appearing
-# somewhere: each is also a cell in the ablation table on another slide.
-print("\n== verifier hedge deltas (slide 22) ==")
+# The one comparison that isolates the verification layer, quoted on the
+# "So what does it do?" slide. Bound to the sentence rather than to the four
+# values appearing somewhere: each is also a cell in the ablation table on
+# another slide. The heading reads the slide's number off the deck, which
+# has renumbered past a typed one twice.
+print(f"\n== verifier hedge deltas (slide {frame_no('So what does it do?')}) ==")
 AB = J["ablations"]["by_condition"]
 for ds, name in (("cwq", "CWQ"), ("webqsp", "WebQSP")):
     full = f"{AB[f'{ds}/half_abl_full']['hedge_pct']:.1f}"
@@ -646,14 +663,15 @@ _slide_rq = {n: " ".join(re.sub(r"\\alert\{([^{}]*)\}", r"\1", q).split())
                  r"(?=\\vspace|\\item|\\end\{enumerate\})",
                  frame("Research questions"))}
 for _n, _q in sorted(BOOK_RQ.items()):
-    ck(f"slide 8 asks RQ{_n} in the book's words", _slide_rq.get(_n) == _q,
+    ck(f"slide {frame_no('Research questions')} asks RQ{_n} in the book's "
+       f"words", _slide_rq.get(_n) == _q,
        f"slide says {_slide_rq.get(_n)!r}")
 
 # Every slide that answers a question is titled with that question, whole
 # and in the book's words, and says in its subtitle what it answers. The
 # question slides run unbroken and in order, so a slide that drops its
 # question for a heading of its own leaves a gap, which fails.
-_rq_at = [(n, t, s) for n, (t, s, _) in enumerate(FRAMES, 1)
+_rq_at = [(n, t, s) for n, (t, s, _) in enumerate(MAIN_FRAMES, 1)
           if re.match(r"RQ\d: ", t)]
 _rq_pos = [n for n, _, _ in _rq_at]
 ck(f"{len(_rq_at)} slides carry a research question as their title, "
@@ -898,17 +916,35 @@ for drv in DRIVERS:
        os.path.exists(os.path.join(HERE, drv))
        and r"\input{preamble}" in open(os.path.join(HERE, drv),
                                        encoding="utf-8").read())
-# "No backup slide leaked into the presented deck" was the rule while the
-# two were separate documents. They are one file now, so the invariant is
-# no longer that the backup frames are absent -- it is that they all sit
-# AFTER the closing slide, where paging reaches them only deliberately.
-# Interleaving one into the narrative is the defect this now catches.
-_close = main_src.find(r"{\Large\bfseries\color{agrdark} Thank you}")
-_backups = [m.start() for m in
-            re.finditer(r"\\begin\{frame\}\{Backup:", main_src)]
-ck("the closing slide is in the deck", _close >= 0)
-ck(f"all {len(_backups)} backup frames follow it, none before",
-   bool(_backups) and _close >= 0 and min(_backups) > _close)
+# Two documents again since 2026-10-07, so the invariant is the
+# pre-defense's: the presented deck ends on its closing slide and holds no
+# backup frame, and the backup deck is its index page and backup frames
+# only. A frame after the close is one nobody reaches by presenting, and a
+# backup frame before it is one the talk would have to skip. While the
+# backups were this file's tail, the rule was that they all followed the
+# close.
+_main_live = uncomment(main_src)
+_close = _main_live.find(r"{\Large\bfseries\color{agrdark} Thank you}")
+ck("the closing slide is in the presented deck", _close >= 0)
+ck("and the presented deck ends on it",
+   _close >= 0 and r"\begin{frame}" not in _main_live[_close:])
+ck("no backup frame is in the presented deck",
+   not any(t.startswith("Backup:") for t, _, _ in MAIN_FRAMES))
+_bk = DECKS[1][1]
+ck(f"the backup deck is an index page and {len(_bk) - 1} backup frames",
+   len(_bk) > 1 and not _bk[0][0]
+   and all(t.startswith("Backup: ") for t, _, _ in _bk[1:]),
+   "; ".join(t[:30] or "(untitled)" for t, _, _ in _bk))
+# The index names every backup slide by the number its footer prints, in
+# the slide's own words. A frame added, dropped or moved without the index
+# following would send a question to the wrong page.
+_idx = re.findall(r"\\textbf\{(\d+)\}\s*&\s*(.*?)\s*\\\\",
+                  _bk[0][2]) if _bk else []
+_pages = [(str(n), t[len("Backup: "):].lower())
+          for n, (t, _, _) in enumerate(_bk, 1) if t.startswith("Backup: ")]
+ck("the backup index lists each slide by its page, as titled",
+   bool(_pages) and [(n, s.lower()) for n, s in _idx] == _pages,
+   f"index {[n for n, _ in _idx]}, deck {[n for n, _ in _pages]}")
 
 # Every titled frame balances the glue under its title. The preamble puts
 # `plus 1filll' after every frametitle so a thin slide's body settles
@@ -1087,13 +1123,18 @@ if pymupdf is not None:
 # inside each edge.
 print("\n== each research question is a one-line title, smaller only where "
       "one line needs it ==")
-_deck = os.path.join(HERE, os.path.splitext(DRIVERS[0])[0] + ".pdf")
+# Every page rule from here reads both PDFs, each against its own frames,
+# keyed (deck, page): 0 is the presented deck, 1 the backup deck.
+_deck = DECKS[0][0]
+_TAG = ("", "backup ")
 if pymupdf is not None:
     _tline, _tsize, _twide, _room = {}, {}, {}, 0.0
-    if os.path.exists(_deck):
-        with pymupdf.open(_deck) as d:
+    for _di, (_pdf, _frs) in enumerate(DECKS):
+        if not os.path.exists(_pdf):
+            continue
+        with pymupdf.open(_pdf) as d:
             _room = d[0].rect.width - 2 * 0.3 / 2.54 * 72
-            for _n, (_t, _s, _) in enumerate(FRAMES, 1):
+            for _n, (_t, _s, _) in enumerate(_frs, 1):
                 if not _t or _n > d.page_count:
                     continue
                 _lines = sorted(
@@ -1106,21 +1147,23 @@ if pymupdf is not None:
                     for l in b.get("lines", [])
                     if "".join(sp["text"] for sp in l["spans"]).strip())
                 if _lines:
-                    _, _tline[_n], _tsize[_n], _twide[_n] = _lines[0]
-    _rqn = {n for n, _, _ in _rq_at}
+                    (_, _tline[_di, _n], _tsize[_di, _n],
+                     _twide[_di, _n]) = _lines[0]
+    _rqn = {(0, n) for n, _, _ in _rq_at}
     for _n, _t, _ in _rq_at:
         ck(f"  slide {_n}'s question is set on one line",
-           _tline.get(_n) == _t, f"its first line is {_tline.get(_n, '')!r}")
+           _tline.get((0, _n)) == _t,
+           f"its first line is {_tline.get((0, _n), '')!r}")
     _full = sorted({round(v, 1) for n, v in _tsize.items() if n not in _rqn})
-    ck("every other title is set at one size, the frame-title size",
-       len(_full) == 1, f"{_full}pt")
+    ck("every other title, in both decks, is set at one size, the "
+       "frame-title size", len(_full) == 1, f"{_full}pt")
     _fsize = max((v for n, v in _tsize.items() if n not in _rqn), default=0)
     for _k in sorted(BOOK_RQ):
-        _ns = [n for n, t, _ in _rq_at if t[2] == _k and n in _tsize]
+        _ns = [n for n, t, _ in _rq_at if t[2] == _k and (0, n) in _tsize]
         if not _ns or len(_full) != 1:
             continue
-        _sizes = sorted({round(_tsize[n], 1) for n in _ns})
-        _at_full = _twide[_ns[0]] * _fsize / _tsize[_ns[0]]
+        _sizes = sorted({round(_tsize[0, n], 1) for n in _ns})
+        _at_full = _twide[0, _ns[0]] * _fsize / _tsize[0, _ns[0]]
         _fits = _at_full <= _room
         ck(f"  RQ{_k}, {_at_full:.0f}pt at full size against a "
            f"{_room:.0f}pt line, is set "
@@ -1142,24 +1185,28 @@ if pymupdf is not None and os.path.exists(_deck):
     _bar_rgb = tuple(1 - int(_tint.group(1)) / 100 * (1 - int(h, 16) / 255)
                      for h in re.findall("..", _node.group(1)))
     _edge = 72 / 2.54
-    _bars, _off = 0, []
-    with pymupdf.open(_deck) as d:
-        for page in d:
-            _r = None
-            for dr in page.get_drawings():
-                f = dr.get("fill")
-                if (f and dr["rect"].width > 300
-                        and all(abs(a - b) < 0.01
-                                for a, b in zip(f, _bar_rgb))):
-                    _r = dr["rect"] if _r is None else _r | dr["rect"]
-            if _r is None:
-                continue
-            _bars += 1
-            _l, _rt = _r.x0, page.rect.width - _r.x1
-            if abs(_l - _edge) > 0.3 or abs(_rt - _edge) > 0.3:
-                _off.append(f"slide {page.number + 1}: {_l:.2f}pt in from "
-                            f"the left, {_rt:.2f}pt from the right")
-    _want = sum(1 for _, _, b in FRAMES if r"\takeaway{" in b)
+    _bars, _off, _want = 0, [], 0
+    for _di, (_pdf, _frs) in enumerate(DECKS):
+        if not os.path.exists(_pdf):
+            continue
+        _want += sum(1 for _, _, b in _frs if r"\takeaway{" in b)
+        with pymupdf.open(_pdf) as d:
+            for page in d:
+                _r = None
+                for dr in page.get_drawings():
+                    f = dr.get("fill")
+                    if (f and dr["rect"].width > 300
+                            and all(abs(a - b) < 0.01
+                                    for a, b in zip(f, _bar_rgb))):
+                        _r = dr["rect"] if _r is None else _r | dr["rect"]
+                if _r is None:
+                    continue
+                _bars += 1
+                _l, _rt = _r.x0, page.rect.width - _r.x1
+                if abs(_l - _edge) > 0.3 or abs(_rt - _edge) > 0.3:
+                    _off.append(f"{_TAG[_di]}slide {page.number + 1}: "
+                                f"{_l:.2f}pt in from the left, "
+                                f"{_rt:.2f}pt from the right")
     ck(f"all {_bars} bars sit 1cm in from each edge, one per \\takeaway "
        f"({_want})", _bars == _want and not _off,
        _off[0] if _off else f"{_bars} bars found")
@@ -1176,49 +1223,54 @@ print("\n== the generated figures sit centred, legends under their panels ==")
 if pymupdf is not None and os.path.exists(_deck):
     _names = {"No-retrieval", "Vector-RAG", "GraphRAG", "Think-on-Graph",
               "AGR"}
-    with pymupdf.open(_deck) as d:
-        for _n, (_t, _s, _b) in enumerate(FRAMES, 1):
-            _fig = re.search(r"\\input\{figures/(fig_\w+)\.tex\}", _b)
-            if not _fig or _n > d.page_count:
-                continue
-            page = d[_n - 1]
-            W = page.rect.width
-            # Not the page, not the bar, and nothing drawn in white: the
-            # census histogram's hatching is a white pattern, whose tile
-            # PyMuPDF reports at the page's corner.
-            _white = (1.0, 1.0, 1.0)
-            _dr = [dr["rect"] for dr in page.get_drawings()
-                   if dr["rect"].width < W - 1
-                   and not (dr.get("fill") and dr["rect"].width > 300)
-                   and not all(c is None or tuple(round(v, 2) for v in c)
-                               == _white
-                               for c in (dr.get("fill"), dr.get("color")))]
-            # Text within 10pt of the drawing is the figure's own: panel
-            # titles above the axes, tick labels under the census axis. The
-            # header and the sentence under a figure are further off.
-            _y0 = min(r.y0 for r in _dr) - 10
-            _y1 = max(r.y1 for r in _dr) + 10
-            _tx = [(pymupdf.Rect(l["bbox"]),
-                    "".join(sp["text"] for sp in l["spans"]).strip())
-                   for b in page.get_text("dict")["blocks"]
-                   for l in b.get("lines", [])
-                   if "".join(sp["text"] for sp in l["spans"]).strip()]
-            _tx = [(r, s) for r, s in _tx if r.y1 > _y0 and r.y0 < _y1]
-            _all = _dr + [r for r, _ in _tx]
-            _mid = (min(r.x0 for r in _all) + max(r.x1 for r in _all)) / 2
-            ck(f"slide {_n}: {_fig.group(1)} is centred on the page",
-               abs(_mid - W / 2) < 1.5, f"{_mid - W / 2:+.2f}pt off")
-            _leg = [r for r, s in _tx if s in _names]
-            if len(_leg) < len(_names):
-                continue
-            _ly0 = min(r.y0 for r in _leg) - 2
-            _ly1 = max(r.y1 for r in _leg) + 2
-            _row = [r for r in _all if r.y0 >= _ly0 and r.y1 <= _ly1]
-            _rest = [r for r in _all if not (r.y0 >= _ly0 and r.y1 <= _ly1)]
-            _lmid = (min(r.x0 for r in _row) + max(r.x1 for r in _row)) / 2
-            _pmid = (min(r.x0 for r in _rest) + max(r.x1 for r in _rest)) / 2
-            ck(f"slide {_n}: its legend is centred under its panels",
-               abs(_lmid - _pmid) < 1.5, f"{_lmid - _pmid:+.2f}pt off")
+    for _di, (_pdf, _frs) in enumerate(DECKS):
+        if not os.path.exists(_pdf):
+            continue
+        with pymupdf.open(_pdf) as d:
+            for _n, (_t, _s, _b) in enumerate(_frs, 1):
+                _fig = re.search(r"\\input\{figures/(fig_\w+)\.tex\}", _b)
+                if not _fig or _n > d.page_count:
+                    continue
+                page = d[_n - 1]
+                W = page.rect.width
+                # Not the page, not the bar, and nothing drawn in white: the
+                # census histogram's hatching is a white pattern, whose tile
+                # PyMuPDF reports at the page's corner.
+                _white = (1.0, 1.0, 1.0)
+                _dr = [dr["rect"] for dr in page.get_drawings()
+                       if dr["rect"].width < W - 1
+                       and not (dr.get("fill") and dr["rect"].width > 300)
+                       and not all(c is None or tuple(round(v, 2) for v in c)
+                                   == _white
+                                   for c in (dr.get("fill"), dr.get("color")))]
+                # Text within 10pt of the drawing is the figure's own: panel
+                # titles above the axes, tick labels under the census axis. The
+                # header and the sentence under a figure are further off.
+                _y0 = min(r.y0 for r in _dr) - 10
+                _y1 = max(r.y1 for r in _dr) + 10
+                _tx = [(pymupdf.Rect(l["bbox"]),
+                        "".join(sp["text"] for sp in l["spans"]).strip())
+                       for b in page.get_text("dict")["blocks"]
+                       for l in b.get("lines", [])
+                       if "".join(sp["text"] for sp in l["spans"]).strip()]
+                _tx = [(r, s) for r, s in _tx if r.y1 > _y0 and r.y0 < _y1]
+                _all = _dr + [r for r, _ in _tx]
+                _mid = (min(r.x0 for r in _all) + max(r.x1 for r in _all)) / 2
+                ck(f"{_TAG[_di]}slide {_n}: {_fig.group(1)} is centred on "
+                   f"the page",
+                   abs(_mid - W / 2) < 1.5, f"{_mid - W / 2:+.2f}pt off")
+                _leg = [r for r, s in _tx if s in _names]
+                if len(_leg) < len(_names):
+                    continue
+                _ly0 = min(r.y0 for r in _leg) - 2
+                _ly1 = max(r.y1 for r in _leg) + 2
+                _row = [r for r in _all if r.y0 >= _ly0 and r.y1 <= _ly1]
+                _rest = [r for r in _all if not (r.y0 >= _ly0 and r.y1 <= _ly1)]
+                _lmid = (min(r.x0 for r in _row) + max(r.x1 for r in _row)) / 2
+                _pmid = (min(r.x0 for r in _rest) + max(r.x1 for r in _rest)) / 2
+                ck(f"{_TAG[_di]}slide {_n}: its legend is centred under its "
+                   f"panels",
+                   abs(_lmid - _pmid) < 1.5, f"{_lmid - _pmid:+.2f}pt off")
 
 # Every slide's body sits midway between its header and its foot. The
 # preamble's two glues share a slide's slack evenly, but a table, a list or
@@ -1243,82 +1295,86 @@ else:
     _S = 4
     _left = 0.3 / 2.54 * 72
     _unbal, _tops, _seen = [], {}, 0
-    with pymupdf.open(_deck) as d:
-        for _n, (_t, _s, _b) in enumerate(FRAMES, 1):
-            if not _t or _n > d.page_count:
-                continue
-            page = d[_n - 1]
-            H = page.rect.height
-            _px = page.get_pixmap(matrix=pymupdf.Matrix(_S, _S),
-                                  colorspace=pymupdf.csGRAY, alpha=False)
-            _ink = numpy.frombuffer(_px.samples, dtype=numpy.uint8).reshape(
-                _px.height, _px.width) < 245
-            _ls = []
-            for b in page.get_text("rawdict")["blocks"]:
-                for l in b.get("lines", []):
-                    ch = [c for sp in l["spans"] for c in sp["chars"]
-                          if c["c"].strip()]
-                    if ch:
-                        _ls.append(dict(
-                            x0=min(c["bbox"][0] for c in ch),
-                            x1=max(c["bbox"][2] for c in ch),
-                            y0=min(c["bbox"][1] for c in ch),
-                            y1=max(c["bbox"][3] for c in ch),
-                            base=max(sp["origin"][1] for sp in l["spans"]),
-                            text="".join(c["c"] for c in ch)))
-            _head = [l for l in _ls
-                     if abs(l["x0"] - _left) < 0.6 and l["y1"] < 50]
-            _num = [l for l in _ls
-                    if l["y0"] > H - 16 and l["text"].isdigit()]
-            if not _head:
-                continue
-            _mask = numpy.zeros_like(_ink)
-            for l in _head + _num:
-                _mask[max(int(l["y0"] * _S) - 4, 0):int(l["y1"] * _S) + 4,
-                      max(int(l["x0"] * _S) - 4, 0):
-                      int(l["x1"] * _S) + 12] = True
-            _hrows = numpy.where((_ink & _mask).any(axis=1))[0]
-            _tops[_n] = _hrows[0] / _S
-            _bar = None
-            if r"\takeaway{" in _b:
-                for dr in page.get_drawings():
-                    f = dr.get("fill")
-                    if (f and dr["rect"].width > 300
-                            and all(abs(a - c) < 0.01
-                                    for a, c in zip(f, _bar_rgb))):
-                        _bar = dr["rect"] if _bar is None else _bar | dr["rect"]
-                if _bar is None:
+    for _di, (_pdf, _frs) in enumerate(DECKS):
+        if not os.path.exists(_pdf):
+            continue
+        with pymupdf.open(_pdf) as d:
+            for _n, (_t, _s, _b) in enumerate(_frs, 1):
+                if not _t or _n > d.page_count:
                     continue
-                _mask[int(_bar.y0 * _S) - 1:, :] = True
-            _body = _ink & ~_mask
-            _rows = numpy.where(_body.any(axis=1))[0]
-            _inner = [l for l in _ls if l not in _head and l not in _num
-                      and (_bar is None or l["y0"] < _bar.y0)]
-            if r"\sinkfoot" in _b:
-                # the foot is the last run of lines, a line apart
-                _lo = sorted(_inner, key=lambda l: l["base"])
-                k = len(_lo) - 1
-                while k > 0 and _lo[k]["base"] - _lo[k - 1]["base"] < 16:
-                    k -= 1
-                _fy = min(l["y0"] for l in _lo[k:])
-                _ref = _rows[_rows / _S >= _fy - 1][0] / _S
-                _rows = _rows[_rows / _S < _fy - 1]
-                _inner = [l for l in _inner if l["base"] < _fy]
-            elif _bar is not None:
-                _ref = _bar.y0
-            else:
-                _nr = numpy.where((_ink & _mask).any(axis=1))[0]
-                _ref = _nr[_nr / _S > H - 20][0] / _S
-            _top, _ib = _rows[0] / _S, (_rows[-1] + 1) / _S
-            _last = max(_inner, key=lambda l: l["base"]) if _inner else None
-            _bot = (_last["base"] if _last and _ib <= _last["y1"] + 0.5
-                    else _ib)
-            _above = _top - max(l["base"] for l in _head)
-            _below = _ref - _bot
-            _seen += 1
-            if abs(_above - _below) > 2.0:
-                _unbal.append(f"slide {_n}: {_above:.1f}pt under its "
-                              f"header, {_below:.1f}pt over its foot")
+                page = d[_n - 1]
+                H = page.rect.height
+                _px = page.get_pixmap(matrix=pymupdf.Matrix(_S, _S),
+                                      colorspace=pymupdf.csGRAY, alpha=False)
+                _ink = numpy.frombuffer(_px.samples, dtype=numpy.uint8).reshape(
+                    _px.height, _px.width) < 245
+                _ls = []
+                for b in page.get_text("rawdict")["blocks"]:
+                    for l in b.get("lines", []):
+                        ch = [c for sp in l["spans"] for c in sp["chars"]
+                              if c["c"].strip()]
+                        if ch:
+                            _ls.append(dict(
+                                x0=min(c["bbox"][0] for c in ch),
+                                x1=max(c["bbox"][2] for c in ch),
+                                y0=min(c["bbox"][1] for c in ch),
+                                y1=max(c["bbox"][3] for c in ch),
+                                base=max(sp["origin"][1] for sp in l["spans"]),
+                                text="".join(c["c"] for c in ch)))
+                _head = [l for l in _ls
+                         if abs(l["x0"] - _left) < 0.6 and l["y1"] < 50]
+                _num = [l for l in _ls
+                        if l["y0"] > H - 16 and l["text"].isdigit()]
+                if not _head:
+                    continue
+                _mask = numpy.zeros_like(_ink)
+                for l in _head + _num:
+                    _mask[max(int(l["y0"] * _S) - 4, 0):int(l["y1"] * _S) + 4,
+                          max(int(l["x0"] * _S) - 4, 0):
+                          int(l["x1"] * _S) + 12] = True
+                _hrows = numpy.where((_ink & _mask).any(axis=1))[0]
+                _tops[_di, _n] = _hrows[0] / _S
+                _bar = None
+                if r"\takeaway{" in _b:
+                    for dr in page.get_drawings():
+                        f = dr.get("fill")
+                        if (f and dr["rect"].width > 300
+                                and all(abs(a - c) < 0.01
+                                        for a, c in zip(f, _bar_rgb))):
+                            _bar = dr["rect"] if _bar is None else _bar | dr["rect"]
+                    if _bar is None:
+                        continue
+                    _mask[int(_bar.y0 * _S) - 1:, :] = True
+                _body = _ink & ~_mask
+                _rows = numpy.where(_body.any(axis=1))[0]
+                _inner = [l for l in _ls if l not in _head and l not in _num
+                          and (_bar is None or l["y0"] < _bar.y0)]
+                if r"\sinkfoot" in _b:
+                    # the foot is the last run of lines, a line apart
+                    _lo = sorted(_inner, key=lambda l: l["base"])
+                    k = len(_lo) - 1
+                    while k > 0 and _lo[k]["base"] - _lo[k - 1]["base"] < 16:
+                        k -= 1
+                    _fy = min(l["y0"] for l in _lo[k:])
+                    _ref = _rows[_rows / _S >= _fy - 1][0] / _S
+                    _rows = _rows[_rows / _S < _fy - 1]
+                    _inner = [l for l in _inner if l["base"] < _fy]
+                elif _bar is not None:
+                    _ref = _bar.y0
+                else:
+                    _nr = numpy.where((_ink & _mask).any(axis=1))[0]
+                    _ref = _nr[_nr / _S > H - 20][0] / _S
+                _top, _ib = _rows[0] / _S, (_rows[-1] + 1) / _S
+                _last = max(_inner, key=lambda l: l["base"]) if _inner else None
+                _bot = (_last["base"] if _last and _ib <= _last["y1"] + 0.5
+                        else _ib)
+                _above = _top - max(l["base"] for l in _head)
+                _below = _ref - _bot
+                _seen += 1
+                if abs(_above - _below) > 2.0:
+                    _unbal.append(f"{_TAG[_di]}slide {_n}: {_above:.1f}pt "
+                                  f"under its "
+                                  f"header, {_below:.1f}pt over its foot")
     ck(f"all {_seen} titled slides sit within 1pt of midway",
        _seen > 0 and not _unbal, "; ".join(_unbal[:3]))
     _tv = sorted(_tops.values())
@@ -2106,24 +2162,21 @@ for label, paths in (("deck", [os.path.join(HERE, "content-main.tex")]),
 # lands on hedging rather than the census. That is a note consulted under
 # pressure, which is when the wrong slide costs most.
 print("\n== the script's own internals agree ==")
-# The backup frames are the tail of content-main.tex now, not a file (and
-# a PDF) of their own. The rules below still describe how a transcript
-# addresses them, and that addressing scheme is the transcript's to
-# settle when one is next written -- these pages are no longer a separate
-# document, so "page 2 onwards" is not automatically what it should say.
-backup_titles = re.findall(r"\\begin\{frame\}\{Backup: ([^}]*)\}", main_src)
+# The backup frames are content-backup.tex and a PDF of their own again
+# since 2026-10-07, after a stretch as the tail of content-main.tex. A
+# transcript addresses them by the page the backup PDF's footer prints,
+# from 2 onwards behind the index page.
+backup_titles = [t[len("Backup: "):] for t, _, _ in DECKS[1][1]
+                 if t.startswith("Backup: ")]
 rows = re.findall(r"^\| (\d+) \| ([^|]+?) \| \"", MD, re.M)
 ck(f"the backup table has a row per backup slide ({len(backup_titles)})",
    len(rows) == len(backup_titles), f"{len(rows)} rows")
-# The numbers were pages 2..6 of a second PDF. They are slide numbers in
-# the one deck now, so they are read off the deck rather than assumed:
-# whichever frames are titled "Backup: ...", at whatever position they
-# sit. Moving one, or adding a sixth, fails this until the table follows.
-_frames = [m.start() for m in re.finditer(r"\\begin\{frame\}", main_src)]
-_backup_nums = [n for n, i in enumerate(_frames, 1)
-                if re.match(r"\\begin\{frame\}(?:\[[^\]]*\])?\{Backup:",
-                            main_src[i:])]
-ck("and they are the deck's own backup slide numbers",
+# Read off the backup deck rather than assumed: whichever frames are titled
+# "Backup: ...", at whatever page they sit. Moving one, or adding another,
+# fails this until the table follows.
+_backup_nums = [n for n, (t, _, _) in enumerate(DECKS[1][1], 1)
+                if t.startswith("Backup: ")]
+ck("and they are the backup deck's own page numbers",
    [int(p) for p, _ in rows] == _backup_nums,
    f"table says {[p for p, _ in rows]}, deck has {_backup_nums}")
 
@@ -2863,10 +2916,12 @@ _rch = len(re.findall(r"\\textbf\{", _rc[_rcm.end():_rc.index(
 ck(f"the thesis says {_rcm.group(1) if _rcm else '?'} differences and names "
    f"{_rch}", _rcm is not None and NUM.get(_rch) == _rcm.group(1))
 
-# Slide 7 gives the published figures' reasons, and RoG's is not the full
-# Freebase: it searched the subgraphs this thesis's graph is built from.
+# The related-work slide gives the published figures' reasons, and RoG's is
+# not the full Freebase: it searched the subgraphs this thesis's graph is
+# built from.
 _s7 = frame("What everyone else does")
-ck("slide 7 gives RoG's real difference, the training",
+ck(f"slide {frame_no('What everyone else does')} gives RoG's real "
+   f"difference, the training",
    "RoG is fine-tuned on these benchmarks" in _s7
    and re.search(r"because of [^.]*full Freebase", _s7) is None)
 
@@ -3053,8 +3108,9 @@ ck(f"the missed decision is kappa {JV['cohens_kappa']} against "
    rf"${JV['preregistered_threshold']}$" in
    block(r"\begin{frame}{Contributions}", "enumerate"))
 
-# The future-work counts are the census's.
-NEXT = frame("What comes next")
+# The future-work counts are the census's. A backup slide since 2026-10-07;
+# it closed the talk before that.
+NEXT = frame("Backup: what comes next")
 for label, count in (("extraction-bug", len(bug)),
                      ("composite-claim", sum(H2[d][k].get("composite_claim", 0)
                                              for d in ("webqsp", "cwq")

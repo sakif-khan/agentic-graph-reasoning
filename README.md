@@ -547,16 +547,17 @@ through `scripts/build_figures.py`, which emits one target per document because
 a thesis column, a 16:9 slide and a journal measure are different shapes. Re-run
 the experiments and all three move together.
 
-**Seven files here are documents and forty-four are not.**
-`thesis_book/thesis_book_0421052099.tex`,
-`thesis_presentation/thesis_defense_0421052099.tex`,
-`journal/journal_0421052099.tex` and the four archived under
+**Eleven files here are documents and forty-four are not.**
+`thesis_book/thesis_book_0421052099.tex` and its appendices volume,
+`thesis_presentation/thesis_defense_0421052099.tex` and its backup deck, the
+deck's speaking copy `thesis_presentation/transcript-min.tex`,
+`journal/journal_0421052099.tex` and its supplement, and the four archived under
 `thesis_presentation/pre-defense-frozen-2026-08-29/` carry `\begin{document}`. Everything else — every
 chapter, appendix, section, figure, table and preamble — is a fragment that stops
 with *Missing `\begin{document}`* if you build it on its own. Each fragment names its document in a `% !TEX root`
 line on its first line, so an editor's build button compiles the right thing
-from any file. The repository holds five roots, so nothing else could resolve
-that. Fragments under `figures/` and `tables/` are generated, and their
+from any file. The fragments name seven roots between them, so nothing else
+could resolve that. Fragments under `figures/` and `tables/` are generated, and their
 directive is emitted by `scripts/build_figures.py` rather than typed into them.
 
 ```bash

@@ -26,12 +26,14 @@ import sys
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 DECK = ROOT / "thesis_presentation" / "content-main.tex"
+# The benchmark slide is a backup slide, in its own file since 2026-10-07.
+BACKUP = ROOT / "thesis_presentation" / "content-backup.tex"
 SCRIPT = ROOT / "thesis_presentation" / "transcript.md"
 INTRO = ROOT / "thesis_book" / "chapters" / "introduction.tex"
 NUMS = ROOT / "results" / "phase4" / "thesis_numbers.json"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
-FILES = (DECK, SCRIPT, INTRO, NUMS)
+FILES = (DECK, BACKUP, SCRIPT, INTRO, NUMS)
 orig = {p: io.open(p, encoding="utf-8", newline="").read() for p in FILES}
 
 
@@ -108,7 +110,7 @@ CASES = [
           "the contribution is the named mechanism itself.")),
     # The two slides are one finding.
     ("the benchmark slide goes back to an unrelated second finding",
-     edit(DECK, CURRENT_BENCH,
+     edit(BACKUP, CURRENT_BENCH,
           r"Reading every failure also found questions where the "
           r"\emph{benchmark}, not the system, was at fault:")),
     # The companion case, "and the script does too", was dropped on
@@ -121,7 +123,7 @@ CASES = [
     # CURRENT_S20 is kept above as the record of what the script used to say.
     # The counts, from both ends.
     ("the flagged total drifts on the slide",
-     edit(DECK, r"Consensus flagged $105$ questions",
+     edit(BACKUP, r"Consensus flagged $105$ questions",
           r"Consensus flagged $100$ questions")),
     ("the pass flags more and neither slide follows",
      edit(NUMS, '"flagged_questions": 58,', '"flagged_questions": 60,')),

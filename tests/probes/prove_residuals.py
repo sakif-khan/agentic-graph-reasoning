@@ -120,7 +120,9 @@ def retime_row(n, secs):
     about this table passed on that: the cumulative column summed, the
     headings agreed, the budget line matched the total, and the total fit
     the limit. So the corruption has to repair all four, or the probe
-    proves one of those rules instead of the one being tested.
+    proves one of those rules instead of the one being tested. The recovery
+    marker, a cumulative quoted in prose, was checked later and is repaired
+    here too: left stale, it caught this case in the rate rule's place.
     """
     def go():
         md = orig[SCRIPT]
@@ -135,9 +137,10 @@ def retime_row(n, secs):
         def mmss(s):
             return f"{s // 60}:{s % 60:02d}"
 
-        run, lines = 0, []
+        run, lines, cum = 0, [], {}
         for r in rows:
             run += alloc[int(r[0])]
+            cum[r[0]] = run
             lines.append(f"| {r[0]} | {r[1]} | {mmss(alloc[int(r[0])])} "
                          f"| {mmss(run)} |")
         # Joined with the FILE's newline, not with "\n". This file is stored
@@ -159,8 +162,19 @@ def retime_row(n, secs):
         md = re.sub(r"\*\*Budget: \d+ min \d+ s of speaking",
                     f"**Budget: {run // 60} min {run % 60} s of speaking", md,
                     count=1)
+        md = re.sub(r"(If you hit \*\*)\d+:\d\d( \(the end of slide )(\d+)\)",
+                    lambda m: f"{m.group(1)}{mmss(cum[m.group(3)])}"
+                              f"{m.group(2)}{m.group(3)})", md, count=1)
         io.open(SCRIPT, "w", encoding="utf-8", newline="").write(md)
     return go
+
+
+# The main results, found by title. The row was 17 until slide 2 split back
+# into two on 2026-10-07, and from then retime_row(17, 75) gave the
+# fairness slide seven seconds of slack, which nothing flags; the case
+# passed only on the stale recovery marker.
+MAIN_ROW = int(re.search(r"^\| (\d+) \| \*\*Main results\*\* \|",
+                         orig[SCRIPT], re.M).group(1))
 
 
 def drop_subtype():
@@ -278,7 +292,7 @@ CASES = [
     # words is legitimate slack the rule does not flag -- so the same
     # shortfall is reinstated on the longest section now, the main results.
     ("shipped: a slide gets 75 seconds for more words than that holds",
-     retime_row(17, 75)),
+     retime_row(MAIN_ROW, 75)),
 
     # ---- Nine matched inside Nineteen ----
     ("the extraction-bug count grows a syllable",

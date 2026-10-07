@@ -23,9 +23,9 @@ ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else
                     pathlib.Path(__file__).resolve().parents[2])
 RM = ROOT / "thesis_presentation" / "README.md"
 MAIN = ROOT / "thesis_presentation" / "content-main.tex"
-# content-main.tex: the backup frames were folded into the one deck by
-# 275fadc, which moved content-backup.tex into the frozen pre-defense dir.
-BACK = ROOT / "thesis_presentation" / "content-main.tex"
+# The backup frames are content-backup.tex again since 2026-10-07. From
+# 275fadc until then they were the tail of content-main.tex.
+BACK = ROOT / "thesis_presentation" / "content-backup.tex"
 ROOTS = ROOT / "scripts" / "check_tex_roots.py"
 CHECK = ROOT / "thesis_presentation" / "check_slides.py"
 
@@ -105,7 +105,9 @@ CASES = [
     # across the boundary -- so a second \input lower down changes nothing
     # it looks at. The case would have reported MISSED against a rule that
     # is working. What it used to cover from the deck side, the case above
-    # covers.
+    # covers. The backup deck is a file of its own again since 2026-10-07,
+    # and a reach across the boundary from it fails check_slides.py's
+    # "nothing is \input across the directory boundary", which reads both.
 ]
 
 out = []
