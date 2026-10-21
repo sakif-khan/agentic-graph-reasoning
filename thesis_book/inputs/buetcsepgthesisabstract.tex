@@ -37,7 +37,7 @@ AGR reaches a Hits@1 of $0.755$ on WebQSP and $0.522$ on ComplexWebQuestions. It
 beats every baseline on both datasets, at half the agentic navigator's
 language-model calls. The navigator does lead AGR on the questions its own
 budget lets it finish. But that budget runs out on $29\%$ and $44\%$ of
-questions on the two datasets. AGR's own budget never does. AGR also grounds
+questions on the two datasets. AGR's own budget never does, and AGR grounds
 every entity it asserts, all $1{,}709$ of them. The parametric control leaves
 $221$ of its $1{,}001$ asserted entities ungrounded ($22.1\%$). And on
 ComplexWebQuestions, AGR is the only system whose accuracy rises with hop count.
@@ -55,9 +55,9 @@ decomposition should be gated on question structure, not applied
 unconditionally.
 
 We read all $256$ remaining failures by hand. The characteristic error is not
-invention. We call this the \emph{echo attractor}. It is a real, grounded entity
-one hop from the answer, which any grounding check will pass because it is
-genuinely true, and which different systems fall into together. The same reading
-confirms $57$ questions where the benchmark, not the system, was wrong.
+invention but what we call the \emph{echo attractor}. It is a real, grounded
+entity one hop from the answer, which any grounding check will pass because it
+is genuinely true, and which different systems fall into together. The same
+reading confirms $57$ questions where the benchmark, not the system, was wrong.
 
 \endinput

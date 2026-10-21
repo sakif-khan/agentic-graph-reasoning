@@ -1,10 +1,10 @@
 % !TEX root = ../thesis_book_0421052099.tex
 \chapter{Introduction}\label{ch:intro}
 
-Large language models answer factual questions fluently. But often enough, they
-give wrong answers. The errors are not random. They are systematic, and the
-model states them with the same confidence it gives a correct answer. That makes
-them hard to catch by reading the output alone. A fabricated answer looks
+Large language models answer factual questions fluently. But often enough they
+give wrong answers, and those errors are not random. They are systematic, and
+the model states them with the same confidence it gives a correct answer. That
+makes them hard to catch by reading the output alone. A fabricated answer looks
 exactly like a correct one. Things get worse when the answer requires putting
 several facts together rather than recalling just one. This thesis takes on that
 gap in two steps. First, we give the model a symbolic knowledge graph to walk
@@ -24,7 +24,7 @@ phenomenon at length. They argue that hallucination comes from how these models
 are built, not from some incidental defect that could be patched away. That
 framing matters here. This is because it determines what kind of remedy is on
 the table at all. If hallucination were a bug, we would fix it. But it is
-structural. So the response has to be architectural.
+structural, so the response has to be architectural.
 
 \subsection{Where Hallucination Originates: Training Data, Model, and Prompt}
 
@@ -43,9 +43,9 @@ has memorised from a plausible continuation it is simply constructing.
 Intervening here means changing the architecture or the training objective.
 That, again, is largely out of reach.
 
-The third is the \emph{prompt}. The prompt is the one this thesis takes on. When
-the context supplied alongside a question already carries the facts needed to
-answer it, the model does not have to fall back on parametric recall. Structured
+The third is the \emph{prompt}, which is the one this thesis takes on. When the
+context supplied alongside a question already carries the facts needed to answer
+it, the model does not have to fall back on parametric recall. Structured
 context can override defects inherited from the training data without touching
 the model at all. Retrieval augmentation~\cite{lewis2020retrieval} rests on that
 premise, and so does this work. Our contribution is in \emph{how} that context
@@ -53,8 +53,8 @@ is assembled, and in \emph{what gets checked} before the answer goes out.
 
 \subsection{Why Multi-Hop Questions Are the Hard Case}
 
-Single-fact questions are the easy case. ``Where was Ada Lovelace born?'' takes
-one lookup. The model either knows the answer or it does not.
+Single-fact questions are easy, as ``Where was Ada Lovelace born?'' takes one
+lookup. The model either knows the answer or it does not.
 
 \emph{Multi-hop}\index{multi-hop question} questions, such as ``Who directed the
 film that won Best Picture in 1998?'', need a chain of lookups in a fixed order.
@@ -127,8 +127,8 @@ structured sources~\cite{jiang2023structgpt}. Recent surveys treat this meeting
 of language models and knowledge graphs as a research programme in its own
 right~\cite{pan2024unifying,ma2025unifying}.
 
-Agentic navigation is the right shape for the problem. This thesis adopts it.
-The question is what it still leaves unsolved.
+Agentic navigation is the right shape for the problem, and this thesis adopts
+it. The question is what it still leaves unsolved.
 
 \section{Limitations of Existing Agentic KGQA Systems}\label{sec:limitations}
 
@@ -136,8 +136,8 @@ The question is what it still leaves unsolved.
 their answers in the subgraph they traverse. Our own measurements confirm that
 this works. The entities they assert do exist in the graph, and they are
 reachable along the paths the systems actually walked
-(\Cref{sec:groundedness-results}). The problem is not fabrication. The problem
-is \emph{precision}. Every system surveyed in \Cref{ch:background} simply emits
+(\Cref{sec:groundedness-results}). The problem is not fabrication but
+\emph{precision}. Every system surveyed in \Cref{ch:background} simply emits
 whatever its final generation call produces from the traversed context. Nothing
 checks that each asserted entity actually answers the question asked. An entity
 can sit in the retrieved subgraph, have been retrieved correctly, and still be
@@ -162,15 +162,15 @@ backtracking, and self-correction. The literature tends to report them as
 wholes. When one beats a static baseline, the published work rarely establishes
 which mechanism produced the gain, or whether some contribute nothing at all. So
 later work inherits the entire assembly on faith along with its cost.
-Component-level ablation is the standard remedy. This literature conspicuously
-underuses it.
+Component-level ablation is the standard remedy, but this literature underuses
+it.
 
-\textbf{Accuracy is reported without cost.} Navigation is expensive. Every
-exploration step costs at least one model call. Agentic systems routinely burn
-an order of magnitude more tokens per question than a single-shot baseline. An
-accuracy table that leaves this out makes agentic methods look better across the
-board. The honest picture is a trade-off. And that trade-off is exactly what a
-practitioner needs to see before deciding whether to deploy such a system.
+\textbf{Accuracy is reported without cost.} Navigation is expensive, because
+every exploration step costs at least one model call. Agentic systems routinely
+burn an order of magnitude more tokens per question than a single-shot baseline.
+An accuracy table that leaves this out makes agentic methods look better across
+the board. The honest picture is a trade-off. And that trade-off is exactly what
+a practitioner needs to see before deciding whether to deploy such a system.
 
 \section{Problem Statement}\label{sec:problem}
 
@@ -182,7 +182,7 @@ every entity in $A$ and contains only triples the system actually traversed in
 reaching $A$.
 
 Three properties set this apart from standard knowledge graph question
-answering. The output is a \emph{pair}, not just an answer. The supporting
+answering. The output is a \emph{pair}, not just an answer, and its supporting
 triples are part of the contract. That is what makes the reasoning auditable
 rather than merely asserted. The support also has to be \emph{traversed}. It is
 not enough that the triples could be retrieved after the fact. That requirement
@@ -233,13 +233,13 @@ drops the claim from the answer. AGR returns what survives paired with the
 triples that support it.
 
 Both repair routes are reported at the frequency we actually measured rather
-than the one we intended. That frequency is low. The re-exploration route never
-fired on the development set. The depth budget is already exhausted by the time
-the verifier is reached. And the entity filter ran on three of eighty questions
-(\Cref{sec:entity-filtering}). On the vast majority of questions the layer
-passes through and certifies a draft at no extra model call. That is a finding
-about when verification can act rather than a defect in it. \Cref{sec:findings}
-treats it as one.
+than the one we intended. That frequency is low, and the re-exploration route
+never fired on the development set. The depth budget is already exhausted by the
+time the verifier is reached. And the entity filter ran on three of eighty
+questions (\Cref{sec:entity-filtering}). On the vast majority of questions the
+layer passes through and certifies a draft at no extra model call. That is a
+finding about when verification can act rather than a defect in it.
+\Cref{sec:findings} treats it as one.
 
 Four further contributions follow from evaluating that framework. \textbf{A
 component-level ablation} of the planner, the backtracking mechanism, the
@@ -253,14 +253,14 @@ on the shallower benchmark while trending toward harming it on the deeper one.
 The asymmetry, not the pooled average, is the result. Only the improving arm
 reaches significance ($p = 0.006$). The harming arm does not ($p = 0.088$). So
 it is reported as a direction rather than an effect. \textbf{The echo attractor}
-names a recurring failure in which several systems sharing a
-graph\index{echo attractor} and a backbone converge on the same wrong answer.
-That answer is typically the question's own topic entity, an intermediate node
-from the reasoning chain, or a coarser-granularity container. No evaluation
-treating those systems as independent can see that convergence. It accounts for
-$13$ of the $256$ failures read in \Cref{sec:echo}, though the contribution is
-the named mechanism and what it means for consensus-based evaluation rather than
-the frequency. And \textbf{quantified benchmark defect rates} for WebQSP and CWQ
+names a recurring failure in which several systems sharing a graph\index{echo
+attractor} and a backbone converge on the same wrong answer. That answer is
+typically the question's own topic entity, an intermediate node from the
+reasoning chain, or a coarser-granularity container. No evaluation treating
+those systems as independent can see that convergence. It accounts for $13$ of
+the $256$ failures read in \Cref{sec:echo}, though the contribution is the named
+mechanism and what it means for consensus-based evaluation rather than the
+frequency. And \textbf{quantified benchmark defect rates} for WebQSP and CWQ
 come from a consensus\index{benchmark defect} pre-pass followed by per-item
 adjudication, separating the two kinds of label error by their opposite evidence
 signatures and reporting the accuracy tables as measured, with the direction in
@@ -298,7 +298,7 @@ than as evidence of production readiness.
 registered with CASR at the proposal stage. That title is fixed at registration
 and is not revised here. Three of its terms are broader than what the chapters
 below actually establish. They are better read against the findings than taken
-as claims in their own right. \emph{Hallucination mitigation} does occur. But it
+as claims in their own right. \emph{Hallucination mitigation} does occur, but it
 is not this work's contribution. \Cref{sec:groundedness-results} attributes the
 elimination of structural hallucination to graph navigation, with the agentic
 baseline reaching the same zero without any verification layer at all.

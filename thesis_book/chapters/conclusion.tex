@@ -5,8 +5,8 @@
 
 This thesis asked what an agent gains by navigating a knowledge graph rather
 than retrieving from it, and what a claim-level check against the traversed
-subgraph adds on top. The answers are not uniform. The value of the work lies
-partly in where they diverge.
+subgraph adds on top. The answers are not uniform, and the value of the work
+lies partly in where they diverge.
 
 \Cref{sec:results} reported the measurements. AGR leads every accuracy cell of
 the main matrix. Every one of the eight paired comparisons rejects, including
@@ -54,7 +54,8 @@ paired significance testing, closing the attribution gap of
 components has a detectable accuracy effect.
 
 \textbf{Stratum-dependent decomposition.} The literature treats decomposition as
-straightforwardly beneficial. It is not. Removing the planner \emph{improves}
+straightforwardly beneficial, but it is not. Removing the planner
+\emph{improves}
 WebQSP accuracy by $0.083$ F1 at $p = 0.006$ while cutting tokens by $31\%$, and
 trends toward harming CWQ. The asymmetry, not the pooled average, is the result.
 It says that decomposition should be gated on question structure rather than
@@ -82,8 +83,8 @@ it.
 \textbf{Structural grounding is not answer adequacy.} Both navigating systems
 assert zero ungrounded entities on WebQSP. That says the answers are made of the
 graph's own material. It does not say they answer the question. The echo
-attractor (\Cref{sec:echo}) is the counter-example. It is not the most
-frequent failure in this census. It is the one no grounding check can catch.
+attractor (\Cref{sec:echo}) is the counter-example. It is not the most frequent
+failure in this census but the one no grounding check can catch.
 
 \textbf{The evaluation is single-environment, single-backbone, and single-run.}
 Absolute levels are bounded by an environment built from answer-containing
@@ -100,8 +101,8 @@ assumed throughout, topic entities being given by the benchmarks.
 \section{Future Work}\label{sec:future}
 
 The census makes it possible to separate proposals backed by a counted, repeated
-pattern from proposals backed by an argument. Both are listed. They are not the
-same kind of claim.
+pattern from proposals backed by an argument. Both are listed, but they are not
+the same kind of claim.
 
 \subsection{Repairs the Census Earned}
 
@@ -134,14 +135,14 @@ self-diagnosing from the logs rather than by manual trace reconstruction. The
 same change closes a second gap. The run record currently stores the
 \emph{number} of supporting triples rather than the triples
 (\Cref{sec:output-contract}). So the output contract holds inside the run. It
-cannot be checked afterwards from any committed file. It is the highest-value
-change in this list relative to its cost. It is a logging change.
+cannot be checked afterwards from any committed file. As a logging change, it is
+the highest-value change in this list relative to its cost.
 
 \subsection{Operators the Failure Categories Specify}
 
-Three additions are specified by categories rather than motivated by them.
-The first is \emph{adaptive decomposition gating}. A decomposition step should
-be gated on whether the rewritten sub-objective preserves the question's actual
+Three additions are specified by categories rather than motivated by them. The
+first is \emph{adaptive decomposition gating}. A decomposition step should be
+gated on whether the rewritten sub-objective preserves the question's actual
 interrogative. The Phoenician case of \Cref{sec:decomposition-errors} lost the
 word ``where'' entirely. It should also be gated on whether the step resolves an
 entity that was already unambiguous, and on whether the sub-objectives reference
@@ -179,18 +180,18 @@ carry them. Reconstructing them would measure whether the system reaches the
 right answer \emph{by the right path}. The groundedness metrics can only
 approximate that question, and it bears directly on the echo attractor.
 
-Two baseline bounds are cheap to lift. Both are re-runs rather than redesigns.
-The first is to \emph{equalise the candidate widths}. That means re-running the
-agentic baseline at AGR's $300$ relations and $200$ neighbours, leaving beam
-width, depth, budget, prompts, and scoring untouched. That decides whether the
-unclipped-subset comparison of \Cref{sec:tog-split} measured search strategy or
-candidate supply. Both outcomes are usable, though it will also raise the clip
-rate. Wider candidate sets make each pruning call dearer. So the split must be
-reported rather than the aggregate. The second is to \emph{widen the static
-retriever's radius, and order its fanout}. That means re-running it with
-neighbours expanded a second time, everything else frozen, and reporting the
-same strata, so that its collapse on deep CWQ questions can be attributed to the
-paradigm rather than to the particular radius chosen. The same pass should
+Two baseline bounds are cheap to lift, since both are re-runs rather than
+redesigns. The first is to \emph{equalise the candidate widths}. That means
+re-running the agentic baseline at AGR's $300$ relations and $200$ neighbours,
+leaving beam width, depth, budget, prompts, and scoring untouched. That decides
+whether the unclipped-subset comparison of \Cref{sec:tog-split} measured search
+strategy or candidate supply. Both outcomes are usable, though it will also
+raise the clip rate. Wider candidate sets make each pruning call dearer. So the
+split must be reported rather than the aggregate. The second is to \emph{widen
+the static retriever's radius, and order its fanout}. That means re-running it
+with neighbours expanded a second time, everything else frozen, and reporting
+the same strata, so that its collapse on deep CWQ questions can be attributed to
+the paradigm rather than to the particular radius chosen. The same pass should
 impose an ordering on the fanout cap, so that the $100$ edges kept per topic
 entity are a stated selection rather than an arbitrary one
 (\Cref{sec:baseline-graphrag}). Until then those two limits are confounded.
