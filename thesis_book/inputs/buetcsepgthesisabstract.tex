@@ -1,9 +1,8 @@
-% !TEX root = ../thesis_book_0421052099.tex Every result quoted here comes from
-% results/phase4/thesis_numbers.json, the same source the body chapters read
-% from. The two exceptions are the entity and triple counts, which are not in
-% that file: they come from results/phase1/ by way of tab:graphstats. If a rerun
-% changes a value in either source, this file is one of the places that has to
-% change with it.
+% !TEX root = ../thesis_book_0421052099.tex
+%
+% Every result quoted here comes from results/phase4/thesis_numbers.json, the
+% same source the body chapters read from. If a rerun changes a value there,
+% this file is one of the places that has to change with it.
 
 Large language models answer factual questions fluently. But, they tend to sound
 just as fluent when they do not hold the facts. To fix this, researchers
@@ -16,7 +15,7 @@ interleaving retrieval with reasoning. Even they, however, send out whatever
 their final generation call produces, and nothing checks the answer's claims
 before it reaches the user.
 
-To close that gap we propose Agentic Graph Reasoning (AGR): a knowledge-graph
+To close that gap we propose Agentic Graph Reasoning (AGR): A knowledge-graph
 question-answering framework. Here, an agent plans sub-objectives and walks the
 graph through a constrained, deterministic tool API. Its distinguishing
 component is a Structural Verification Layer. Before the answer is emitted, it
@@ -26,38 +25,25 @@ are re-explored or withdrawn. So, where it cannot ground a claim, AGR hedges
 rather than asserts. And the grounded claims come paired with the triples that
 support them.
 
-We evaluate AGR on a Freebase-derived environment of $2.59$ million entities and
-$8.31$ million triples. We test it on $400$ certified questions from each of
-WebQSP and ComplexWebQuestions. We compare it against four baselines: parametric
-answering, vector retrieval, GraphRAG, and an agentic navigator. All five
-systems share one frozen backbone and the same call budget. So, any difference
-between them comes from architecture, not model capacity.
+We evaluate AGR on $400$ certified questions from each of WebQSP and
+ComplexWebQuestions, over a Freebase-derived knowledge graph. We compare it
+against four baselines, from parametric answering to an agentic navigator. All
+five systems share one frozen backbone and the same call budget. So, any
+difference between them comes from architecture, not model capacity. AGR reaches
+a Hits@1 of $0.755$ on WebQSP and $0.522$ on ComplexWebQuestions, beating every
+baseline on both datasets at half the navigator's language-model calls. The
+navigator does lead on the questions it finishes within its budget, but its
+budget runs out on many questions, and AGR's never does. AGR grounds every
+entity it asserts, and on ComplexWebQuestions it is the only system whose
+accuracy rises with hop count.
 
-AGR reaches a Hits@1 of $0.755$ on WebQSP and $0.522$ on ComplexWebQuestions. It
-beats every baseline on both datasets, at half the agentic navigator's
-language-model calls. The navigator does lead AGR on the questions its own
-budget lets it finish. But that budget runs out on $29\%$ and $44\%$ of
-questions on the two datasets. AGR's own budget never does, and AGR grounds
-every entity it asserts, all $1{,}709$ of them. The parametric control leaves
-$221$ of its $1{,}001$ asserted entities ungrounded ($22.1\%$). And on
-ComplexWebQuestions, AGR is the only system whose accuracy rises with hop count.
-Every other system ends up below where it started.
-
-We performed an ablation study. Each condition removes exactly one component and
-re-runs the identical questions. The four components are the planner that
-decomposes a question into sub-objectives, the backtracker, the claim
-verification layer, and the model-based edge scorer. We tested the re-runs
-against the unmodified system with paired significance tests. Only the planner
-shows a detectable effect, and it runs the opposite way from what we expected.
-Removing it \emph{improves} WebQSP accuracy by $0.083$ F1 ($p = 0.006$) and cuts
-token use by $31\%$, while it trends the other way on ComplexWebQuestions. So,
+An ablation study removes one component at a time and re-runs the same
+questions. Only the planner shows a detectable effect, and it runs the opposite
+way from what we expected. Removing it \emph{improves} WebQSP accuracy and cuts
+token use, while it trends the other way on ComplexWebQuestions. So,
 decomposition should be gated on question structure, not applied
-unconditionally.
-
-We read all $256$ remaining failures by hand. The characteristic error is not
-invention but what we call the \emph{echo attractor}. It is a real, grounded
-entity one hop from the answer, which any grounding check will pass because it
-is genuinely true, and which different systems fall into together. The same
-reading confirms $57$ questions where the benchmark, not the system, was wrong.
+unconditionally. Reading every remaining failure by hand, we name the \emph{echo
+attractor}, a grounded entity next to the answer that several systems fall into
+together and no grounding check can catch.
 
 \endinput
