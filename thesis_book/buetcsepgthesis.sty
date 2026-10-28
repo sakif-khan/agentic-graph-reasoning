@@ -7,7 +7,8 @@
 %
 % Three deviations are kept, each for a reason that was measured rather than
 % assumed. Removing each one was tried, built, and inspected; the cost recorded
-% below is what that build showed.
+% below is what that build showed. A fourth, the last entry, was added after the
+% defense for the double-sided print.
 %
 % KEPT, a BUG FIX to an inherited defect rather than a style choice:
 %   \RequirePackage{setspace} moves from after hyperref to before it. Both
@@ -41,6 +42,19 @@
 %   differs. Removing them was tried and reverted: it costs three underfull
 %   hboxes, at badness 2173, 2080 and 3724, on the Sec 1.2, 1.5.1 and 9.8
 %   titles, which is a visibly stretched first line on each of the three.
+%
+% ADDED after the defense, for the double-sided print:
+%   \cleartorecto, defined above \st@rtingm@teri@ls, breaks the page and adds
+%   a blank one if the next page would be a left-hand page. The template ends
+%   each front-matter item with \cleardoublepage, which does the same in a
+%   twoside document but is only \clearpage in this oneside one. Six of those
+%   calls now use \cleartorecto, so the title page, the declaration, the Board
+%   of Examiners page, the acknowledgement and the abstract each start on the
+%   right with a blank back. The root file calls it after every chapter too.
+%   The dedication's call is left alone, and so are the three inside
+%   \listsandtoc, so the contents and the lists of figures, tables and
+%   algorithms run on without blanks. Blank pages are numbered but print
+%   nothing, so odd page numbers stay on the right.
 %
 % Everything else is additive: five package loads the template does not carry --
 % helvet, array, multicol, tikz and pgfplots -- the three-colour figure palette
@@ -431,27 +445,32 @@
   \phantomsection\addcontentsline{toc}{chapter}{\abstractname}
   \quotation}{\endquotation}
 
+% Double-sided print: break the page, then add an empty one if the next page
+% would be a left-hand page. The last deviation note at the top says why.
+\def\cleartorecto{\clearpage\ifodd\c@page\else
+  \thispagestyle{empty}\null\clearpage\fi}
+
 % Starting materials
 \def\st@rtingm@teri@ls{
   \thesistitlepage
 
-  \cleardoublepage
+  \cleartorecto
   \dedic@tionp@ge
 
   \cleardoublepage
   \pagenumbering{roman}
   \thesiscandidatesdeclaration
 
-  \cleardoublepage
+  \cleartorecto
   \thesisacceptancepage
 
-  \cleardoublepage
+  \cleartorecto
   \input {inputs/buetcsepgthesisacknowledgement.tex}
 
-  \cleardoublepage
+  \cleartorecto
   \listsandtoc
-  
-  \cleardoublepage
+
+  \cleartorecto
   \begin{abstract}
     \input{inputs/buetcsepgthesisabstract.tex}
   \end{abstract}}
@@ -474,7 +493,7 @@
   \degreen@mes
   \thesisd@tes
   \st@rtingm@teri@ls
-  \cleardoublepage
+  \cleartorecto
   \pagestyle{fancy}
   \pagenumbering{arabic}
   \setcounter{page}{1}

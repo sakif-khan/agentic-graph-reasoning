@@ -149,12 +149,21 @@
 % Chapters
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% For the double-sided print, \cleartorecto adds a blank page after a chapter
+% that ends on an odd page. So every chapter starts on the right, and so do the
+% References after the last one. The macro is defined in buetcsepgthesis.sty.
 \input{chapters/introduction.tex}
+\cleartorecto
 \input{chapters/background.tex}
+\cleartorecto
 \input{chapters/environment.tex}
+\cleartorecto
 \input{chapters/framework.tex}
+\cleartorecto
 \input{chapters/evaluation.tex}
+\cleartorecto
 \input{chapters/conclusion.tex}
+\cleartorecto
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Back matter
