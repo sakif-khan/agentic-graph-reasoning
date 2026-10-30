@@ -15,27 +15,37 @@
 % BUDGET     : 20 to 22 pages including the references, and at most 1.5
 %              pages of references.
 %
+% LAYOUT     : type sizes follow two model papers in
+%              thesis_templates/references/. See preamble.tex.
+%
 % BUILD      : latexmk -pdf journal_v2_0421052099.tex
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[journal,a4paper]{IEEEtran}
+\documentclass[10pt,twocolumn,a4paper]{article}
 
 \input{preamble}
 
+\hypersetup{
+  pdftitle={Agentic Graph Reasoning: Multi-Hop Knowledge Graph Question
+    Answering with Structural Claim Verification},
+  pdfauthor={Md. Sakif Khan, Sadia Sharmin},
+  pdfkeywords={Knowledge graphs, question answering, large language models,
+    retrieval-augmented generation, hallucination, claim verification, agents}}
+
+\title{Agentic Graph Reasoning: Multi-Hop Knowledge Graph\\
+Question Answering with Structural Claim Verification}
+
+\author{Md.~Sakif~Khan$^{\dagger}$, Sadia~Sharmin}
+
+\affiliation{Department of Computer Science and Engineering\\
+Bangladesh University of Engineering and Technology, Dhaka, Bangladesh}
+
+\titlenote{$^{\dagger}$Corresponding author (sakifkhanopu@gmail.com).}
+\titlenote{This paper is based on the first author's M.Sc.\ Engg.\ thesis.}
+
 \begin{document}
 
-\title{Agentic Graph Reasoning: Multi-Hop Knowledge Graph Question Answering
-with Structural Claim Verification}
-
-\author{Md.~Sakif~Khan and Sadia~Sharmin%
-\thanks{Both authors are with the Department of Computer Science and
-Engineering, Bangladesh University of Engineering and Technology, Dhaka,
-Bangladesh. Corresponding author: Md.~Sakif~Khan (e-mail:
-sakifkhanopu@gmail.com). This paper is based on the first author's M.Sc.
-Engg. thesis.}}
-
-\markboth{Khan and Sharmin: Agentic Graph Reasoning}%
-{Khan and Sharmin: Agentic Graph Reasoning}
+\bstctlcite{IEEEexample:BSTcontrol}
 
 \maketitle
 
@@ -64,10 +74,8 @@ names the \emph{echo attractor}, a grounded entity next to the answer that
 several systems fall into together.
 \end{abstract}
 
-\begin{IEEEkeywords}
-Knowledge graphs, question answering, large language models,
-retrieval-augmented generation, hallucination, claim verification, agents.
-\end{IEEEkeywords}
+\keywords{Knowledge graphs, question answering, large language models,
+retrieval-augmented generation, hallucination, claim verification, agents.}
 
 \input{sections/introduction}
 \input{sections/related}

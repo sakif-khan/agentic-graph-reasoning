@@ -1,12 +1,30 @@
 % !TEX root = journal_v2_0421052099.tex
 %
-% Packages and styles for the two-column journal version of the thesis. The
-% class is IEEEtran in journal mode. Its text face is Times, the same as the
-% book's, so only the book's sans scaling is repeated here.
+% Packages and styles for the two-column journal version of the thesis.
+%
+% The class is the standard article class in two columns. Its type sizes copy
+% two published papers the author chose as models. Both are kept in
+% thesis_templates/references/.
+%   - "A survey of graph meets large language" (IJCAI 2024) gives the title,
+%     author, and affiliation styles, and most sizes. Body, abstract, and
+%     reference text are 10 pt. Captions and footnotes are 9 pt. Section heads
+%     are 12 pt bold and subsection heads 11 pt bold.
+%   - "KBQA-o1" (ICML 2025) gives the 1 pt rules above and below the title,
+%     with its spacing of 0.25 in, 0.22 in, and 0.3 in. Its tables are set at
+%     8 pt or 9 pt, and so are these.
+% Both papers are on US Letter. This one keeps A4, with the survey's 7 in text
+% width and 0.25 in column gap.
 
+\usepackage[a4paper, textwidth=7in, columnsep=0.25in, top=1in, bottom=1in,
+  heightrounded]{geometry}
+
+% Times text with Computer Modern maths, as in both model papers and the book.
 % The book marks identifiers in sans and scales Helvetica to 92% so that it
 % matches Times optically. The journal keeps the same pairing.
+\renewcommand{\rmdefault}{ptm}
 \usepackage[scaled=0.92]{helvet}
+\renewcommand{\ttdefault}{pcr}
+
 \usepackage{cite}
 \usepackage{amsmath,amssymb}
 \usepackage{array}
@@ -18,12 +36,118 @@
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
 \usepackage{microtype}
+\usepackage{etoolbox}
+\usepackage{enumitem}
+\usepackage[font=small, labelsep=colon, skip=4pt]{caption}
+\captionsetup[table]{position=top}
+
+\makeatletter
+
+% Section heads as in the survey. 12 pt bold, then 11 pt bold, numbered
+% "1 Introduction" and "1.1 Title". A head that runs to two lines is set
+% ragged right, so its first line is not stretched.
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+  {-12pt \@plus -3pt \@minus -2pt}{5pt \@plus 1pt}%
+  {\normalfont\large\bfseries\raggedright}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {-9pt \@plus -2pt \@minus -1pt}{4pt \@plus 1pt}%
+  {\normalfont\fontsize{11}{13}\selectfont\bfseries\raggedright}}
+
+% Footnotes are 9 pt, as in both model papers. The patch must come before
+% hyperref, which wraps \@footnotetext.
+\patchcmd{\@footnotetext}{\footnotesize}{\small}{}%
+  {\PackageWarning{preamble}{Footnote size patch failed}}
+
+% The title block. The title sits between two 1 pt rules, as in KBQA-o1. The
+% author names are 12 pt bold and the affiliation 12 pt roman, as in the
+% survey. The notes go at the foot of the first column without a number.
+\newcommand\affiliation[1]{\gdef\agr@affiliation{#1}}
+\newcommand\agr@titlenotes{}
+\newcommand\titlenote[1]{\g@addto@macro\agr@titlenotes{\footnotetext{#1}}}
+\renewcommand\maketitle{%
+  \twocolumn[{%
+    \centering
+    \hrule height 1pt
+    \vskip 0.25in
+    {\Large\bfseries\@title\par}%
+    % KBQA-o1 puts the rule 16 pt below the last title baseline. The depth of
+    % that line already gives 2.6 pt of it.
+    \vskip 13.2pt
+    \hrule height 1pt
+    \vskip 0.3in
+    {\large\bfseries\@author\par}%
+    \vskip 4pt
+    {\large\agr@affiliation\par}%
+    \vskip 0.35in
+  }]%
+  \thispagestyle{plain}%
+  \begingroup
+    \renewcommand\thefootnote{}%
+    \agr@titlenotes
+  \endgroup}
+
+% The abstract sits in the first column under a centred 12 pt bold head, set
+% in from both sides by 20 pt, as in both model papers.
+\renewenvironment{abstract}{%
+  \par\noindent\hfil{\large\bfseries\abstractname}\hfil\par
+  \vskip 6pt
+  \list{}{\leftmargin 20pt \rightmargin 20pt \listparindent 1em
+    \itemindent \z@ \parsep \z@ \topsep \z@ \partopsep \z@}%
+  \item\relax}%
+  {\endlist}
+\newcommand\keywords[1]{%
+  \begin{list}{}{\leftmargin 20pt \rightmargin 20pt \itemindent \z@
+    \parsep \z@ \topsep 6pt \partopsep \z@}%
+  \item\relax\textbf{Keywords:} #1%
+  \end{list}\vskip 6pt}
+
+% Reference entries are separated by a small gap rather than the list default.
+\apptocmd{\thebibliography}{\setlength{\itemsep}{1.5pt \@plus 0.5pt}%
+  \setlength{\parsep}{\z@}}{}%
+  {\PackageWarning{preamble}{Bibliography spacing patch failed}}
+
+% IEEEtran.bst reads its options from a control entry that \bstctlcite cites.
+% IEEEtran.cls defines the command. This is its definition, for other classes.
+\def\bstctlcite{\@ifnextchar[{\@bstctlcite}{\@bstctlcite[@auxout]}}
+\def\@bstctlcite[#1]#2{\@bsphack
+  \@for\@citeb:=#2\do{%
+    \edef\@citeb{\expandafter\@firstofone\@citeb}%
+    \if@filesw\immediate\write\csname #1\endcsname{\string\citation{\@citeb}}\fi}%
+  \@esphack}
+
+\makeatother
+
+% Floats may fill more of a page than the article defaults allow, as in
+% IEEEtran. Without this, most of the wide tables would go to float pages.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\dbltopfraction}{0.9}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.8}
+\renewcommand{\dblfloatpagefraction}{0.8}
+\setcounter{topnumber}{3}
+\setcounter{dbltopnumber}{2}
+\setcounter{totalnumber}{4}
+
+% A column that breaks early before a float or a head is left a line short
+% rather than stretched. Stretching opened blank lines between paragraphs.
+\raggedbottom
+
+% Lists are set close to the text, as in the model papers.
+\setlist{topsep=3pt plus 1pt, itemsep=1pt, parsep=0pt, partopsep=0pt}
+\setlist[itemize,enumerate]{leftmargin=1.5em}
+
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalise,nameinlink]{cleveref}
+
+% URLs in the text face, as in the survey.
+\urlstyle{same}
 
 % Two columns are narrow. A little emergency stretch lets TeX set a line with
 % a long identifier in it rather than push it into the margin.
 \setlength{\emergencystretch}{1.5em}
+
+% Names split only where their parts join, or not at all.
+\hyphenation{WebQSP Complex-Web-Questions GraphRAG HippoRAG StructGPT}
 
 % Fixed-width table columns set ragged right, as in the book.
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
@@ -50,10 +174,7 @@
     tick style={gray!60},
   }}
 
-% cleveref's names for this class. IEEEtran numbers tables in roman, and the
-% figure name follows the class's own "Fig." abbreviation.
-\crefname{figure}{Fig.}{Figs.}
-\Crefname{figure}{Fig.}{Figs.}
+% cleveref's names. Figures and tables are named in full, as in the survey.
 \crefname{algorithm}{Algorithm}{Algorithms}
 \Crefname{algorithm}{Algorithm}{Algorithms}
 \crefname{equation}{Eq.}{Eqs.}

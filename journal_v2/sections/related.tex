@@ -94,16 +94,15 @@ improvements in this literature. So the agentic baseline here is reimplemented
 and run under controlled conditions (\Cref{sec:baselines}). The one published
 comparison is reported with its differences stated (\Cref{sec:rog}).
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \caption{Mechanisms of the closest prior systems. No surveyed system checks the
   claims of its final answer against retrieved triples before responding.}
 \label{tab:mechanisms}
 \centering
-\scriptsize
-\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{@{}lL{22mm}L{10.5mm}L{12mm}L{17mm}@{}}
+\small
+\begin{tabular}{@{}lllll@{}}
 \toprule
-System & Exploration & Decom\-poses & Back\-tracks & Verifies before answering \\
+System & Exploration & Decomposes & Backtracks & Verifies before answering \\
 \midrule
 Think-on-Graph & Model-pruned beam search & No & No & No \\
 Plan-on-Graph & Adaptive planning with reflection & Yes & Yes & The search, not the answer \\
@@ -116,7 +115,7 @@ KBQA-o1 & Tree search over an agent & Implicitly & By tree revisits & No \\
 AGR (ours) & Guided best-first beam search & Yes & Yes & Yes, claim by claim \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \begin{table}[!t]
 \caption{Hits@1 as each paper publishes it. These figures are not comparable
@@ -124,7 +123,8 @@ AGR (ours) & Guided best-first beam search & Yes & Yes & Yes, claim by claim \\
   of the systems are fine-tuned.}
 \label{tab:reported}
 \centering
-\footnotesize
+\small
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}llrr@{}}
 \toprule
 System & Backbone & WebQSP & CWQ \\

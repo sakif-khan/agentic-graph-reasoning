@@ -11,7 +11,7 @@
   $97.0\%$ and $99.2\%$.}
 \label{tab:main}
 \centering
-\footnotesize
+\small
 \setlength{\tabcolsep}{4.5pt}
 \begin{tabular}{@{}llrrrrlrrrr@{}}
 \toprule
@@ -77,20 +77,22 @@ that Think-on-Graph misses, against $51$ the other way.
   and ``Base only'' counts the reverse.}
 \label{tab:mcnemar}
 \centering
-\footnotesize
-\begin{tabular}{@{}llrrl@{}}
+\small
+\begin{tabular}{@{}lrrl@{}}
 \toprule
-Data & Baseline & AGR only & Base only & $p$ \\
+Baseline & AGR only & Base only & $p$ \\
 \midrule
-WebQSP & No-retrieval & $152$ & $31$ & $2.3 \times 10^{-20}$ \\
-WebQSP & Vector-RAG & $117$ & $42$ & $2.2 \times 10^{-9}$ \\
-WebQSP & GraphRAG & $186$ & $20$ & $6.5 \times 10^{-35}$ \\
-WebQSP & Think-on-Graph & $76$ & $38$ & $4.8 \times 10^{-4}$ \\
+\multicolumn{4}{@{}l}{\emph{WebQSP}} \\
+No-retrieval & $152$ & $31$ & $2.3 \times 10^{-20}$ \\
+Vector-RAG & $117$ & $42$ & $2.2 \times 10^{-9}$ \\
+GraphRAG & $186$ & $20$ & $6.5 \times 10^{-35}$ \\
+Think-on-Graph & $76$ & $38$ & $4.8 \times 10^{-4}$ \\
 \midrule
-CWQ & No-retrieval & $121$ & $35$ & $2.7 \times 10^{-12}$ \\
-CWQ & Vector-RAG & $151$ & $23$ & $2.8 \times 10^{-24}$ \\
-CWQ & GraphRAG & $148$ & $21$ & $1.0 \times 10^{-24}$ \\
-CWQ & Think-on-Graph & $86$ & $51$ & $3.5 \times 10^{-3}$ \\
+\multicolumn{4}{@{}l}{\emph{CWQ}} \\
+No-retrieval & $121$ & $35$ & $2.7 \times 10^{-12}$ \\
+Vector-RAG & $151$ & $23$ & $2.8 \times 10^{-24}$ \\
+GraphRAG & $148$ & $21$ & $1.0 \times 10^{-24}$ \\
+Think-on-Graph & $86$ & $51$ & $3.5 \times 10^{-3}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -110,18 +112,20 @@ Think-on-Graph off separates search quality from affordability
   \Cref{tab:main}.}
 \label{tab:split}
 \centering
-\footnotesize
-\begin{tabular}{@{}llrrrr@{}}
+\small
+\begin{tabular}{@{}lrrrr@{}}
 \toprule
-Data & Subset & $n$ & ToG & AGR & $\Delta$ \\
+Subset & $n$ & ToG & AGR & $\Delta$ \\
 \midrule
-WebQSP & ToG ran to completion & $283$ & $0.852$ & $0.788$ & $-0.064$ \\
-& ToG clipped by the cap & $117$ & $0.197$ & $0.675$ & $+0.478$ \\
-& Combined & $400$ & $0.660$ & $0.755$ & $+0.095$ \\
+\multicolumn{5}{@{}l}{\emph{WebQSP}} \\
+ToG ran to completion & $283$ & $0.852$ & $0.788$ & $-0.064$ \\
+ToG clipped by the cap & $117$ & $0.197$ & $0.675$ & $+0.478$ \\
+Combined & $400$ & $0.660$ & $0.755$ & $+0.095$ \\
 \midrule
-CWQ & ToG ran to completion & $224$ & $0.629$ & $0.607$ & $-0.022$ \\
-& ToG clipped by the cap & $176$ & $0.188$ & $0.415$ & $+0.227$ \\
-& Combined & $400$ & $0.435$ & $0.522$ & $+0.087$ \\
+\multicolumn{5}{@{}l}{\emph{CWQ}} \\
+ToG ran to completion & $224$ & $0.629$ & $0.607$ & $-0.022$ \\
+ToG clipped by the cap & $176$ & $0.188$ & $0.415$ & $+0.227$ \\
+Combined & $400$ & $0.435$ & $0.522$ & $+0.087$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -169,7 +173,7 @@ margin is not sampling noise. AGR's $95\%$ intervals on Hits@1 are $[71.3,
   scores AGR's answers with RoG's released scorer.}
 \label{tab:rog}
 \centering
-\footnotesize
+\small
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
 & \multicolumn{2}{c}{WebQSP} & \multicolumn{2}{c}{CWQ} \\
@@ -215,23 +219,25 @@ examples. The contribution of this work lies outside the accuracy column.
   four questions and is not interpreted.}
 \label{tab:strata}
 \centering
-\scriptsize
+\small
 \setlength{\tabcolsep}{3pt}
-\begin{tabular}{@{}llllll@{}}
+\begin{tabular}{@{}lllll@{}}
 \toprule
-Data & System & 1 hop & 2 hops & 3+ hops & Unreach. \\
+System & 1 hop & 2 hops & 3+ hops & Unreach. \\
 \midrule
-WebQSP & No-retrieval & $0.43$/$0.29$ & $0.52$/$0.36$ & $0.25$/$0.00$ & $0.17$/$0.17$ \\
-WebQSP & Vector-RAG & $0.82$/$0.63$ & $0.12$/$0.07$ & $0.00$/$0.00$ & $0.08$/$0.08$ \\
-WebQSP & GraphRAG & $0.30$/$0.23$ & $0.44$/$0.35$ & $0.25$/$0.07$ & $0.08$/$0.08$ \\
-WebQSP & Think-on-Graph & $0.63$/$0.45$ & $0.78$/$0.58$ & $0.25$/$0.07$ & $0.17$/$0.17$ \\
-WebQSP & AGR & $0.75$/$0.64$ & $\mathbf{0.84}$/$\mathbf{0.73}$ & $0.00$/$0.00$ & $0.08$/$0.08$ \\
+\multicolumn{5}{@{}l}{\emph{WebQSP}} \\
+No-retrieval & $0.43$/$0.29$ & $0.52$/$0.36$ & $0.25$/$0.00$ & $0.17$/$0.17$ \\
+Vector-RAG & $0.82$/$0.63$ & $0.12$/$0.07$ & $0.00$/$0.00$ & $0.08$/$0.08$ \\
+GraphRAG & $0.30$/$0.23$ & $0.44$/$0.35$ & $0.25$/$0.07$ & $0.08$/$0.08$ \\
+Think-on-Graph & $0.63$/$0.45$ & $0.78$/$0.58$ & $0.25$/$0.07$ & $0.17$/$0.17$ \\
+AGR & $0.75$/$0.64$ & $\mathbf{0.84}$/$\mathbf{0.73}$ & $0.00$/$0.00$ & $0.08$/$0.08$ \\
 \midrule
-CWQ & No-retrieval & $0.38$/$0.35$ & $0.30$/$0.27$ & $0.14$/$0.14$ & $0.00$/$0.00$ \\
-CWQ & Vector-RAG & $0.33$/$0.27$ & $0.14$/$0.11$ & $0.10$/$0.09$ & $0.67$/$0.67$ \\
-CWQ & GraphRAG & $0.34$/$0.30$ & $0.16$/$0.14$ & $0.02$/$0.02$ & $0.33$/$0.33$ \\
-CWQ & Think-on-Graph & $\mathbf{0.53}$/$0.48$ & $0.37$/$0.32$ & $0.45$/$0.32$ & $0.33$/$0.33$ \\
-CWQ & AGR & $0.46$/$0.42$ & $\mathbf{0.55}$/$\mathbf{0.49}$ & $\mathbf{0.57}$/$\mathbf{0.50}$ & $0.33$/$0.33$ \\
+\multicolumn{5}{@{}l}{\emph{CWQ}} \\
+No-retrieval & $0.38$/$0.35$ & $0.30$/$0.27$ & $0.14$/$0.14$ & $0.00$/$0.00$ \\
+Vector-RAG & $0.33$/$0.27$ & $0.14$/$0.11$ & $0.10$/$0.09$ & $0.67$/$0.67$ \\
+GraphRAG & $0.34$/$0.30$ & $0.16$/$0.14$ & $0.02$/$0.02$ & $0.33$/$0.33$ \\
+Think-on-Graph & $\mathbf{0.53}$/$0.48$ & $0.37$/$0.32$ & $0.45$/$0.32$ & $0.33$/$0.33$ \\
+AGR & $0.46$/$0.42$ & $\mathbf{0.55}$/$\mathbf{0.49}$ & $\mathbf{0.57}$/$\mathbf{0.50}$ & $0.33$/$0.33$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -288,22 +294,24 @@ Graph-navigated answering removes structural hallucination outright.
   answer.}
 \label{tab:groundedness}
 \centering
-\footnotesize
-\begin{tabular}{@{}llrr@{}}
+\small
+\begin{tabular}{@{}lrr@{}}
 \toprule
-Data & System & Tier 1 ungrounded & Tier 2 supported \\
+System & Tier 1 ungrounded & Tier 2 supported \\
 \midrule
-WebQSP & No-retrieval & $179$ of $661$ ($27.1\%$) & $63.3\%$ \\
-WebQSP & Vector-RAG & $38$ of $1{,}040$ ($3.7\%$) & $61.7\%$ \\
-WebQSP & GraphRAG & $6$ of $800$ ($0.8\%$) & $55.0\%$ \\
-WebQSP & Think-on-Graph & $0$ of $832$ ($0.0\%$) & $61.7\%$ \\
-WebQSP & AGR & $0$ of $1{,}235$ ($0.0\%$) & $66.7\%$ \\
+\multicolumn{3}{@{}l}{\emph{WebQSP}} \\
+No-retrieval & $179$ of $661$ ($27.1\%$) & $63.3\%$ \\
+Vector-RAG & $38$ of $1{,}040$ ($3.7\%$) & $61.7\%$ \\
+GraphRAG & $6$ of $800$ ($0.8\%$) & $55.0\%$ \\
+Think-on-Graph & $0$ of $832$ ($0.0\%$) & $61.7\%$ \\
+AGR & $0$ of $1{,}235$ ($0.0\%$) & $66.7\%$ \\
 \midrule
-CWQ & No-retrieval & $42$ of $340$ ($12.4\%$) & $36.7\%$ \\
-CWQ & Vector-RAG & $7$ of $289$ ($2.4\%$) & $50.0\%$ \\
-CWQ & GraphRAG & $2$ of $224$ ($0.9\%$) & $36.7\%$ \\
-CWQ & Think-on-Graph & $0$ of $433$ ($0.0\%$) & $43.3\%$ \\
-CWQ & AGR & $0$ of $474$ ($0.0\%$) & $48.3\%$ \\
+\multicolumn{3}{@{}l}{\emph{CWQ}} \\
+No-retrieval & $42$ of $340$ ($12.4\%$) & $36.7\%$ \\
+Vector-RAG & $7$ of $289$ ($2.4\%$) & $50.0\%$ \\
+GraphRAG & $2$ of $224$ ($0.9\%$) & $36.7\%$ \\
+Think-on-Graph & $0$ of $433$ ($0.0\%$) & $43.3\%$ \\
+AGR & $0$ of $474$ ($0.0\%$) & $48.3\%$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -342,22 +350,24 @@ and it is stated as a price.
   share of questions on which the shared $25$-call budget ran out mid-search.}
 \label{tab:cost}
 \centering
-\footnotesize
-\begin{tabular}{@{}llrrrr@{}}
+\small
+\begin{tabular}{@{}lrrrr@{}}
 \toprule
-Data & System & Tokens & Calls & Seconds & Clipped \\
+System & Tokens & Calls & Seconds & Clipped \\
 \midrule
-WebQSP & No-retrieval & $113$ & $1.0$ & $1.2$ & --- \\
-WebQSP & Vector-RAG & $527$ & $1.0$ & $1.4$ & --- \\
-WebQSP & GraphRAG & $531$ & $1.0$ & $2.1$ & --- \\
-WebQSP & Think-on-Graph & $3{,}615$ & $12.8$ & $12.9$ & $29.2\%$ \\
-WebQSP & AGR & $4{,}511$ & $6.2$ & $11.2$ & $0.0\%$ \\
+\multicolumn{5}{@{}l}{\emph{WebQSP}} \\
+No-retrieval & $113$ & $1.0$ & $1.2$ & --- \\
+Vector-RAG & $527$ & $1.0$ & $1.4$ & --- \\
+GraphRAG & $531$ & $1.0$ & $2.1$ & --- \\
+Think-on-Graph & $3{,}615$ & $12.8$ & $12.9$ & $29.2\%$ \\
+AGR & $4{,}511$ & $6.2$ & $11.2$ & $0.0\%$ \\
 \midrule
-CWQ & No-retrieval & $118$ & $1.0$ & $1.0$ & --- \\
-CWQ & Vector-RAG & $535$ & $1.0$ & $1.4$ & --- \\
-CWQ & GraphRAG & $470$ & $1.0$ & $2.2$ & --- \\
-CWQ & Think-on-Graph & $5{,}572$ & $18.2$ & $15.2$ & $44.0\%$ \\
-CWQ & AGR & $6{,}818$ & $8.9$ & $17.2$ & $0.0\%$ \\
+\multicolumn{5}{@{}l}{\emph{CWQ}} \\
+No-retrieval & $118$ & $1.0$ & $1.0$ & --- \\
+Vector-RAG & $535$ & $1.0$ & $1.4$ & --- \\
+GraphRAG & $470$ & $1.0$ & $2.2$ & --- \\
+Think-on-Graph & $5{,}572$ & $18.2$ & $15.2$ & $44.0\%$ \\
+AGR & $6{,}818$ & $8.9$ & $17.2$ & $0.0\%$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -396,7 +406,7 @@ choice for shallow questions and useless for deep ones.
   the reference on per-question correctness.}
 \label{tab:ablation}
 \centering
-\footnotesize
+\small
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lrrrrrrlrrrrrrl@{}}
 \toprule
