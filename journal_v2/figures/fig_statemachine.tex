@@ -1,0 +1,50 @@
+% !TEX root = ../journal_v2_0421052099.tex
+%
+% Hand-drawn. The AGR state machine of the book's Figure 4.1
+% (thesis_book/chapters/framework.tex), redrawn narrower so that it fits one
+% journal column. Topology, labels and colours are the book's. Blue marks the
+% agent nodes and green the verifier.
+\begin{tikzpicture}[
+    node distance=5mm,
+    box/.style={draw=agrNode, thick, rounded corners=2pt, minimum height=6.5mm,
+      fill=agrNode!8, minimum width=21mm, align=center, font=\footnotesize},
+    vbox/.style={box, draw=agrSup, fill=agrSup!12},
+    term/.style={draw=black!45, rounded corners=5pt, minimum height=5mm,
+      minimum width=14mm, font=\scriptsize\sffamily, fill=black!6},
+    flow/.style={-{Stealth[length=1.8mm]}, semithick, draw=black!68},
+    lbl/.style={font=\scriptsize\ttfamily, inner sep=1.2pt, fill=white,
+      anchor=center}]
+
+  \node[term]              (start) {START};
+  \node[box, below=of start] (plan) {Planner};
+  \node[box, below=of plan]  (expl) {Explorer};
+  \node[box, below=of expl]  (eval) {Evaluator};
+  \node[vbox, below=of eval] (ver)  {Verifier};
+  \node[box, below=of ver]   (ans)  {Answerer};
+  \node[term, below=of ans]  (end)  {END};
+  \node[box, right=17mm of eval, minimum width=19mm] (back) {Backtracker};
+
+  \draw[flow] (start) -- (plan);
+  \draw[flow] (plan) -- (expl);
+  \draw[flow] (expl) -- (eval);
+  \draw[flow] (eval) -- node[lbl] {answer} (ver);
+  \draw[flow] (ver) -- node[lbl] {grounded $\mid$ give\_up} (ans);
+  \draw[flow] (ans) -- (end);
+
+  % The search cycle, from the evaluator back to the explorer.
+  \draw[flow] (eval.west) -- ++(-15mm,0) node[lbl, above, pos=0.5]
+    {continue} |- (expl.west);
+
+  % The backtracking cycle, through the backtracker.
+  \draw[flow] (eval.east) -- node[lbl] {backtrack} (back.west);
+  \draw[flow] (back.north) |- (expl.east);
+
+  % Verification-driven re-exploration.
+  \draw[flow] (ver.west) -- ++(-21mm,0) node[lbl, below, pos=0.5] {retry} |-
+    ([yshift=-1.8mm] expl.west);
+
+  \begin{scope}[on background layer]
+    \node[draw=black!35, dashed, rounded corners, inner sep=2mm,
+          fit=(expl)(eval)] {};
+  \end{scope}
+\end{tikzpicture}

@@ -1,0 +1,50 @@
+% !TEX root = ../journal_v2_0421052099.tex
+%
+% Condensed from thesis_book/chapters/conclusion.tex.
+\section{Conclusion}\label{sec:conclusion}
+
+This paper asked what an agent gains by navigating a knowledge graph rather than
+retrieving from it. It also asked what a claim-level check against the traversed
+subgraph adds on top. AGR leads every accuracy column on WebQSP and CWQ, at half
+the language-model calls of the agentic baseline. Its margin over that baseline
+is affordability under a fixed budget rather than better resolution. On CWQ it
+is the only system whose accuracy rises with hop count. Structural hallucination
+is eliminated by navigation itself. The verification layer contributes
+auditability rather than accuracy, and decomposition helps or hurts depending on
+the structure of the question.
+
+The failure census earns three small repairs, each backed by a repeated
+mechanism. The claim decomposer should be told which argument of the drafted
+sentence is the answer. The evaluator's decisions should be logged beside the
+scores of the relations it abandons. And the drafter should commit to a value
+that the evaluator resolved and the verifier grounded. One logging change has
+the highest value for its cost. Persisting each accepted claim with the triples
+that matched it would turn wrongful acceptance into a rate with a denominator.
+It would also make the output contract checkable after the run. Three further
+additions are specified by the failure categories. A decomposition step should
+be gated on whether its rewrite keeps the question's interrogative and its
+constraints. A set-intersection operator would serve the $47$ composite-claim
+failures, and ordinal and literal-value support would serve the knowledge-graph
+gaps. A semantic check that accepts a bounded relation chain would recover the
+claims wrongly rejected for lacking a single edge. Finally, re-running the
+agentic baseline at AGR's candidate widths, and the static baseline at a wider
+and ordered radius, would lift the two baseline bounds.
+
+Four directions extend the work rather than repairing it. A knowledge graph
+constructed by a language model, used as a controlled comparison, would separate
+what the framework contributes from what a curated environment contributes.
+Rollout-based value estimation would supply what the scorer lacks, since it
+scores each candidate once and never revises that score. Temporal and
+multi-source environments would address the questions with a time qualifier that
+recur through the census. And high-stakes domains are where auditability matters
+more than accuracy.
+
+The result we would most want carried forward is not the accuracy margin. It is
+the shape of the gap that remains. A system that traverses a real graph and
+copies its answers out of real triples can be made to assert nothing ungrounded.
+What remains is an answer that is grounded, connected, and true, and is still
+not the answer to the question that was asked. Fact verification against a
+knowledge graph turns out to be the easier half of the problem. \emph{Relevance}
+verification is the half still open.
+
+\endinput

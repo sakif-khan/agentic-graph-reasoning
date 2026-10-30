@@ -1,0 +1,124 @@
+% !TEX root = ../journal_v2_0421052099.tex
+%
+% Condensed from thesis_book/chapters/environment.tex and the knowledge-graph
+% preliminaries of thesis_book/chapters/background.tex.
+\section{The Knowledge Environment}\label{sec:environment}
+
+Everything the agent can know, it knows from the graph. So the environment sets
+a ceiling on how accurate any system can be. A result reported without that
+ceiling is hard to interpret.
+
+\subsection{Freebase and Mediator Nodes}
+
+A knowledge graph $G = (E, R, T)$ stores facts as triples $(h, r, t)$, each
+asserting that relation $r$ holds from head entity $h$ to tail entity $t$.
+Triples are atomic, so a claim can be checked by testing for specific edges.
+They are also composable, and a chain of them expresses a multi-hop relationship
+that no single triple states. Freebase~\cite{bollacker2008freebase}, frozen
+since 2016, is the substrate of the standard benchmarks. One of its features
+changes every depth measurement. A \emph{mediator node} is an unnamed node
+standing for one fact with more than two participants, with one edge to each
+participant. That Rainn Wilson played Dwight Schrute in \emph{The Office} is
+stored as a mediator with edges to the actor, the character, and the show. So a
+relationship a user would describe as one hop is two edges in the graph.
+Distances in this paper are in \emph{raw} hops, which count graph edges. One
+\emph{logical} hop through a mediator is two raw hops.
+
+\subsection{Hallucination, Defined Operationally}\label{sec:halluc}
+
+``Hallucination'' means different things in different papers. This paper adopts
+a narrow, operational definition tied to the environment. An \emph{asserted}
+entity is one the system names in its answer. It is \emph{ungrounded} if it does
+not exist in the graph, or exists but lies more than four hops from every topic
+entity of the question. A \emph{claim} is a single statement drawn from the
+answer that relates two entities. It is \emph{unsupported} if the traversed
+triples do not entail it. Two consequences follow. The definition is relative to
+the environment, so an entity absent from the graph is ungrounded even if it is
+true in the world. And groundedness is not correctness. An answer can be
+grounded in every entity and still be the wrong answer to the question.
+
+\subsection{Construction}
+
+The environment is the union of every per-question subgraph that the
+Reasoning-on-Graphs distribution~\cite{luo2024reasoning} publishes for WebQSP
+and ComplexWebQuestions, across all splits. So the questions and the graph come
+from one distribution and are mutually consistent. Taking the union is not a
+minor detail. A per-question subgraph on its own is close to an oracle. It was
+extracted to contain the answer, so an agent searching it meets almost no
+distractors. Merging every question's neighbourhood into one graph brings the
+distractors back. \Cref{tab:environment} records the result. Mediators are
+retained rather than collapsed, since systems that skip them lose the facts they
+encode~\cite{xu2024generate}. They make up $63.7\%$ of the nodes.
+
+Two consequences must be disclosed. The subgraphs were pre-extracted to
+guarantee that answers are reachable, which makes the environment friendlier
+than raw Freebase. And the distribution keys entities by name rather than by
+Freebase identifier. So distinct entities that share a surface form are merged
+into one node. Both bound the absolute numbers, and \Cref{sec:threats} returns
+to them.
+
+The graph is stored in Neo4j~\cite{robinson2015graph}, with each relation as a
+native relationship type, and is queried in Cypher~\cite{francis2018cypher}.
+Entity names and the relation vocabulary are embedded with the 384-dimensional
+sentence encoder all-MiniLM-L6-v2~\cite{reimers2019sentence}. Relation names are
+verbalised before embedding, so \textsf{people.person.place\_of\_birth} is
+encoded as the phrase it means. Embeddings have a narrow role. They link
+question phrases to entities and pre-rank relation candidates. They never
+establish that a fact is true, a role that belongs to the triples alone.
+
+Entity resolution is a three-stage cascade of exact, lexical, and vector
+matching, each stage tried only if the previous one fails. Over all $7{,}149$
+topic-entity mentions in both test sets, $99.86\%$ resolve at the exact stage.
+The ten that do not are bare machine identifiers that the benchmark carries in
+place of a name. So a failure in this environment cannot be blamed on the
+resolver missing the question's topic. The graph and the benchmarks share their
+name strings, though, so this shows only that the resolver loses nothing the
+environment contains.
+
+\begin{table}[!t]
+\caption{The knowledge environment and its validation gate. Reachability is the
+  share of test questions with a gold answer within four raw hops of a topic
+  entity. It is the Hits@1 ceiling over each full test split.}
+\label{tab:environment}
+\centering
+\footnotesize
+\begin{tabular}{@{}lr@{}}
+\toprule
+Property & Value \\
+\midrule
+Entities & $2{,}592{,}892$ \\
+Triples & $8{,}309{,}194$ \\
+Distinct relation types & $7{,}058$ \\
+Mediator nodes & $1{,}652{,}618$ ($63.7\%$) \\
+Mentions resolved by exact match & $7{,}139$ of $7{,}149$ ($99.86\%$) \\
+\midrule
+Reachable, WebQSP test split & $1{,}584$ of $1{,}628$ ($97.3\%$) \\
+Reachable, CWQ test split & $3{,}519$ of $3{,}531$ ($99.7\%$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The Validation Gate}\label{sec:gate}
+
+No experiment ran until the environment was certified. For every test question
+we computed whether a gold answer is reachable from a topic entity within four
+raw hops, by breadth-first search over undirected edges. The agent's tools look
+in both directions, so the gate does the same. Reachability is $97.3\%$ on
+WebQSP and $99.7\%$ on CWQ (\Cref{tab:environment}). It is the accuracy ceiling,
+since no navigating system can find an answer it cannot reach. Existence and
+reachability agree question for question. When a question is unanswerable here,
+it is because its gold entities are absent, not because they are too far away.
+Reachability was also re-verified directly in Cypher, independently of the code
+that computed it.
+
+Certifying reachability says nothing about answers that are not entities. The
+import gives every node a single label, with no typed literal. Only $77$ nodes
+carry a full date as their name and $175$ a bare year, together under $0.01\%$
+of the graph and untyped. And the tool layer exposes no sorting or comparison
+operator. So ``the earliest'' or ``the smallest'' cannot be computed even when
+every candidate is present. These gaps define a class of questions that are
+\emph{unanswerable in this environment}, those whose answer is a date, a
+measured quantity, or a superlative selection. Missing one is not a reasoning
+failure, and \Cref{sec:errors} counts how often it happens.
+
+\endinput

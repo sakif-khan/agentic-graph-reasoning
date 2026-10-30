@@ -1,0 +1,200 @@
+% !TEX root = ../journal_v2_0421052099.tex
+%
+% Condensed from the error-analysis half of thesis_book/chapters/evaluation.tex.
+% The histogram is the book's tables/tab_failure_histogram.tex, which
+% scripts/build_figures.py generates from results/phase4/thesis_numbers.json.
+\section{Error Analysis}\label{sec:errors}
+
+\Cref{sec:results} measured how often each system fails. This section reads the
+failures and names the mechanism of each one. The census is a population, not a
+sample. Every question the full system did not answer correctly was read and
+labelled by hand, after the confirmed benchmark defects were removed, for $256$
+failures in all. The reading surfaced $16$ more benchmark defects inside the
+census. They are filed as gold noise or ambiguous questions, so those two rows
+of \Cref{tab:census} count the benchmark's failures rather than the system's.
+Each failure packet holds the question, the gold answer, the answer given, the
+plan, the explored relations with their scores, the backtrack reasons, and the
+verifier outcome. The protocol was fixed before reading began. For each packet,
+find where the trajectory first left the correct path, and label that point
+rather than the last visible symptom. Without that rule, a run that
+mis-decomposes, then explores the wrong relation, then hedges would be counted
+three times.
+
+\subsection{The Shape of the Failures}
+
+\begin{table}[!t]
+\caption{The failure census of AGR, $n = 256$. Each failure is labelled at the
+  point where its trajectory first left the correct path. Wrong answers and
+  hedges are kept separate.}
+\label{tab:census}
+\centering
+\footnotesize
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{WebQSP} & \multicolumn{2}{c}{CWQ} & \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+Category & Wrong & Hedge & Wrong & Hedge & Total \\
+\midrule
+Relation selection & $19$ & $6$ & $20$ & $19$ & $64$ \\
+Composite claim & $1$ & --- & $23$ & $23$ & $47$ \\
+Knowledge-graph gap & $8$ & $4$ & $7$ & $24$ & $43$ \\
+Decomposition error & $15$ & $11$ & $10$ & $2$ & $38$ \\
+Answer selection & $1$ & $1$ & $8$ & $5$ & $15$ \\
+Echo attractor & $5$ & $2$ & $4$ & $2$ & $13$ \\
+Ambiguous question & $1$ & $1$ & $3$ & $5$ & $10$ \\
+Premature termination & $1$ & $4$ & $1$ & $2$ & $8$ \\
+Gold noise & $1$ & --- & $2$ & $3$ & $6$ \\
+Other & --- & $1$ & --- & $5$ & $6$ \\
+Verifier, wrongly rejected & --- & $3$ & $1$ & $1$ & $5$ \\
+Verifier, wrongly accepted & --- & --- & --- & $1$ & $1$ \\
+\midrule
+Total & $52$ & $33$ & $79$ & $92$ & $256$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{tab:census} gives the histogram. Relation selection sits at or near the
+top on both datasets, with $25$ of WebQSP's $85$ failures and $39$ of CWQ's
+$171$. Picking the wrong edge is the base rate of graph navigation. What
+distinguishes the datasets is a pair of categories that are nearly absent from
+one and dominant in the other. Composite claims account for $1$ failure on
+WebQSP and $46$ on CWQ, and knowledge-graph gaps for $12$ and $31$.
+Decomposition errors run the other way, at $26$ against $12$.
+
+Both asymmetries follow from how the datasets were built. WebQSP is $64\%$
+one-hop, so it presents the planner with exactly the questions that do not need
+decomposing. That mismatch is the significant ablation result of
+\Cref{sec:ablations}, appearing here as a category count. CWQ's templates invoke
+dates, numbers, and ordinals constantly, and the environment can express none of
+them (\Cref{sec:gate}). When those gaps make a CWQ question unanswerable, AGR
+more often declines than errs, with $24$ hedges against $7$ wrong answers in
+that category.
+
+\subsection{Failures inside the Agent}
+
+\textbf{The entity-extraction bug.} Nine decomposition errors share one
+mechanism, and they are the most actionable finding in the census. Asked ``who
+was stephen r covey'', the system drafts ``Stephen Covey was a Writer,
+Motivational speaker, Author, Consultant, Professor, and Manager''. All six gold
+values are there. But the scored entity list comes back as the sentence's
+grammatical subject, \textsf{[Stephen Covey]}. Navigation and verification both
+succeeded. The step that turns answer text into an entity list failed. So the
+measured accuracy on this question shape is a floor.
+
+\textbf{Right candidate, wrong draft.} In $15$ answer-selection failures the
+exact gold value entered the resolved candidates, and the drafter chose
+something else. One was first filed as a verifier error. The draft read ``Marlon
+Brando also played in \emph{Joy}'', and the verifier rejected it. Brando was not
+in \emph{Joy}, but De Niro was, and the evaluator had resolved him. The verifier
+was correct, and the case is the clearest example in the census of the layer
+doing its job. A related family of six shares a mechanism nothing predicted. The
+evaluator resolves the gold value, the verifier returns \textsf{grounded}, and
+the draft hedges anyway. One answer states that Spanish was spoken in Spain and
+then that the first language spoken there could not be determined.
+
+\textbf{Context-stripping.} Three decomposition failures show a mechanism that
+decomposition's own design cannot see. Splitting a question into steps removes a
+qualifier that appears only in a later clause. So an early sub-objective
+resolves the wrong sense of an ambiguous term before the disambiguating
+information arrives. The strongest specimen asks for the 33rd president who
+``was the nation's leader during WW2''. That is one entity under two
+descriptions. The planner emits two unlinked sub-objectives, as though the
+descriptions were a chain. With the first one active, the anchor \textsf{World
+War II} scores at the noise floor, and the war constraint is never used. The run
+drafts Woodrow Wilson, the 28th president. The undecomposed run answers Harry
+S.~Truman correctly in three calls.
+
+\textbf{Over-decomposition.} The more expected decomposition failures appear
+too. In one, the plan splits ``what type of religion did massachusetts have''
+into a step that finds Massachusetts and a step that finds its religion type.
+The run burns $14$ of its $16$ calls on three evaluator backtracks and hedges,
+while the undecomposed run finds the same fact in three calls. In another, the
+planner rewrites ``where is ancient phoenician'' as the single step ``find
+ancient Phoenician''. The rewrite drops the interrogative, the word that says
+what is being asked. So the explorer re-identifies the topic instead of locating
+it, and the run answers ``Phoenicia'', grounded and useless. With the ask
+removed, the nearest well-grounded entity to a topic is the topic itself.
+
+\textbf{Systemic relation gaps.} Relation selection is the largest category, at
+$64$ failures. Either a wrong relation was explored, or the right one was
+explored and abandoned. Its interest lies in cases that show the same gap from
+several angles. Three questions on CWQ share a stem and reach Beyonc\'{e} by
+three different routes, through a documentary, an actor, and a composer. All
+three resolve her correctly. None ever tries \textsf{people.person.children},
+the single relation that answers each of them, and all three hedge. Three
+independent entry points hitting the same dead end show that the gap is
+systemic. It is a property of the scorer's ranking over that entity's relations,
+not of one question's phrasing.
+
+\textbf{Abandoned relations.} Five premature terminations share one pattern
+across unrelated domains. The correct relation is explored with a solid score,
+as high as $0.731$, and the evaluator backtracks away from it and never returns.
+That reads as a policy defect, not a reasoning gap.
+
+\textbf{Verifier errors.} The two error polarities are very unevenly evidenced,
+and the imbalance comes from the instrumentation. Five failures came from a
+wrongly rejected claim, all by one mechanism. Each claim was true, but no single
+edge stated it in the phrasing the drafter used, and the retry lost the answer.
+Three of the five had already resolved the exact gold answer before the
+rejection forced the retry. The verifier ran $828$ times over the $800$ test
+questions, since a repaired question is verified again. Its first verdict was
+unsupported on $52$ questions. After repairs, $761$ questions were answered
+under a grounded verdict and $39$ under an unsupported one. So roughly one
+rejected question in ten cost a correct answer, and even that is a lower bound.
+Wrongful acceptance has no logged population at all, because accepted claims are
+not persisted. One specimen surfaced by hand. A claim connecting Seth MacFarlane
+to \emph{ThunderCats} was accepted, and a direct Cypher query confirms that no
+such edge exists. A second case shows why acceptance is hard to judge. Asked
+when President Wilson was in office, the system answered with inauguration
+events whose edges are real, since the environment holds no dates. The
+structural check passed correctly while the answer is wrong. A check of whether
+a claim is \emph{in} the graph cannot check whether it is \emph{the answer}.
+
+\subsection{Knowledge-Graph Gaps}
+
+Knowledge-graph gaps are the third-largest category, at $43$ failures, and CWQ's
+largest hedge category. They are the unanswerable class of \Cref{sec:gate} seen
+in the census, and five subtypes account for $39$ of them. Ordinal questions
+($9$) ask for a first, last, or smallest member. The relevant relation is
+explored and the candidates come back, but no component compares them. Asked for
+the year of the first Miss America pageant, the system answers $1925$, then
+$1980$, then $1929$ across successive rounds, because nothing sorts and takes
+the extreme. Numeric literals ($16$) are internal identifiers and codes that
+CWQ's templates invoke and that no explored relation exposes. Date literals
+($4$) and temporal qualifiers ($4$) fail because the environment holds events
+but not their dates. Asked who was president in 1988, the system names the
+winner of that November's election, who took office the following January. Only
+the last subtype, data errors ($6$), is a gap in this particular import. The
+other four are gaps in what a triple-and-traversal architecture can express at
+all. No larger graph fixes them, since they need an operator.
+
+\subsection{The Echo Attractor}\label{sec:echo}
+
+Thirteen failures name a mechanism that recurs independently of any component.
+The system resolves a real, well-grounded entity that sits near the correct
+answer in the graph. The verifier passes it, because it genuinely is grounded.
+The fact is true but not what was asked. Two shapes appear. In the first, the
+system confuses entities in one tight cluster. Asked who plays Lex Luthor on
+\emph{Smallville}, it answers that John Glover plays Lionel Luthor. In the
+second, it finds the right entity family at the wrong level. It answers
+``Kingdom of Denmark'' where the gold answer is ``Denmark'', or narrows from
+Harvard College to Harvard University. None of these are cases where the system
+knew nothing. The right edge exists, is used, and lands one node away.
+
+The echo attractor is also why the consensus pass of \Cref{sec:gold} flagged far
+more questions than adjudication confirmed. All five systems answer ``rick
+scott'' where the gold answer lists his professions, and ``thor heyerdahl''
+where it lists his occupations. Each returns the topic entity. All five answer
+``belgium'' where the gold answer is the containing region, and ``maryland''
+where it lists counties. When systems agree with one another against gold, the
+usual cause is a shared attractor, not a label error. A policy of rescoring
+whenever three systems agree would have turned this failure into apparent
+correctness. Adjudication is what stands between the two. Counting the census
+and the earlier exclusions together, $57$ distinct questions needed the
+benchmark, not the system, to be corrected. Two patterns account for most of the
+CWQ defects, and both are properties of template generation rather than of
+annotation care. One is a gold list flattened from a relation that has several
+values, with the pipeline keeping a marginal one. The other is an annotation
+query that traversed one relation too far.
+
+\endinput

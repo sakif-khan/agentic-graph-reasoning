@@ -1,0 +1,146 @@
+% !TEX root = ../journal_v2_0421052099.tex
+%
+% Condensed from thesis_book/chapters/introduction.tex.
+\section{Introduction}\label{sec:intro}
+
+\IEEEPARstart{L}{arge} language models answer factual questions fluently. But
+often enough they give wrong answers, and those errors are not random. They are
+systematic, and the model states them with the same confidence it gives a
+correct answer~\cite{huang2025survey}. So a fabricated answer looks exactly like
+a correct one. Things get worse when the answer requires putting several facts
+together. A \emph{multi-hop} question such as ``Who directed the film that won
+Best Picture in 1998?'' needs a chain of lookups in a fixed order. If the first
+hop lands on the wrong entity, the rest of the chain carries on from a false
+premise. And a check on the final answer alone never sees the intermediate
+results.
+
+Hallucinations arise at three points, and each calls for a different kind of
+intervention~\cite{huang2025survey}. Defects in the training data can be fixed
+only by curating the corpus and retraining. The model itself stores what it
+knows diffusely across its weights, with no reliable signal that separates a
+memorised fact from a plausible continuation. The third point is the prompt, and
+it is the one this work takes on. When the context supplied with a question
+already carries the facts needed to answer it, the model does not have to fall
+back on parametric recall. Retrieval augmentation rests on that premise, and so
+does this work. Our contribution is in how that context is assembled, and in
+what gets checked before the answer goes out.
+
+Retrieval-augmented generation (RAG)~\cite{lewis2020retrieval} attaches the
+model to an external corpus and lets it answer from retrieved passages. For a
+multi-hop question, the ranking signal measures the wrong thing. The passage
+holding the intermediate entity may bear little resemblance to the question. And
+flat retrieval cannot represent the relationships that a compositional question
+has to traverse~\cite{li2023survey}. A knowledge graph makes those relationships
+explicit, so composing two facts becomes a traversal.
+GraphRAG~\cite{edge2024local} exploits this, but it still retrieves
+\emph{statically}. It fetches a neighbourhood once, before reasoning starts. A
+fixed radius is then either too small to contain the answer or so large that the
+relevant edges are buried. The natural response is to interleave retrieval with
+reasoning. Think-on-Graph~\cite{sun2024think} set that pattern with model-guided
+beam search over the graph. Later systems added decomposition, backtracking, and
+generated relation paths~\cite{chen2024plan,luo2024reasoning}.
+
+Agentic navigation is the right shape for the problem, and this paper adopts it.
+Three things it leaves unsolved motivate the work.
+
+\textbf{Nothing checks what the final answer asserts.} Agentic systems ground
+their answers in the subgraph they traverse, and the entities they assert do
+exist in the graph. The problem is not fabrication but \emph{precision}. An
+entity can sit in the retrieved subgraph, have been retrieved correctly, and
+still be the wrong answer. Every system we survey emits whatever its final
+generation call produces from the traversed context. Post-hoc self-checking
+reduces factual error in free-form generation~\cite{dhuliawala2024chain}. What
+none provides is a claim-level check against the retrieved triples, carried out
+\emph{before} the answer is emitted, inside a graph-navigating agent.
+
+\textbf{The contribution of individual mechanisms is unquantified.} Agentic
+systems are assemblies of decomposition, scoring, backtracking, and
+self-correction. The literature tends to report them as wholes. So when one
+beats a static baseline, the mechanism that produced the gain is rarely
+established.
+
+\textbf{Accuracy is reported without cost.} Every exploration step costs at
+least one model call. An accuracy table that leaves cost out makes agentic
+methods look better across the board. The honest picture is a trade-off.
+
+We present Agentic Graph Reasoning (AGR), a knowledge-graph question-answering
+framework built as an explicit state machine over a constrained, deterministic
+graph tool API. Its distinguishing component is a \emph{Structural Verification
+Layer}. Before anything is emitted, the layer splits the draft answer into
+atomic claims. It checks each one against the (head, relation, tail) triples the
+agent actually traversed. Claims it cannot ground are re-explored or withdrawn.
+So where it cannot ground a claim, AGR hedges rather than asserts. And the
+answers it does give come paired with the triples that support them.
+
+Stated formally, the input is a natural-language question $q$ and a knowledge
+graph $G = (E, R, T)$ with entities $E$, relation types $R$, and triples $T
+\subseteq E \times R \times E$. The system returns an answer set $A \subseteq E$
+together with a supporting triple set $S \subseteq T$. The set $S$ contains only
+triples the system traversed in reaching $A$, and it is checked before $A$ is
+emitted. Three properties set this apart from standard question answering over
+knowledge graphs. The output is a pair, and its supporting triples are part of
+the contract. That is what makes the reasoning auditable rather than merely
+asserted. The support must also be traversed, which rules out justifying, after
+the fact, an answer the system reached some other way. And the justification is
+checked before the answer is emitted. So unsupported content can be dropped or
+hedged instead of merely flagged. Three research questions follow.
+
+\begin{itemize}
+\item \textbf{RQ1:} Does agentic navigation improve multi-hop factual accuracy,
+  and does the advantage grow with the number of hops?
+\item \textbf{RQ2:} What does pre-generation verification contribute beyond
+  graph navigation?
+\item \textbf{RQ3:} Which components contribute what, at what token cost?
+\end{itemize}
+
+We answer them with a controlled evaluation. All five systems share one frozen
+backbone, one knowledge environment, and one call budget. So any difference
+between them comes from architecture, not model capacity. The paper makes four
+contributions.
+
+\begin{enumerate}
+\item AGR and its Structural Verification Layer (\Cref{sec:framework}). The word
+  \emph{structural} names what the check establishes and, in the same word,
+  bounds it. The check asks whether an edge joins a claim's endpoints, not
+  whether it is the edge the claim names.
+\item A controlled comparison of five systems on $400$ certified questions from
+  each of WebQSP~\cite{yih2016value} and
+  ComplexWebQuestions (CWQ)~\cite{talmor2018web}
+  (\Cref{sec:setup,sec:results}). It
+  splits the margin over the agentic baseline into search quality and
+  affordability under a fixed budget.
+\item A component-level ablation with paired significance tests
+  (\Cref{sec:ablations}). It finds that
+  decomposition is stratum dependent. Removing the planner improves accuracy on
+  the shallower benchmark and trends toward harming it on the deeper one.
+\item A hand reading of all $256$ remaining failures (\Cref{sec:errors}). It
+  names the \emph{echo attractor}, a recurring failure in which several systems
+  sharing a graph and a backbone converge on the same grounded but wrong answer.
+  It also counts the benchmark's own label defects, which adjudication separates
+  from those convergences.
+\end{enumerate}
+
+The headline results are these. AGR leads every accuracy column on both
+datasets, and all eight paired tests against the baselines reject. Where the
+shared call cap lets the agentic baseline finish, that baseline is slightly
+ahead. So the margin is affordability, not better resolution. Structural
+hallucination is eliminated by graph navigation itself, since the agentic
+baseline also reaches zero. And removing the verification layer changes the
+correctness of two questions out of $398$. Its contribution is auditability
+rather than accuracy.
+
+One limit applies to every absolute number. The knowledge environment is a union
+of per-question subgraphs, each pre-extracted to contain its own question's
+answer. That makes it friendlier than full
+Freebase~\cite{bollacker2008freebase}, and the accuracies are not comparable
+with evaluations over full Freebase. The comparisons between systems are sound,
+because every system navigates the same environment (\Cref{sec:threats}).
+
+The rest of the paper is organised as follows. \Cref{sec:related} reviews
+related work, and \Cref{sec:environment} describes the knowledge environment.
+\Cref{sec:framework} specifies AGR. \Cref{sec:setup} gives the experimental
+setup and \Cref{sec:results} the results. \Cref{sec:errors} reads the failures.
+\Cref{sec:discussion} discusses the findings and their limits, and
+\Cref{sec:conclusion} concludes.
+
+\endinput

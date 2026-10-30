@@ -1,0 +1,131 @@
+% !TEX root = ../journal_v2_0421052099.tex
+%
+% Condensed from the discussion and threats to validity of
+% thesis_book/chapters/evaluation.tex.
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Findings against the Research Questions}
+
+\textbf{RQ1.} Agentic navigation improves multi-hop accuracy, and the multi-hop
+qualifier is doing real work. AGR leads every accuracy column, and all eight
+paired tests reject. On CWQ its accuracy rises with hop count, while every
+static system decays. Three boundaries come with that answer. Think-on-Graph
+hedges marginally less on CWQ, at $22.5\%$ against $23.0\%$, the one cell of
+\Cref{tab:main} that AGR does not lead. It is also better on CWQ's one-hop
+stratum. And the margin over it is located in the budget, against a baseline
+that prunes from narrower candidate sets. So the claim defended here is that
+guided search completes under a realistic budget where beam search does not.
+
+\textbf{RQ2.} The answer has three parts that a yes-or-no question would merge.
+First, navigation eliminates structural hallucination, and the verifier is not
+what does it. Second, the precision advantage over Think-on-Graph belongs to the
+architecture, and this experiment cannot award any of it to the layer. Removing
+the verifier moves per-question precision by $+0.001$ and $-0.010$, an order of
+magnitude below the gap. Entity filtering runs only on the give-up path, which
+$10$ WebQSP and $29$ CWQ questions entered. A filter that touches $2.5\%$ of a
+test set cannot produce a $0.13$ precision margin on it. Two differences that
+the ablation holds fixed remain live. One is the groundedness filter on
+evaluator resolutions, which is navigation rather than verification. The other
+is the drafting prompt's provisions, which the baselines' plain prompt lacks.
+Third, verification shows no measurable Hits@1 effect. A metric satisfied by one
+correct entity among several cannot see a mechanism that works on the others.
+What the layer offers is an answer that arrives with the triples supporting it.
+That is an auditability claim, not an accuracy claim.
+
+\textbf{RQ3.} One condition of four reaches significance. Removing the planner
+improves WebQSP by $0.083$ F1 at $p = 0.006$ while saving $31\%$ of tokens, and
+it costs CWQ $0.047$ F1 at $p = 0.088$. That asymmetry, not a pooled average, is
+the result. It says how decomposition should be applied, not whether it works.
+Backtracking, verification, and the scoring blend show no detectable effect at
+$n \approx 200$. On cost, the whole apparatus runs at half the calls of the
+agentic baseline.
+
+So the three answers do not point the same way. Navigation is where the accuracy
+comes from, and verification is where the auditability comes from.
+Decomposition, the component the literature treats as straightforwardly
+beneficial, is the one this work can show is sometimes harmful.
+
+\subsection{What Agency Buys, and What It Costs}
+
+Agency buys the deep tail. On CWQ the agentic system's accuracy rises across hop
+strata while every static system decays. It buys that at roughly an order of
+magnitude more tokens than one-shot retrieval. Against the other agentic system,
+it buys higher accuracy for half the calls, and it never exhausts the call
+budget that clips that baseline on $44\%$ of CWQ questions. That is the
+difference between a guided search and a blind one, priced. Agency also
+lengthens the failure surface. Decomposition errors, abandoned relations, and
+verifier errors are failures that a static baseline cannot have. It has no plan
+to mis-decompose, no frontier to abandon, and no draft to check. Agency converts
+a retrieval problem into a control problem, and control problems fail in more
+ways.
+
+\subsection{When Verification Helps and When It Over-Hedges}
+
+The layer's contribution is auditability, and its cost is recall. Both
+directions show up at case level, which is where they are established, since the
+aggregate effect of removing the layer is indistinguishable from zero. The layer
+helps when a draft asserts something the traversal never supported. It rejected
+the fabricated Brando claim of \Cref{sec:errors} before it could be emitted. A
+pair of sibling questions about the battle of Vicksburg shows the other kind of
+help. One asks who was president during the battle, and its gold answer is
+Ulysses S.~Grant, who took office six years later. AGR answered that the claim
+could not be verified, and its verifier flagged the draft. The ablated system
+without a planner asserted Grant with confidence and was scored a hit for
+restating a gold value that answers a different question. The system that hedged
+was the more correct one, and the metric scored it as a loss.
+
+The layer over-hedges when a true claim has no single edge stating it in the
+drafted phrasing. The five wrongly rejected cases of \Cref{sec:errors} show
+that, and four of them were retries that ran and lost the answer. So the claim
+is narrow. Verification does not make this system more accurate. It makes the
+answers it does give attributable, at a small and measurable cost in recall. And
+it provides no protection against an answer that is grounded, connected, true,
+and not what was asked.
+
+\subsection{Threats to Validity}\label{sec:threats}
+
+\textbf{The environment is friendlier than the knowledge base it stands in for.}
+It is a union of subgraphs that were extracted to contain their own answers.
+That is why reachability is certified at $97.3\%$ and $99.7\%$, and why the
+accuracies are not comparable with evaluations over full Freebase. Every system
+navigates the identical environment, so the relative ordering is sound even
+where the absolute level is optimistic. Every claim in this paper is relative
+for that reason.
+
+\textbf{An identical environment is not identical access.} The agentic baseline
+sees narrower candidate sets than AGR. The static baseline sees a single logical
+hop under an unordered fanout cap. So the reported margins are bounded in both
+directions, and equal-width re-runs would settle them.
+
+\textbf{Every number comes from one run per condition.} The intervals and paired
+tests resample questions, so they bound the sampling variance of the draw and
+nothing else. The backbone repeated its trajectory on only $8$ of $12$ probes.
+The margins defended here are large relative to their intervals, so a rank
+reversal from decoding noise alone is unlikely. But the experiment that would
+bound that variance was not run.
+
+\textbf{Entities are keyed by name.} Homonyms collapse into one node. A merged
+node can manufacture a path between unconnected things, which inflates
+reachability and lets a wrong answer verify as grounded. So structural
+groundedness is a claim about this graph's node identity, not about the world.
+
+\textbf{Wrongful acceptance is unmeasured.} The verifier logs the claims it
+rejects and not the ones it accepts. So one polarity of its error is reported at
+census scale and the other from a single specimen. The exposed population is
+bounded only as $[39, 2{,}008]$ of $2{,}008$ accepted claims.
+
+\textbf{Further limits.} The judge fell short of its pre-specified bar by
+$0.0005$ and shares the systems' backbone. Topic entities are given rather than
+linked, so the accuracies assume a linking step that a deployed system would
+perform itself. The ablations are underpowered. The extraction bug makes the
+measured accuracy a lower bound on one question shape. And the benchmark defects
+were adjudicated by the first author, with the consensus signal visible.
+
+\textbf{One criterion is not reported.} Path fidelity asks whether a system
+reaches the answer by the relation chain that the benchmark's own query
+specifies. It needs the gold SPARQL chains, and the distribution used here
+publishes triples without them. Reconstructing the chains would measure whether
+the right answer came by the right path. The groundedness metrics can only
+approximate that question, and it bears directly on the echo attractor.
+
+\endinput

@@ -1,0 +1,62 @@
+% !TEX root = journal_v2_0421052099.tex
+%
+% Packages and styles for the two-column journal version of the thesis. The
+% class is IEEEtran in journal mode. Its text face is Times, the same as the
+% book's, so only the book's sans scaling is repeated here.
+
+% The book marks identifiers in sans and scales Helvetica to 92% so that it
+% matches Times optically. The journal keeps the same pairing.
+\usepackage[scaled=0.92]{helvet}
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise,nameinlink]{cleveref}
+
+% Two columns are narrow. A little emergency stretch lets TeX set a line with
+% a long identifier in it rather than push it into the margin.
+\setlength{\emergencystretch}{1.5em}
+
+% Fixed-width table columns set ragged right, as in the book.
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Figure palette and plot style, copied from thesis_book/buetcsepgthesis.sty
+% so that the generated figures render here exactly as they do in the book.
+% Okabe-Ito colours, and every series also differs by mark shape, so a
+% greyscale print keeps them apart.
+\definecolor{agrNode}{HTML}{0072B2}
+\definecolor{agrSup}{HTML}{009E73}
+\definecolor{agrUns}{HTML}{D55E00}
+\pgfplotsset{
+  agrplot/.style={
+    width=0.46\textwidth,
+    height=52mm,
+    tick label style={font=\scriptsize},
+    label style={font=\small},
+    title style={font=\small\bfseries},
+    legend style={font=\scriptsize, draw=none, fill=none},
+    grid=major,
+    grid style={gray!25, very thin},
+    axis line style={gray!60},
+    tick align=outside,
+    tick style={gray!60},
+  }}
+
+% cleveref's names for this class. IEEEtran numbers tables in roman, and the
+% figure name follows the class's own "Fig." abbreviation.
+\crefname{figure}{Fig.}{Figs.}
+\Crefname{figure}{Fig.}{Figs.}
+\crefname{algorithm}{Algorithm}{Algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{equation}{Eq.}{Eqs.}
+\Crefname{equation}{Eq.}{Eqs.}
+
+\endinput

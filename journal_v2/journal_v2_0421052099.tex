@@ -1,0 +1,102 @@
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Agentic Graph Reasoning --- two-column journal version of the M.Sc. Engg.
+% (CSE) thesis in thesis_book/.
+%
+% SOURCE     : the thesis book is the source of truth. Every number here is
+%              one the book states, and the book's numbers come from
+%              results/phase4/thesis_numbers.json. Nothing is transcribed
+%              from the run logs directly.
+%
+% REGISTER   : the book's. Short sentences with one idea each and plain
+%              connectives. No colon explanations, no em-dashes, no
+%              contractions, and at most two sentences joined into one.
+%              British spelling, as in the book.
+%
+% BUDGET     : 20 to 22 pages including the references, and at most 1.5
+%              pages of references.
+%
+% BUILD      : latexmk -pdf journal_v2_0421052099.tex
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[journal,a4paper]{IEEEtran}
+
+\input{preamble}
+
+\begin{document}
+
+\title{Agentic Graph Reasoning: Multi-Hop Knowledge Graph Question Answering
+with Structural Claim Verification}
+
+\author{Md.~Sakif~Khan and Sadia~Sharmin%
+\thanks{Both authors are with the Department of Computer Science and
+Engineering, Bangladesh University of Engineering and Technology, Dhaka,
+Bangladesh. Corresponding author: Md.~Sakif~Khan (e-mail:
+sakifkhanopu@gmail.com). This paper is based on the first author's M.Sc.
+Engg. thesis.}}
+
+\markboth{Khan and Sharmin: Agentic Graph Reasoning}%
+{Khan and Sharmin: Agentic Graph Reasoning}
+
+\maketitle
+
+\begin{abstract}
+Large language models answer factual questions fluently. But they sound just
+as fluent when they do not hold the facts. Retrieval-augmented generation
+grounds answers in retrieved text, but retrieves once, before reasoning starts.
+Systems that navigate a knowledge graph do better by interleaving retrieval
+with reasoning. Even they send out whatever their final generation call
+produces, and nothing checks the answer's claims before it reaches the user.
+We propose Agentic Graph Reasoning (AGR), a knowledge-graph question-answering
+framework whose agent plans sub-objectives and walks the graph through a
+deterministic tool API. Before the answer is emitted, a Structural Verification
+Layer splits the draft into atomic claims and checks each one against the
+triples the agent traversed. We evaluate AGR on $400$ certified questions from
+each of WebQSP and ComplexWebQuestions, against four baselines sharing one
+frozen backbone and one call budget. AGR reaches a Hits@1 of $0.755$ on WebQSP
+and $0.522$ on ComplexWebQuestions, beating every baseline at half the calls of
+the agentic baseline. That baseline leads on the questions it finishes, so the
+margin is affordability under a fixed budget. On ComplexWebQuestions, AGR is
+the only system whose accuracy rises with hop count. An ablation finds one
+detectable effect, opposite to what we expected. Removing the planner improves
+WebQSP accuracy. The verification layer does not change how often AGR is right.
+It makes answers auditable. A hand reading of all $256$ remaining failures
+names the \emph{echo attractor}, a grounded entity next to the answer that
+several systems fall into together.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Knowledge graphs, question answering, large language models,
+retrieval-augmented generation, hallucination, claim verification, agents.
+\end{IEEEkeywords}
+
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/environment}
+\input{sections/framework}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/errors}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+\section*{Data Availability}
+
+Code, prompts, per-question run records, and the scripts that produce every
+table and figure in this paper are available at
+\url{https://github.com/sakif-khan/agentic-graph-reasoning} under the MIT
+licence. The questions and the Freebase-derived subgraphs come from the public
+Reasoning-on-Graphs distribution~\cite{luo2024reasoning}, used unmodified.
+
+\section*{Acknowledgment}
+
+This research received no specific grant from any funding agency in the public,
+commercial, or not-for-profit sectors. During the preparation of this manuscript
+the authors used Claude (Anthropic) to draft and revise its prose from the
+completed thesis on which it is based. The study design, the experiments, the
+analysis, and the findings are the authors' own and predate the manuscript. The
+authors reviewed and edited the content and take full responsibility for it.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,505 @@
+% !TEX root = ../journal_v2_0421052099.tex
+%
+% Condensed from thesis_book/chapters/framework.tex. Checked against the code
+% in agr/ (nodes.py, scorer.py, planner.py, budget.py, kg_tools.py).
+\section{The AGR Framework}\label{sec:framework}
+
+\subsection{The Controlled-Agent Pattern}
+
+There are two ways to build a graph-navigating agent. The first hands the model
+a set of tools through native function calling and lets it drive the loop
+itself, in the style of ReAct~\cite{yao2023react}. The second inverts control.
+The \emph{program} orchestrates the loop, calls the graph tools
+deterministically, and consults the model only at decision points, through
+constrained prompts that must return JSON. AGR uses the second. Every graph
+operation is then logged by construction, and budgets are enforced in code
+rather than requested in prompts. A malformed model response can spoil one
+decision, but it cannot corrupt the control flow. The agency in AGR lives in the
+decision policy. That policy decides which sub-objectives to pursue, which edges
+look promising, whether a path is a dead end, and whether the draft answer is
+supported.
+
+\subsection{The State Machine}
+
+AGR is a state machine of six nodes over a shared typed state, built with
+LangGraph (\Cref{fig:statemachine}). The topology has cycles. Exploration loops
+until the evaluator is satisfied, and verification can send the agent back to
+explore. The verifier sits between the decision to answer and the answer itself.
+There is no path from the evaluator to the answerer that does not pass through
+verification.
+
+\begin{figure}[!t]
+\centering
+\input{figures/fig_statemachine}
+\caption{The AGR state machine. The dashed region is the explorer--evaluator
+  search loop. The backtracker restores an earlier frontier, and the verifier's
+  retry edge is verification-driven re-exploration. All three cycles are bounded
+  by the budgets of \Cref{tab:budget}. Every path from the evaluator to the
+  answerer passes through the verifier.}
+\label{fig:statemachine}
+\end{figure}
+
+\subsection{The Graph Tool API}\label{sec:tools}
+
+The model never writes graph queries. A generated query introduces a failure
+that is indistinguishable, in the results, from a reasoning failure. When a
+question is answered wrongly, one cannot tell whether the agent reasoned badly
+or emitted invalid syntax. So the tools are parameterised Cypher templates,
+written once and unit-tested. Four operations are live.
+
+\textsf{search\_entity} links a mention to candidate nodes through the resolver
+of \Cref{sec:environment}. It is the only entry point from text to graph.
+
+\textsf{get\_relations} returns the relation types incident to an entity in
+\emph{both} directions, each with its fanout count. Freebase's edge direction is
+a modelling artefact. And the count is free signal, since a relation with a
+fanout of forty thousand rarely answers a specific question. Relations in
+administrative namespaces such as \textsf{common}, \textsf{type}, and
+\textsf{freebase} are dropped. The list is capped at $300$ relations, sorted by
+fanout.
+
+\textsf{get\_neighbors} expands an entity along one relation. When it reaches a
+mediator, it hops through it and returns the entities on the far side, each with
+the chain of relations that reached it. So the model reasons about logical
+neighbours, while the log keeps the raw chain. At most $200$ neighbours are
+returned per expansion.
+
+\textsf{verify\_connection} asks whether two entities are adjacent in the full
+graph, directly or through one mediator. It ignores the relation and the
+direction. A fifth operation, \textsf{verify\_triple}, also matched the
+relation. It was built first as the claim checker and did not survive contact
+with generated text. Claim decomposition produces relations phrased in English,
+while Freebase predicates are neither phrased that way nor reliably one edge
+long. So requiring the relation to match rejected claims that were true, and no
+node calls it.
+
+\subsection{Planner, Explorer, and Scorer}\label{sec:explorer}
+
+The planner makes one model call. It turns the question into an ordered chain of
+at most four sub-objectives, in which later objectives refer back to earlier
+results with a \textsf{\#N} back-reference. The prompt is few-shot, with one
+example for each of four archetypes (single hop, composition, conjunction, and
+superlative). The single-hop example shows that \emph{not} decomposing is a
+valid output. The plan is validated rather than trusted. If it is empty, too
+long, refers forwards, or names no topic, the planner falls back to a single
+sub-objective holding the whole question. Planning can degrade but can never
+abort a run. Search is seeded from the dataset's annotated topic entities, the
+standard protocol in this literature~\cite{sun2024think,luo2024reasoning}. That
+choice separates reasoning from entity linking.
+
+The explorer performs one expansion of the frontier. It pushes a checkpoint onto
+the backtrack stack and gathers the relations of every anchor into a single
+candidate list. It scores the whole list in one pass and takes the best three
+edges per anchor, skipping banned ones. Each selected edge is expanded, and the
+new frontier is sorted by the score of the edge that produced each entity and
+truncated to five anchors. Each candidate edge $c$ receives the hybrid score
+\begin{equation}\label{eq:score}
+\mathrm{score}(c) = \alpha \cos\big(\mathbf{v}_{\mathrm{rel}(c)},
+\mathbf{v}_{\mathrm{obj}}\big) + (1-\alpha)\,\mathrm{LLM}(c),
+\end{equation}
+where $\mathbf{v}_{\mathrm{rel}(c)}$ embeds the candidate's relation and
+$\mathbf{v}_{\mathrm{obj}}$ embeds the active sub-objective. $\mathrm{LLM}(c)
+\in [0,1]$ is the model's rating of how likely following the edge is to advance
+that objective. Three properties matter. The objective is embedded, not the
+question, with any back-reference already replaced by the resolved entity's
+name. That substitution is the mechanism by which decomposition is supposed to
+help. The model rates only the twenty candidates that the embedding ranks
+highest, in one batched call. Every other candidate scores $\mathrm{LLM}(c) =
+0$, so the pre-filter is a hard gate. And the blend is applied after the call.
+The scoring prompt holds no configuration value, so every condition of an
+$\alpha$ sweep shares the same cached model responses. We use $\alpha = 0.7$,
+chosen on development data (\Cref{sec:ablation-setup}).
+
+\subsection{Evaluator and Backtracking}
+
+The evaluator makes one model call per expansion. It sees the active
+sub-objective, the thirty traversed facts most relevant to it, and the remaining
+budget. It decides whether to continue, backtrack, or answer, and it names the
+entities that satisfy the objective. Those names are not taken on trust. Any
+name that is not the tail of a traversed triple is discarded. A language model
+asked which entities satisfy an objective will happily list ones it knows from
+training but never retrieved. This \emph{groundedness filter} refuses to let
+that recall pass as evidence. On one question of an early smoke run, the
+evaluator listed nine correct countries that appeared in no retrieved triple,
+because the beam had gone down an unrelated branch. The filter rejected all
+nine, and the system abstained. That cost a point, but it kept every proposed
+entity tied to the graph. Surviving resolutions are added to the candidate
+answers on every evaluation, whether or not the objective was judged complete.
+When an objective completes, the plan advances and the resolved entities become
+the next frontier.
+
+Backtracking fires on the first of three triggers, checked in this order. Either
+the last expansion produced no new triples, or the frontier's signal fell below
+a threshold $\tau = 0.20$, or the evaluator judged the direction a dead end. The
+first two cost nothing, so a mechanically hopeless frontier is abandoned without
+asking the model. The signal compared against $\tau$ is the largest of three
+quantities. They are the best blended score among the expanded edges, the best
+raw embedding similarity over every candidate, and the best model rating. So the
+trigger fires only when all three are weak. The backtracker restores the
+\emph{highest-scoring} snapshot on the stack rather than the most recent one. It
+also bans the (anchor, relation, direction) combinations of the last pass.
+Without that ban list, a deterministic scorer facing a restored frontier would
+select the same edges again until the budget ran out. \Cref{alg:nav} states the
+whole navigation loop.
+
+\begin{algorithm}[!t]
+\caption{AGR navigation, with the verification layer abstracted}
+\label{alg:nav}
+\small
+\begin{algorithmic}[1]
+\REQUIRE question $q$, budgets, blend $\alpha$, threshold $\tau$
+\ENSURE answer $A$ with supporting triples $S$
+\STATE $P \gets \textsc{Plan}(q)$; \textbf{if} invalid \textbf{then}
+  $P \gets [\,q\,]$
+\STATE $F \gets \textsc{SeedAnchors}(q)$; $T, C, \mathit{stack},
+  \mathit{ban} \gets \emptyset$
+\WHILE{budgets permit}
+  \STATE push $(F, \mathit{depth}, \sigma)$ onto $\mathit{stack}$
+  \STATE $R \gets \bigcup_{e \in F} \textsc{GetRelations}(e)$
+  \STATE score $R$ by \Cref{eq:score} against the active objective
+  \STATE $E \gets$ best $3$ edges per anchor, excluding $\mathit{ban}$
+  \STATE $T \gets T \cup \textsc{GetNeighbors}(E)$
+  \STATE $F \gets$ best $5$ new entities by edge score
+  \STATE $\sigma \gets$ the largest of the three signals of this pass
+  \STATE $(d, \mathit{done}, \rho) \gets \textsc{Evaluate}(\text{objective},
+    \textsc{TopFacts}(T))$
+  \STATE $\rho \gets \rho \cap \textsc{Tails}(T)$; $C \gets C \cup \rho$
+    \COMMENT{groundedness filter}
+  \IF{$\mathit{done}$}
+    \STATE advance $P$; \textbf{if} no objective remains \textbf{then}
+      $d \gets \textsf{answer}$ \textbf{else} $F \gets \rho$
+  \ENDIF
+  \IF{no new triples \OR $\sigma < \tau$ \OR $d = \textsf{backtrack}$}
+    \STATE $\mathit{ban} \gets \mathit{ban} \cup E$; restore the
+      highest-scoring snapshot
+  \ELSIF{$d = \textsf{answer}$}
+    \STATE \textbf{break}
+  \ENDIF
+\ENDWHILE
+\STATE $(A, S) \gets \textsc{VerifyAndAnswer}(q, T, C)$
+  \COMMENT{\Cref{alg:verify}}
+\RETURN $(A, S)$
+\end{algorithmic}
+\end{algorithm}
+
+The implementation departs from this specification in one way that has a
+measurable consequence. It is recorded rather than repaired, since repairing it
+would change the frozen results. The backtracker bans the \emph{most recent}
+pass but restores the \emph{highest-scoring} snapshot, which is often older. So
+whatever was expanded in between stays unbanned, and the explorer can select it
+again. Over the main test runs, $53$ explorer passes expanded a set of (anchor,
+relation) pairs that the same question had already expanded. That is exactly the
+repetition the ban list exists to prevent.
+
+\subsection{Budgets and Termination}
+
+\Cref{tab:budget} lists the budgets. They are enforced in the routers between
+nodes and in the model client, never in prompts. The depth budget counts
+explorer expansions. One expansion can cross a mediator, so it does not bound
+the search at four raw hops. Every cycle in \Cref{fig:statemachine} passes
+through a router that checks a counter which only moves one way. So no sequence
+of model outputs can produce a run that never ends. Every model call is also
+cached, keyed on the model, its sampling settings, and the full prompt. A cache
+hit replays the original token counts, so a cached rerun reproduces the original
+run's budget record exactly. Each run writes two logs. The tool log records
+every graph operation with its arguments, result size, and latency. The run
+record holds the answer, the draft, the verification outcome, every backtrack
+with its trigger, the full decision trace, and the budget snapshot. It also
+names the backbone, the budget configuration hash, the run configuration, and
+the source commit. So any record found anywhere states what produced it.
+
+\begin{table}[!t]
+\caption{Budget configuration. The last two rows are caps in the tool layer that
+  bound what the agent can see.}
+\label{tab:budget}
+\centering
+\footnotesize
+\begin{tabular}{@{}lrl@{}}
+\toprule
+Budget & Value & What it bounds \\
+\midrule
+\textsf{max\_depth} & $4$ & explorer expansions \\
+\textsf{beam\_width} & $3$ & edges expanded per anchor \\
+\textsf{max\_anchors} & $5$ & frontier size \\
+\textsf{max\_backtracks} & $3$ & backtracks per question \\
+\textsf{max\_llm\_calls} & $25$ & model calls per question \\
+\textsf{max\_verify\_iters} & $2$ & repair iterations \\
+\textsf{max\_seconds} & $300$ & wall-clock time \\
+\midrule
+\textsf{max\_relations} & $300$ & relations offered to the scorer \\
+\textsf{max\_fanout} & $200$ & neighbours per expansion \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Design Validation on a Smoke Set}\label{sec:smoke}
+
+Twenty questions from the training and validation splits, never from test, were
+used once to check the assembled framework's mechanics. The set was built to
+exercise specific machinery rather than to sample the benchmarks. The first
+end-to-end run answered roughly three or four of them correctly, and the final
+configuration answers thirteen or fourteen. That interval is where several of
+the mechanisms above were shown to be necessary. The first run's failures
+collapsed into five systematic causes, and \Cref{tab:rootcauses} gives the
+mechanism each one motivated. Its before-state was read from a console log that
+was never committed. So these figures are given as ranges, and none of them
+enters any result.
+
+\begin{table}[!t]
+\caption{Root causes of failure in the first end-to-end run on the smoke set,
+  and the mechanism each one motivated.}
+\label{tab:rootcauses}
+\centering
+\footnotesize
+\begin{tabular}{@{}L{43mm}L{39mm}@{}}
+\toprule
+Observed failure & Mechanism introduced \\
+\midrule
+Backtracking was a no-op, since a restored frontier reproduced the same scores and decisions & A ban list on abandoned (anchor, relation, direction) combinations \\
+\addlinespace
+The fact window showed the thirty most recent triples, so a large expansion pushed the answer out of view & A fact window ranked by relevance to the objective \\
+\addlinespace
+A relation cap of $80$, sorted by fanout, hid precise low-fanout relations behind hub relations & The cap raised to $300$, and administrative predicates blocked \\
+\addlinespace
+Entities resolved while an objective was incomplete were discarded & Candidates accumulated on every evaluation \\
+\addlinespace
+The frontier was truncated in insertion order, so the agent drifted from the anchor that mattered & The frontier sorted by edge score before truncation \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The two confabulations of the first run came from a retrieval defect, not a
+generation defect. Two questions about national currencies produced a confident
+``United States Dollar''. The relation cap had hidden the currency relation, the
+beam surfaced triples about national income per capita in dollars, and the
+answerer matched the pattern. No retrieved triple supported the answer, and
+nothing that examined the answer caught it. After the cap was raised, both
+questions resolved correctly at roughly a third of the token cost. But a
+claim-level check against the traversed triples would have caught them
+regardless of the retrieval defect. That is the argument for verifying before
+emitting.
+
+\subsection{The Structural Verification Layer}\label{sec:verification}
+
+The navigation loop ends with a set of traversed triples and a list of candidate
+entities. Nothing in it constrains what the final answer \emph{asserts}. A final
+generation call is free to name an entity that appeared in neither, as the
+currency answers of \Cref{sec:smoke} did.
+
+The response is to check the draft before it is emitted. Chain-of-Verification
+and FActScore decompose and check after generation, and both take further model
+output as evidence~\cite{dhuliawala2024chain,min2023factscore}. The layer
+borrows their decomposition step and rejects their placement and their evidence.
+Placing the check inside the loop has three consequences. The checker sees the
+same evidence the drafter saw. A rejected claim can trigger more exploration
+while budget remains. And the judge of whether a fact holds is the environment,
+not a second opinion from the model that wrote the draft.
+
+\textbf{Claim decomposition.} One model call produces three things at once. They
+are a prose draft, the entities the draft asserts as the answer, and a
+decomposition of the draft into atomic claims $\langle h, r, t \rangle$ over
+entity names. The call sees at most sixty traversed triples, ranked by relevance
+to the question, and up to twenty-five candidates. The prompt requires names to
+be copied exactly from the facts, and it requires a hedged draft to carry no
+claims. It also requires the answer entities to be specific entities of the kind
+the question asks for. That rule was added after drafts such as ``the senators
+from New Jersey are the United States Senate members associated with New
+Jersey''. Such an answer is grammatically complete and semantically empty. The
+relation slot $r$ is free text, since the model has no reliable way to name a
+Freebase predicate. Decomposition is sparse. On the development set the drafter
+emitted $121$ claims over $80$ questions, with a median of one per question. Ten
+questions produced no claims at all, so for those ten the layer certified
+nothing.
+
+\begin{figure*}[!t]
+\centering
+\input{figures/fig_claim_path}
+\caption{The path of one atomic claim through the verification layer, mirroring
+  \Cref{alg:verify}. A claim leaves at the first test that settles it. Only the
+  first structural route adds to the evidence, which is why some grounded
+  answers carry supporting triples and others do not. A claim that names an
+  entity the agent never traversed skips both structural routes, because the
+  name map is built from traversed triples alone.}
+\label{fig:claim}
+\end{figure*}
+
+\textbf{Two-stage checking.} \Cref{alg:verify} gives the procedure, and
+\Cref{fig:claim} draws one claim's path through it. The structural check first
+maps a claim's names back to nodes through the traversed triples alone. A claim
+naming an entity the agent never traversed cannot reach either structural route.
+It falls to the entailment check. The first structural route is \emph{traversed
+adjacency}. The claim is supported if a traversed triple joins its endpoints,
+and every such triple is attached to the answer as evidence. The second route
+asks \textsf{verify\_connection} whether the endpoints are adjacent in the full
+graph, since the agent may have reached both along different branches. It
+records no evidence. This second route is rare. On the test sets it was
+consulted for $100$ of the $2{,}110$ claims and accepted $39$. Claims that fail
+both routes go to the \emph{entailment check}, one batched model call that
+judges each claim against the same fact window. If that call fails for any
+reason, every pending claim is marked unsupported.
+
+The structural check runs first for three reasons. The graph should decide where
+it can, so the model is consulted only where the graph is silent. Only traversed
+adjacency yields triples that can be attached to the answer. And a set lookup is
+free, while the entailment call is the layer's only unavoidable cost beyond
+drafting.
+
+\begin{algorithm}[!t]
+\caption{Structural verification of a draft}
+\label{alg:verify}
+\small
+\begin{algorithmic}[1]
+\REQUIRE question $q$, traversed triples $T$, candidates $C$
+\ENSURE draft, answer entities $A$, claim sets $S$ and $U$, evidence $E$
+\STATE $W \gets \textsc{TopFacts}(q, T, 60)$
+\STATE $\mu \gets$ name-to-id map over $T$
+\STATE $(\mathit{draft}, A, K) \gets \textsc{DraftAndDecompose}(q, W, C)$
+\STATE $\mathit{adj} \gets \{(h,t),(t,h) : (h,r,t) \in T\}$
+\STATE $S \gets \emptyset$; $P \gets \emptyset$; $E \gets \langle\,\rangle$
+\FORALL{$c = \langle h, r, t \rangle \in K$}
+  \IF{$h \notin \mu$ \OR $t \notin \mu$}
+    \STATE $P \gets P \cup \{c\}$ \COMMENT{never traversed}
+  \ELSIF{$(\mu[h], \mu[t]) \in \mathit{adj}$}
+    \STATE $S \gets S \cup \{c\}$; append the joining triples to $E$
+  \ELSIF{$\textsf{verify\_connection}(\mu[h], \mu[t])$}
+    \STATE $S \gets S \cup \{c\}$ \COMMENT{no evidence recorded}
+  \ELSE
+    \STATE $P \gets P \cup \{c\}$
+  \ENDIF
+\ENDFOR
+\STATE $U \gets \emptyset$
+\IF{$P \neq \emptyset$}
+  \STATE split $P$ into $S$ and $U$ by $\textsc{Entail}(W, P)$
+\ENDIF
+\IF{$U \neq \emptyset$ \AND repair budget remains}
+  \STATE add a repair objective for the first claim in $U$
+\ENDIF
+\STATE route \textsf{grounded} if $U = \emptyset$, else \textsf{retry}
+  if the repair, depth, and time budgets remain, else \textsf{give\_up}
+\RETURN $(\mathit{draft}, A, S, U, E)$
+\end{algorithmic}
+\end{algorithm}
+
+\textbf{Repair.} The router after the verifier has three outcomes. With no
+unsupported claim it routes to \textsf{grounded}, and the draft is emitted with
+no further model call. With unsupported claims and the repair, depth, and time
+budgets all remaining, it routes to \textsf{retry}. The verifier has already
+appended a repair objective for the first unsupported claim and re-anchored the
+search on that claim's head entity. Anything else routes to \textsf{give\_up}.
+On that path the final entity list is computed deterministically. An entity is
+kept if it appears in a supported claim or in no unsupported claim. One rewrite
+call then restates the prose around the kept list. Repair is capped at two
+iterations. The grounded path costs nothing, so the layer is cheap overall. On
+the development set it raised mean tokens per question from $4{,}858$ to
+$4{,}925$, about $1.4\%$.
+
+The retry route never ran on the development set. On all three development
+questions that produced an unsupported claim, the depth budget was already spent
+when the verifier was reached. That correlation does not survive the move to
+test. Across the $800$ test questions the verifier asked for a repair on $52$,
+and exploration actually resumed on $28$ of them. So the depth condition blocks
+the retry about half the time. Thirteen questions ended grounded after a repair,
+and the iteration cap bound on $15$.
+
+That deterministic filter replaced a second generation call, and the reason is
+the most instructive result of the design. On the development set, a
+question-by-question comparison against the same system with claim checking
+switched off found exactly three questions that differed. No entailment verdict
+was involved in any of them. All three traced to the rewrite call, which at the
+time regenerated the answer entities along with the prose. In one case it
+dropped four correct entities together with an unsupported one. In another it
+added the question's own subject to the answer. In the third it respelled the
+graph's \textsf{University Yale} as \textsf{Yale University}, which scored as
+wrong (\Cref{sec:example}). The verification logic was sound, and its repair
+path frequently was not. Replacing generation with filtering removed two of the
+three regressions.
+
+\textbf{The output contract and its limits.} AGR returns each answer paired with
+the triples that support it. That coverage is narrower than the phrase suggests.
+Only the traversed-adjacency route records evidence. And the run log keeps the
+number of supporting triples, not the triples. So the contract holds inside the
+run, but it cannot be checked afterwards from the committed records. On the
+development set, $13$ of $80$ answers carry no supporting triples at all. Ten of
+them are hedges with no claims, for which zero is the honest count. The other
+three had every claim rejected or certified only through the route that records
+nothing.
+
+\subsection{A Worked Example}\label{sec:example}
+
+The question ``Which university, founded in 1701, did actor James Franco
+attend?'' shows the layer end to end. Its gold answer is the graph's
+\textsf{University Yale}. Navigation anchors on James Franco and expands his
+education relations. The plan's first objective, the university founded in 1701,
+is never satisfied, because the environment holds essentially no date literals.
+After three evaluator-triggered backtracks, the run stops on the depth budget.
+
+The drafter writes ``James Franco attended University Yale, which was founded in
+1701.'' Its entity list is \textsf{[University Yale]}, copied from the fact
+window in the graph's spelling. It decomposes the draft into an attendance claim
+and a founding claim. Traversed triples join the attendance claim's endpoints,
+so that claim is supported, and four triples are recorded as its evidence. The
+founding claim names \textsf{1701}, which no traversed triple mentions. So it
+falls to the entailment check, which correctly reports it unsupported. The depth
+budget is spent, so the router takes \textsf{give\_up}. The filter keeps
+\textsf{University Yale}, since it appears in a supported claim. The rewrite
+asserts the attendance and hedges the founding date, and the answer scores as a
+hit.
+
+The instructive part is the counterfactual. Before deterministic filtering, the
+identical trace ended with \textsf{[Yale University]}. The rewrite call had
+restated the answer in the model's own spelling rather than the graph's, and the
+answer was scored wrong. The claim-level checks had worked perfectly. The layer
+still emitted an entity string that appears nowhere in the environment, which is
+the precise thing it exists to prevent.
+
+\subsection{What the Layer Can Get Wrong}\label{sec:failure-modes}
+
+The ways the layer can be wrong follow from its design, independently of how
+often they occur. A claim is \emph{wrongly rejected} when the layer withholds
+support that the environment would in fact provide. It is \emph{wrongly
+accepted} when the layer certifies a claim that the environment does not
+support. \Cref{sec:errors} reports which of these mechanisms actually fired.
+
+Five mechanisms lead to wrongful rejection. The most expensive is the composite
+claim. When a draft asserts a filtered set, such as ``these teams were founded
+before 1996'', its claims are about the founding. The membership that makes each
+team a candidate may never be claimed at all. So each team's only claim is the
+unverifiable one, the filter drops every team, and a draft with four correct
+answers becomes a hedge. A claim can also name an endpoint outside the
+traversal, which skips both structural routes whatever the graph contains. The
+entailment check's fact window is ranked for relevance to the question rather
+than to the claim, so a peripheral claim may be judged against facts that never
+mention it. A failed entailment call records an infrastructure error as a
+rejection. And the name map keeps the first identifier it sees for a name, so
+two entities that share a surface form collapse into one.
+
+Wrongful acceptance has more mechanisms, and they reach further. Both structural
+routes ignore the relation and the direction. So any edge between two entities
+certifies any claimed relation between them. A claim that X is Y's mother is
+accepted on an edge recording that X is Y's child. That is the price of
+free-text relations, and it is the layer's main acceptance risk. On the test
+sets the verifier accepted $2{,}008$ of the $2{,}110$ claims it decomposed. The
+number accepted by a relation-blind test lies somewhere in $[39, 2{,}008]$. The
+lower end is what the log pins down, and the upper end is what the mechanism
+permits. The mediator hop adds a second looseness. An actor, a film, a
+character, and a period are all mutually connected through one performance node,
+so any claim relating two of them is certified. A draft with no claims has no
+unsupported claim and is routed \textsf{grounded}, which describes $10$ of the
+$80$ development questions. An entity that the drafter named but the decomposer
+never put into a claim is never checked. So the guarantee over emitted entities
+rests on decomposition recall, which is itself an unchecked model output. A
+claim accepted structurally is never examined for meaning, since the entailment
+check sees only what the structural routes could not resolve. And an answer
+whose every claim is supported can still fail to answer the question, as the New
+Jersey senators draft does. No claim-level check can catch that, because the
+defect lies between the claims and the question.
+
+The layer establishes that the entity pairs a draft relates are connected in the
+environment. On the repair path it also makes the emitted entity list a
+deterministic function of those verdicts rather than a second generation. It
+does not establish that the claimed relation is the one the edge records, that
+an entity absent from every claim was grounded, or that the answer is responsive
+to the question. Those boundaries are properties of the design rather than
+defects discovered in it.
+
+\endinput
