@@ -1,4 +1,4 @@
-% !TEX root = ../journal_v2_0421052099.tex
+% !TEX root = ../journal_0421052099.tex
 %
 % Condensed from thesis_book/chapters/environment.tex and the knowledge-graph
 % preliminaries of thesis_book/chapters/background.tex.
@@ -57,14 +57,14 @@ Freebase identifier. So distinct entities that share a surface form are merged
 into one node. Both bound the absolute numbers, and \Cref{sec:threats} returns
 to them.
 
-The graph is stored in Neo4j~\cite{robinson2015graph}, with each relation as a
-native relationship type, and is queried in Cypher~\cite{francis2018cypher}.
-Entity names and the relation vocabulary are embedded with the 384-dimensional
-sentence encoder all-MiniLM-L6-v2~\cite{reimers2019sentence}. Relation names are
-verbalised before embedding, so \textsf{people.person.place\_of\_birth} is
-encoded as the phrase it means. Embeddings have a narrow role. They link
-question phrases to entities and pre-rank relation candidates. They never
-establish that a fact is true, a role that belongs to the triples alone.
+The graph is stored in Neo4j, with each relation as a native relationship type,
+and is queried in Cypher. Entity names and the relation vocabulary are embedded
+with the 384-dimensional sentence encoder
+all-MiniLM-L6-v2~\cite{reimers2019sentence}. Relation names are verbalised
+before embedding, so \textsf{people.person.place\_of\_birth} is encoded as the
+phrase it means. Embeddings have a narrow role. They link question phrases to
+entities and pre-rank relation candidates. They never establish that a fact is
+true, a role that belongs to the triples alone.
 
 Entity resolution is a three-stage cascade of exact, lexical, and vector
 matching, each stage tried only if the previous one fails. Over all $7{,}149$

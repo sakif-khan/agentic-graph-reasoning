@@ -1,8 +1,6 @@
-% !TEX root = ../journal_v2_0421052099.tex
+% !TEX root = ../journal_0421052099.tex
 %
-% Condensed from thesis_book/chapters/background.tex. Six works the book does
-% not survey (GNN-RAG, SubgraphRAG, ToG-2, GCR, Self-RAG, CRAG) are cited for
-% currency. Their entries sit in the book's own .bib file.
+% Condensed from thesis_book/chapters/background.tex.
 \section{Related Work}\label{sec:related}
 
 \subsection{Static Retrieval over Text and Graphs}
@@ -16,13 +14,10 @@ suited to direct cosine comparison~\cite{reimers2019sentence}. Graph-based
 retrieval swaps flat passages for structured context.
 GraphRAG~\cite{edge2024local} builds a graph over a corpus and answers from
 summaries of its communities. HippoRAG~\cite{gutierrez2024hipporag} ranks nodes
-by a random walk that restarts from the query's entities. Other systems learn
-the retriever, scoring candidates with a graph neural
-network~\cite{mavromatis2024gnnrag} or retrieving a bounded subgraph with a
-light-weight scorer~\cite{li2025subgraphrag}. All of them retrieve once, before
-reasoning, so the context cannot be conditioned on what reasoning finds. The
-distinction that matters here is not graph versus vector but \emph{static versus
-interleaved}.
+by a random walk that restarts from the query's entities. All of them retrieve
+once, before reasoning, so the context cannot be conditioned on what reasoning
+finds. The distinction that matters here is not graph versus vector but
+\emph{static versus interleaved}.
 
 \subsection{Agentic Exploration of Knowledge Graphs}
 
@@ -30,50 +25,40 @@ Think-on-Graph~\cite{sun2024think} established \emph{training-free} agentic
 question answering over knowledge graphs, in which the model is prompted and
 never fine-tuned. The model performs iterative beam search over the graph, with
 beam width and depth both set to three, and prunes relations and entities
-itself. Its successor adds document retrieval at each step~\cite{ma2024tog2}.
-Plan-on-Graph~\cite{chen2024plan} decomposes the question into sub-objectives.
-Its reflection step decides both whether to self-correct and which entity to
-backtrack to, which makes it the one surveyed system with genuine backtracking.
-That self-correction operates on the search, not on the draft answer.
-Reasoning-on-Graphs (RoG)~\cite{luo2024reasoning} fine-tunes a model to generate
-relation paths and instantiates them in the graph. Its answers are faithful by
-construction, and graph-constrained reasoning~\cite{luo2025gcr} takes the same
-route. But the plan is generated once, with no mechanism to revise it when it
-fails to instantiate. KG-Agent~\cite{jiang2024kgagent} drives a toolbox with an
-instruction-tuned model. StructGPT~\cite{jiang2023structgpt} reads structured
-data through specialised interfaces. Generate-on-Graph
-(GoG)~\cite{xu2024generate} admits model-generated triples when the graph is
-incomplete, whereas AGR admits only graph triples.
+itself. Plan-on-Graph~\cite{chen2024plan} decomposes the question into
+sub-objectives. Its reflection step decides both whether to self-correct and
+which entity to backtrack to, which makes it the one surveyed system with
+genuine backtracking. That self-correction operates on the search, not on the
+draft answer. Reasoning-on-Graphs (RoG)~\cite{luo2024reasoning} fine-tunes a
+model to generate relation paths and instantiates them in the graph. Its answers
+are faithful by construction. But the plan is generated once, with no mechanism
+to revise it when it fails to instantiate. KG-Agent~\cite{jiang2024kgagent}
+drives a toolbox with an instruction-tuned model.
+StructGPT~\cite{jiang2023structgpt} reads structured data through specialised
+interfaces. Generate-on-Graph (GoG)~\cite{xu2024generate} admits model-generated
+triples when the graph is incomplete, whereas AGR admits only graph triples.
 
 KBQA-o1~\cite{luo2025kbqao1} is the system closest to genuine tree search. It
-wraps a ReAct-style~\cite{yao2023react} agent in full Monte Carlo Tree
-Search~\cite{kocsis2006bandit,browne2012survey}, with policy and reward models,
-rollouts, and value backpropagation. AGR has none of these. Its search is guided
-best-first search with a bounded beam and
-backtracking~\cite{hart1968formal,pearl1984heuristics}, and each candidate is
-scored once. KBQA-o1 also shows what an ablation can attribute. Removing its
-tree search drops its F1 on GrailQA~\cite{gu2021beyond} from $78.5$ to
+wraps a ReAct-style~\cite{yao2023react} agent in full Monte Carlo Tree Search,
+with policy and reward models, rollouts, and value backpropagation. AGR has none
+of these. Its search is guided best-first search with a bounded beam and
+backtracking~\cite{pearl1984heuristics}, and each candidate is scored once.
+KBQA-o1 also shows what an ablation can attribute. Removing its tree search
+drops its F1 on GrailQA~\cite{gu2021beyond} from $78.5$ to
 $48.5$~\cite{luo2025kbqao1}. That attribution was possible only because its
 authors removed one component at a time.
 
 \subsection{Verification and Factuality}
 
 Chain-of-Verification~\cite{dhuliawala2024chain} has the model draft a response,
-plan verification questions, answer them, and regenerate. Multi-agent
-debate~\cite{du2024improving} gets a related effect by having several model
-instances critique one another. Both check against the model's own knowledge,
-and models cannot reliably correct their own reasoning without outside
-feedback~\cite{huang2024selfcorrect}. A second group critiques the retrieval.
-Self-RAG~\cite{asai2024selfrag} emits reflection tokens that judge whether a
-passage supports the output. Corrective RAG~\cite{yan2024crag} grades the
-retrieved documents and triggers a fallback search.
+plan verification questions, answer them, and regenerate. It checks against the
+model's own knowledge, and models cannot reliably correct their own reasoning
+without outside feedback~\cite{huang2024selfcorrect}.
 Reflexion~\cite{shinn2023reflexion} conditions an agent's next attempt on a
-critique of its failed one, and a self-correcting graph RAG system applies such
-a loop to clinical decision support~\cite{hu2025selfcorrecting}.
-FActScore~\cite{min2023factscore} breaks generated text into atomic facts and
-checks each against a reference source. It is a metric rather than a control
-step, and the groundedness metric of \Cref{sec:metrics} borrows its
-decompose-then-verify protocol.
+critique of its failed one. FActScore~\cite{min2023factscore} breaks generated
+text into atomic facts and checks each against a reference source. It is a
+metric rather than a control step, and the groundedness metric of
+\Cref{sec:metrics} borrows its decompose-then-verify protocol.
 
 \subsection{Positioning}
 
